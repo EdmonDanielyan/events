@@ -12,8 +12,13 @@ class AuthScreen extends StatelessWidget {
     return BlocProvider<AuthCubit>(
         create: (BuildContext context) => AuthCubit(),
         child: Scaffold(
-          appBar: InkAppBar(),
-          body: Body(),
+            appBar: InkAppBar(),
+            body: Container(
+                child: SingleChildScrollView(
+                    physics: NeverScrollableScrollPhysics(),
+                    child: Body()
+                )
+            ),
         )
     );
   }

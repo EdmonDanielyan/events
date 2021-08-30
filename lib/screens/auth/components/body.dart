@@ -26,22 +26,31 @@ class Body extends StatelessWidget {
                           .of(context)
                           .size
                           .height,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      child: Stack(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              AuthTitle(),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  AuthTitle(),
+                                ],
+                              ),
+                              AuthForm(),
+                              Expanded(
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      AuthHint(),
+                                      AuthButtons(),
+                                    ],
+                                  )
+                              )
                             ],
                           ),
-                          AuthForm(),
-                          AuthHint(),
-                          Expanded(
-                              child: AuthButtons()
-                          )
                         ],
-                      ),
+                      )
                     )
                 );
             }
