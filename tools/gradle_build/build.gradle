@@ -1,0 +1,71 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url "https://repo1.maven.org/maven2" }
+    }
+    dependencies {
+        classpath "org.openapitools:openapi-generator-gradle-plugin:5.1.0"
+    }
+}
+
+
+task downloadFile {
+    doLast {
+        def f = new File("$projectDir/openapi.json")
+        new URL('https://dev.social-hc.app/services/rest/v1/openapi.json').withInputStream{ i -> f.withOutputStream{ it << i }}
+    }
+}
+
+task generateApiClient(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask, dependsOn: downloadFile) {
+    generatorName = "dart-dio"
+    inputSpec = "$projectDir/openapi.json"
+    outputDir = "$projectDir"
+    configFile = "$projectDir/generator-config.yaml"
+    templateDir = "$projectDir/../tools/dart-dio-custom"
+    skipValidateSpec = true
+    globalProperties = [
+            apiTests: "false",
+            modelTests: "false"
+    ]
+}
+
+//task buildApiClient(dependsOn: generateApiClient) {
+//  doLast {
+//      commandLine 'flutter', 'clean'
+//      commandLine 'flutter', 'pub', 'get'
+//      commandLine 'flutter', 'pub', 'run', 'build_runner', 'build' '--delete-conflicting-outputs'
+//      commandLine 'flutter', 'format', "$projectDir/lib"
+//  }
+//}
+
+task buildApiClient(dependsOn: generateApiClient) {
+    doLast {
+        def shell = 'sh'
+        def shellArgs = '-c'
+        if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+            shell = 'cmd'
+            shellArgs = '/c'
+        }
+
+        exec {
+            workingDir projectDir
+            commandLine shell, shellArgs, 'flutter clean'
+        }
+        exec {
+            workingDir projectDir
+            commandLine shell, shellArgs, 'flutter pub get'
+
+        }
+        exec {
+            workingDir projectDir
+            commandLine shell, shellArgs,
+                    'flutter pub run build_runner build --delete-conflicting-outputs'
+
+        }
+        exec {
+            workingDir projectDir
+            commandLine shell, shellArgs,
+                    "flutter format lib"
+        }
+    }
+}

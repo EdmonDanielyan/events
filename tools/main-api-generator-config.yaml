@@ -1,0 +1,6 @@
+# Config options for the dart-dio generator
+pubName: main_api_client
+pubVersion: 0.1.0
+pubDescription: "Project Main API"
+legacyDiscriminatorBehavior: false
+templateDir: dart-dio-custom
