@@ -44,7 +44,18 @@ class _ContentState extends State<Content> {
       margin: EdgeInsets.only(bottom: 35),
       child: Column(
         children: [
-          Html(data: widget.text),
+          Html(
+            data: widget.text,
+            style: {
+              "a": Style(
+                color: Colors.black,
+                textDecoration: TextDecoration.none
+              ),
+              "b": Style(
+                fontWeight: FontWeight.normal
+              )
+            },
+          ),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               child: Row(

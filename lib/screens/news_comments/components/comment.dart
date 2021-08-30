@@ -69,7 +69,9 @@ class _CommentState extends State<Comment> {
                           padding: EdgeInsets.only(bottom: 5),
                           alignment: Alignment.topLeft,
                           child: Text(
-                            widget.name,
+                            // Пришлось так сделать, т.к. каким-то образом null
+                            // все равно проходит сюда и вызывает фаталку
+                            widget.name ?? '',
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold
@@ -77,7 +79,9 @@ class _CommentState extends State<Comment> {
                           )
                       ),
                       Text(
-                        widget.text,
+                        // Пришлось так сделать, т.к. каким-то образом null
+                        // все равно проходит сюда и вызывает фаталку
+                        widget.text ?? '',
                         style: TextStyle(
                             color: _textColor,
                             fontSize: 16

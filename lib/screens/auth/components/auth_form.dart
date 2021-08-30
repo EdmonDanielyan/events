@@ -6,8 +6,6 @@ import 'auth_password_field.dart';
 class AuthForm extends StatelessWidget {
   AuthForm({Key? key}) : super(key: key);
 
-  final TextEditingController _loginController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
@@ -18,7 +16,6 @@ class AuthForm extends StatelessWidget {
         child: Column(
           children: [
             TextField(
-              controller: _loginController,
               decoration: InputDecoration(
                 labelText: 'Логин',
                 border: OutlineInputBorder(),
@@ -26,7 +23,7 @@ class AuthForm extends StatelessWidget {
                 filled: true,
               ),
               onChanged: (login) {
-                authCubit.login = _loginController.text;
+                authCubit.login = login;
               },
             ),
             SizedBox(height: size.height * 0.03),
