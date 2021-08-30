@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/models/auth_form_data.dart';
 
@@ -15,13 +16,14 @@ class AuthPasswordField extends StatefulWidget {
 class _AuthPasswordFieldState extends State<AuthPasswordField> {
   bool _obscureText = true;
 
+  static const String SHOW_TEXT_ICON_LINK = 'assets/images/show_text_icon.svg';
+  static const String HIDE_TEXT_ICON_LINK = 'assets/images/hide_text_icon.svg';
+
   void _toggle() {
     setState(() {
       _obscureText = !_obscureText;
     });
   }
-
-  TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,25 +31,39 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
 
     return TextField(
       onChanged: (value) {
-        authCubit.password = _controller.text;
+        authCubit.password = value;
       },
-      controller: _controller,
       obscureText: _obscureText,
       decoration: InputDecoration(
         labelText: 'Пароль',
         border: OutlineInputBorder(),
         fillColor: Colors.white,
         filled: true,
-        suffixIcon: IconButton(
-            icon: Icon(
-                _obscureText
-                ? Icons.remove_red_eye
-                : Icons.remove_red_eye_outlined
+        suffixIcon: GestureDetector(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: SvgPicture.asset(
+              _obscureText
+                  ? SHOW_TEXT_ICON_LINK
+                  : HIDE_TEXT_ICON_LINK,
+              width: 10,
+              height: 10,
             ),
-            onPressed: () {
-              _toggle();
-            }
-        ),
+          ),
+          onTap: () {
+            _toggle();
+          }
+        )
+        //   IconButton(
+        //     icon: Icon(
+        //         _obscureText
+        //         ? Icons.remove_red_eye
+        //         : Icons.remove_red_eye_outlined
+        //     ),
+        //     onPressed: () {
+        //       _toggle();
+        //     }
+        // ),
       ),
     );
   }
