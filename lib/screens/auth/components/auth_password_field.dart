@@ -54,16 +54,6 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
             _toggle();
           }
         )
-        //   IconButton(
-        //     icon: Icon(
-        //         _obscureText
-        //         ? Icons.remove_red_eye
-        //         : Icons.remove_red_eye_outlined
-        //     ),
-        //     onPressed: () {
-        //       _toggle();
-        //     }
-        // ),
       ),
     );
   }
