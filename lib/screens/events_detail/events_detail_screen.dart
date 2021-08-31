@@ -14,7 +14,7 @@ import 'package:intl/intl.dart';
 class EventDetailScreen extends StatelessWidget {
   static const String DEFAULT_PREVIEW_PICTURE_LINK =
       'https://sobitie.com.ua/sites/default/files/sobitie_logo.png';
-  static const String YOU_PARTICIPATE_MESSAGE = 'Вы учавствуете в событии';
+  static const String YOU_PARTICIPATE_MESSAGE = 'Вы участвуете в событии';
   static const String I_PARTICIPATE_TEXT = 'Я пойду';
 
   const EventDetailScreen({Key? key}) : super(key: key);

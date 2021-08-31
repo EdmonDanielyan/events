@@ -9,8 +9,8 @@ import 'package:ink_mobile/extensions/int_extension.dart';
 class Comment extends StatefulWidget {
   Comment({Key? key,
     required this.id,
-    required this.avatar,
-    required this.name,
+    this.avatar,
+    this.name,
     required this.text,
     required this.barrelChecked,
     required this.barrelsCount,
@@ -19,7 +19,7 @@ class Comment extends StatefulWidget {
 
   final int id;
   final String? avatar;
-  final String name;
+  final String? name;
   final String text;
   bool barrelChecked;
   int barrelsCount;
@@ -69,8 +69,6 @@ class _CommentState extends State<Comment> {
                           padding: EdgeInsets.only(bottom: 5),
                           alignment: Alignment.topLeft,
                           child: Text(
-                            // Пришлось так сделать, т.к. каким-то образом null
-                            // все равно проходит сюда и вызывает фаталку
                             widget.name ?? '',
                             style: TextStyle(
                                 fontSize: 16,
@@ -79,9 +77,7 @@ class _CommentState extends State<Comment> {
                           )
                       ),
                       Text(
-                        // Пришлось так сделать, т.к. каким-то образом null
-                        // все равно проходит сюда и вызывает фаталку
-                        widget.text ?? '',
+                        widget.text,
                         style: TextStyle(
                             color: _textColor,
                             fontSize: 16
@@ -170,7 +166,7 @@ class _CommentState extends State<Comment> {
   void _onAnswerButtonTap() {
     NewsCommentsCubit _cubit = widget.cubit;
 
-    _cubit.commentInputController.text = widget.name + ', ';
+    _cubit.commentInputController.text = widget.name ?? '' + ', ';
     _cubit.commentInputController.selection =
         TextSelection.fromPosition(
             TextPosition(
