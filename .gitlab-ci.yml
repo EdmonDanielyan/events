@@ -1,0 +1,147 @@
+stages:
+  - build
+  - notify-success
+  - notify-failure
+
+cache: &global_cache
+  key: ${CI_COMMIT_REF_SLUG}_pub_cache
+  untracked: true
+  paths:
+    - /pub-cache
+  policy: pull-push
+
+android:release:
+  cache:
+    <<: *global_cache
+    policy: pull
+  stage: build
+  image: cirrusci/flutter:latest
+  tags:
+    - flutter_android
+  variables:
+    GIT_LOGIN: "${GIT_LOGIN}"
+    GIT_EMAIL: "${GIT_EMAIL}"
+    GIT_PASSWORD: "${GIT_PASSWORD}"
+    KEY_ALIAS: "${KEY_ALIAS}"
+    KEY_PASSWORD: "${KEY_PASSWORD}"
+    KEY_STORE: "${KEY_STORE}"
+    STORE_PASSWORD: "${STORE_PASSWORD}"
+    AAB_BUILD_RELATIVE_PATH: "${AAB_BUILD_RELATIVE_PATH}"
+    APK_BUILD_RELATIVE_PATH: "${APK_BUILD_RELATIVE_PATH}"
+    PUB_CACHE: "/cache/pub-cache"
+  allow_failure: true
+  before_script:
+    - git config --global user.name "${GIT_LOGIN}"
+    - git config --global user.email "${GIT_EMAIL}"
+    - git config --global user.password "${GIT_PASSWORD}"
+    - git config --global credential.helper store
+    - echo "https://${GIT_LOGIN}:${GIT_PASSWORD}@gitlab.jetrabbits.com" > ~/.git-credentials
+  script:
+    - du -h -d 1 ${PUB_CACHE} && ls -la ${PUB_CACHE} && echo ${CI_JOB_ID} > "${PUB_CACHE}/last_job_id"
+    - base64 --decode $KEY_STORE > key.jks && export KEY_STORE=`pwd`/key.jks
+    - flutter doctor
+    - flutter pub upgrade
+    - du -h -d 1 /cache/pub-cache && ls -la /cache/pub-cache
+    - flutter build appbundle --verbose --no-sound-null-safety
+    - flutter build apk --verbose --no-sound-null-safety
+    - ls -la ${AAB_BUILD_RELATIVE_PATH}
+    - ls -la ${APK_BUILD_RELATIVE_PATH}
+  artifacts:
+    paths:
+      - build/app/outputs/bundle/release/app-release.aab
+      - build/app/outputs/apk/release/app-release.apk
+    expire_in: 1 day
+  only:
+    - master
+
+ios:debug:
+  stage: build
+  allow_failure: true
+  tags:
+    - flutter_ios
+  before_script:
+    - git config --global user.name "${GIT_LOGIN}"
+    - git config --global user.email "${GIT_EMAIL}"
+    - git config --global user.password "${GIT_PASSWORD}"
+    - git config --global credential.helper osxkeychain
+    - echo "https://${GIT_LOGIN}:${GIT_PASSWORD}@gitlab.jetrabbits.com" > ~/.git-credentials
+  variables:
+    GIT_LOGIN: "${GIT_LOGIN}"
+    GIT_EMAIL: "${GIT_EMAIL}"
+    GIT_PASSWORD: "${GIT_PASSWORD}"
+    FLUTTER_EXEC: "${FLUTTER_EXEC}"
+    IPA_SSH_PATH: "${IPA_SSH_PATH}"
+    IPA_BUILD_RELATIVE_PATH: "${IPA_BUILD_RELATIVE_PATH}"
+    PUB_CACHE: "${FLUTTER_IOS_PUB_CACHE}"
+  script:
+    - du -h -d 1 ${PUB_CACHE} && ls -la ${PUB_CACHE} && echo ${CI_JOB_ID} > "${PUB_CACHE}/last_job_id"
+    - ${FLUTTER_EXEC} --version
+    - ${FLUTTER_EXEC} doctor
+    - ${FLUTTER_EXEC} pub upgrade
+    - ${FLUTTER_EXEC} build ios --no-sound-null-safety
+    - cd ios
+    - xcodebuild archive -workspace Runner.xcworkspace -scheme Runner -archivePath Runner.xcarchive -destination 'generic/platform=iOS'
+    - xcodebuild -exportArchive -archivePath Runner.xcarchive -exportPath Runner.ipa -exportOptionsPlist DevelopmentExportOptions.plist
+    - scp ${IPA_BUILD_RELATIVE_PATH} ${IPA_SSH_PATH}
+  artifacts:
+    paths:
+      - ios/Runner.ipa/jdc_mobile.ipa
+    expire_in: 1 day
+  only:
+    - master
+
+notify:android:success:
+  stage: notify-success
+  dependencies:
+    - android:release
+  needs:
+    - android:release
+  allow_failure: true
+  image: curlimages/curl
+  variables:
+    TELEGRAM_TOKEN: "${TELEGRAM_TOKEN}"
+    TELEGRAM_PROJECT_HASH_TAG: "${TELEGRAM_PROJECT_HASH_TAG}"
+    TELEGRAM_SUCCESS_CHAT_ID: "${TELEGRAM_SUCCESS_CHAT_ID}"
+    AAB_BUILD_RELATIVE_PATH: "${AAB_BUILD_RELATIVE_PATH}"
+    APK_BUILD_RELATIVE_PATH: "${APK_BUILD_RELATIVE_PATH}"
+  script:
+    - ls -la ${AAB_BUILD_RELATIVE_PATH}
+    - ls -la ${APK_BUILD_RELATIVE_PATH}
+    - curl -v -F "chat_id=${TELEGRAM_SUCCESS_CHAT_ID}" -F "caption=#${TELEGRAM_PROJECT_HASH_TAG} New Release for test. Build ${CI_JOB_ID} from ${CI_PROJECT_NAME}/${CI_BUILD_REF_NAME}" -F document=@${APK_BUILD_RELATIVE_PATH} https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument
+    - curl -v -F "chat_id=${TELEGRAM_SUCCESS_CHAT_ID}" -F "caption=#${TELEGRAM_PROJECT_HASH_TAG} Bundle to deploy to Google Play. Build ${CI_JOB_ID} from ${CI_PROJECT_NAME}/${CI_BUILD_REF_NAME}. Do not install" -F document=@${AAB_BUILD_RELATIVE_PATH} https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument
+  only:
+    - master
+
+notify:ios:success:
+  stage: notify-success
+  dependencies:
+    - ios:debug
+  needs:
+    - ios:debug
+  allow_failure: true
+  image: curlimages/curl
+  variables:
+    TELEGRAM_TOKEN: "${TELEGRAM_TOKEN}"
+    TELEGRAM_PROJECT_HASH_TAG: "${TELEGRAM_PROJECT_HASH_TAG}"
+    TELEGRAM_SUCCESS_CHAT_ID: "${TELEGRAM_SUCCESS_CHAT_ID}"
+    IPA_HTTP_URL: "${IPA_HTTP_URL}"
+    IPA_BUILD_RELATIVE_PATH: "${IPA_BUILD_RELATIVE_PATH}"
+  script:
+    - ls -la ios/${IPA_BUILD_RELATIVE_PATH}
+    - curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_FAILURE_CHAT_ID} -d text="#${TELEGRAM_PROJECT_HASH_TAG} Build ${CI_JOB_ID} from ${CI_PROJECT_NAME}/${CI_BUILD_REF_NAME}. ${IPA_HTTP_URL} Bundle to manual deploy on iPhone."
+  only:
+    - master
+
+notify:failure:
+  stage: notify-failure
+  image: curlimages/curl
+  when: on_failure
+  variables:
+    TELEGRAM_TOKEN: "${TELEGRAM_TOKEN}"
+    TELEGRAM_PROJECT_HASH_TAG: "${TELEGRAM_PROJECT_HASH_TAG}"
+    TELEGRAM_FAILURE_CHAT_ID: "${TELEGRAM_FAILURE_CHAT_ID}"
+  script:
+    - echo "stub mode"
+    - curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_FAILURE_CHAT_ID} -d text="#${TELEGRAM_PROJECT_HASH_TAG} Build ${CI_JOB_ID} from ${CI_PROJECT_NAME}/${CI_BUILD_REF_NAME} failed. Please see details in ${CI_JOB_URL}"
+  only:
+    - master
