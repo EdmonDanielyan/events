@@ -113,6 +113,15 @@ class _HeaderState extends State<Header> {
           )
         );
       });
+    } else {
+      imagesContainer.add(
+         Image.network(
+          Header.DEFAULT_PREVIEW_PICTURE_LINK,
+          fit: BoxFit.fill,
+          colorBlendMode: BlendMode.darken,
+          color: Colors.black.withOpacity(0.15),
+        )
+      );
     }
 
     return imagesContainer;
