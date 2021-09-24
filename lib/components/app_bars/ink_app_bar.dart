@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
 
 class InkAppBar extends StatelessWidget with PreferredSizeWidget {
   final bool showPersonalPageLink;
+  static late LanguageStrings _strings;
 
-  InkAppBar({
-    Key? key,
-    this.showPersonalPageLink = false
-  }) : super(key: key);
+  InkAppBar({Key? key, this.showPersonalPageLink = false}) : super(key: key);
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
+    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return getAppBarWidget(context);
   }
 
   AppBar getAppBarWidget(BuildContext context) {
-      return AppBar(
+    return AppBar(
         leading: Builder(
           builder: (context) {
             if (Navigator.of(context).canPop()) {
@@ -37,61 +39,56 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
             'assets/images/appbar_lines.svg',
             semanticsLabel: 'appbar Line',
             height: MediaQuery.of(context).size.height *
-              MediaQuery.of(context).devicePixelRatio,
+                MediaQuery.of(context).devicePixelRatio,
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover,
           ),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [Theme.of(context).primaryColor, const Color(0xFF182B23)],
+                colors: [
+                  Theme.of(context).primaryColor,
+                  const Color(0xFF182B23)
+                ],
                 begin: FractionalOffset.centerLeft,
                 end: FractionalOffset.centerRight,
                 stops: [0.0, 1.0],
-                tileMode: TileMode.decal
-            ),
+                tileMode: TileMode.decal),
           ),
         ),
         title: Container(
           width: 170,
-          child: Row(
-            children: [
-              SvgPicture.asset(
-                'assets/images/logo.svg',
-                semanticsLabel: 'INK Logo',
-                width: 30,
-              ),
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text('ИНК-Портал'),
-              ),
-            ]
-          ),
+          child: Row(children: [
+            SvgPicture.asset(
+              'assets/images/logo.svg',
+              semanticsLabel: 'INK Logo',
+              width: 30,
+            ),
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Text(_strings.appName),
+            ),
+          ]),
         ),
         centerTitle: true,
-        actions: getActions(context)
-      );
+        actions: getActions(context));
   }
 
   List<Widget> getActions(BuildContext context) {
     List<Widget> actions = [];
 
     if (showPersonalPageLink) {
-      actions.add(
-        Container(
-          margin: EdgeInsets.only(right: 5),
-          child: IconButton(
-            icon: SvgPicture.asset(
-                'assets/images/personal_page_link.svg',
-                width: 30
-            ),
-            onPressed: () {
-              SchedulerBinding.instance?.addPostFrameCallback((_) {
-                Navigator.pushNamed(context, '/personal');
-              });
-            },
-          ),
-        )
-      );
+      actions.add(Container(
+        margin: EdgeInsets.only(right: 5),
+        child: IconButton(
+          icon: SvgPicture.asset('assets/images/personal_page_link.svg',
+              width: 30),
+          onPressed: () {
+            SchedulerBinding.instance?.addPostFrameCallback((_) {
+              Navigator.pushNamed(context, '/personal');
+            });
+          },
+        ),
+      ));
     }
 
     return actions;

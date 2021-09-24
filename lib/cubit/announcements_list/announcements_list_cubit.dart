@@ -1,130 +1,76 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/core/errors/dio_error_handler.dart';
+import 'package:ink_mobile/core/scrolling_loader/scroll_bottom_to_load.dart';
+import 'package:ink_mobile/cubit/announcements_list/use_cases/fetch.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
-import 'package:ink_mobile/models/error_response.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
+import 'package:ink_mobile/models/pagination.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:main_api_client/api.dart';
-import 'package:main_api_client/api/announcements_api.dart';
-import 'package:main_api_client/model/get_announcements.dart';
 import 'announcements_list_state.dart';
 import 'package:dio/dio.dart';
 
-class AnnouncementsListCubit extends Cubit<AnnouncementsListState>
-{
-  static AnnouncementsApi announcementsApi =
-    MainApiClient().getAnnouncementsApi();
+import 'domain/repository.dart';
 
-  static const int COUNT = 5;
-  static const int BOTTOM_SCROLL_OFFSET = 300;
+class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
+  LanguageStrings languageStrings;
 
-  int pageNumber = 1;
-  bool isLastPage = false;
-  bool isLoading = false;
-  double loadedHeight = 0.0;
-  List<AnnouncementData> announcementsList = [];
+  Pagination<AnnouncementData> pagination =
+      Pagination<AnnouncementData>(countOnPage: 5);
+  ScrollBottomToLoad scrollBottomToLoad = ScrollBottomToLoad();
 
-  AnnouncementsListCubit(): super(AnnouncementsListState(
-      type: AnnouncementsListStateType.LOADING
-  ));
+  AnnouncementsListCubit({required this.languageStrings})
+      : super(AnnouncementsListState(type: AnnouncementsListStateType.LOADING));
 
   Future<void> fetch() async {
     try {
-      if (!isLastPage) {
+      if (pagination.next) {
         await Token.setNewTokensIfExpired();
-
-        Response<GetAnnouncements> response =
-          await announcementsApi.getAnnouncements(
-              countOnPage: COUNT,
-              pageNumber: pageNumber
-          );
-
-        Map? announcementsListData = response.data?.data.asMap;
-
-        if (announcementsListData != null) {
-          announcementsList.addAll(
-              AnnouncementData
-                  .getListFromMap(announcementsListData['announcements'])
-          );
-
-          if (announcementsListData['next'] == null) {
-            isLastPage = true;
-          } else {
-            pageNumber++;
-          }
-
-          emit(AnnouncementsListState(
-              type: AnnouncementsListStateType.LOADED,
-              data: announcementsList
-          ));
-        } else {
-          emitState(
-              type: AnnouncementsListStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-
-          throw UnknownErrorException();
-        }
+        Pagination<AnnouncementData> response = await AnnouncementsListFetch(
+                pagination: pagination,
+                dependency: AnnouncementListRepository(pagination: pagination)
+                    .getDependency())
+            .call();
+        pagination = response;
+        emitSuccess(pagination.items);
       }
     } on DioError catch (e) {
-      if (e.type == DioErrorType.response) {
-        ErrorResponse response = ErrorResponse
-            .fromException(e);
-
-        if (response.code == 'QMA-6') {
-          emitState(
-            type: AnnouncementsListStateType.ERROR,
-            errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-
-          throw InvalidRefreshTokenException();
-        } else {
-          emitState(
-              type: AnnouncementsListStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-
-          throw UnknownErrorException();
-        }
-      } else {
-        emitState(
-            type: AnnouncementsListStateType.ERROR,
-            errorMessage: ErrorMessages.NO_CONNECTION_ERROR_MESSAGE
-        );
-
-        throw NoConnectionException();
-      }
-
-    } on Exception catch (e) {
-      emitState(
-          type: AnnouncementsListStateType.ERROR,
-          errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-      );
-
+      ErrorModel error =
+          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      emitError(error.msg);
+      throw error.exception;
+    } on Exception catch (_) {
+      emitError(languageStrings.errorOccuried);
       throw UnknownErrorException();
     }
   }
 
-  void emitState({
-    required AnnouncementsListStateType type,
-    List<AnnouncementData>? data,
-    String? errorMessage
-  }) {
+  void emitSuccess(List<AnnouncementData> announcementsList) {
     emit(AnnouncementsListState(
-        type: type,
-        data: data,
-        errorMessage: errorMessage
-    ));
+        type: AnnouncementsListStateType.LOADED, data: announcementsList));
+  }
+
+  void emitError(String errorMsg) {
+    emitState(
+      type: AnnouncementsListStateType.ERROR,
+      errorMessage: errorMsg,
+    );
+  }
+
+  void emitState(
+      {required AnnouncementsListStateType type,
+      List<AnnouncementData>? data,
+      String? errorMessage}) {
+    emit(AnnouncementsListState(
+        type: type, data: data, errorMessage: errorMessage));
   }
 
   void resetProperties() {
-    pageNumber = 1;
-    announcementsList = [];
-    isLastPage = false;
-    isLoading = false;
-    loadedHeight = 0.0;
+    pagination.clear();
+    scrollBottomToLoad.clear();
   }
 
   void refresh() {
@@ -133,40 +79,19 @@ class AnnouncementsListCubit extends Cubit<AnnouncementsListState>
   }
 
   Future<void> onScroll(ScrollController controller) async {
-    bool reachedLoadTrigger =
-        controller.offset
-            >= controller.position.maxScrollExtent
-            - BOTTOM_SCROLL_OFFSET;
+    scrollBottomToLoad.setController(controller);
 
-    bool wasNotLoadedAlready = controller.offset > loadedHeight;
+    scrollBottomToLoad.onScroll(() async {
+      await fetch().then((value) {
+        scrollBottomToLoad.isLoading = false;
+      }).onError((error, stackTrace) {
+        String message = error is NoConnectionException
+            ? languageStrings.noConnectionError
+            : languageStrings.unknownError;
 
-    if (
-    reachedLoadTrigger
-        && wasNotLoadedAlready
-        && !controller.position.outOfRange
-        && !isLoading
-    ) {
-      isLoading = true;
-      loadedHeight = controller.position.maxScrollExtent;
-
-      await
-        fetch()
-          .then((value) {
-            isLoading = false;
-          })
-          .onError((error, stackTrace) {
-            String message;
-
-            if (error is NoConnectionException) {
-              message = ErrorMessages.NO_CONNECTION_ERROR_MESSAGE;
-            } else {
-              message = ErrorMessages.UNKNOWN_ERROR_MESSAGE;
-            }
-
-            showErrorDialog(message);
-
-            isLoading = false;
-          });
-    }
+        showErrorDialog(message);
+        scrollBottomToLoad.isLoading = false;
+      });
+    });
   }
 }

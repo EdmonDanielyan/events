@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 
 class AccidentInsurance extends StatelessWidget {
   const AccidentInsurance({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final _strings =
+        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return Scaffold(
-      appBar: InkAppBarWithText(title: 'Страхование от несч. случаев'),
+      appBar: InkAppBarWithText(title: _strings.accidentInsurance),
       body: SingleChildScrollView(
-          child: Container(
-            child: Html(
-                onLinkTap: (String? url, RenderContext context, Map<String, String> attributes, dom.Element? element) {
-                  print(url!);
-                },
-                data: '''
+        child: Container(
+          child: Html(
+              onLinkTap: (String? url, RenderContext context,
+                  Map<String, String> attributes, dom.Element? element) {
+                print(url!);
+              },
+              data: '''
                   <h1>Страхование от несчастных случаев</h1>
                   <p>
                      Все сотрудники компании застрахованы от несчастных случаев в размере, определенном договором страхования от несчастных случаев (Договор 2020-2021 гг. с ПАО СК &nbsp;«Росгосстрах» № НСК81-Д-63809000-000081-20 от «14» марта 2020 г.)
@@ -144,7 +149,7 @@ class AccidentInsurance extends StatelessWidget {
                    <br>
                    </a>
                 '''),
-          ),
+        ),
       ),
     );
   }

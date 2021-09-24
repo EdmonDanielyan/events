@@ -5,17 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
 
 class NewsCommentInput extends StatelessWidget {
   NewsCommentInput({Key? key}) : super(key: key);
-  static const String SEND_COMMENT_SVG_LINK =
-      'assets/images/send_comment.svg';
-
-  static const String WRITE_COMMENT = 'Написать комментарий...';
-
-  static const String COMMENT_SENDING_ERROR =
-      'Произошла ошибка при отправке комментария';
-
+  static const String SEND_COMMENT_SVG_LINK = 'assets/images/send_comment.svg';
+  static late LanguageStrings _strings;
   late NewsCommentsCubit _cubit;
 
   @override
@@ -26,6 +22,8 @@ class NewsCommentInput extends StatelessWidget {
     int newsId = arg['id'];
 
     _cubit = BlocProvider.of<NewsCommentsCubit>(context);
+
+    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
 
     return Container(
         width: size.width,
@@ -44,15 +42,9 @@ class NewsCommentInput extends StatelessWidget {
             Expanded(
               flex: 6,
               child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                      maxHeight: 100
-                  ),
+                  constraints: BoxConstraints(maxHeight: 100),
                   child: Container(
-                      margin: EdgeInsets.only(
-                          left: 15,
-                          top: 10,
-                          bottom: 10
-                      ),
+                      margin: EdgeInsets.only(left: 15, top: 10, bottom: 10),
                       child: TextField(
                           controller: _cubit.commentInputController,
                           keyboardType: TextInputType.multiline,
@@ -70,20 +62,12 @@ class NewsCommentInput extends StatelessWidget {
                               filled: true,
                               isDense: true,
                               contentPadding: EdgeInsets.symmetric(
-                                  vertical: 8,
-                                  horizontal: 25
-                              ),  // Added this
+                                  vertical: 8, horizontal: 25), // Added this
                               fillColor: Colors.white,
-                              hintText: WRITE_COMMENT,
+                              hintText: _strings.writeCommentHint,
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.all(
-                                      Radius.circular(30)
-                                  )
-                              )
-                          )
-                      )
-                  )
-              ),
+                                      Radius.circular(30))))))),
             ),
             Expanded(
                 flex: 1,
@@ -94,15 +78,10 @@ class NewsCommentInput extends StatelessWidget {
                   child: Container(
                       width: 40,
                       height: 40,
-                      child: SvgPicture.asset(
-                          SEND_COMMENT_SVG_LINK
-                      )
-                  ),
-                )
-            )
+                      child: SvgPicture.asset(SEND_COMMENT_SVG_LINK)),
+                ))
           ],
-        )
-    );
+        ));
   }
 
   void _onChanged(String value) {
@@ -114,28 +93,21 @@ class NewsCommentInput extends StatelessWidget {
 
   Future<void> _onMessageSend(BuildContext context, int id) async {
     final NewsCommentsCubit newsCommentsCubit =
-    BlocProvider.of<NewsCommentsCubit>(context);
+        BlocProvider.of<NewsCommentsCubit>(context);
 
-    await newsCommentsCubit
-        .addComment(id)
-        .onError((error, stackTrace) {
+    await newsCommentsCubit.addComment(id).onError((error, stackTrace) {
       String errorMessage;
 
       if (error is NoConnectionException) {
-        errorMessage = ErrorMessages.NO_CONNECTION_ERROR_MESSAGE;
+        errorMessage = _strings.noConnectionError;
       } else {
-        errorMessage = COMMENT_SENDING_ERROR;
+        errorMessage = _strings.commentSendingError;
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-                errorMessage
-            ),
-            duration: Duration(seconds: 1),
-          )
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(errorMessage),
+        duration: Duration(seconds: 1),
+      ));
     });
   }
-
 }

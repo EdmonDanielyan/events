@@ -4,7 +4,6 @@ import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/handlers/error_handlers.dart';
 
 class ErrorCatcher {
-
   static ErrorCatcher? _instance;
   late ErrorHandler _handler;
 

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/contacts_row.dart';
 import 'package:ink_mobile/screens/profile/components/section_title.dart';
 
-
 class Contacts extends StatelessWidget {
+  static late LanguageStrings _strings;
   final UserContacts? contacts;
   const Contacts({Key? key, required this.contacts}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     if (contacts != null) {
       return getContactsWidget(context);
     } else {
@@ -19,23 +23,19 @@ class Contacts extends StatelessWidget {
   }
 
   getContactsWidget(BuildContext context) {
-    if (
-      contacts!.workPhone != null ||
-      contacts!.mobilePhone != null ||
-      contacts!.workMobilePhone != null ||
-      contacts!.email != null
-    ) {
+    if (contacts!.workPhone != null ||
+        contacts!.mobilePhone != null ||
+        contacts!.workMobilePhone != null ||
+        contacts!.email != null) {
       return Container(
         margin: EdgeInsets.only(top: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              child: SectionTitle(title: 'Контакты'),
+              child: SectionTitle(title: _strings.contacts),
             ),
-            Column(
-              children: getContactWidgetRows(context)
-            )
+            Column(children: getContactWidgetRows(context))
           ],
         ),
       );
@@ -49,13 +49,11 @@ class Contacts extends StatelessWidget {
 
     getRowsInfo(context).forEach((element) {
       if (element['value'] != null) {
-        contactRows.add(
-          ContactsRow(
-            title: element['title'],
-            value: element['value'],
-            icon: element['icon'],
-          )
-        );
+        contactRows.add(ContactsRow(
+          title: element['title'],
+          value: element['value'],
+          icon: element['icon'],
+        ));
       }
     });
 
@@ -65,12 +63,12 @@ class Contacts extends StatelessWidget {
   List getRowsInfo(BuildContext context) {
     return [
       {
-        'title': 'Рабочий телефон',
+        'title': _strings.workPhone,
         'value': contacts!.workPhone,
         'icon': SvgPicture.asset('assets/images/work_phone.svg')
       },
       {
-        'title': 'Рабочий мобильный телефон',
+        'title': _strings.workMobilePhone,
         'value': contacts!.workMobilePhone,
         'icon': Icon(
           Icons.phone,
@@ -79,7 +77,7 @@ class Contacts extends StatelessWidget {
         )
       },
       {
-        'title': 'Мобильный телефон',
+        'title': _strings.mobilePhone,
         'value': contacts!.mobilePhone,
         'icon': Icon(
           Icons.phone_iphone,

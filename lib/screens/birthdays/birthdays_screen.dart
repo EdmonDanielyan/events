@@ -2,11 +2,12 @@ import 'package:awesome_loader/awesome_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
-import 'package:ink_mobile/components/bottom_nav_bars/ink_bottom_navigation_bar.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_cubit.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_state.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_other_days_element.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_today_element.dart';
@@ -16,195 +17,175 @@ class BirthdaysScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _strings =
+        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
 
     return BlocProvider<BirthdaysCubit>(
-        create: (BuildContext context) => BirthdaysCubit(),
+        create: (BuildContext context) =>
+            BirthdaysCubit(languageStrings: _strings),
         child: Scaffold(
-            appBar: InkAppBarWithText(title: 'Дни рождения',),
-            body: BlocBuilder<BirthdaysCubit, BirthdaysState>(
+          appBar: InkAppBarWithText(
+            title: _strings.birthdays,
+          ),
+          body: BlocBuilder<BirthdaysCubit, BirthdaysState>(
               builder: (context, state) {
-                final BirthdaysCubit birthdaysCubit = BlocProvider.of<BirthdaysCubit>(context);
+            final BirthdaysCubit birthdaysCubit =
+                BlocProvider.of<BirthdaysCubit>(context);
 
-                switch (state.type) {
-                  case (BirthdaysStateType.EMPTY): {
-                    return Center(
-                        child: Text(
-                          'Сегодня и ближайшие 3 дня нет дней рождения'
-                        )
-                    );
-                  }
-
-                  case (BirthdaysStateType.LOADED): {
-                    return SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 15,
-                                horizontal: 25
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border(
-                                bottom: BorderSide(
-                                    width: 1,
-                                    color: Color(0xFFE5E5E5)
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    flex: 8,
-                                    child: Text(
-                                      'Дни рождения',
-                                      style: TextStyle(
-                                          fontSize: 28,
-                                          fontWeight: FontWeight.bold
-                                      )
-                                    )
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Image.asset(
-                                      "assets/images/balloon.png"
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          /* Дни рождения сегодня*/
-                          state.birthdaysToday!.length > 0 ? Container(
-                            alignment: Alignment.bottomLeft,
-                            margin: EdgeInsets.only(top: 25),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(left: 25),
-                                  child: Text(
-                                    'СЕГОДНЯ',
-                                    style: TextStyle(
-                                        color: Theme.of(context).iconTheme.color,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18
-                                    )
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border(
-                                        top: BorderSide(
-                                            width: 1,
-                                            color: Color(0xFFE5E5E5)
-                                        ),
-                                        bottom: BorderSide(
-                                            width: 1,
-                                            color: Color(0xFFE5E5E5)
-                                        ),
-                                      )
-                                  ),
-                                  child: Column(
-                                    children: _getBirthdaysToday(
-                                        context,
-                                        state.birthdaysToday!,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ) : Container(),
-                          /* Дни рождения в ближайшие дни*/
-                          state.birthdaysOther!.length > 0 ? Container(
-                            alignment: Alignment.bottomLeft,
-                            margin: EdgeInsets.only(top: 25),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(left: 25),
-                                  child: Text(
-                                    'БЛИЖАЙШИЕ ДНИ',
-                                    style: TextStyle(
-                                        color: Theme.of(context).iconTheme.color,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18
-                                    )
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border(
-                                        top: BorderSide(
-                                            width: 1,
-                                            color: Color(0xFFE5E5E5)
-                                        ),
-                                        bottom: BorderSide(
-                                            width: 1,
-                                            color: Color(0xFFE5E5E5)
-                                        ),
-                                      )
-                                  ),
-                                  child: Column(
-                                    children: _getBirthdaysOther(
-                                      context,
-                                      state.birthdaysOther!
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ) : Container(),
-                        ],
-                      ),
-                    );
-                  }
-
-                  case (BirthdaysStateType.LOADING): {
-                    birthdaysCubit.load();
-                    return InkPageLoader();
-                  }
-
-                  case (BirthdaysStateType.ERROR): {
-                    return ErrorRefreshButton(
-                      onTap: birthdaysCubit.refresh,
-                      text: state.errorMessage!,
-                    );
-                  }
+            switch (state.type) {
+              case (BirthdaysStateType.EMPTY):
+                {
+                  return Center(child: Text(_strings.noBirthdaysSoon));
                 }
 
-                return Container();
-              }
-            ),
-            bottomNavigationBar: InkBottomNavBar(
-                selectedItemCode: InkBottomNavBarItemCodes.services
-            )
-        )
-    );
+              case (BirthdaysStateType.LOADED):
+                {
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 25),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border(
+                              bottom: BorderSide(
+                                  width: 1, color: Color(0xFFE5E5E5)),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  flex: 8,
+                                  child: Text(_strings.birthdays,
+                                      style: TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.bold))),
+                              Expanded(
+                                flex: 2,
+                                child: Image.asset("assets/images/balloon.png"),
+                              )
+                            ],
+                          ),
+                        ),
+                        /* Дни рождения сегодня*/
+                        state.birthdaysToday!.length > 0
+                            ? Container(
+                                alignment: Alignment.bottomLeft,
+                                margin: EdgeInsets.only(top: 25),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(left: 25),
+                                      child: Text(_strings.today.toUpperCase(),
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18)),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border(
+                                            top: BorderSide(
+                                                width: 1,
+                                                color: Color(0xFFE5E5E5)),
+                                            bottom: BorderSide(
+                                                width: 1,
+                                                color: Color(0xFFE5E5E5)),
+                                          )),
+                                      child: Column(
+                                        children: _getBirthdaysToday(
+                                          context,
+                                          state.birthdaysToday!,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                        /* Дни рождения в ближайшие дни*/
+                        state.birthdaysOther!.length > 0
+                            ? Container(
+                                alignment: Alignment.bottomLeft,
+                                margin: EdgeInsets.only(top: 25),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(left: 25),
+                                      child: Text(
+                                          _strings.inComingDays.toUpperCase(),
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18)),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border(
+                                            top: BorderSide(
+                                                width: 1,
+                                                color: Color(0xFFE5E5E5)),
+                                            bottom: BorderSide(
+                                                width: 1,
+                                                color: Color(0xFFE5E5E5)),
+                                          )),
+                                      child: Column(
+                                        children: _getBirthdaysOther(
+                                            context, state.birthdaysOther!),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                      ],
+                    ),
+                  );
+                }
 
+              case (BirthdaysStateType.LOADING):
+                {
+                  birthdaysCubit.load();
+                  return InkPageLoader();
+                }
+
+              case (BirthdaysStateType.ERROR):
+                {
+                  return ErrorRefreshButton(
+                    onTap: birthdaysCubit.refresh,
+                    text: state.errorMessage!,
+                  );
+                }
+            }
+
+            return Container();
+          }),
+          bottomNavigationBar: NewBottomNavBar(),
+        ));
   }
 
   List<Widget> _getBirthdaysToday(
-    BuildContext context,
-    List<BirthdayData>? birthdaysData
-  ) {
+      BuildContext context, List<BirthdayData>? birthdaysData) {
     List<Widget> birthdays = [];
 
     birthdaysData?.forEach((birthday) {
-      birthdays.add(
-          BirthdayTodayElement(birthday: birthday)
-      );
+      birthdays.add(BirthdayTodayElement(birthday: birthday));
 
-      birthdays.add(
-          Divider(
-            thickness: 1,
-            height: 4,
-          )
-      );
+      birthdays.add(Divider(
+        thickness: 1,
+        height: 4,
+      ));
     });
 
     birthdays.removeLast();
@@ -213,17 +194,16 @@ class BirthdaysScreen extends StatelessWidget {
   }
 
   List<Widget> _getBirthdaysOther(
-    BuildContext context,
-    List<BirthdayData>? birthdaysData
-  ) {
+      BuildContext context, List<BirthdayData>? birthdaysData) {
     List<Widget> birthdays = [];
 
     birthdaysData?.forEach((birthday) {
-      birthdays.add(
-          BirthdayOtherDaysElement(birthday: birthday)
-      );
+      birthdays.add(BirthdayOtherDaysElement(birthday: birthday));
 
-      birthdays.add(Divider(thickness: 1, height: 4,));
+      birthdays.add(Divider(
+        thickness: 1,
+        height: 4,
+      ));
     });
 
     birthdays.removeLast();
