@@ -45,6 +45,8 @@ class LearningMaterialsList extends StatelessWidget {
 
             case LearningMaterialsListStateType.LOADED:
               {
+                List<LearningMaterialsListElement> items =
+                    _getLearningMaterialsWidgetList(state.data!);
                 return Container(
                   color: Color(0xfff9f9f9),
                   child: Column(children: [
@@ -61,9 +63,14 @@ class LearningMaterialsList extends StatelessWidget {
                           ],
                         )),
                     Container(
-                        child: Column(
-                            children:
-                                _getLearningMaterialsWidgetList(state.data!)))
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        controller: ScrollController(keepScrollOffset: false),
+                        itemCount: items.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            items[index],
+                      ),
+                    )
                   ]),
                 );
               }

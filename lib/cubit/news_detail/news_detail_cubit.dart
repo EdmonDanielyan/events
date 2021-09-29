@@ -38,13 +38,13 @@ class NewsDetailCubit extends Cubit<NewsDetailState> {
     }
   }
 
-  Future<bool> like(int newsId) async {
+  Future<void> like(int newsId) async {
     try {
+      emitSuccess(state.data!.copyWith(isLiked: !state.data!.isLiked!));
       await Token.setNewTokensIfExpired();
       await NewsDetailLike(
         dependency: NewsDetailLikeRepository(newsId: newsId).getDependency(),
       ).like();
-      return true;
     } on DioError catch (e) {
       if (e.type == DioErrorType.other) throw NoConnectionException();
 

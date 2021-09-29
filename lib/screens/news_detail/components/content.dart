@@ -139,16 +139,6 @@ class _ContentState extends State<Content> {
         duration: Duration(seconds: 1),
       ));
       return false;
-    }).then((value) {
-      if (value) {
-        if (widget.isLiked) {
-          widget.likeCount--;
-        } else {
-          widget.likeCount++;
-        }
-
-        widget.isLiked = !widget.isLiked;
-      }
     });
   }
 }

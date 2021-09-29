@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
-import 'package:ink_mobile/core/errors/empty_error_handler.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_state.dart';
 import 'package:ink_mobile/cubit/birthdays/use_cases/fetch.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
@@ -27,14 +26,14 @@ class BirthdaysCubit extends Cubit<BirthdaysState> {
 
       emitSuccess(response.birthdaysToday, response.birthdaysOther);
     } on DioError catch (e) {
-      bool isEmpty = DioEmptyHandler(e: e).isEmpty();
-      if (isEmpty) {
+      final _errorHandler =
+          DioErrorHandler(e: e, languageStrings: languageStrings);
+      if (_errorHandler.isEmpty()) {
         emitEmpty();
         return;
       }
 
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = _errorHandler.call();
       emitError(error.msg);
       throw error.exception;
     }

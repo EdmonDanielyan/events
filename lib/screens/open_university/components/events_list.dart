@@ -37,6 +37,7 @@ class OpenUniversityEventsList extends StatelessWidget {
 
         case EventsListStateType.LOADED:
           {
+            List<EventsListElement> items = _getEventsWidgetList(state.data!);
             return Container(
               color: Color(0xfff9f9f9),
               child: Column(children: [
@@ -53,7 +54,14 @@ class OpenUniversityEventsList extends StatelessWidget {
                       ],
                     )),
                 Container(
-                    child: Column(children: _getEventsWidgetList(state.data!)))
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    controller: ScrollController(keepScrollOffset: false),
+                    itemCount: items.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        items[index],
+                  ),
+                )
               ]),
             );
           }

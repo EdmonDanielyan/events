@@ -10,8 +10,8 @@ import 'package:ink_mobile/screens/main/components/events_list.dart';
 
 class EventsAndAnnouncementsBlock extends StatelessWidget {
   static late LanguageStrings _strings;
-  late EventsAndAnnouncementsBlockCubit cubit;
-  Size? size;
+  static late EventsAndAnnouncementsBlockCubit cubit;
+  static late Size? size;
   EventsAndAnnouncementsBlock({Key? key}) : super(key: key);
 
   @override
@@ -36,7 +36,11 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
                       getNavigationRow(context, 'events'),
                       EventsList(),
                       ElevatedFullWidthButton(
-                          title: _strings.allEvents, link: '/events_list')
+                        title: _strings.allEvents,
+                        onTap: () {
+                          Navigator.pushNamed(context, '/events_list');
+                        },
+                      )
                     ]));
               }
 
@@ -50,8 +54,11 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
                       getNavigationRow(context, 'announcements'),
                       AnnouncementsList(),
                       ElevatedFullWidthButton(
-                          title: _strings.allAnnouncements,
-                          link: '/announcements_list')
+                        title: _strings.allAnnouncements,
+                        onTap: () {
+                          Navigator.pushNamed(context, '/announcements_list');
+                        },
+                      )
                     ]));
               }
           }

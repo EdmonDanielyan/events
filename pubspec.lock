@@ -169,6 +169,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.2"
+  file_picker:
+    dependency: "direct main"
+    description:
+      name: file_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.1"
   fixnum:
     dependency: transitive
     description:
@@ -216,6 +223,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_math_fork:
     dependency: transitive
     description:
@@ -223,6 +235,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.3+1"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -317,6 +336,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0+1"
+  multi_select_flutter:
+    dependency: "direct main"
+    description:
+      name: multi_select_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   nested:
     dependency: transitive
     description:

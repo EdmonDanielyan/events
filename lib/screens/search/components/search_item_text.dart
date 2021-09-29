@@ -32,7 +32,7 @@ class SearchItemText extends StatelessWidget {
                   caseSensitive: false,
                   patternList: [
                     EasyRichTextPattern(
-                        targetString: query,
+                        targetString: RegExp.escape(query),
                         style: TextStyle(color: Colors.blue)),
                   ],
                 )),

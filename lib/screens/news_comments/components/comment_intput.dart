@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
@@ -12,7 +11,7 @@ class NewsCommentInput extends StatelessWidget {
   NewsCommentInput({Key? key}) : super(key: key);
   static const String SEND_COMMENT_SVG_LINK = 'assets/images/send_comment.svg';
   static late LanguageStrings _strings;
-  late NewsCommentsCubit _cubit;
+  static late NewsCommentsCubit _cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -25,67 +24,68 @@ class NewsCommentInput extends StatelessWidget {
 
     _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
 
-    return Container(
+    return SafeArea(
+      child: Container(
         width: size.width,
         decoration: BoxDecoration(
           color: Colors.white,
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Colors.black,
-              offset: Offset(1.0, 20.0),
-              blurRadius: 30.0,
+          border: Border(
+            top: BorderSide(
+              color: Colors.grey[200]!.withOpacity(0.8),
+              width: 1.0,
             ),
-          ],
+          ),
         ),
+        padding: const EdgeInsets.symmetric(vertical: 13.0),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              flex: 6,
-              child: ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: 100),
-                  child: Container(
-                      margin: EdgeInsets.only(left: 15, top: 10, bottom: 10),
-                      child: TextField(
-                          controller: _cubit.commentInputController,
-                          keyboardType: TextInputType.multiline,
-                          focusNode: _cubit.focusNode,
-                          minLines: 1,
-                          maxLines: 5,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1000)
-                          ],
-                          style: TextStyle(),
-                          onChanged: (String value) {
-                            _onChanged(value);
-                          },
-                          decoration: InputDecoration(
-                              filled: true,
-                              isDense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 25), // Added this
-                              fillColor: Colors.white,
-                              hintText: _strings.writeCommentHint,
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(30))))))),
-            ),
-            Expanded(
-                flex: 1,
-                child: GestureDetector(
-                  onTap: () async {
-                    await _onMessageSend(context, newsId);
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: TextField(
+                  controller: _cubit.commentInputController,
+                  keyboardType: TextInputType.multiline,
+                  focusNode: _cubit.focusNode,
+                  minLines: 1,
+                  maxLines: 5,
+                  inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+                  style: TextStyle(),
+                  onChanged: (String value) {
+                    _onChanged(value);
                   },
-                  child: Container(
-                      width: 40,
-                      height: 40,
-                      child: SvgPicture.asset(SEND_COMMENT_SVG_LINK)),
-                ))
+                  decoration: InputDecoration(
+                    filled: true,
+                    isDense: true,
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 13.0),
+                    fillColor: Colors.white,
+                    hintText: _strings.writeCommentHint,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: 7.0),
+            GestureDetector(
+              onTap: () async {
+                await _onMessageSend(context, newsId);
+              },
+              child: Container(
+                  width: 40,
+                  height: 40,
+                  child: SvgPicture.asset(SEND_COMMENT_SVG_LINK)),
+            ),
+            SizedBox(width: 3.0),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   void _onChanged(String value) {
-    print(value);
     if (value == '') {
       _cubit.answerId = null;
     }

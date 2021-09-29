@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
-
 class Pagination<T> {
   List<T> items;
   int countOnPage;

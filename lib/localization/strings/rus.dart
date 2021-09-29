@@ -49,6 +49,7 @@ class RussianStrings extends LanguageStrings {
   final String inkLiteracy = "ИНК-грамотность";
   final String learningMaterials = "Обучающие материалы";
   final String phone = "Телефон";
+  final String contactPhone = "Контактный телефон";
   final String textCopied = "Текст скопирован в буфер обмена";
   final String staffMovements = "Кадровые перемещения";
   final String position = "Должность";
@@ -94,4 +95,71 @@ class RussianStrings extends LanguageStrings {
   final String signOff = "Выйти";
   final String changeLanguage = "Сменить язык";
   final String userNotFound = "Пользователь не найден";
+  final String errorLoadingQuestions = "Не удалось загрузить вопросы";
+  final String answersToQuestions = "Ответы на вопросы";
+  final String notRequired = "(не обязательно)";
+  final String fullnameHint = "Ваше ФИО";
+  final String email = "Электронная почта";
+  final String question = "Вопрос";
+  final String addresseeHint = "Кому адресован вопрос";
+  final String feedbackFormHint =
+      "Ответы на вопросы, в которых не будет указаны ФИО и/или адрес электронной почты, будут опубликованы на этой странице.";
+  final String chooseAddressee = "Выберите адресата";
+  final String incorrectEmail = "Неправильная электронная почта";
+  final String fillTheField = "Заполните поле";
+  final String askQuestion = "Задать вопрос";
+  final String allAnswers = "Все ответы";
+  final String toWhomLable = "Кому";
+  final String feedbackSuccessfullySent = "Успешное оформление заявки";
+  final String requiredParamsAreNotFilled =
+      "Отсутствуют обязательные параметры";
+  final String select = "Выбрать";
+  final String choose = "Выберите";
+  final String back = "Назад";
+  final String accessRightsReferInfo =
+      "Данный функционал доступен только работникам ООО «ИНК», ООО «ИНК-Сервис» и ООО «ИНК-ТКРС»";
+  final String childsFullname = "ФИО ребенка";
+  final String countInstances = "Количество экземпляров";
+  final String order = "Заказать";
+  final String productionTimeReferInfo = "Срок изготовления 3 рабочих дня";
+  final String childsAllowanceInfo =
+      "Без предоставления в отдел кадрового администрирования копии свидетельства о рождении ребенка формирование справки не представляется возможным";
+  final String toSubmitFor = "Для предоставления в";
+  final String period = "Период";
+  final String periodStart = "Дата начала периода";
+  final String periodEnd = "Дата окончания периода";
+  final String deliveryMethod = "Способ получения";
+  final String deliveryAddress = "Адрес доставки";
+  final String zipIndex = "Почтовый индекс";
+  final String refEmploymentCenter = "Справка в центр занятости населения";
+  final String refVisa = "Справка для оформления визы";
+  final String refSickLeave =
+      "Справка для расчетов по больничному листу (Форма 1-Н)";
+  final String refIncome2ndfl = "Справка о доходах (2–НДФЛ)";
+  final String refIncome = "Справка о доходах";
+  final String refChildAllowance =
+      "Справка о единовременном пособии на ребенка";
+  final String refChildAllowance1HalfYears =
+      "Справка о пособии на ребенка до 1,5 лет";
+  final String refFifo = "Справка о работе вахтовым методом";
+  final String refWorkAtCompany = "Справка о работе на предприятии";
+  final String refAverageEarnings = "Справка о среднем заработке";
+  final String refPayrollAccount = "Справка о том что счет является зарплатным";
+  final String refFundsWithholding =
+      "Справка об удержаниях с заработной платы по исполнительным листам";
+  final String refLaborActivity =
+      "Сведения о трудовой деятельности работника (СТД-Р)";
+  final String refEmploymentRecord = "Копия трудовой книжки";
+
+  final String deliveryMethodBuh = "Бухгалтерия в офисе ИНК в г. Иркутске";
+  final String deliveryMethodSecurityUk = "Пост охраны в г. Усть-Куте";
+  final String deliveryMethodOkIrk =
+      "Отдел кадрового администрирования офис ИНК в г. Иркутск";
+  final String deliveryMethodOkUk =
+      "Отдел кадрового администрирования офис ИНК в г. Усть-Кут";
+  final String deliveryMethodInkTkrs =
+      "Отдел управления персоналом ООО “ИНК-ТКРС”";
+  final String deliveryMethodPostMail = "Почтой по адресу";
+  final String childsBirthCertificate = "Свидетельство о рождении ребенка";
+  final String files = "Файлы";
 }

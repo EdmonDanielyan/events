@@ -29,6 +29,8 @@ class SearchField extends StatelessWidget {
               suffixIcon: Icon(Icons.search),
               fillColor: Colors.white,
               hintText: _strings.searchHint,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(50))))),
     );

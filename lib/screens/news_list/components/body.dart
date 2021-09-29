@@ -83,6 +83,7 @@ class Body extends StatelessWidget {
   }
 
   Widget _getLoadedStateWidget(List<NewsItemData> newsList) {
+    List<Widget> items = _getNewsWidgetList(newsList);
     return Container(
         color: Color(0xfff9f9f9),
         child: SingleChildScrollView(
@@ -101,7 +102,14 @@ class Body extends StatelessWidget {
                     )
                   ],
                 )),
-            Container(child: Column(children: _getNewsWidgetList(newsList)))
+            Container(
+              child: ListView.builder(
+                shrinkWrap: true,
+                controller: ScrollController(keepScrollOffset: false),
+                itemCount: items.length,
+                itemBuilder: (BuildContext context, int index) => items[index],
+              ),
+            )
           ]),
         ));
   }

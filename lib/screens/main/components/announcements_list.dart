@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/list_element_divider.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_state.dart';
@@ -15,7 +14,6 @@ class AnnouncementsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     final _strings =
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return BlocProvider<AnnouncementsListCubit>(
@@ -29,10 +27,17 @@ class AnnouncementsList extends StatelessWidget {
           switch (state.type) {
             case AnnouncementsListStateType.LOADED:
               {
+                List<Widget> items = getAnnouncementsWidgetList(state.data!);
                 return Container(
-                    margin: EdgeInsets.only(top: 30),
-                    child: Column(
-                        children: getAnnouncementsWidgetList(state.data!)));
+                  margin: EdgeInsets.only(top: 30),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    controller: ScrollController(keepScrollOffset: false),
+                    itemCount: items.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        items[index],
+                  ),
+                );
               }
 
             case AnnouncementsListStateType.LOADING:

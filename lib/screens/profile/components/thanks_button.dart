@@ -24,7 +24,6 @@ class ThanksButton extends StatelessWidget {
           child: TextButton(
             onPressed: () {
               userCubit.thanks(userId);
-              userCubit.refresh();
             },
             child: Container(
                 padding: EdgeInsets.only(

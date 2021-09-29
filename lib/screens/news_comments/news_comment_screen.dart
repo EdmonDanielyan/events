@@ -14,12 +14,18 @@ class NewsCommentScreen extends StatelessWidget {
     final _strings =
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return BlocProvider<NewsCommentsCubit>(
-        create: (BuildContext context) =>
-            NewsCommentsCubit(languageStrings: _strings),
-        child: Scaffold(
-          appBar: InkAppBarWithText(title: _strings.comments),
-          body: Body(),
-          bottomSheet: NewsCommentInput(),
-        ));
+      create: (BuildContext context) =>
+          NewsCommentsCubit(languageStrings: _strings),
+      child: Scaffold(
+        appBar: InkAppBarWithText(title: _strings.comments),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: Body()),
+            NewsCommentInput(),
+          ],
+        ),
+      ),
+    );
   }
 }

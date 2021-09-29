@@ -21,7 +21,7 @@ class Body extends StatelessWidget {
       ServiceListItem(
           title: _strings.feedback,
           svgPicturePath: 'assets/images/services_feedback_icon.svg',
-          link: '/personal'),
+          link: '/feedback'),
       ServiceListItem(
           title: _strings.transportOrdering,
           svgPicturePath: 'assets/images/services_transport_request_icon.svg',
@@ -29,7 +29,7 @@ class Body extends StatelessWidget {
       ServiceListItem(
           title: _strings.orderInquiry,
           svgPicturePath: 'assets/images/services_inquiry_request_icon.svg',
-          link: '/personal'),
+          link: '/references'),
       ServiceListItem(
           title: _strings.getMedicalInsurance,
           svgPicturePath: 'assets/images/services_medical_insurance_icon.svg',

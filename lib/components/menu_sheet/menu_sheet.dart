@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet_item.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/eng.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
-import 'package:ink_mobile/localization/strings/rus.dart';
 import 'package:ink_mobile/models/token.dart';
 
 class MenuSheet extends StatelessWidget {
   MenuSheet({Key? key}) : super(key: key);
-  late BuildContext _context;
+  static late BuildContext _context;
   static late LanguageStrings _strings;
 
   @override

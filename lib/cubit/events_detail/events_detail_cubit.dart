@@ -41,11 +41,11 @@ class EventDetailCubit extends Cubit<EventsDetailState> {
 
   Future<void> invite(int eventId) async {
     try {
+      emitSuccess(state.data!.copyWith(isMember: !state.data!.isMember!));
       await Token.setNewTokensIfExpired();
       await EventInvite(
         dependency: EventsInviteRepository(eventId: eventId).getDependency(),
       ).invite();
-      this.load(eventId);
     } on DioError catch (e) {
       ErrorModel error =
           DioErrorHandler(e: e, languageStrings: languageStrings).call();

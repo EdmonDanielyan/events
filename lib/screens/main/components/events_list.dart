@@ -27,9 +27,17 @@ class EventsList extends StatelessWidget {
           switch (state.type) {
             case EventsListStateType.LOADED:
               {
+                List<Widget> items = getEventsWidgetList(state.data!);
                 return Container(
-                    margin: EdgeInsets.only(top: 30),
-                    child: Column(children: getEventsWidgetList(state.data!)));
+                  margin: EdgeInsets.only(top: 30),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    controller: ScrollController(keepScrollOffset: false),
+                    itemCount: items.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        items[index],
+                  ),
+                );
               }
 
             case EventsListStateType.LOADING:

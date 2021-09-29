@@ -6,11 +6,10 @@ class InkPageLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     return Center(
+    return Center(
         child: AwesomeLoader(
-          loaderType: AwesomeLoader.AwesomeLoader2,
-          color: Theme.of(context).primaryColor,
-        )
-    );
+      loaderType: AwesomeLoader.AwesomeLoader2,
+      color: Theme.of(context).primaryColor,
+    ));
   }
 }

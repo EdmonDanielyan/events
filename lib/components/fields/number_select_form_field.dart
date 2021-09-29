@@ -3,11 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NumberSelectFormField extends FormField<String> {
-
   NumberSelectFormField({
     Key? key,
     required this.controller,
-    this.mode= NumberSelectFieldMode.double,
+    this.mode = NumberSelectFieldMode.double,
     this.changeValueBy = 1,
     this.buttonsColor = const ButtonsColor(),
     this.flex,
@@ -31,16 +30,16 @@ class NumberSelectFormField extends FormField<String> {
     bool? showCursor,
     @Deprecated(
       'Use autovalidateMode parameter which provide more specific '
-          'behaviour related to auto validation. '
-          'This feature was deprecated after v1.19.0.',
+      'behaviour related to auto validation. '
+      'This feature was deprecated after v1.19.0.',
     )
-    bool autovalidate = false,
+        bool autovalidate = false,
     @Deprecated(
       'Use maxLengthEnforcement parameter which provides more specific '
-          'behavior related to the maxLength limit. '
-          'This feature was deprecated after v1.25.0-5.0.pre.',
+      'behavior related to the maxLength limit. '
+      'This feature was deprecated after v1.25.0-5.0.pre.',
     )
-    bool maxLengthEnforced = true,
+        bool maxLengthEnforced = true,
     MaxLengthEnforcement? maxLengthEnforcement,
     bool expands = false,
     int? maxLength,
@@ -61,11 +60,10 @@ class NumberSelectFormField extends FormField<String> {
     TextSelectionControls? selectionControls,
     InputCounterWidgetBuilder? buildCounter,
     AutovalidateMode? autovalidateMode,
-  }) :
-        assert(autovalidate != null),
+  })  : assert(autovalidate != null),
         assert(
-        autovalidate == false ||
-          autovalidate == true && autovalidateMode == null,
+          autovalidate == false ||
+              autovalidate == true && autovalidateMode == null,
           'autovalidate and autovalidateMode should not be used together.',
         ),
         assert(maxLengthEnforced != null),
@@ -77,91 +75,88 @@ class NumberSelectFormField extends FormField<String> {
         assert(maxLength == null || maxLength > 0),
         assert(enableInteractiveSelection != null),
         assert(
-          mode == NumberSelectFieldMode.int && changeValueBy is int ||
-          mode == NumberSelectFieldMode.double,
-          'changeValueBy type must match mode type'
-        ),
+            mode == NumberSelectFieldMode.int && changeValueBy is int ||
+                mode == NumberSelectFieldMode.double,
+            'changeValueBy type must match mode type'),
         super(
-        key: key,
-        initialValue: controller.text,
-        onSaved: onSaved,
-        validator: validator,
-        enabled: enabled ?? true,
-        autovalidateMode: autovalidate
-            ? AutovalidateMode.always
-            : (autovalidateMode ?? AutovalidateMode.disabled),
-        builder: (FormFieldState<String> field) {
-          final _NumberSelectFormFieldState state = field as _NumberSelectFormFieldState;
+          key: key,
+          initialValue: controller.text,
+          onSaved: onSaved,
+          validator: validator,
+          enabled: enabled ?? true,
+          autovalidateMode: autovalidate
+              ? AutovalidateMode.always
+              : (autovalidateMode ?? AutovalidateMode.disabled),
+          builder: (FormFieldState<String> field) {
+            final _NumberSelectFormFieldState state =
+                field as _NumberSelectFormFieldState;
 
-          BoxDecoration effectiveBoxDecor =
-              decoration ??
-              BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                    color: Colors.grey
-                ),
-              )
-          ;
+            BoxDecoration effectiveBoxDecor = decoration ??
+                BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey),
+                );
 
-          if (field.hasError) {
-            effectiveBoxDecor = effectiveBoxDecor.copyWith(
-                border: Border.all(color: Colors.red)
-            );
-          }
-
-          void onChangedHandler(String value) {
-            field.didChange(value);
-            if (onChanged != null) {
-              onChanged(value);
+            if (field.hasError) {
+              effectiveBoxDecor = effectiveBoxDecor.copyWith(
+                  border: Border.all(color: Colors.red));
             }
-          }
 
-          List<TextInputFormatter> defaultInputFormatters = [];
+            void onChangedHandler(String value) {
+              field.didChange(value);
+              if (onChanged != null) {
+                onChanged(value);
+              }
+            }
 
-          if (inputFormatters == null) {
-            defaultInputFormatters = _getDefaultInputFormatters(
-                mode,
-                onlyPositive
-            );
-          }
+            List<TextInputFormatter> defaultInputFormatters = [];
 
-          InputDecoration textFieldDecoration = const InputDecoration(
-              border: InputBorder.none,
-              isCollapsed: true
-          );
+            if (inputFormatters == null) {
+              defaultInputFormatters =
+                  _getDefaultInputFormatters(mode, onlyPositive);
+            }
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: effectiveBoxDecor,
-                width: width ?? defaultWidth,
-                height: height ?? defaultHeight,
-                clipBehavior: Clip.hardEdge,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        child: Container(
-                            alignment: AlignmentDirectional.center,
-                            height: height ?? defaultHeight,
-                            color: buttonsColor.left,
-                            child: leftButtonIcon ?? SvgPicture.asset('assets/images/minus_sign.svg')
+            InputDecoration textFieldDecoration = const InputDecoration(
+                border: InputBorder.none, isCollapsed: true);
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                    decoration: effectiveBoxDecor,
+                    width: width ?? defaultWidth,
+                    height: height ?? defaultHeight,
+                    clipBehavior: Clip.hardEdge,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                              child: Container(
+                                  alignment: AlignmentDirectional.center,
+                                  height: height ?? defaultHeight,
+                                  color: buttonsColor.left,
+                                  child: leftButtonIcon ??
+                                      SvgPicture.asset(
+                                          'assets/images/minus_sign.svg')),
+                              onTap: () {
+                                num _currentValue =
+                                    _textToValue(mode, controller.text);
+                                num _result = _currentValue - changeValueBy;
+                                num _newValue =
+                                    (onlyPositive && _result < 0) ? 0 : _result;
+
+                                controller.text = _newValue.toStringAsFixed(
+                                    mode == NumberSelectFieldMode.int ? 0 : 1);
+
+                                onChangedHandler(controller.text);
+                              }),
+                          flex:
+                              flex?.buttons ?? flex?.leftButton ?? defaultFlex,
                         ),
-                        onTap: () {
-                          num _currentValue = _textToValue(mode, controller.text);
-                          num _result = _currentValue - changeValueBy;
-                          num _newValue = (onlyPositive && _result < 0) ? 0 : _result;
-
-                          controller.text = _newValue.toStringAsFixed(mode == NumberSelectFieldMode.int ? 0 : 1);
-                        }
-                      ),
-                      flex: flex?.buttons ?? flex?.leftButton ?? defaultFlex,
-                    ),
-                    Expanded(
-                      child: Container(
-                          child: TextField(
+                        Expanded(
+                          child: Container(
+                              child: TextField(
                             controller: state._effectiveController,
                             focusNode: focusNode,
                             decoration: textFieldDecoration,
@@ -187,60 +182,62 @@ class NumberSelectFormField extends FormField<String> {
                             onTap: onTap,
                             onEditingComplete: onEditingComplete,
                             onSubmitted: onFieldSubmitted,
-                            inputFormatters: inputFormatters ?? defaultInputFormatters,
-                            enabled: enabled  ?? true,
+                            inputFormatters:
+                                inputFormatters ?? defaultInputFormatters,
+                            enabled: enabled ?? true,
                             cursorWidth: cursorWidth,
                             cursorHeight: cursorHeight,
                             cursorRadius: cursorRadius,
                             cursorColor: cursorColor,
                             keyboardAppearance: keyboardAppearance,
-                            enableInteractiveSelection: enableInteractiveSelection,
+                            enableInteractiveSelection:
+                                enableInteractiveSelection,
                             selectionControls: selectionControls,
                             buildCounter: buildCounter,
-                          )
-                      ),
-                      flex: flex?.textField ?? defaultFlex,
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                          child: Container(
-                              alignment: AlignmentDirectional.center,
-                              height: height ?? defaultHeight,
-                              color: buttonsColor.right,
-                              child: rightButtonIcon ?? SvgPicture.asset('assets/images/plus_sign.svg')
-                          ),
-                          onTap: () {
-                            num currentValue = _textToValue(mode, controller.text);
+                          )),
+                          flex: flex?.textField ?? defaultFlex,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                              child: Container(
+                                  alignment: AlignmentDirectional.center,
+                                  height: height ?? defaultHeight,
+                                  color: buttonsColor.right,
+                                  child: rightButtonIcon ??
+                                      SvgPicture.asset(
+                                          'assets/images/plus_sign.svg')),
+                              onTap: () {
+                                num currentValue =
+                                    _textToValue(mode, controller.text);
 
-                            controller.text = (currentValue + changeValueBy).toStringAsFixed(mode == NumberSelectFieldMode.int ? 0 : 1);
-                          }
-                      ),
-                      flex: flex?.buttons ?? flex?.rightButton ?? defaultFlex,
-                    ),
-                  ],
-                )
-              ),
-              _getErrorContainer(field)
-            ],
-          );
-        },
-      );
+                                controller.text = (currentValue + changeValueBy)
+                                    .toStringAsFixed(
+                                        mode == NumberSelectFieldMode.int
+                                            ? 0
+                                            : 1);
+                                onChangedHandler(controller.text);
+                              }),
+                          flex:
+                              flex?.buttons ?? flex?.rightButton ?? defaultFlex,
+                        ),
+                      ],
+                    )),
+                _getErrorContainer(field)
+              ],
+            );
+          },
+        );
 
   static Widget _getErrorContainer(FormFieldState<String> field) {
-    return (field.errorText != null && field.errorText != '') ?
-      Container(
-        margin: EdgeInsets.only(top: 8),
-        child: Text(
-          field.errorText!,
-          style: TextStyle(
-              color: Colors.red,
-              fontSize: 12
-          ),
-        ),
-      )
-      :
-      Container()
-    ;
+    return (field.errorText != null && field.errorText != '')
+        ? Container(
+            margin: EdgeInsets.only(top: 8),
+            child: Text(
+              field.errorText!,
+              style: TextStyle(color: Colors.red, fontSize: 12),
+            ),
+          )
+        : Container();
   }
 
   /// Controls the text being edited.
@@ -287,7 +284,7 @@ class NumberSelectFormField extends FormField<String> {
 
   /// Defining number type inside text field
   final NumberSelectFieldMode mode;
-  
+
   /// Returns num value with the type depending on mode given
   static num _textToValue(NumberSelectFieldMode mode, String inputValue) {
     TextToNumberConverter converter = TextToNumberConverter.getConverter(mode);
@@ -296,33 +293,30 @@ class NumberSelectFormField extends FormField<String> {
     return value;
   }
 
-  static List<TextInputFormatter> _getDefaultInputFormatters(NumberSelectFieldMode mode, bool onlyPositive) {
-      List<TextInputFormatter> defaultInputFormatters = [];
+  static List<TextInputFormatter> _getDefaultInputFormatters(
+      NumberSelectFieldMode mode, bool onlyPositive) {
+    List<TextInputFormatter> defaultInputFormatters = [];
 
-      RegExp regExp = onlyPositive ?
-        RegExp(r'(^\d*\.?\d*)') :
-        RegExp(r'(^-?\d*\.?\d*)')
-      ;
+    RegExp regExp =
+        onlyPositive ? RegExp(r'(^\d*\.?\d*)') : RegExp(r'(^-?\d*\.?\d*)');
 
-      if (mode == NumberSelectFieldMode.double) {
-        if (onlyPositive) {
-          regExp = RegExp(r'(^\d*\.?\d*)');
-        } else {
-          regExp = RegExp(r'(^-?\d*\.?\d*)');
-        }
+    if (mode == NumberSelectFieldMode.double) {
+      if (onlyPositive) {
+        regExp = RegExp(r'(^\d*\.?\d*)');
       } else {
-        if (onlyPositive) {
-          regExp = RegExp(r'(^\d*)');
-        } else {
-          regExp = RegExp(r'(^-?\d*)');
-        }
+        regExp = RegExp(r'(^-?\d*\.?\d*)');
       }
+    } else {
+      if (onlyPositive) {
+        regExp = RegExp(r'(^\d*)');
+      } else {
+        regExp = RegExp(r'(^-?\d*)');
+      }
+    }
 
-      defaultInputFormatters.add(
-          FilteringTextInputFormatter.allow(regExp)
-      );
+    defaultInputFormatters.add(FilteringTextInputFormatter.allow(regExp));
 
-      return defaultInputFormatters;
+    return defaultInputFormatters;
   }
 
   @override
@@ -395,20 +389,15 @@ class _NumberSelectFormFieldState extends FormFieldState<String> {
   }
 }
 
-enum NumberSelectFieldMode {int, double}
+enum NumberSelectFieldMode { int, double }
 
 class NumberSelectFieldFlex {
-  NumberSelectFieldFlex({
-    required this.textField,
-    this.buttons,
-    this.leftButton,
-    this.rightButton
-  }) :
-  assert(
-    buttons != null ||
-    (leftButton != null && rightButton != null)
-  )
-  ;
+  NumberSelectFieldFlex(
+      {required this.textField,
+      this.buttons,
+      this.leftButton,
+      this.rightButton})
+      : assert(buttons != null || (leftButton != null && rightButton != null));
 
   int? buttons;
   int? leftButton;
@@ -418,11 +407,7 @@ class NumberSelectFieldFlex {
 
 /// Class for defining buttons color
 class ButtonsColor {
-
-  const ButtonsColor({
-    this.left = Colors.grey,
-    this.right = Colors.grey
-  });
+  const ButtonsColor({this.left = Colors.grey, this.right = Colors.grey});
 
   final Color? left;
   final Color? right;
@@ -435,13 +420,15 @@ class ButtonsColor {
 abstract class TextToNumberConverter {
   static TextToNumberConverter getConverter(NumberSelectFieldMode mode) {
     switch (mode) {
-      case NumberSelectFieldMode.double: {
-        return TextToDoubleConverter();
-      }
+      case NumberSelectFieldMode.double:
+        {
+          return TextToDoubleConverter();
+        }
 
-      case NumberSelectFieldMode.int: {
-        return TextToIntConverter();
-      }
+      case NumberSelectFieldMode.int:
+        {
+          return TextToIntConverter();
+        }
     }
   }
 

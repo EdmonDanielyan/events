@@ -193,27 +193,3 @@ class EventDetailScreen extends StatelessWidget {
             )));
   }
 }
-
-class EventCalendar extends StatefulWidget {
-  bool addEvent = false;
-
-  EventCalendar({Key? key, required this.addEvent}) : super(key: key);
-
-  @override
-  _EventCalendarState createState() => _EventCalendarState();
-}
-
-class _EventCalendarState extends State<EventCalendar> {
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoSwitch(
-      activeColor: Theme.of(context).primaryColor,
-      onChanged: (value) {
-        setState(() {
-          widget.addEvent = value;
-        });
-      },
-      value: widget.addEvent,
-    );
-  }
-}

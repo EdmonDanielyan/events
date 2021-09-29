@@ -35,9 +35,6 @@ class Body extends StatelessWidget {
               margin: EdgeInsets.only(top: 24),
               child: BlocBuilder<OpenUniversityCubit, OpenUniversityState>(
                   builder: (context, state) {
-                OpenUniversityCubit cubit =
-                    BlocProvider.of<OpenUniversityCubit>(context);
-
                 switch (state.type) {
                   case OpenUniversityStateType.ERROR:
                     {

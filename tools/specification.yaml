@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   title: QSOFT Mobile API
 servers:
-  - url: http://mobile.ink.vpool/api/v1
+  - url: https://mobile.ink.vpool.qsoft.ru/api/v1
 
 tags:
   - name: Auth
@@ -452,6 +452,20 @@ paths:
                 $ref: "#/components/schemas/canInquire"
       security:
         - bearerAuth: []
+  /user/getreferenceautofill:
+    get:
+      tags:
+        - User
+      summary: Автозаполняемые поля для формы справок
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/referenceAutoFill"
+      security:
+        - bearerAuth: []
 
   /user/{id}:
     get:
@@ -690,7 +704,7 @@ paths:
       requestBody:
         description: Данные для заказа справки
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: "#/components/schemas/orderReference"
       responses:
@@ -706,6 +720,32 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/orderReferenceFail"
+      security:
+        - bearerAuth: []
+  /user/orderdms:
+    post:
+      tags:
+        - User
+      summary: Метод для заказа ДМС
+      requestBody:
+        description: Данные для заказа полиса
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/orderDMS"
+      responses:
+        200:
+          description: Успешное оформление заявки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/orderDMSSuccess"
+        400:
+          description: Отсутствует один или несколько обязательных параметров
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/orderDMSFail"
       security:
         - bearerAuth: []
   /publications:
@@ -750,6 +790,90 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/getTransportOrderForm"
+      security:
+        - bearerAuth: []
+  /user/referenceorderform:
+    get:
+      tags:
+        - User
+      summary: Возвращает вспомогательные данные для формы заказа транспорта
+      responses:
+        200:
+          description: Запрос успешно выполнен
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getReferenceOrderForm"
+      security:
+        - bearerAuth: []
+  /user/getfeedbacktags:
+    get:
+      tags:
+        - User
+      summary: Возвращает тэги для формы обратной связи
+      responses:
+        200:
+          description: Список тегов
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/feedbackTagsList"
+      security:
+        - bearerAuth: []
+  /user/getquestions:
+    get:
+      tags:
+        - User
+      summary: Возвращает вопросы (обратная связь)
+      parameters:
+        - name: page_number
+          in: query
+          description: Номер страницы для пагинации
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+        - name: count_on_page
+          in: query
+          description: Количество элементов на странице
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+      responses:
+        200:
+          description: Список вопросов и ответов
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/questionsList"
+      security:
+        - bearerAuth: []
+  /user/sendfeedback:
+    post:
+      tags:
+        - User
+      summary: Метод для отправки обратной связи (вопроса руководству)
+      requestBody:
+        description: Данные для вопроса
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/sendFeedback"
+      responses:
+        200:
+          description: Успешное оформление заявки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/sendFeedbackSuccess"
+        400:
+          description: Отсутствуют обязательные параметры
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/sendFeedbackFail"
       security:
         - bearerAuth: []
   /user/ordertransport:
@@ -1070,6 +1194,28 @@ components:
           type: string
           example: "Ваша заявка на справку <название_справки> принята."
     orderReferenceFail:
+      allOf:
+        - $ref: "#/components/schemas/RequiredError"
+      type: object
+      properties:
+        title:
+          type: string
+          default: Отсутствует один или несколько обязательных параметров
+        detail:
+          type: string
+          example: Отсутствует как минимум одно обязательное поле формы
+        status:
+          type: integer
+          default: 400
+        code:
+          type: string
+          default: "QMA-1"
+      required:
+        - title
+        - detail
+        - status
+        - code
+    orderDMSFail:
       allOf:
         - $ref: "#/components/schemas/RequiredError"
       type: object
@@ -1487,9 +1633,11 @@ components:
           example: "Какой-то текст"
         user_name:
           type: string
+          nullable: true
           example: "Имя и отчество"
         user_last_name:
           type: string
+          nullable: true
           example: "Фамилия"
         likes:
           type: integer
@@ -2281,6 +2429,12 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/userProperties"
+    referenceAutoFill:
+      allOf:
+        - $ref: "#/components/schemas/RequiredSuccess"
+      properties:
+        data:
+          $ref: "#/components/schemas/AutoFillForm"
     userProperties:
       type: object
       properties:
@@ -2351,6 +2505,106 @@ components:
         - detail
         - status
         - code
+    AutoFillForm:
+      type: object
+      properties:
+        fio:
+          type: string
+          example: "Иванов Иван Иванович"
+          nullable: true
+        position:
+          type: string
+          example: "Администратор"
+          nullable: true
+        department:
+          type: string
+          example: "Технический департамент"
+          nullable: true
+    orderDMS:
+      type: object
+      properties:
+        dms_type:
+          type: string
+          example: "policy OR letter"
+        last_name:
+          type: string
+          example: 'Иванов'
+        first_name:
+          type: string
+          example: 'Иван'
+        second_name:
+          type: string
+          example: 'Иванович'
+        birthday:
+          type: string
+          example: '01.01.1969'
+        work_position:
+          type: string
+          example: 'Слесарь ЭВМ'
+        phone:
+          type: string
+          example: '+71231234567'
+        email:
+          type: string
+          example: 'test@test.com'
+        additional_information:
+          type: string
+          example: 'Дополнительная информация'
+        dental_select:
+          type: boolean
+          example: false
+        spec_select:
+          type: boolean
+          example: false
+        lab_select:
+          type: boolean
+          example: false
+        other_select:
+          type: boolean
+          example: false
+        spec_text:
+          type: string
+          example: 'Уточнение специалист'
+        lab_text:
+          type: string
+          example: 'Уточнение лаборатория'
+        other_text:
+          type: string
+          example: 'Уточнение другое'
+        clinic:
+          type: string
+          example: 'Клиника'
+        city:
+          type: string
+          example: 'Город'
+        address:
+          type: string
+          example: 'Адрес'
+        money:
+          type: string
+          example: '10000000'
+        date:
+          type: string
+          example: '01.01.2000'
+        date_to:
+          type: string
+          example: '01.01.2000'
+      required:
+        - dms_type
+        - last_name
+        - first_name
+        - second_name
+        - birthday
+        - work_position
+        - phone
+        - email
+    orderDMSSuccess:
+      allOf:
+        - $ref: "#/components/schemas/RequiredSuccess"
+      properties:
+        data:
+          type: string
+          example: "Ваша заявка <1234567> принята."
     orderReference:
       type: object
       properties:
@@ -2389,10 +2643,122 @@ components:
         date_end:
           type: string
           example: "01.05.2020"
+        files[]:
+          type: array
+          items:
+            type: string
+            format: binary
       required:
-        - reference_id
+        - reference_type
         - phone
         - way
+    questionsList:
+      allOf:
+        - $ref: "#/components/schemas/RequiredSuccess"
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/questionsListData"
+    questionsListData:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1234
+        date:
+          type: string
+          example: "16.06.2021 07:55:12"
+        responsible:
+          type: string
+          example: "Служба информационных технологий и телекоммуникаций"
+        tags:
+          type: string
+          example: "Информационные технологии, Билеты"
+        question:
+          type: string
+          example: "Вопросный вопрос"
+        answer:
+          type: string
+          example: "Ответный ответ"
+        total_count:
+          type: integer
+          example: 5
+        next:
+          type: string
+          example: "http://example.com/api/v1/user/getquestions?page_number=3&count_on_page=2"
+        prev:
+          type: string
+          example: "http://example.com/api/v1/user/getquestions?page_number=1&count_on_page=2"
+    feedbackTagsList:
+      allOf:
+        - $ref: "#/components/schemas/RequiredSuccess"
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/feedbackForm"
+    feedbackForm:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'charter'
+        title:
+          type: string
+          example: "Чартер"
+    sendFeedbackSuccess:
+      allOf:
+        - $ref: "#/components/schemas/RequiredSuccess"
+      properties:
+        data:
+          type: string
+          example: "Ваш вопрос успешно отправлен."
+    sendFeedback:
+      type: object
+      properties:
+        fio:
+          type: string
+          example: "Иванов Иван Иванович"
+        contacts:
+          type: string
+          example: "test@test.com"
+        question:
+          type: string
+          example: "Вы продоете рыбов?"
+        tags:
+          type: string
+          example: "Риски, COVID-19"
+        files[]:
+          type: array
+          items:
+            type: string
+            format: binary
+      required:
+        - tags
+        - question
+    sendFeedbackFail:
+      allOf:
+        - $ref: "#/components/schemas/RequiredError"
+      type: object
+      properties:
+        title:
+          type: string
+          default: Отсутствует один или несколько обязательных параметров
+        detail:
+          type: string
+          example: Отсутствует как минимум одно обязательное поле формы
+        status:
+          type: integer
+          default: 400
+        code:
+          type: string
+          default: "QMA-1"
+      required:
+        - title
+        - detail
+        - status
+        - code
     orderTransport:
       type: object
       properties:
@@ -2467,6 +2833,23 @@ components:
         - detail
         - status
         - code
+    getReferenceOrderForm:
+      allOf:
+        - $ref: "#/components/schemas/RequiredSuccess"
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            name:
+              type: string
+              example: 'Иванов Иван Иванович'
+            position:
+              type: string
+              example: "Название должности"
+            department:
+              type: string
+              example: "Название отдела"
     getTransportOrderForm:
       allOf:
         - $ref: "#/components/schemas/RequiredSuccess"

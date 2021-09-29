@@ -1,4 +1,3 @@
-import 'package:awesome_loader/awesome_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
@@ -40,6 +39,10 @@ class BirthdaysScreen extends StatelessWidget {
 
               case (BirthdaysStateType.LOADED):
                 {
+                  List<Widget> bdaysToday =
+                      _getBirthdaysToday(context, state.birthdaysToday!);
+                  List<Widget> bdaysOther =
+                      _getBirthdaysOther(context, state.birthdaysOther!);
                   return SingleChildScrollView(
                     child: Column(
                       children: [
@@ -98,11 +101,14 @@ class BirthdaysScreen extends StatelessWidget {
                                                 width: 1,
                                                 color: Color(0xFFE5E5E5)),
                                           )),
-                                      child: Column(
-                                        children: _getBirthdaysToday(
-                                          context,
-                                          state.birthdaysToday!,
-                                        ),
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        controller: ScrollController(
+                                            keepScrollOffset: false),
+                                        itemCount: bdaysToday.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) =>
+                                                bdaysToday[index],
                                       ),
                                     )
                                   ],
@@ -140,9 +146,14 @@ class BirthdaysScreen extends StatelessWidget {
                                                 width: 1,
                                                 color: Color(0xFFE5E5E5)),
                                           )),
-                                      child: Column(
-                                        children: _getBirthdaysOther(
-                                            context, state.birthdaysOther!),
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        controller: ScrollController(
+                                            keepScrollOffset: false),
+                                        itemCount: bdaysOther.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) =>
+                                                bdaysOther[index],
                                       ),
                                     )
                                   ],

@@ -1,4 +1,3 @@
-import 'package:awesome_loader/awesome_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
@@ -39,7 +38,18 @@ class Body extends StatelessWidget {
               {
                 List<SearchContainer> searchResult = _getSearchResult(state);
 
-                return Column(children: searchResult);
+                return MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  removeBottom: true,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    controller: ScrollController(keepScrollOffset: false),
+                    itemCount: searchResult.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        searchResult[index],
+                  ),
+                );
               }
 
             case SearchStateType.EMPTY:

@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
-import 'package:ink_mobile/core/errors/empty_error_handler.dart';
 import 'package:ink_mobile/cubit/news_comments/domain/fetch_repository.dart';
 import 'package:ink_mobile/cubit/news_comments/use_cases/comment.dart';
 import 'package:ink_mobile/cubit/news_comments/use_cases/fetch.dart';
@@ -35,13 +34,14 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       ).call();
       emitSuccess(comments);
     } on DioError catch (e) {
-      bool isEmpty = DioEmptyHandler(e: e).isEmpty();
-      if (isEmpty) {
+      final _errorHandler =
+          DioErrorHandler(e: e, languageStrings: languageStrings);
+      if (_errorHandler.isEmpty()) {
         emitEmpty();
         return;
       }
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+
+      ErrorModel error = _errorHandler.call();
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {

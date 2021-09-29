@@ -21,6 +21,7 @@ import 'package:main_api_client/model/announcements_not_found.dart';
 import 'package:main_api_client/model/announcements_property.dart';
 import 'package:main_api_client/model/auth_params.dart';
 import 'package:main_api_client/model/auth_success.dart';
+import 'package:main_api_client/model/auto_fill_form.dart';
 import 'package:main_api_client/model/bad_auth_params.dart';
 import 'package:main_api_client/model/bad_id.dart';
 import 'package:main_api_client/model/bad_request.dart';
@@ -38,6 +39,8 @@ import 'package:main_api_client/model/empty_search.dart';
 import 'package:main_api_client/model/event_property.dart';
 import 'package:main_api_client/model/events_not_found.dart';
 import 'package:main_api_client/model/events_property.dart';
+import 'package:main_api_client/model/feedback_form.dart';
+import 'package:main_api_client/model/feedback_tags_list.dart';
 import 'package:main_api_client/model/forbidden.dart';
 import 'package:main_api_client/model/get_announcement_by_id.dart';
 import 'package:main_api_client/model/get_announcements.dart';
@@ -48,6 +51,7 @@ import 'package:main_api_client/model/get_events.dart';
 import 'package:main_api_client/model/get_news.dart';
 import 'package:main_api_client/model/get_news_by_id.dart';
 import 'package:main_api_client/model/get_publications.dart';
+import 'package:main_api_client/model/get_reference_order_form.dart';
 import 'package:main_api_client/model/get_search_success.dart';
 import 'package:main_api_client/model/get_transport_order_form.dart';
 import 'package:main_api_client/model/get_user_fail.dart';
@@ -60,7 +64,9 @@ import 'package:main_api_client/model/news_not_found.dart';
 import 'package:main_api_client/model/news_property.dart';
 import 'package:main_api_client/model/news_property_by_id.dart';
 import 'package:main_api_client/model/not_found.dart';
-import 'package:main_api_client/model/order_reference.dart';
+import 'package:main_api_client/model/order_dms.dart';
+import 'package:main_api_client/model/order_dms_fail.dart';
+import 'package:main_api_client/model/order_dms_success.dart';
 import 'package:main_api_client/model/order_reference_fail.dart';
 import 'package:main_api_client/model/order_reference_success.dart';
 import 'package:main_api_client/model/order_transport_fail.dart';
@@ -69,6 +75,9 @@ import 'package:main_api_client/model/post_comment.dart';
 import 'package:main_api_client/model/post_comment_params_fail.dart';
 import 'package:main_api_client/model/post_comment_success.dart';
 import 'package:main_api_client/model/publications_property.dart';
+import 'package:main_api_client/model/questions_list.dart';
+import 'package:main_api_client/model/questions_list_data.dart';
+import 'package:main_api_client/model/reference_auto_fill.dart';
 import 'package:main_api_client/model/refresh_token_params.dart';
 import 'package:main_api_client/model/register_confirm_params.dart';
 import 'package:main_api_client/model/register_confirm_success.dart';
@@ -76,6 +85,8 @@ import 'package:main_api_client/model/register_params.dart';
 import 'package:main_api_client/model/register_success.dart';
 import 'package:main_api_client/model/required_error.dart';
 import 'package:main_api_client/model/required_success.dart';
+import 'package:main_api_client/model/send_feedback_fail.dart';
+import 'package:main_api_client/model/send_feedback_success.dart';
 import 'package:main_api_client/model/server_error.dart';
 import 'package:main_api_client/model/thank_by_id.dart';
 import 'package:main_api_client/model/thank_self.dart';
@@ -94,6 +105,7 @@ part 'serializers.g.dart';
   AnnouncementsProperty,
   AuthParams,
   AuthSuccess,
+  AutoFillForm,
   BadAuthParams,
   BadId,
   BadRequest,
@@ -111,6 +123,8 @@ part 'serializers.g.dart';
   EventProperty,
   EventsNotFound,
   EventsProperty,
+  FeedbackForm,
+  FeedbackTagsList,
   Forbidden,
   GetAnnouncementById,
   GetAnnouncements,
@@ -121,6 +135,7 @@ part 'serializers.g.dart';
   GetNews,
   GetNewsById,
   GetPublications,
+  GetReferenceOrderForm,
   GetSearchSuccess,
   GetTransportOrderForm,
   GetUserFail,
@@ -133,7 +148,9 @@ part 'serializers.g.dart';
   NewsProperty,
   NewsPropertyById,
   NotFound,
-  OrderReference,
+  OrderDMS,
+  OrderDMSFail,
+  OrderDMSSuccess,
   OrderReferenceFail,
   OrderReferenceSuccess,
   OrderTransportFail,
@@ -142,6 +159,9 @@ part 'serializers.g.dart';
   PostCommentParamsFail,
   PostCommentSuccess,
   PublicationsProperty,
+  QuestionsList,
+  QuestionsListData,
+  ReferenceAutoFill,
   RefreshTokenParams,
   RegisterConfirmParams,
   RegisterConfirmSuccess,
@@ -149,6 +169,8 @@ part 'serializers.g.dart';
   RegisterSuccess,
   RequiredError,
   RequiredSuccess,
+  SendFeedbackFail,
+  SendFeedbackSuccess,
   ServerError,
   ThankById,
   ThankSelf,

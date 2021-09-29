@@ -10,30 +10,55 @@ class DioErrorHandler {
 
   DioErrorHandler({required this.e, required this.languageStrings});
 
+  List<String> emptyResponseCodes = ["QMA-32", "QMA-33"];
+
+  bool isEmpty() {
+    if (e.type == DioErrorType.response) {
+      ErrorResponse response = ErrorResponse.fromException(e);
+
+      for (var code in emptyResponseCodes)
+        if (code == response.code) return true;
+    }
+
+    return false;
+  }
+
   ErrorModel call() {
     if (e.type == DioErrorType.response) {
       ErrorResponse response = ErrorResponse.fromException(e);
 
-      if (response.code == 'QMA-6') {
-        return ErrorModel(
-            msg: languageStrings.errorOccuried,
-            exception: InvalidRefreshTokenException());
-      } else if (response.code == 'QMA-15') {
-        return ErrorModel(
-            msg: languageStrings.userNotFound,
-            exception:
-                UnknownErrorException(message: languageStrings.userNotFound));
-      } else {
-        return ErrorModel(
-          msg: languageStrings.errorOccuried,
-          exception: UnknownErrorException(),
-        );
+      switch (response.code) {
+        case "QMA-6":
+          return invalidRefreshToken();
+        case "QMA-15":
+          return unknownErrorException(
+              languageStrings.userNotFound, languageStrings.userNotFound);
+        default:
+          return unknownErrorException(languageStrings.errorOccuried, "");
       }
-    } else {
-      return ErrorModel(
-        msg: languageStrings.noConnectionError,
-        exception: NoConnectionException(),
-      );
     }
+
+    return noConnection();
+  }
+
+  ErrorModel invalidRefreshToken() {
+    return ErrorModel(
+      msg: languageStrings.errorOccuried,
+      exception: InvalidRefreshTokenException(),
+    );
+  }
+
+  ErrorModel unknownErrorException(String msg, String exceptionMsg) {
+    return ErrorModel(
+      msg: msg,
+      exception: UnknownErrorException(message: exceptionMsg),
+    );
+  }
+
+  ErrorModel noConnection() {
+    return ErrorModel(
+      msg: languageStrings.noConnectionError,
+      exception: NoConnectionException(),
+    );
   }
 }

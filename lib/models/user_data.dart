@@ -10,35 +10,66 @@ class UserProfileData {
   UserContacts? contacts;
   UserBasicInfo? basicInformation;
 
-  UserProfileData({
-    required this.id,
-    this.lastName,
-    this.name,
-    this.workPosition,
-    this.pathToAvatar,
-    this.votes,
-    this.awards,
-    this.contacts,
-    this.basicInformation,
-    required this.canBeThanked
-  });
+  UserProfileData(
+      {required this.id,
+      this.lastName,
+      this.name,
+      this.workPosition,
+      this.pathToAvatar,
+      this.votes,
+      this.awards,
+      this.contacts,
+      this.basicInformation,
+      required this.canBeThanked});
 
-  static UserProfileData getUserFromResponse(Map userData)
-  {
+  UserProfileData copyWith({
+    int? id,
+    String? lastName,
+    String? name,
+    String? workPosition,
+    String? pathToAvatar,
+    bool? canBeThanked,
+    UserVotes? votes,
+    UserAwards? awards,
+    UserContacts? contacts,
+    UserBasicInfo? basicInformation,
+  }) {
     return UserProfileData(
-      id: userData['id'] ?? 0,
-      lastName: userData['last_name'],
-      name: userData['name'],
-      workPosition: userData['work_position'],
-      pathToAvatar: userData['avatar'],
-      votes: userData['barrels'] != null ? UserVotes.getUserVotesFromMap(userData['barrels']) : null,
-      awards: userData['awards'] != null ? UserAwards.getUserAwardsFromMap(userData['awards']) : null,
-      contacts: userData['contacts'] != null ? UserContacts.getUserContactsFromMap(userData['contacts']) : null,
-      basicInformation: userData['basic_information'] != null ? UserBasicInfo.getUserBasicInfoFromMap(userData['basic_information']) : null,
-      canBeThanked: userData['canBeThanked']
+      id: id ?? this.id,
+      lastName: lastName ?? this.lastName,
+      name: name ?? this.name,
+      workPosition: workPosition ?? this.workPosition,
+      pathToAvatar: pathToAvatar ?? this.pathToAvatar,
+      canBeThanked: canBeThanked ?? this.canBeThanked,
+      votes: votes ?? this.votes,
+      awards: awards ?? this.awards,
+      contacts: contacts ?? this.contacts,
+      basicInformation: basicInformation ?? this.basicInformation,
     );
   }
 
+  static UserProfileData getUserFromResponse(Map userData) {
+    return UserProfileData(
+        id: userData['id'] ?? 0,
+        lastName: userData['last_name'],
+        name: userData['name'],
+        workPosition: userData['work_position'],
+        pathToAvatar: userData['avatar'],
+        votes: userData['barrels'] != null
+            ? UserVotes.getUserVotesFromMap(userData['barrels'])
+            : null,
+        awards: userData['awards'] != null
+            ? UserAwards.getUserAwardsFromMap(userData['awards'])
+            : null,
+        contacts: userData['contacts'] != null
+            ? UserContacts.getUserContactsFromMap(userData['contacts'])
+            : null,
+        basicInformation: userData['basic_information'] != null
+            ? UserBasicInfo.getUserBasicInfoFromMap(
+                userData['basic_information'])
+            : null,
+        canBeThanked: userData['canBeThanked']);
+  }
 }
 
 class UserVotes {
@@ -46,11 +77,7 @@ class UserVotes {
   int reservoir;
   int tankers;
 
-  UserVotes({
-    this.barrels = 0,
-    this.reservoir = 0,
-    this.tankers = 0
-  });
+  UserVotes({this.barrels = 0, this.reservoir = 0, this.tankers = 0});
 
   static UserVotes getUserVotesFromMap(Map userVotesMap) {
     UserVotes userVotes = new UserVotes();
@@ -62,6 +89,17 @@ class UserVotes {
     return userVotes;
   }
 
+  UserVotes copyWith({
+    int? barrels,
+    int? reservoir,
+    int? tankers,
+  }) {
+    return UserVotes(
+      barrels: barrels ?? this.barrels,
+      reservoir: reservoir ?? this.reservoir,
+      tankers: tankers ?? this.tankers,
+    );
+  }
 }
 
 class UserAwards {
@@ -69,20 +107,17 @@ class UserAwards {
   bool goldenTanker2019;
   bool team;
 
-  UserAwards({
-    this.goldenTanker = false,
-    this.goldenTanker2019 = false,
-    this.team = false
-  });
+  UserAwards(
+      {this.goldenTanker = false,
+      this.goldenTanker2019 = false,
+      this.team = false});
 
   static UserAwards getUserAwardsFromMap(Map userAwardsMap) {
     return new UserAwards(
-      goldenTanker: userAwardsMap['gold_tanker'] ?? false,
-      goldenTanker2019: userAwardsMap['gold_tanker_2019'] ?? false,
-      team: userAwardsMap['team'] ?? false
-    );
+        goldenTanker: userAwardsMap['gold_tanker'] ?? false,
+        goldenTanker2019: userAwardsMap['gold_tanker_2019'] ?? false,
+        team: userAwardsMap['team'] ?? false);
   }
-
 }
 
 class UserContacts {
@@ -91,12 +126,8 @@ class UserContacts {
   String? mobilePhone;
   String? email;
 
-  UserContacts({
-    this.workPhone,
-    this.workMobilePhone,
-    this.mobilePhone,
-    this.email
-  });
+  UserContacts(
+      {this.workPhone, this.workMobilePhone, this.mobilePhone, this.email});
 
   static UserContacts getUserContactsFromMap(Map userContactsMap) {
     return new UserContacts(
@@ -106,7 +137,6 @@ class UserContacts {
       email: userContactsMap['email'],
     );
   }
-
 }
 
 class UserBasicInfo {
@@ -115,20 +145,13 @@ class UserBasicInfo {
   String? office;
   String? birthday;
 
-  UserBasicInfo({
-    this.organization,
-    this.address,
-    this.office,
-    this.birthday
-  });
+  UserBasicInfo({this.organization, this.address, this.office, this.birthday});
 
   static UserBasicInfo getUserBasicInfoFromMap(Map userBasicInfoMap) {
-   return new UserBasicInfo(
-      organization: userBasicInfoMap['organization'],
-      address: userBasicInfoMap['address'],
-      office: userBasicInfoMap['office'],
-      birthday: userBasicInfoMap['birthday']
-    );
+    return new UserBasicInfo(
+        organization: userBasicInfoMap['organization'],
+        address: userBasicInfoMap['address'],
+        office: userBasicInfoMap['office'],
+        birthday: userBasicInfoMap['birthday']);
   }
-
 }

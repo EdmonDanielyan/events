@@ -13,6 +13,7 @@ import 'package:ink_mobile/handlers/error_catcher.dart';
 import 'package:ink_mobile/localization/strings/rus.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/themes/light.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
 import 'localization/localization_cubit/localization_cubit.dart';
@@ -65,6 +66,10 @@ class InkMobile extends StatelessWidget {
         navigatorKey: App.materialKey,
         title: 'ИНК',
         initialRoute: '/init',
+        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+        supportedLocales: [
+          const Locale('ru'),
+        ],
         routes: MainRoutes.routes,
         theme: LightTheme().getThemeData(),
         darkTheme: LightTheme().getThemeData(),

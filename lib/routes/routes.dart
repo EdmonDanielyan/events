@@ -7,6 +7,7 @@ import 'package:ink_mobile/screens/birthdays/birthdays_screen.dart';
 import 'package:ink_mobile/screens/error/404_screen.dart';
 import 'package:ink_mobile/screens/events_detail/events_detail_screen.dart';
 import 'package:ink_mobile/screens/events_list/events_list_screen.dart';
+import 'package:ink_mobile/screens/feedback/feedback_screen.dart';
 import 'package:ink_mobile/screens/initial/initial_screen.dart';
 import 'package:ink_mobile/screens/main/main_screen.dart';
 import 'package:ink_mobile/screens/news_comments/news_comment_screen.dart';
@@ -15,6 +16,7 @@ import 'package:ink_mobile/screens/news_list/news_list_screen.dart';
 import 'package:ink_mobile/screens/open_university/open_university_screen.dart';
 import 'package:ink_mobile/screens/personnel_movements/personnel_movements_screen.dart';
 import 'package:ink_mobile/screens/profile/profile_screen.dart';
+import 'package:ink_mobile/screens/references/references_screen.dart';
 import 'package:ink_mobile/screens/search/search_screen.dart';
 import 'package:ink_mobile/screens/service_list/service_list_screen.dart';
 import 'package:ink_mobile/screens/social_package/content/accident_insurance.dart';
@@ -46,6 +48,8 @@ class MainRoutes {
     '/news_list': (BuildContext context) => NewsListScreen(),
     '/announcements_list': (BuildContext context) => AnnouncementsListScreen(),
     '/services': (BuildContext context) => ServiceListScreen(),
+    '/feedback': (BuildContext context) => FeedBackScreen(),
+    '/references': (BuildContext context) => ReferencesScreen(),
     '/personnel_movements': (BuildContext context) =>
         PersonnelMovementsScreen(),
     '/social_package': (BuildContext context) => SocialPackageScreen(),

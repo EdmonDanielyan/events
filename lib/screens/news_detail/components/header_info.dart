@@ -7,11 +7,9 @@ class HeaderInfo extends StatelessWidget {
   final int viewCount;
   final DateTime? dateCreate;
 
-  const HeaderInfo({
-    Key? key,
-    required this.viewCount,
-    required this.dateCreate
-  }) : super(key: key);
+  const HeaderInfo(
+      {Key? key, required this.viewCount, required this.dateCreate})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,25 +26,24 @@ class HeaderInfo extends StatelessWidget {
                 margin: EdgeInsets.only(right: 6.0),
               ),
               Container(
-                  child: Text(
-                      viewCount != null ? viewCount.toString() : '0',
+                  child: Text(viewCount.toString(),
                       style: TextStyle(
                           fontFamily: "Helvetica",
                           fontWeight: FontWeight.w500,
                           color: Colors.grey)),
                   margin: EdgeInsets.only(right: 16.0)),
               Text(
-                dateCreate != null ? DateFormat('dd.MM.yyyy').format(dateCreate!) : '',
-                style: TextStyle(
-                  fontFamily: "Helvetica",
-                  color: Colors.grey[500],
-                  fontWeight: FontWeight.w200,
-                )
-              ),
+                  dateCreate != null
+                      ? DateFormat('dd.MM.yyyy').format(dateCreate!)
+                      : '',
+                  style: TextStyle(
+                    fontFamily: "Helvetica",
+                    color: Colors.grey[500],
+                    fontWeight: FontWeight.w200,
+                  )),
             ],
           ),
           margin: EdgeInsets.only(left: 20.0, top: 17.0, bottom: 10.0),
-        )
-    );
+        ));
   }
 }

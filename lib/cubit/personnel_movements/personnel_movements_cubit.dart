@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
-import 'package:ink_mobile/core/errors/empty_error_handler.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_state.dart';
 import 'package:ink_mobile/cubit/personnel_movements/use_cases/fetch.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
@@ -28,13 +27,14 @@ class PersonnelMovementsCubit extends Cubit<PersonnelMovementsState> {
       ).call();
       emitSuccess(response);
     } on DioError catch (e) {
-      bool isEmpty = DioEmptyHandler(e: e).isEmpty();
-      if (isEmpty) {
+      final _errorHandler =
+          DioErrorHandler(e: e, languageStrings: languageStrings);
+      if (_errorHandler.isEmpty()) {
         emitEmpty();
         return;
       }
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+
+      ErrorModel error = _errorHandler.call();
       throw error.exception;
     } on TimeoutException catch (_) {
       emitError(languageStrings.noConnectionError);

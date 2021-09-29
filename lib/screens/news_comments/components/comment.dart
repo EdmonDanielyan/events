@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/ink_icons.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
@@ -151,7 +150,9 @@ class _CommentState extends State<Comment> {
   void _onAnswerButtonTap() {
     NewsCommentsCubit _cubit = widget.cubit;
 
-    _cubit.commentInputController.text = widget.name ?? '' + ', ';
+    _cubit.commentInputController.text =
+        widget.name != null ? "${widget.name}, " : "";
+
     _cubit.commentInputController.selection = TextSelection.fromPosition(
         TextPosition(offset: _cubit.commentInputController.text.length));
     _cubit.answerId = widget.id;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/static_slider/static_slider_effect.dart';
 import 'package:ink_mobile/cubit/main_page/main_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
@@ -14,8 +13,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class NewsBlock extends StatelessWidget {
   NewsBlock({Key? key}) : super(key: key);
-  late Size size;
-  late NewsBlockCubit newsCubit;
+  static late Size size;
+  static late NewsBlockCubit newsCubit;
 
   @override
   Widget build(BuildContext context) {

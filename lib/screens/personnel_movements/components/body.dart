@@ -67,8 +67,12 @@ class Body extends StatelessWidget {
                               fontSize: 35, fontWeight: FontWeight.bold)),
                     ),
                   ),
-                  Column(
-                    children: personnelMovements,
+                  ListView.builder(
+                    shrinkWrap: true,
+                    controller: ScrollController(keepScrollOffset: false),
+                    itemCount: personnelMovements.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        personnelMovements[index],
                   ),
                   SizedBox(height: 30)
                 ],

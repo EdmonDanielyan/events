@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 analysis_options.yaml
 doc/AddEventMember.md
@@ -12,6 +11,7 @@ doc/AnnouncementsProperty.md
 doc/AuthApi.md
 doc/AuthParams.md
 doc/AuthSuccess.md
+doc/AutoFillForm.md
 doc/BadAuthParams.md
 doc/BadId.md
 doc/BadRequest.md
@@ -31,6 +31,8 @@ doc/EventProperty.md
 doc/EventsApi.md
 doc/EventsNotFound.md
 doc/EventsProperty.md
+doc/FeedbackForm.md
+doc/FeedbackTagsList.md
 doc/Forbidden.md
 doc/GetAnnouncementById.md
 doc/GetAnnouncements.md
@@ -41,6 +43,7 @@ doc/GetEvents.md
 doc/GetNews.md
 doc/GetNewsById.md
 doc/GetPublications.md
+doc/GetReferenceOrderForm.md
 doc/GetSearchSuccess.md
 doc/GetTransportOrderForm.md
 doc/GetUserFail.md
@@ -54,7 +57,9 @@ doc/NewsNotFound.md
 doc/NewsProperty.md
 doc/NewsPropertyById.md
 doc/NotFound.md
-doc/OrderReference.md
+doc/OrderDMS.md
+doc/OrderDMSFail.md
+doc/OrderDMSSuccess.md
 doc/OrderReferenceFail.md
 doc/OrderReferenceSuccess.md
 doc/OrderTransportFail.md
@@ -64,6 +69,9 @@ doc/PostCommentParamsFail.md
 doc/PostCommentSuccess.md
 doc/PublicationsApi.md
 doc/PublicationsProperty.md
+doc/QuestionsList.md
+doc/QuestionsListData.md
+doc/ReferenceAutoFill.md
 doc/RefreshTokenParams.md
 doc/RegisterConfirmParams.md
 doc/RegisterConfirmSuccess.md
@@ -72,6 +80,8 @@ doc/RegisterSuccess.md
 doc/RequiredError.md
 doc/RequiredSuccess.md
 doc/SearchApi.md
+doc/SendFeedbackFail.md
+doc/SendFeedbackSuccess.md
 doc/ServerError.md
 doc/ThankApi.md
 doc/ThankById.md
@@ -103,6 +113,7 @@ lib/model/announcements_not_found.dart
 lib/model/announcements_property.dart
 lib/model/auth_params.dart
 lib/model/auth_success.dart
+lib/model/auto_fill_form.dart
 lib/model/bad_auth_params.dart
 lib/model/bad_id.dart
 lib/model/bad_request.dart
@@ -120,6 +131,8 @@ lib/model/empty_search.dart
 lib/model/event_property.dart
 lib/model/events_not_found.dart
 lib/model/events_property.dart
+lib/model/feedback_form.dart
+lib/model/feedback_tags_list.dart
 lib/model/forbidden.dart
 lib/model/get_announcement_by_id.dart
 lib/model/get_announcements.dart
@@ -130,6 +143,7 @@ lib/model/get_events.dart
 lib/model/get_news.dart
 lib/model/get_news_by_id.dart
 lib/model/get_publications.dart
+lib/model/get_reference_order_form.dart
 lib/model/get_search_success.dart
 lib/model/get_transport_order_form.dart
 lib/model/get_user_fail.dart
@@ -142,7 +156,9 @@ lib/model/news_not_found.dart
 lib/model/news_property.dart
 lib/model/news_property_by_id.dart
 lib/model/not_found.dart
-lib/model/order_reference.dart
+lib/model/order_dms.dart
+lib/model/order_dms_fail.dart
+lib/model/order_dms_success.dart
 lib/model/order_reference_fail.dart
 lib/model/order_reference_success.dart
 lib/model/order_transport_fail.dart
@@ -151,6 +167,9 @@ lib/model/post_comment.dart
 lib/model/post_comment_params_fail.dart
 lib/model/post_comment_success.dart
 lib/model/publications_property.dart
+lib/model/questions_list.dart
+lib/model/questions_list_data.dart
+lib/model/reference_auto_fill.dart
 lib/model/refresh_token_params.dart
 lib/model/register_confirm_params.dart
 lib/model/register_confirm_success.dart
@@ -158,6 +177,8 @@ lib/model/register_params.dart
 lib/model/register_success.dart
 lib/model/required_error.dart
 lib/model/required_success.dart
+lib/model/send_feedback_fail.dart
+lib/model/send_feedback_success.dart
 lib/model/server_error.dart
 lib/model/thank_by_id.dart
 lib/model/thank_self.dart

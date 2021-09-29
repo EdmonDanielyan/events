@@ -5,7 +5,6 @@ import 'package:ink_mobile/components/centring_widget.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_state.dart';
-import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/news_data.dart';

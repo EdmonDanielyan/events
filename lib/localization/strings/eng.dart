@@ -92,4 +92,67 @@ class EnglishStrings implements LanguageStrings {
   final String signOff = "Sign off";
   final String changeLanguage = "Change the language";
   final String userNotFound = "The user is not found";
+  final String errorLoadingQuestions = "Could not load the questions";
+  final String answersToQuestions = "Answers to questions";
+  final String notRequired = "(not required)";
+  final String fullnameHint = "Your fullname";
+  final String email = "E-mail";
+  final String question = "Question";
+  final String addresseeHint = "Addressees";
+  final String feedbackFormHint =
+      "Answers that doesn't have fullname and email in it will be shown here.";
+  final String chooseAddressee = "Choose addressee";
+  final String incorrectEmail = "Incorrect e-mail";
+  final String fillTheField = "Fill the field";
+  final String askQuestion = "Ask question";
+  final String allAnswers = "All answers";
+  final String toWhomLable = "To whom";
+  final String feedbackSuccessfullySent = "Sent succesfully";
+  final String requiredParamsAreNotFilled = "Required params are not filled";
+  final String select = "Select";
+  final String choose = "Choose";
+  final String back = "Back";
+  final String accessRightsReferInfo =
+      "This section is only available for workers from next companies: ООО «ИНК», ООО «ИНК-Сервис» и ООО «ИНК-ТКРС»";
+  final String childsFullname = "Child's fullname";
+  final String contactPhone = "Contact phone";
+  final String countInstances = "Quantity of instances";
+  final String order = "Order";
+  final String productionTimeReferInfo = "Production time is 3 working days";
+  final String childsAllowanceInfo =
+      "Without submitting a copy of the child's birth certificate to the HR administration department, it is impossible to provide a certificate.";
+  final String toSubmitFor = "To submit for";
+  final String period = "Time period";
+  final String periodStart = "Before the start of the period time";
+  final String periodEnd = "Until the end of the period time";
+  final String deliveryMethod = "Delivery method";
+  final String deliveryAddress = "Delivery address";
+  final String zipIndex = "Zip index";
+  final String refEmploymentCenter = "Employment center";
+  final String refVisa = "For getting visa";
+  final String refSickLeave = "Calculations on sick leave (Form 1-N)";
+  final String refIncome2ndfl = "Income (2–NDFL)";
+  final String refIncome = "Income";
+  final String refChildAllowance = "Child allowance support";
+  final String refChildAllowance1HalfYears =
+      "Child allowance support for 1,5 years";
+  final String refFifo = "On work on a rotational basis";
+  final String refWorkAtCompany = "Working in the company inquiry";
+  final String refAverageEarnings = "Average earnings inquiry";
+  final String refPayrollAccount =
+      "Inquiry for stating that the account is for salary purposes";
+  final String refFundsWithholding =
+      "Info on deductions from wages under executive orders";
+  final String refLaborActivity = "Certificate about employment activity";
+  final String refEmploymentRecord = "Copy of a work book";
+
+  final String deliveryMethodBuh = "Accounting department INK in Irkutsk";
+  final String deliveryMethodSecurityUk = "Security post in Ust-Kut";
+  final String deliveryMethodOkIrk =
+      "INK HR administration department office in Irkutsk";
+  final String deliveryMethodOkUk = "INK HR department office in Ust-Kut";
+  final String deliveryMethodInkTkrs = "HR department in ООО “ИНК-ТКРС”";
+  final String deliveryMethodPostMail = "By post mail";
+  final String childsBirthCertificate = "Child's birth certificate";
+  final String files = "Files";
 }

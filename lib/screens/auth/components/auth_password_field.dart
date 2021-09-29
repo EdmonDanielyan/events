@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/models/auth_form_data.dart';
 
 class AuthPasswordField extends StatefulWidget {
   const AuthPasswordField({

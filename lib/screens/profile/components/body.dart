@@ -10,7 +10,6 @@ import 'package:ink_mobile/screens/profile/components/basic_information.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
-import 'package:awesome_loader/awesome_loader.dart';
 import 'package:ink_mobile/screens/profile/components/other_user_page_header.dart';
 
 class Body extends StatelessWidget {
@@ -26,37 +25,39 @@ class Body extends StatelessWidget {
         },
         color: Colors.green,
         displacement: 20,
-        child: BlocBuilder<ProfileCubit, ProfileState>(
-            builder: (context, state) {
-              switch (state.type) {
-                case ProfileStateType.LOADED: {
-                  return getLoadedStateWidget(context, state);
-                }
-
-                case ProfileStateType.OTHER_USER_LOADED: {
-                  return getOtherUserLoadedWidget(context, state);
-                }
-
-                case ProfileStateType.LOADING: {
-                  Map arg = ModalRoute.of(context)!.settings.arguments as Map;
-                  int? userId;
-
-                  if (arg != null && arg.isNotEmpty) {
-                    userId = arg['id'];
-                  }
-
-                  userCubit.fetchUser(userId);
-
-                  return getLoadingStateWidget(context, state);
-                }
-
-                case ProfileStateType.ERROR: {
-                  return _getErrorStateWidget(context, state);
-                }
+        child:
+            BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
+          switch (state.type) {
+            case ProfileStateType.LOADED:
+              {
+                return getLoadedStateWidget(context, state);
               }
-            }
-        )
-    );
+
+            case ProfileStateType.OTHER_USER_LOADED:
+              {
+                return getOtherUserLoadedWidget(context, state);
+              }
+
+            case ProfileStateType.LOADING:
+              {
+                Map arg = ModalRoute.of(context)!.settings.arguments as Map;
+                int? userId;
+
+                if (arg != null && arg.isNotEmpty) {
+                  userId = arg['id'];
+                }
+
+                userCubit.fetchUser(userId);
+
+                return getLoadingStateWidget(context, state);
+              }
+
+            case ProfileStateType.ERROR:
+              {
+                return _getErrorStateWidget(context, state);
+              }
+          }
+        }));
   }
 
   Widget getLoadedStateWidget(context, ProfileState state) {
@@ -65,33 +66,21 @@ class Body extends StatelessWidget {
     return Container(
         child: Background(
             child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              child: Column(
-                  children: [
-                    PersonalPageHeader(
-                        user: user
-                    ),
-                    Awards(
-                        awards: user.awards
-                    ),
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Contacts(
-                              contacts: user.contacts
-                          ),
-                          BasicInformation(
-                              info: user.basicInformation
-                          ),
-                        ],
-                      ),
-                    )
-                  ]
-              ),
-            )
+      physics: AlwaysScrollableScrollPhysics(),
+      child: Column(children: [
+        PersonalPageHeader(user: user),
+        Awards(awards: user.awards),
+        Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Contacts(contacts: user.contacts),
+              BasicInformation(info: user.basicInformation),
+            ],
+          ),
         )
-    );
+      ]),
+    )));
   }
 
   Widget getOtherUserLoadedWidget(context, state) {
@@ -100,33 +89,21 @@ class Body extends StatelessWidget {
     return Container(
         child: Background(
             child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              child: Column(
-                  children: [
-                    OtherUserPageHeader(
-                        user: user
-                    ),
-                    Awards(
-                        awards: user.awards
-                    ),
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Contacts(
-                              contacts: user.contacts
-                          ),
-                          BasicInformation(
-                              info: user.basicInformation
-                          ),
-                        ],
-                      ),
-                    )
-                  ]
-              ),
-            )
+      physics: AlwaysScrollableScrollPhysics(),
+      child: Column(children: [
+        OtherUserPageHeader(user: user),
+        Awards(awards: user.awards),
+        Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Contacts(contacts: user.contacts),
+              BasicInformation(info: user.basicInformation),
+            ],
+          ),
         )
-    );
+      ]),
+    )));
   }
 
   Widget getLoadingStateWidget(BuildContext context, ProfileState state) {
@@ -137,8 +114,8 @@ class Body extends StatelessWidget {
     final ProfileCubit cubit = BlocProvider.of<ProfileCubit>(context);
 
     return ErrorRefreshButton(
-        onTap: cubit.refresh,
-        text: state.errorMessage!,
+      onTap: cubit.refresh,
+      text: state.errorMessage!,
     );
   }
 }

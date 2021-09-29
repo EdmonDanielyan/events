@@ -13,117 +13,99 @@ class EventData extends Data {
   String? pictureLink;
   bool? isMember;
 
-  EventData({
-    this.id,
-    this.title,
-    this.dateCreate,
-    this.beginDate,
-    this.endDate,
-    this.place,
-    this.viewCount,
-    this.detailText,
-    this.pictureLink,
-    this.isMember
-  });
+  EventData(
+      {this.id,
+      this.title,
+      this.dateCreate,
+      this.beginDate,
+      this.endDate,
+      this.place,
+      this.viewCount,
+      this.detailText,
+      this.pictureLink,
+      this.isMember});
 
   void fillFromMap(Map map) {
-    id =
-      map['id'] is int
-        ? map['id']
-        : int.tryParse(map['id'].toString());
+    id = map['id'] is int ? map['id'] : int.tryParse(map['id'].toString());
 
-    title =
-      map['title'] is String
-        ? map['title']
-        : null;
+    title = map['title'] is String ? map['title'] : null;
 
-    dateCreate =
-      map['date_create'] is String
+    dateCreate = map['date_create'] is String
         ? DateTime.tryParse(map['date_create'])
         : null;
 
-    beginDate =
-      map['date_start'] is String
+    beginDate = map['date_start'] is String
         ? DateTime.tryParse(map['date_start'])
         : null;
 
-    endDate = 
-      map['date_finish'] is String
+    endDate = map['date_finish'] is String
         ? DateTime.tryParse(map['date_finish'])
         : null;
 
-    place =
-      map['place'] is String
-        ? map['place']
-        : null;
+    place = map['place'] is String ? map['place'] : null;
 
-    viewCount =
-      map['view_count'] is int
+    viewCount = map['view_count'] is int
         ? map['view_count']
         : int.tryParse(map['view_count'].toString());
 
-    pictureLink =
-      map['detail_picture'] is int
+    pictureLink = map['detail_picture'] is int
         ? map['detail_picture']
         : int.tryParse(map['detail_picture'].toString());
 
-    isMember =
-      map['is_member'] is bool
-        ? map['is_member']
-        : null;
+    isMember = map['is_member'] is bool ? map['is_member'] : null;
   }
 
   factory EventData.fromMap(Map map) {
     return EventData(
-      id:
-        map['id'] is int
-          ? map['id']
-          : int.tryParse(map['id'].toString()),
-
-      title:
-        map['title'] is String
-          ? map['title']
-          : null,
-
-      dateCreate:
-        map['date_create'] is String
+      id: map['id'] is int ? map['id'] : int.tryParse(map['id'].toString()),
+      title: map['title'] is String ? map['title'] : null,
+      dateCreate: map['date_create'] is String
           ? DateTime.tryParse(map['date_create'])
           : null,
-
-      beginDate:
-        map['date_start'] is String
+      beginDate: map['date_start'] is String
           ? DateTime.tryParse(map['date_start'])
           : null,
-
-      endDate:
-        map['date_finish'] is String
+      endDate: map['date_finish'] is String
           ? DateTime.tryParse(map['date_finish'])
           : null,
-
-      place:
-        map['place'] is String
-          ? map['place']
-          : null,
-
-      viewCount:
-        map['view_count'] is int
+      place: map['place'] is String ? map['place'] : null,
+      viewCount: map['view_count'] is int
           ? map['view_count']
           : int.tryParse(map['view_count'].toString()),
-
-      pictureLink:
-        map['detail_picture'] is int
+      pictureLink: map['detail_picture'] is int
           ? map['detail_picture']
           : int.tryParse(map['detail_picture'].toString()),
-
-      isMember:
-        map['is_member'] is bool
-          ? map['is_member']
-          : null,
+      isMember: map['is_member'] is bool ? map['is_member'] : null,
     );
   }
 
-  factory EventData.fromProperty(EventProperty property)
-  {
+  EventData copyWith({
+    int? id,
+    String? title,
+    DateTime? dateCreate,
+    DateTime? beginDate,
+    DateTime? endDate,
+    String? place,
+    int? viewCount,
+    String? detailText,
+    String? pictureLink,
+    bool? isMember,
+  }) {
+    return EventData(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      dateCreate: dateCreate ?? this.dateCreate,
+      beginDate: beginDate ?? this.beginDate,
+      endDate: endDate ?? this.endDate,
+      place: place ?? this.place,
+      viewCount: viewCount ?? this.viewCount,
+      detailText: detailText ?? this.detailText,
+      pictureLink: pictureLink ?? this.pictureLink,
+      isMember: isMember ?? this.isMember,
+    );
+  }
+
+  factory EventData.fromProperty(EventProperty property) {
     return EventData(
         id: property.id,
         title: property.title,
@@ -134,12 +116,10 @@ class EventData extends Data {
         endDate: property.dateFinish,
         place: property.place,
         pictureLink: property.detailPicture,
-        isMember: property.isMember
-    );
+        isMember: property.isMember);
   }
 
-  static List<EventData> getListFromResponse(List eventDataList)
-  {
+  static List<EventData> getListFromResponse(List eventDataList) {
     List<EventData> list = [];
 
     eventDataList.forEach((element) {

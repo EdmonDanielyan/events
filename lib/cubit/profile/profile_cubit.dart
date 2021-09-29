@@ -26,11 +26,10 @@ class ProfileCubit extends Cubit<ProfileState> {
       ).call();
       JwtPayload? authUser = await Token.getJwtPayloadObject();
 
-      if (userId == null || authUser != null && authUser.userId == userId) {
-        emitState(type: ProfileStateType.LOADED, data: userData);
-      } else {
-        emitState(type: ProfileStateType.OTHER_USER_LOADED, data: userData);
-      }
+      if (userId == null || authUser != null && authUser.userId == userId)
+        emitSuccessUser(userData);
+      else
+        emitSuccessOtherUser(userData);
     } on DioError catch (e) {
       ErrorModel error =
           DioErrorHandler(e: e, languageStrings: languageStrings).call();
@@ -44,11 +43,16 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   Future<void> thanks(userId) async {
     try {
+      emitSuccessOtherUser(state.data!.copyWith(
+        canBeThanked: !state.data!.canBeThanked,
+        votes: state.data!.votes!.copyWith(
+          barrels: state.data!.votes!.barrels + 1,
+        ),
+      ));
       await Token.setNewTokensIfExpired();
       ProfileThank(
         dependency: ProfileThankRepository(userId: userId).getDependency(),
       ).thank();
-      fetchUser(userId);
     } on DioError catch (e) {
       ErrorModel error =
           DioErrorHandler(e: e, languageStrings: languageStrings).call();
@@ -58,6 +62,14 @@ class ProfileCubit extends Cubit<ProfileState> {
       emitError(languageStrings.errorOccuried);
       throw UnknownErrorException();
     }
+  }
+
+  void emitSuccessOtherUser(UserProfileData data) {
+    emitState(type: ProfileStateType.OTHER_USER_LOADED, data: data);
+  }
+
+  void emitSuccessUser(UserProfileData data) {
+    emitState(type: ProfileStateType.LOADED, data: data);
   }
 
   void emitError(String errorMsg) {
