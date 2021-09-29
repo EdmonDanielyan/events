@@ -29,10 +29,18 @@ class ReferencesFormValidator {
     return null;
   }
 
+  String? validateQuantity(int quantity) {
+    if (quantity < 1 && referencesItem.fields.quantity) {
+      return "${strings.choose} ${strings.countInstances.toLowerCase()}";
+    }
+    return null;
+  }
+
   bool validateForm(BuildContext context, ReferencesFormEntities entities) {
     final _validateFiles = validateFiles(entities.files);
     final _validateDeliveryMethod =
         validateDeliveryMethod(entities.deliveryType);
+    final _validateQuantity = validateQuantity(entities.quantity);
 
     if (_validateFiles != null) {
       SimpleCustomSnackbar(context: context, txt: _validateFiles);
@@ -41,6 +49,11 @@ class ReferencesFormValidator {
 
     if (_validateDeliveryMethod != null) {
       SimpleCustomSnackbar(context: context, txt: _validateDeliveryMethod);
+      return false;
+    }
+
+    if (_validateQuantity != null) {
+      SimpleCustomSnackbar(context: context, txt: _validateQuantity);
       return false;
     }
 

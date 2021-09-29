@@ -13,6 +13,7 @@ import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/core/cubit/btn/btn_state.dart';
 import 'package:ink_mobile/cubit/references/references_cubit.dart';
 import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart';
+import 'package:ink_mobile/functions/parser.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/references/delivery_list.dart';
@@ -28,6 +29,9 @@ class ReferencesForm extends StatefulWidget {
 }
 
 class _ReferencesFormState extends State<ReferencesForm> {
+  TextEditingController quantityTextController = TextEditingController();
+  TextEditingController periodFromController = TextEditingController();
+  TextEditingController periodToController = TextEditingController();
   final _key = GlobalKey<FormState>();
   final GlobalKey<PickFilesState> _pickFilesKey = GlobalKey<PickFilesState>();
   late ReferencesPageCubit referencesCubit;
@@ -82,9 +86,8 @@ class _ReferencesFormState extends State<ReferencesForm> {
               items: referencesList.getListTitles(),
               onChanged: (int index) {
                 entities.referencesType = index;
-                clearForm();
                 setStage(2);
-                setState(() {});
+                clearForm();
               },
             ),
             if (stage == 2) ...[
@@ -240,7 +243,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget quantityWidget() {
     return NumberSelectFormField(
-      controller: TextEditingController(),
+      controller: quantityTextController,
       buttonsColor: ButtonsColor(
         left: Color(0xFF4E6D49),
         right: Color(0xFF4E6D49),
@@ -248,7 +251,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       changeValueBy: 1,
       mode: NumberSelectFieldMode.int,
       onlyPositive: true,
-      onChanged: (val) => entities.quantity = int.parse(val),
+      onChanged: (val) => entities.quantity = Parser.stringToInt(val),
       validator: (value) {},
       style: TextStyle(fontSize: 30, height: 1),
       textAlignVertical: TextAlignVertical.center,
@@ -279,7 +282,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget periodFromWidget() {
     return DateInputField(
-      controller: TextEditingController(),
+      controller: periodFromController,
       title: _strings.periodStart,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.periodFrom = val,
@@ -288,7 +291,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget periodToWidget() {
     return DateInputField(
-      controller: TextEditingController(),
+      controller: periodToController,
       title: _strings.periodEnd,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.periodTo = val,
