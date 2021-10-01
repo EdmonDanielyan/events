@@ -5,17 +5,23 @@
 import 'package:main_api_client/api.dart';
 ```
 
-All URIs are relative to *http://mobile.ink.vpool/api/v1*
+All URIs are relative to *https://mobile.ink.vpool.qsoft.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**userBirthdayGet**](UserApi.md#userBirthdayGet) | **get** /user/birthday | 
 [**userCaninquireGet**](UserApi.md#userCaninquireGet) | **get** /user/caninquire | Метод для получения информации может ли пользователь оставлять заявки на справки
 [**userGet**](UserApi.md#userGet) | **get** /user | Получение информации о текущем пользователе
+[**userGetfeedbacktagsGet**](UserApi.md#userGetfeedbacktagsGet) | **get** /user/getfeedbacktags | Возвращает тэги для формы обратной связи
+[**userGetquestionsGet**](UserApi.md#userGetquestionsGet) | **get** /user/getquestions | Возвращает вопросы (обратная связь)
+[**userGetreferenceautofillGet**](UserApi.md#userGetreferenceautofillGet) | **get** /user/getreferenceautofill | Автозаполняемые поля для формы справок
 [**userIdGet**](UserApi.md#userIdGet) | **get** /user/{id} | Получение информации о пользователе по ID
 [**userMovementsGet**](UserApi.md#userMovementsGet) | **get** /user/movements | Получение информации о кадровых перемещениях текущего пользователя
+[**userOrderdmsPost**](UserApi.md#userOrderdmsPost) | **post** /user/orderdms | Метод для заказа ДМС
 [**userOrderreferencePost**](UserApi.md#userOrderreferencePost) | **post** /user/orderreference | Метод для заказа справок
 [**userOrdertransportPost**](UserApi.md#userOrdertransportPost) | **post** /user/ordertransport | Метод для заказа транспорта
+[**userReferenceorderformGet**](UserApi.md#userReferenceorderformGet) | **get** /user/referenceorderform | Возвращает вспомогательные данные для формы заказа транспорта
+[**userSendfeedbackPost**](UserApi.md#userSendfeedbackPost) | **post** /user/sendfeedback | Метод для отправки обратной связи (вопроса руководству)
 [**userTranspontorderformGet**](UserApi.md#userTranspontorderformGet) | **get** /user/transpontorderform | Возвращает вспомогательные данные для формы заказа транспорта
 
 
@@ -139,6 +145,132 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **userGetfeedbacktagsGet**
+> FeedbackTagsList userGetfeedbacktagsGet()
+
+Возвращает тэги для формы обратной связи
+
+### Example 
+```dart
+import 'package:main_api_client/api.dart';
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
+
+var api_instance = new UserApi();
+
+try { 
+    var result = api_instance.userGetfeedbacktagsGet();
+    print(result);
+} catch (e) {
+    print('Exception when calling UserApi->userGetfeedbacktagsGet: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**FeedbackTagsList**](FeedbackTagsList.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **userGetquestionsGet**
+> QuestionsList userGetquestionsGet(pageNumber, countOnPage)
+
+Возвращает вопросы (обратная связь)
+
+### Example 
+```dart
+import 'package:main_api_client/api.dart';
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
+
+var api_instance = new UserApi();
+var pageNumber = 56; // int | Номер страницы для пагинации
+var countOnPage = 56; // int | Количество элементов на странице
+
+try { 
+    var result = api_instance.userGetquestionsGet(pageNumber, countOnPage);
+    print(result);
+} catch (e) {
+    print('Exception when calling UserApi->userGetquestionsGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **pageNumber** | **int**| Номер страницы для пагинации | [optional] 
+ **countOnPage** | **int**| Количество элементов на странице | [optional] 
+
+### Return type
+
+[**QuestionsList**](QuestionsList.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **userGetreferenceautofillGet**
+> ReferenceAutoFill userGetreferenceautofillGet()
+
+Автозаполняемые поля для формы справок
+
+### Example 
+```dart
+import 'package:main_api_client/api.dart';
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
+
+var api_instance = new UserApi();
+
+try { 
+    var result = api_instance.userGetreferenceautofillGet();
+    print(result);
+} catch (e) {
+    print('Exception when calling UserApi->userGetreferenceautofillGet: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**ReferenceAutoFill**](ReferenceAutoFill.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **userIdGet**
 > GetUserSuccess userIdGet(id)
 
@@ -223,8 +355,52 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **userOrderdmsPost**
+> OrderDMSSuccess userOrderdmsPost(orderDMS)
+
+Метод для заказа ДМС
+
+### Example 
+```dart
+import 'package:main_api_client/api.dart';
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
+
+var api_instance = new UserApi();
+var orderDMS = new OrderDMS(); // OrderDMS | Данные для заказа полиса
+
+try { 
+    var result = api_instance.userOrderdmsPost(orderDMS);
+    print(result);
+} catch (e) {
+    print('Exception when calling UserApi->userOrderdmsPost: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **orderDMS** | [**OrderDMS**](OrderDMS.md)| Данные для заказа полиса | [optional] 
+
+### Return type
+
+[**OrderDMSSuccess**](OrderDMSSuccess.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **userOrderreferencePost**
-> OrderReferenceSuccess userOrderreferencePost(orderReference)
+> OrderReferenceSuccess userOrderreferencePost(referenceType, phone, way, postalCode, address, period, destination, num_, child, dateStart, dateEnd, filesLeftSquareBracketRightSquareBracket)
 
 Метод для заказа справок
 
@@ -236,10 +412,21 @@ import 'package:main_api_client/api.dart';
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
 var api_instance = new UserApi();
-var orderReference = new OrderReference(); // OrderReference | Данные для заказа справки
+var referenceType = referenceType_example; // String | 
+var phone = phone_example; // String | 
+var way = way_example; // String | 
+var postalCode = postalCode_example; // String | 
+var address = address_example; // String | 
+var period = period_example; // String | 
+var destination = destination_example; // String | 
+var num_ = 56; // int | 
+var child = child_example; // String | 
+var dateStart = dateStart_example; // String | 
+var dateEnd = dateEnd_example; // String | 
+var filesLeftSquareBracketRightSquareBracket = [BINARY_DATA_HERE]; // BuiltList<Uint8List> | 
 
 try { 
-    var result = api_instance.userOrderreferencePost(orderReference);
+    var result = api_instance.userOrderreferencePost(referenceType, phone, way, postalCode, address, period, destination, num_, child, dateStart, dateEnd, filesLeftSquareBracketRightSquareBracket);
     print(result);
 } catch (e) {
     print('Exception when calling UserApi->userOrderreferencePost: $e\n');
@@ -250,7 +437,18 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **orderReference** | [**OrderReference**](OrderReference.md)| Данные для заказа справки | [optional] 
+ **referenceType** | **String**|  | [default to 'employment_center, visa, sick_leave, income_2ndfl, income, child_allowance, child_allowance_1.5_years, FIFO, work_at_company, average_earnings, payroll_account, funds_withholding, labor_activity, employment_record']
+ **phone** | **String**|  | [default to '+71231234567']
+ **way** | **String**|  | [default to 'BUH, SECURITY_UK, OK_IRK, OK_UK, INKTKRS, POST']
+ **postalCode** | **String**|  | [optional] 
+ **address** | **String**|  | [optional] 
+ **period** | **String**|  | [optional] 
+ **destination** | **String**|  | [optional] 
+ **num_** | **int**|  | [optional] 
+ **child** | **String**|  | [optional] 
+ **dateStart** | **String**|  | [optional] 
+ **dateEnd** | **String**|  | [optional] 
+ **filesLeftSquareBracketRightSquareBracket** | [**BuiltList<Uint8List>**](Uint8List.md)|  | [optional] 
 
 ### Return type
 
@@ -262,7 +460,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: multipart/form-data
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -317,6 +515,98 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**OrderTransportSuccess**](OrderTransportSuccess.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **userReferenceorderformGet**
+> GetReferenceOrderForm userReferenceorderformGet()
+
+Возвращает вспомогательные данные для формы заказа транспорта
+
+### Example 
+```dart
+import 'package:main_api_client/api.dart';
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
+
+var api_instance = new UserApi();
+
+try { 
+    var result = api_instance.userReferenceorderformGet();
+    print(result);
+} catch (e) {
+    print('Exception when calling UserApi->userReferenceorderformGet: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**GetReferenceOrderForm**](GetReferenceOrderForm.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **userSendfeedbackPost**
+> SendFeedbackSuccess userSendfeedbackPost(question, tags, fio, contacts, filesLeftSquareBracketRightSquareBracket)
+
+Метод для отправки обратной связи (вопроса руководству)
+
+### Example 
+```dart
+import 'package:main_api_client/api.dart';
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
+
+var api_instance = new UserApi();
+var question = question_example; // String | 
+var tags = tags_example; // String | 
+var fio = fio_example; // String | 
+var contacts = contacts_example; // String | 
+var filesLeftSquareBracketRightSquareBracket = [BINARY_DATA_HERE]; // BuiltList<Uint8List> | 
+
+try { 
+    var result = api_instance.userSendfeedbackPost(question, tags, fio, contacts, filesLeftSquareBracketRightSquareBracket);
+    print(result);
+} catch (e) {
+    print('Exception when calling UserApi->userSendfeedbackPost: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **question** | **String**|  | 
+ **tags** | **String**|  | 
+ **fio** | **String**|  | [optional] 
+ **contacts** | **String**|  | [optional] 
+ **filesLeftSquareBracketRightSquareBracket** | [**BuiltList<Uint8List>**](Uint8List.md)|  | [optional] 
+
+### Return type
+
+[**SendFeedbackSuccess**](SendFeedbackSuccess.md)
 
 ### Authorization
 

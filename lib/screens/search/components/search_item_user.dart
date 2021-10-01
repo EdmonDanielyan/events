@@ -8,14 +8,14 @@ class SearchItemUser extends StatelessWidget {
   final String query;
   final String route;
 
-  const SearchItemUser({
-    Key? key,
+  const SearchItemUser(
+      {Key? key,
       required this.id,
       required this.fullName,
       required this.avatar,
       required this.query,
-      required this.route
-  }) : super(key: key);
+      required this.route})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,21 +33,25 @@ class SearchItemUser extends StatelessWidget {
               radius: 25,
               backgroundImage: avatar,
             )),
-            Container(
-                margin: EdgeInsets.only(left: 15),
-                child: EasyRichText(
-                  fullName ?? '',
-                  defaultStyle: TextStyle(
-                      color: Color(0xFF1D2126),
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400),
-                  caseSensitive: false,
-                  patternList: [
-                    EasyRichTextPattern(
-                        targetString: query,
-                        style: TextStyle(color: Colors.blue)),
-                  ],
-                ))
+            Flexible(
+              child: Container(
+                  margin: EdgeInsets.only(left: 15),
+                  child: EasyRichText(
+                    fullName ?? '',
+                    overflow: TextOverflow.clip,
+                    maxLines: 2,
+                    defaultStyle: TextStyle(
+                        color: Color(0xFF1D2126),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400),
+                    caseSensitive: false,
+                    patternList: [
+                      EasyRichTextPattern(
+                          targetString: RegExp.escape(query),
+                          style: TextStyle(color: Colors.blue)),
+                    ],
+                  )),
+            )
           ],
         ),
       ),

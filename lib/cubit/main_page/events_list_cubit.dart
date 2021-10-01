@@ -1,98 +1,63 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/core/errors/dio_error_handler.dart';
+import 'package:ink_mobile/cubit/events_list/domain/repository.dart';
+import 'package:ink_mobile/cubit/events_list/use_cases/fetch.dart';
 import 'package:ink_mobile/cubit/main_page/events_list_state.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/models/error_response.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/event_data.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/pagination.dart';
 import 'package:dio/dio.dart';
-import 'package:main_api_client/api.dart';
-import 'package:main_api_client/api/events_api.dart';
 
 class EventsListCubit extends Cubit<EventsListState> {
-  static List<EventData>? eventsList;
-  EventsListCubit() : super(EventsListState(type: EventsListStateType.LOADING));
+  LanguageStrings languageStrings;
+  static List<EventData>? eventList;
+  EventsListCubit({required this.languageStrings})
+      : super(EventsListState(type: EventsListStateType.LOADING));
+
+  Pagination<EventData> pagination =
+      Pagination<EventData>(countOnPage: 5, pageNumber: 1);
 
   Future<void> fetchEvents() async {
     try {
-      await Token.setNewTokensIfExpired();
-      if (eventsList == null) {
-
-        MainApiClient api = MainApiClient();
-        EventsApi eventsApi = api.getEventsApi();
-
-        final _response = await eventsApi.getEvents(
-            pageNumber: 1,
-            countOnPage: 5
-        );
-        final eventsDataMap = _response.data?.data.asMap;
-
-        if (eventsDataMap != null && eventsDataMap.isNotEmpty) {
-          eventsList = EventData.getListFromResponse(eventsDataMap['events']);
-
-          emitState(
-              type: EventsListStateType.LOADED,
-              data: eventsList
-          );
-        } else {
-          emitState(
-              type: EventsListStateType.ERROR,
-              errorMessage: ErrorMessages.NO_CONNECTION_ERROR_MESSAGE
-          );
-          throw NoConnectionException();
-        }
-
+      if (eventList == null) {
+        Pagination<EventData> response = await EventListFetch(
+          pagination: pagination,
+          dependency:
+              EventListRepository(pagination: pagination).getDependency(),
+        ).call();
+        emitSuccess(response.items);
       } else {
-        emitState(
-            type: EventsListStateType.LOADED,
-            data: eventsList
-        );
+        emitSuccess(eventList!);
       }
-
     } on DioError catch (e) {
-      if (e.type == DioErrorType.response) {
-        ErrorResponse response = ErrorResponse.fromException(e);
+      ErrorModel error =
+          DioErrorHandler(e: e, languageStrings: languageStrings).call();
 
-        if (response.code == 'QMA-6') {
-          emitState(
-              type: EventsListStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-          throw InvalidRefreshTokenException();
-        } else {
-          emitState(
-              type: EventsListStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-          throw UnknownErrorException();
-        }
-      } else {
-        emitState(
-            type: EventsListStateType.ERROR,
-            errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-        );
-      }
-
-    } on Exception catch (e) {
-      emitState(
-        type: EventsListStateType.ERROR,
-        errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-      );
+      emitError(error.msg);
+      throw error.exception;
+    } on Exception catch (_) {
+      emitError(languageStrings.errorOccuried);
       throw UnknownErrorException();
     }
   }
 
-  void emitState({
-    required EventsListStateType type,
-    List<EventData>? data,
-    String? errorMessage
-  }) {
-    emit(EventsListState(
-        type: type,
-        data: data,
-        errorMessage: errorMessage
-    ));
+  void emitSuccess(List<EventData> items) {
+    emitState(type: EventsListStateType.LOADED, data: items);
   }
 
+  void emitError(String errorMsg) {
+    emitState(
+      type: EventsListStateType.ERROR,
+      errorMessage: errorMsg,
+    );
+  }
+
+  void emitState(
+      {required EventsListStateType type,
+      List<EventData>? data,
+      String? errorMessage}) {
+    emit(EventsListState(type: type, data: data, errorMessage: errorMessage));
+  }
 }

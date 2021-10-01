@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
-import 'package:ink_mobile/models/auth_form_data.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 
 class AuthPasswordField extends StatefulWidget {
   const AuthPasswordField({
@@ -28,6 +28,8 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
   @override
   Widget build(BuildContext context) {
     final AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
+    final _strings =
+        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
 
     return TextField(
       onChanged: (value) {
@@ -35,26 +37,22 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
       },
       obscureText: _obscureText,
       decoration: InputDecoration(
-        labelText: 'Пароль',
-        border: OutlineInputBorder(),
-        fillColor: Colors.white,
-        filled: true,
-        suffixIcon: GestureDetector(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: SvgPicture.asset(
-              _obscureText
-                  ? SHOW_TEXT_ICON_LINK
-                  : HIDE_TEXT_ICON_LINK,
-              width: 10,
-              height: 10,
-            ),
-          ),
-          onTap: () {
-            _toggle();
-          }
-        )
-      ),
+          labelText: _strings.password,
+          border: OutlineInputBorder(),
+          fillColor: Colors.white,
+          filled: true,
+          suffixIcon: GestureDetector(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: SvgPicture.asset(
+                  _obscureText ? SHOW_TEXT_ICON_LINK : HIDE_TEXT_ICON_LINK,
+                  width: 10,
+                  height: 10,
+                ),
+              ),
+              onTap: () {
+                _toggle();
+              })),
     );
   }
 }

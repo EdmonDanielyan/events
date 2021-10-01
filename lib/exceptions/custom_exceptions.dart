@@ -1,6 +1,7 @@
 import 'package:ink_mobile/assets/constants.dart';
 
 abstract class CustomException implements FormatException {}
+
 abstract class AuthException implements CustomException {}
 
 class InvalidRefreshTokenException implements AuthException {
@@ -16,9 +17,9 @@ class NoConnectionException implements CustomException {
   int? offset;
   dynamic source;
 
-  NoConnectionException({
-    this.message = ErrorMessages.NO_CONNECTION_ERROR_MESSAGE
-  }) : super();
+  NoConnectionException(
+      {this.message = ErrorMessages.NO_CONNECTION_ERROR_MESSAGE})
+      : super();
 }
 
 class UnknownErrorException implements CustomException {
@@ -26,7 +27,6 @@ class UnknownErrorException implements CustomException {
   int? offset;
   dynamic source;
 
-  UnknownErrorException({
-    this.message = ErrorMessages.UNKNOWN_ERROR_MESSAGE
-  }) : super();
+  UnknownErrorException({this.message = ErrorMessages.UNKNOWN_ERROR_MESSAGE})
+      : super();
 }

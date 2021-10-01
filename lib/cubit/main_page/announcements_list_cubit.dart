@@ -1,95 +1,65 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/core/errors/dio_error_handler.dart';
+import 'package:ink_mobile/cubit/announcements_list/domain/repository.dart';
+import 'package:ink_mobile/cubit/announcements_list/use_cases/fetch.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_state.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
-import 'package:ink_mobile/models/error_response.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/error_model.dart';
+import 'package:ink_mobile/models/pagination.dart';
 import 'package:dio/dio.dart';
-import 'package:main_api_client/api.dart';
 
 class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
   static List<AnnouncementData>? announcementsList;
-  AnnouncementsListCubit() : super(AnnouncementsListState(type: AnnouncementsListStateType.LOADING));
+  LanguageStrings languageStrings;
+  AnnouncementsListCubit({required this.languageStrings})
+      : super(AnnouncementsListState(type: AnnouncementsListStateType.LOADING));
+
+  Pagination<AnnouncementData> pagination =
+      Pagination<AnnouncementData>(countOnPage: 5, pageNumber: 1);
 
   Future<void> fetchAnnouncements() async {
     try {
-      await Token.setNewTokensIfExpired();
-
       if (announcementsList == null) {
-        var api = MainApiClient();
-        var announcementsApi = api.getAnnouncementsApi();
+        Pagination<AnnouncementData> response = await AnnouncementsListFetch(
+          pagination: pagination,
+          dependency: AnnouncementListRepository(pagination: pagination)
+              .getDependency(),
+        ).call();
 
-        final _response = await announcementsApi.getAnnouncements(
-            pageNumber: 1, countOnPage: 5);
-        final announcementsDataMap = _response.data?.data.asMap;
-
-        if (announcementsDataMap != null && announcementsDataMap.isNotEmpty) {
-          announcementsList = AnnouncementData.getListFromMap(announcementsDataMap['announcements']);
-
-          emitState(
-              type: AnnouncementsListStateType.LOADED,
-              data: announcementsList
-          );
-        } else {
-          emitState(
-              type: AnnouncementsListStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-          throw UnknownErrorException();
-        }
-
+        emitSuccess(response.items);
       } else {
-
-        emitState(
-            type: AnnouncementsListStateType.LOADED,
-            data: announcementsList
-        );
+        emitSuccess(announcementsList!);
       }
-
     } on DioError catch (e) {
-      if (e.type == DioErrorType.response) {
-        ErrorResponse response = ErrorResponse.fromException(e);
+      ErrorModel error =
+          DioErrorHandler(e: e, languageStrings: languageStrings).call();
 
-        if (response.code == 'QMA-6') {
-          emitState(
-              type: AnnouncementsListStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-          throw InvalidRefreshTokenException();
-        } else {
-          emitState(
-              type: AnnouncementsListStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-          throw UnknownErrorException();
-        }
-      } else {
-        emitState(
-            type: AnnouncementsListStateType.ERROR,
-            errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-        );
-      }
-
-    } on Exception catch (e) {
-      emitState(
-          type: AnnouncementsListStateType.ERROR,
-          errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-      );
+      emitError(error.msg);
+      throw error.exception;
+    } on Exception catch (_) {
+      emitError(languageStrings.errorOccuried);
       throw UnknownErrorException();
     }
   }
 
-  void emitState({
-    required AnnouncementsListStateType type,
-    List<AnnouncementData>? data,
-    String? errorMessage
-  }) {
-    emit(AnnouncementsListState(
-      type: type,
-      data: data,
-      errorMessage: errorMessage
-    ));
+  void emitSuccess(List<AnnouncementData> items) {
+    emitState(type: AnnouncementsListStateType.LOADED, data: items);
   }
 
+  void emitError(String errorMsg) {
+    emitState(
+      type: AnnouncementsListStateType.ERROR,
+      errorMessage: errorMsg,
+    );
+  }
+
+  void emitState(
+      {required AnnouncementsListStateType type,
+      List<AnnouncementData>? data,
+      String? errorMessage}) {
+    emit(AnnouncementsListState(
+        type: type, data: data, errorMessage: errorMessage));
+  }
 }

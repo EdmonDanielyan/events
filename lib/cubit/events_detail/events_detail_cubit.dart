@@ -1,131 +1,76 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/core/errors/dio_error_handler.dart';
+import 'package:ink_mobile/cubit/events_detail/domain/invite_repository.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_state.dart';
+import 'package:ink_mobile/cubit/events_detail/use_cases/fetch.dart';
+import 'package:ink_mobile/cubit/events_detail/use_cases/invite.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/models/error_response.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:main_api_client/api.dart';
 import 'package:dio/dio.dart';
-import 'package:main_api_client/api/events_api.dart';
-import 'package:main_api_client/model/event_property.dart';
-import 'package:main_api_client/model/get_event_by_id.dart';
 
-class EventDetailCubit extends Cubit<EventsDetailState>
-{
-  EventDetailCubit(): super (EventsDetailState(type: EventsDetailStateType.LOADING));
+import 'domain/fetch_repository.dart';
+
+class EventDetailCubit extends Cubit<EventsDetailState> {
+  LanguageStrings languageStrings;
+  EventDetailCubit({required this.languageStrings})
+      : super(EventsDetailState(type: EventsDetailStateType.LOADING));
 
   Future<void> load(int eventId) async {
     EventsDetailState(type: EventsDetailStateType.LOADING);
 
     try {
       await Token.setNewTokensIfExpired();
-      MainApiClient api = MainApiClient();
-      EventsApi eventApi = api.getEventsApi();
-      Response<GetEventById> response = await eventApi.getEventById(eventId);
-      EventProperty? responseData = response.data?.data;
-
-      if (responseData != null) {
-        EventData event = EventData.fromProperty(responseData);
-        emitState(
-            type: EventsDetailStateType.LOADED,
-            data: event
-        );
-      } else {
-        emitState(
-          type: EventsDetailStateType.ERROR,
-          errorMessage: ErrorMessages.UNKNOWN_ERROR_MESSAGE
-        );
-        throw UnknownErrorException();
-      }
+      EventData eventData = await EventDetailFetch(
+        dependency: EventsDetailRepository(eventId: eventId).getDependency(),
+      ).call();
+      emitSuccess(eventData);
     } on DioError catch (e) {
-      if (e.type == DioErrorType.response) {
-        ErrorResponse response = ErrorResponse.fromException(e);
+      ErrorModel error =
+          DioErrorHandler(e: e, languageStrings: languageStrings).call();
 
-        if (response.code == 'QMA-6') {
-          emitState(
-              type: EventsDetailStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-          throw InvalidRefreshTokenException();
-        } else {
-          emitState(
-              type: EventsDetailStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-          throw UnknownErrorException();
-        }
-      } else {
-        emitState(
-            type: EventsDetailStateType.ERROR,
-            errorMessage: ErrorMessages.NO_CONNECTION_ERROR_MESSAGE
-        );
-        throw NoConnectionException();
-      }
-
-    } on Exception catch (e) {
-      emitState(
-          type: EventsDetailStateType.ERROR,
-          errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-      );
+      emitError(error.msg);
+      throw error.exception;
+    } on Exception catch (_) {
+      emitError(languageStrings.errorOccuried);
       throw UnknownErrorException();
     }
   }
 
   Future<void> invite(int eventId) async {
     try {
+      emitSuccess(state.data!.copyWith(isMember: !state.data!.isMember!));
       await Token.setNewTokensIfExpired();
-      MainApiClient api = MainApiClient();
-      EventsApi eventApi = api.getEventsApi();
-
-      await eventApi.eventsAddeventmemberIdGet(eventId);
-
-      this.load(eventId);
-
+      await EventInvite(
+        dependency: EventsInviteRepository(eventId: eventId).getDependency(),
+      ).invite();
     } on DioError catch (e) {
-      if (e.type == DioErrorType.response) {
-        ErrorResponse response = ErrorResponse.fromException(e);
+      ErrorModel error =
+          DioErrorHandler(e: e, languageStrings: languageStrings).call();
 
-        if (response.code == 'QMA-6') {
-          emitState(
-              type: EventsDetailStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-          throw InvalidRefreshTokenException();
-        } else {
-          emitState(
-              type: EventsDetailStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-          throw UnknownErrorException();
-        }
-      } else {
-        emitState(
-            type: EventsDetailStateType.ERROR,
-            errorMessage: ErrorMessages.NO_CONNECTION_ERROR_MESSAGE
-        );
-        throw NoConnectionException();
-      }
-
-    } on Exception catch (e) {
-      emitState(
-          type: EventsDetailStateType.ERROR,
-          errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-      );
+      emitError(error.msg);
+      throw error.exception;
+    } on Exception catch (_) {
+      emitError(languageStrings.errorOccuried);
       throw UnknownErrorException();
     }
   }
 
-  void emitState({
-    required EventsDetailStateType type,
-    EventData? data,
-    String? errorMessage
-  }) {
-    emit(EventsDetailState(
-      type: type,
-      data: data,
-      errorMessage: errorMessage
-    ));
+  void emitSuccess(EventData event) {
+    emitState(type: EventsDetailStateType.LOADED, data: event);
+  }
+
+  void emitError(String errorMsg) {
+    emitState(type: EventsDetailStateType.ERROR, errorMessage: errorMsg);
+  }
+
+  void emitState(
+      {required EventsDetailStateType type,
+      EventData? data,
+      String? errorMessage}) {
+    emit(EventsDetailState(type: type, data: data, errorMessage: errorMessage));
   }
 
   void refresh() {

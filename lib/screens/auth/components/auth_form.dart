@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'auth_password_field.dart';
 
 class AuthForm extends StatelessWidget {
@@ -9,6 +10,8 @@ class AuthForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
+    final _strings =
+        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     Size size = MediaQuery.of(context).size;
 
     return Container(
@@ -17,7 +20,7 @@ class AuthForm extends StatelessWidget {
           children: [
             TextField(
               decoration: InputDecoration(
-                labelText: 'Логин',
+                labelText: _strings.login,
                 border: OutlineInputBorder(),
                 fillColor: Colors.white,
                 filled: true,
@@ -29,7 +32,6 @@ class AuthForm extends StatelessWidget {
             SizedBox(height: size.height * 0.03),
             AuthPasswordField(),
           ],
-        )
-    );
+        ));
   }
 }

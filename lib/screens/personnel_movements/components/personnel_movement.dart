@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/models/movements_data.dart';
 
 class PersonnelMovement extends StatelessWidget {
-  static const String DATE_OF_TAKING_POSITION = 'Дата вступления в должность';
-  static const String POSITION = 'Должность';
-  static const String DEPARTMENT = 'Подразделение';
-  static const String ORGANIZATION = 'Организация';
-  static const String STATUS = 'Статус';
-  static const String PERSONNEL_NUMBER = 'Табельный номер';
-
   final PersonnelMovementLabel? label;
   final MovementsData movement;
 
@@ -20,22 +15,17 @@ class PersonnelMovement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _strings =
+        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     Size size = MediaQuery.of(context).size;
 
     return Container(
       margin: EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-              width: 1,
-              color: Color(0xFFE5E5E5)
-          ),
-          bottom: BorderSide(
-              width: 1,
-              color: Color(0xFFE5E5E5)
-          ),
-        )
-      ),
+          border: Border(
+        top: BorderSide(width: 1, color: Color(0xFFE5E5E5)),
+        bottom: BorderSide(width: 1, color: Color(0xFFE5E5E5)),
+      )),
       child: Column(
         children: [
           Container(
@@ -51,10 +41,9 @@ class PersonnelMovement extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          DATE_OF_TAKING_POSITION,
-                          style: TextStyle(
-                              color: Theme.of(context).accentColor
-                          ),
+                          _strings.dateOfTakingPosition,
+                          style:
+                              TextStyle(color: Theme.of(context).accentColor),
                         ),
                       ],
                     ),
@@ -84,10 +73,9 @@ class PersonnelMovement extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          POSITION,
-                          style: TextStyle(
-                              color: Theme.of(context).accentColor
-                          ),
+                          _strings.position,
+                          style:
+                              TextStyle(color: Theme.of(context).accentColor),
                         ),
                         getLabel()
                       ],
@@ -118,10 +106,9 @@ class PersonnelMovement extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          DEPARTMENT,
-                            style: TextStyle(
-                                color: Theme.of(context).accentColor
-                            ),
+                          _strings.department,
+                          style:
+                              TextStyle(color: Theme.of(context).accentColor),
                         ),
                       ],
                     ),
@@ -151,10 +138,9 @@ class PersonnelMovement extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          ORGANIZATION,
-                          style: TextStyle(
-                              color: Theme.of(context).accentColor
-                          ),
+                          _strings.company,
+                          style:
+                              TextStyle(color: Theme.of(context).accentColor),
                         ),
                       ],
                     ),
@@ -184,10 +170,9 @@ class PersonnelMovement extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          STATUS,
-                          style: TextStyle(
-                              color: Theme.of(context).accentColor
-                          ),
+                          _strings.status,
+                          style:
+                              TextStyle(color: Theme.of(context).accentColor),
                         ),
                       ],
                     ),
@@ -217,10 +202,9 @@ class PersonnelMovement extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          PERSONNEL_NUMBER,
-                          style: TextStyle(
-                              color: Theme.of(context).accentColor
-                          ),
+                          _strings.staffNumber,
+                          style:
+                              TextStyle(color: Theme.of(context).accentColor),
                         ),
                       ],
                     ),
@@ -243,9 +227,7 @@ class PersonnelMovement extends StatelessWidget {
         ? Container(
             decoration: BoxDecoration(
               color: label!.background,
-              borderRadius: BorderRadius.all(
-                  Radius.circular(80)
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(80)),
             ),
             margin: EdgeInsets.only(left: 10),
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -254,23 +236,18 @@ class PersonnelMovement extends StatelessWidget {
               style: TextStyle(
                   fontSize: 10,
                   color: label!.color,
-                  fontWeight: FontWeight.bold
-              ),
+                  fontWeight: FontWeight.bold),
             ),
           )
         : Container();
   }
 }
 
-class PersonnelMovementLabel
-{
+class PersonnelMovementLabel {
   Color color;
   Color background;
   String title;
 
-  PersonnelMovementLabel({
-    required this.background,
-    required this.color,
-    required this.title
-  });
+  PersonnelMovementLabel(
+      {required this.background, required this.color, required this.title});
 }

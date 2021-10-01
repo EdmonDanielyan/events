@@ -54,110 +54,127 @@ try {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://mobile.ink.vpool/api/v1*
+All URIs are relative to *https://mobile.ink.vpool.qsoft.ru/api/v1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*AnnouncementsApi* | [**getAnnouncementById**](doc\/AnnouncementsApi.md#getannouncementbyid) | **get** /announcements/{id} | Получить информацию об объявлении по ID
-*AnnouncementsApi* | [**getAnnouncements**](doc\/AnnouncementsApi.md#getannouncements) | **get** /announcements | Получение списка событий
-*AuthApi* | [**auth**](doc\/AuthApi.md#auth) | **post** /auth/login | Авторизация
-*AuthApi* | [**authRefreshPost**](doc\/AuthApi.md#authrefreshpost) | **post** /auth/refresh | Продление JWT токена по refresh token
-*AuthApi* | [**authRegisterConfirmPost**](doc\/AuthApi.md#authregisterconfirmpost) | **post** /auth/register/confirm | Подтверждение регистрации по коду из SMS
-*AuthApi* | [**authRegisterPost**](doc\/AuthApi.md#authregisterpost) | **post** /auth/register | Регистрация
-*ContactsApi* | [**getContacts**](doc\/ContactsApi.md#getcontacts) | **get** /contacts | Получение контактов
-*EventsApi* | [**eventsAddeventmemberIdGet**](doc\/EventsApi.md#eventsaddeventmemberidget) | **get** /events/addeventmember/{id} | Добавить текущего пользователя как участника события
-*EventsApi* | [**getEventById**](doc\/EventsApi.md#geteventbyid) | **get** /events/{id} | Получить информацию о событии по ID
-*EventsApi* | [**getEvents**](doc\/EventsApi.md#getevents) | **get** /events | Метод получения событий
-*NewsApi* | [**getNews**](doc\/NewsApi.md#getnews) | **get** /news | Получение списка новостей
-*NewsApi* | [**newsCommentsIdGet**](doc\/NewsApi.md#newscommentsidget) | **get** /news/comments/{id} | Получение комментариев к новости по ID
-*NewsApi* | [**newsCommentsLikeIdGet**](doc\/NewsApi.md#newscommentslikeidget) | **get** /news/comments/like/{id} | Поблагодарить комментарий
-*NewsApi* | [**newsIdGet**](doc\/NewsApi.md#newsidget) | **get** /news/{id} | Получение информации о новости по ID
-*NewsApi* | [**newsLikeIdGet**](doc\/NewsApi.md#newslikeidget) | **get** /news/like/{id} | Поблагодарить новость
-*NewsApi* | [**newsPostcommentPost**](doc\/NewsApi.md#newspostcommentpost) | **post** /news/postcomment | Создание нового комментария
-*PublicationsApi* | [**publicationsGet**](doc\/PublicationsApi.md#publicationsget) | **get** /publications | ИНК-Знание - Публикации
-*SearchApi* | [**searchGet**](doc\/SearchApi.md#searchget) | **get** /search | Метод поиска по сотрудниками, объявлениям, событиям, новостям
-*ThankApi* | [**thankIdGet**](doc\/ThankApi.md#thankidget) | **get** /thank/{id} | Поблагодарить
-*UserApi* | [**userBirthdayGet**](doc\/UserApi.md#userbirthdayget) | **get** /user/birthday | 
-*UserApi* | [**userCaninquireGet**](doc\/UserApi.md#usercaninquireget) | **get** /user/caninquire | Метод для получения информации может ли пользователь оставлять заявки на справки
-*UserApi* | [**userGet**](doc\/UserApi.md#userget) | **get** /user | Получение информации о текущем пользователе
-*UserApi* | [**userIdGet**](doc\/UserApi.md#useridget) | **get** /user/{id} | Получение информации о пользователе по ID
-*UserApi* | [**userMovementsGet**](doc\/UserApi.md#usermovementsget) | **get** /user/movements | Получение информации о кадровых перемещениях текущего пользователя
-*UserApi* | [**userOrderreferencePost**](doc\/UserApi.md#userorderreferencepost) | **post** /user/orderreference | Метод для заказа справок
-*UserApi* | [**userOrdertransportPost**](doc\/UserApi.md#userordertransportpost) | **post** /user/ordertransport | Метод для заказа транспорта
-*UserApi* | [**userTranspontorderformGet**](doc\/UserApi.md#usertranspontorderformget) | **get** /user/transpontorderform | Возвращает вспомогательные данные для формы заказа транспорта
+*AnnouncementsApi* | [**getAnnouncementById**](doc//AnnouncementsApi.md#getannouncementbyid) | **get** /announcements/{id} | Получить информацию об объявлении по ID
+*AnnouncementsApi* | [**getAnnouncements**](doc//AnnouncementsApi.md#getannouncements) | **get** /announcements | Получение списка событий
+*AuthApi* | [**auth**](doc//AuthApi.md#auth) | **post** /auth/login | Авторизация
+*AuthApi* | [**authRefreshPost**](doc//AuthApi.md#authrefreshpost) | **post** /auth/refresh | Продление JWT токена по refresh token
+*AuthApi* | [**authRegisterConfirmPost**](doc//AuthApi.md#authregisterconfirmpost) | **post** /auth/register/confirm | Подтверждение регистрации по коду из SMS
+*AuthApi* | [**authRegisterPost**](doc//AuthApi.md#authregisterpost) | **post** /auth/register | Регистрация
+*ContactsApi* | [**getContacts**](doc//ContactsApi.md#getcontacts) | **get** /contacts | Получение контактов
+*EventsApi* | [**eventsAddeventmemberIdGet**](doc//EventsApi.md#eventsaddeventmemberidget) | **get** /events/addeventmember/{id} | Добавить текущего пользователя как участника события
+*EventsApi* | [**getEventById**](doc//EventsApi.md#geteventbyid) | **get** /events/{id} | Получить информацию о событии по ID
+*EventsApi* | [**getEvents**](doc//EventsApi.md#getevents) | **get** /events | Метод получения событий
+*NewsApi* | [**getNews**](doc//NewsApi.md#getnews) | **get** /news | Получение списка новостей
+*NewsApi* | [**newsCommentsIdGet**](doc//NewsApi.md#newscommentsidget) | **get** /news/comments/{id} | Получение комментариев к новости по ID
+*NewsApi* | [**newsCommentsLikeIdGet**](doc//NewsApi.md#newscommentslikeidget) | **get** /news/comments/like/{id} | Поблагодарить комментарий
+*NewsApi* | [**newsIdGet**](doc//NewsApi.md#newsidget) | **get** /news/{id} | Получение информации о новости по ID
+*NewsApi* | [**newsLikeIdGet**](doc//NewsApi.md#newslikeidget) | **get** /news/like/{id} | Поблагодарить новость
+*NewsApi* | [**newsPostcommentPost**](doc//NewsApi.md#newspostcommentpost) | **post** /news/postcomment | Создание нового комментария
+*PublicationsApi* | [**publicationsGet**](doc//PublicationsApi.md#publicationsget) | **get** /publications | ИНК-Знание - Публикации
+*SearchApi* | [**searchGet**](doc//SearchApi.md#searchget) | **get** /search | Метод поиска по сотрудниками, объявлениям, событиям, новостям
+*ThankApi* | [**thankIdGet**](doc//ThankApi.md#thankidget) | **get** /thank/{id} | Поблагодарить
+*UserApi* | [**userBirthdayGet**](doc//UserApi.md#userbirthdayget) | **get** /user/birthday | 
+*UserApi* | [**userCaninquireGet**](doc//UserApi.md#usercaninquireget) | **get** /user/caninquire | Метод для получения информации может ли пользователь оставлять заявки на справки
+*UserApi* | [**userGet**](doc//UserApi.md#userget) | **get** /user | Получение информации о текущем пользователе
+*UserApi* | [**userGetfeedbacktagsGet**](doc//UserApi.md#usergetfeedbacktagsget) | **get** /user/getfeedbacktags | Возвращает тэги для формы обратной связи
+*UserApi* | [**userGetquestionsGet**](doc//UserApi.md#usergetquestionsget) | **get** /user/getquestions | Возвращает вопросы (обратная связь)
+*UserApi* | [**userGetreferenceautofillGet**](doc//UserApi.md#usergetreferenceautofillget) | **get** /user/getreferenceautofill | Автозаполняемые поля для формы справок
+*UserApi* | [**userIdGet**](doc//UserApi.md#useridget) | **get** /user/{id} | Получение информации о пользователе по ID
+*UserApi* | [**userMovementsGet**](doc//UserApi.md#usermovementsget) | **get** /user/movements | Получение информации о кадровых перемещениях текущего пользователя
+*UserApi* | [**userOrderdmsPost**](doc//UserApi.md#userorderdmspost) | **post** /user/orderdms | Метод для заказа ДМС
+*UserApi* | [**userOrderreferencePost**](doc//UserApi.md#userorderreferencepost) | **post** /user/orderreference | Метод для заказа справок
+*UserApi* | [**userOrdertransportPost**](doc//UserApi.md#userordertransportpost) | **post** /user/ordertransport | Метод для заказа транспорта
+*UserApi* | [**userReferenceorderformGet**](doc//UserApi.md#userreferenceorderformget) | **get** /user/referenceorderform | Возвращает вспомогательные данные для формы заказа транспорта
+*UserApi* | [**userSendfeedbackPost**](doc//UserApi.md#usersendfeedbackpost) | **post** /user/sendfeedback | Метод для отправки обратной связи (вопроса руководству)
+*UserApi* | [**userTranspontorderformGet**](doc//UserApi.md#usertranspontorderformget) | **get** /user/transpontorderform | Возвращает вспомогательные данные для формы заказа транспорта
 
 
 ## Documentation For Models
 
- - [AddEventMember](doc\/AddEventMember.md)
- - [AlreadyEventMember](doc\/AlreadyEventMember.md)
- - [AlreadyThanked](doc\/AlreadyThanked.md)
- - [AnnouncementProperty](doc\/AnnouncementProperty.md)
- - [AnnouncementsNotFound](doc\/AnnouncementsNotFound.md)
- - [AnnouncementsProperty](doc\/AnnouncementsProperty.md)
- - [AuthParams](doc\/AuthParams.md)
- - [AuthSuccess](doc\/AuthSuccess.md)
- - [BadAuthParams](doc\/BadAuthParams.md)
- - [BadId](doc\/BadId.md)
- - [BadRequest](doc\/BadRequest.md)
- - [BirthdaysNotFound](doc\/BirthdaysNotFound.md)
- - [BirthdaysSuccess](doc\/BirthdaysSuccess.md)
- - [BirthdaysSuccessData](doc\/BirthdaysSuccessData.md)
- - [CanInquire](doc\/CanInquire.md)
- - [Comment](doc\/Comment.md)
- - [CommentLikeSuccess](doc\/CommentLikeSuccess.md)
- - [CommentParent](doc\/CommentParent.md)
- - [CommentsNotFound](doc\/CommentsNotFound.md)
- - [ContactsNotFound](doc\/ContactsNotFound.md)
- - [ContactsProperty](doc\/ContactsProperty.md)
- - [EmptySearch](doc\/EmptySearch.md)
- - [EventProperty](doc\/EventProperty.md)
- - [EventsNotFound](doc\/EventsNotFound.md)
- - [EventsProperty](doc\/EventsProperty.md)
- - [Forbidden](doc\/Forbidden.md)
- - [GetAnnouncementById](doc\/GetAnnouncementById.md)
- - [GetAnnouncements](doc\/GetAnnouncements.md)
- - [GetCommentsById](doc\/GetCommentsById.md)
- - [GetContacts](doc\/GetContacts.md)
- - [GetEventById](doc\/GetEventById.md)
- - [GetEvents](doc\/GetEvents.md)
- - [GetNews](doc\/GetNews.md)
- - [GetNewsById](doc\/GetNewsById.md)
- - [GetPublications](doc\/GetPublications.md)
- - [GetSearchSuccess](doc\/GetSearchSuccess.md)
- - [GetTransportOrderForm](doc\/GetTransportOrderForm.md)
- - [GetUserFail](doc\/GetUserFail.md)
- - [GetUserSuccess](doc\/GetUserSuccess.md)
- - [MovementsFail](doc\/MovementsFail.md)
- - [MovementsObject](doc\/MovementsObject.md)
- - [MovementsSuccess](doc\/MovementsSuccess.md)
- - [NewsLikeSuccess](doc\/NewsLikeSuccess.md)
- - [NewsNotFound](doc\/NewsNotFound.md)
- - [NewsProperty](doc\/NewsProperty.md)
- - [NewsPropertyById](doc\/NewsPropertyById.md)
- - [NotFound](doc\/NotFound.md)
- - [OrderReference](doc\/OrderReference.md)
- - [OrderReferenceFail](doc\/OrderReferenceFail.md)
- - [OrderReferenceSuccess](doc\/OrderReferenceSuccess.md)
- - [OrderTransportFail](doc\/OrderTransportFail.md)
- - [OrderTransportSuccess](doc\/OrderTransportSuccess.md)
- - [PostComment](doc\/PostComment.md)
- - [PostCommentParamsFail](doc\/PostCommentParamsFail.md)
- - [PostCommentSuccess](doc\/PostCommentSuccess.md)
- - [PublicationsProperty](doc\/PublicationsProperty.md)
- - [RefreshTokenParams](doc\/RefreshTokenParams.md)
- - [RegisterConfirmParams](doc\/RegisterConfirmParams.md)
- - [RegisterConfirmSuccess](doc\/RegisterConfirmSuccess.md)
- - [RegisterParams](doc\/RegisterParams.md)
- - [RegisterSuccess](doc\/RegisterSuccess.md)
- - [RequiredError](doc\/RequiredError.md)
- - [RequiredSuccess](doc\/RequiredSuccess.md)
- - [ServerError](doc\/ServerError.md)
- - [ThankById](doc\/ThankById.md)
- - [ThankSelf](doc\/ThankSelf.md)
- - [TransportForm](doc\/TransportForm.md)
- - [UserNotFound](doc\/UserNotFound.md)
- - [UserProperties](doc\/UserProperties.md)
+ - [AddEventMember](doc//AddEventMember.md)
+ - [AlreadyEventMember](doc//AlreadyEventMember.md)
+ - [AlreadyThanked](doc//AlreadyThanked.md)
+ - [AnnouncementProperty](doc//AnnouncementProperty.md)
+ - [AnnouncementsNotFound](doc//AnnouncementsNotFound.md)
+ - [AnnouncementsProperty](doc//AnnouncementsProperty.md)
+ - [AuthParams](doc//AuthParams.md)
+ - [AuthSuccess](doc//AuthSuccess.md)
+ - [AutoFillForm](doc//AutoFillForm.md)
+ - [BadAuthParams](doc//BadAuthParams.md)
+ - [BadId](doc//BadId.md)
+ - [BadRequest](doc//BadRequest.md)
+ - [BirthdaysNotFound](doc//BirthdaysNotFound.md)
+ - [BirthdaysSuccess](doc//BirthdaysSuccess.md)
+ - [BirthdaysSuccessData](doc//BirthdaysSuccessData.md)
+ - [CanInquire](doc//CanInquire.md)
+ - [Comment](doc//Comment.md)
+ - [CommentLikeSuccess](doc//CommentLikeSuccess.md)
+ - [CommentParent](doc//CommentParent.md)
+ - [CommentsNotFound](doc//CommentsNotFound.md)
+ - [ContactsNotFound](doc//ContactsNotFound.md)
+ - [ContactsProperty](doc//ContactsProperty.md)
+ - [EmptySearch](doc//EmptySearch.md)
+ - [EventProperty](doc//EventProperty.md)
+ - [EventsNotFound](doc//EventsNotFound.md)
+ - [EventsProperty](doc//EventsProperty.md)
+ - [FeedbackForm](doc//FeedbackForm.md)
+ - [FeedbackTagsList](doc//FeedbackTagsList.md)
+ - [Forbidden](doc//Forbidden.md)
+ - [GetAnnouncementById](doc//GetAnnouncementById.md)
+ - [GetAnnouncements](doc//GetAnnouncements.md)
+ - [GetCommentsById](doc//GetCommentsById.md)
+ - [GetContacts](doc//GetContacts.md)
+ - [GetEventById](doc//GetEventById.md)
+ - [GetEvents](doc//GetEvents.md)
+ - [GetNews](doc//GetNews.md)
+ - [GetNewsById](doc//GetNewsById.md)
+ - [GetPublications](doc//GetPublications.md)
+ - [GetReferenceOrderForm](doc//GetReferenceOrderForm.md)
+ - [GetSearchSuccess](doc//GetSearchSuccess.md)
+ - [GetTransportOrderForm](doc//GetTransportOrderForm.md)
+ - [GetUserFail](doc//GetUserFail.md)
+ - [GetUserSuccess](doc//GetUserSuccess.md)
+ - [MovementsFail](doc//MovementsFail.md)
+ - [MovementsObject](doc//MovementsObject.md)
+ - [MovementsSuccess](doc//MovementsSuccess.md)
+ - [NewsLikeSuccess](doc//NewsLikeSuccess.md)
+ - [NewsNotFound](doc//NewsNotFound.md)
+ - [NewsProperty](doc//NewsProperty.md)
+ - [NewsPropertyById](doc//NewsPropertyById.md)
+ - [NotFound](doc//NotFound.md)
+ - [OrderDMS](doc//OrderDMS.md)
+ - [OrderDMSFail](doc//OrderDMSFail.md)
+ - [OrderDMSSuccess](doc//OrderDMSSuccess.md)
+ - [OrderReferenceFail](doc//OrderReferenceFail.md)
+ - [OrderReferenceSuccess](doc//OrderReferenceSuccess.md)
+ - [OrderTransportFail](doc//OrderTransportFail.md)
+ - [OrderTransportSuccess](doc//OrderTransportSuccess.md)
+ - [PostComment](doc//PostComment.md)
+ - [PostCommentParamsFail](doc//PostCommentParamsFail.md)
+ - [PostCommentSuccess](doc//PostCommentSuccess.md)
+ - [PublicationsProperty](doc//PublicationsProperty.md)
+ - [QuestionsList](doc//QuestionsList.md)
+ - [QuestionsListData](doc//QuestionsListData.md)
+ - [ReferenceAutoFill](doc//ReferenceAutoFill.md)
+ - [RefreshTokenParams](doc//RefreshTokenParams.md)
+ - [RegisterConfirmParams](doc//RegisterConfirmParams.md)
+ - [RegisterConfirmSuccess](doc//RegisterConfirmSuccess.md)
+ - [RegisterParams](doc//RegisterParams.md)
+ - [RegisterSuccess](doc//RegisterSuccess.md)
+ - [RequiredError](doc//RequiredError.md)
+ - [RequiredSuccess](doc//RequiredSuccess.md)
+ - [SendFeedbackFail](doc//SendFeedbackFail.md)
+ - [SendFeedbackSuccess](doc//SendFeedbackSuccess.md)
+ - [ServerError](doc//ServerError.md)
+ - [ThankById](doc//ThankById.md)
+ - [ThankSelf](doc//ThankSelf.md)
+ - [TransportForm](doc//TransportForm.md)
+ - [UserNotFound](doc//UserNotFound.md)
+ - [UserProperties](doc//UserProperties.md)
 
 
 ## Documentation For Authorization

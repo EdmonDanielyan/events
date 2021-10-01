@@ -1,100 +1,62 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/core/errors/dio_error_handler.dart';
+import 'package:ink_mobile/cubit/announcements_detail/use_cases/fetch.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
-import 'package:ink_mobile/models/error_response.dart';
+import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:main_api_client/api.dart';
-import 'package:main_api_client/api/announcements_api.dart';
 import 'announcements_detail_state.dart';
 import 'package:dio/dio.dart';
 
+import 'domain/repository.dart';
+
 class AnnouncementCubit extends Cubit<AnnouncementsDetailState> {
-  AnnouncementCubit()
-    : super(AnnouncementsDetailState(
-      type: AnnouncementsDetailStateType.LOADING
-    ));
+  LanguageStrings languageStrings;
+  AnnouncementCubit({required this.languageStrings})
+      : super(AnnouncementsDetailState(
+            type: AnnouncementsDetailStateType.LOADING));
 
   Future<void> fetch(int announcementId) async {
     try {
       await Token.setNewTokensIfExpired();
-
-      MainApiClient api = MainApiClient();
-      AnnouncementsApi announcementsApi = api.getAnnouncementsApi();
-
-      final _response = await announcementsApi
-          .getAnnouncementById(announcementId)
-      ;
-
-      final announcementData = _response.data?.data;
-
-      if (announcementData != null) {
-        AnnouncementData announcement =
-          AnnouncementData.fromProperty(announcementData);
-
-        emitState(
-            type: AnnouncementsDetailStateType.LOADED,
-            data: announcement
-        );
-
-      } else {
-        emitState(
-            type: AnnouncementsDetailStateType.ERROR,
-            errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-        );
-        throw UnknownErrorException();
-      }
+      AnnouncementData announcement = await AnnouncementDetailFetch(
+        dependency:
+            AnnouncementsDetailRepository(id: announcementId).getDependency(),
+      ).call();
+      emitSuccess(announcement);
     } on DioError catch (e) {
-      if (e.type == DioErrorType.response) {
-        ErrorResponse response =
-          ErrorResponse.fromException(e);
+      ErrorModel error =
+          DioErrorHandler(e: e, languageStrings: languageStrings).call();
 
-        if (response.code == 'QMA-6') {
-          emitState(
-              type: AnnouncementsDetailStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-
-          throw InvalidRefreshTokenException();
-        } else {
-          emitState(
-              type: AnnouncementsDetailStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-
-          throw UnknownErrorException();
-        }
-      } else {
-        emitState(
-            type: AnnouncementsDetailStateType.ERROR,
-            errorMessage: ErrorMessages.NO_CONNECTION_ERROR_MESSAGE
-        );
-
-        throw NoConnectionException();
-      }
-    } on Exception catch (e) {
-      emitState(
-          type: AnnouncementsDetailStateType.ERROR,
-          errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-      );
-
+      emitError(error.msg);
+      throw error.exception;
+    } on Exception catch (_) {
+      emitError(languageStrings.errorOccuried);
       throw UnknownErrorException();
     }
+  }
+
+  void emitSuccess(AnnouncementData announcement) {
+    emitState(type: AnnouncementsDetailStateType.LOADED, data: announcement);
+  }
+
+  void emitError(String errorMsg) {
+    emitState(
+      type: AnnouncementsDetailStateType.ERROR,
+      errorMessage: errorMsg,
+    );
   }
 
   void refresh() {
     emitState(type: AnnouncementsDetailStateType.LOADING);
   }
 
-  void emitState({
-    required AnnouncementsDetailStateType type,
-    AnnouncementData? data,
-    String? errorMessage
-  }) {
+  void emitState(
+      {required AnnouncementsDetailStateType type,
+      AnnouncementData? data,
+      String? errorMessage}) {
     emit(AnnouncementsDetailState(
-        type: type,
-        data: data,
-        errorMessage: errorMessage
-    ));
+        type: type, data: data, errorMessage: errorMessage));
   }
 }

@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 
 class VoluntaryMedicalInsurance extends StatelessWidget {
   const VoluntaryMedicalInsurance({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final _strings =
+        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return Scaffold(
-      appBar: InkAppBarWithText(title: 'Добровольное мед. страхование'),
+      appBar: InkAppBarWithText(title: _strings.voluntaryMedicalInsurance),
       body: SingleChildScrollView(
           child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xFFE5E5E5)
-                      )
-                    )
-                ),
-                child: Html(
-                    onLinkTap: (String? url, RenderContext context, Map<String, String> attributes, dom.Element? element) {
-                      print(url!);
-                    },
-                    data: '''
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(bottom: BorderSide(color: Color(0xFFE5E5E5)))),
+            child: Html(
+                onLinkTap: (String? url, RenderContext context,
+                    Map<String, String> attributes, dom.Element? element) {
+                  print(url!);
+                },
+                data: '''
                   <h1 align="center">Комплексное медицинское обслуживание</h1>
                     <p>
                      <span style="color: #40403b;">ООО «ИНК» в рамках системы ДМС сотрудничает со следующими страховыми компаниями: ООО СК «ВТБ Страхование», ПАО СК «Росгосстрах», АО «СОГАЗ» и СПАО «Ингосстрах». </span>
@@ -68,25 +68,20 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
                      <span style="color: #40403b;">- специалист по работе со страховыми компаниями – Николаева Ирина Ивановна, тел. 1421, </span><span style="color: #40403b;">E</span><span style="color: #40403b;">-</span><span style="color: #40403b;">mail</span><span style="color: #40403b;">: </span><a style="color: #2b5e4a;" href="mailto:nikolaeva_ii@irkutskoil.ru">nikolaeva_ii@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-504.</span>
                     </p>
                 '''),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                        bottom: BorderSide(
-                            color: Color(0xFFE5E5E5)
-                        ),
-                        top: BorderSide(
-                          color: Color(0xFFE5E5E5)
-                        )
-                    )
-                ),
-                child: Html(
-                    onLinkTap: (String? url, RenderContext context, Map<String, String> attributes, dom.Element? element) {
-                      print(url!);
-                    },
-                    data: '''
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                    bottom: BorderSide(color: Color(0xFFE5E5E5)),
+                    top: BorderSide(color: Color(0xFFE5E5E5)))),
+            child: Html(
+                onLinkTap: (String? url, RenderContext context,
+                    Map<String, String> attributes, dom.Element? element) {
+                  print(url!);
+                },
+                data: '''
                   <h1 align="center">Санаторно-курортное и реабилитационно-восстановительное лечение</h1>
                     <p>
                     <span style="color: #40403b;">Сотрудники, проработавшие в компании более 2 лет, имеют возможность пройти курс санаторно-курортного и реабилитационно-восстановительного лечения в оздоровительных учреждениях на территории Российской Федерации. </span>
@@ -113,25 +108,20 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
                     <span style="color: #40403b;">- специалист по работе со страховыми компаниями – Николаева Ирина Ивановна, тел. 1421, </span><span style="color: #40403b;">E</span><span style="color: #40403b;">-</span><span style="color: #40403b;">mail</span><span style="color: #40403b;">: </span><a style="color: #2b5e4a;"  href="mailto:nikolaeva_ii@irkutskoil.ru">nikolaeva_ii@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-504. </span>
                     </p>
                   '''),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                        bottom: BorderSide(
-                            color: Color(0xFFE5E5E5)
-                        ),
-                        top: BorderSide(
-                            color: Color(0xFFE5E5E5)
-                        )
-                    )
-                ),
-                child: Html(
-                  onLinkTap: (String? url, RenderContext context, Map<String, String> attributes, dom.Element? element) {
-                    print(url!);
-                  },
-                  data: '''
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                    bottom: BorderSide(color: Color(0xFFE5E5E5)),
+                    top: BorderSide(color: Color(0xFFE5E5E5)))),
+            child: Html(
+              onLinkTap: (String? url, RenderContext context,
+                  Map<String, String> attributes, dom.Element? element) {
+                print(url!);
+              },
+              data: '''
                   <h1 align="center">Вакцинация</h1>
                   <p>
                   <span style="color: #40403b;">Ежегодно в компании проходит вакцинация сотрудников: </span>
@@ -158,26 +148,21 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
                   <span style="color: #40403b;">- специалист по работе со страховыми компаниями – Николаева Ирина Ивановна, тел. 1421, E-mail: </span><a style="color: #2b5e4a;" href="mailto:nikolaeva_ii@irkutskoil.ru">nikolaeva_ii@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-504. </span>
                   </p>
                   ''',
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                        bottom: BorderSide(
-                            color: Color(0xFFE5E5E5)
-                        ),
-                        top: BorderSide(
-                            color: Color(0xFFE5E5E5)
-                        )
-                    )
-                ),
-                child: Html(
-                  onLinkTap: (String? url, RenderContext context, Map<String, String> attributes, dom.Element? element) {
-                    print(url!);
-                  },
-                  data: '''
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                    bottom: BorderSide(color: Color(0xFFE5E5E5)),
+                    top: BorderSide(color: Color(0xFFE5E5E5)))),
+            child: Html(
+              onLinkTap: (String? url, RenderContext context,
+                  Map<String, String> attributes, dom.Element? element) {
+                print(url!);
+              },
+              data: '''
                   <h1 align="center">Страхование сотрудников от несчастных случаев</h1>
                   <p>
                   Все сотрудники компании застрахованы от несчастных случаев в размере, определенном договором страхования от несчастных случаев (Договор 2020-2021 гг. с ПАО СК &nbsp;«Росгосстрах» № НСК81-Д-63809000-000081-20 от «14» марта 2020 г.)
@@ -237,23 +222,19 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
                   <span style="color: #40403b;">- специалист по работе со страховыми компаниями – Николаева Ирина Ивановна, тел. 1421, E-mail: </span><a style="color: #2b5e4a;" href="mailto:nikolaeva_ii@irkutskoil.ru">nikolaeva_ii@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-504.</span>
                   </p>
                   ''',
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                        top: BorderSide(
-                            color: Color(0xFFE5E5E5)
-                        )
-                    )
-                ),
-                child: Html(
-                  onLinkTap: (String? url, RenderContext context, Map<String, String> attributes, dom.Element? element) {
-                    print(url!);
-                  },
-                  data: '''
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(top: BorderSide(color: Color(0xFFE5E5E5)))),
+            child: Html(
+              onLinkTap: (String? url, RenderContext context,
+                  Map<String, String> attributes, dom.Element? element) {
+                print(url!);
+              },
+              data: '''
                   <h1 align="center">Корпоративный врач</h1>
                   <p>
                   <span style="color: #40403b;">В офисе г. Иркутск работает корпоративный врач – Карцева Оксана Владимировна, тел. медицинского кабинета 2119,</span> <span style="color: #40403b;">E-mail: </span><a style="color: #2b5e4a;" href="mailto:kartseva_ov@irkutskoil.ru">kartseva_ov@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-505.</span>
@@ -268,11 +249,10 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
                   &nbsp;
                   </p>
                   ''',
-                ),
-              )
-            ],
+            ),
           )
-      ),
+        ],
+      )),
     );
   }
 }

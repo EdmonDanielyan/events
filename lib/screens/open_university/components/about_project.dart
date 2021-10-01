@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/screens/open_university/components/about_project_contact_container.dart';
 
 class AboutProject extends StatelessWidget {
+  static late LanguageStrings _strings;
   AboutProject({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return Container(
         margin: EdgeInsets.only(bottom: 24),
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    child: Text(
-                        ' О проекте', // Пробел для того, чтобы заголовок был с тем же отступом, что и HTML
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24
-                        )
-                    )
-                ),
-                Html(
-                  data: '''<p align="right" style="text-align: left;">
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                child: Text(
+                    " ${_strings.aboutProject}", // Пробел для того, чтобы заголовок был с тем же отступом, что и HTML
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 24))),
+            Html(
+              data: '''<p align="right" style="text-align: left;">
  <b><span style="">Идёшь вперёд ты - идёт вперёд компания. </span></b>
  <b><span style=""></span></b>
  <b><span style="">Так проявляется ЛИДЕРСТВО</span></b>
@@ -99,13 +100,12 @@ class AboutProject extends StatelessWidget {
  <br>
 <p>
 </p>''',
-                ),
-                Column(
-                  children: _getContactInfoWidgetList(),
-                )
-              ],
+            ),
+            Column(
+              children: _getContactInfoWidgetList(),
             )
-    );
+          ],
+        ));
   }
 
   List<AboutProjectItem> _getContactInfoItemList() {
@@ -121,15 +121,11 @@ class AboutProject extends StatelessWidget {
     List<Widget> _widgetList = [];
 
     for (int i = 0; i < _items.length; i++) {
-      _widgetList.add(
-          Container(
-            margin: EdgeInsets.only(bottom: 10),
-            child: AboutProjectContact(
-                title: _items[i].title,
-                text: _items[i].text
-            ),
-          )
-      );
+      _widgetList.add(Container(
+        margin: EdgeInsets.only(bottom: 10),
+        child:
+            AboutProjectContact(title: _items[i].title, text: _items[i].text),
+      ));
     }
 
     return _widgetList;

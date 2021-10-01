@@ -1,45 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/app.dart';
 
-
 void showErrorDialog(
-    String message,
-    {
-      String title = 'Ошибка',
-      List<TextButton>? actions
-    }
-  ) {
-    showDialog(
+  String message, {
+  String title = 'Ошибка',
+  List<TextButton>? actions,
+}) {
+  showDialog(
       context: App.materialKey!.currentContext!,
       builder: (context) {
         return AlertDialog(
-          title: Text(
-              title,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold
-              )
-          ),
+          title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
           content: Text(message),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                  Radius.circular(10)
-              )
-          ),
-          actions: actions ?? [
-            TextButton(
-              child: Text(
-                'Закрыть',
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          actions: actions ??
+              [
+                TextButton(
+                  child: Text(
+                    'Закрыть',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    maxLines: 1,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
-                maxLines: 1,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
+              ],
         );
-      }
-    );
+      });
 }

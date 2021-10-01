@@ -1,55 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet_item.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/token.dart';
 
 class MenuSheet extends StatelessWidget {
   MenuSheet({Key? key}) : super(key: key);
-  late BuildContext _context;
+  static late BuildContext _context;
+  static late LanguageStrings _strings;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     _context = context;
+    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
 
     return Container(
       height: 325,
       width: size.width,
-      child: Column(
-            children: [
-              Container(
-                  margin: EdgeInsets.only(top: 7),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 45,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.grey.withOpacity(0.3),
-                        ),
-                      )
-                    ],
-                  )
-              ),
-              Container(
-                  margin: EdgeInsets.only(top: 24),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: _getItemsList(),
-                  )
-              ),
-            ]
-        ),
+      child: Column(children: [
+        Container(
+            margin: EdgeInsets.only(top: 7),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 45,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.grey.withOpacity(0.3),
+                  ),
+                )
+              ],
+            )),
+        Container(
+            margin: EdgeInsets.only(top: 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: _getItemsList(),
+            )),
+      ]),
     );
   }
 
   List<MenuSheetItem> _getItemsList() {
     return [
       MenuSheetItem(
-        title: 'Новости',
+        title: _strings.news,
         onTap: () {
           Navigator.pushNamed(_context, '/news_list');
         },
@@ -59,7 +60,7 @@ class MenuSheet extends StatelessWidget {
         ),
       ),
       MenuSheetItem(
-        title: 'События',
+        title: _strings.events,
         onTap: () {
           Navigator.pushNamed(_context, '/events_list');
         },
@@ -69,7 +70,7 @@ class MenuSheet extends StatelessWidget {
         ),
       ),
       MenuSheetItem(
-        title: 'Объявления',
+        title: _strings.announcements,
         onTap: () {
           Navigator.pushNamed(_context, '/announcements_list');
         },
@@ -79,7 +80,7 @@ class MenuSheet extends StatelessWidget {
         ),
       ),
       MenuSheetItem(
-        title: 'Мои данные',
+        title: _strings.myData,
         onTap: () {
           Navigator.pushNamed(_context, '/personal');
         },
@@ -89,17 +90,18 @@ class MenuSheet extends StatelessWidget {
         ),
       ),
       MenuSheetItem(
-        title: 'Выйти',
+        title: _strings.signOff,
         onTap: () async {
           await Token.deleteTokens();
-          Navigator.pushNamedAndRemoveUntil(_context, '/auth', (route) => false);
+          Navigator.pushNamedAndRemoveUntil(
+              _context, '/auth', (route) => false);
         },
         icon: SvgPicture.asset(
           'assets/images/exit_icon.svg',
           height: 20,
         ),
         withBottomDivider: false,
-      )
+      ),
     ];
   }
 }

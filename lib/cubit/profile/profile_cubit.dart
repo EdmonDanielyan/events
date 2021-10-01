@@ -1,172 +1,89 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/core/errors/dio_error_handler.dart';
+import 'package:ink_mobile/cubit/profile/domain/thank_repository.dart';
+import 'package:ink_mobile/cubit/profile/use_cases/fetch.dart';
+import 'package:ink_mobile/cubit/profile/use_cases/thank.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/models/error_response.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:dio/dio.dart';
-import 'package:main_api_client/api.dart';
-import 'package:main_api_client/api/thank_api.dart';
-import 'package:main_api_client/api/user_api.dart';
-import 'package:main_api_client/model/get_user_success.dart';
+
+import 'domain/fetch_repository.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit() : super(ProfileState(type: ProfileStateType.LOADING));
-  static const String USER_NOT_FOUND = 'Пользователь не найден';
+  LanguageStrings languageStrings;
+  ProfileCubit({required this.languageStrings})
+      : super(ProfileState(type: ProfileStateType.LOADING));
 
   Future<void> fetchUser(int? userId) async {
-
     try {
       await Token.setNewTokensIfExpired();
+      UserProfileData userData = await ProfileFetch(
+        dependency: ProfileFetchRepository(userId: userId).getDependency(),
+      ).call();
+      JwtPayload? authUser = await Token.getJwtPayloadObject();
 
-      MainApiClient api = MainApiClient();
-      UserApi user = api.getUserApi();
-
-      final Response<GetUserSuccess> response;
-
-      if (userId == null) {
-        response = await user.userGet();
-      } else {
-        response = await user.userIdGet(userId);
-      }
-
-      final Map? userDataMap = response.data?.data.asMap;
-
-      if (userDataMap != null) {
-        UserProfileData userData = UserProfileData
-            .getUserFromResponse(userDataMap);
-
-        JwtPayload? authUser = await Token.getJwtPayloadObject();
-
-        if (userId == null || authUser != null && authUser.userId == userId) {
-          emitState(
-              type: ProfileStateType.LOADED,
-              data: userData
-          );
-        } else {
-          emitState(
-              type: ProfileStateType.OTHER_USER_LOADED,
-              data: userData
-          );
-        }
-        
-      } else {
-        emitState(
-            type: ProfileStateType.ERROR,
-            errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-        );
-        throw UnknownErrorException();
-      }
-
+      if (userId == null || authUser != null && authUser.userId == userId)
+        emitSuccessUser(userData);
+      else
+        emitSuccessOtherUser(userData);
     } on DioError catch (e) {
-      print(e);
-      if (e.type == DioErrorType.response) {
-        ErrorResponse response = ErrorResponse.fromException(e);
-
-        print(response.code);
-        switch (response.code) {
-          case 'QMA-6': {
-            emitState(
-                type: ProfileStateType.ERROR,
-                errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-            );
-            throw InvalidRefreshTokenException();
-          }
-
-          case 'QMA-15': {
-            emitState(
-                type: ProfileStateType.ERROR,
-                errorMessage: USER_NOT_FOUND
-            );
-            throw UnknownErrorException(
-              message: USER_NOT_FOUND
-            );
-          }
-
-          default: {
-            emitState(
-                type: ProfileStateType.ERROR,
-                errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-            );
-            throw UnknownErrorException();
-          }
-        }
-      } else {
-        emitState(
-            type: ProfileStateType.ERROR,
-            errorMessage: ErrorMessages.NO_CONNECTION_ERROR_MESSAGE
-        );
-        throw NoConnectionException();
-      }
-
-    } on Exception catch (e) {
-      emitState(
-          type: ProfileStateType.ERROR,
-          errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-      );
+      ErrorModel error =
+          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      emitError(error.msg);
+      throw error.exception;
+    } on Exception catch (_) {
+      emitError(languageStrings.errorOccuried);
       throw UnknownErrorException();
     }
   }
 
   Future<void> thanks(userId) async {
     try {
+      emitSuccessOtherUser(state.data!.copyWith(
+        canBeThanked: !state.data!.canBeThanked,
+        votes: state.data!.votes!.copyWith(
+          barrels: state.data!.votes!.barrels + 1,
+        ),
+      ));
       await Token.setNewTokensIfExpired();
-
-      MainApiClient api = MainApiClient();
-      ThankApi thank = api.getThankApi();
-
-      await thank.thankIdGet(userId);
-
-      this.fetchUser(userId);
+      ProfileThank(
+        dependency: ProfileThankRepository(userId: userId).getDependency(),
+      ).thank();
     } on DioError catch (e) {
-      if (e.type == DioErrorType.response) {
-        ErrorResponse response = ErrorResponse.fromException(e);
-
-        if (response.code == 'QMA-6') {
-          emitState(
-              type: ProfileStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-          throw InvalidRefreshTokenException();
-        } else {
-          emitState(
-              type: ProfileStateType.ERROR,
-              errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-          );
-          throw UnknownErrorException();
-        }
-      } else {
-        emitState(
-            type: ProfileStateType.ERROR,
-            errorMessage: ErrorMessages.NO_CONNECTION_ERROR_MESSAGE
-        );
-        throw NoConnectionException();
-      }
-
-    } on Exception catch (e) {
-      emitState(
-        type: ProfileStateType.ERROR,
-        errorMessage: ErrorMessages.SIMPLE_ERROR_MESSAGE
-      );
+      ErrorModel error =
+          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      emitError(error.msg);
+      throw error.exception;
+    } on Exception catch (_) {
+      emitError(languageStrings.errorOccuried);
       throw UnknownErrorException();
     }
+  }
+
+  void emitSuccessOtherUser(UserProfileData data) {
+    emitState(type: ProfileStateType.OTHER_USER_LOADED, data: data);
+  }
+
+  void emitSuccessUser(UserProfileData data) {
+    emitState(type: ProfileStateType.LOADED, data: data);
+  }
+
+  void emitError(String errorMsg) {
+    emitState(type: ProfileStateType.ERROR, errorMessage: errorMsg);
   }
 
   void refresh() {
     emitState(type: ProfileStateType.LOADING);
   }
 
-  void emitState({
-    required ProfileStateType type,
-    UserProfileData? data,
-    String? errorMessage
-  }) {
-    emit(ProfileState(
-      type: type,
-      data: data,
-      errorMessage: errorMessage
-    ));
+  void emitState(
+      {required ProfileStateType type,
+      UserProfileData? data,
+      String? errorMessage}) {
+    emit(ProfileState(type: type, data: data, errorMessage: errorMessage));
   }
-
 }

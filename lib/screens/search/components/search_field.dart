@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/models/search/search_query.dart';
 import 'package:ink_mobile/cubit/search/search_cubit.dart';
 
@@ -8,6 +9,8 @@ class SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _strings =
+        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     final SearchCubit searchCubit = BlocProvider.of<SearchCubit>(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 35, vertical: 40),
@@ -25,12 +28,11 @@ class SearchField extends StatelessWidget {
               filled: true,
               suffixIcon: Icon(Icons.search),
               fillColor: Colors.white,
-              hintText: 'Найти...',
+              hintText: _strings.searchHint,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
               border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(50))
-              )
-          )
-      ),
+                  borderRadius: BorderRadius.all(Radius.circular(50))))),
     );
   }
 }

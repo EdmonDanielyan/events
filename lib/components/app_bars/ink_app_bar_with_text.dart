@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
   final String title;
-  late BuildContext? appBarContext;
 
   static const String APP_BAR_LINES_SVG_LINK = 'assets/images/appbar_lines.svg';
 
@@ -14,17 +13,16 @@ class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    appBarContext = context;
+    BuildContext appBarContext = context;
 
     return AppBar(
       leading: Builder(
         builder: (context) {
-          if (Navigator.of(appBarContext!).canPop()) {
+          if (Navigator.of(appBarContext).canPop()) {
             return IconButton(
               icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-              onPressed: () async => await Navigator
-                  .of(appBarContext!)
-                  .maybePop(),
+              onPressed: () async =>
+                  await Navigator.of(appBarContext).maybePop(),
             );
           } else {
             return Container();
@@ -42,22 +40,18 @@ class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
         ),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-              colors: [
-                Theme.of(context).primaryColor,
-                const Color(0xFF182B23)
-              ],
+              colors: [Theme.of(context).primaryColor, const Color(0xFF182B23)],
               begin: FractionalOffset.centerLeft,
               end: FractionalOffset.centerRight,
               stops: [0.0, 1.0],
-              tileMode: TileMode.decal
-          ),
+              tileMode: TileMode.decal),
         ),
       ),
       title: Container(
         child: Text(
-            '$title',
-            textAlign: TextAlign.center,
-          ),
+          '$title',
+          textAlign: TextAlign.center,
+        ),
       ),
       centerTitle: true,
     );
