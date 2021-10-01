@@ -31,6 +31,7 @@ abstract class LanguageStrings {
   abstract final String allNews;
   abstract final String newsIdea;
   abstract final String volunteerNews;
+  abstract final String sustainableDevelopment;
   abstract final String sportNews;
   abstract final String msNews;
   abstract final String openUniversity;

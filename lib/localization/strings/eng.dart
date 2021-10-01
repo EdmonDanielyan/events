@@ -33,6 +33,7 @@ class EnglishStrings implements LanguageStrings {
   final String allNews = "All news";
   final String newsIdea = "INK-Idea";
   final String volunteerNews = "Volunteer movement";
+  final String sustainableDevelopment = "Sustainable development";
   final String sportNews = "Sport";
   final String msNews = "Youth council";
   final String openUniversity = "Open university";

@@ -33,6 +33,7 @@ class RussianStrings extends LanguageStrings {
   final String allNews = "Все новости";
   final String newsIdea = "ИНК-Идея";
   final String volunteerNews = "Волонтерское движение";
+  final String sustainableDevelopment = "Устойчивое развитие";
   final String sportNews = "Спорт";
   final String msNews = "Молодежный совет";
   final String openUniversity = "Открытый университет";
