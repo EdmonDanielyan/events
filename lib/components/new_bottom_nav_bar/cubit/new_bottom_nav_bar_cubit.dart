@@ -10,4 +10,8 @@ class NewBottomNavBarCubit extends Cubit<int> {
   void onPageChanged(int index) {
     emit(index);
   }
+
+  void setOnMainPage() {
+    onPageChanged(0);
+  }
 }

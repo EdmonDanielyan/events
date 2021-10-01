@@ -2,24 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_state.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:multi_select_flutter/dialog/mult_select_dialog.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 
-class ServiceSelectField extends StatelessWidget {
+class ServiceSelectFieldCubit extends StatelessWidget {
   final SelectfieldCubit cubit;
   final String hint;
   final List<Selectfield> items;
+  final Widget? onSelectItemWidget;
+  final Widget Function(Selectfield, bool)? subWidget;
   final String? Function(String?)? validator;
   final void Function(List<Selectfield>) onChanged;
-  const ServiceSelectField({
+  const ServiceSelectFieldCubit({
     Key? key,
     required this.cubit,
     this.hint = "",
+    this.onSelectItemWidget,
+    this.subWidget,
     this.validator,
     required this.items,
     required this.onChanged,
   }) : super(key: key);
+  static late LanguageStrings _strings;
 
   void showModalOptions(BuildContext context) async {
     await showDialog(
@@ -39,6 +47,7 @@ class ServiceSelectField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
+    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return InkWell(
       onTap: () => showModalOptions(context),
       child: IgnorePointer(
@@ -53,22 +62,28 @@ class ServiceSelectField extends StatelessWidget {
     );
   }
 
+  List<MultiSelectItem<Selectfield>> getList() {
+    return items.map((e) => MultiSelectItem(e, e.title)).toList();
+  }
+
   Widget _listSelectors() {
     return BlocBuilder<SelectfieldCubit, SelectfieldCubitState>(
       bloc: cubit,
       builder: (BuildContext context, state) {
         return MultiSelectDialog(
-          items: items.map((e) => MultiSelectItem(e, e.title)).toList(),
+          items: getList(),
           onConfirm: onConfirm,
           initialValue: state.items,
           searchable: false,
           title: SizedBox(),
+          controlAffinity: ListTileControlAffinity.trailing,
+          subWidget: subWidget,
           cancelText: Text(
-            "Назад",
+            _strings.back,
             style: TextStyle(color: Colors.grey[600]),
           ),
           confirmText: Text(
-            "Выбрать",
+            _strings.select,
             style: TextStyle(
               color: Colors.green,
             ),
@@ -144,7 +159,7 @@ class ServiceSelectField extends StatelessWidget {
         border: Border.all(color: Theme.of(context).primaryColor),
       ),
       child: Text(
-        name,
+        name.length > 10 ? name.substring(0, 10) + '...' : name,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),

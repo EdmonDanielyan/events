@@ -6,10 +6,11 @@ import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/components/textfields/pick_files.dart';
 import 'package:ink_mobile/components/textfields/service_btn.dart';
-import 'package:ink_mobile/components/textfields/service_selectfield.dart';
+import 'package:ink_mobile/components/textfields/service_selectfield_cubit.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/core/cubit/btn/btn_state.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
+import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/cubit/send_feedback_form/send_form_cubit.dart';
 import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart';
 import 'package:ink_mobile/cubit/tags_list/tags_list_state.dart';
@@ -59,7 +60,8 @@ class ManagementFeedbackForm extends StatelessWidget {
             SizedBox(height: 20.0),
             ServiceTextField(
               hint: "${_strings.email} ${_strings.notRequired}",
-              validator: _validator.emailValidator,
+              validator: (val) => FieldValidator.emailValidator(val, _strings,
+                  canBeEmpty: true),
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
               onChanged: (val) => entities.email = val,
@@ -101,7 +103,7 @@ class ManagementFeedbackForm extends StatelessWidget {
             state.state == TagsListCubitStateEnums.SUCCESS ? state.data : [];
         return IgnorePointer(
           ignoring: state.data.length < 1,
-          child: ServiceSelectField(
+          child: ServiceSelectFieldCubit(
             hint: _strings.addresseeHint,
             cubit: selectfieldCubit,
             items: getItems,

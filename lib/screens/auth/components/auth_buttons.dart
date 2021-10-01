@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
@@ -13,6 +14,8 @@ class AuthButtons extends StatelessWidget {
     final AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
     final _strings =
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _bottomNavBar =
+        BlocProvider.of<NewBottomNavBarCubit>(context, listen: true);
     Size size = MediaQuery.of(context).size;
 
     return Container(
@@ -34,6 +37,7 @@ class AuthButtons extends StatelessWidget {
                 onPressed: () {
                   authCubit.auth().then((success) {
                     if (success) {
+                      _bottomNavBar.setOnMainPage();
                       Navigator.pushNamedAndRemoveUntil(
                           context, '/app_layer', (route) => false);
                     }

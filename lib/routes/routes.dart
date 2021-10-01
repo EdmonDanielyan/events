@@ -10,6 +10,7 @@ import 'package:ink_mobile/screens/events_list/events_list_screen.dart';
 import 'package:ink_mobile/screens/feedback/feedback_screen.dart';
 import 'package:ink_mobile/screens/initial/initial_screen.dart';
 import 'package:ink_mobile/screens/main/main_screen.dart';
+import 'package:ink_mobile/screens/medical_insurance/medical_insurance_screen.dart';
 import 'package:ink_mobile/screens/news_comments/news_comment_screen.dart';
 import 'package:ink_mobile/screens/news_detail/news_detail.dart';
 import 'package:ink_mobile/screens/news_list/news_list_screen.dart';
@@ -50,6 +51,7 @@ class MainRoutes {
     '/services': (BuildContext context) => ServiceListScreen(),
     '/feedback': (BuildContext context) => FeedBackScreen(),
     '/references': (BuildContext context) => ReferencesScreen(),
+    '/medical_insurance': (BuildContext context) => MedicalInsuranceScreen(),
     '/personnel_movements': (BuildContext context) =>
         PersonnelMovementsScreen(),
     '/social_package': (BuildContext context) => SocialPackageScreen(),

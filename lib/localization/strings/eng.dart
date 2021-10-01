@@ -155,4 +155,32 @@ class EnglishStrings implements LanguageStrings {
   final String deliveryMethodPostMail = "By post mail";
   final String childsBirthCertificate = "Child's birth certificate";
   final String files = "Files";
+  final String medicalServiceSection = "Medical service section";
+  final String medicalInsuranceFormInfo =
+      "For registration/renewal of voluntary medical insurance, you must fill out the form";
+  final String formFillingSample = "Form filling sample";
+  final String birthDate = "Birth date";
+  final String regAppForMedIns = "Register application for medical insurance";
+  final String regAppForMedInsDesc =
+      "I would like to get funds for voluntary medical insurance to receive the following services:";
+  final String extGuarantLetter =
+      "Prolongation of validity of the guarantee letter";
+  final String extGuarantLetterDesc =
+      "If your letter of guarantee has expired and you need to continue treatment, fill the date field until which you need to extend the period of the letter:";
+  final String submit = "Submit";
+  final String dateHint = "DD.MM.YYYY";
+  final String hospitalName = "Hospital's name";
+  final String city = "City";
+  final String medicalPrice = "The amount for treatment";
+  final String medicalDateStart = "Start date of treatment";
+  final String medAdditionalText =
+      "Information that you want to provide additionally";
+  final String medServiceDentist = "Dental treatment, prosthetics";
+  final String medServiceConsult =
+      "Consultation with a specialist (which doctor)";
+  final String medServiceLabResearch = "Laboratory research";
+  final String medServiceOther =
+      "Other services (massage, manual therapy, MRI, ultrasound etc.)";
+  final String chooseService = "Choose service";
+  final String clarification = "Clarification";
 }

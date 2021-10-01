@@ -23,17 +23,13 @@ class Body extends StatelessWidget {
           svgPicturePath: 'assets/images/services_feedback_icon.svg',
           link: '/feedback'),
       ServiceListItem(
-          title: _strings.transportOrdering,
-          svgPicturePath: 'assets/images/services_transport_request_icon.svg',
-          link: '/personal'),
-      ServiceListItem(
           title: _strings.orderInquiry,
           svgPicturePath: 'assets/images/services_inquiry_request_icon.svg',
           link: '/references'),
       ServiceListItem(
           title: _strings.getMedicalInsurance,
           svgPicturePath: 'assets/images/services_medical_insurance_icon.svg',
-          link: '/personal'),
+          link: '/medical_insurance'),
       ServiceListItem(
           title: _strings.socialPackage,
           svgPicturePath: 'assets/images/services_social_package_icon.svg',

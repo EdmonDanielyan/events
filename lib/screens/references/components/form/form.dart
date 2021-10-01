@@ -209,6 +209,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       hint: _strings.contactPhone,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.phone = val,
+      keyboardType: TextInputType.number,
     );
   }
 

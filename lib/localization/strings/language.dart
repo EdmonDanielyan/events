@@ -144,4 +144,25 @@ abstract class LanguageStrings {
   abstract final String childsBirthCertificate;
   abstract final String files;
   abstract final String childsAllowanceInfo;
+  abstract final String medicalServiceSection;
+  abstract final String medicalInsuranceFormInfo;
+  abstract final String formFillingSample;
+  abstract final String birthDate;
+  abstract final String regAppForMedIns;
+  abstract final String regAppForMedInsDesc;
+  abstract final String extGuarantLetter;
+  abstract final String extGuarantLetterDesc;
+  abstract final String submit;
+  abstract final String dateHint;
+  abstract final String hospitalName;
+  abstract final String city;
+  abstract final String medicalPrice;
+  abstract final String medicalDateStart;
+  abstract final String medAdditionalText;
+  abstract final String medServiceDentist;
+  abstract final String medServiceConsult;
+  abstract final String medServiceLabResearch;
+  abstract final String medServiceOther;
+  abstract final String chooseService;
+  abstract final String clarification;
 }

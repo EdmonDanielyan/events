@@ -162,4 +162,30 @@ class RussianStrings extends LanguageStrings {
   final String deliveryMethodPostMail = "Почтой по адресу";
   final String childsBirthCertificate = "Свидетельство о рождении ребенка";
   final String files = "Файлы";
+  final String medicalServiceSection = "Раздел Медслужбы";
+  final String medicalInsuranceFormInfo =
+      "Для оформления/продления ДМС необходимо заполнить форму";
+  final String formFillingSample = "Образец заполнения формы";
+  final String birthDate = "Дата рождения";
+  final String regAppForMedIns = "Оформление заявления на ДМС";
+  final String regAppForMedInsDesc =
+      "Прошу выделить средства ДМС для получения следующих услуг:";
+  final String extGuarantLetter = "Продление действия гарантийного письма";
+  final String extGuarantLetterDesc =
+      "Если у вас закончился срок действия гарантийного письма и вам необходимо продолжить лечение, укажите дату, до которой необходимо продлить срок гарантийного письма:";
+  final String submit = "Отправить";
+  final String dateHint = "ДД.ММ.ГГГГ";
+  final String hospitalName = "Наименование клиники";
+  final String city = "Город";
+  final String medicalPrice = "Сумма исследований или лечения";
+  final String medicalDateStart = "Дата начала лечения";
+  final String medAdditionalText =
+      "Информация, которую Вы хотите сообщить дополнительно по Вашему заявлению на ДМС";
+  final String medServiceDentist = "Стоматологическое лечение, протезирование";
+  final String medServiceConsult = "Консультация специалиста (какого врача)";
+  final String medServiceLabResearch = "Лабораторные исследования";
+  final String medServiceOther =
+      "Другие услуги (массаж, мануальная терапия, МРТ, УЗИ и т.д.)";
+  final String chooseService = "Выберите услугу";
+  final String clarification = "Уточнение";
 }

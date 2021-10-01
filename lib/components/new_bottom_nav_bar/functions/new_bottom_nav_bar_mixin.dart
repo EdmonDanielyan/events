@@ -6,7 +6,7 @@ class NewBottomNavBarMixin {
   static List<NavBottomNavBarItem> navBottomNavBarItems = [
     MainBottomNavBarItem(),
     SearchBottomNavBarItem(),
-    MessagesBottomNavBarItem(),
+    //MessagesBottomNavBarItem(),
     ServicesBottomNavBarItem(),
     MenuBottomNavBarItem()
   ];

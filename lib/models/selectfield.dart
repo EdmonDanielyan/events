@@ -1,6 +1,13 @@
 class Selectfield {
   final String id;
   final String title;
+  String description;
+  bool subWidget;
 
-  const Selectfield({required this.id, required this.title});
+  Selectfield({
+    required this.id,
+    required this.title,
+    this.description = "",
+    this.subWidget = false,
+  });
 }
