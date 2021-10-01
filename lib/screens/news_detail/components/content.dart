@@ -33,6 +33,7 @@ class Content extends StatefulWidget {
 
 class _ContentState extends State<Content> {
   late LanguageStrings _strings;
+
   @override
   Widget build(BuildContext context) {
     _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
@@ -92,7 +93,11 @@ class _ContentState extends State<Content> {
                         child: Container(
                           color: Colors.white,
                           child: Row(children: [
-                            SvgPicture.asset(IconLinks.COMMENT_SVG_LINK),
+                            SvgPicture.asset(
+                              IconLinks.COMMENT_SVG_LINK,
+                              width: 30,
+                              color: Color(0xFF757678),
+                            ),
                             Container(
                                 margin: EdgeInsets.only(left: 4),
                                 child: Text(widget.commentsCount.toString(),

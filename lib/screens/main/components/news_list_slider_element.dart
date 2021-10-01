@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 class NewsListSliderElement extends StatelessWidget {
   static const double ELEMENT_WIDTH = 276.0;
   static const double ELEMENT_HEIGHT = 334.0;
-  static const String DEFAULT_PREVIEW_PICTURE_LINK = 'https://ysia.ru/wp-content/uploads/2019/04/225353843_5b787050a10e5.jpg';
+  static const String DEFAULT_PREVIEW_PICTURE_LINK = 'assets/images/default_news.jpg';
 
   final NewsItemData newsItem;
 
@@ -50,15 +50,18 @@ class NewsListSliderElement extends StatelessWidget {
                       Container(
                           height: 141,
                           width: ELEMENT_WIDTH,
-                          child: Image.network(
-                            newsItem.previewPictureLink ?? DEFAULT_PREVIEW_PICTURE_LINK,
-                            fit: BoxFit.fitWidth,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.network(
-                                DEFAULT_PREVIEW_PICTURE_LINK,
-                                fit: BoxFit.fitWidth,
-                              );
-                            }
+                          child: newsItem.previewPictureLink == null ? Image.asset(
+                              DEFAULT_PREVIEW_PICTURE_LINK,
+                              fit: BoxFit.fitWidth
+                          ) : Image.network(
+                              newsItem.previewPictureLink!,
+                              fit: BoxFit.fitWidth,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                    DEFAULT_PREVIEW_PICTURE_LINK,
+                                    fit: BoxFit.fitWidth
+                                );
+                              }
                           )
                       ),
                       Expanded(

@@ -2,6 +2,7 @@ class CommentData {
   int newsId;
   int id;
   String? pathToAvatar;
+  int authorId;
   String? authorName;
   String? authorLastName;
   String comment;
@@ -13,6 +14,7 @@ class CommentData {
   CommentData(
       {required this.newsId,
       required this.id,
+      required this.authorId,
       this.pathToAvatar,
       this.authorName,
       this.authorLastName,

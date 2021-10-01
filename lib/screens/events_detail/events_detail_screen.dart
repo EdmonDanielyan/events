@@ -13,8 +13,7 @@ import 'package:ink_mobile/models/event_data.dart';
 import 'package:intl/intl.dart';
 
 class EventDetailScreen extends StatelessWidget {
-  static const String DEFAULT_PREVIEW_PICTURE_LINK =
-      'https://sobitie.com.ua/sites/default/files/sobitie_logo.png';
+  static const String DEFAULT_PREVIEW_PICTURE_LINK = 'assets/images/default_event.jpg';
 
   const EventDetailScreen({Key? key}) : super(key: key);
 
@@ -79,15 +78,18 @@ class EventDetailScreen extends StatelessWidget {
                   children: [
                     Container(
                         width: size.width,
-                        height: 300,
-                        child: Image.network(
-                            event.pictureLink ?? DEFAULT_PREVIEW_PICTURE_LINK,
+                        height: 250,
+                        child: event.pictureLink == null ? Image.asset(
+                            DEFAULT_PREVIEW_PICTURE_LINK,
+                            fit: BoxFit.fitWidth
+                        ) : Image.network(
+                            event.pictureLink!,
                             fit: BoxFit.fitWidth,
                             errorBuilder: (context, error, stackTrace) {
-                          return Image.network(
-                            DEFAULT_PREVIEW_PICTURE_LINK,
-                            fit: BoxFit.fitWidth,
-                          );
+                              return Image.asset(
+                                  DEFAULT_PREVIEW_PICTURE_LINK,
+                                  fit: BoxFit.fitWidth
+                              );
                         })),
                     Positioned.fill(
                         child: Align(

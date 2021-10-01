@@ -5,8 +5,7 @@ import 'package:ink_mobile/models/learning_materials_data.dart';
 import 'package:intl/intl.dart';
 
 class LearningMaterialsListElement extends StatelessWidget {
-  static const String DEFAULT_PREVIEW_PICTURE_LINK =
-      'https://ysia.ru/wp-content/uploads/2019/04/225353843_5b787050a10e5.jpg';
+  static const String DEFAULT_PREVIEW_PICTURE_LINK = 'assets/images/default_news.jpg';
   final LearningMaterialsData learningMaterial;
 
   const LearningMaterialsListElement({

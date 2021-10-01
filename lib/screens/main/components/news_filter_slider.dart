@@ -55,10 +55,10 @@ class NewsFilterSlider extends StatelessWidget {
   List<FilterItem> _getFilterItems() {
     return [
       FilterItem(title: _strings.allNews, code: 'news'),
-      FilterItem(title: "# ${_strings.newsIdea}", code: 'news-idea'),
       FilterItem(title: '# ${_strings.volunteerNews}', code: 'volunteer_news'),
       FilterItem(title: '# ${_strings.sportNews}', code: 'information_sport'),
       FilterItem(title: '# ${_strings.msNews}', code: 'information_ms'),
+      FilterItem(title: "# ${_strings.newsIdea}", code: 'news-idea'),
       FilterItem(title: '# ${_strings.openUniversity}', code: 'open_university')
     ];
   }

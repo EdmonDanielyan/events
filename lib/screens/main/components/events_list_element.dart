@@ -4,7 +4,9 @@ import 'package:intl/intl.dart';
 
 class EventsListElement extends StatelessWidget {
   final EventData event;
-  static const String DEFAULT_PREVIEW_PICTURE_LINK = 'https://sobitie.com.ua/sites/default/files/sobitie_logo.png';
+  static const String DEFAULT_PREVIEW_PICTURE_LINK =
+      'assets/images/default_event.jpg';
+
   const EventsListElement({Key? key, required this.event}) : super(key: key);
 
   @override
@@ -13,7 +15,8 @@ class EventsListElement extends StatelessWidget {
 
     return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, '/event_detail', arguments: {'id': event.id});
+          Navigator.pushNamed(context, '/event_detail',
+              arguments: {'id': event.id});
         },
         child: Container(
             color: Colors.white,
@@ -27,48 +30,42 @@ class EventsListElement extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Image.network(
-                        event.pictureLink ?? DEFAULT_PREVIEW_PICTURE_LINK,
-                        fit: BoxFit.fitWidth,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.network(
-                            DEFAULT_PREVIEW_PICTURE_LINK,
+                    child: event.pictureLink == null
+                        ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
+                            fit: BoxFit.fitWidth)
+                        : Image.network(event.pictureLink!,
                             fit: BoxFit.fitWidth,
-                          );
-                        }
-                    )
-                ),
+                            errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
+                                fit: BoxFit.fitWidth);
+                          })),
                 Container(
-                  margin: EdgeInsets.only(top: 20),
-                  child: Container(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      _getEventTimeAndPlace(),
-                      style: TextStyle(
-                          color: Theme.of(context).iconTheme.color,
-                          fontSize: 16
+                    margin: EdgeInsets.only(top: 20),
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        _getEventTimeAndPlace(),
+                        style: TextStyle(
+                            color: Theme.of(context).iconTheme.color,
+                            fontSize: 16),
+                        textAlign: TextAlign.start,
                       ),
-                      textAlign: TextAlign.start,
-                    ),
-                  )
-                ),
+                    )),
                 Container(
                   margin: EdgeInsets.only(top: 8, bottom: 5),
                   alignment: Alignment.topLeft,
                   child: Text(
                     event.title ?? '',
                     style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
                     textAlign: TextAlign.start,
                   ),
                 )
               ],
-            )
-        )
-    );
+            )));
   }
 
   String _getEventTimeAndPlace() {
@@ -80,7 +77,9 @@ class EventsListElement extends StatelessWidget {
     }
 
     if (event.beginDate != null && event.endDate != null) {
-      timeRange = DateFormat('HH:mm').format(event.beginDate!) + ' - ' + DateFormat('HH:mm').format(event.endDate!);
+      timeRange = DateFormat('HH:mm').format(event.beginDate!) +
+          ' - ' +
+          DateFormat('HH:mm').format(event.endDate!);
       timeAndPlace.add(timeRange);
     }
 
@@ -90,5 +89,4 @@ class EventsListElement extends StatelessWidget {
 
     return timeAndPlace.join(', ');
   }
-
 }

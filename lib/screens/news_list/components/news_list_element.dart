@@ -8,8 +8,7 @@ class NewsListElement extends StatelessWidget {
   const NewsListElement({Key? key, required this.newsItem}) : super(key: key);
 
   final NewsItemData newsItem;
-  static const String DEFAULT_PREVIEW_PICTURE_LINK =
-      'https://ysia.ru/wp-content/uploads/2019/04/225353843_5b787050a10e5.jpg';
+  static const String DEFAULT_PREVIEW_PICTURE_LINK = 'assets/images/default_news.jpg';
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +37,16 @@ class NewsListElement extends StatelessWidget {
                 Container(
                     height: 191,
                     width: size.width,
-                    child: Image.network(
-                        newsItem.previewPictureLink
-                            ?? DEFAULT_PREVIEW_PICTURE_LINK,
+                    child: newsItem.previewPictureLink == null ? Image.asset(
+                        DEFAULT_PREVIEW_PICTURE_LINK,
+                        fit: BoxFit.fitWidth
+                    ) : Image.network(
+                        newsItem.previewPictureLink!,
                         fit: BoxFit.fitWidth,
                         errorBuilder: (context, error, stackTrace) {
-                          return Image.network(
-                            DEFAULT_PREVIEW_PICTURE_LINK,
-                            fit: BoxFit.fitWidth,
+                          return Image.asset(
+                              DEFAULT_PREVIEW_PICTURE_LINK,
+                              fit: BoxFit.fitWidth
                           );
                         }
                     )

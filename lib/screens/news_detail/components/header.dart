@@ -10,8 +10,7 @@ class Header extends StatefulWidget {
   final List<String>? imageLinks;
   final List<String>? videoLinks;
 
-  static const DEFAULT_PREVIEW_PICTURE_LINK =
-      'https://ysia.ru/wp-content/uploads/2019/04/225353843_5b787050a10e5.jpg';
+  static const DEFAULT_PREVIEW_PICTURE_LINK = 'assets/images/default_news.jpg';
 
   const Header({
     Key? key,
@@ -95,32 +94,31 @@ class _HeaderState extends State<Header> {
     if (images != null && images.isNotEmpty) {
       images.forEach((image) {
         imagesContainer.add(
-          Container(
-            child: Image.network(
-              image,
-              fit: BoxFit.fill,
-              colorBlendMode: BlendMode.darken,
-              color: Colors.black.withOpacity(0.15),
-              errorBuilder: (context, error, stackTrace) {
-                return Image.network(
-                  Header.DEFAULT_PREVIEW_PICTURE_LINK,
+            Container(
+                child: FadeInImage(
                   fit: BoxFit.fill,
-                  colorBlendMode: BlendMode.darken,
-                  color: Colors.black.withOpacity(0.15),
-                );
-              },
+                  imageErrorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      Header.DEFAULT_PREVIEW_PICTURE_LINK,
+                      fit: BoxFit.fill,
+                      colorBlendMode: BlendMode.darken,
+                      color: Colors.black.withOpacity(0.15),
+                    );
+                  },
+                  image: NetworkImage(image),
+                  placeholder: AssetImage(Header.DEFAULT_PREVIEW_PICTURE_LINK),
+                )
             )
-          )
         );
       });
     } else {
       imagesContainer.add(
-         Image.network(
-          Header.DEFAULT_PREVIEW_PICTURE_LINK,
-          fit: BoxFit.fill,
-          colorBlendMode: BlendMode.darken,
-          color: Colors.black.withOpacity(0.15),
-        )
+          Image.asset(
+            Header.DEFAULT_PREVIEW_PICTURE_LINK,
+            fit: BoxFit.fill,
+            colorBlendMode: BlendMode.darken,
+            color: Colors.black.withOpacity(0.15),
+          )
       );
     }
 

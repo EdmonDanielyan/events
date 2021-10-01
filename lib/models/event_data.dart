@@ -72,9 +72,8 @@ class EventData extends Data {
       viewCount: map['view_count'] is int
           ? map['view_count']
           : int.tryParse(map['view_count'].toString()),
-      pictureLink: map['detail_picture'] is int
-          ? map['detail_picture']
-          : int.tryParse(map['detail_picture'].toString()),
+      pictureLink:
+          map['preview_picture'] is String ? map['preview_picture'] : null,
       isMember: map['is_member'] is bool ? map['is_member'] : null,
     );
   }

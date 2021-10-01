@@ -1,4 +1,4 @@
-package com.example.ink_mobile
+package ru.irkutskoil.portal
 
 import io.flutter.embedding.android.FlutterActivity
 

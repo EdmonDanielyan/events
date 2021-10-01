@@ -11,6 +11,7 @@ class Comment extends StatefulWidget {
   Comment(
       {Key? key,
       required this.id,
+      required this.authorId,
       this.avatar,
       this.name,
       required this.text,
@@ -20,6 +21,7 @@ class Comment extends StatefulWidget {
       : super(key: key);
 
   final int id;
+  final int authorId;
   final String? avatar;
   final String? name;
   final String text;
@@ -58,9 +60,20 @@ class _CommentState extends State<Comment> {
                   child: Container(
                     alignment: Alignment.topCenter,
                     margin: EdgeInsets.only(right: 5),
-                    child: CircleAvatar(
-                      radius: 30,
-                      backgroundImage: getAvatarImage(),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context,
+                            '/personal',
+                            arguments: {
+                              'id': widget.authorId
+                            }
+                        );
+                      },
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: getAvatarImage(),
+                      ),
                     ),
                   )),
               Expanded(
@@ -68,14 +81,28 @@ class _CommentState extends State<Comment> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                          padding: EdgeInsets.only(bottom: 5),
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            widget.name ?? '',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          )),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context,
+                              '/personal',
+                              arguments: {
+                                'id': widget.authorId
+                              }
+                          );
+                        },
+                        child: Container(
+                            padding: EdgeInsets.only(bottom: 5),
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              widget.name ?? '',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            )
+                        ),
+                      ),
                       Text(
                         widget.text,
                         style: TextStyle(color: _textColor, fontSize: 16),

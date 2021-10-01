@@ -32,7 +32,8 @@ class NewsCommentsFetch {
               comment: commentChildren.postText,
               barrels: commentChildren.likes,
               barrelsChecked: commentChildren.likedByUser,
-              timeCreate: commentChildren.dateCreate));
+              timeCreate: commentChildren.dateCreate,
+              authorId: commentChildren.authorId));
         });
       }
 
@@ -46,6 +47,7 @@ class NewsCommentsFetch {
         barrels: comment.likes,
         barrelsChecked: comment.likedByUser,
         children: commentsChildren,
+        authorId: comment.authorId
       ));
     });
 

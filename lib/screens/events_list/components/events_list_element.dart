@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 class EventsListElement extends StatelessWidget {
   final EventData event;
-  static const String DEFAULT_PREVIEW_PICTURE_LINK = 'https://sobitie.com.ua/sites/default/files/sobitie_logo.png';
+  static const String DEFAULT_PREVIEW_PICTURE_LINK = 'assets/images/default_event.jpg';
 
   const EventsListElement({
     Key? key,
@@ -34,13 +34,16 @@ class EventsListElement extends StatelessWidget {
                 Container(
                     width: size.width,
                     height: 191,
-                    child: Image.network(
-                        event.pictureLink ?? DEFAULT_PREVIEW_PICTURE_LINK,
+                    child: event.pictureLink == null ? Image.asset(
+                        DEFAULT_PREVIEW_PICTURE_LINK,
+                        fit: BoxFit.fitWidth
+                    ) : Image.network(
+                        event.pictureLink!,
                         fit: BoxFit.fitWidth,
                         errorBuilder: (context, error, stackTrace) {
-                          return Image.network(
-                            DEFAULT_PREVIEW_PICTURE_LINK,
-                            fit: BoxFit.fitWidth,
+                          return Image.asset(
+                              DEFAULT_PREVIEW_PICTURE_LINK,
+                              fit: BoxFit.fitWidth
                           );
                         }
                     )

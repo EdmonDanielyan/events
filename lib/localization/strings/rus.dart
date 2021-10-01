@@ -75,7 +75,7 @@ class RussianStrings extends LanguageStrings {
   final String employees = "Сотрудники";
   final String searchHint = "Найти...";
   final String services = "Сервисы";
-  final String myData = "Мои данные";
+  final String myData = "Личный кабинет";
   final String feedback = "Обратная связь";
   final String transportOrdering = "Заказ служебного транспорта";
   final String orderInquiry = "Заказ справок";

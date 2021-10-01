@@ -53,6 +53,7 @@ class Contacts extends StatelessWidget {
           title: element['title'],
           value: element['value'],
           icon: element['icon'],
+          type: element['type'],
         ));
       }
     });
@@ -65,7 +66,8 @@ class Contacts extends StatelessWidget {
       {
         'title': _strings.workPhone,
         'value': contacts!.workPhone,
-        'icon': SvgPicture.asset('assets/images/work_phone.svg')
+        'icon': SvgPicture.asset('assets/images/work_phone.svg'),
+        'type': 'none'
       },
       {
         'title': _strings.workMobilePhone,
@@ -74,7 +76,8 @@ class Contacts extends StatelessWidget {
           Icons.phone,
           size: 30,
           color: Theme.of(context).primaryColor,
-        )
+        ),
+        'type': 'call'
       },
       {
         'title': _strings.mobilePhone,
@@ -83,12 +86,14 @@ class Contacts extends StatelessWidget {
           Icons.phone_iphone,
           size: 30,
           color: Theme.of(context).primaryColor,
-        )
+        ),
+        'type': 'call'
       },
       {
         'title': 'Email',
         'value': contacts!.email,
-        'icon': SvgPicture.asset('assets/images/mail_at.svg')
+        'icon': SvgPicture.asset('assets/images/mail_at.svg'),
+        'type': 'email'
       },
     ];
   }

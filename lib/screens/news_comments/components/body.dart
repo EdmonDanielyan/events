@@ -114,12 +114,13 @@ class _BodyState extends State<Body> {
       comments.add(
         Comment(
             id: comment.id,
+            authorId: comment.authorId,
             avatar: comment.pathToAvatar,
             name: comment.authorName,
             text: comment.comment,
             barrelChecked: comment.barrelsChecked,
             barrelsCount: comment.barrels,
-            dateTime: comment.timeCreate),
+            dateTime: comment.timeCreate,),
       );
 
       comment.children?.forEach((childrenComment) {
@@ -128,6 +129,7 @@ class _BodyState extends State<Body> {
               margin: EdgeInsets.only(left: 25),
               child: Comment(
                   id: childrenComment.id,
+                  authorId: childrenComment.authorId,
                   avatar: childrenComment.pathToAvatar,
                   name: childrenComment.authorName,
                   text: childrenComment.comment,
