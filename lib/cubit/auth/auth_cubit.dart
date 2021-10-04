@@ -16,6 +16,7 @@ class AuthCubit extends Cubit<AuthState> {
   String password = '';
 
   Future<bool> auth() async {
+    emitState(type: AuthStateType.LOADING);
     try {
       AuthUser authUser = AuthUser(
         dependency:
