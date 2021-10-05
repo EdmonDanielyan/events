@@ -23,6 +23,7 @@ class RussianStrings extends LanguageStrings {
   final String birthdays = "Дни рождения";
   final String noBirthdaysSoon = "Сегодня и ближайшие 3 дня нет дней рождения";
   final String today = "Сегодня";
+  final String yesterday = "Вчера";
   final String inComingDays = "Ближайшие дни";
   final String pageNotFound = "Страница не найдена";
   final String nowParticipatingInTheEvent = "Вы участвуете в событии";
@@ -39,6 +40,7 @@ class RussianStrings extends LanguageStrings {
   final String openUniversity = "Открытый университет";
   final String comments = "Комментарии";
   final String answer = "Ответить";
+  final String writeHint = "Написать";
   final String writeCommentHint = "Написать комментарий...";
   final String commentSendingError =
       "Произошла ошибка при отправке комментария";
@@ -189,4 +191,6 @@ class RussianStrings extends LanguageStrings {
       "Другие услуги (массаж, мануальная терапия, МРТ, УЗИ и т.д.)";
   final String chooseService = "Выберите услугу";
   final String clarification = "Уточнение";
+  final String find = "Найти";
+  final String online = "В сети";
 }

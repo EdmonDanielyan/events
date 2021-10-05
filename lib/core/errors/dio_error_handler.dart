@@ -26,7 +26,6 @@ class DioErrorHandler {
   ErrorModel call() {
     if (e.type == DioErrorType.response) {
       ErrorResponse response = ErrorResponse.fromException(e);
-      print(response);
 
       switch (response.code) {
         case "QMA-6":

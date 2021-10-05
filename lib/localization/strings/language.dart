@@ -21,6 +21,7 @@ abstract class LanguageStrings {
   abstract final String birthdays;
   abstract final String noBirthdaysSoon;
   abstract final String today;
+  abstract final String yesterday;
   abstract final String inComingDays;
   abstract final String pageNotFound;
   abstract final String iWillParticipate;
@@ -37,6 +38,7 @@ abstract class LanguageStrings {
   abstract final String openUniversity;
   abstract final String comments;
   abstract final String answer;
+  abstract final String writeHint;
   abstract final String writeCommentHint;
   abstract final String commentSendingError;
   abstract final String noCommentsNewsSection;
@@ -166,4 +168,6 @@ abstract class LanguageStrings {
   abstract final String medServiceOther;
   abstract final String chooseService;
   abstract final String clarification;
+  abstract final String find;
+  abstract final String online;
 }

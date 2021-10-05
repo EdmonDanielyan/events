@@ -22,6 +22,7 @@ class EnglishStrings implements LanguageStrings {
   final String birthdays = "Birthdays";
   final String noBirthdaysSoon = "No birthday in the next 3 days";
   final String today = "Today";
+  final String yesterday = "Yesterday";
   final String inComingDays = "In coming days";
   final String pageNotFound = "Page not found";
   final String nowParticipatingInTheEvent =
@@ -39,6 +40,7 @@ class EnglishStrings implements LanguageStrings {
   final String openUniversity = "Open university";
   final String comments = "Comments";
   final String answer = "Answer";
+  final String writeHint = "Write";
   final String writeCommentHint = "Write a comment...";
   final String commentSendingError = "Occured an error while sending a comment";
   final String noCommentsNewsSection = "No comments yet";
@@ -184,4 +186,6 @@ class EnglishStrings implements LanguageStrings {
       "Other services (massage, manual therapy, MRI, ultrasound etc.)";
   final String chooseService = "Choose service";
   final String clarification = "Clarification";
+  final String find = "Find";
+  final String online = "Online";
 }

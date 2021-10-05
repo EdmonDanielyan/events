@@ -3,10 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
   final String title;
+  final Widget? titleWidget;
+  final List<Widget>? actions;
 
   static const String APP_BAR_LINES_SVG_LINK = 'assets/images/appbar_lines.svg';
 
-  InkAppBarWithText({Key? key, required this.title}) : super(key: key);
+  InkAppBarWithText(
+      {Key? key, required this.title, this.titleWidget, this.actions})
+      : super(key: key);
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
@@ -47,13 +51,15 @@ class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
               tileMode: TileMode.decal),
         ),
       ),
-      title: Container(
-        child: Text(
-          '$title',
-          textAlign: TextAlign.center,
-        ),
-      ),
+      title: titleWidget ??
+          Container(
+            child: Text(
+              '$title',
+              textAlign: TextAlign.center,
+            ),
+          ),
       centerTitle: true,
+      actions: actions,
     );
   }
 }
