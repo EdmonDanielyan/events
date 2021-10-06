@@ -52,7 +52,7 @@ android:release:
       - build/app/outputs/apk/release/app-release.apk
     expire_in: 1 day
   only:
-    - master
+    - develop
 
 ios:debug:
   stage: build
@@ -88,7 +88,7 @@ ios:debug:
       - ios/Runner.ipa/jdc_mobile.ipa
     expire_in: 1 day
   only:
-    - master
+    - develop
 
 notify:android:success:
   stage: notify-success
@@ -110,7 +110,7 @@ notify:android:success:
     - curl -v -F "chat_id=${TELEGRAM_SUCCESS_CHAT_ID}" -F "caption=#${TELEGRAM_PROJECT_HASH_TAG} New Release for test. Build ${CI_JOB_ID} from ${CI_PROJECT_NAME}/${CI_BUILD_REF_NAME}" -F document=@${APK_BUILD_RELATIVE_PATH} https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument
     - curl -v -F "chat_id=${TELEGRAM_SUCCESS_CHAT_ID}" -F "caption=#${TELEGRAM_PROJECT_HASH_TAG} Bundle to deploy to Google Play. Build ${CI_JOB_ID} from ${CI_PROJECT_NAME}/${CI_BUILD_REF_NAME}. Do not install" -F document=@${AAB_BUILD_RELATIVE_PATH} https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument
   only:
-    - master
+    - develop
 
 notify:ios:success:
   stage: notify-success
@@ -130,7 +130,7 @@ notify:ios:success:
     - ls -la ios/${IPA_BUILD_RELATIVE_PATH}
     - curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_FAILURE_CHAT_ID} -d text="#${TELEGRAM_PROJECT_HASH_TAG} Build ${CI_JOB_ID} from ${CI_PROJECT_NAME}/${CI_BUILD_REF_NAME}. ${IPA_HTTP_URL} Bundle to manual deploy on iPhone."
   only:
-    - master
+    - develop
 
 notify:failure:
   stage: notify-failure
@@ -144,4 +144,4 @@ notify:failure:
     - echo "stub mode"
     - curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_FAILURE_CHAT_ID} -d text="#${TELEGRAM_PROJECT_HASH_TAG} Build ${CI_JOB_ID} from ${CI_PROJECT_NAME}/${CI_BUILD_REF_NAME} failed. Please see details in ${CI_JOB_URL}"
   only:
-    - master
+    - develop
