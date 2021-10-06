@@ -146,6 +146,8 @@ abstract class LanguageStrings {
   abstract final String deliveryMethodPostMail;
   abstract final String childsBirthCertificate;
   abstract final String files;
+  abstract final String and;
+  abstract final String links;
   abstract final String childsAllowanceInfo;
   abstract final String medicalServiceSection;
   abstract final String medicalInsuranceFormInfo;
@@ -170,5 +172,14 @@ abstract class LanguageStrings {
   abstract final String clarification;
   abstract final String find;
   abstract final String online;
+  abstract final String chat;
   abstract final String chatInfo;
+  abstract final String notifications;
+  abstract final String turnOn;
+  abstract final String turnOff;
+  abstract final String clear;
+  abstract final String leave;
+  abstract final String delete;
+  abstract final String participant;
+  abstract final String participants;
 }

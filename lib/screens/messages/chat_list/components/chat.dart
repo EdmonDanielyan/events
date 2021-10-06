@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_avatar.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_date.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_divider.dart';
@@ -24,6 +25,7 @@ class ChatListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Message lastMessage = chat.messages.last;
     return Material(
       child: InkWell(
         onTap: () =>
@@ -40,7 +42,7 @@ class ChatListTile extends StatelessWidget {
                 children: [
                   ChatAvatar(
                     url: chat.avatarUrl,
-                    indicator: chat.message.user.online ? true : false,
+                    indicator: lastMessage.user.online ? true : false,
                   ),
                   SizedBox(width: leadingGap),
                   Expanded(
@@ -56,7 +58,7 @@ class ChatListTile extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: 2.0),
-                            ChatDate(chatDate: chat.message.messageDate)
+                            ChatDate(chatDate: lastMessage.messageDate)
                           ],
                         ),
                         SizedBox(height: 5.0),
@@ -66,9 +68,9 @@ class ChatListTile extends StatelessWidget {
                             Expanded(
                               child: ChatMessage(
                                 displayName: chat.group != null
-                                    ? chat.message.user.name
+                                    ? lastMessage.user.name
                                     : null,
-                                message: chat.message.message,
+                                message: lastMessage.message,
                                 highlightValue: highlightValue,
                               ),
                             ),

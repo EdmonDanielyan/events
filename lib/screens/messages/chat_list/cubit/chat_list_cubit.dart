@@ -9,10 +9,12 @@ class ChatListCubit extends Cubit<ChatListCubitState> {
     List<Chat> items = state.chats.where((element) {
       bool containsChatName =
           element.chatName.toLowerCase().contains(value.toLowerCase());
-      bool containsUserName =
-          element.message.user.name.toLowerCase().contains(value.toLowerCase());
-      bool containsMessage =
-          element.message.message.toLowerCase().contains(value.toLowerCase());
+      bool containsUserName = element.messages.last.user.name
+          .toLowerCase()
+          .contains(value.toLowerCase());
+      bool containsMessage = element.messages.last.message
+          .toLowerCase()
+          .contains(value.toLowerCase());
 
       return containsChatName || containsUserName || containsMessage;
     }).toList();

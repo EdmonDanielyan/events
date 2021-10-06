@@ -18,7 +18,7 @@ class ChatScreen extends StatelessWidget {
         title: "",
         actions: [MessageSearchBtn()],
       ),
-      body: Body(),
+      body: Body(chat: chat),
     );
   }
 }

@@ -17,9 +17,13 @@ class ChatInfoScreen extends StatelessWidget {
     return Scaffold(
       appBar: InkAppBarWithText(
         title: _strings.chatInfo,
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.edit))],
+        actions: [
+          if (chat.group != null) ...[
+            IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+          ],
+        ],
       ),
-      body: Body(),
+      body: Body(chat: chat),
     );
   }
 }

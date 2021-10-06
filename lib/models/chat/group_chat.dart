@@ -4,6 +4,12 @@ class GroupChat {
   final ChatUser creator;
   final List<ChatUser> admins;
   final List<ChatUser> users;
+  final String description;
 
-  GroupChat({required this.creator, required this.admins, required this.users});
+  GroupChat({
+    required this.creator,
+    required this.admins,
+    required this.users,
+    this.description = "",
+  });
 }

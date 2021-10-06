@@ -165,6 +165,8 @@ class RussianStrings extends LanguageStrings {
   final String deliveryMethodPostMail = "Почтой по адресу";
   final String childsBirthCertificate = "Свидетельство о рождении ребенка";
   final String files = "Файлы";
+  final String and = "И";
+  final String links = "Ссылки";
   final String medicalServiceSection = "Раздел Медслужбы";
   final String medicalInsuranceFormInfo =
       "Для оформления/продления ДМС необходимо заполнить форму";
@@ -193,5 +195,14 @@ class RussianStrings extends LanguageStrings {
   final String clarification = "Уточнение";
   final String find = "Найти";
   final String online = "В сети";
+  final String chat = "Чат";
   final String chatInfo = "Информация о чате";
+  final String notifications = "Уведомления";
+  final String turnOn = "Включить";
+  final String turnOff = "Выключить";
+  final String clear = "Очистить";
+  final String leave = "Покинуть";
+  final String delete = "Удалить";
+  final String participant = "Участник";
+  final String participants = "Участников";
 }

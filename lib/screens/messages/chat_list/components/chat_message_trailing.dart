@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_count.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
 
@@ -10,10 +11,11 @@ class ChatMessageTrailing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int unreadMessages = MessageListView.unreadMessages(chat.messages);
     return Container(
-      child: chat.unreadMessages > 0
-          ? ChatCount(count: chat.unreadMessages)
-          : ChatTick(chatStatus: chat.message.status),
+      child: unreadMessages > 0
+          ? ChatCount(count: unreadMessages)
+          : ChatTick(chatStatus: chat.messages.last.status),
     );
   }
 }

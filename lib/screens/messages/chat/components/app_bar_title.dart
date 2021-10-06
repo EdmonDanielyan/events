@@ -7,10 +7,13 @@ class ChatAppBarTitle extends StatelessWidget {
   final Chat chat;
   const ChatAppBarTitle({Key? key, required this.chat}) : super(key: key);
 
+  bool get isGroup => chat.group != null;
+
   @override
   Widget build(BuildContext context) {
     final _strings =
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+
     return GestureDetector(
       onTap: () =>
           Navigator.of(context).pushNamed("/chat_info", arguments: chat),
@@ -21,7 +24,7 @@ class ChatAppBarTitle extends StatelessWidget {
             style: TextStyle(fontSize: 17.0),
             textAlign: TextAlign.center,
           ),
-          if (chat.message.user.online) ...[
+          if (!isGroup && chat.messages.last.user.online) ...[
             Text(
               _strings.online,
               style: TextStyle(fontSize: 13.0, color: Colors.blueGrey[300]),

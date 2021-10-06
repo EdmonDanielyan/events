@@ -8,7 +8,8 @@ import 'package:ink_mobile/screens/messages/chat/components/date_widget.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card.dart';
 
 class MessageList extends StatefulWidget {
-  const MessageList({Key? key}) : super(key: key);
+  final List<Message> messages;
+  const MessageList({Key? key, required this.messages}) : super(key: key);
 
   @override
   _MessageListState createState() => _MessageListState();
@@ -16,7 +17,6 @@ class MessageList extends StatefulWidget {
 
 class _MessageListState extends State<MessageList> with MessageMixins {
   ScrollController controller = ScrollController();
-  List<Message> messages = MessageListView.getExampleList();
 
   @override
   void initState() {
@@ -41,18 +41,18 @@ class _MessageListState extends State<MessageList> with MessageMixins {
             removeTop: true,
             child: ListView.builder(
               controller: controller,
-              itemCount: messages.length,
+              itemCount: widget.messages.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return Column(
                   children: [
                     DateWidget(
                       dateTime: getMessageDateTime(
-                        messages[index].messageDate,
+                        widget.messages[index].messageDate,
                         dateSort,
                       ),
                     ),
-                    MessageCard(message: messages[index]),
+                    MessageCard(message: widget.messages[index]),
                   ],
                 );
               },

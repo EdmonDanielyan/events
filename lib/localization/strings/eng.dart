@@ -158,6 +158,8 @@ class EnglishStrings implements LanguageStrings {
   final String deliveryMethodPostMail = "By post mail";
   final String childsBirthCertificate = "Child's birth certificate";
   final String files = "Files";
+  final String and = "And";
+  final String links = "Links";
   final String medicalServiceSection = "Medical service section";
   final String medicalInsuranceFormInfo =
       "For registration/renewal of voluntary medical insurance, you must fill out the form";
@@ -188,5 +190,14 @@ class EnglishStrings implements LanguageStrings {
   final String clarification = "Clarification";
   final String find = "Find";
   final String online = "Online";
+  final String chat = "Chat";
   final String chatInfo = "Chat info";
+  final String notifications = "Notifications";
+  final String turnOn = "Turn on";
+  final String turnOff = "Turn off";
+  final String clear = "Clear";
+  final String leave = "Leave";
+  final String delete = "Delete";
+  final String participant = "Participant";
+  final String participants = "Participants";
 }
