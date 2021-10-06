@@ -29,7 +29,6 @@ android:release:
     AAB_BUILD_RELATIVE_PATH: "${AAB_BUILD_RELATIVE_PATH}"
     APK_BUILD_RELATIVE_PATH: "${APK_BUILD_RELATIVE_PATH}"
     PUB_CACHE: "/cache/pub-cache"
-  allow_failure: true
   before_script:
     - git config --global user.name "${GIT_LOGIN}"
     - git config --global user.email "${GIT_EMAIL}"
@@ -56,7 +55,6 @@ android:release:
 
 ios:debug:
   stage: build
-  allow_failure: true
   tags:
     - flutter_ios
   before_script:
