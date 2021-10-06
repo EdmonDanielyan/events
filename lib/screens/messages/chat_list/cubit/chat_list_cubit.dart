@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/models/chat.dart';
+import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/screens/messages/chat_list/cubit/chat_list_state.dart';
 
 class ChatListCubit extends Cubit<ChatListCubitState> {
@@ -10,7 +10,7 @@ class ChatListCubit extends Cubit<ChatListCubitState> {
       bool containsChatName =
           element.chatName.toLowerCase().contains(value.toLowerCase());
       bool containsUserName =
-          element.message.userName.toLowerCase().contains(value.toLowerCase());
+          element.message.user.name.toLowerCase().contains(value.toLowerCase());
       bool containsMessage =
           element.message.message.toLowerCase().contains(value.toLowerCase());
 

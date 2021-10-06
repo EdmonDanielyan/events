@@ -1,4 +1,4 @@
-import 'package:ink_mobile/models/chat.dart';
+import 'package:ink_mobile/models/chat/chat.dart';
 
 class ChatListCubitState {
   List<Chat> chats;

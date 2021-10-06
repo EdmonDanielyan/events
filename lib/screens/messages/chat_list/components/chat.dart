@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/models/chat.dart';
+import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_avatar.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_date.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_divider.dart';
@@ -38,7 +38,10 @@ class ChatListTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ChatAvatar(url: chat.avatarUrl, indicator: chat.online),
+                  ChatAvatar(
+                    url: chat.avatarUrl,
+                    indicator: chat.message.user.online ? true : false,
+                  ),
                   SizedBox(width: leadingGap),
                   Expanded(
                     child: Column(
@@ -62,8 +65,9 @@ class ChatListTile extends StatelessWidget {
                           children: [
                             Expanded(
                               child: ChatMessage(
-                                displayName:
-                                    chat.isGroup ? chat.message.userName : null,
+                                displayName: chat.group != null
+                                    ? chat.message.user.name
+                                    : null,
                                 message: chat.message.message,
                                 highlightValue: highlightValue,
                               ),

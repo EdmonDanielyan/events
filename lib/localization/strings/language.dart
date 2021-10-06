@@ -170,4 +170,5 @@ abstract class LanguageStrings {
   abstract final String clarification;
   abstract final String find;
   abstract final String online;
+  abstract final String chatInfo;
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ink_mobile/models/message.dart';
+import 'package:ink_mobile/models/chat/message.dart';
 
 class ChatTick extends StatelessWidget {
   final MessageStatus chatStatus;

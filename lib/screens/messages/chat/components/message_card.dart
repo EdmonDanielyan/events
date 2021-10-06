@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/models/message.dart';
+import 'package:ink_mobile/core/mixins/popup_menu_container.dart';
+import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card_text.dart';
+import 'package:ink_mobile/screens/messages/chat/components/select_menu.dart';
 
 class MessageCard extends StatelessWidget {
   final Message message;
@@ -12,12 +14,30 @@ class MessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 7),
-      child: Align(
-        alignment: message.byMe ? Alignment.topRight : Alignment.topLeft,
-        child: _getMessageWidget(),
+    return PopupMenuContainer<String>(
+      child: InkWell(
+        onTap: () {},
+        child: Container(
+          padding: EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 7),
+          child: Align(
+            alignment: message.byMe ? Alignment.topRight : Alignment.topLeft,
+            child: _getMessageWidget(),
+          ),
+        ),
       ),
+      items: SelectMessageMenuList.getStandartList()
+          .map(
+            (e) => PopupMenuItem(
+              value: e.name,
+              child: Text(e.name),
+            ),
+          )
+          .toList(),
+      onItemSelected: (value) async {
+        if (value == 'delete') {
+          print("DELETE");
+        }
+      },
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:ink_mobile/functions/date_sort.dart';
 import 'package:ink_mobile/functions/message_mixins.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
-import 'package:ink_mobile/models/message.dart';
+import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/screens/messages/chat/components/date_widget.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card.dart';
 

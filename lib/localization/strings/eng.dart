@@ -188,4 +188,5 @@ class EnglishStrings implements LanguageStrings {
   final String clarification = "Clarification";
   final String find = "Find";
   final String online = "Online";
+  final String chatInfo = "Chat info";
 }

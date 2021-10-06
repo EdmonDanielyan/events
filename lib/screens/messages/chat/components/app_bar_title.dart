@@ -1,28 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/models/chat/chat.dart';
 
 class ChatAppBarTitle extends StatelessWidget {
-  final String title;
-  final String? subtitle;
-  const ChatAppBarTitle({Key? key, required this.title, this.subtitle})
-      : super(key: key);
+  final Chat chat;
+  const ChatAppBarTitle({Key? key, required this.chat}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          title,
-          style: TextStyle(fontSize: 17.0),
-          textAlign: TextAlign.center,
-        ),
-        if (subtitle != null) ...[
+    final _strings =
+        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    return GestureDetector(
+      onTap: () =>
+          Navigator.of(context).pushNamed("/chat_info", arguments: chat),
+      child: Column(
+        children: [
           Text(
-            subtitle!,
-            style: TextStyle(fontSize: 13.0, color: Colors.blueGrey[300]),
+            chat.chatName,
+            style: TextStyle(fontSize: 17.0),
             textAlign: TextAlign.center,
           ),
+          if (chat.message.user.online) ...[
+            Text(
+              _strings.online,
+              style: TextStyle(fontSize: 13.0, color: Colors.blueGrey[300]),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ],
-      ],
+      ),
     );
   }
 }

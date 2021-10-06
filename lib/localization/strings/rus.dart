@@ -193,4 +193,5 @@ class RussianStrings extends LanguageStrings {
   final String clarification = "Уточнение";
   final String find = "Найти";
   final String online = "В сети";
+  final String chatInfo = "Информация о чате";
 }
