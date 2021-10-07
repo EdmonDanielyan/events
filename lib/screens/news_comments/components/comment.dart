@@ -62,13 +62,8 @@ class _CommentState extends State<Comment> {
                     margin: EdgeInsets.only(right: 5),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(
-                            context,
-                            '/personal',
-                            arguments: {
-                              'id': widget.authorId
-                            }
-                        );
+                        Navigator.pushNamed(context, '/personal',
+                            arguments: {'id': widget.authorId});
                       },
                       child: CircleAvatar(
                         radius: 30,
@@ -83,13 +78,8 @@ class _CommentState extends State<Comment> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(
-                              context,
-                              '/personal',
-                              arguments: {
-                                'id': widget.authorId
-                              }
-                          );
+                          Navigator.pushNamed(context, '/personal',
+                              arguments: {'id': widget.authorId});
                         },
                         child: Container(
                             padding: EdgeInsets.only(bottom: 5),
@@ -97,11 +87,8 @@ class _CommentState extends State<Comment> {
                             child: Text(
                               widget.name ?? '',
                               style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold
-                              ),
-                            )
-                        ),
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            )),
                       ),
                       Text(
                         widget.text,
@@ -149,7 +136,7 @@ class _CommentState extends State<Comment> {
                                           _onAnswerButtonTap();
                                         },
                                         child: Text(
-                                          _strings.answer,
+                                          _strings.reply,
                                           style: TextStyle(
                                               color: _textColor,
                                               fontSize: 14,

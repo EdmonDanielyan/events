@@ -40,6 +40,7 @@ class EnglishStrings implements LanguageStrings {
   final String openUniversity = "Open university";
   final String comments = "Comments";
   final String answer = "Answer";
+  final String reply = "Reply";
   final String writeHint = "Write";
   final String writeCommentHint = "Write a comment...";
   final String commentSendingError = "Occured an error while sending a comment";
@@ -64,6 +65,7 @@ class EnglishStrings implements LanguageStrings {
   final String noStaffMovements = "No staff movements";
   final String birthday = "Birthday";
   final String mainInformation = "Main information";
+  final String add = "Add";
   final String address = "Address";
   final String office = "Office";
   final String contacts = "Contacts";
@@ -190,6 +192,7 @@ class EnglishStrings implements LanguageStrings {
   final String clarification = "Clarification";
   final String find = "Find";
   final String online = "Online";
+  final String offline = "Offline";
   final String chat = "Chat";
   final String chatInfo = "Chat info";
   final String notifications = "Notifications";
@@ -200,4 +203,13 @@ class EnglishStrings implements LanguageStrings {
   final String delete = "Delete";
   final String participant = "Participant";
   final String participants = "Participants";
+  final String participantsAccusative = "Participants";
+  final String owner = "Owner";
+  final String admin = "Admin";
+  final String edit = "Edit";
+  final String cancel = "Cancel";
+  final String ready = "Ready";
+  final String sendOn = "Forward";
+  final String copy = "Copy";
+  final String attach = "Attach";
 }

@@ -38,6 +38,7 @@ abstract class LanguageStrings {
   abstract final String openUniversity;
   abstract final String comments;
   abstract final String answer;
+  abstract final String reply;
   abstract final String writeHint;
   abstract final String writeCommentHint;
   abstract final String commentSendingError;
@@ -61,6 +62,7 @@ abstract class LanguageStrings {
   abstract final String newPosition;
   abstract final String noStaffMovements;
   abstract final String mainInformation;
+  abstract final String add;
   abstract final String address;
   abstract final String office;
   abstract final String contacts;
@@ -172,6 +174,7 @@ abstract class LanguageStrings {
   abstract final String clarification;
   abstract final String find;
   abstract final String online;
+  abstract final String offline;
   abstract final String chat;
   abstract final String chatInfo;
   abstract final String notifications;
@@ -182,4 +185,13 @@ abstract class LanguageStrings {
   abstract final String delete;
   abstract final String participant;
   abstract final String participants;
+  abstract final String participantsAccusative;
+  abstract final String owner;
+  abstract final String admin;
+  abstract final String edit;
+  abstract final String cancel;
+  abstract final String ready;
+  abstract final String sendOn;
+  abstract final String copy;
+  abstract final String attach;
 }

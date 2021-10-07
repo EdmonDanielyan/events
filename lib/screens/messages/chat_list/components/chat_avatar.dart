@@ -3,22 +3,33 @@ import 'package:flutter/material.dart';
 class ChatAvatar extends StatelessWidget {
   final String url;
   final bool? indicator;
-  const ChatAvatar({Key? key, required this.url, this.indicator})
-      : super(key: key);
+  final double? avatarWidth;
+  final double? avatarHeight;
+  const ChatAvatar({
+    Key? key,
+    required this.url,
+    this.indicator,
+    this.avatarWidth,
+    this.avatarHeight,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: Colors.grey,
-          backgroundImage:
-              AssetImage("assets/images/avatars/avatar_default.png"),
-          foregroundImage: NetworkImage(url),
-          onForegroundImageError: (Object exception, _) {
-            print("Error handling foreground image");
-          },
+        SizedBox(
+          width: avatarWidth,
+          height: avatarHeight,
+          child: CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.grey,
+            backgroundImage:
+                AssetImage("assets/images/avatars/avatar_default.png"),
+            foregroundImage: NetworkImage(url),
+            onForegroundImageError: (Object exception, _) {
+              print("Error handling foreground image");
+            },
+          ),
         ),
         if (indicator != null && indicator!) ...[
           Positioned(

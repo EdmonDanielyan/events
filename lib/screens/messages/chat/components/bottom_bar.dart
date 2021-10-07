@@ -9,6 +9,7 @@ class MessageBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
+        margin: EdgeInsets.only(bottom: 7.0, top: 8.0),
         width: double.infinity,
         padding: EdgeInsets.only(left: 7.0, top: 7.0),
         decoration: BoxDecoration(
@@ -20,6 +21,7 @@ class MessageBottomBar extends StatelessWidget {
           ),
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(child: MessageTextfield()),
             SizedBox(width: 8.0),

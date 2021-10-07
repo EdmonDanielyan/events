@@ -4,14 +4,12 @@ import 'package:ink_mobile/localization/localization_cubit/localization_cubit.da
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/models/chat/group_chat.dart';
+import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_avatar.dart';
 
 class ChatInfoHeader extends StatelessWidget {
   final Chat chat;
-  final double horizontalPadding;
-  const ChatInfoHeader(
-      {Key? key, required this.chat, required this.horizontalPadding})
-      : super(key: key);
+  const ChatInfoHeader({Key? key, required this.chat}) : super(key: key);
 
   static late LanguageStrings _strings;
 
@@ -22,7 +20,7 @@ class ChatInfoHeader extends StatelessWidget {
     if (group.users.length == 1)
       return _strings.participant;
     else
-      return _strings.participants;
+      return _strings.participantsAccusative;
   }
 
   @override
@@ -31,8 +29,8 @@ class ChatInfoHeader extends StatelessWidget {
 
     return Container(
       color: Colors.white,
-      padding:
-          EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 20.0),
+      padding: EdgeInsets.symmetric(
+          horizontal: ChatInfoDesignEntities.horizontalPadding, vertical: 20.0),
       child: Row(
         crossAxisAlignment:
             isGroup ? CrossAxisAlignment.start : CrossAxisAlignment.center,

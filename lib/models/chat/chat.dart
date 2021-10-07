@@ -110,7 +110,7 @@ class ChatListView {
         ],
         group: GroupChat(
           description: "Давайте выберем подарок Катюше",
-          creator: ChatUser(
+          owner: ChatUser(
             avatarUrl:
                 "https://upload.wikimedia.org/wikipedia/en/5/5d/Rudy_Wade.jpg",
             name: "Алексей Иванюк",
@@ -124,9 +124,8 @@ class ChatListView {
             ),
             ChatUser(
               avatarUrl:
-                  "https://upload.wikimedia.org/wikipedia/en/5/5d/Rudy_Wade.jpg",
-              name: "Алексей Иванюк",
-              online: true,
+                  "https://static.wikia.nocookie.net/e4-misfits/images/6/6c/Nathh.jpg/revision/latest/scale-to-width-down/250?cb=20121220194143",
+              name: "Елена Юртаева",
             ),
           ],
           users: [

@@ -34,3 +34,13 @@ class ChatUser {
   @override
   int get hashCode => avatarUrl.hashCode ^ name.hashCode ^ online.hashCode;
 }
+
+class ChatUserViewModel {
+  static bool isOwner(ChatUser user, ChatUser owner) => user == owner;
+
+  static bool isAdmin(ChatUser user, List<ChatUser> admins) {
+    for (var admin in admins) if (user == admin) return true;
+
+    return false;
+  }
+}

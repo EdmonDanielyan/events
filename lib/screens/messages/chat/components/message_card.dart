@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/core/mixins/popup_menu_container.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card_text.dart';
 import 'package:ink_mobile/screens/messages/chat/components/select_menu.dart';
@@ -14,6 +16,8 @@ class MessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _strings =
+        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return PopupMenuContainer<String>(
       child: InkWell(
         onTap: () {},
@@ -25,19 +29,35 @@ class MessageCard extends StatelessWidget {
           ),
         ),
       ),
-      items: SelectMessageMenuList.getStandartList()
-          .map(
-            (e) => PopupMenuItem(
-              value: e.name,
-              child: Text(e.name),
-            ),
-          )
+      items: SelectMessageMenuList.getStandartList(_strings)
+          .map((e) => menuItem(e))
           .toList(),
       onItemSelected: (value) async {
         if (value == 'delete') {
           print("DELETE");
         }
       },
+    );
+  }
+
+  PopupMenuItem<String> menuItem(SelectMessageMenu e) {
+    return PopupMenuItem(
+      value: e.name,
+      child: Row(
+        children: [
+          e.icon,
+          SizedBox(width: 10.0),
+          Expanded(
+            child: Text(
+              e.name,
+              maxLines: 1,
+              style: TextStyle(
+                fontSize: 14.0,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
 
 class SelectMessageMenu {
   final String name;
@@ -9,27 +10,43 @@ class SelectMessageMenu {
 }
 
 class SelectMessageMenuList {
-  static List<SelectMessageMenu> getStandartList() {
+  static List<SelectMessageMenu> getStandartList(LanguageStrings strings) {
+    double iconSize = 18.0;
     return [
       SelectMessageMenu(
-        name: "Ответить",
-        icon: Icon(CupertinoIcons.arrowshape_turn_up_left_fill),
+        name: strings.reply,
+        icon: Icon(
+          CupertinoIcons.arrowshape_turn_up_left_fill,
+          size: iconSize,
+        ),
       ),
       SelectMessageMenu(
-        name: "Переслать",
-        icon: Icon(CupertinoIcons.arrowshape_turn_up_right_fill),
+        name: strings.sendOn,
+        icon: Icon(
+          CupertinoIcons.arrowshape_turn_up_right_fill,
+          size: iconSize,
+        ),
       ),
       SelectMessageMenu(
-        name: "Скопировать",
-        icon: Icon(Icons.file_copy),
+        name: strings.copy,
+        icon: Icon(
+          Icons.file_copy,
+          size: iconSize,
+        ),
       ),
       SelectMessageMenu(
-        name: "Выбрать",
-        icon: Icon(Icons.check_circle),
+        name: strings.select,
+        icon: Icon(
+          Icons.check_circle,
+          size: iconSize,
+        ),
       ),
       SelectMessageMenu(
-        name: "Удалить",
-        icon: Icon(Icons.delete),
+        name: strings.delete,
+        icon: Icon(
+          Icons.delete,
+          size: iconSize,
+        ),
       )
     ];
   }

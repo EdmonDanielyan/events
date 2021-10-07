@@ -18,32 +18,39 @@ class PopupMenuContainer<T> extends StatefulWidget {
 
 class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
   late Offset _tapDownPosition;
+  late T? value;
+
+  void closeMenu() {
+    if (value != null) Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTapDown: (TapDownDetails details) {
-          _tapDownPosition = details.globalPosition;
-        },
-        onLongPress: () async {
-          final RenderBox overlay =
-              Overlay.of(context)!.context.findRenderObject()! as RenderBox;
+      behavior: HitTestBehavior.opaque,
+      onTapDown: (TapDownDetails details) {
+        _tapDownPosition = details.globalPosition;
+      },
+      onLongPress: () async {
+        final RenderBox overlay =
+            Overlay.of(context)!.context.findRenderObject()! as RenderBox;
 
-          T? value = await showMenu<T>(
-            context: context,
-            items: widget.items,
-            position: RelativeRect.fromLTRB(
-              _tapDownPosition.dx,
-              _tapDownPosition.dy,
-              overlay.size.width - _tapDownPosition.dx,
-              overlay.size.height - _tapDownPosition.dy,
-            ),
-          );
+        value = await showMenu<T>(
+          context: context,
+          items: widget.items,
+          position: RelativeRect.fromLTRB(
+            _tapDownPosition.dx,
+            _tapDownPosition.dy,
+            overlay.size.width - _tapDownPosition.dx,
+            overlay.size.height - _tapDownPosition.dy,
+          ),
+        );
 
-          if (value != null) {
-            widget.onItemSelected(value);
-          }
-        },
-        child: widget.child);
+        if (value != null) {
+          widget.onItemSelected(value!);
+        }
+      },
+      child: widget.child,
+    );
   }
 }

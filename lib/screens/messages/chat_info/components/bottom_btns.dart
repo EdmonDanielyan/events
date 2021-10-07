@@ -3,15 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
 
 class ChatInfoBottomBtns extends StatelessWidget {
   final Chat chat;
-  final double horizontalPadding;
-  const ChatInfoBottomBtns({
-    Key? key,
-    required this.chat,
-    this.horizontalPadding = 20.0,
-  }) : super(key: key);
+  const ChatInfoBottomBtns({Key? key, required this.chat}) : super(key: key);
   static late LanguageStrings _strings;
 
   @override
@@ -59,8 +55,8 @@ class ChatInfoBottomBtns extends StatelessWidget {
     required String text,
   }) {
     return Container(
-      padding:
-          EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0.0),
+      padding: EdgeInsets.symmetric(
+          horizontal: ChatInfoDesignEntities.horizontalPadding, vertical: 0.0),
       child: TextButton(
         onPressed: onPressed,
         child: Text(

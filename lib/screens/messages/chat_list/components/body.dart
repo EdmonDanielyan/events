@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/search_bar.dart';
-import 'package:ink_mobile/screens/messages/chat_list/cubit/chat_list_cubit.dart';
-import 'package:ink_mobile/screens/messages/chat_list/cubit/chat_list_state.dart';
+import 'package:ink_mobile/screens/messages/cubit/chat_list_cubit.dart';
+import 'package:ink_mobile/screens/messages/cubit/chat_list_state.dart';
 
 import 'chat.dart';
 

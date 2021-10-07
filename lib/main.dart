@@ -10,13 +10,10 @@ import 'package:ink_mobile/core/errors/errors_to_server.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/handlers/error_catcher.dart';
-import 'package:ink_mobile/localization/strings/rus.dart';
+import 'package:ink_mobile/providers/global_providers.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/themes/light.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
-import 'localization/localization_cubit/localization_cubit.dart';
 
 void main() async {
   runZonedGuarded(() async {
@@ -55,13 +52,7 @@ class InkMobile extends StatelessWidget {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (BuildContext context) =>
-              LocalizationCubit(initialState: RussianStrings()),
-        ),
-        BlocProvider(create: (context) => NewBottomNavBarCubit()),
-      ],
+      providers: GlobalProvider.getProviders(context).cast(),
       child: MaterialApp(
         navigatorKey: App.materialKey,
         title: 'ИНК',

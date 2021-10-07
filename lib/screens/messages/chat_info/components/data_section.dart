@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/screens/messages/chat_info/components/btn_wrapper.dart';
+import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
 
 class ChatInfoDataSection extends StatelessWidget {
-  final double horizontalPadding;
-  const ChatInfoDataSection({Key? key, this.horizontalPadding = 20.0})
-      : super(key: key);
+  const ChatInfoDataSection({Key? key}) : super(key: key);
   static late LanguageStrings _strings;
-  static double _titleGap = 15.0;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,7 @@ class ChatInfoDataSection extends StatelessWidget {
   }
 
   Widget filesAndLinksButton() {
-    return btnWrapper(
+    return ChatInfoBtnWrapper(
       onTap: () {
         print("Files and links");
       },
@@ -48,12 +47,12 @@ class ChatInfoDataSection extends StatelessWidget {
   Widget divider() {
     return Container(
       padding: EdgeInsets.only(
-        left: horizontalPadding,
+        left: ChatInfoDesignEntities.horizontalPadding,
       ),
       child: Row(
         children: [
           SizedBox(height: 0.0, child: filesIcon()),
-          SizedBox(width: _titleGap),
+          SizedBox(width: ChatInfoDesignEntities.titleGap),
           Expanded(child: Divider(color: Colors.grey, height: 1.0)),
         ],
       ),
@@ -61,7 +60,7 @@ class ChatInfoDataSection extends StatelessWidget {
   }
 
   Widget notificationBtnWidget() {
-    return btnWrapper(
+    return ChatInfoBtnWrapper(
       onTap: () {
         print("Notifications");
       },
@@ -71,7 +70,7 @@ class ChatInfoDataSection extends StatelessWidget {
         child: Icon(
           Icons.volume_off_rounded,
           color: Colors.white,
-          size: 24,
+          size: ChatInfoDesignEntities.iconSize,
         ),
       ),
       children: [
@@ -90,38 +89,7 @@ class ChatInfoDataSection extends StatelessWidget {
       child: Icon(
         Icons.file_present,
         color: Colors.white,
-        size: 24,
-      ),
-    );
-  }
-
-  Widget btnWrapper({
-    required void Function()? onTap,
-    required Widget icon,
-    required List<Widget> children,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: horizontalPadding,
-        ),
-        margin: EdgeInsets.only(bottom: 2.0),
-        width: double.infinity,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            icon,
-            SizedBox(width: _titleGap),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: children,
-              ),
-            ),
-          ],
-        ),
+        size: ChatInfoDesignEntities.iconSize,
       ),
     );
   }

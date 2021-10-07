@@ -39,7 +39,8 @@ class RussianStrings extends LanguageStrings {
   final String msNews = "Молодежный совет";
   final String openUniversity = "Открытый университет";
   final String comments = "Комментарии";
-  final String answer = "Ответить";
+  final String answer = "Ответ";
+  final String reply = "Ответить";
   final String writeHint = "Написать";
   final String writeCommentHint = "Написать комментарий...";
   final String commentSendingError =
@@ -66,6 +67,7 @@ class RussianStrings extends LanguageStrings {
   final String noStaffMovements = "Кадровые перемещения отсутствуют";
   final String birthday = "День рождения";
   final String mainInformation = "Основная информация";
+  final String add = "Добавить";
   final String address = "Адрес";
   final String office = "Кабинет";
   final String contacts = "Контакты";
@@ -195,6 +197,7 @@ class RussianStrings extends LanguageStrings {
   final String clarification = "Уточнение";
   final String find = "Найти";
   final String online = "В сети";
+  final String offline = "Не в сети";
   final String chat = "Чат";
   final String chatInfo = "Информация о чате";
   final String notifications = "Уведомления";
@@ -204,5 +207,14 @@ class RussianStrings extends LanguageStrings {
   final String leave = "Покинуть";
   final String delete = "Удалить";
   final String participant = "Участник";
-  final String participants = "Участников";
+  final String participants = "Участники";
+  final String participantsAccusative = "Участников";
+  final String owner = "Создатель";
+  final String admin = "Админ";
+  final String edit = "Редактировать";
+  final String cancel = "Отмена";
+  final String ready = "Готово";
+  final String sendOn = "Переслать";
+  final String copy = "Скопировать";
+  final String attach = "Прикрепить";
 }

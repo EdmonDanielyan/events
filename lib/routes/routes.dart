@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/screens/announcements_detail/announcements_detail_screen.dart';
 import 'package:ink_mobile/screens/announcements_list/announcements_list_screen.dart';
 import 'package:ink_mobile/screens/app_layer/app_layer_screen.dart';
@@ -68,16 +67,8 @@ class MainRoutes {
         RecreationalActivities(),
     '/birthdays': (BuildContext context) => BirthdaysScreen(),
     '/open_university': (BuildContext context) => OpenUniversityScreen(),
-    '/message': (BuildContext context) {
-      final args = ModalRoute.of(context)?.settings.arguments;
-      if (args is Chat) return ChatScreen(chat: args);
-      return PageNotFoundScreen();
-    },
-    '/chat_info': (BuildContext context) {
-      final args = ModalRoute.of(context)?.settings.arguments;
-      if (args is Chat) return ChatInfoScreen(chat: args);
-      return PageNotFoundScreen();
-    },
+    '/message': (BuildContext context) => ChatScreen(),
+    '/chat_info': (BuildContext context) => ChatInfoScreen(),
     '/test': (BuildContext context) => TestScreen()
   };
 }

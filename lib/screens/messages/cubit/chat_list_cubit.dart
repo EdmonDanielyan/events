@@ -1,9 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
-import 'package:ink_mobile/screens/messages/chat_list/cubit/chat_list_state.dart';
+import 'package:ink_mobile/screens/messages/cubit/chat_list_state.dart';
 
 class ChatListCubit extends Cubit<ChatListCubitState> {
+  int selectedChatIndex = 0;
   ChatListCubit() : super(ChatListCubitState());
+
+  void selectChat(int index) => selectedChatIndex = index;
 
   void setSearchValue(String value) {
     List<Chat> items = state.chats.where((element) {
