@@ -15,8 +15,7 @@ class ChatAppBarTitle extends StatelessWidget {
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
 
     return GestureDetector(
-      onTap: () =>
-          Navigator.of(context).pushNamed("/chat_info", arguments: chat),
+      onTap: () => Navigator.of(context).pushNamed("/chat_info"),
       child: Column(
         children: [
           Text(

@@ -212,4 +212,7 @@ class EnglishStrings implements LanguageStrings {
   final String sendOn = "Forward";
   final String copy = "Copy";
   final String attach = "Attach";
+  final String takePicture = "Take a picture";
+  final String picVidFromGallery = "Image or video from gallery";
+  final String document = "Document";
 }

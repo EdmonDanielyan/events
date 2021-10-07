@@ -1,7 +1,7 @@
 import 'package:ink_mobile/models/chat/chat_user.dart';
 
 enum MessageStatus { SENDING, SENT, READ, ERROR }
-enum MessageType { TEXT, DOCUMENT, PICTURE, VIDEO }
+enum MessageType { TEXT, DOCUMENT, PICTURE_VIDEO }
 
 class Message {
   final int id;
@@ -76,4 +76,7 @@ class MessageListView {
                 ? previousValue + 1
                 : previousValue + 0,
       );
+
+  static int sortByDate(Message a, Message b) =>
+      a.messageDate.isAfter(b.messageDate) ? -1 : 1;
 }

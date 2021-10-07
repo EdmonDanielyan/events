@@ -56,6 +56,15 @@ class Chat {
 }
 
 class ChatListView {
+  static int sortByDate(Chat a, Chat b) {
+    if (a.messages.length > 0) {
+      return a.messages.last.messageDate.isAfter(b.messages.last.messageDate)
+          ? -1
+          : 1;
+    }
+    return 1;
+  }
+
   static List<Chat> getExampleList() {
     return [
       Chat(
@@ -247,7 +256,7 @@ class ChatListView {
         ],
       ),
       Chat(
-        chatName: "Елена Юртаеваeqeq",
+        chatName: "Елена Юртаева",
         avatarUrl:
             "https://static.wikia.nocookie.net/e4-misfits/images/6/6c/Nathh.jpg/revision/latest/scale-to-width-down/250?cb=20121220194143",
         messages: [

@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:ink_mobile/functions/message_mixins.dart';
+import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/screens/messages/chat/components/bottom_bar.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_list.dart';
 
-class Body extends StatelessWidget {
-  final Chat chat;
-  const Body({Key? key, required this.chat}) : super(key: key);
+class Body extends StatefulWidget {
+  const Body({Key? key}) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> with MessageMixins {
+  ScrollController controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () {
+      ScrollBottom(controller).jump();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +30,17 @@ class Body extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-            child: MessageList(
-          messages: chat.messages,
-        )),
-        MessageBottomBar(),
+          child: SingleChildScrollView(
+            controller: controller,
+            child: KeyboardVisibilityBuilder(
+              builder: (context, isKeyboardVisible) {
+                if (isKeyboardVisible) bottomGapScroll(controller);
+                return MessageList();
+              },
+            ),
+          ),
+        ),
+        MessageBottomBar(scrollController: controller),
       ],
     );
   }

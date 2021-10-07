@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
+import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_avatar.dart';
@@ -8,7 +10,6 @@ import 'package:ink_mobile/screens/messages/chat_list/components/chat_divider.da
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message_trailing.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_name.dart';
-import 'package:ink_mobile/screens/messages/cubit/chat_list_cubit.dart';
 
 class ChatListTile extends StatelessWidget {
   final String highlightValue;
@@ -27,12 +28,14 @@ class ChatListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _cubit = BlocProvider.of<ChatListCubit>(context);
+    final _chatCubit = BlocProvider.of<ChatCubit>(context);
+    final _chatListCubit = BlocProvider.of<ChatListCubit>(context);
     Message lastMessage = chat.messages.last;
     return Material(
       child: InkWell(
         onTap: () {
-          _cubit.selectChat(index);
+          _chatCubit.emitChat(chat);
+          _chatListCubit.selectedChat = index;
           Navigator.of(context).pushNamed("/message");
         },
         child: Container(

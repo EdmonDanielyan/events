@@ -217,4 +217,7 @@ class RussianStrings extends LanguageStrings {
   final String sendOn = "Переслать";
   final String copy = "Скопировать";
   final String attach = "Прикрепить";
+  final String takePicture = "Сделать фото";
+  final String picVidFromGallery = "Фото и видео из галереи";
+  final String document = "Документ";
 }

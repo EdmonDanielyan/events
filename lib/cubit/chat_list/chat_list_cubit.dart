@@ -1,12 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
-import 'package:ink_mobile/screens/messages/cubit/chat_list_state.dart';
+
+import 'chat_list_state.dart';
 
 class ChatListCubit extends Cubit<ChatListCubitState> {
-  int selectedChatIndex = 0;
+  int selectedChat = 0;
   ChatListCubit() : super(ChatListCubitState());
-
-  void selectChat(int index) => selectedChatIndex = index;
 
   void setSearchValue(String value) {
     List<Chat> items = state.chats.where((element) {
@@ -24,7 +23,13 @@ class ChatListCubit extends Cubit<ChatListCubitState> {
     emitSearchList(items, value);
   }
 
-  void emitChats(List<Chat> items) {
+  void addChat(Chat chat) {
+    List<Chat> chats = state.chats;
+    chats[selectedChat] = chat;
+    emitChats(items: chats);
+  }
+
+  void emitChats({required List<Chat> items}) {
     emit(state.copyWith(chats: items, searchList: items));
   }
 

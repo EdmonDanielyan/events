@@ -14,6 +14,7 @@ class CustomBottomSheet {
   }) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       shape: shape,
       builder: (context) => child,
     );
@@ -22,6 +23,7 @@ class CustomBottomSheet {
 
 class CustomBottomSheetChild extends StatelessWidget {
   final Widget child;
+  final double? height;
   final bool showTopLine;
   final String? title;
   final bool showCancelBtn;
@@ -34,6 +36,7 @@ class CustomBottomSheetChild extends StatelessWidget {
   const CustomBottomSheetChild({
     Key? key,
     required this.child,
+    this.height,
     this.title,
     this.showTopLine = true,
     this.showCancelBtn = true,
@@ -64,8 +67,11 @@ class CustomBottomSheetChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: height,
+      padding: MediaQuery.of(context).viewInsets,
       margin: EdgeInsets.only(top: 7),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           if (showTopLine) ...[

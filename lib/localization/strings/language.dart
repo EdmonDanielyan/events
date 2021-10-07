@@ -194,4 +194,7 @@ abstract class LanguageStrings {
   abstract final String sendOn;
   abstract final String copy;
   abstract final String attach;
+  abstract final String takePicture;
+  abstract final String picVidFromGallery;
+  abstract final String document;
 }

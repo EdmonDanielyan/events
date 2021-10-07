@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MessageSendBtn extends StatelessWidget {
-  const MessageSendBtn({Key? key}) : super(key: key);
+  final Function()? onPressed;
+  const MessageSendBtn({Key? key, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class MessageSendBtn extends StatelessWidget {
         ),
         child: IconButton(
           icon: Icon(Icons.send_rounded),
-          onPressed: () {},
+          onPressed: onPressed,
           color: Colors.white,
         ),
       ),
