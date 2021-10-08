@@ -175,6 +175,7 @@ abstract class LanguageStrings {
   abstract final String find;
   abstract final String online;
   abstract final String offline;
+  abstract final String create;
   abstract final String chat;
   abstract final String chatInfo;
   abstract final String notifications;
@@ -197,4 +198,5 @@ abstract class LanguageStrings {
   abstract final String takePicture;
   abstract final String picVidFromGallery;
   abstract final String document;
+  abstract final String newChatHint;
 }

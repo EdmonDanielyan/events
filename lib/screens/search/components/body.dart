@@ -26,7 +26,21 @@ class Body extends StatelessWidget {
     return Background(
         child: Column(
       children: [
-        SearchField(),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 35, vertical: 40),
+          padding: EdgeInsets.only(top: 15),
+          child: SearchField(
+            hint: _strings.searchHint,
+            onChanged: (query) {
+              if (query.length >= 3) {
+                SearchQuery.query = query;
+                searchCubit.search(query);
+              } else {
+                searchCubit.refresh();
+              }
+            },
+          ),
+        ),
         BlocBuilder<SearchCubit, SearchState>(builder: (context, state) {
           switch (state.type) {
             case SearchStateType.LOADING:

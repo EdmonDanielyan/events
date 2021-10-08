@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.dart';
+import 'package:ink_mobile/components/loader/error_loading_widget.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_cubit.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_state.dart';
@@ -52,7 +53,7 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
             () => loadMore(_answers_cubit, _scrollBottomLoaderCubit),
           );
         } else if (state.state == FeedbackAnswerListCubitStateEnums.ERROR) {
-          return _errorLoadingWidget();
+          return ErrorLoadingWidget(errorMsg: _strings.errorLoadingQuestions);
         }
 
         return SizedBox();
@@ -88,19 +89,6 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
             ),
           ],
         ],
-      ),
-    );
-  }
-
-  Widget _errorLoadingWidget() {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Text(
-        _strings.errorLoadingQuestions,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16.0,
-        ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ChatAvatar extends StatelessWidget {
   final String url;
   final bool? indicator;
+  final double indicatorSize;
   final double? avatarWidth;
   final double? avatarHeight;
   const ChatAvatar({
@@ -11,6 +12,7 @@ class ChatAvatar extends StatelessWidget {
     this.indicator,
     this.avatarWidth,
     this.avatarHeight,
+    this.indicatorSize = 12.0,
   }) : super(key: key);
 
   @override
@@ -44,7 +46,7 @@ class ChatAvatar extends StatelessWidget {
               child: Icon(
                 Icons.circle,
                 color: Colors.green[800],
-                size: 12.0,
+                size: indicatorSize,
               ),
             ),
           ),

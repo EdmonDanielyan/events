@@ -13,6 +13,7 @@ class SelectMessage extends StatelessWidget {
     final _strings =
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return PopupMenuContainer<String>(
+      blurBackground: true,
       child: InkWell(
         onTap: () {},
         child: child,

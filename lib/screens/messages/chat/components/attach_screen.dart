@@ -16,7 +16,7 @@ class ChatAttachScreen extends StatelessWidget {
       height: 250.0,
       title: _strings.attach,
       cancelBtnTxt: _strings.cancel,
-      showSubmitBtn: false,
+      submitBtnTxt: "",
       horizontalPadding: _horizontalPadding,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: _horizontalPadding),

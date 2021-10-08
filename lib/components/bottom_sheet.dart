@@ -24,12 +24,11 @@ class CustomBottomSheet {
 class CustomBottomSheetChild extends StatelessWidget {
   final Widget child;
   final double? height;
+  final BoxConstraints? constraints;
   final bool showTopLine;
   final String? title;
-  final bool showCancelBtn;
   final String cancelBtnTxt;
   final Function? onCancel;
-  final bool showSubmitBtn;
   final String submitBtnTxt;
   final Function? onSubmit;
   final double horizontalPadding;
@@ -37,12 +36,11 @@ class CustomBottomSheetChild extends StatelessWidget {
     Key? key,
     required this.child,
     this.height,
+    this.constraints,
     this.title,
     this.showTopLine = true,
-    this.showCancelBtn = true,
     this.cancelBtnTxt = "Отмена",
     this.onCancel,
-    this.showSubmitBtn = true,
     this.submitBtnTxt = "Готово",
     this.onSubmit,
     this.horizontalPadding = 20.0,
@@ -68,29 +66,38 @@ class CustomBottomSheetChild extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: height,
+      constraints: constraints,
       padding: MediaQuery.of(context).viewInsets,
       margin: EdgeInsets.only(top: 7),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (showTopLine) ...[
             topLineWidget(),
           ],
           Container(
             padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: Stack(
+              alignment: Alignment.centerLeft,
               children: [
-                TextButton(
-                  child: showCancelBtn ? actionBtn(cancelBtnTxt) : SizedBox(),
-                  onPressed: () => _onCancel(context),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: actionBtn(
+                    ignoring: cancelBtnTxt.isEmpty,
+                    txt: cancelBtnTxt,
+                    onPressed: () => _onCancel(context),
+                  ),
                 ),
                 title != null ? titleWidget() : SizedBox(),
-                TextButton(
-                  child: showSubmitBtn ? actionBtn(submitBtnTxt) : SizedBox(),
-                  onPressed: () => _onSubmit(context),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: actionBtn(
+                    ignoring: submitBtnTxt.isEmpty,
+                    txt: submitBtnTxt,
+                    onPressed: () => _onSubmit(context),
+                  ),
                 ),
               ],
             ),
@@ -102,32 +109,46 @@ class CustomBottomSheetChild extends StatelessWidget {
   }
 
   Widget topLineWidget() {
-    return Container(
-      width: 45,
-      height: 5,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: Colors.grey.withOpacity(0.3),
+    return Center(
+      child: Container(
+        width: 45,
+        height: 5,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.grey.withOpacity(0.3),
+        ),
       ),
     );
   }
 
   Widget titleWidget() {
-    return Text(
-      title!,
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
+    return Align(
+      alignment: Alignment.center,
+      child: Text(
+        title!,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
 
-  Widget actionBtn(String txt) {
-    return Text(
-      txt,
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        fontSize: 13.0,
-        color: Colors.blue,
+  Widget actionBtn(
+      {required String txt,
+      required void Function()? onPressed,
+      bool ignoring = false}) {
+    return IgnorePointer(
+      ignoring: ignoring,
+      child: TextButton(
+        onPressed: onPressed,
+        child: Text(
+          txt,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 13.0,
+            color: Colors.blue,
+          ),
+        ),
       ),
     );
   }

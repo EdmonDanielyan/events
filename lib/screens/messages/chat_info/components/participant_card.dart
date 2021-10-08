@@ -7,20 +7,30 @@ import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.d
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_avatar.dart';
 
 class ParticipantCard extends StatelessWidget {
-  final ChatUser owner;
-  final List<ChatUser> admins;
+  final ChatUser? owner;
+  final List<ChatUser>? admins;
   final ChatUser user;
+  final double? horizontalPadding;
+  final double? titleGap;
+  final double? avatarSize;
   const ParticipantCard({
     Key? key,
     required this.user,
     required this.owner,
     required this.admins,
+    this.horizontalPadding,
+    this.titleGap,
+    this.avatarSize,
   }) : super(key: key);
   static late LanguageStrings _strings;
 
   String getPrivilegeLable() {
-    if (ChatUserViewModel.isOwner(user, owner)) return _strings.owner;
-    if (ChatUserViewModel.isAdmin(user, admins)) return _strings.admin;
+    if (owner != null) {
+      if (ChatUserViewModel.isOwner(user, owner!)) return _strings.owner;
+    }
+    if (admins != null) {
+      if (ChatUserViewModel.isAdmin(user, admins!)) return _strings.admin;
+    }
 
     return "";
   }
@@ -33,12 +43,13 @@ class ParticipantCard extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: ChatInfoDesignEntities.horizontalPadding),
+          horizontal:
+              horizontalPadding ?? ChatInfoDesignEntities.horizontalPadding),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           avatarWidget(),
-          SizedBox(width: ChatInfoDesignEntities.titleGap - 7),
+          SizedBox(width: titleGap ?? ChatInfoDesignEntities.titleGap - 7),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,10 +68,12 @@ class ParticipantCard extends StatelessWidget {
   }
 
   Widget avatarWidget() {
-    return SizedBox(
-      width: ChatInfoDesignEntities.iconSize + 7,
-      height: ChatInfoDesignEntities.iconSize + 7,
-      child: ChatAvatar(url: user.avatarUrl),
+    return ChatAvatar(
+      avatarHeight: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
+      avatarWidth: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
+      url: user.avatarUrl,
+      indicator: user.online,
+      indicatorSize: 8.0,
     );
   }
 

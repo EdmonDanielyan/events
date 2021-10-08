@@ -25,7 +25,7 @@ class ChatEntitiesFunctions {
   static Message buildMessage(ChatEntities entities) {
     return Message(
       id: 8,
-      user: ChatUser(avatarUrl: "", name: "IBRA CHEKAEV"),
+      user: ChatUser(avatarUrl: "", name: "IBRA CHEKAEV", online: true),
       message: entities.text,
       messageDate: DateTime.now(),
       type: getType(entities),

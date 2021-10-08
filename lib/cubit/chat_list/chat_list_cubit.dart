@@ -25,7 +25,8 @@ class ChatListCubit extends Cubit<ChatListCubitState> {
 
   void addChat(Chat chat) {
     List<Chat> chats = state.chats;
-    chats[selectedChat] = chat;
+    chats.removeAt(selectedChat);
+    chats.add(chat);
     emitChats(items: chats);
   }
 

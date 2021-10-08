@@ -193,6 +193,7 @@ class EnglishStrings implements LanguageStrings {
   final String find = "Find";
   final String online = "Online";
   final String offline = "Offline";
+  final String create = "Create";
   final String chat = "Chat";
   final String chatInfo = "Chat info";
   final String notifications = "Notifications";
@@ -215,4 +216,5 @@ class EnglishStrings implements LanguageStrings {
   final String takePicture = "Take a picture";
   final String picVidFromGallery = "Image or video from gallery";
   final String document = "Document";
+  final String newChatHint = "Choose person (one or many)";
 }

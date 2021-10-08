@@ -198,6 +198,7 @@ class RussianStrings extends LanguageStrings {
   final String find = "Найти";
   final String online = "В сети";
   final String offline = "Не в сети";
+  final String create = "Создать";
   final String chat = "Чат";
   final String chatInfo = "Информация о чате";
   final String notifications = "Уведомления";
@@ -220,4 +221,5 @@ class RussianStrings extends LanguageStrings {
   final String takePicture = "Сделать фото";
   final String picVidFromGallery = "Фото и видео из галереи";
   final String document = "Документ";
+  final String newChatHint = "Выберите собеседников (один или несколько)";
 }

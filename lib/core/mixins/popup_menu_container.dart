@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class PopupMenuContainer<T> extends StatefulWidget {
   final Widget child;
+  final bool blurBackground;
   final List<PopupMenuEntry<T>> items;
   final void Function(T) onItemSelected;
 
   PopupMenuContainer(
       {required this.child,
+      this.blurBackground = false,
       required this.items,
       required this.onItemSelected,
       Key? key})
@@ -20,12 +22,20 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
   late Offset _tapDownPosition;
   late T? value;
 
-  void closeMenu() {
-    if (value != null) Navigator.of(context).pop();
+  bool isMenuShown = false;
+
+  void switchMenuShown(bool show) {
+    setState(() {
+      isMenuShown = show;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    return mainChild();
+  }
+
+  Widget mainChild() {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTapDown: (TapDownDetails details) {
@@ -35,6 +45,7 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
         final RenderBox overlay =
             Overlay.of(context)!.context.findRenderObject()! as RenderBox;
 
+        switchMenuShown(true);
         value = await showMenu<T>(
           context: context,
           items: widget.items,
@@ -44,7 +55,9 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
             overlay.size.width - _tapDownPosition.dx,
             overlay.size.height - _tapDownPosition.dy,
           ),
-        );
+        ).then((value) {
+          switchMenuShown(false);
+        });
 
         if (value != null) {
           widget.onItemSelected(value!);
