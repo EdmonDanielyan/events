@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/core/mixins/popup_menu_container.dart';
+import 'package:ink_mobile/components/popup/popup_menu_container.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/models/chat/select_menu.dart';
 
@@ -14,10 +14,7 @@ class SelectMessage extends StatelessWidget {
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return PopupMenuContainer<String>(
       blurBackground: true,
-      child: InkWell(
-        onTap: () {},
-        child: child,
-      ),
+      child: child,
       items: SelectMessageMenuList.getStandartList(_strings)
           .map((e) => menuItem(e))
           .toList(),
