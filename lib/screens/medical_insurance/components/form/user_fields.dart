@@ -36,6 +36,7 @@ class MedicalInsuranceFormUserFields extends StatelessWidget {
   Widget _fioWidget() {
     return ServiceTextField(
       hint: _strings.fullnameHint,
+      requiredIcon: true,
       validator: (val) =>
           val!.split(" ").length < 3 ? _strings.fillTheField : null,
       autocorrect: false,
@@ -47,6 +48,7 @@ class MedicalInsuranceFormUserFields extends StatelessWidget {
     MaskTextInputFormatter mask = TextFieldMasks.date;
     return ServiceTextField(
       hint: _strings.birthDate,
+      requiredIcon: true,
       validator: (val) =>
           !mask.isFill() || val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.birthDate = val,
@@ -58,23 +60,29 @@ class MedicalInsuranceFormUserFields extends StatelessWidget {
   Widget _positionWidget() {
     return ServiceTextField(
       hint: _strings.position,
+      requiredIcon: true,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.position = val,
     );
   }
 
   Widget _mobilePhoneWidget() {
+    MaskTextInputFormatter mask = TextFieldMasks.phone;
     return ServiceTextField(
       hint: _strings.mobilePhone,
-      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+      requiredIcon: true,
+      validator: (val) =>
+          !mask.isFill() || val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.phone = val,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.phone,
+      inputFormatters: [mask],
     );
   }
 
   Widget _emailWidget() {
     return ServiceTextField(
       hint: _strings.email,
+      requiredIcon: true,
       validator: (val) => FieldValidator.emailValidator(val, _strings),
       keyboardType: TextInputType.emailAddress,
       autocorrect: false,

@@ -10,6 +10,7 @@ import 'package:ink_mobile/components/textfields/service_selectfield_cubit.dart'
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/core/cubit/btn/btn_state.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
+import 'package:ink_mobile/core/masks/input_formatters.dart';
 import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/cubit/send_feedback_form/send_form_cubit.dart';
 import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart';
@@ -22,10 +23,20 @@ import 'package:ink_mobile/screens/feedback/components/hint_text.dart';
 
 import 'entities.dart';
 
-class ManagementFeedbackForm extends StatelessWidget {
+class ManagementFeedbackForm extends StatefulWidget {
   const ManagementFeedbackForm({Key? key}) : super(key: key);
-  static late LanguageStrings _strings;
-  static late ManagementFeedbackFormValidator _validator;
+
+  @override
+  _ManagementFeedbackFormState createState() => _ManagementFeedbackFormState();
+}
+
+class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
+  late LanguageStrings _strings;
+  late ManagementFeedbackFormValidator _validator;
+  late ManagementFeedbackFormEntities entities =
+      ManagementFeedbackFormEntities();
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +44,10 @@ class ManagementFeedbackForm extends StatelessWidget {
     _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     _validator = ManagementFeedbackFormValidator(strings: _strings);
 
-    final _formKey = GlobalKey<FormState>();
     final _formCubit = BlocProvider.of<SendManagementFormCubit>(context);
 
     final _addresseeCubit = BlocProvider.of<TagsListCubit>(context);
     final _selectfieldCubit = BlocProvider.of<SelectfieldCubit>(context);
-    ManagementFeedbackFormEntities entities = ManagementFeedbackFormEntities();
 
     return Container(
       color: Colors.white,
@@ -56,6 +65,7 @@ class ManagementFeedbackForm extends StatelessWidget {
             ServiceTextField(
               hint: "${_strings.fullnameHint} ${_strings.notRequired}",
               onChanged: (val) => entities.name = val,
+              inputFormatters: [InputFormatters.lettersOnly],
             ),
             SizedBox(height: 20.0),
             ServiceTextField(
@@ -68,6 +78,7 @@ class ManagementFeedbackForm extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             ServiceTextField(
+              requiredIcon: true,
               validator: _validator.questionValidator,
               hint: _strings.question,
               keyboardType: TextInputType.multiline,

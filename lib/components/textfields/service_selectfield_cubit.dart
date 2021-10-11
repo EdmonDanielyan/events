@@ -104,15 +104,16 @@ class ServiceSelectFieldCubit extends StatelessWidget {
           autovalidateMode: state.validateMode,
           validator: validator,
           decoration: InputDecoration(
-              hintText: state.items.length < 1 ? hint : "",
-              border: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).primaryColor),
-              ),
-              suffixIcon: Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.grey,
-              )),
+            hintText: state.items.length < 1 ? hint : "",
+            border: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).primaryColor),
+            ),
+            suffixIcon: Icon(
+              Icons.keyboard_arrow_down,
+              color: Colors.grey,
+            ),
+          ),
         );
       },
     );

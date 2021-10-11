@@ -6,6 +6,7 @@ import 'package:ink_mobile/cubit/send_medical_ins_form/use_cases/send_form.dart'
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
 
 class SendMedicalInsFormCubit extends Cubit<BtnCubitState> {
@@ -17,6 +18,7 @@ class SendMedicalInsFormCubit extends Cubit<BtnCubitState> {
     emitState(newState: BtnCubitStateEnums.SENDING);
 
     try {
+      await Token.setNewTokensIfExpired();
       final res = await SendMedicalInsForm(
         dependency: SendMedicalInsFormRepository(
           entities: entities,

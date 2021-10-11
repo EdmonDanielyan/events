@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/date_input_field.dart';
 import 'package:ink_mobile/components/fields/number_select_form_field.dart';
@@ -11,6 +12,9 @@ import 'package:ink_mobile/components/textfields/pick_files.dart';
 import 'package:ink_mobile/components/textfields/service_btn.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/core/cubit/btn/btn_state.dart';
+import 'package:ink_mobile/core/masks/input_formatters.dart';
+import 'package:ink_mobile/core/masks/textfield_masks.dart';
+import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/cubit/references/references_cubit.dart';
 import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart';
 import 'package:ink_mobile/functions/parser.dart';
@@ -20,6 +24,7 @@ import 'package:ink_mobile/models/references/delivery_list.dart';
 import 'package:ink_mobile/models/references/reference_list.dart';
 import 'package:ink_mobile/screens/references/components/form/entities.dart';
 import 'package:ink_mobile/screens/references/components/form/validator.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ReferencesForm extends StatefulWidget {
   const ReferencesForm({Key? key}) : super(key: key);
@@ -205,11 +210,14 @@ class _ReferencesFormState extends State<ReferencesForm> {
   }
 
   Widget contactPhoneWidget() {
+    MaskTextInputFormatter mask = TextFieldMasks.phone;
     return ServiceTextField(
       hint: _strings.contactPhone,
-      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+      validator: (val) =>
+          !mask.isFill() || val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.phone = val,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.phone,
+      inputFormatters: [mask],
     );
   }
 
@@ -229,21 +237,27 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget deliveryAddressWidget() {
     return ServiceTextField(
       hint: _strings.address,
-      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+      validator: (val) => FieldValidator.addressValidator(val!, _strings),
       onChanged: (val) => entities.address = val,
+      keyboardType: TextInputType.streetAddress,
+      autocorrect: false,
     );
   }
 
   Widget deliveryZipCodeWidget() {
     return ServiceTextField(
       hint: _strings.zipIndex,
-      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+      validator: (val) => FieldValidator.zipCodeValidator(val!, _strings),
       onChanged: (val) => entities.postCode = val,
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      keyboardType: TextInputType.number,
     );
   }
 
   Widget quantityWidget() {
+    quantityTextController.text = entities.quantity.toString();
     return NumberSelectFormField(
+      min: 1,
       controller: quantityTextController,
       buttonsColor: ButtonsColor(
         left: Color(0xFF4E6D49),
@@ -268,16 +282,18 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget toProvideInWidget() {
     return ServiceTextField(
       hint: _strings.toSubmitFor,
-      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+      validator: (val) => val!.length < 8 ? _strings.fillTheField : null,
       onChanged: (val) => entities.toProvideIn = val,
+      inputFormatters: [InputFormatters.lettersOnly],
     );
   }
 
   Widget periodWidget() {
     return ServiceTextField(
       hint: _strings.period,
-      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+      validator: (val) => val!.length < 6 ? _strings.fillTheField : null,
       onChanged: (val) => entities.period = val,
+      inputFormatters: [InputFormatters.lettersOnly],
     );
   }
 

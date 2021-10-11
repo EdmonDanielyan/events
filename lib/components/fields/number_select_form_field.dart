@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/functions/parser.dart';
 
 class NumberSelectFormField extends FormField<String> {
   NumberSelectFormField({
@@ -15,6 +16,7 @@ class NumberSelectFormField extends FormField<String> {
     this.rightButtonIcon,
     this.height,
     this.width,
+    this.min = 0,
     String? initialValue,
     FocusNode? focusNode,
     BoxDecoration? decoration,
@@ -143,8 +145,9 @@ class NumberSelectFormField extends FormField<String> {
                                 num _currentValue =
                                     _textToValue(mode, controller.text);
                                 num _result = _currentValue - changeValueBy;
-                                num _newValue =
-                                    (onlyPositive && _result < 0) ? 0 : _result;
+                                num _newValue = (onlyPositive && _result < min)
+                                    ? min
+                                    : _result;
 
                                 controller.text = _newValue.toStringAsFixed(
                                     mode == NumberSelectFieldMode.int ? 0 : 1);
@@ -156,7 +159,7 @@ class NumberSelectFormField extends FormField<String> {
                         ),
                         Expanded(
                           child: Container(
-                              child: TextField(
+                              child: TextFormField(
                             controller: state._effectiveController,
                             focusNode: focusNode,
                             decoration: textFieldDecoration,
@@ -181,7 +184,8 @@ class NumberSelectFormField extends FormField<String> {
                             onChanged: onChangedHandler,
                             onTap: onTap,
                             onEditingComplete: onEditingComplete,
-                            onSubmitted: onFieldSubmitted,
+                            initialValue: initialValue,
+                            onFieldSubmitted: onFieldSubmitted,
                             inputFormatters:
                                 inputFormatters ?? defaultInputFormatters,
                             enabled: enabled ?? true,
@@ -239,6 +243,8 @@ class NumberSelectFormField extends FormField<String> {
           )
         : Container();
   }
+
+  final int min;
 
   /// Controls the text being edited.
   ///

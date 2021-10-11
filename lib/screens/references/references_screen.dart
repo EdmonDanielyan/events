@@ -13,9 +13,11 @@ class ReferencesScreen extends StatefulWidget {
   _ReferencesScreenState createState() => _ReferencesScreenState();
 }
 
-class _ReferencesScreenState extends State<ReferencesScreen> {
+class _ReferencesScreenState extends State<ReferencesScreen>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final _strings =
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
 
@@ -44,4 +46,7 @@ class _ReferencesScreenState extends State<ReferencesScreen> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

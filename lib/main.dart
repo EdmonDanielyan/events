@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -66,8 +67,14 @@ class InkMobile extends StatelessWidget {
         navigatorKey: App.materialKey,
         title: 'ИНК',
         initialRoute: '/init',
-        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          DefaultMaterialLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+          DefaultWidgetsLocalizations.delegate,
+        ],
         supportedLocales: [
+          const Locale('en'),
           const Locale('ru'),
         ],
         routes: MainRoutes.routes,

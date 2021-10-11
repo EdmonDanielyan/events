@@ -17,4 +17,12 @@ class FieldValidator {
     }
     return null;
   }
+
+  static String? addressValidator(String? str, LanguageStrings strings) {
+    return str!.length < 18 ? strings.fillTheField : null;
+  }
+
+  static String? zipCodeValidator(String? str, LanguageStrings strings) {
+    return str!.length != 6 ? strings.fillTheField : null;
+  }
 }
