@@ -24,12 +24,14 @@ class SocialPackageListElement extends StatelessWidget {
             child: Row(
                 children: [
                   Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
                       margin: EdgeInsets.only(left: 20),
                       child: Text(
                         title,
                         style: TextStyle(
-                            fontSize: 16
+                            fontSize: 14
                         ),
+                        overflow: TextOverflow.ellipsis,
                       )
                   ),
                   Expanded(
