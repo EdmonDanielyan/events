@@ -293,7 +293,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       hint: _strings.period,
       validator: (val) => val!.length < 6 ? _strings.fillTheField : null,
       onChanged: (val) => entities.period = val,
-      inputFormatters: [InputFormatters.lettersOnly],
+      inputFormatters: [InputFormatters.lettersNumbersOnly],
     );
   }
 

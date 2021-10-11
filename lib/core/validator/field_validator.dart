@@ -18,6 +18,14 @@ class FieldValidator {
     return null;
   }
 
+  static String? cityValidator(String? str, LanguageStrings strings) {
+    return str!.length < 5 ? strings.fillTheField : null;
+  }
+
+  static String? streetValidator(String? str, LanguageStrings strings) {
+    return str!.length < 8 ? strings.fillTheField : null;
+  }
+
   static String? addressValidator(String? str, LanguageStrings strings) {
     return str!.length < 18 ? strings.fillTheField : null;
   }

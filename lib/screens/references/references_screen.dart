@@ -7,7 +7,8 @@ import 'package:ink_mobile/localization/localization_cubit/localization_cubit.da
 import 'components/body.dart';
 
 class ReferencesScreen extends StatefulWidget {
-  const ReferencesScreen({Key? key}) : super(key: key);
+  final PreferredSizeWidget? appBar;
+  const ReferencesScreen({Key? key, this.appBar}) : super(key: key);
 
   @override
   _ReferencesScreenState createState() => _ReferencesScreenState();
@@ -22,9 +23,7 @@ class _ReferencesScreenState extends State<ReferencesScreen>
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
 
     return Scaffold(
-      appBar: InkAppBarWithText(
-        title: _strings.orderInquiry,
-      ),
+      appBar: widget.appBar ?? InkAppBarWithText(title: _strings.orderInquiry),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

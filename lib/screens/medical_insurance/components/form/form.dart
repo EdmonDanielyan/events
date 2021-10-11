@@ -7,6 +7,7 @@ import 'package:ink_mobile/components/textfields/service_btn.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/core/cubit/btn/btn_state.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
+import 'package:ink_mobile/core/masks/input_formatters.dart';
 import 'package:ink_mobile/cubit/send_medical_ins_form/send_form_cubit.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
@@ -131,6 +132,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
     return ServiceTextField(
       hint: strings.medAdditionalText,
       onChanged: (val) => entities.additionalText = val,
+      inputFormatters: [InputFormatters.lettersNumbersOnly],
       maxLines: 4,
     );
   }

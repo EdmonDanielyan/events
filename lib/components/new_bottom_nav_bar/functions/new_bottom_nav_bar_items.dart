@@ -3,6 +3,7 @@ import 'package:ink_mobile/components/menu_sheet/menu_sheet.dart';
 import 'package:ink_mobile/functions/navigation_utils.dart';
 import 'package:ink_mobile/screens/main/main_screen.dart';
 import 'package:ink_mobile/screens/search/search_screen.dart';
+import 'package:ink_mobile/screens/service_list/service_list_page_viewer.dart';
 import 'package:ink_mobile/screens/service_list/service_list_screen.dart';
 import 'package:ink_mobile/screens/test/test_screen.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -50,7 +51,7 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
 class ServicesBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/services.svg';
   String label = "Сервисы";
-  Widget screen = ServiceListScreen();
+  Widget screen = ServiceListPageViewer();
 
   void onTap(BuildContext context, Function onChanged, int index) {
     NavigationUtils.popScreenIfCan(context);

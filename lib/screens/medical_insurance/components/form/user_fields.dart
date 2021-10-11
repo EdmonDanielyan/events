@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
+import 'package:ink_mobile/core/masks/input_formatters.dart';
 import 'package:ink_mobile/core/masks/textfield_masks.dart';
 import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
@@ -40,6 +41,7 @@ class MedicalInsuranceFormUserFields extends StatelessWidget {
       validator: (val) =>
           val!.split(" ").length < 3 ? _strings.fillTheField : null,
       autocorrect: false,
+      inputFormatters: [InputFormatters.lettersOnly],
       onChanged: (val) => entities.fio = val,
     );
   }
@@ -62,6 +64,7 @@ class MedicalInsuranceFormUserFields extends StatelessWidget {
       hint: _strings.position,
       requiredIcon: true,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+      inputFormatters: [InputFormatters.lettersOnly],
       onChanged: (val) => entities.position = val,
     );
   }
