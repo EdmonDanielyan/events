@@ -19,7 +19,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
 import 'localization/localization_cubit/localization_cubit.dart';
 
-void main() async {
+Future<void> main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
