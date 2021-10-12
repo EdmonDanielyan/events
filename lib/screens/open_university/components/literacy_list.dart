@@ -61,7 +61,7 @@ class OpenUniversityLiteracyList extends StatelessWidget {
         }));
   }
 
-  void _onScroll() async {
+  Future<void> _onScroll() async {
     await cubit.onScroll(controller);
   }
 

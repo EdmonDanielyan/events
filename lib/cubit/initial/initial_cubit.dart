@@ -25,7 +25,7 @@ class InitialCubit extends Cubit<InitialState> {
     }
   }
 
-  void fetch() async {
+  Future<void> fetch() async {
     try {
       await refreshToken();
       await wasTokenExpired();

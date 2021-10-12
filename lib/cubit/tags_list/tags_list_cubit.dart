@@ -14,7 +14,7 @@ class TagsListCubit extends Cubit<TagsListCubitState> {
   TagsListCubit({required this.languageStrings})
       : super(TagsListCubitState(state: TagsListCubitStateEnums.LOADING));
 
-  void load() async {
+  Future<void> load() async {
     try {
       await Token.setNewTokensIfExpired();
       List<Selectfield> items = await TagsListFetch(

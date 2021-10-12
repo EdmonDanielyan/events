@@ -16,7 +16,7 @@ class SendReferenceFormCubit extends Cubit<BtnCubitState> {
   SendReferenceFormCubit({required this.languageStrings})
       : super(BtnCubitState(state: BtnCubitStateEnums.INITIAL));
 
-  void send(
+  Future<void> send(
       {required ReferencesFormEntities entities,
       required ReferencesItem referencesItem,
       required DeliveryItem deliveryItem}) async {

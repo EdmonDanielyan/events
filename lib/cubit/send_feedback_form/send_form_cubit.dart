@@ -14,7 +14,7 @@ class SendManagementFormCubit extends Cubit<BtnCubitState> {
   SendManagementFormCubit({required this.languageStrings})
       : super(BtnCubitState(state: BtnCubitStateEnums.INITIAL));
 
-  void send(ManagementFeedbackFormEntities entities) async {
+  Future<void> send(ManagementFeedbackFormEntities entities) async {
     emitState(newState: BtnCubitStateEnums.SENDING);
 
     try {

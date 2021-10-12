@@ -29,7 +29,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
   }) : super(key: key);
   static late LanguageStrings _strings;
 
-  void showModalOptions(BuildContext context) async {
+  Future<void> showModalOptions(BuildContext context) async {
     await showDialog(
       context: context,
       builder: (ctx) {

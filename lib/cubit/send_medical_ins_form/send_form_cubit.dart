@@ -14,7 +14,7 @@ class SendMedicalInsFormCubit extends Cubit<BtnCubitState> {
   SendMedicalInsFormCubit({required this.languageStrings})
       : super(BtnCubitState(state: BtnCubitStateEnums.INITIAL));
 
-  void send({required MedicalInsuranceFormEntities entities}) async {
+  Future<void> send({required MedicalInsuranceFormEntities entities}) async {
     emitState(newState: BtnCubitStateEnums.SENDING);
 
     try {
