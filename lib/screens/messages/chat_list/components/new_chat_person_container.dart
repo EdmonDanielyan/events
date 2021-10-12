@@ -6,12 +6,14 @@ class NewChatPersonContainer extends StatelessWidget {
   final ChatUserSelect user;
   final bool enabled;
   final double titleGap;
+  final String highlightTxt;
   final double avatarSize;
   final Function(bool)? onChanged;
   const NewChatPersonContainer({
     Key? key,
     this.enabled = false,
     required this.user,
+    this.highlightTxt = "",
     this.titleGap = 15.0,
     this.avatarSize = 40.0,
     this.onChanged,
@@ -25,6 +27,7 @@ class NewChatPersonContainer extends StatelessWidget {
         children: [
           Expanded(
             child: ParticipantCard(
+              highlightTxt: highlightTxt,
               user: user,
               owner: null,
               admins: null,

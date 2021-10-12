@@ -222,4 +222,5 @@ class RussianStrings extends LanguageStrings {
   final String picVidFromGallery = "Фото и видео из галереи";
   final String document = "Документ";
   final String newChatHint = "Выберите собеседников (один или несколько)";
+  final String you = "Вы";
 }

@@ -23,7 +23,7 @@ class ChatAppBarTitle extends StatelessWidget {
             style: TextStyle(fontSize: 17.0),
             textAlign: TextAlign.center,
           ),
-          if (!isGroup && chat.messages.last.user.online) ...[
+          if (!isGroup) ...[
             Text(
               _strings.online,
               style: TextStyle(fontSize: 13.0, color: Colors.blueGrey[300]),

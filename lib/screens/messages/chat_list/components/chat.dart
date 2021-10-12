@@ -26,11 +26,15 @@ class ChatListTile extends StatelessWidget {
       this.leadingGap = 15.0})
       : super(key: key);
 
+  bool get hasMessage => chat.messages.isNotEmpty;
+
+  Message? get lastMessage => hasMessage ? chat.messages.last : null;
+
   @override
   Widget build(BuildContext context) {
     final _chatCubit = BlocProvider.of<ChatCubit>(context);
     final _chatListCubit = BlocProvider.of<ChatListCubit>(context);
-    Message lastMessage = chat.messages.last;
+
     return Material(
       child: InkWell(
         onTap: () {
@@ -50,7 +54,8 @@ class ChatListTile extends StatelessWidget {
                 children: [
                   ChatAvatar(
                     url: chat.avatarUrl,
-                    indicator: lastMessage.user.online ? true : false,
+                    indicator:
+                        hasMessage && lastMessage!.user.online ? true : false,
                   ),
                   SizedBox(width: leadingGap),
                   Expanded(
@@ -66,23 +71,27 @@ class ChatListTile extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: 2.0),
-                            ChatDate(chatDate: lastMessage.messageDate)
+                            if (hasMessage) ...[
+                              ChatDate(chatDate: lastMessage!.messageDate),
+                            ],
                           ],
                         ),
                         SizedBox(height: 5.0),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Expanded(
-                              child: ChatMessage(
-                                displayName: chat.group != null
-                                    ? lastMessage.user.name
-                                    : null,
-                                message: lastMessage.message,
-                                highlightValue: highlightValue,
+                            if (hasMessage) ...[
+                              Expanded(
+                                child: ChatMessage(
+                                  displayName: chat.group != null
+                                      ? lastMessage!.user.name
+                                      : null,
+                                  message: lastMessage!.message,
+                                  highlightValue: highlightValue,
+                                ),
                               ),
-                            ),
-                            ChatMessageTrailing(chat: chat),
+                              ChatMessageTrailing(chat: chat),
+                            ],
                           ],
                         ),
                         SizedBox(height: 10.0)

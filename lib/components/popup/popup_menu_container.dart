@@ -80,7 +80,7 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
       pushEntry();
     }
 
-    value = await showMenu<T>(
+    await showMenu<T>(
       context: context,
       items: widget.items,
       position: RelativeRect.fromLTRB(
@@ -90,13 +90,12 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
         overlay.size.height - _tapDownPosition.dy,
       ),
     ).then((value) {
+      if (value != null) {
+        widget.onItemSelected(value);
+      }
       switchMenuShown(false);
       closeBluredBg();
     });
-
-    if (value != null) {
-      widget.onItemSelected(value!);
-    }
   }
 
   @override

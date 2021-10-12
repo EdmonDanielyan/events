@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
+import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
@@ -9,19 +11,37 @@ class ChatInfoBottomBtns extends StatelessWidget {
   final Chat chat;
   const ChatInfoBottomBtns({Key? key, required this.chat}) : super(key: key);
   static late LanguageStrings _strings;
+  static late ChatCubit _chatCubit;
+  static late ChatListCubit _chatListCubit;
+
+  bool get isGroup => chat.group != null;
+
+  void _clearMessages() {
+    _chatCubit.clearMessages();
+    _chatListCubit.updateMessages([]);
+  }
+
+  void _deleteChat(BuildContext context) {
+    _chatListCubit.deleteCurrentChat();
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
 
   @override
   Widget build(BuildContext context) {
     _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _chatCubit = BlocProvider.of<ChatCubit>(context);
+    _chatListCubit = BlocProvider.of<ChatListCubit>(context);
 
     return Container(
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          clearChat(),
-          Divider(color: Colors.grey, height: 1.0),
-          leaveChat(),
+          if (chat.messages.length > 0) ...[
+            clearChat(),
+            Divider(color: Colors.grey, height: 1.0),
+          ],
+          leaveChat(context),
         ],
       ),
     );
@@ -29,21 +49,17 @@ class ChatInfoBottomBtns extends StatelessWidget {
 
   Widget clearChat() {
     return textButton(
-      onPressed: () {
-        print("CLEAR CHAT");
-      },
+      onPressed: _clearMessages,
       color: Colors.blue,
       text: "${_strings.clear} ${_strings.chat.toLowerCase()}",
     );
   }
 
-  Widget leaveChat() {
+  Widget leaveChat(BuildContext context) {
     return textButton(
-      onPressed: () {
-        print("LEAVE CHAT");
-      },
+      onPressed: () => _deleteChat(context),
       color: Colors.red,
-      text: chat.group != null
+      text: isGroup
           ? "${_strings.leave} ${_strings.chat.toLowerCase()}"
           : "${_strings.delete} ${_strings.chat.toLowerCase()}",
     );

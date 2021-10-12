@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card_text.dart';
-import 'package:ink_mobile/screens/messages/chat/components/select_message.dart';
+import 'package:ink_mobile/screens/messages/chat/components/hover_message.dart';
 
 class MessageCard extends StatelessWidget {
   final Message message;
@@ -13,7 +13,8 @@ class MessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SelectMessage(
+    return HoverMessage(
+      message: message,
       child: Container(
         padding: EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 7),
         child: Align(

@@ -199,4 +199,5 @@ abstract class LanguageStrings {
   abstract final String picVidFromGallery;
   abstract final String document;
   abstract final String newChatHint;
+  abstract final String you;
 }

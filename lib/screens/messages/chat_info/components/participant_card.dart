@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/components/highlight_text.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
@@ -13,11 +14,13 @@ class ParticipantCard extends StatelessWidget {
   final double? horizontalPadding;
   final double? titleGap;
   final double? avatarSize;
+  final String highlightTxt;
   const ParticipantCard({
     Key? key,
     required this.user,
     required this.owner,
     required this.admins,
+    this.highlightTxt = "",
     this.horizontalPadding,
     this.titleGap,
     this.avatarSize,
@@ -54,7 +57,7 @@ class ParticipantCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                nameWidget(),
+                nameWidget(context),
                 onlineStatusWidget(),
               ],
             ),
@@ -77,12 +80,15 @@ class ParticipantCard extends StatelessWidget {
     );
   }
 
-  Widget nameWidget() {
-    return Text(
-      user.name,
-      style: TextStyle(
+  Widget nameWidget(BuildContext context) {
+    return HighlightText(
+      txt: user.name,
+      highlightTxt: highlightTxt,
+      textStyle: TextStyle(
+        color: Colors.black,
         fontWeight: FontWeight.bold,
         fontSize: 14.0,
+        fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
       ),
     );
   }

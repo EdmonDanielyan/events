@@ -9,6 +9,8 @@ class MessageCardText extends StatelessWidget {
   final Message message;
   const MessageCardText({Key? key, required this.message}) : super(key: key);
 
+  Color get textColor => message.byMe ? Colors.white : Colors.black;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -28,14 +30,20 @@ class MessageCardText extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: containerBorderRadius(),
-              color: message.byMe ? Colors.green[200] : Colors.grey.shade200,
+              color: message.byMe ? Color(0XFF46966E) : Colors.grey.shade200,
             ),
             padding: EdgeInsets.all(13),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Flexible(child: LinkifyText(text: message.message)),
+                Flexible(
+                  child: LinkifyText(
+                    text: message.message,
+                    style: TextStyle(color: textColor),
+                    linkStyle: TextStyle(color: textColor),
+                  ),
+                ),
                 SizedBox(width: 5.0),
                 dateWidget(),
                 if (message.byMe) ...[
@@ -61,7 +69,10 @@ class MessageCardText extends StatelessWidget {
   Widget dateWidget() {
     return Text(
       DateFunctions(passedDate: message.messageDate).hourMinute(),
-      style: TextStyle(fontSize: 11.0),
+      style: TextStyle(
+        fontSize: 11.0,
+        color: textColor,
+      ),
     );
   }
 

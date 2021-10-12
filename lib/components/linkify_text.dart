@@ -4,7 +4,14 @@ import 'package:ink_mobile/functions/launch_url.dart';
 
 class LinkifyText extends StatelessWidget {
   final String text;
-  const LinkifyText({Key? key, required this.text}) : super(key: key);
+  final TextStyle? style;
+  final TextStyle? linkStyle;
+  const LinkifyText({
+    Key? key,
+    required this.text,
+    this.style,
+    this.linkStyle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,12 +20,14 @@ class LinkifyText extends StatelessWidget {
       options: LinkifyOptions(
         humanize: false,
       ),
+      style: style,
       onOpen: (url) {
         launchUrl(url.url);
       },
-      linkStyle: TextStyle(
-        color: Theme.of(context).textTheme.bodyText1!.color,
-      ),
+      linkStyle: linkStyle ??
+          TextStyle(
+            color: Theme.of(context).textTheme.bodyText1!.color,
+          ),
     );
   }
 }

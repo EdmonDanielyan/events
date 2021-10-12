@@ -57,7 +57,7 @@ class Chat {
 
 class ChatListView {
   static int sortByDate(Chat a, Chat b) {
-    if (a.messages.length > 0) {
+    if (a.messages.length > 0 && b.messages.length > 0) {
       return a.messages.last.messageDate.isAfter(b.messages.last.messageDate)
           ? -1
           : 1;

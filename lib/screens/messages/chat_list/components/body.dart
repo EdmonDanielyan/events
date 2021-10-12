@@ -7,15 +7,29 @@ import 'package:ink_mobile/screens/messages/chat_list/components/search_bar.dart
 
 import 'chat.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  late ChatListCubit _cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      _cubit.emitChats(items: ChatListView.getExampleList());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final _contentPadding = EdgeInsets.symmetric(horizontal: 10);
-    final _cubit = BlocProvider.of<ChatListCubit>(context);
+    _cubit = BlocProvider.of<ChatListCubit>(context);
 
-    _cubit.emitChats(items: ChatListView.getExampleList());
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -28,7 +42,6 @@ class Body extends StatelessWidget {
           BlocBuilder<ChatListCubit, ChatListCubitState>(
             builder: (BuildContext context, state) {
               List<Chat> searchList = state.searchList;
-              searchList.sort(ChatListView.sortByDate);
               return ListView.builder(
                 controller: ScrollController(keepScrollOffset: false),
                 shrinkWrap: true,

@@ -11,6 +11,10 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
     emitUsers(items: ChatUserSelectViewModel.getExampleList());
   }
 
+  void setSearchValue(String value) {
+    emit(state.copyWith(searchValue: value));
+  }
+
   void switchItemStatus(bool val, int index) {
     List<ChatUserSelect> users = state.searchUsers;
     users[index] = users.elementAt(index).copyWith(selected: val);

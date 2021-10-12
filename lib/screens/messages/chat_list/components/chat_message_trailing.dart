@@ -15,7 +15,10 @@ class ChatMessageTrailing extends StatelessWidget {
     return Container(
       child: unreadMessages > 0
           ? ChatCount(count: unreadMessages)
-          : ChatTick(chatStatus: chat.messages.last.status),
+          : ChatTick(
+              chatStatus: chat.messages.last.status,
+              brightness: Brightness.light,
+            ),
     );
   }
 }

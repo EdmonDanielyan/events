@@ -69,9 +69,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
           SizedBox(height: 10),
           SearchField(
             hint: _strings.searchHint,
-            onChanged: (val) {
-              print(val);
-            },
+            onChanged: (val) => _personListCubit.setSearchValue(val),
           ),
           SizedBox(height: 20),
           hintText(),
@@ -92,6 +90,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
                       enabled: searchUsers[index].selected,
                       titleGap: _titleGap,
                       avatarSize: _avatarSize,
+                      highlightTxt: state.searchValue,
                       onChanged: (bool val) =>
                           _personListCubit.switchItemStatus(val, index),
                     ),

@@ -217,4 +217,5 @@ class EnglishStrings implements LanguageStrings {
   final String picVidFromGallery = "Image or video from gallery";
   final String document = "Document";
   final String newChatHint = "Choose person (one or many)";
+  final String you = "You";
 }

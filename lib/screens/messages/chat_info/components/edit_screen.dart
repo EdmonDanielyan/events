@@ -30,7 +30,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
     if (_formKey.currentState!.validate()) {
       Chat chat = ChatInfoEditEntitiesFunctions.copyChat(entities, _chat);
 
-      _chatListCubit.addChat(chat);
+      _chatListCubit.reAddChat(chat);
       _chatCubit.emitChat(chat);
     }
 

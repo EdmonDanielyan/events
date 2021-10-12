@@ -18,7 +18,7 @@ class Message {
     required this.message,
     required this.messageDate,
     this.type = MessageType.TEXT,
-    required this.status,
+    this.status = MessageStatus.ERROR,
     this.byMe = false,
   });
 
