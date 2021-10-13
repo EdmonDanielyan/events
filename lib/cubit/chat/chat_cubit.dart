@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/models/chat/message.dart';
-import 'package:ink_mobile/models/chat/selected_message.dart';
 
 import 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatCubitState> {
+  int? previousSelectedMessageId;
   ChatCubit() : super(ChatCubitState(chat: Chat(avatarUrl: "", messages: [])));
 
   void emitChat(Chat chat) {
@@ -26,8 +26,9 @@ class ChatCubit extends Cubit<ChatCubitState> {
     );
   }
 
-  void emitSelectedMessage(SelectedMessage? selectedMessage) {
-    emit(state.copyWith(selectedMessage: selectedMessage));
+  void emitSelectedMessage(int? selectedMessageId) {
+    previousSelectedMessageId = state.selectedMessageId;
+    emit(state.copyWith(selectedMessageId: selectedMessageId));
   }
 
   void _emitMessages(List<Message> messages) {

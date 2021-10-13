@@ -10,6 +10,7 @@ class Message {
   final DateTime messageDate;
   final MessageType type;
   final MessageStatus status;
+  final int? selectedMessageId;
   final bool byMe;
 
   Message({
@@ -19,6 +20,7 @@ class Message {
     required this.messageDate,
     this.type = MessageType.TEXT,
     this.status = MessageStatus.ERROR,
+    this.selectedMessageId,
     this.byMe = false,
   });
 
@@ -29,6 +31,7 @@ class Message {
     DateTime? messageDate,
     MessageType? type,
     MessageStatus? status,
+    int? selectedMessageId,
     bool? byMe,
   }) {
     return Message(
@@ -38,6 +41,7 @@ class Message {
       messageDate: messageDate ?? this.messageDate,
       type: type ?? this.type,
       status: status ?? this.status,
+      selectedMessageId: selectedMessageId ?? this.selectedMessageId,
       byMe: byMe ?? this.byMe,
     );
   }
@@ -53,6 +57,7 @@ class Message {
         other.messageDate == messageDate &&
         other.type == type &&
         other.status == status &&
+        other.selectedMessageId == selectedMessageId &&
         other.byMe == byMe;
   }
 
@@ -64,11 +69,18 @@ class Message {
         messageDate.hashCode ^
         type.hashCode ^
         status.hashCode ^
+        selectedMessageId.hashCode ^
         byMe.hashCode;
   }
 }
 
 class MessageListView {
+  static Message? getMessageById(int id, List<Message> messages) {
+    for (final message in messages) if (message.id == id) return message;
+
+    return null;
+  }
+
   static int unreadMessages(List<Message> items) => items.fold(
         0,
         (previousValue, element) =>

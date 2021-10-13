@@ -9,7 +9,6 @@ import 'package:ink_mobile/localization/localization_cubit/localization_cubit.da
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/models/chat/select_menu.dart';
-import 'package:ink_mobile/models/chat/selected_message.dart';
 
 class HoverMessage extends StatelessWidget {
   final Message message;
@@ -36,12 +35,7 @@ class HoverMessage extends StatelessWidget {
   }
 
   void _onRespond() {
-    SelectedMessage selectedMessage = SelectedMessage(
-      title: message.byMe ? _strings.you : _chatCubit.state.chat.chatName,
-      body: message.message,
-      titleColor: message.byMe ? Colors.green : Colors.purple,
-    );
-    _chatCubit.emitSelectedMessage(selectedMessage);
+    _chatCubit.emitSelectedMessage(message.id);
   }
 
   @override

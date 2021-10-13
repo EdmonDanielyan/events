@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/models/chat/selected_message.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/models/chat/message.dart';
 
 class RespondMessageContainer extends StatelessWidget {
   final void Function()? onCancel;
-  final SelectedMessage selectedMessage;
+  final Message selectedMessage;
   final double horizontalPadding;
+  final Color? txtColor;
+  final Color? bgColor;
   const RespondMessageContainer({
     Key? key,
     this.horizontalPadding = 7.0,
     this.onCancel,
+    this.txtColor,
+    this.bgColor,
     required this.selectedMessage,
   }) : super(key: key);
 
+  static late LanguageStrings _strings;
+
   @override
   Widget build(BuildContext context) {
+    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: bgColor ?? Colors.grey[200],
         borderRadius: BorderRadius.circular(10),
       ),
       padding: EdgeInsets.all(horizontalPadding),
@@ -24,11 +34,14 @@ class RespondMessageContainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
                 child: _titleWidget(),
               ),
-              _cancelWidget(),
+              if (onCancel != null) ...[
+                _cancelWidget(),
+              ],
             ],
           ),
           SizedBox(height: 2.0),
@@ -40,10 +53,10 @@ class RespondMessageContainer extends StatelessWidget {
 
   Widget _titleWidget() {
     return Text(
-      selectedMessage.title,
+      selectedMessage.byMe ? _strings.you : selectedMessage.user.name,
       style: TextStyle(
-        color: selectedMessage.titleColor,
-        fontSize: 12.0,
+        color: selectedMessage.byMe ? Colors.green : Colors.purple[200],
+        fontSize: 12.5,
       ),
     );
   }
@@ -60,11 +73,12 @@ class RespondMessageContainer extends StatelessWidget {
 
   Widget _textWidget() {
     return Text(
-      selectedMessage.body,
+      selectedMessage.message,
       maxLines: 3,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         fontSize: 12.0,
+        color: txtColor ?? Colors.black,
       ),
     );
   }

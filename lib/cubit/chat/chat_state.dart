@@ -1,22 +1,21 @@
 import 'package:ink_mobile/models/chat/chat.dart';
-import 'package:ink_mobile/models/chat/selected_message.dart';
 
 class ChatCubitState {
   Chat chat;
-  SelectedMessage? selectedMessage;
+  int? selectedMessageId;
 
   ChatCubitState({
     required this.chat,
-    this.selectedMessage,
+    this.selectedMessageId,
   });
 
   ChatCubitState copyWith({
     Chat? chat,
-    SelectedMessage? selectedMessage,
+    int? selectedMessageId,
   }) {
     return ChatCubitState(
       chat: chat ?? this.chat,
-      selectedMessage: selectedMessage,
+      selectedMessageId: selectedMessageId,
     );
   }
 }

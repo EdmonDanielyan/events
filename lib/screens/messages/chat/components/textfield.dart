@@ -4,8 +4,13 @@ import 'package:ink_mobile/localization/localization_cubit/localization_cubit.da
 import 'package:ink_mobile/screens/messages/chat/components/attach_icon.dart';
 
 class MessageTextfield extends StatelessWidget {
+  final FocusNode? focusNode;
   final Function(String)? onChanged;
-  const MessageTextfield({Key? key, this.onChanged}) : super(key: key);
+  const MessageTextfield({
+    Key? key,
+    this.onChanged,
+    this.focusNode,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +24,7 @@ class MessageTextfield extends StatelessWidget {
             onChanged: onChanged,
             minLines: 1,
             maxLines: 3,
+            focusNode: focusNode,
             decoration: InputDecoration(
               hintText: "${_strings.writeHint}...",
               border: OutlineInputBorder(

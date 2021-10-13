@@ -22,7 +22,8 @@ class ChatEntitiesFunctions {
     return MessageType.TEXT;
   }
 
-  static Message buildMessage(ChatEntities entities) {
+  static Message buildMessage(
+      {required ChatEntities entities, int? selectedMessageId}) {
     return Message(
       id: 8,
       user: ChatUser(avatarUrl: "", name: "IBRA CHEKAEV", online: true),
@@ -30,6 +31,7 @@ class ChatEntitiesFunctions {
       messageDate: DateTime.now(),
       type: getType(entities),
       status: MessageStatus.SENDING,
+      selectedMessageId: selectedMessageId,
       byMe: true,
     );
   }

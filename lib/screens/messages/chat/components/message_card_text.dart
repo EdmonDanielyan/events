@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/linkify_text.dart';
 import 'package:ink_mobile/functions/date_functions.dart';
 import 'package:ink_mobile/models/chat/message.dart';
+import 'package:ink_mobile/screens/messages/chat/components/respond_container_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_avatar.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
 
@@ -10,6 +11,8 @@ class MessageCardText extends StatelessWidget {
   const MessageCardText({Key? key, required this.message}) : super(key: key);
 
   Color get textColor => message.byMe ? Colors.white : Colors.black;
+
+  Color get bgColor => message.byMe ? Color(0XFF46966E) : Colors.grey.shade200;
 
   @override
   Widget build(BuildContext context) {
@@ -30,27 +33,31 @@ class MessageCardText extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: containerBorderRadius(),
-              color: message.byMe ? Color(0XFF46966E) : Colors.grey.shade200,
+              color: bgColor,
             ),
-            padding: EdgeInsets.all(13),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Flexible(
-                  child: LinkifyText(
-                    text: message.message,
-                    style: TextStyle(color: textColor),
-                    linkStyle: TextStyle(color: textColor),
+            padding: EdgeInsets.all(9.5),
+            child: RespondContainerWrapper(
+              message: message,
+              textColor: textColor,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Flexible(
+                    child: LinkifyText(
+                      text: message.message,
+                      style: TextStyle(color: textColor),
+                      linkStyle: TextStyle(color: textColor),
+                    ),
                   ),
-                ),
-                SizedBox(width: 5.0),
-                dateWidget(),
-                if (message.byMe) ...[
-                  SizedBox(width: 4.0),
-                  statusWidget(),
+                  SizedBox(width: 5.0),
+                  dateWidget(),
+                  if (message.byMe) ...[
+                    SizedBox(width: 4.0),
+                    statusWidget(),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),

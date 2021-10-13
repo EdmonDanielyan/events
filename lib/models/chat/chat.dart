@@ -95,6 +95,7 @@ class ChatListView {
             message:
                 "Я пишу что-то очень интересное, ведь тебе так интересно, что я тебе пишу",
             messageDate: DateTime(2021, 10, 4, 08, 4, 7),
+            selectedMessageId: 1,
             status: MessageStatus.SENT,
           ),
         ],

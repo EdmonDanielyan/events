@@ -21,6 +21,7 @@ class MessageBottomBar extends StatefulWidget {
 
 class _MessageBottomBarState extends State<MessageBottomBar> {
   ChatEntities entities = ChatEntities();
+  FocusNode textfieldFocus = FocusNode();
   late ChatCubit _chatCubit;
   late ChatListCubit _chatListCubit;
   final _formKey = GlobalKey<FormState>();
@@ -29,7 +30,10 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   void onSend() {
     if (entities.text.isNotEmpty) {
       clearForm();
-      Message message = ChatEntitiesFunctions.buildMessage(entities);
+      Message message = ChatEntitiesFunctions.buildMessage(
+        entities: entities,
+        selectedMessageId: _chatCubit.state.selectedMessageId,
+      );
       _chatCubit.addMessage(message);
       _chatListCubit.reAddChat(_chatCubit.state.chat);
       ScrollBottom(widget.scrollController).jumpLazy();
@@ -73,6 +77,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
                   Expanded(
                     child: MessageTextfield(
                       onChanged: (val) => entities.text = val,
+                      focusNode: textfieldFocus,
                     ),
                   ),
                   SizedBox(width: 8.0),
@@ -87,14 +92,28 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   }
 
   Widget _respondContainerWidget() {
-    return BlocBuilder<ChatCubit, ChatCubitState>(
-      builder: (BuildContext, state) {
-        if (state.selectedMessage == null) {
+    return BlocConsumer<ChatCubit, ChatCubitState>(
+      listener: (context, state) {
+        if (state.selectedMessageId != _chatCubit.previousSelectedMessageId) {
+          if (state.selectedMessageId != null) {
+            textfieldFocus.requestFocus();
+          } else {
+            textfieldFocus.unfocus();
+          }
+        }
+      },
+      builder: (context, state) {
+        if (state.selectedMessageId == null) {
           return SizedBox();
         } else {
+          Message? selectedMsg = MessageListView.getMessageById(
+              state.selectedMessageId!, state.chat.messages);
+
+          if (selectedMsg == null) return SizedBox();
+
           return RespondMessageContainer(
             horizontalPadding: _padding,
-            selectedMessage: state.selectedMessage!,
+            selectedMessage: selectedMsg,
             onCancel: () => _chatCubit.emitSelectedMessage(null),
           );
         }
