@@ -243,6 +243,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   }
 
   Widget quantityWidget() {
+    quantityTextController.text = '1';
     return NumberSelectFormField(
       controller: quantityTextController,
       buttonsColor: ButtonsColor(
@@ -252,7 +253,13 @@ class _ReferencesFormState extends State<ReferencesForm> {
       changeValueBy: 1,
       mode: NumberSelectFieldMode.int,
       onlyPositive: true,
-      onChanged: (val) => entities.quantity = Parser.stringToInt(val),
+      onChanged: (val) {
+          entities.quantity = Parser.stringToInt(val);
+          if (entities.quantity < 1) {
+            entities.quantity = 1;
+            quantityTextController.text = '1';
+          }
+        },
       validator: (value) {},
       style: TextStyle(fontSize: 30, height: 1),
       textAlignVertical: TextAlignVertical.center,
