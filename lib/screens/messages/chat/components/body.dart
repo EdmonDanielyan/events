@@ -14,6 +14,14 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> with MessageMixins {
   ScrollController controller = ScrollController();
+  late KeyboardVisibilityController keyboardVisibilityController;
+
+  void keyboardListener() {
+    keyboardVisibilityController = KeyboardVisibilityController();
+    keyboardVisibilityController.onChange.listen((visible) {
+      if (visible) bottomGapScroll(controller);
+    });
+  }
 
   @override
   void initState() {
@@ -22,6 +30,7 @@ class _BodyState extends State<Body> with MessageMixins {
     Future.delayed(Duration.zero, () {
       ScrollBottom(controller).jump();
     });
+    keyboardListener();
   }
 
   @override
@@ -32,12 +41,7 @@ class _BodyState extends State<Body> with MessageMixins {
         Expanded(
           child: SingleChildScrollView(
             controller: controller,
-            child: KeyboardVisibilityBuilder(
-              builder: (context, isKeyboardVisible) {
-                if (isKeyboardVisible) bottomGapScroll(controller);
-                return MessageList();
-              },
-            ),
+            child: MessageList(),
           ),
         ),
         MessageBottomBar(scrollController: controller),

@@ -1,4 +1,7 @@
 import 'package:ink_mobile/models/chat/chat_user.dart';
+import 'package:ink_mobile/models/chat/group_chat.dart';
+
+import 'chat.dart';
 
 class ChatUserSelect extends ChatUser {
   final String avatarUrl;
@@ -30,6 +33,27 @@ class ChatUserSelect extends ChatUser {
 class ChatUserSelectViewModel {
   static List<ChatUserSelect> getSelectedItems(List<ChatUserSelect> items) =>
       items.where((element) => element.selected).toList();
+
+  static Chat createSingleChat(ChatUserSelect user) {
+    return Chat(
+      chatName: user.name,
+      avatarUrl: user.avatarUrl,
+      messages: [],
+    );
+  }
+
+  static Chat createGroup({
+    required String name,
+    required ChatUserSelect owner,
+    required List<ChatUserSelect> users,
+  }) {
+    return Chat(
+      chatName: name,
+      avatarUrl: "",
+      messages: [],
+      group: GroupChat(owner: owner, users: users),
+    );
+  }
 
   static List<ChatUserSelect> getExampleList() {
     return [

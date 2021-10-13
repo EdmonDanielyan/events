@@ -200,4 +200,7 @@ abstract class LanguageStrings {
   abstract final String document;
   abstract final String newChatHint;
   abstract final String you;
+  abstract final String groupName;
+  abstract final String name;
+  abstract final String newGroup;
 }

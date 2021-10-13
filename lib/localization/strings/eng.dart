@@ -218,4 +218,7 @@ class EnglishStrings implements LanguageStrings {
   final String document = "Document";
   final String newChatHint = "Choose person (one or many)";
   final String you = "You";
+  final String groupName = "Group name";
+  final String name = "Name";
+  final String newGroup = "New group";
 }

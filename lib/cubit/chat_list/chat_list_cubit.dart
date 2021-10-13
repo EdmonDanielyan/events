@@ -34,10 +34,22 @@ class ChatListCubit extends Cubit<ChatListCubitState> {
     }
   }
 
+  void addChat(Chat chat) {
+    chats.insert(0, chat);
+    emitChats(items: chats);
+  }
+
   void reAddChat(Chat chat) {
     if (selectedChatExists) {
       chats.removeAt(selectedChat);
       chats.insert(0, chat);
+      emitChats(items: chats);
+    }
+  }
+
+  void updateChat(Chat chat) {
+    if (selectedChatExists) {
+      chats[selectedChat] = chat;
       emitChats(items: chats);
     }
   }
