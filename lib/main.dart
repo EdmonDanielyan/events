@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +19,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
 import 'localization/localization_cubit/localization_cubit.dart';
 
-void main() async {
+Future<void> main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
@@ -66,8 +67,14 @@ class InkMobile extends StatelessWidget {
         navigatorKey: App.materialKey,
         title: 'ИНК',
         initialRoute: '/init',
-        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          DefaultMaterialLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+          DefaultWidgetsLocalizations.delegate,
+        ],
         supportedLocales: [
+          const Locale('en'),
           const Locale('ru'),
         ],
         routes: MainRoutes.routes,

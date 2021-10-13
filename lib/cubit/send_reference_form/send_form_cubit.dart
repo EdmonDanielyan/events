@@ -8,6 +8,7 @@ import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/references/delivery_list.dart';
 import 'package:ink_mobile/models/references/reference_list.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/references/components/form/entities.dart';
 
 class SendReferenceFormCubit extends Cubit<BtnCubitState> {
@@ -15,13 +16,14 @@ class SendReferenceFormCubit extends Cubit<BtnCubitState> {
   SendReferenceFormCubit({required this.languageStrings})
       : super(BtnCubitState(state: BtnCubitStateEnums.INITIAL));
 
-  void send(
+  Future<void> send(
       {required ReferencesFormEntities entities,
       required ReferencesItem referencesItem,
       required DeliveryItem deliveryItem}) async {
     emitState(newState: BtnCubitStateEnums.SENDING);
 
     try {
+      await Token.setNewTokensIfExpired();
       final res = await SendReferenceForm(
         dependency: SendReferenceFormRepository(
           entities: entities,

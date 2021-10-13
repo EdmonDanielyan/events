@@ -77,7 +77,7 @@ class Body extends StatelessWidget {
         ));
   }
 
-  void _onScroll() async {
+  Future<void> _onScroll() async {
     cubit.onScroll(_controller);
   }
 

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/screens/service_list/components/body.dart';
+
+import 'components/body.dart';
 
 class ServiceListScreen extends StatefulWidget {
   const ServiceListScreen({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class _ServiceListScreenState extends State<ServiceListScreen>
     super.build(context);
     final _strings =
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+
     return Scaffold(
       appBar: InkAppBarWithText(title: _strings.services),
       body: Body(),

@@ -4,11 +4,9 @@ class SocialPackageListElement extends StatelessWidget {
   final String title;
   final String link;
 
-  const SocialPackageListElement({
-    Key? key,
-    required this.title,
-    required this.link
-  }) : super(key: key);
+  const SocialPackageListElement(
+      {Key? key, required this.title, required this.link})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +17,7 @@ class SocialPackageListElement extends StatelessWidget {
         child: Container(
             color: Colors.white,
             alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            padding: EdgeInsets.symmetric(vertical: 10),
             height: 60,
             child: Row(
                 children: [

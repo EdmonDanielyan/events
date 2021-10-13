@@ -59,16 +59,21 @@ class Head extends StatelessWidget {
   }
 
   Widget _sampleWidget() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Icon(Icons.info, color: Colors.blue),
-        SizedBox(width: 7.0),
-        Text(
-          _strings.formFillingSample,
-          style: TextStyle(color: Colors.blue),
-        )
-      ],
+    return InkWell(
+      onTap: () {
+        launchUrl("http://p3.ink.vpool/services/dms/help.jpg");
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(Icons.info, color: Colors.blue),
+          SizedBox(width: 7.0),
+          Text(
+            _strings.formFillingSample,
+            style: TextStyle(color: Colors.blue),
+          )
+        ],
+      ),
     );
   }
 }

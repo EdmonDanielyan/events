@@ -5,6 +5,7 @@ import 'package:ink_mobile/cubit/send_feedback_form/domain/repository.dart';
 import 'package:ink_mobile/cubit/send_feedback_form/use_cases/send.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/error_model.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/feedback/components/form/entities.dart';
 import 'package:dio/dio.dart';
 
@@ -13,10 +14,11 @@ class SendManagementFormCubit extends Cubit<BtnCubitState> {
   SendManagementFormCubit({required this.languageStrings})
       : super(BtnCubitState(state: BtnCubitStateEnums.INITIAL));
 
-  void send(ManagementFeedbackFormEntities entities) async {
+  Future<void> send(ManagementFeedbackFormEntities entities) async {
     emitState(newState: BtnCubitStateEnums.SENDING);
 
     try {
+      await Token.setNewTokensIfExpired();
       final bool res = await SendFeedbackForm(
               dependency: SendFeedbackFormRepository(entities: entities)
                   .getDependency())

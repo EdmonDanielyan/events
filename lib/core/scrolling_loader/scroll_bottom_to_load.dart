@@ -15,7 +15,7 @@ class ScrollBottomToLoad {
     _controller = controller;
   }
 
-  void onScroll(Function onCall) async {
+  Future<void> onScroll(Function onCall) async {
     bool reachedLoadTrigger = _controller.offset >=
         _controller.position.maxScrollExtent - bottomScrollOffset;
 

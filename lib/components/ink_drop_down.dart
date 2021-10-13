@@ -53,7 +53,7 @@ class _InkDropDownState extends State<InkDropDown> {
     );
   }
 
-  void showSelectorDialog() async {
+  Future<void> showSelectorDialog() async {
     int? selected = await showDialog(
         context: context,
         builder: (context) {
