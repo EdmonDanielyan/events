@@ -43,8 +43,27 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
   Widget screen = TestScreen();
 
   void onTap(BuildContext context, Function onChanged, int index) {
-    NavigationUtils.popScreenIfCan(context);
-    onChanged(index);
+    // NavigationUtils.popScreenIfCan(context);
+    // onChanged(index);
+    info(context);
+  }
+  void info(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text("Сообщения в разработке!"),
+          actions: [
+            TextButton(
+            child: Text("OK"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 

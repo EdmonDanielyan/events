@@ -29,8 +29,8 @@ class Head extends StatelessWidget {
           _medicalServiceLinkWidget(),
           SizedBox(height: 12.0),
           _infoWidget(),
-          SizedBox(height: 5.0),
-          _sampleWidget(),
+          // SizedBox(height: 5.0),
+          // _sampleWidget(),
         ],
       ),
     );

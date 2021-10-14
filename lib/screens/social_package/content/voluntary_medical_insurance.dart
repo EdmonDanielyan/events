@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
+import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 
 class VoluntaryMedicalInsurance extends StatelessWidget {
@@ -24,7 +26,7 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
             child: Html(
                 onLinkTap: (String? url, RenderContext context,
                     Map<String, String> attributes, dom.Element? element) {
-                  print(url!);
+                  launchUrl(url!);
                 },
                 data: '''
                   <h1 align="center">Комплексное медицинское обслуживание</h1>
@@ -79,7 +81,7 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
             child: Html(
                 onLinkTap: (String? url, RenderContext context,
                     Map<String, String> attributes, dom.Element? element) {
-                  print(url!);
+                  launchUrl(url!);
                 },
                 data: '''
                   <h1 align="center">Санаторно-курортное и реабилитационно-восстановительное лечение</h1>
@@ -119,7 +121,7 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
             child: Html(
               onLinkTap: (String? url, RenderContext context,
                   Map<String, String> attributes, dom.Element? element) {
-                print(url!);
+                launchUrl(url!);
               },
               data: '''
                   <h1 align="center">Вакцинация</h1>
@@ -160,7 +162,7 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
             child: Html(
               onLinkTap: (String? url, RenderContext context,
                   Map<String, String> attributes, dom.Element? element) {
-                print(url!);
+                launchUrl(url!);
               },
               data: '''
                   <h1 align="center">Страхование сотрудников от несчастных случаев</h1>
@@ -188,7 +190,7 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
                   1.&nbsp;&nbsp;&nbsp; Ознакомиться с <a style="color: #2b5e4a;" href="https://portal.irkutskoil.ru/upload/medialibrary/4db/4db0bedbb0859cb4c8d9c9729035f30b.docx%20" title="Список документов.docx"><b><span style="color: #00736a;"><u>перечнем документов</u></span></b></a>, предоставляемых в ПАО СК «Росгосстрах» для принятия решения о страховой выплате;&nbsp;
                   </p>
                   <p>
-                  2.&nbsp;&nbsp;&nbsp; Заполнить <a style="color: #2b5e4a;" href="https://portal.irkutskoil.ru/upload/medialibrary/2cd/2cdf468ce2e738964dd227df2c54aa67.doc%20" title="Форма заявления на страховую выплату.doc"><b><span style="color: #00736a;"><u>заявление</u></span></b></a><b>&nbsp;</b>на&nbsp; страховую выплату;
+                  2.&nbsp;&nbsp;&nbsp; Заполнить <a style="color: #2b5e4a;" href="https://portal.irkutskoil.ru/upload/medialibrary/2cd/2cdf468ce2e738964dd227df2c54aa67.doc%20" title="Форма заявления на страховую выплату.doc"><b><span style="color: #00736a;"><u>заявление</u></span></b></a><b>&nbsp;</b> на&nbsp; страховую выплату;
                   </p>
                   <p>
                   3.&nbsp;&nbsp;&nbsp; Собрать и передать пакет документов:
@@ -232,7 +234,7 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
             child: Html(
               onLinkTap: (String? url, RenderContext context,
                   Map<String, String> attributes, dom.Element? element) {
-                print(url!);
+                launchUrl(url!);
               },
               data: '''
                   <h1 align="center">Корпоративный врач</h1>
@@ -253,6 +255,7 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
           )
         ],
       )),
+      bottomNavigationBar: NewBottomNavBar(),
     );
   }
 }

@@ -70,7 +70,7 @@ class _ContentState extends State<Content> {
                         child: Row(children: [
                           SvgPicture.asset(
                             IconLinks.BARREL_SVG_LINK,
-                            width: 18,
+                            width: 14,
                             color: widget.isLiked
                                 ? Theme.of(context).primaryColor
                                 : Theme.of(context).accentColor,
@@ -79,7 +79,7 @@ class _ContentState extends State<Content> {
                               margin: EdgeInsets.only(left: 4),
                               child: Text(widget.likeCount.toString(),
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     color: widget.isLiked
                                         ? Theme.of(context).primaryColor
                                         : Theme.of(context).accentColor,
@@ -97,14 +97,14 @@ class _ContentState extends State<Content> {
                           child: Row(children: [
                             SvgPicture.asset(
                               IconLinks.COMMENT_SVG_LINK,
-                              width: 23,
+                              width: 18,
                               color: Color(0xFF757678),
                             ),
                             Container(
                                 margin: EdgeInsets.only(left: 4),
                                 child: Text(widget.commentsCount.toString(),
                                     style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       color: Theme.of(context).accentColor,
                                     )))
                           ]),
