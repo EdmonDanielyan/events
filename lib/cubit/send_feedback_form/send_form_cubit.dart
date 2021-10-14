@@ -31,7 +31,7 @@ class SendManagementFormCubit extends Cubit<BtnCubitState> {
 
       emitError(error.msg);
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccuried);
+      emitError(languageStrings.errorOccurred);
     }
   }
 

@@ -25,7 +25,7 @@ class TagsListCubit extends Cubit<TagsListCubitState> {
 
       emitError(error.msg);
     } catch (e) {
-      emitError(languageStrings.errorOccuried);
+      emitError(languageStrings.errorOccurred);
     }
   }
 

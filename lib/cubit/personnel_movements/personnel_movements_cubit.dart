@@ -40,7 +40,7 @@ class PersonnelMovementsCubit extends Cubit<PersonnelMovementsState> {
       emitError(languageStrings.noConnectionError);
       throw NoConnectionException();
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccuried);
+      emitError(languageStrings.errorOccurred);
     }
   }
 

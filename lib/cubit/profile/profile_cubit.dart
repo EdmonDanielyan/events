@@ -36,7 +36,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccuried);
+      emitError(languageStrings.errorOccurred);
       throw UnknownErrorException();
     }
   }
@@ -59,7 +59,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccuried);
+      emitError(languageStrings.errorOccurred);
       throw UnknownErrorException();
     }
   }

@@ -45,7 +45,7 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccuried);
+      emitError(languageStrings.errorOccurred);
     }
   }
 

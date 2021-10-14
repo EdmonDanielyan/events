@@ -136,7 +136,7 @@ class _ContentState extends State<Content> {
       if (error is NoConnectionException) {
         message = _strings.noConnectionError;
       } else {
-        message = _strings.errorOccuried;
+        message = _strings.errorOccurred;
       }
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

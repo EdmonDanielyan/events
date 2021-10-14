@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/cubit/boot/boot_cubit.dart';
 import 'package:ink_mobile/cubit/initial/initial_cubit.dart';
 import 'package:ink_mobile/cubit/initial/initial_state.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
@@ -52,6 +54,8 @@ class InitPage extends StatelessWidget {
                 case InitialStateType.LOADING:
                   {
                     cubit.fetch();
+                    final bootCubit = GetIt.I<BootCubit>();
+                    bootCubit.load();
 
                     return Container(child: InkPageLoader());
                   }
