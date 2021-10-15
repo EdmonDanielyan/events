@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:ink_mobile/core/handlers/AuthHandler.dart';
 import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/cubit/initial/initial_state.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
@@ -29,7 +31,7 @@ class InitialCubit extends Cubit<InitialState> {
     try {
       await refreshToken();
       await wasTokenExpired();
-
+      GetIt.I<AuthHandler>().onSuccessAuth();
       emitState(type: InitialStateType.LOAD_MAIN);
     } on DioError catch (e) {
       if (e.type == DioErrorType.other) {

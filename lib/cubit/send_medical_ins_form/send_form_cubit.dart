@@ -34,7 +34,7 @@ class SendMedicalInsFormCubit extends Cubit<BtnCubitState> {
 
       emitError(error.msg);
     } catch (_) {
-      emitError(languageStrings.errorOccuried);
+      emitError(languageStrings.errorOccurred);
     }
   }
 

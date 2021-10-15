@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
+import 'package:ink_mobile/core/handlers/AuthHandler.dart';
 import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/cubit/auth/sources/dependency.dart';
 import 'package:ink_mobile/models/token.dart';
@@ -23,7 +25,7 @@ class AuthUser {
 
       await Token.setRefresh(refreshToken);
       await Token.setJwt(token);
-
+      GetIt.I<AuthHandler>().onSuccessAuth();
       return true;
     } else {
       return false;

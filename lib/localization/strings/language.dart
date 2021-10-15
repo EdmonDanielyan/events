@@ -84,7 +84,7 @@ abstract class LanguageStrings {
   abstract final String christmasGifts;
   abstract final String recreationalActivities;
   abstract final String noConnectionError;
-  abstract final String errorOccuried;
+  abstract final String errorOccurred;
   abstract final String unknownError;
   abstract final String reload;
   abstract final String signOff;
