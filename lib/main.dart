@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ink_mobile/app.dart';
 import 'package:ink_mobile/assets/constants.dart';
@@ -16,11 +17,9 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/themes/light.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
 import 'cubit/boot/boot_cubit.dart';
-import 'cubit/initial/initial_cubit.dart';
 import 'localization/localization_cubit/localization_cubit.dart';
 
 void main() async {

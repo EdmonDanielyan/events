@@ -1,14 +1,14 @@
-enum InitialStateType {LOADING, LOAD_MAIN, LOAD_WELCOME, ERROR}
+enum BootStateStateType {LOADING, LOADED, ERROR}
 
 class BootState {
   BootState({
     required this.type,
     this.errorMessage
   }) : assert(
-    type != InitialStateType.ERROR
+    type != BootStateStateType.ERROR
     || errorMessage != null
   );
 
-  InitialStateType type;
+  BootStateStateType type;
   String? errorMessage;
 }
