@@ -199,7 +199,7 @@ class BirthdaysScreen extends StatelessWidget {
       ));
     });
 
-    birthdays.removeLast();
+    if (birthdays.length > 0) birthdays.removeLast();
 
     return birthdays;
   }
@@ -217,7 +217,7 @@ class BirthdaysScreen extends StatelessWidget {
       ));
     });
 
-    birthdays.removeLast();
+    if (birthdays.length > 0) birthdays.removeLast();
 
     return birthdays;
   }

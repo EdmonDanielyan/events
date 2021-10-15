@@ -70,6 +70,7 @@ class _ContentState extends State<Content> {
                         child: Row(children: [
                           SvgPicture.asset(
                             IconLinks.BARREL_SVG_LINK,
+                            width: 14,
                             color: widget.isLiked
                                 ? Theme.of(context).primaryColor
                                 : Theme.of(context).accentColor,
@@ -78,6 +79,7 @@ class _ContentState extends State<Content> {
                               margin: EdgeInsets.only(left: 4),
                               child: Text(widget.likeCount.toString(),
                                   style: TextStyle(
+                                    fontSize: 18,
                                     color: widget.isLiked
                                         ? Theme.of(context).primaryColor
                                         : Theme.of(context).accentColor,
@@ -95,34 +97,35 @@ class _ContentState extends State<Content> {
                           child: Row(children: [
                             SvgPicture.asset(
                               IconLinks.COMMENT_SVG_LINK,
-                              width: 30,
+                              width: 18,
                               color: Color(0xFF757678),
                             ),
                             Container(
                                 margin: EdgeInsets.only(left: 4),
                                 child: Text(widget.commentsCount.toString(),
                                     style: TextStyle(
+                                      fontSize: 18,
                                       color: Theme.of(context).accentColor,
                                     )))
                           ]),
                         ))),
-                Expanded(
-                    child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                      Row(children: [
-                        SvgPicture.asset(
-                          IconLinks.VIEW_COUNT_SVG_LINK,
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 4),
-                            child: Text(widget.viewCount.toString(),
-                                style: TextStyle(
-                                  color: Theme.of(context).accentColor,
-                                )))
-                      ])
-                    ]))
+                // Expanded(
+                //     child: Row(
+                //         mainAxisSize: MainAxisSize.max,
+                //         mainAxisAlignment: MainAxisAlignment.end,
+                //         children: [
+                //       Row(children: [
+                //         SvgPicture.asset(
+                //           IconLinks.VIEW_COUNT_SVG_LINK,
+                //         ),
+                //         Container(
+                //             margin: EdgeInsets.only(left: 4),
+                //             child: Text(widget.viewCount.toString(),
+                //                 style: TextStyle(
+                //                   color: Theme.of(context).accentColor,
+                //                 )))
+                //       ])
+                //     ]))
               ]))
         ],
       ),

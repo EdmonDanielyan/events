@@ -7,14 +7,16 @@ import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/models/token.dart';
 
 class TagsListCubit extends Cubit<TagsListCubitState> {
   final LanguageStrings languageStrings;
   TagsListCubit({required this.languageStrings})
       : super(TagsListCubitState(state: TagsListCubitStateEnums.LOADING));
 
-  void load() async {
+  Future<void> load() async {
     try {
+      await Token.setNewTokensIfExpired();
       List<Selectfield> items = await TagsListFetch(
         dependency: TagsListRepository().getDependency(),
       ).call();

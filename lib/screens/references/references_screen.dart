@@ -7,22 +7,23 @@ import 'package:ink_mobile/localization/localization_cubit/localization_cubit.da
 import 'components/body.dart';
 
 class ReferencesScreen extends StatefulWidget {
-  const ReferencesScreen({Key? key}) : super(key: key);
+  final PreferredSizeWidget? appBar;
+  const ReferencesScreen({Key? key, this.appBar}) : super(key: key);
 
   @override
   _ReferencesScreenState createState() => _ReferencesScreenState();
 }
 
-class _ReferencesScreenState extends State<ReferencesScreen> {
+class _ReferencesScreenState extends State<ReferencesScreen>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final _strings =
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
 
     return Scaffold(
-      appBar: InkAppBarWithText(
-        title: _strings.orderInquiry,
-      ),
+      appBar: widget.appBar ?? InkAppBarWithText(title: _strings.orderInquiry),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,4 +45,7 @@ class _ReferencesScreenState extends State<ReferencesScreen> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

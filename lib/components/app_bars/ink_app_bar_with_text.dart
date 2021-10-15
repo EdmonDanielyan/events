@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/components/app_bars/back_btn.dart';
 
 class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
   final String title;
+  final Widget? leading;
 
   static const String APP_BAR_LINES_SVG_LINK = 'assets/images/appbar_lines.svg';
 
-  InkAppBarWithText({Key? key, required this.title}) : super(key: key);
+  InkAppBarWithText({
+    Key? key,
+    required this.title,
+    this.leading,
+  }) : super(key: key);
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
@@ -16,19 +22,16 @@ class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
     BuildContext appBarContext = context;
 
     return AppBar(
-      leading: Builder(
-        builder: (context) {
-          if (Navigator.of(appBarContext).canPop()) {
-            return IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-              onPressed: () async =>
-                  await Navigator.of(appBarContext).maybePop(),
-            );
-          } else {
-            return Container();
-          }
-        },
-      ),
+      leading: leading ??
+          Builder(
+            builder: (context) {
+              if (Navigator.of(appBarContext).canPop()) {
+                return AppBarBackBtn();
+              } else {
+                return Container();
+              }
+            },
+          ),
       flexibleSpace: Container(
         child: SvgPicture.asset(
           APP_BAR_LINES_SVG_LINK,

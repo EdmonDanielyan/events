@@ -5,7 +5,9 @@ import 'package:ink_mobile/components/textfields/service_selectfield_cubit.dart'
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/core/lists/medical_services.dart';
+import 'package:ink_mobile/core/masks/input_formatters.dart';
 import 'package:ink_mobile/core/masks/textfield_masks.dart';
+import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/selectfield.dart';
@@ -85,7 +87,9 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
   Widget _hospitalName() {
     return ServiceTextField(
       hint: _strings.hospitalName,
-      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+      requiredIcon: true,
+      validator: (val) => val!.length < 5 ? _strings.fillTheField : null,
+      inputFormatters: [InputFormatters.lettersNumbersOnly],
       onChanged: (val) => entities.hospitalName = val,
     );
   }
@@ -93,7 +97,9 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
   Widget _city() {
     return ServiceTextField(
       hint: _strings.city,
-      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+      requiredIcon: true,
+      keyboardType: TextInputType.streetAddress,
+      validator: (val) => FieldValidator.cityValidator(val, _strings),
       onChanged: (val) => entities.city = val,
     );
   }
@@ -101,7 +107,9 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
   Widget _address() {
     return ServiceTextField(
       hint: _strings.address,
-      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+      requiredIcon: true,
+      keyboardType: TextInputType.streetAddress,
+      validator: (val) => FieldValidator.streetValidator(val, _strings),
       onChanged: (val) => entities.address = val,
     );
   }
@@ -109,6 +117,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
   Widget _price() {
     return ServiceTextField(
       hint: _strings.medicalPrice,
+      requiredIcon: true,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.number,
@@ -120,6 +129,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
     MaskTextInputFormatter mask = TextFieldMasks.date;
     return ServiceTextField(
       hint: _strings.medicalDateStart,
+      requiredIcon: true,
       validator: (val) =>
           !mask.isFill() || val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.dateStart = val,

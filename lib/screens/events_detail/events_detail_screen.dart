@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_state.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
@@ -57,6 +58,7 @@ class EventDetailScreen extends StatelessWidget {
                 }
             }
           }),
+          bottomNavigationBar: NewBottomNavBar(),
         ));
   }
 

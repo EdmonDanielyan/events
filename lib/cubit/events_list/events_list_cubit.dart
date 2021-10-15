@@ -73,7 +73,7 @@ class EventsListCubit extends Cubit<EventsListState> {
     emit(EventsListState(type: type, data: data, errorMessage: errorMessage));
   }
 
-  void onScroll(ScrollController controller) async {
+  Future<void> onScroll(ScrollController controller) async {
     scrollBottomToLoad.setController(controller);
 
     scrollBottomToLoad.onScroll(() async {
