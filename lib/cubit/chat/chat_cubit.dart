@@ -13,6 +13,10 @@ class ChatCubit extends Cubit<ChatCubitState> {
             chat: Chat(avatarUrl: "", messages: []),
             messagesSearch: ItemsSearch<Message>()));
 
+  List<Message> get getMessages => state.chat.messages;
+  List<Message> get getSelectedMessages =>
+      MessageListView.getSelectedItems(getMessages);
+
   void emitChat(Chat chat) {
     emit(state.copyWith(chat: chat));
   }
@@ -31,9 +35,23 @@ class ChatCubit extends Cubit<ChatCubitState> {
     );
   }
 
-  void emitSelectedMessage(int? selectedMessageId) {
+  void emitSelectedMessageId(int? selectedMessageId) {
     previousSelectedMessageId = state.selectedMessageId;
     emit(state.copyWith(selectedMessageId: selectedMessageId));
+  }
+
+  void selectMessage(int index, bool select) {
+    List<Message> newMessages = getMessages;
+    newMessages[index].selected = select;
+    _emitMessages(newMessages);
+  }
+
+  void unselectAllMessages() {
+    List<Message> newMessages = getMessages;
+    for (final message in newMessages) {
+      if (message.selected) message.selected = false;
+    }
+    _emitMessages(newMessages);
   }
 
   void emitAppBarEnum(ChatAppBarEnums appBarEnum) {

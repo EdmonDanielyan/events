@@ -116,7 +116,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
           return RespondMessageContainer(
             horizontalPadding: _padding,
             selectedMessage: selectedMsg,
-            onCancel: () => _chatCubit.emitSelectedMessage(null),
+            onCancel: () => _chatCubit.emitSelectedMessageId(null),
           );
         }
       },

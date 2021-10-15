@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
@@ -8,6 +9,7 @@ import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/screens/messages/chat/components/app_bar_title.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dart';
+import 'package:ink_mobile/screens/messages/chat/components/selective_app_bar.dart';
 
 import 'components/body.dart';
 
@@ -39,6 +41,8 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
       builder: (context, state) {
         if (state.appBarEnum == ChatAppBarEnums.SEARCH_BAR) {
           return searchBar();
+        } else if (_chatCubit.getSelectedMessages.length > 0) {
+          return selectiveBar();
         } else {
           return initialBar();
         }
@@ -62,6 +66,19 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
           onDown: () => _chatCubit.emitMessageSearch(
               _chatCubit.state.messagesSearch.increaseIndexAndReturn()),
         ),
+      ),
+    );
+  }
+
+  PreferredSizeWidget selectiveBar() {
+    return InkAppBarWithText(
+      title: "",
+      titleWidget: WillPopScope(
+        onWillPop: () async {
+          _chatCubit.unselectAllMessages();
+          return Future.value(false);
+        },
+        child: SelectiveAppBar(),
       ),
     );
   }

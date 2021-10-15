@@ -13,6 +13,8 @@ class Message {
   final int? selectedMessageId;
   final bool byMe;
 
+  bool selected = false;
+
   Message({
     required this.id,
     required this.user,
@@ -75,6 +77,9 @@ class Message {
 }
 
 class MessageListView {
+  static List<Message> getSelectedItems(List<Message> items) =>
+      items.where((element) => element.selected == true).toList();
+
   static List<Message> searchMessagesByStr(
       String value, List<Message> messages) {
     List<Message> search = [];

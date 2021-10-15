@@ -5,15 +5,21 @@ import 'package:ink_mobile/components/popup/popup_menu_container.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
+import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/models/chat/select_menu.dart';
 
 class HoverMessage extends StatelessWidget {
+  final int index;
   final Message message;
   final Widget child;
-  const HoverMessage({Key? key, required this.child, required this.message})
+  const HoverMessage(
+      {Key? key,
+      required this.index,
+      required this.child,
+      required this.message})
       : super(key: key);
 
   static late LanguageStrings _strings;
@@ -35,7 +41,12 @@ class HoverMessage extends StatelessWidget {
   }
 
   void _onRespond() {
-    _chatCubit.emitSelectedMessage(message.id);
+    _chatCubit.emitSelectedMessageId(message.id);
+  }
+
+  void _onSelect() {
+    TextFieldUtils.loseTextFieldFocus();
+    _chatCubit.selectMessage(index, true);
   }
 
   @override
@@ -53,6 +64,7 @@ class HoverMessage extends StatelessWidget {
         if (value == _strings.delete) _onDelete();
         if (value == _strings.copy) _onCopy(context);
         if (value == _strings.reply) _onRespond();
+        if (value == _strings.select) _onSelect();
       },
     );
   }

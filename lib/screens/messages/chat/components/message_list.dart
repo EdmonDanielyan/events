@@ -28,7 +28,7 @@ class MessageList extends StatelessWidget with MessageMixins {
               itemCount: messages.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
-                return eachItem(messages[index], dateSort);
+                return eachItem(messages[index], dateSort, index);
               },
             );
           },
@@ -37,13 +37,13 @@ class MessageList extends StatelessWidget with MessageMixins {
     );
   }
 
-  Widget eachItem(Message message, DateTimeSort dateSort) {
+  Widget eachItem(Message message, DateTimeSort dateSort, int index) {
     return Column(
       children: [
         DateWidget(
           dateTime: dateSort.getMessageDateTime(message.messageDate),
         ),
-        MessageCard(message: message),
+        MessageCard(message: message, index: index),
       ],
     );
   }
