@@ -12,18 +12,7 @@ class ChatListCubit extends Cubit<ChatListCubitState> {
   bool get selectedChatExists => chats.length > selectedChat;
 
   void setSearchValue(String value) {
-    List<Chat> items = chats.where((element) {
-      bool containsChatName =
-          element.chatName.toLowerCase().contains(value.toLowerCase());
-      bool containsUserName = element.messages.last.user.name
-          .toLowerCase()
-          .contains(value.toLowerCase());
-      bool containsMessage = element.messages.last.message
-          .toLowerCase()
-          .contains(value.toLowerCase());
-
-      return containsChatName || containsUserName || containsMessage;
-    }).toList();
+    List<Chat> items = ChatListView.searchChats(value, chats);
     emitSearchList(items, value);
   }
 
@@ -39,10 +28,11 @@ class ChatListCubit extends Cubit<ChatListCubitState> {
     emitChats(items: chats);
   }
 
-  void reAddChat(Chat chat) {
+  void updateAndSetToFirst(Chat chat) {
     if (selectedChatExists) {
       chats.removeAt(selectedChat);
       chats.insert(0, chat);
+      selectedChat = 0;
       emitChats(items: chats);
     }
   }

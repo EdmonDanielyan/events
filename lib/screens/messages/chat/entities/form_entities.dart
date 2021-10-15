@@ -9,6 +9,12 @@ class ChatEntities {
   List<File>? pics_vids;
 
   ChatEntities({this.text = "", this.files, this.pics_vids});
+
+  void clear() {
+    text = "";
+    files = null;
+    pics_vids = null;
+  }
 }
 
 class ChatEntitiesFunctions {

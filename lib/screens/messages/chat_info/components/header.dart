@@ -5,7 +5,7 @@ import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/models/chat/group_chat.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
-import 'package:ink_mobile/screens/messages/chat_list/components/chat_avatar.dart';
+import 'package:ink_mobile/components/custom_circle_avatar.dart';
 
 class ChatInfoHeader extends StatelessWidget {
   final Chat chat;
@@ -35,7 +35,7 @@ class ChatInfoHeader extends StatelessWidget {
         crossAxisAlignment:
             isGroup ? CrossAxisAlignment.start : CrossAxisAlignment.center,
         children: [
-          ChatAvatar(url: chat.avatarUrl),
+          CustomCircleAvatar(url: chat.avatarUrl),
           SizedBox(width: 20.0),
           Expanded(
             child: Column(

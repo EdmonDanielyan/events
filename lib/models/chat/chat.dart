@@ -56,6 +56,25 @@ class Chat {
 }
 
 class ChatListView {
+  static bool strContainsValue(String str, String value) =>
+      str.toLowerCase().contains(value.toLowerCase());
+
+  static List<Chat> searchChats(String value, List<Chat> chats) {
+    List<Chat> newChats = [];
+    newChats = chats.where((element) {
+      bool messagesNotEmpty = element.messages.isNotEmpty;
+      bool containsChatName = strContainsValue(element.chatName, value);
+      bool containsUserName = messagesNotEmpty &&
+          strContainsValue(element.messages.last.user.name, value);
+      bool containsMessage = messagesNotEmpty &&
+          strContainsValue(element.messages.last.message, value);
+
+      return containsChatName || containsUserName || containsMessage;
+    }).toList();
+
+    return newChats;
+  }
+
   static List<Chat> getExampleList() {
     return [
       Chat(

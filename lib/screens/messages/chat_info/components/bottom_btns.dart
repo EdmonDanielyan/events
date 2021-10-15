@@ -34,8 +34,10 @@ class ChatInfoBottomBtns extends StatelessWidget {
 
     return Container(
       color: Colors.white,
+      width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: [
           if (chat.messages.length > 0) ...[
             clearChat(),

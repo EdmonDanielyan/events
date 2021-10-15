@@ -224,6 +224,7 @@ class RussianStrings extends LanguageStrings {
   final String newChatHint = "Выберите собеседников (один или несколько)";
   final String you = "Вы";
   final String groupName = "Название группы";
+  final String description = "Описание";
   final String name = "Название";
   final String newGroup = "Новая группа";
 }

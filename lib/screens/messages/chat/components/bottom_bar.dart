@@ -30,12 +30,14 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   void onSend() {
     if (entities.text.isNotEmpty) {
       clearForm();
+
       Message message = ChatEntitiesFunctions.buildMessage(
         entities: entities,
         selectedMessageId: _chatCubit.state.selectedMessageId,
       );
+      entities.clear();
       _chatCubit.addMessage(message);
-      _chatListCubit.reAddChat(_chatCubit.state.chat);
+      _chatListCubit.updateAndSetToFirst(_chatCubit.state.chat);
       ScrollBottom(widget.scrollController).jumpLazy();
     }
   }

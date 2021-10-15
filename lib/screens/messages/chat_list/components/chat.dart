@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/models/chat/message.dart';
-import 'package:ink_mobile/screens/messages/chat_list/components/chat_avatar.dart';
+import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_date.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_divider.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message.dart';
@@ -43,7 +43,7 @@ class ChatListTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ChatAvatar(
+                  CustomCircleAvatar(
                     url: chat.avatarUrl,
                     indicator:
                         hasMessage && lastMessage!.user.online ? true : false,
@@ -96,7 +96,8 @@ class ChatListTile extends StatelessWidget {
                   SizedBox(
                     height: 0.0,
                     child: Opacity(
-                        child: ChatAvatar(url: chat.avatarUrl), opacity: 0.0),
+                        child: CustomCircleAvatar(url: chat.avatarUrl),
+                        opacity: 0.0),
                   ),
                   SizedBox(width: leadingGap),
                   Expanded(child: ChatDivider())

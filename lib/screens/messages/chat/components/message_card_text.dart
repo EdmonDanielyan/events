@@ -3,7 +3,7 @@ import 'package:ink_mobile/components/linkify_text.dart';
 import 'package:ink_mobile/functions/date_functions.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container_wrapper.dart';
-import 'package:ink_mobile/screens/messages/chat_list/components/chat_avatar.dart';
+import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
 
 class MessageCardText extends StatelessWidget {
@@ -67,7 +67,7 @@ class MessageCardText extends StatelessWidget {
 
   Widget userAvatarWidget() {
     return SizedBox(
-      child: ChatAvatar(url: message.user.avatarUrl),
+      child: CustomCircleAvatar(url: message.user.avatarUrl),
       width: 45,
       height: 45,
     );

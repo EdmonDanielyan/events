@@ -7,7 +7,7 @@ import 'package:ink_mobile/localization/localization_cubit/localization_cubit.da
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/models/chat/chat_user_select.dart';
-import 'package:ink_mobile/screens/messages/chat_list/components/chat_avatar.dart';
+import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/screens/messages/chat_list/functions/open_chat.dart';
 
 class NewGroupScreen extends StatefulWidget {
@@ -95,7 +95,7 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
           children: List.generate(
             users.length,
             (index) => Container(
-              child: ChatAvatar(url: users[index].avatarUrl),
+              child: CustomCircleAvatar(url: users[index].avatarUrl),
             ),
           ),
         ),

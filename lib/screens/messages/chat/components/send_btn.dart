@@ -10,7 +10,7 @@ class MessageSendBtn extends StatelessWidget {
       padding: const EdgeInsets.all(2.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.green[800],
+          color: Color(0XFF46966E),
           borderRadius: BorderRadius.circular(50),
         ),
         child: IconButton(

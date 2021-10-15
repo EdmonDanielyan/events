@@ -3,6 +3,8 @@ import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card_text.dart';
 import 'package:ink_mobile/screens/messages/chat/components/hover_message.dart';
 
+import 'message_search_wrapper.dart';
+
 class MessageCard extends StatelessWidget {
   final Message message;
   const MessageCard({Key? key, required this.message}) : super(key: key);
@@ -15,11 +17,14 @@ class MessageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return HoverMessage(
       message: message,
-      child: Container(
-        padding: EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 7),
-        child: Align(
-          alignment: message.byMe ? Alignment.topRight : Alignment.topLeft,
-          child: _getMessageWidget(),
+      child: MessageSearchWrapper(
+        message: message,
+        child: Container(
+          padding: EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 7),
+          child: Align(
+            alignment: message.byMe ? Alignment.topRight : Alignment.topLeft,
+            child: _getMessageWidget(),
+          ),
         ),
       ),
     );

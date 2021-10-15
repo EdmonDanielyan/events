@@ -5,7 +5,7 @@ import 'package:ink_mobile/localization/localization_cubit/localization_cubit.da
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
-import 'package:ink_mobile/screens/messages/chat_list/components/chat_avatar.dart';
+import 'package:ink_mobile/components/custom_circle_avatar.dart';
 
 class ParticipantCard extends StatelessWidget {
   final ChatUser? owner;
@@ -71,7 +71,7 @@ class ParticipantCard extends StatelessWidget {
   }
 
   Widget avatarWidget() {
-    return ChatAvatar(
+    return CustomCircleAvatar(
       avatarHeight: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
       avatarWidth: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
       url: user.avatarUrl,

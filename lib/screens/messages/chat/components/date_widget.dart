@@ -14,13 +14,16 @@ class DateWidget extends StatelessWidget {
     final _strings =
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
 
+    String humanDate =
+        DateFunctions(passedDate: dateTime!).dayMonthYearHuman(_strings);
+
     return Container(
       margin: EdgeInsets.only(top: 10.0, bottom: 5.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        DateFunctions(passedDate: dateTime!).dayMonthYearHuman(_strings),
+        humanDate,
         style: TextStyle(fontSize: 11.0, fontWeight: FontWeight.bold),
       ),
     );

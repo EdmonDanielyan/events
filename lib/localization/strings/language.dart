@@ -201,6 +201,7 @@ abstract class LanguageStrings {
   abstract final String newChatHint;
   abstract final String you;
   abstract final String groupName;
+  abstract final String description;
   abstract final String name;
   abstract final String newGroup;
 }

@@ -5,15 +5,15 @@ class ScrollBottom {
   ScrollBottom(this._controller);
 
   void scrollSmooth({Duration duration = const Duration(microseconds: 500)}) {
-    if (_controller.hasClients) {
-      Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(Duration(milliseconds: 500), () {
+      if (_controller.hasClients) {
         _controller.animateTo(
           _controller.position.maxScrollExtent,
           duration: duration,
           curve: Curves.fastOutSlowIn,
         );
-      });
-    }
+      }
+    });
   }
 
   void jump() {

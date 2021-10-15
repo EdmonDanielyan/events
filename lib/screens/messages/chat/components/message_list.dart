@@ -22,6 +22,7 @@ class MessageList extends StatelessWidget with MessageMixins {
           builder: (BuildContext context, state) {
             DateTimeSort dateSort = DateTimeSort();
             List<Message> messages = state.chat.messages;
+
             return ListView.builder(
               controller: ScrollController(keepScrollOffset: false),
               itemCount: messages.length,
@@ -40,7 +41,7 @@ class MessageList extends StatelessWidget with MessageMixins {
     return Column(
       children: [
         DateWidget(
-          dateTime: getMessageDateTime(message.messageDate, dateSort),
+          dateTime: dateSort.getMessageDateTime(message.messageDate),
         ),
         MessageCard(message: message),
       ],

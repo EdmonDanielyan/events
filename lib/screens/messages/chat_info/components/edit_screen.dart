@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
+import 'package:ink_mobile/components/changable_avatar.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
-import 'package:ink_mobile/screens/messages/chat_info/components/icon_on_top.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/edit_entities.dart';
-import 'package:ink_mobile/screens/messages/chat_list/components/chat_avatar.dart';
 
 class ChatInfoEditScreen extends StatefulWidget {
   const ChatInfoEditScreen({Key? key}) : super(key: key);
@@ -25,6 +25,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
   double _horizontalPadding = 20.0;
   late ChatInfoEditEntities entities;
   final _formKey = GlobalKey<FormState>();
+  late LanguageStrings _strings;
 
   void onSave() {
     if (_formKey.currentState!.validate()) {
@@ -39,8 +40,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     _chatListCubit = BlocProvider.of<ChatListCubit>(context);
     _chatCubit = BlocProvider.of<ChatCubit>(context);
     return BlocBuilder<ChatCubit, ChatCubitState>(
@@ -67,7 +67,8 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
                   SizedBox(height: 20.0),
                   divider(),
                   textfieldWidget(
-                    hint: _chat.chatName,
+                    initalValue: _chat.chatName,
+                    hint: _strings.groupName,
                     fontWeight: FontWeight.bold,
                     onChanged: (val) => entities.name = val,
                     validator: (val) =>
@@ -76,7 +77,8 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
                   divider(),
                   if (isGroup) ...[
                     textfieldWidget(
-                      hint: _chat.group!.description,
+                      initalValue: _chat.group!.description,
+                      hint: _strings.description,
                       onChanged: (val) => entities.description = val,
                     ),
                     divider(),
@@ -92,27 +94,12 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
   }
 
   Widget avatarWidget() {
-    return SizedBox(
-      width: 100,
-      height: 100,
-      child: Stack(
-        children: [
-          ChatAvatar(
-            url: _chat.avatarUrl,
-            avatarWidth: double.infinity,
-            avatarHeight: double.infinity,
-          ),
-          IconOnTop(
-            width: double.infinity,
-            height: double.infinity,
-          ),
-        ],
-      ),
-    );
+    return ChangableAvatar(url: _chat.avatarUrl);
   }
 
   Widget textfieldWidget({
-    required String hint,
+    required String initalValue,
+    String hint = "",
     FontWeight fontWeight = FontWeight.normal,
     void Function(String)? onChanged,
     String? Function(String?)? validator,
@@ -121,10 +108,13 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
       padding: EdgeInsets.symmetric(horizontal: _horizontalPadding),
       child: TextFormField(
         onChanged: onChanged,
-        initialValue: hint,
+        initialValue: initalValue,
         validator: validator,
         autovalidateMode: AutovalidateMode.disabled,
-        decoration: InputDecoration(border: InputBorder.none),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: hint,
+        ),
         style: TextStyle(
           fontSize: 14.0,
           fontWeight: fontWeight,

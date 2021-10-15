@@ -17,4 +17,11 @@ class DateTimeSort {
 
     return false;
   }
+
+  DateTime? getMessageDateTime(DateTime dateTime) {
+    DateTime? returnDate = hasDateByDay(dateTime) ? null : dateTime;
+
+    addDate(dateTime);
+    return returnDate;
+  }
 }

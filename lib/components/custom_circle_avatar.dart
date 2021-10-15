@@ -1,19 +1,24 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
-class ChatAvatar extends StatelessWidget {
-  final String url;
+class CustomCircleAvatar extends StatelessWidget {
+  final String? url;
+  final File? file;
   final bool? indicator;
   final double indicatorSize;
   final double? avatarWidth;
   final double? avatarHeight;
-  const ChatAvatar({
+  const CustomCircleAvatar({
     Key? key,
-    required this.url,
+    this.url,
+    this.file,
     this.indicator,
     this.avatarWidth,
     this.avatarHeight,
     this.indicatorSize = 12.0,
-  }) : super(key: key);
+  })  : assert(url != null || file != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +27,7 @@ class ChatAvatar extends StatelessWidget {
         SizedBox(
           width: avatarWidth,
           height: avatarHeight,
-          child: CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.grey,
-            backgroundImage:
-                AssetImage("assets/images/avatars/avatar_default.png"),
-            foregroundImage: NetworkImage(url),
-            onForegroundImageError: (Object exception, _) {
-              print("Error handling foreground image");
-            },
-          ),
+          child: getAvatar(),
         ),
         if (indicator != null && indicator!) ...[
           Positioned(
@@ -52,6 +48,32 @@ class ChatAvatar extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+
+  Widget getAvatar() {
+    if (url != null) return getAvatarByUrl();
+    if (file != null) return getAvatarByFile();
+
+    return SizedBox();
+  }
+
+  Widget getAvatarByUrl() {
+    return CircleAvatar(
+      radius: 30,
+      backgroundColor: Colors.grey,
+      backgroundImage: AssetImage("assets/images/avatars/avatar_default.png"),
+      foregroundImage: NetworkImage(url!),
+      onForegroundImageError: (Object exception, _) {},
+    );
+  }
+
+  Widget getAvatarByFile() {
+    return ClipOval(
+      child: Image.file(
+        file!,
+        fit: BoxFit.cover,
+      ),
     );
   }
 }

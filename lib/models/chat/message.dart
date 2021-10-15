@@ -75,6 +75,20 @@ class Message {
 }
 
 class MessageListView {
+  static List<Message> searchMessagesByStr(
+      String value, List<Message> messages) {
+    List<Message> search = [];
+    if (value.trim().isNotEmpty) {
+      search = messages.where((element) {
+        bool byBody =
+            element.message.toLowerCase().contains(value.toLowerCase());
+
+        return byBody;
+      }).toList();
+    }
+    return search;
+  }
+
   static Message? getMessageById(int id, List<Message> messages) {
     for (final message in messages) if (message.id == id) return message;
 
