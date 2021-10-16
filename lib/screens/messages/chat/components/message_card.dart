@@ -18,7 +18,6 @@ class MessageCard extends StatelessWidget {
 
   void _onSwitchSelected(bool enabled) {
     _chatCubit.selectMessage(index, enabled);
-    print(selectedMessages);
   }
 
   @override

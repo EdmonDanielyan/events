@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/popup/popup_menu_container.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/models/chat/select_menu.dart';
+import 'package:ink_mobile/screens/messages/chat/functions/message_functions.dart';
 
 class HoverMessage extends StatelessWidget {
   final int index;
@@ -24,12 +24,9 @@ class HoverMessage extends StatelessWidget {
 
   static late LanguageStrings _strings;
   static late ChatCubit _chatCubit;
-  static late ChatListCubit _chatListCubit;
 
-  void _onDelete() {
-    _chatCubit.deleteMessage(message);
-    _chatListCubit.updateMessages(_chatCubit.state.chat.messages);
-  }
+  void _onDelete(BuildContext context) =>
+      ChatMessageFunctions(context).deleteMessages([message]);
 
   void _onCopy(BuildContext context) {
     Clipboard.setData(new ClipboardData(text: message.message));
@@ -53,7 +50,6 @@ class HoverMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     _chatCubit = BlocProvider.of<ChatCubit>(context);
-    _chatListCubit = BlocProvider.of<ChatListCubit>(context);
     return PopupMenuContainer<String>(
       blurBackground: true,
       child: child,
@@ -61,7 +57,7 @@ class HoverMessage extends StatelessWidget {
           .map((e) => menuItem(e))
           .toList(),
       onItemSelected: (value) async {
-        if (value == _strings.delete) _onDelete();
+        if (value == _strings.delete) _onDelete(context);
         if (value == _strings.copy) _onCopy(context);
         if (value == _strings.reply) _onRespond();
         if (value == _strings.select) _onSelect();

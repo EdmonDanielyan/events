@@ -29,9 +29,21 @@ class ChatCubit extends Cubit<ChatCubitState> {
     _emitMessages([]);
   }
 
-  void deleteMessage(Message message) {
+  void deleteMessage(List<Message> messages) {
     _emitMessages(
-      state.chat.messages..removeWhere((element) => element == message),
+      state.chat.messages
+        ..removeWhere(
+          (element) {
+            bool delete = false;
+            for (final message in messages) {
+              if (message == element) {
+                delete = true;
+                break;
+              }
+            }
+            return delete;
+          },
+        ),
     );
   }
 

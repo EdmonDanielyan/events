@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SelectiveAppBar extends StatelessWidget {
-  const SelectiveAppBar({Key? key}) : super(key: key);
+  final void Function()? onDelete;
+  final void Function()? onSendOn;
+  const SelectiveAppBar({Key? key, this.onDelete, this.onSendOn})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -10,11 +13,11 @@ class SelectiveAppBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         IconButton(
-          onPressed: () {},
+          onPressed: onDelete,
           icon: Icon(Icons.delete),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: onSendOn,
           icon: Icon(CupertinoIcons.arrowshape_turn_up_right_fill),
         ),
       ],
