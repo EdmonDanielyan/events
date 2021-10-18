@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:messagepack/messagepack.dart';
 import 'package:uuid/uuid.dart';
@@ -8,7 +9,7 @@ import 'package:uuid/uuid.dart';
 abstract class Message {
   abstract String id;
   abstract MessageType type;
-  abstract String createdAt;
+  abstract DateTime createdAt;
   abstract bool needAck;
   abstract String from;
   abstract String to;
@@ -19,34 +20,35 @@ abstract class Message {
 class BaseMessage extends Message {
   late String id;
   late MessageType type;
-  late String createdAt;
+  late DateTime createdAt;
   late bool needAck;
   late String from;
   late String to;
+  late Packer _packer;
 
   BaseMessage(id, type, needAck, createdAt, from, to) {
     this.id = id ?? Uuid().v4();
     this.type = type ?? MessageType.base;
-    this.needAck = needAck ?? false;
-    this.createdAt = createdAt ?? DateTime.now().toString();
-    this.from = from;
-    this.to = to;
+    this.needAck = needAck ?? true;
+    this.createdAt = createdAt ?? DateTime.now();
+    this.from = from ?? "";
+    this.to = to ?? "";
   }
 
   Packer packer() {
-    final packer = Packer();
-    packer.packString(id);
-    packer.packString(type.toString());
-    packer.packString(createdAt);
-    packer.packBool(needAck);
-    packer.packString(from);
-    packer.packString(to);
-    return packer;
+    _packer = Packer();
+    _packer.packString(id);
+    _packer.packString(describeEnum(type));
+    _packer.packString(createdAt.toString());
+    _packer.packBool(needAck);
+    _packer.packString(from);
+    _packer.packString(to);
+    return _packer;
   }
 
   @override
   List<int> toBytes() {
-    return packer().takeBytes();
+    return _packer.takeBytes();
   }
 
   @override
@@ -60,36 +62,54 @@ class SystemPayload {
   final Map<String, String> data;
 
   SystemPayload(this.action, this.data);
-}
 
-class NatsMessage extends BaseMessage {
-  late Object? payload;
-
-  NatsMessage({id, type, needAck, createdAt, from, to})
-      : super(id, type, needAck, createdAt, from, to);
-
-  void setPayload(String payload) {
-    super.packer().packString(payload);
-    this.type = MessageType.simple;
-    this.payload = payload;
-  }
-
-  void setBinaryPayload(List<int> payload) {
-    super.packer().packBinary(payload);
-    this.type = MessageType.binary;
-    this.payload = payload;
-  }
-
-  void setSystemPayload(action, data) {
-    var packer = super.packer();
-    packer.packString(action.toString());
+  void pack(Packer packer){
+    packer.packString(describeEnum(action));
     packer.packMapLength(data.length);
     data.forEach((key, value) {
       packer.packString(key);
       packer.packString(value);
     });
-    this.type = MessageType.system;
+  }
+
+  static SystemPayload fromUnpacker(Unpacker unpacker) {
+    final action = unpacker.unpackString()!;
+    final dataMapLength = unpacker.unpackMapLength();
+    Map<String, String> data = {};
+    for (int i = 0; i < dataMapLength; i++) {
+      data[unpacker.unpackString()!] = unpacker.unpackString()!;
+    }
+    return new SystemPayload(action.toSystemMessageType(), data);
+  }
+
+  @override
+  String toString() {
+    return '{action: $action, data: $data}';
+  }
+}
+
+class NatsMessage extends BaseMessage {
+  late Object? payload = "";
+
+  NatsMessage({id, type, needAck, createdAt, from, to})
+      : super(id, type, needAck, createdAt, from, to);
+
+  void setPayload(String payload) {
+    this.type = MessageType.message;
     this.payload = payload;
+    super.packer().packString(payload);
+  }
+
+  void setBinaryPayload(List<int> payload) {
+    this.type = MessageType.binary;
+    this.payload = payload;
+    super.packer().packBinary(payload);
+  }
+
+  void setSystemPayload(action, data) {
+    this.type = MessageType.system;
+    this.payload = new SystemPayload(action, data);
+    (this.payload as SystemPayload).pack(super.packer());
   }
 
   String getPayload() {
@@ -109,18 +129,12 @@ class NatsMessage extends BaseMessage {
     NatsMessage message = new NatsMessage();
     message.id = unpacker.unpackString()!;
     message.type = unpacker.unpackString()!.toMessageType();
+    message.createdAt = DateTime.parse(unpacker.unpackString()!);
     message.needAck = unpacker.unpackBool()!;
-    message.createdAt = unpacker.unpackString()!;
     message.from = unpacker.unpackString()!;
     message.to = unpacker.unpackString()!;
     if (message.type == MessageType.system) {
-      final action = unpacker.unpackString()!;
-      final dataMapLength = unpacker.unpackMapLength();
-      Map<String, String> data = {};
-      for (int i = 0; i < dataMapLength; i++) {
-        data[unpacker.unpackString()!] = unpacker.unpackString()!;
-      }
-      message.payload = new SystemPayload(action.toSystemMessageType(), data);
+      message.payload = SystemPayload.fromUnpacker(unpacker);
     } else {
       message.payload = message.type == MessageType.binary
           ? unpacker.unpackBinary()
@@ -131,6 +145,6 @@ class NatsMessage extends BaseMessage {
 
   @override
   String toString() {
-    return '${super.toString()}, payload: $payload}';
+    return '${super.toString()}, payload: $payload';
   }
 }

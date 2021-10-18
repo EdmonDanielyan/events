@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 
-enum MessageType { base, simple, binary, system }
+enum MessageType { base, message, binary, system }
 
 extension MessageTypeEx on String {
   MessageType toMessageType() =>
       MessageType.values.firstWhere((d) => describeEnum(d) == toLowerCase());
 }
 
-enum SystemMessageType { channels, favorites }
+enum SystemMessageType { channels }
 
 extension SystemMessageTypeEx on String {
   SystemMessageType toSystemMessageType() =>
