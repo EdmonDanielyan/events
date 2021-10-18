@@ -227,4 +227,5 @@ class RussianStrings extends LanguageStrings {
   final String description = "Описание";
   final String name = "Название";
   final String newGroup = "Новая группа";
+  final String forwardedMsg = "Пересланное сообщение";
 }

@@ -9,6 +9,7 @@ import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_state.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/chat_user_select.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/new_chat_person_container.dart';
 import 'package:ink_mobile/screens/messages/chat_list/functions/open_chat.dart';
@@ -38,13 +39,12 @@ class _NewChatScreenState extends State<NewChatScreen> {
     super.initState();
 
     Future.delayed(Duration.zero, () {
-      _personListCubit.state.searchValue = "";
-      _personListCubit.loadUsers();
+      _personListCubit.init();
     });
   }
 
   void _createChat(ChatUserSelect user) {
-    Chat newChat = ChatUserSelectViewModel.createSingleChat(user);
+    Chat newChat = ChatUserViewModel.createSingleChat(user);
     _chatListCubit.addChat(newChat);
     Navigator.of(context).pop();
     OpenChat(context, newChat, 0);

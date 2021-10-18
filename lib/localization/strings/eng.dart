@@ -222,4 +222,5 @@ class EnglishStrings implements LanguageStrings {
   final String description = "Description";
   final String name = "Name";
   final String newGroup = "New group";
+  final String forwardedMsg = "Forwarded message";
 }

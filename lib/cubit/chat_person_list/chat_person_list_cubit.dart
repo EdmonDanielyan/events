@@ -5,6 +5,11 @@ import 'package:ink_mobile/models/chat/chat_user_select.dart';
 class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
   ChatPersonListCubit() : super(ChatPersonListCubitState());
 
+  void init() {
+    state.searchValue = "";
+    loadUsers();
+  }
+
   void loadUsers() {
     emitLoading();
 

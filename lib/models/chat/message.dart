@@ -11,6 +11,7 @@ class Message {
   final MessageType type;
   final MessageStatus status;
   final int? selectedMessageId;
+  final bool sentOn;
   final bool byMe;
 
   bool selected = false;
@@ -23,7 +24,9 @@ class Message {
     this.type = MessageType.TEXT,
     this.status = MessageStatus.ERROR,
     this.selectedMessageId,
+    this.sentOn = false,
     this.byMe = false,
+    this.selected = false,
   });
 
   Message copyWith({
@@ -34,7 +37,9 @@ class Message {
     MessageType? type,
     MessageStatus? status,
     int? selectedMessageId,
+    bool? sentOn,
     bool? byMe,
+    bool? selected,
   }) {
     return Message(
       id: id ?? this.id,
@@ -44,7 +49,9 @@ class Message {
       type: type ?? this.type,
       status: status ?? this.status,
       selectedMessageId: selectedMessageId ?? this.selectedMessageId,
+      sentOn: sentOn ?? this.sentOn,
       byMe: byMe ?? this.byMe,
+      selected: selected ?? this.selected,
     );
   }
 
@@ -60,7 +67,9 @@ class Message {
         other.type == type &&
         other.status == status &&
         other.selectedMessageId == selectedMessageId &&
-        other.byMe == byMe;
+        other.sentOn == sentOn &&
+        other.byMe == byMe &&
+        other.selected == selected;
   }
 
   @override
@@ -72,11 +81,21 @@ class Message {
         type.hashCode ^
         status.hashCode ^
         selectedMessageId.hashCode ^
-        byMe.hashCode;
+        sentOn.hashCode ^
+        byMe.hashCode ^
+        selected.hashCode;
   }
 }
 
 class MessageListView {
+  static List<Message> makeMessagesSendOn(List<Message> messages) {
+    messages = messages
+        .map((element) => element.copyWith(byMe: true, sentOn: true))
+        .toList();
+    messages.sort(sortByDateReverse);
+    return messages;
+  }
+
   static List<Message> getSelectedItems(List<Message> items) =>
       items.where((element) => element.selected == true).toList();
 
@@ -110,4 +129,7 @@ class MessageListView {
 
   static int sortByDate(Message a, Message b) =>
       a.messageDate.isAfter(b.messageDate) ? -1 : 1;
+
+  static int sortByDateReverse(Message a, Message b) =>
+      a.messageDate.isAfter(b.messageDate) ? 1 : -1;
 }

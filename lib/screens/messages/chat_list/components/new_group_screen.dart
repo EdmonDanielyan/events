@@ -6,6 +6,7 @@ import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/chat_user_select.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/screens/messages/chat_list/functions/open_chat.dart';
@@ -26,7 +27,7 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
   String chatName = "";
 
   void _onCreate(BuildContext context) {
-    Chat groupChat = ChatUserSelectViewModel.createGroup(
+    Chat groupChat = ChatUserViewModel.createGroup(
         name: chatName, owner: users[0], users: users);
 
     _chatListCubit.addChat(groupChat);

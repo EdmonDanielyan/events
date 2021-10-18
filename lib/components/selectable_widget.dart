@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SelectableWidget extends StatefulWidget {
+class SelectableWidget extends StatelessWidget {
   final bool isOn;
   final Widget child;
   final bool selected;
@@ -13,40 +13,18 @@ class SelectableWidget extends StatefulWidget {
     required this.child,
   }) : super(key: key);
 
-  @override
-  _SelectableWidgetState createState() => _SelectableWidgetState(selected);
-}
-
-class _SelectableWidgetState extends State<SelectableWidget> {
-  bool selected;
-
-  _SelectableWidgetState(this.selected);
-
-  @override
-  void didUpdateWidget(covariant SelectableWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.selected != widget.selected) {
-      _setSelect(widget.selected);
+  void setSelect(bool newSelect) {
+    if (onSwitch != null) {
+      onSwitch!(newSelect);
     }
   }
 
-  void _setSelect(bool newSelect) {
-    setState(() {
-      selected = newSelect;
-    });
-
-    if (widget.onSwitch != null) {
-      widget.onSwitch!(newSelect);
-    }
-  }
-
-  void _switchState() => _setSelect(!selected);
+  void _switchState() => setSelect(!selected);
 
   @override
   Widget build(BuildContext context) {
-    if (widget.isOn == false) {
-      return widget.child;
+    if (isOn == false) {
+      return child;
     }
 
     return Container(
@@ -58,7 +36,7 @@ class _SelectableWidgetState extends State<SelectableWidget> {
         child: Row(
           children: [
             Expanded(
-              child: IgnorePointer(child: widget.child),
+              child: IgnorePointer(child: child),
             ),
           ],
         ),

@@ -18,8 +18,8 @@ class ParticipantCard extends StatelessWidget {
   const ParticipantCard({
     Key? key,
     required this.user,
-    required this.owner,
-    required this.admins,
+    this.owner,
+    this.admins,
     this.highlightTxt = "",
     this.horizontalPadding,
     this.titleGap,

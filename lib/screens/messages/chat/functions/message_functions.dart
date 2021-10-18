@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
+import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/message.dart';
+import 'package:ink_mobile/models/chat/person_list_params.dart';
 
-class ChatMessageFunctions {
+class MessageFunctions {
   final BuildContext context;
-  late ChatCubit _chatCubit;
-  late ChatListCubit _chatListCubit;
+  final LanguageStrings? strings;
+  MessageFunctions({required this.context, this.strings});
 
-  ChatMessageFunctions(this.context) {
-    _chatCubit = BlocProvider.of<ChatCubit>(context);
-    _chatListCubit = BlocProvider.of<ChatListCubit>(context);
-  }
-
-  void deleteMessages(List<Message> messages) {
-    _chatCubit.deleteMessage(messages);
-    _chatListCubit.updateMessages(_chatCubit.getMessages);
+  void sendOn(List<Message> messages) {
+    Future.delayed(Duration(milliseconds: 200), () {
+      Navigator.of(context).pushNamed(
+        "/message_person_list",
+        arguments: PersonListParams(
+          messages: messages,
+          title: strings != null ? strings!.sendOn : "",
+          type: PersonListParamsEnum.SEND_ON,
+        ),
+      );
+    });
   }
 }

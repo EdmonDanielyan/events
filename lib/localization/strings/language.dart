@@ -204,4 +204,5 @@ abstract class LanguageStrings {
   abstract final String description;
   abstract final String name;
   abstract final String newGroup;
+  abstract final String forwardedMsg;
 }

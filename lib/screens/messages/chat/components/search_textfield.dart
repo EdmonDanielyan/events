@@ -20,7 +20,7 @@ class ChatSearchTextfield extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings =
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
-    final _buttonWidth = 100.0;
+    final _buttonWidth = (onUp != null || onDown != null) ? 100.0 : 0.0;
     return Stack(
       children: [
         TextFormField(

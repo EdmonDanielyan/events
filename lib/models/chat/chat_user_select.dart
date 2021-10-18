@@ -1,7 +1,4 @@
 import 'package:ink_mobile/models/chat/chat_user.dart';
-import 'package:ink_mobile/models/chat/group_chat.dart';
-
-import 'chat.dart';
 
 class ChatUserSelect extends ChatUser {
   final String avatarUrl;
@@ -28,32 +25,30 @@ class ChatUserSelect extends ChatUser {
       selected: selected ?? this.selected,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ChatUserSelect &&
+        other.avatarUrl == avatarUrl &&
+        other.online == online &&
+        other.name == name &&
+        other.selected == selected;
+  }
+
+  @override
+  int get hashCode {
+    return avatarUrl.hashCode ^
+        online.hashCode ^
+        name.hashCode ^
+        selected.hashCode;
+  }
 }
 
 class ChatUserSelectViewModel {
   static List<ChatUserSelect> getSelectedItems(List<ChatUserSelect> items) =>
       items.where((element) => element.selected).toList();
-
-  static Chat createSingleChat(ChatUserSelect user) {
-    return Chat(
-      chatName: user.name,
-      avatarUrl: user.avatarUrl,
-      messages: [],
-    );
-  }
-
-  static Chat createGroup({
-    required String name,
-    required ChatUserSelect owner,
-    required List<ChatUserSelect> users,
-  }) {
-    return Chat(
-      chatName: name,
-      avatarUrl: "",
-      messages: [],
-      group: GroupChat(owner: owner, users: users),
-    );
-  }
 
   static List<ChatUserSelect> getExampleList() {
     return [
@@ -78,47 +73,6 @@ class ChatUserSelectViewModel {
         avatarUrl:
             "https://static.wikia.nocookie.net/e4-misfits/images/6/6c/Nathh.jpg/revision/latest/scale-to-width-down/250?cb=20121220194143",
         name: "Елена Юртаева",
-      ),
-      ChatUserSelect(
-        avatarUrl:
-            "https://upload.wikimedia.org/wikipedia/en/5/5d/Rudy_Wade.jpg",
-        name: "Алексей Иванюк",
-        online: true,
-      ),
-      ChatUserSelect(
-        avatarUrl:
-            "https://upload.wikimedia.org/wikipedia/en/5/5d/Rudy_Wade.jpg",
-        name: "Константин Константинов",
-      ),
-      ////
-      ///
-      ///
-      ChatUserSelect(
-        avatarUrl:
-            "https://static.wikia.nocookie.net/e4-misfits/images/6/6c/Nathh.jpg/revision/latest/scale-to-width-down/250?cb=20121220194143",
-        name: "Елена Юртаева",
-      ),
-      ChatUserSelect(
-        avatarUrl:
-            "https://upload.wikimedia.org/wikipedia/en/5/5d/Rudy_Wade.jpg",
-        name: "Алексей Иванюк",
-        online: true,
-      ),
-      ChatUserSelect(
-        avatarUrl:
-            "https://upload.wikimedia.org/wikipedia/en/5/5d/Rudy_Wade.jpg",
-        name: "Константин Константинов",
-      ),
-      ChatUserSelect(
-        avatarUrl:
-            "https://static.wikia.nocookie.net/e4-misfits/images/6/6c/Nathh.jpg/revision/latest/scale-to-width-down/250?cb=20121220194143",
-        name: "Елена Юртаева",
-      ),
-      ChatUserSelect(
-        avatarUrl:
-            "https://upload.wikimedia.org/wikipedia/en/5/5d/Rudy_Wade.jpg",
-        name: "Алексей Иванюк",
-        online: true,
       ),
       ChatUserSelect(
         avatarUrl:

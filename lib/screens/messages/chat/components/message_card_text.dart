@@ -4,6 +4,7 @@ import 'package:ink_mobile/functions/date_functions.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container_wrapper.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
+import 'package:ink_mobile/screens/messages/chat/components/sent_on_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
 
 class MessageCardText extends StatelessWidget {
@@ -36,28 +37,37 @@ class MessageCardText extends StatelessWidget {
               color: bgColor,
             ),
             padding: EdgeInsets.all(9.5),
-            child: RespondContainerWrapper(
-              message: message,
-              textColor: textColor,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Flexible(
-                    child: LinkifyText(
-                      text: message.message,
-                      style: TextStyle(color: textColor),
-                      linkStyle: TextStyle(color: textColor),
-                    ),
-                  ),
-                  SizedBox(width: 5.0),
-                  dateWidget(),
-                  if (message.byMe) ...[
-                    SizedBox(width: 4.0),
-                    statusWidget(),
-                  ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (message.sentOn) ...[
+                  SentOnWidget(),
+                  SizedBox(height: 5.0),
                 ],
-              ),
+                RespondContainerWrapper(
+                  message: message,
+                  textColor: textColor,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Flexible(
+                        child: LinkifyText(
+                          text: message.message,
+                          style: TextStyle(color: textColor),
+                          linkStyle: TextStyle(color: textColor),
+                        ),
+                      ),
+                      SizedBox(width: 5.0),
+                      dateWidget(),
+                      if (message.byMe) ...[
+                        SizedBox(width: 4.0),
+                        statusWidget(),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),

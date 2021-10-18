@@ -1,3 +1,7 @@
+import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:ink_mobile/models/chat/group_chat.dart';
+import 'package:ink_mobile/models/chat/message.dart';
+
 class ChatUser {
   String avatarUrl;
   String name;
@@ -36,6 +40,28 @@ class ChatUser {
 }
 
 class ChatUserViewModel {
+  static Chat createSingleChat(ChatUser user,
+      {List<Message> messages = const []}) {
+    return Chat(
+      chatName: user.name,
+      avatarUrl: user.avatarUrl,
+      messages: messages,
+    );
+  }
+
+  static Chat createGroup({
+    required String name,
+    required ChatUser owner,
+    required List<ChatUser> users,
+  }) {
+    return Chat(
+      chatName: name,
+      avatarUrl: "",
+      messages: [],
+      group: GroupChat(owner: owner, users: users),
+    );
+  }
+
   static bool isOwner(ChatUser user, ChatUser owner) => user == owner;
 
   static bool isAdmin(ChatUser user, List<ChatUser> admins) {
