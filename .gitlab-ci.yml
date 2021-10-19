@@ -83,7 +83,7 @@ ios:debug:
     - scp ${IPA_BUILD_RELATIVE_PATH} ${IPA_SSH_PATH}
   artifacts:
     paths:
-      - ios/Runner.ipa/jdc_mobile.ipa
+      - ios/Runner.ipa/ink_mobile.ipa
     expire_in: 1 day
   only:
     - develop

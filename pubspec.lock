@@ -221,9 +221,11 @@ packages:
   dart_nats_streaming:
     dependency: "direct main"
     description:
-      name: dart_nats_streaming
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "0766f5aca99d483cce7fd4ac43b8b5e99f010530"
+      url: "https://github.com/JetRabbits/dart-nats-streaming.git"
+    source: git
     version: "0.0.7"
   dart_style:
     dependency: transitive
@@ -574,6 +576,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.10"
+  messagepack:
+    dependency: "direct main"
+    description:
+      name: messagepack
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
   meta:
     dependency: transitive
     description:
@@ -699,7 +708,7 @@ packages:
       name: petitparser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.0"
+    version: "4.4.0"
   platform:
     dependency: transitive
     description:
@@ -1033,7 +1042,7 @@ packages:
       name: xml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.1.2"
+    version: "5.3.1"
   yaml:
     dependency: transitive
     description:
