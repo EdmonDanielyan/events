@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/chat_user_select.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/screens/messages/chat_list/functions/open_chat.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewGroupScreen extends StatefulWidget {
   const NewGroupScreen({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class NewGroupScreen extends StatefulWidget {
 class _NewGroupScreenState extends State<NewGroupScreen> {
   late ChatPersonListCubit _personListCubit;
   late ChatListCubit _chatListCubit;
-  late LanguageStrings _strings;
+  late AppLocalizations _strings;
   final double horizontalPadding = 20;
   List<ChatUserSelect> users = [];
   String chatName = "";
@@ -37,7 +37,7 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
     _personListCubit = BlocProvider.of<ChatPersonListCubit>(context);
     _chatListCubit = BlocProvider.of<ChatListCubit>(context);
     users = ChatUserSelectViewModel.getSelectedItems(

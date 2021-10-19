@@ -5,7 +5,7 @@ import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/announcements_detail/components/body.dart';
 import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_cubit.dart';
 import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_state.dart';
@@ -15,16 +15,14 @@ class AnnouncementsDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
 
     return BlocProvider<AnnouncementCubit>(
-        create: (BuildContext context) =>
-            AnnouncementCubit(languageStrings: _strings),
-        child: Scaffold(
-          appBar: InkAppBarWithText(title: _strings.announcements),
-          body: BlocBuilder<AnnouncementCubit, AnnouncementsDetailState>(
-              builder: (context, state) {
+      create: (BuildContext context) => AnnouncementCubit(),
+      child: Scaffold(
+        appBar: InkAppBarWithText(title: _strings.announcements),
+        body: BlocBuilder<AnnouncementCubit, AnnouncementsDetailState>(
+          builder: (context, state) {
             final AnnouncementCubit announcementCubit =
                 BlocProvider.of<AnnouncementCubit>(context);
 
@@ -66,8 +64,10 @@ class AnnouncementsDetailScreen extends StatelessWidget {
                   return Container();
                 }
             }
-          }),
-          bottomNavigationBar: NewBottomNavBar(),
-        ));
+          },
+        ),
+        bottomNavigationBar: NewBottomNavBar(),
+      ),
+    );
   }
 }

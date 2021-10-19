@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/contacts_row.dart';
 import 'package:ink_mobile/screens/profile/components/section_title.dart';
 
 class Contacts extends StatelessWidget {
-  static late LanguageStrings _strings;
+  static late AppLocalizations _strings;
   final UserContacts? contacts;
   const Contacts({Key? key, required this.contacts}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
     if (contacts != null) {
       return getContactsWidget(context);
     } else {

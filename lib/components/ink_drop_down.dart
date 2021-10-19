@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InkDropDown extends StatefulWidget {
   final List<String> items;
@@ -84,11 +83,11 @@ class SelectDialog extends StatefulWidget {
 
 class _SelectDialogState extends State<SelectDialog> {
   int? selectedItem;
-  late LanguageStrings _strings;
+  late AppLocalizations _strings;
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
 
     if (selectedItem == null) {
       selectedItem = widget.selectedIndex;

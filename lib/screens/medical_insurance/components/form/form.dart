@@ -9,13 +9,11 @@ import 'package:ink_mobile/core/cubit/btn/btn_state.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/core/masks/input_formatters.dart';
 import 'package:ink_mobile/cubit/send_medical_ins_form/send_form_cubit.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/custom_tab.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/guar_let_fields.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/reg_app_fields.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/user_fields.dart';
-
 import 'entities.dart';
 
 class MedicalInsuranceForm extends StatefulWidget {
@@ -30,7 +28,6 @@ class MedicalInsuranceForm extends StatefulWidget {
 class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
   MedicalInsuranceFormEntities entities = MedicalInsuranceFormEntities();
   final _formKey = GlobalKey<FormState>();
-  late LanguageStrings strings;
   CustomSectionSwitcher? tabsSwitcher;
   late SelectfieldCubit selectfieldCubit;
   late SendMedicalInsFormCubit sendMedicalInsFormCubit;
@@ -41,13 +38,13 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
         CustomSectionTab(
           index: 0,
           name: "policy",
-          label: strings.regAppForMedIns,
+          label: localizationInstance.regAppForMedIns,
           widget: MedicalInsuranceRegAppFields(entities: entities),
         ),
         CustomSectionTab(
           index: 1,
           name: "letter",
-          label: strings.extGuarantLetter,
+          label: localizationInstance.extGuarantLetter,
           widget: MedicalInsuranceGuarLetFields(entities: entities),
         ),
       ]);
@@ -65,7 +62,6 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
 
   @override
   Widget build(BuildContext context) {
-    strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     selectfieldCubit = BlocProvider.of<SelectfieldCubit>(context);
     sendMedicalInsFormCubit = BlocProvider.of<SendMedicalInsFormCubit>(context);
 
@@ -130,7 +126,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
 
   Widget _additionalText() {
     return ServiceTextField(
-      hint: strings.medAdditionalText,
+      hint: localizationInstance.medAdditionalText,
       onChanged: (val) => entities.additionalText = val,
       inputFormatters: [InputFormatters.lettersNumbersOnly],
       maxLines: 4,
@@ -162,7 +158,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
                 sendMedicalInsFormCubit.send(entities: entities);
               }
             },
-            txt: strings.submit,
+            txt: localizationInstance.submit,
           );
         }
       },

@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/cubit/announcements_detail/use_cases/fetch.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/token.dart';
@@ -12,8 +12,7 @@ import 'package:dio/dio.dart';
 import 'domain/repository.dart';
 
 class AnnouncementCubit extends Cubit<AnnouncementsDetailState> {
-  LanguageStrings languageStrings;
-  AnnouncementCubit({required this.languageStrings})
+  AnnouncementCubit()
       : super(AnnouncementsDetailState(
             type: AnnouncementsDetailStateType.LOADING));
 
@@ -26,13 +25,12 @@ class AnnouncementCubit extends Cubit<AnnouncementsDetailState> {
       ).call();
       emitSuccess(announcement);
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccurred);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }

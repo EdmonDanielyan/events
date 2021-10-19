@@ -5,17 +5,15 @@ import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_state.dart';
 import 'package:ink_mobile/cubit/personnel_movements/use_cases/fetch.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/movements_data.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:dio/dio.dart';
-
 import 'domain/repository.dart';
 
 class PersonnelMovementsCubit extends Cubit<PersonnelMovementsState> {
-  LanguageStrings languageStrings;
-  PersonnelMovementsCubit({required this.languageStrings})
+  PersonnelMovementsCubit()
       : super(
             PersonnelMovementsState(type: PersonnelMovementsStateType.LOADING));
 
@@ -27,8 +25,7 @@ class PersonnelMovementsCubit extends Cubit<PersonnelMovementsState> {
       ).call();
       emitSuccess(response);
     } on DioError catch (e) {
-      final _errorHandler =
-          DioErrorHandler(e: e, languageStrings: languageStrings);
+      final _errorHandler = DioErrorHandler(e: e);
       if (_errorHandler.isEmpty()) {
         emitEmpty();
         return;
@@ -37,10 +34,10 @@ class PersonnelMovementsCubit extends Cubit<PersonnelMovementsState> {
       ErrorModel error = _errorHandler.call();
       throw error.exception;
     } on TimeoutException catch (_) {
-      emitError(languageStrings.noConnectionError);
+      emitError(localizationInstance.noConnectionError);
       throw NoConnectionException();
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccurred);
+      emitError(localizationInstance.errorOccurred);
     }
   }
 

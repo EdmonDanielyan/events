@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/models/chat/person_list_params.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MessageFunctions {
   final BuildContext context;
-  final LanguageStrings? strings;
+  final AppLocalizations? strings;
   MessageFunctions({required this.context, this.strings});
 
   void sendOn(List<Message> messages) {

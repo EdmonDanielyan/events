@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatInfoBottomBtns extends StatelessWidget {
   final Chat chat;
   const ChatInfoBottomBtns({Key? key, required this.chat}) : super(key: key);
-  static late LanguageStrings _strings;
+  static late AppLocalizations _strings;
   static late ChatCubit _chatCubit;
   static late ChatListCubit _chatListCubit;
 
@@ -28,7 +28,7 @@ class ChatInfoBottomBtns extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
     _chatCubit = BlocProvider.of<ChatCubit>(context);
     _chatListCubit = BlocProvider.of<ChatListCubit>(context);
 

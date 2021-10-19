@@ -4,7 +4,7 @@ import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/personnel_movements/components/personnel_movement.dart';
 
 class Body extends StatelessWidget {
@@ -12,8 +12,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
 
     return BlocBuilder<PersonnelMovementsCubit, PersonnelMovementsState>(
         builder: (context, state) {

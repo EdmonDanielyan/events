@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/models/chat/group_chat.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/btn_wrapper.dart';
@@ -11,13 +10,13 @@ import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.d
 class ChatInfoParticipants extends StatelessWidget {
   final Chat chat;
   const ChatInfoParticipants({Key? key, required this.chat}) : super(key: key);
-  static late LanguageStrings _strings;
+  static late AppLocalizations _strings;
 
   GroupChat get group => chat.group!;
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       color: Colors.white,

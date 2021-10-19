@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class ChatAttachScreen extends StatelessWidget {
   const ChatAttachScreen({Key? key}) : super(key: key);
@@ -10,8 +9,7 @@ class ChatAttachScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
     return CustomBottomSheetChild(
       height: 250.0,
       title: _strings.attach,

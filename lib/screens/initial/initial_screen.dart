@@ -5,17 +5,14 @@ import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/cubit/initial/initial_cubit.dart';
 import 'package:ink_mobile/cubit/initial/initial_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 
 class InitPage extends StatelessWidget {
   const InitPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return BlocProvider<InitialCubit>(
-        create: (context) => InitialCubit(languageStrings: _strings),
+        create: (context) => InitialCubit(),
         child: Scaffold(
           body: BlocBuilder<InitialCubit, InitialState>(
             builder: (context, state) {

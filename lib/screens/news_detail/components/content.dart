@@ -5,8 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Content extends StatefulWidget {
   final int viewCount;
@@ -32,11 +32,11 @@ class Content extends StatefulWidget {
 }
 
 class _ContentState extends State<Content> {
-  late LanguageStrings _strings;
+  late AppLocalizations _strings;
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
 
     widget.cubit = BlocProvider.of<NewsDetailCubit>(context);
 

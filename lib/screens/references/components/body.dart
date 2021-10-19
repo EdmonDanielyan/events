@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/references/references_cubit.dart';
 import 'package:ink_mobile/cubit/references/references_state.dart';
 import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/screens/references/components/form/form.dart';
 import 'package:ink_mobile/screens/references/components/permission_denied.dart';
 import 'loading.dart';
@@ -13,8 +12,6 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return Container(
       child: BlocBuilder<ReferencesPageCubit, ReferencesPageState>(
         builder: (context, state) {
@@ -35,8 +32,7 @@ class Body extends StatelessWidget {
           }
 
           return BlocProvider(
-            create: (context) =>
-                SendReferenceFormCubit(languageStrings: _strings),
+            create: (context) => SendReferenceFormCubit(),
             child: SafeArea(
               child: ReferencesForm(),
             ),

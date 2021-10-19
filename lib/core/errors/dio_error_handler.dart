@@ -1,14 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/error_response.dart';
 
 class DioErrorHandler {
-  LanguageStrings languageStrings;
   final DioError e;
 
-  DioErrorHandler({required this.e, required this.languageStrings});
+  DioErrorHandler({required this.e});
 
   List<String> emptyResponseCodes = ["QMA-32", "QMA-33"];
 
@@ -31,10 +30,10 @@ class DioErrorHandler {
         case "QMA-6":
           return invalidRefreshToken();
         case "QMA-15":
-          return unknownErrorException(
-              languageStrings.userNotFound, languageStrings.userNotFound);
+          return unknownErrorException(localizationInstance.userNotFound,
+              localizationInstance.userNotFound);
         default:
-          return unknownErrorException(languageStrings.errorOccurred, "");
+          return unknownErrorException(localizationInstance.errorOccurred, "");
       }
     }
 
@@ -43,7 +42,7 @@ class DioErrorHandler {
 
   ErrorModel invalidRefreshToken() {
     return ErrorModel(
-      msg: languageStrings.errorOccurred,
+      msg: localizationInstance.errorOccurred,
       exception: InvalidRefreshTokenException(),
     );
   }
@@ -57,7 +56,7 @@ class DioErrorHandler {
 
   ErrorModel noConnection() {
     return ErrorModel(
-      msg: languageStrings.noConnectionError,
+      msg: localizationInstance.noConnectionError,
       exception: NoConnectionException(),
     );
   }

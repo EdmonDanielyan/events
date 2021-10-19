@@ -8,8 +8,8 @@ import 'package:ink_mobile/core/lists/medical_services.dart';
 import 'package:ink_mobile/core/masks/input_formatters.dart';
 import 'package:ink_mobile/core/masks/textfield_masks.dart';
 import 'package:ink_mobile/core/validator/field_validator.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -18,7 +18,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
   final MedicalInsuranceFormEntities entities;
   const MedicalInsuranceRegAppFields({Key? key, required this.entities})
       : super(key: key);
-  static late LanguageStrings _strings;
+  static late AppLocalizations _strings;
   static late SelectfieldCubit _selectfieldCubit;
   static late MedicalServicesList _medicalServicesList;
   static late List<Selectfield> _servicesList;
@@ -26,8 +26,8 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _selectfieldCubit = BlocProvider.of<SelectfieldCubit>(context);
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
-    _medicalServicesList = MedicalServicesList(strings: _strings);
+    _strings = localizationInstance;
+    _medicalServicesList = MedicalServicesList();
     _servicesList = _medicalServicesList.getList();
 
     return Column(
@@ -99,7 +99,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
       hint: _strings.city,
       requiredIcon: true,
       keyboardType: TextInputType.streetAddress,
-      validator: (val) => FieldValidator.cityValidator(val, _strings),
+      validator: (val) => FieldValidator.cityValidator(val),
       onChanged: (val) => entities.city = val,
     );
   }
@@ -109,7 +109,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
       hint: _strings.address,
       requiredIcon: true,
       keyboardType: TextInputType.streetAddress,
-      validator: (val) => FieldValidator.streetValidator(val, _strings),
+      validator: (val) => FieldValidator.streetValidator(val),
       onChanged: (val) => entities.address = val,
     );
   }

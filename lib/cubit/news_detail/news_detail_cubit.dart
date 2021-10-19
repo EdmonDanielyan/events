@@ -3,7 +3,7 @@ import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/cubit/news_detail/use_cases/fetch.dart';
 import 'package:ink_mobile/cubit/news_detail/use_cases/like.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/models/token.dart';
@@ -13,9 +13,7 @@ import 'news_detail_state.dart';
 import 'package:dio/dio.dart';
 
 class NewsDetailCubit extends Cubit<NewsDetailState> {
-  LanguageStrings languageStrings;
-  NewsDetailCubit({required this.languageStrings})
-      : super(NewsDetailState(type: NewsDetailStateType.LOADING));
+  NewsDetailCubit() : super(NewsDetailState(type: NewsDetailStateType.LOADING));
 
   Future<void> load(int newsId) async {
     try {
@@ -27,13 +25,12 @@ class NewsDetailCubit extends Cubit<NewsDetailState> {
 
       emitSuccess(item);
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccurred);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }

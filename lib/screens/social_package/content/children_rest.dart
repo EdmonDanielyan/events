@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class ChildrenRest extends StatelessWidget {
   const ChildrenRest({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
     return Scaffold(
       appBar: InkAppBarWithText(title: _strings.childrenRest),
       body: SingleChildScrollView(

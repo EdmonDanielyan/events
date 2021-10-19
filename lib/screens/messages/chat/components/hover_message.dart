@@ -5,12 +5,12 @@ import 'package:ink_mobile/components/popup/popup_menu_container.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/models/chat/select_menu.dart';
 import 'package:ink_mobile/screens/messages/chat/functions/message_cubit_functions.dart';
 import 'package:ink_mobile/screens/messages/chat/functions/message_functions.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HoverMessage extends StatelessWidget {
   final int index;
@@ -23,7 +23,7 @@ class HoverMessage extends StatelessWidget {
       required this.message})
       : super(key: key);
 
-  static late LanguageStrings _strings;
+  static late AppLocalizations _strings;
   static late ChatCubit _chatCubit;
 
   void _onDelete(BuildContext context) =>
@@ -53,12 +53,12 @@ class HoverMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
     _chatCubit = BlocProvider.of<ChatCubit>(context);
     return PopupMenuContainer<String>(
       blurBackground: true,
       child: child,
-      items: SelectMessageMenuList.getStandartList(_strings)
+      items: SelectMessageMenuList.getStandartList()
           .map((e) => menuItem(e))
           .toList(),
       onItemSelected: (value) async {

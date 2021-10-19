@@ -4,7 +4,6 @@ import 'package:ink_mobile/components/list_element_divider.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_state.dart';
 import 'package:ink_mobile/cubit/main_page/main_cubit.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/screens/main/components/announcements_list_element.dart';
 import 'package:ink_mobile/screens/main/components/announcements_list_element_placeholder.dart';
@@ -14,11 +13,8 @@ class AnnouncementsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return BlocProvider<AnnouncementsListCubit>(
-        create: (BuildContext context) =>
-            AnnouncementsListCubit(languageStrings: _strings),
+        create: (BuildContext context) => AnnouncementsListCubit(),
         child: BlocBuilder<AnnouncementsListCubit, AnnouncementsListState>(
             builder: (context, state) {
           final AnnouncementsListCubit announcementsCubit =

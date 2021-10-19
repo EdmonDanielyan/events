@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/functions/date_functions.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 
 class DateWidget extends StatelessWidget {
   final DateTime? dateTime;
@@ -11,11 +9,7 @@ class DateWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (dateTime == null) return SizedBox();
 
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
-
-    String humanDate =
-        DateFunctions(passedDate: dateTime!).dayMonthYearHuman(_strings);
+    String humanDate = DateFunctions(passedDate: dateTime!).dayMonthYearHuman();
 
     return Container(
       margin: EdgeInsets.only(top: 10.0, bottom: 5.0),

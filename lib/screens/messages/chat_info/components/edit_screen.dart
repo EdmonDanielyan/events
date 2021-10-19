@@ -5,10 +5,10 @@ import 'package:ink_mobile/components/changable_avatar.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/edit_entities.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatInfoEditScreen extends StatefulWidget {
   const ChatInfoEditScreen({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
   double _horizontalPadding = 20.0;
   late ChatInfoEditEntities entities;
   final _formKey = GlobalKey<FormState>();
-  late LanguageStrings _strings;
+  late AppLocalizations _strings;
 
   void onSave() {
     if (_formKey.currentState!.validate()) {
@@ -40,7 +40,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
     _chatListCubit = BlocProvider.of<ChatListCubit>(context);
     _chatCubit = BlocProvider.of<ChatCubit>(context);
     return BlocBuilder<ChatCubit, ChatCubitState>(

@@ -1,20 +1,19 @@
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 
 class ManagementFeedbackFormValidator {
-  final LanguageStrings strings;
-  ManagementFeedbackFormValidator({required this.strings});
+  ManagementFeedbackFormValidator();
 
   String? toWhomValidator(List<Selectfield>? items) {
     if (items == null || items.length < 1) {
-      return strings.chooseAddressee;
+      return localizationInstance.chooseAddressee;
     }
     return null;
   }
 
   String? questionValidator(String? str) {
     if (str!.length < 4) {
-      return strings.fillTheField;
+      return localizationInstance.fillTheField;
     }
     return null;
   }

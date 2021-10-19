@@ -4,7 +4,7 @@ import 'package:ink_mobile/cubit/main_page/news_block_state.dart';
 import 'package:ink_mobile/cubit/news_list/domain/repository.dart';
 import 'package:ink_mobile/cubit/news_list/use_cases/fetch.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
@@ -12,9 +12,7 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:dio/dio.dart';
 
 class NewsBlockCubit extends Cubit<NewsBlockState> {
-  LanguageStrings languageStrings;
-  NewsBlockCubit({required this.languageStrings})
-      : super(NewsBlockState(type: NewsBlockStateType.LOADING));
+  NewsBlockCubit() : super(NewsBlockState(type: NewsBlockStateType.LOADING));
 
   Pagination<NewsItemData> pagination =
       Pagination<NewsItemData>(countOnPage: 5);
@@ -30,13 +28,12 @@ class NewsBlockCubit extends Cubit<NewsBlockState> {
       ).call();
       emitSuccess(response.items);
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccurred);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }

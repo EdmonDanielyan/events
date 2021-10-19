@@ -4,16 +4,10 @@ import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_ba
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/rus.dart';
 
 class GlobalProvider {
   static List<dynamic> getProviders(BuildContext context) {
     return [
-      BlocProvider(
-        create: (BuildContext context) =>
-            LocalizationCubit(initialState: RussianStrings()),
-      ),
       BlocProvider(create: (context) => NewBottomNavBarCubit()),
       BlocProvider(create: (context) => ChatListCubit()),
       BlocProvider(create: (context) => ChatCubit()),

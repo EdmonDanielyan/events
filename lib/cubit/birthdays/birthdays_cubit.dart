@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_state.dart';
 import 'package:ink_mobile/cubit/birthdays/use_cases/fetch.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/token.dart';
@@ -13,9 +12,7 @@ import 'package:dio/dio.dart';
 import 'domain/repository.dart';
 
 class BirthdaysCubit extends Cubit<BirthdaysState> {
-  LanguageStrings languageStrings;
-  BirthdaysCubit({required this.languageStrings})
-      : super(BirthdaysState(type: BirthdaysStateType.LOADING));
+  BirthdaysCubit() : super(BirthdaysState(type: BirthdaysStateType.LOADING));
 
   Future<void> load() async {
     try {
@@ -26,8 +23,7 @@ class BirthdaysCubit extends Cubit<BirthdaysState> {
 
       emitSuccess(response.birthdaysToday, response.birthdaysOther);
     } on DioError catch (e) {
-      final _errorHandler =
-          DioErrorHandler(e: e, languageStrings: languageStrings);
+      final _errorHandler = DioErrorHandler(e: e);
       if (_errorHandler.isEmpty()) {
         emitEmpty();
         return;

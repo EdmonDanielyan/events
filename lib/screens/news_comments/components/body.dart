@@ -5,24 +5,23 @@ import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_state.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/news_comments/components/comment.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
-  static late LanguageStrings _strings;
 
   @override
   _BodyState createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
-  late LanguageStrings _strings;
+  late AppLocalizations _strings;
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
     int countLoad = 0;
     ScrollController controller = ScrollController();
 
@@ -57,7 +56,7 @@ class _BodyState extends State<Body> {
           case NewsCommentStateType.EMPTY:
             {
               return Center(
-                child: Text(Body._strings.noCommentsNewsSection),
+                child: Text(_strings.noCommentsNewsSection),
               );
             }
 

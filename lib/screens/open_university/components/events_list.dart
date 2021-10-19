@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/cubit/events_list/events_list_cubit.dart';
 import 'package:ink_mobile/cubit/events_list/events_list_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/screens/events_list/components/events_list_element.dart';
 
@@ -18,8 +18,7 @@ class OpenUniversityEventsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
 
     size = MediaQuery.of(context).size;
     controller.addListener(_onScroll);
