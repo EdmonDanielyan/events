@@ -28,7 +28,7 @@ class BaseMessage extends Message {
 
   BaseMessage(id, type, needAck, createdAt, from, to) {
     this.type = type ?? MessageType.base;
-    this.id = id ?? Uuid().v4() + '-' + describeEnum(type);
+    this.id = id ?? Uuid().v4();
     this.needAck = needAck ?? true;
     this.createdAt = createdAt ?? DateTime.now();
     this.from = from ?? "";
@@ -38,6 +38,8 @@ class BaseMessage extends Message {
   Packer packer() {
     _packer = Packer();
     _packer.packString(id);
+    var messageType = '-' + describeEnum(this.type);
+    this.id += messageType;
     _packer.packString(describeEnum(type));
     _packer.packString(createdAt.toString());
     _packer.packBool(needAck);
@@ -145,6 +147,6 @@ class NatsMessage extends BaseMessage {
 
   @override
   String toString() {
-    return '${super.toString()}, payload: $payload';
+    return '${super.toString()}, payload: ${payload ?? payload.toString()}';
   }
 }

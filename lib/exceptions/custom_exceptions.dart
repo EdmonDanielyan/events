@@ -38,3 +38,19 @@ class PermissionDeniedException implements CustomException {
 
   PermissionDeniedException({this.message = ''}) : super();
 }
+
+class ChannelAlreadyExistException implements CustomException {
+  String message;
+  int? offset;
+  dynamic source;
+
+  ChannelAlreadyExistException({this.message = ''}) : super();
+}
+
+class SubscriptionAlreadyExistException implements CustomException {
+  String message;
+  int? offset;
+  dynamic source;
+
+  SubscriptionAlreadyExistException({this.message = ''}) : super();
+}
