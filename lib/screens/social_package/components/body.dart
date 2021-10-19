@@ -6,6 +6,7 @@ import 'package:ink_mobile/screens/social_package/components/social_package_list
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
+  static double _horizontalPadding = 15.0;
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +36,16 @@ class Body extends StatelessWidget {
       children: [
         Container(
           width: size.width,
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 25),
+          padding: EdgeInsets.symmetric(
+              horizontal: _horizontalPadding, vertical: 25),
           color: Colors.white,
-          child: Text(_strings.socialPackage,
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+          child: Text(
+            _strings.socialPackage,
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
         ),
         Container(
+            padding: EdgeInsets.symmetric(horizontal: _horizontalPadding),
             color: Colors.white,
             width: size.width,
             height: 450,

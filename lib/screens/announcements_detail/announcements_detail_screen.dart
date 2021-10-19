@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/screens/announcements_detail/components/body.dart';
 import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_cubit.dart';
@@ -66,6 +67,7 @@ class AnnouncementsDetailScreen extends StatelessWidget {
                 }
             }
           }),
+          bottomNavigationBar: NewBottomNavBar(),
         ));
   }
 }

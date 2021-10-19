@@ -33,6 +33,7 @@ class MedicalInsuranceGuarLetFields extends StatelessWidget {
     MaskTextInputFormatter mask = TextFieldMasks.date;
     return ServiceTextField(
       hint: _strings.dateHint,
+      requiredIcon: true,
       validator: (val) =>
           !mask.isFill() || val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.guaranteeLetterDate = val,

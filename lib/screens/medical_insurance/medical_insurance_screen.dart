@@ -8,20 +8,27 @@ import 'package:ink_mobile/screens/medical_insurance/components/head.dart';
 
 import 'components/form/form.dart';
 
-class MedicalInsuranceScreen extends StatelessWidget {
-  const MedicalInsuranceScreen({Key? key}) : super(key: key);
+class MedicalInsuranceScreen extends StatefulWidget {
+  final PreferredSizeWidget? appBar;
+  const MedicalInsuranceScreen({Key? key, this.appBar}) : super(key: key);
 
   @override
+  _MedicalInsuranceScreenState createState() => _MedicalInsuranceScreenState();
+}
+
+class _MedicalInsuranceScreenState extends State<MedicalInsuranceScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     final _strings =
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     EdgeInsetsGeometry sectionPadding =
         const EdgeInsets.symmetric(horizontal: 25, vertical: 20.0);
 
     return Scaffold(
-      appBar: InkAppBarWithText(
-        title: _strings.getMedicalInsurance,
-      ),
+      appBar: widget.appBar ??
+          InkAppBarWithText(title: _strings.getMedicalInsurance),
       body: SingleChildScrollView(
         child: Container(
           child: Column(
@@ -46,4 +53,7 @@ class MedicalInsuranceScreen extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
+import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 
 class FinancialAid extends StatelessWidget {
@@ -19,7 +21,7 @@ class FinancialAid extends StatelessWidget {
           child: Html(
               onLinkTap: (String? url, RenderContext context,
                   Map<String, String> attributes, dom.Element? element) {
-                print(url!);
+                launchUrl(url!);
               },
               data: '''
                    <b>Материальная помощь </b>- разовая выплата, предоставляемая сотруднику по решению руководства Компании. Размер материальной помощи определен Положением о гарантиях и компенсациях сотрудникам ООО «ИНК» и составляет <b>20 000 (Двадцать тысяч) рублей</b>.
@@ -89,6 +91,7 @@ class FinancialAid extends StatelessWidget {
                 '''),
         ),
       ),
+      bottomNavigationBar: NewBottomNavBar(),
     );
   }
 }

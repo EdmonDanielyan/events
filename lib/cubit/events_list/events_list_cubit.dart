@@ -43,7 +43,7 @@ class EventsListCubit extends Cubit<EventsListState> {
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccuried);
+      emitError(languageStrings.errorOccurred);
       throw UnknownErrorException();
     }
   }
@@ -73,7 +73,7 @@ class EventsListCubit extends Cubit<EventsListState> {
     emit(EventsListState(type: type, data: data, errorMessage: errorMessage));
   }
 
-  void onScroll(ScrollController controller) async {
+  Future<void> onScroll(ScrollController controller) async {
     scrollBottomToLoad.setController(controller);
 
     scrollBottomToLoad.onScroll(() async {

@@ -32,7 +32,7 @@ class AnnouncementCubit extends Cubit<AnnouncementsDetailState> {
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccuried);
+      emitError(languageStrings.errorOccurred);
       throw UnknownErrorException();
     }
   }
