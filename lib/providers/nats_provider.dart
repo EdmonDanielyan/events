@@ -355,7 +355,7 @@ class NatsProvider {
 
   Future<Subscription?> _subscribeToChannel(channel) async {
     var clientID = await _userChannel();
-    var durableName = "$clientID-$channel-${Uuid().v4()}";
+    var durableName = "$clientID-$channel}";
     // TODO: add device ID
     var subscription =
         await stan.subscribe(subject: channel, durableName: durableName);
