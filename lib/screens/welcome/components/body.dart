@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/screens/auth/components/sign_in_instructions.dart';
 import 'package:ink_mobile/screens/welcome/components/background.dart';
 
 class Body extends StatelessWidget {
@@ -81,18 +82,16 @@ class Body extends StatelessWidget {
                             ))),
                     TextButton(
                         onPressed: () {
-                          launchUrl('https://portal.irkutskoil.ru/');
+                          launchUrl('https://portal.irkutskoil.ru/login/?act=register');
                         },
-                        child: Opacity(
-                            opacity: 0.6,
-                            child: Text(
-                              _strings.signInInstructions,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ))),
+                        child: Text(
+                          'Регистрация',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              decoration: TextDecoration.underline),
+                        )),
+                    // SignInInstructions(),
                     Expanded(
                         child: Container(
                             width: 100,
@@ -104,6 +103,9 @@ class Body extends StatelessWidget {
                             ))),
                   ],
                 ),
+                Container(
+                  child: SignInInstructions(),
+                )
               ],
             ),
           )),

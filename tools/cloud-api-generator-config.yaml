@@ -1,6 +1,0 @@
-# Config options for the dart-dio generator
-pubName: cloud_api_client
-pubVersion: 0.1.0
-pubDescription: "Cloud API"
-legacyDiscriminatorBehavior: false
-templateDir: dart-dio-custom

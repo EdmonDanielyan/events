@@ -91,8 +91,8 @@ class EnglishStrings implements LanguageStrings {
   final String christmasGifts = "Christmas gifts";
   final String recreationalActivities = "Recreational activities";
   final String noConnectionError = "No connection error";
-  final String errorOccuried = "An error occuried";
-  final String unknownError = "Occuried an unknown error";
+  final String errorOccurred = "An error occurred";
+  final String unknownError = "Occurred an unknown error";
   final String reload = "Reload";
   final String signOff = "Sign off";
   final String changeLanguage = "Change the language";

@@ -94,7 +94,7 @@ class RussianStrings extends LanguageStrings {
   final String christmasGifts = "Новогодние подарки";
   final String recreationalActivities = "Оздоровительные мероприятия";
   final String noConnectionError = "Отсутствует подключение к интернету";
-  final String errorOccuried = "Произошла ошибка";
+  final String errorOccurred = "Произошла ошибка";
   final String unknownError = "Произошла непредвиденная ошибка";
   final String reload = "Обновить";
   final String signOff = "Выйти";

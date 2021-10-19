@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ink_mobile/components/textfields/required_icon.dart';
 
 class ServiceTextField extends StatelessWidget {
   final String hint;
@@ -13,6 +14,7 @@ class ServiceTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final int maxLines;
   final AutovalidateMode autovalidateMode;
+  final bool requiredIcon;
   const ServiceTextField({
     Key? key,
     this.hint = "",
@@ -20,6 +22,7 @@ class ServiceTextField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.initialValue,
+    this.requiredIcon = false,
     this.obscureText = false,
     this.keyboardType,
     this.inputFormatters = const [],
@@ -43,6 +46,8 @@ class ServiceTextField extends StatelessWidget {
       initialValue: initialValue,
       decoration: InputDecoration(
         hintText: hint,
+        suffixIcon: requiredIcon ? RequiredTextfieldIcon() : null,
+        suffixIconConstraints: RequiredTextfieldIcon.boxConstraints(),
         border: OutlineInputBorder(),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Theme.of(context).primaryColor),

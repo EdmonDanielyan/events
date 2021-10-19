@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
-import 'package:ink_mobile/models/user_data.dart';
-import 'package:ink_mobile/screens/profile/components/background.dart';
-import 'package:ink_mobile/screens/profile/components/header.dart';
-import 'package:ink_mobile/screens/profile/components/awards.dart';
-import 'package:ink_mobile/screens/profile/components/contacts.dart';
-import 'package:ink_mobile/screens/profile/components/basic_information.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
+import 'package:ink_mobile/models/user_data.dart';
+import 'package:ink_mobile/screens/profile/components/awards.dart';
+import 'package:ink_mobile/screens/profile/components/background.dart';
+import 'package:ink_mobile/screens/profile/components/basic_information.dart';
+import 'package:ink_mobile/screens/profile/components/contacts.dart';
+import 'package:ink_mobile/screens/profile/components/header.dart';
 import 'package:ink_mobile/screens/profile/components/other_user_page_header.dart';
 
 class Body extends StatelessWidget {
@@ -43,7 +43,7 @@ class Body extends StatelessWidget {
                 Map arg = ModalRoute.of(context)!.settings.arguments as Map;
                 int? userId;
 
-                if (arg != null && arg.isNotEmpty) {
+                if (arg.isNotEmpty) {
                   userId = arg['id'];
                 }
 

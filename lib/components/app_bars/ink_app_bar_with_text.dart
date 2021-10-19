@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/components/app_bars/back_btn.dart';
 
 class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
   final String title;
@@ -20,19 +21,16 @@ class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
     BuildContext appBarContext = context;
 
     return AppBar(
-      leading: Builder(
-        builder: (context) {
-          if (Navigator.of(appBarContext).canPop()) {
-            return IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-              onPressed: () async =>
-                  await Navigator.of(appBarContext).maybePop(),
-            );
-          } else {
-            return Container();
-          }
-        },
-      ),
+      leading: leading ??
+          Builder(
+            builder: (context) {
+              if (Navigator.of(appBarContext).canPop()) {
+                return AppBarBackBtn();
+              } else {
+                return Container();
+              }
+            },
+          ),
       flexibleSpace: Container(
         child: SvgPicture.asset(
           APP_BAR_LINES_SVG_LINK,

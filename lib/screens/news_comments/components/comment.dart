@@ -176,7 +176,7 @@ class _CommentState extends State<Comment> {
   Future<void> _onLike(BuildContext context) async {
     await widget.cubit.like(widget.id).onError((error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(_strings.errorOccuried),
+        content: Text(_strings.errorOccurred),
         duration: Duration(seconds: 1),
       ));
       return false;

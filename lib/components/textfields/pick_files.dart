@@ -26,7 +26,7 @@ class PickFilesState extends State<PickFiles> {
   final String NO_FILE_PICKED = "Файл не выбран";
   List<File> pickedFiles = [];
 
-  void _pickFile() async {
+  Future<void> _pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {

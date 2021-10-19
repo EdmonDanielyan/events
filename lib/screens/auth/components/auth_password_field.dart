@@ -31,28 +31,32 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
     final _strings =
         BlocProvider.of<LocalizationCubit>(context, listen: true).state;
 
-    return TextField(
+    return TextFormField(
       onChanged: (value) {
         authCubit.password = value;
       },
+      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: _obscureText,
       decoration: InputDecoration(
-          labelText: _strings.password,
-          border: OutlineInputBorder(),
-          fillColor: Colors.white,
-          filled: true,
-          suffixIcon: GestureDetector(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: SvgPicture.asset(
-                  _obscureText ? SHOW_TEXT_ICON_LINK : HIDE_TEXT_ICON_LINK,
-                  width: 10,
-                  height: 10,
-                ),
-              ),
-              onTap: () {
-                _toggle();
-              })),
+        labelText: _strings.password,
+        border: OutlineInputBorder(),
+        fillColor: Colors.white,
+        filled: true,
+        suffixIcon: GestureDetector(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: SvgPicture.asset(
+              _obscureText ? SHOW_TEXT_ICON_LINK : HIDE_TEXT_ICON_LINK,
+              width: 10,
+              height: 10,
+            ),
+          ),
+          onTap: () {
+            _toggle();
+          },
+        ),
+      ),
     );
   }
 }

@@ -18,13 +18,15 @@ class AuthForm extends StatelessWidget {
         margin: EdgeInsets.only(top: size.height * 0.03),
         child: Column(
           children: [
-            TextField(
+            TextFormField(
               decoration: InputDecoration(
                 labelText: _strings.login,
                 border: OutlineInputBorder(),
                 fillColor: Colors.white,
                 filled: true,
               ),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
               onChanged: (login) {
                 authCubit.login = login;
               },

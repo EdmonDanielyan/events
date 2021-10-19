@@ -4,6 +4,7 @@ import 'package:ink_mobile/functions/navigation_utils.dart';
 import 'package:ink_mobile/screens/main/main_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/screens/search/search_screen.dart';
+import 'package:ink_mobile/screens/service_list/service_list_page_viewer.dart';
 import 'package:ink_mobile/screens/service_list/service_list_screen.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -42,15 +43,34 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
   Widget screen = ChatListScreen();
 
   void onTap(BuildContext context, Function onChanged, int index) {
-    NavigationUtils.popScreenIfCan(context);
-    onChanged(index);
+    // NavigationUtils.popScreenIfCan(context);
+    // onChanged(index);
+    info(context);
+  }
+  void info(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text("Сообщения в разработке!"),
+          actions: [
+            TextButton(
+            child: Text("OK"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
 class ServicesBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/services.svg';
   String label = "Сервисы";
-  Widget screen = ServiceListScreen();
+  Widget screen = ServiceListPageViewer();
 
   void onTap(BuildContext context, Function onChanged, int index) {
     NavigationUtils.popScreenIfCan(context);

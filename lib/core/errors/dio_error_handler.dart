@@ -34,7 +34,7 @@ class DioErrorHandler {
           return unknownErrorException(
               languageStrings.userNotFound, languageStrings.userNotFound);
         default:
-          return unknownErrorException(languageStrings.errorOccuried, "");
+          return unknownErrorException(languageStrings.errorOccurred, "");
       }
     }
 
@@ -43,7 +43,7 @@ class DioErrorHandler {
 
   ErrorModel invalidRefreshToken() {
     return ErrorModel(
-      msg: languageStrings.errorOccuried,
+      msg: languageStrings.errorOccurred,
       exception: InvalidRefreshTokenException(),
     );
   }
