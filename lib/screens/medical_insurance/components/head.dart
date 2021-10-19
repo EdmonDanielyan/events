@@ -57,23 +57,4 @@ class Head extends StatelessWidget {
       style: TextStyle(color: Colors.grey[700]),
     );
   }
-
-  Widget _sampleWidget() {
-    return InkWell(
-      onTap: () {
-        launchUrl("http://p3.ink.vpool/services/dms/help.jpg");
-      },
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(Icons.info, color: Colors.blue),
-          SizedBox(width: 7.0),
-          Text(
-            _strings.formFillingSample,
-            style: TextStyle(color: Colors.blue),
-          )
-        ],
-      ),
-    );
-  }
 }

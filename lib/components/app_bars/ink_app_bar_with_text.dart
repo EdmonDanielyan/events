@@ -6,12 +6,17 @@ class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
   final String title;
   final Widget? titleWidget;
   final List<Widget>? actions;
+  final Widget? leading;
 
   static const String APP_BAR_LINES_SVG_LINK = 'assets/images/appbar_lines.svg';
 
-  InkAppBarWithText(
-      {Key? key, required this.title, this.titleWidget, this.actions})
-      : super(key: key);
+  InkAppBarWithText({
+    Key? key,
+    required this.title,
+    this.titleWidget,
+    this.actions,
+    this.leading,
+  }) : super(key: key);
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
