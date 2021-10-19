@@ -374,11 +374,9 @@ class NatsProvider {
   }
 
   Future<void> _listenBySubscription(channel, subscription) async {
-    print("listenBySubscription.channel: $channel");
     await publishMessageToChannel(channel, "ECHO!");
     await for (final dataMessage in subscription!.stream) {
       NatsMessage message = _parseMessage(dataMessage);
-      print("listenBySubscription.message: $message");
       if (message.type == MessageType.system) {
         await _onSystemMessage(channel, message);
       } else {
