@@ -35,7 +35,9 @@ class NatsProvider {
   final Map<String, Map<String, String>> _channel2messages = {};
 
   late Future<void> Function(String, NatsMessage) _onMessage =
-      (channel, message) async {};
+      (channel, message) async {
+    print("onMessage.channel: $channel, message: $message");
+  };
   late Future<void> Function(String, NatsMessage) _onSaveMessage =
       (channel, message) async {
     if (!_channel2messages.containsKey(channel)) {
@@ -46,6 +48,7 @@ class NatsProvider {
   };
   late Future<void> Function(String, NatsMessage) _onSystemMessage =
       (channel, message) async {
+    print("onSystemMessage.channel: $channel, message: $message");
     var systemPayload = message.payload as SystemPayload;
     switch (systemPayload.action) {
       case SystemMessageType.channels:
@@ -85,18 +88,19 @@ class NatsProvider {
 
     // tests
     var newChannel = Uuid().v4();
-    createPublicChannel(newChannel, {
+    await createPublicChannel(newChannel, {
       "name": "Избранное",
       "description": "Канал для заметок",
-      "avatar_url":
-          "https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/8bfdb754-1cc2-469a-9437-54ed95b0cbc9/300x",
+      "avatar_url": "https://startng.ru/wp-content/uploads/2018/03/ink-1.jpg",
       "created_at": DateTime.now().toString(),
     });
-    publishMessageToChannel(newChannel, "Моя первая заметка!");
+    await publishMessageToChannel(newChannel, "Моя первая заметка!");
     return true;
   }
 
   Map<String, Map<String, String>> get channel2settings => _channel2settings;
+
+  Map<String, Map<String, String>> get channel2messages => _channel2messages;
 
   set onMessage(Future<void> Function(String, NatsMessage) value) {
     _onMessage = value;
@@ -118,8 +122,7 @@ class NatsProvider {
     var userChannel = await _userChannel();
     NatsMessage message = new NatsMessage(from: userChannel, to: channel);
     message.setPayload(payload);
-    return stan.pubBytes(
-        subject: channel, bytes: message.toBytes(), guid: message.id);
+    return _sendMessage(channel, message);
   }
 
   /// Delete [payload] from [channel]
@@ -162,13 +165,13 @@ class NatsProvider {
       _publicChannelIds.add(channel);
       NatsMessage message;
       message =
-          new NatsMessage(needAck: false, from: userChannel, to: userChannel);
+          new NatsMessage(from: userChannel, to: userChannel);
       message.setSystemPayload(
           SystemMessageType.channels, {channel: CREATE_CHANNEL});
       await _sendMessage(userChannel, message);
       var publicChannel = this._publicChannel();
       message =
-          new NatsMessage(needAck: false, from: userChannel, to: publicChannel);
+          new NatsMessage(from: userChannel, to: publicChannel);
       message.setSystemPayload(
           SystemMessageType.channels, {channel: CREATE_CHANNEL});
       await _sendMessage(publicChannel, message);
@@ -216,13 +219,13 @@ class NatsProvider {
 
       NatsMessage message;
       message =
-          new NatsMessage(needAck: false, from: userChannel, to: userChannel);
+          new NatsMessage(from: userChannel, to: userChannel);
       message.setSystemPayload(
           SystemMessageType.channels, {channel: DELETE_CHANNEL});
       await _sendMessage(userChannel, message);
       var publicChannel = this._publicChannel();
       message =
-          new NatsMessage(needAck: false, from: userChannel, to: publicChannel);
+          new NatsMessage(from: userChannel, to: publicChannel);
       message.setSystemPayload(
           SystemMessageType.channels, {channel: DELETE_CHANNEL});
       await _sendMessage(publicChannel, message);
@@ -243,8 +246,7 @@ class NatsProvider {
     if (!_userChannelIds.contains(channel)) {
       _userChannelIds.add(channel);
       NatsMessage message;
-      message =
-          new NatsMessage(needAck: false, from: userChannel, to: userChannel);
+      message = new NatsMessage(from: userChannel, to: userChannel);
       message.setSystemPayload(
           SystemMessageType.channels, {channel: SUBSCRIBE_CHANNEL});
       await _sendMessage(userChannel, message);
@@ -283,7 +285,6 @@ class NatsProvider {
   String _publicChannel() => CHANNEL_LIST;
 
   Future<bool> _sendMessage(String channel, NatsMessage message) async {
-    print("channel: $channel, message: $message");
     return await stan.pubBytes(
         subject: channel, bytes: message.toBytes(), guid: message.id);
   }
@@ -291,18 +292,17 @@ class NatsProvider {
   NatsMessage _parseMessage(dataMessage) {
     var payload = (dataMessage as DataMessage).encodedPayload;
     var message = NatsMessage.fromBytes(payload);
-    print("message: $message from ${payload.length} bytes");
     return message;
   }
 
   Future<void> _listenUserChannels() async {
-    _subscriptionToUserInbox = await _subscribeToChannel(await _userChannel());
+    var userChannel = await _userChannel();
+    _subscriptionToUserInbox = await _subscribeToChannel(userChannel);
     await for (final dataMessage in _subscriptionToUserInbox!.stream) {
       NatsMessage message = _parseMessage(dataMessage);
       var systemPayload = message.getSystemPayload();
       if (systemPayload.action == SystemMessageType.channels) {
         systemPayload.data.forEach((channel, action) async {
-          print("channel: $channel, action: $action");
           if (action == CREATE_CHANNEL || action == SUBSCRIBE_CHANNEL) {
             _userChannelIds.add(channel);
             await _subscribeToChannels(channel);
@@ -344,7 +344,8 @@ class NatsProvider {
   }
 
   Future<void> _listenPublicChannels() async {
-    _subscriptionToPublicInbox = await _subscribeToChannel(_publicChannel());
+    var publicChannel = _publicChannel();
+    _subscriptionToPublicInbox = await _subscribeToChannel(publicChannel);
     await for (final dataMessage in _subscriptionToPublicInbox!.stream) {
       NatsMessage message = _parseMessage(dataMessage);
       var systemPayload = message.getSystemPayload();
@@ -365,17 +366,19 @@ class NatsProvider {
 
   Future<Subscription?> _subscribeToChannel(channel) async {
     var clientID = await _userChannel();
-    var durableName = "$clientID-$channel";
+    var durableName = "$clientID-$channel-${Uuid().v4()}";
     // TODO: add device ID
-    print("subscribe.channel: $channel, client: $clientID");
     var subscription =
         await stan.subscribe(subject: channel, durableName: durableName);
     return subscription;
   }
 
   Future<void> _listenBySubscription(channel, subscription) async {
+    print("listenBySubscription.channel: $channel");
+    await publishMessageToChannel(channel, "ECHO!");
     await for (final dataMessage in subscription!.stream) {
       NatsMessage message = _parseMessage(dataMessage);
+      print("listenBySubscription.message: $message");
       if (message.type == MessageType.system) {
         await _onSystemMessage(channel, message);
       } else {

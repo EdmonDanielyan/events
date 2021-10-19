@@ -147,6 +147,6 @@ class NatsMessage extends BaseMessage {
 
   @override
   String toString() {
-    return '${super.toString()}, payload: $payload';
+    return '${super.toString()}, payload: ${payload ?? payload.toString()}';
   }
 }
