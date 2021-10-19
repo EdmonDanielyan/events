@@ -3,14 +3,12 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/auth/domain/repository.dart';
 import 'package:ink_mobile/cubit/auth/use_cases/auth.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/cubit/auth/auth_state.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  LanguageStrings languageStrings;
-  AuthCubit({required this.languageStrings})
-      : super(AuthState(type: AuthStateType.LOADED));
+  AuthCubit() : super(AuthState(type: AuthStateType.LOADED));
 
   String login = '';
   String password = '';
@@ -26,18 +24,18 @@ class AuthCubit extends Cubit<AuthState> {
 
       return authUser.handleResponse(response);
     } on TimeoutException catch (_) {
-      emitError(languageStrings.noConnectionError);
-      throw FormatException(languageStrings.noConnectionError);
+      emitError(localizationInstance.noConnectionError);
+      throw FormatException(localizationInstance.noConnectionError);
     } on DioError catch (e) {
       String message = (e.type == DioErrorType.response)
           ? e.response?.data['detail']
-          : languageStrings.noConnectionError;
+          : localizationInstance.noConnectionError;
 
       emitError(message);
       throw FormatException(message);
     } on Exception catch (_) {
-      emitError(languageStrings.unknownError);
-      throw FormatException(languageStrings.unknownError);
+      emitError(localizationInstance.unknownError);
+      throw FormatException(localizationInstance.unknownError);
     }
   }
 

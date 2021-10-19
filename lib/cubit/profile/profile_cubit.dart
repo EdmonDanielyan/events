@@ -4,7 +4,7 @@ import 'package:ink_mobile/cubit/profile/domain/thank_repository.dart';
 import 'package:ink_mobile/cubit/profile/use_cases/fetch.dart';
 import 'package:ink_mobile/cubit/profile/use_cases/thank.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
@@ -14,9 +14,7 @@ import 'package:dio/dio.dart';
 import 'domain/fetch_repository.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
-  LanguageStrings languageStrings;
-  ProfileCubit({required this.languageStrings})
-      : super(ProfileState(type: ProfileStateType.LOADING));
+  ProfileCubit() : super(ProfileState(type: ProfileStateType.LOADING));
 
   Future<void> fetchUser(int? userId) async {
     try {
@@ -31,12 +29,11 @@ class ProfileCubit extends Cubit<ProfileState> {
       else
         emitSuccessOtherUser(userData);
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccurred);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }
@@ -54,12 +51,11 @@ class ProfileCubit extends Cubit<ProfileState> {
         dependency: ProfileThankRepository(userId: userId).getDependency(),
       ).thank();
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccurred);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }

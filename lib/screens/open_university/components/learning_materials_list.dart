@@ -5,7 +5,7 @@ import 'package:ink_mobile/components/centring_widget.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/cubit/learning_materials_list/learning_materials_list_cubit.dart';
 import 'package:ink_mobile/cubit/learning_materials_list/learning_materials_list_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/learning_materials_data.dart';
 import 'package:ink_mobile/screens/open_university/components/learning_materials_list_element.dart';
 
@@ -19,8 +19,7 @@ class LearningMaterialsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
 
     size = MediaQuery.of(context).size;
     controller.addListener(_onScroll);

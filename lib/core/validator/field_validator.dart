@@ -1,9 +1,8 @@
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class FieldValidator {
   static String? emailValidator(
-    String? str,
-    LanguageStrings strings, {
+    String? str, {
     bool canBeEmpty = false,
   }) {
     if (canBeEmpty && str!.isEmpty) return null;
@@ -13,24 +12,24 @@ class FieldValidator {
         .hasMatch(str!);
 
     if (!emailValid) {
-      return strings.incorrectEmail;
+      return localizationInstance.incorrectEmail;
     }
     return null;
   }
 
-  static String? cityValidator(String? str, LanguageStrings strings) {
-    return str!.length < 5 ? strings.fillTheField : null;
+  static String? cityValidator(String? str) {
+    return str!.length < 5 ? localizationInstance.fillTheField : null;
   }
 
-  static String? streetValidator(String? str, LanguageStrings strings) {
-    return str!.length < 8 ? strings.fillTheField : null;
+  static String? streetValidator(String? str) {
+    return str!.length < 8 ? localizationInstance.fillTheField : null;
   }
 
-  static String? addressValidator(String? str, LanguageStrings strings) {
-    return str!.length < 18 ? strings.fillTheField : null;
+  static String? addressValidator(String? str) {
+    return str!.length < 18 ? localizationInstance.fillTheField : null;
   }
 
-  static String? zipCodeValidator(String? str, LanguageStrings strings) {
-    return str!.length != 6 ? strings.fillTheField : null;
+  static String? zipCodeValidator(String? str) {
+    return str!.length != 6 ? localizationInstance.fillTheField : null;
   }
 }

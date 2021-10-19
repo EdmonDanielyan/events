@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/screens/search/components/body.dart';
 import 'package:ink_mobile/cubit/search/search_cubit.dart';
 
@@ -16,10 +15,8 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return BlocProvider<SearchCubit>(
-      create: (BuildContext context) => SearchCubit(languageStrings: _strings),
+      create: (BuildContext context) => SearchCubit(),
       child: Scaffold(
         body: Body(),
       ),

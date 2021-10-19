@@ -6,14 +6,14 @@ import 'package:ink_mobile/components/loader/error_loading_widget.dart';
 import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/chat_user_select.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/new_chat_person_container.dart';
 import 'package:ink_mobile/screens/messages/chat_list/functions/open_chat.dart';
 import 'package:ink_mobile/screens/search/components/search_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewChatScreen extends StatefulWidget {
   const NewChatScreen({Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
   double _avatarSize = 35.0;
   double _titleGap = 15.0;
   double _horizontalPadding = 20.0;
-  late LanguageStrings _strings;
+  late AppLocalizations _strings;
   late ChatPersonListCubit _personListCubit;
   late ChatListCubit _chatListCubit;
 
@@ -59,7 +59,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
     _chatListCubit = BlocProvider.of<ChatListCubit>(context);
     _personListCubit = BlocProvider.of<ChatPersonListCubit>(context);
 

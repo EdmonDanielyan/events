@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet.dart';
 import 'package:ink_mobile/functions/navigation_utils.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/main/main_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/screens/search/search_screen.dart';
@@ -16,7 +17,7 @@ abstract class NavBottomNavBarItem {
 
 class MainBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/home.svg';
-  String label = "Главная";
+  String label = localizationInstance.home;
   Widget screen = MainScreen();
 
   void onTap(BuildContext context, Function onChanged, int index) {
@@ -27,7 +28,7 @@ class MainBottomNavBarItem extends NavBottomNavBarItem {
 
 class SearchBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/search.svg';
-  String label = "Поиск";
+  String label = localizationInstance.search;
   Widget screen = SearchScreen();
 
   void onTap(BuildContext context, Function onChanged, int index) {
@@ -38,7 +39,7 @@ class SearchBottomNavBarItem extends NavBottomNavBarItem {
 
 class MessagesBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/message.svg';
-  String label = "Сообщения";
+  String label = localizationInstance.messages;
   Widget screen = ChatListScreen();
 
   void onTap(BuildContext context, Function onChanged, int index) {
@@ -49,7 +50,7 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
 
 class ServicesBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/services.svg';
-  String label = "Сервисы";
+  String label = localizationInstance.services;
   Widget screen = ServiceListPageViewer();
 
   void onTap(BuildContext context, Function onChanged, int index) {
@@ -60,7 +61,7 @@ class ServicesBottomNavBarItem extends NavBottomNavBarItem {
 
 class MenuBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/menu.svg';
-  String label = "Меню";
+  String label = localizationInstance.menu;
   Widget screen = SizedBox();
 
   void onTap(BuildContext context, Function onChanged, int index) {

@@ -13,11 +13,13 @@ import 'package:ink_mobile/core/errors/errors_to_server.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/handlers/error_catcher.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/providers/global_providers.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/themes/light.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'cubit/boot/boot_cubit.dart';
 
@@ -73,10 +75,11 @@ class InkMobile extends StatelessWidget {
         navigatorKey: App.materialKey,
         title: 'ИНК',
         initialRoute: '/init',
-        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
-        supportedLocales: [
-          const Locale('ru'),
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
         ],
+        supportedLocales: I18n.all,
         routes: MainRoutes.routes,
         theme: LightTheme().getThemeData(),
         darkTheme: LightTheme().getThemeData(),

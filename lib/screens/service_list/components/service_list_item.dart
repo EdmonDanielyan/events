@@ -1,4 +1,4 @@
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ServiceListItem {
   final String title;
@@ -15,7 +15,7 @@ class ServiceListItem {
 }
 
 class ServiceListItemListView {
-  static List<ServiceListItem> getItems(LanguageStrings _strings) => [
+  static List<ServiceListItem> getItems(AppLocalizations _strings) => [
         ServiceListItem(
           title: _strings.myData,
           svgPicturePath: 'assets/images/services_profile_icon.svg',

@@ -5,7 +5,7 @@ import 'package:ink_mobile/core/scrolling_loader/scroll_bottom_to_load.dart';
 import 'package:ink_mobile/cubit/announcements_list/use_cases/fetch.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
@@ -16,13 +16,11 @@ import 'package:dio/dio.dart';
 import 'domain/repository.dart';
 
 class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
-  LanguageStrings languageStrings;
-
   Pagination<AnnouncementData> pagination =
       Pagination<AnnouncementData>(countOnPage: 5);
   ScrollBottomToLoad scrollBottomToLoad = ScrollBottomToLoad();
 
-  AnnouncementsListCubit({required this.languageStrings})
+  AnnouncementsListCubit()
       : super(AnnouncementsListState(type: AnnouncementsListStateType.LOADING));
 
   Future<void> fetch() async {
@@ -38,12 +36,11 @@ class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
         emitSuccess(pagination.items);
       }
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccurred);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }
@@ -86,8 +83,8 @@ class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
         scrollBottomToLoad.isLoading = false;
       }).onError((error, stackTrace) {
         String message = error is NoConnectionException
-            ? languageStrings.noConnectionError
-            : languageStrings.unknownError;
+            ? localizationInstance.noConnectionError
+            : localizationInstance.unknownError;
 
         showErrorDialog(message);
         scrollBottomToLoad.isLoading = false;

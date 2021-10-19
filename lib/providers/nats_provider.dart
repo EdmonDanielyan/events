@@ -9,7 +9,6 @@ import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:ink_mobile/screens/references/components/permission_denied.dart';
 
 @singleton
 class NatsProvider {

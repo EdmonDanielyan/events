@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class SelectMessageMenu {
   final String name;
@@ -10,7 +10,8 @@ class SelectMessageMenu {
 }
 
 class SelectMessageMenuList {
-  static List<SelectMessageMenu> getStandartList(LanguageStrings strings) {
+  static List<SelectMessageMenu> getStandartList() {
+    final strings = localizationInstance;
     double iconSize = 18.0;
     return [
       SelectMessageMenu(

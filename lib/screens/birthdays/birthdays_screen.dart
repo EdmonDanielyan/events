@@ -6,7 +6,7 @@ import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_cubit.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_other_days_element.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_today_element.dart';
@@ -16,12 +16,10 @@ class BirthdaysScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
 
     return BlocProvider<BirthdaysCubit>(
-        create: (BuildContext context) =>
-            BirthdaysCubit(languageStrings: _strings),
+        create: (BuildContext context) => BirthdaysCubit(),
         child: Scaffold(
           appBar: InkAppBarWithText(
             title: _strings.birthdays,

@@ -3,7 +3,7 @@ import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/domain/repository.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/use_cases/fetch.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/feedback/management_answer.dart';
 import 'package:ink_mobile/models/pagination.dart';
@@ -13,8 +13,7 @@ import 'package:ink_mobile/models/token.dart';
 import 'answer_list_state.dart';
 
 class FeedbackAnswerListCubit extends Cubit<FeedbackAnswerListCubitState> {
-  final LanguageStrings languageStrings;
-  FeedbackAnswerListCubit({required this.languageStrings})
+  FeedbackAnswerListCubit()
       : super(FeedbackAnswerListCubitState(
             state: FeedbackAnswerListCubitStateEnums.LOADING));
 
@@ -34,12 +33,11 @@ class FeedbackAnswerListCubit extends Cubit<FeedbackAnswerListCubitState> {
         emitSuccess(pagination.items);
       }
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccurred);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }

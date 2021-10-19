@@ -4,7 +4,7 @@ import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/feedback/components/body.dart';
 
 class FeedBackScreen extends StatefulWidget {
@@ -23,8 +23,7 @@ class _FeedBackScreenState extends State<FeedBackScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
     return BlocProvider(
       create: (context) =>
           ScrollBottomLoadMoreCubit(ScrollBottomLoadMoreState(isOn: false)),

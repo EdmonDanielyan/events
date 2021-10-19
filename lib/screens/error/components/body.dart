@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/error/components/background.dart';
 
 class Body extends StatelessWidget {
@@ -8,9 +7,6 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
-
     return Background(
         child: SingleChildScrollView(
       padding: EdgeInsets.all(20),
@@ -27,7 +23,7 @@ class Body extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             Text(
-              _strings.pageNotFound,
+              localizationInstance.pageNotFound,
               style: TextStyle(
                 fontSize: 24,
                 color: Colors.white,

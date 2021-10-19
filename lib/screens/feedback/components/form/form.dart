@@ -15,8 +15,7 @@ import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/cubit/send_feedback_form/send_form_cubit.dart';
 import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart';
 import 'package:ink_mobile/cubit/tags_list/tags_list_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:ink_mobile/screens/feedback/components/form/validator.dart';
 import 'package:ink_mobile/screens/feedback/components/hint_text.dart';
@@ -31,7 +30,6 @@ class ManagementFeedbackForm extends StatefulWidget {
 }
 
 class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
-  late LanguageStrings _strings;
   late ManagementFeedbackFormValidator _validator;
   late ManagementFeedbackFormEntities entities =
       ManagementFeedbackFormEntities();
@@ -41,8 +39,8 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<PickFilesState> _pickFilesKey = GlobalKey<PickFilesState>();
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
-    _validator = ManagementFeedbackFormValidator(strings: _strings);
+    final _strings = localizationInstance;
+    _validator = ManagementFeedbackFormValidator();
 
     final _formCubit = BlocProvider.of<SendManagementFormCubit>(context);
 
@@ -70,8 +68,8 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
             SizedBox(height: 20.0),
             ServiceTextField(
               hint: "${_strings.email} ${_strings.notRequired}",
-              validator: (val) => FieldValidator.emailValidator(val, _strings,
-                  canBeEmpty: true),
+              validator: (val) =>
+                  FieldValidator.emailValidator(val, canBeEmpty: true),
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
               onChanged: (val) => entities.email = val,
@@ -115,7 +113,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
         return IgnorePointer(
           ignoring: state.data.length < 1,
           child: ServiceSelectFieldCubit(
-            hint: _strings.addresseeHint,
+            hint: localizationInstance.addresseeHint,
             cubit: selectfieldCubit,
             items: getItems,
             validator: (_) => _validator.toWhomValidator(entities.toWhom),
@@ -150,12 +148,13 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
           return CustomCircularProgressIndicator();
         } else {
           return ServiceBtn(
-              txt: _strings.askQuestion,
-              onPressed: () {
-                if (key.currentState!.validate()) {
-                  formCubit.send(entities);
-                }
-              });
+            txt: localizationInstance.askQuestion,
+            onPressed: () {
+              if (key.currentState!.validate()) {
+                formCubit.send(entities);
+              }
+            },
+          );
         }
       },
     );

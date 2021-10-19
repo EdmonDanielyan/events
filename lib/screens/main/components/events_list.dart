@@ -4,7 +4,6 @@ import 'package:ink_mobile/components/list_element_divider.dart';
 import 'package:ink_mobile/cubit/main_page/events_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/events_list_state.dart';
 import 'package:ink_mobile/cubit/main_page/main_cubit.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/screens/main/components/events_list_element.dart';
 import 'package:ink_mobile/screens/main/components/events_list_element_placeholder.dart';
@@ -14,11 +13,8 @@ class EventsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     return BlocProvider<EventsListCubit>(
-        create: (BuildContext context) =>
-            EventsListCubit(languageStrings: _strings),
+        create: (BuildContext context) => EventsListCubit(),
         child: BlocBuilder<EventsListCubit, EventsListState>(
             builder: (context, state) {
           final EventsListCubit eventsCubit =

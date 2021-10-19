@@ -4,17 +4,15 @@ import 'package:ink_mobile/cubit/events_list/domain/repository.dart';
 import 'package:ink_mobile/cubit/events_list/use_cases/fetch.dart';
 import 'package:ink_mobile/cubit/main_page/events_list_state.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
 import 'package:dio/dio.dart';
 
 class EventsListCubit extends Cubit<EventsListState> {
-  LanguageStrings languageStrings;
   static List<EventData>? eventList;
-  EventsListCubit({required this.languageStrings})
-      : super(EventsListState(type: EventsListStateType.LOADING));
+  EventsListCubit() : super(EventsListState(type: EventsListStateType.LOADING));
 
   Pagination<EventData> pagination =
       Pagination<EventData>(countOnPage: 5, pageNumber: 1);
@@ -32,13 +30,12 @@ class EventsListCubit extends Cubit<EventsListState> {
         emitSuccess(eventList!);
       }
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccurred);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }

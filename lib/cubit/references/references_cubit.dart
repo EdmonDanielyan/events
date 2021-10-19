@@ -3,15 +3,13 @@ import 'package:ink_mobile/cubit/references/domain/get_autofill_rep.dart';
 import 'package:ink_mobile/cubit/references/references_state.dart';
 import 'package:ink_mobile/cubit/references/use_cases/check_permission.dart';
 import 'package:ink_mobile/cubit/references/use_cases/get_autofill_data.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/autofill.dart';
 import 'package:ink_mobile/models/token.dart';
 
 import 'domain/check_perm_rep.dart';
 
 class ReferencesPageCubit extends Cubit<ReferencesPageState> {
-  final LanguageStrings languageStrings;
-  ReferencesPageCubit({required this.languageStrings})
+  ReferencesPageCubit()
       : super(ReferencesPageState(type: ReferencesStateType.LOADING));
 
   Autofill autofill = Autofill();

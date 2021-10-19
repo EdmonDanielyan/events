@@ -8,7 +8,7 @@ import 'package:ink_mobile/cubit/news_comments/use_cases/comment.dart';
 import 'package:ink_mobile/cubit/news_comments/use_cases/fetch.dart';
 import 'package:ink_mobile/cubit/news_comments/use_cases/like.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/comment_data.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/token.dart';
@@ -17,12 +17,11 @@ import 'domain/like_repository.dart';
 import 'news_comments_state.dart';
 
 class NewsCommentsCubit extends Cubit<NewsCommentState> {
-  LanguageStrings languageStrings;
   TextEditingController commentInputController = TextEditingController();
   FocusNode focusNode = FocusNode();
   int? answerId;
 
-  NewsCommentsCubit({required this.languageStrings})
+  NewsCommentsCubit()
       : super(NewsCommentState(type: NewsCommentStateType.LOADING));
 
   Future<void> load(int newsId) async {
@@ -34,8 +33,7 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       ).call();
       emitSuccess(comments);
     } on DioError catch (e) {
-      final _errorHandler =
-          DioErrorHandler(e: e, languageStrings: languageStrings);
+      final _errorHandler = DioErrorHandler(e: e);
       if (_errorHandler.isEmpty()) {
         emitEmpty();
         return;
@@ -45,7 +43,7 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccurred);
+      emitError(localizationInstance.errorOccurred);
     }
   }
 

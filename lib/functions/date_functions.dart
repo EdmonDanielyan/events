@@ -1,4 +1,4 @@
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -32,9 +32,9 @@ class DateFunctions {
     return formatter.format(passedDate);
   }
 
-  String dayMonthYearHuman(LanguageStrings strings) {
-    if (isToday()) return strings.today;
-    if (isYesterday()) return strings.yesterday;
+  String dayMonthYearHuman() {
+    if (isToday()) return localizationInstance.today;
+    if (isYesterday()) return localizationInstance.yesterday;
 
     return dayMonthYear();
   }

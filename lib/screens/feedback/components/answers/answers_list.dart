@@ -5,8 +5,7 @@ import 'package:ink_mobile/components/loader/error_loading_widget.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_cubit.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/feedback/management_answer.dart';
 import 'package:ink_mobile/screens/feedback/components/load_more_btn.dart';
 
@@ -14,8 +13,6 @@ import 'answer_widget.dart';
 
 class ManagementFeedbackAnswersList extends StatelessWidget {
   const ManagementFeedbackAnswersList({Key? key}) : super(key: key);
-
-  static late LanguageStrings _strings;
 
   void loadMore(FeedbackAnswerListCubit answersCubit, scrollBottomLoaderCubit) {
     answersCubit.fetch();
@@ -35,7 +32,6 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
     final _answers_cubit = BlocProvider.of<FeedbackAnswerListCubit>(context);
     final _scrollBottomLoaderCubit =
         BlocProvider.of<ScrollBottomLoadMoreCubit>(context);
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
 
     linkScreenToCubit(_scrollBottomLoaderCubit,
         () => loadMore(_answers_cubit, _scrollBottomLoaderCubit));
@@ -53,7 +49,8 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
             () => loadMore(_answers_cubit, _scrollBottomLoaderCubit),
           );
         } else if (state.state == FeedbackAnswerListCubitStateEnums.ERROR) {
-          return ErrorLoadingWidget(errorMsg: _strings.errorLoadingQuestions);
+          return ErrorLoadingWidget(
+              errorMsg: localizationInstance.errorLoadingQuestions);
         }
 
         return SizedBox();
@@ -85,7 +82,7 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
               cubit.pagination.next) ...[
             LoadMoreBtn(
               onPressed: () => loadMore(),
-              text: _strings.allAnswers,
+              text: localizationInstance.allAnswers,
             ),
           ],
         ],

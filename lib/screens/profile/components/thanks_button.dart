@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class ThanksButton extends StatelessWidget {
   final int userId;
@@ -10,8 +10,7 @@ class ThanksButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
     final ProfileCubit userCubit = BlocProvider.of<ProfileCubit>(context);
     return Column(
       children: [

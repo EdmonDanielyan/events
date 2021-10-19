@@ -6,15 +6,13 @@ import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_ba
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/cubit/auth/auth_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/auth/components/sign_in_instructions.dart';
 
 class AuthButtons extends StatelessWidget {
   final GlobalKey<FormState>? formKey;
   const AuthButtons({Key? key, this.formKey}) : super(key: key);
   static late AuthCubit authCubit;
-  static late LanguageStrings _strings;
   static late NewBottomNavBarCubit _bottomNavBar;
 
   void onSubmit(BuildContext context) {
@@ -32,7 +30,6 @@ class AuthButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     authCubit = BlocProvider.of<AuthCubit>(context);
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
     _bottomNavBar =
         BlocProvider.of<NewBottomNavBarCubit>(context, listen: true);
     Size size = MediaQuery.of(context).size;
@@ -104,7 +101,7 @@ class AuthButtons extends StatelessWidget {
                 if (validate) onSubmit(context);
               },
               child: Text(
-                _strings.enter,
+                localizationInstance.enter,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 19,

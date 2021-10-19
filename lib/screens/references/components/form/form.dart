@@ -18,8 +18,8 @@ import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/cubit/references/references_cubit.dart';
 import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart';
 import 'package:ink_mobile/functions/parser.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/references/delivery_list.dart';
 import 'package:ink_mobile/models/references/reference_list.dart';
 import 'package:ink_mobile/screens/references/components/form/entities.dart';
@@ -40,7 +40,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   final _key = GlobalKey<FormState>();
   final GlobalKey<PickFilesState> _pickFilesKey = GlobalKey<PickFilesState>();
   late ReferencesPageCubit referencesCubit;
-  late LanguageStrings _strings;
+  late AppLocalizations _strings;
   late ReferencesList referencesList;
   late DeliveryList deliveryList;
   late ReferencesFormEntities entities = ReferencesFormEntities();
@@ -59,10 +59,10 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
 
-    referencesList = ReferencesList(strings: _strings);
-    deliveryList = DeliveryList(strings: _strings);
+    referencesList = ReferencesList();
+    deliveryList = DeliveryList();
     referencesCubit = BlocProvider.of<ReferencesPageCubit>(context);
     _sendReferenceFormCubit = BlocProvider.of<SendReferenceFormCubit>(context);
     currentReferenceItem =
@@ -237,7 +237,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget deliveryAddressWidget() {
     return ServiceTextField(
       hint: _strings.address,
-      validator: (val) => FieldValidator.addressValidator(val!, _strings),
+      validator: (val) => FieldValidator.addressValidator(val!),
       onChanged: (val) => entities.address = val,
       keyboardType: TextInputType.streetAddress,
       autocorrect: false,
@@ -247,7 +247,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget deliveryZipCodeWidget() {
     return ServiceTextField(
       hint: _strings.zipIndex,
-      validator: (val) => FieldValidator.zipCodeValidator(val!, _strings),
+      validator: (val) => FieldValidator.zipCodeValidator(val!),
       onChanged: (val) => entities.postCode = val,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.number,

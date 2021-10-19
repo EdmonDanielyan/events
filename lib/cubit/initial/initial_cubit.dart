@@ -4,14 +4,12 @@ import 'package:ink_mobile/core/handlers/AuthHandler.dart';
 import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/cubit/initial/initial_state.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:dio/dio.dart';
 
 class InitialCubit extends Cubit<InitialState> {
-  LanguageStrings languageStrings;
-  InitialCubit({required this.languageStrings})
-      : super(InitialState(type: InitialStateType.LOADING));
+  InitialCubit() : super(InitialState(type: InitialStateType.LOADING));
 
   Future<void> refreshToken() async {
     String? refreshToken = await Token.getRefresh();
@@ -35,14 +33,14 @@ class InitialCubit extends Cubit<InitialState> {
       emitState(type: InitialStateType.LOAD_MAIN);
     } on DioError catch (e) {
       if (e.type == DioErrorType.other) {
-        emitError(languageStrings.noConnectionError);
+        emitError(localizationInstance.noConnectionError);
       } else {
         emitWelcome();
       }
     } on InvalidRefreshTokenException catch (_) {
       emitWelcome();
     } on Exception catch (_) {
-      emitError(languageStrings.noConnectionError);
+      emitError(localizationInstance.noConnectionError);
     }
   }
 

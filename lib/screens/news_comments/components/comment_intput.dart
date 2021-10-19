@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewsCommentInput extends StatelessWidget {
   NewsCommentInput({Key? key}) : super(key: key);
   static const String SEND_COMMENT_SVG_LINK = 'assets/images/send_comment.svg';
-  static late LanguageStrings _strings;
+  static late AppLocalizations _strings;
   static late NewsCommentsCubit _cubit;
 
   @override
@@ -22,7 +22,7 @@ class NewsCommentInput extends StatelessWidget {
 
     _cubit = BlocProvider.of<NewsCommentsCubit>(context);
 
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
 
     return SafeArea(
       child: Container(

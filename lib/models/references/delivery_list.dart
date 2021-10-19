@@ -1,24 +1,25 @@
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/references/reference_list.dart';
 
 enum DeliveryType { BUH, SECURITY_UK, OK_IRK, OK_UK, INKTKRS, POST }
 
 class DeliveryList {
-  final LanguageStrings strings;
-  DeliveryList({required this.strings});
+  DeliveryList();
 
-  DeliveryItem buh() =>
-      DeliveryItem(title: strings.deliveryMethodBuh, deliveryType: 'BUH');
+  DeliveryItem buh() => DeliveryItem(
+      title: localizationInstance.deliveryMethodBuh, deliveryType: 'BUH');
   DeliveryItem securityUk() => DeliveryItem(
-      title: strings.deliveryMethodSecurityUk, deliveryType: 'SECURITY_UK');
-  DeliveryItem okIrk() =>
-      DeliveryItem(title: strings.deliveryMethodOkIrk, deliveryType: 'OK_IRK');
-  DeliveryItem okUk() =>
-      DeliveryItem(title: strings.deliveryMethodOkUk, deliveryType: 'OK_UK');
+      title: localizationInstance.deliveryMethodSecurityUk,
+      deliveryType: 'SECURITY_UK');
+  DeliveryItem okIrk() => DeliveryItem(
+      title: localizationInstance.deliveryMethodOkIrk, deliveryType: 'OK_IRK');
+  DeliveryItem okUk() => DeliveryItem(
+      title: localizationInstance.deliveryMethodOkUk, deliveryType: 'OK_UK');
   DeliveryItem inktkrs() => DeliveryItem(
-      title: strings.deliveryMethodInkTkrs, deliveryType: 'INKTKRS');
-  DeliveryItem post() =>
-      DeliveryItem(title: strings.deliveryMethodPostMail, deliveryType: 'POST');
+      title: localizationInstance.deliveryMethodInkTkrs,
+      deliveryType: 'INKTKRS');
+  DeliveryItem post() => DeliveryItem(
+      title: localizationInstance.deliveryMethodPostMail, deliveryType: 'POST');
 
   DeliveryItem? getDeliveryItem(DeliveryType type) {
     switch (type) {

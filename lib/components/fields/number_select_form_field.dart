@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ink_mobile/functions/parser.dart';
 
 class NumberSelectFormField extends FormField<String> {
   NumberSelectFormField({
@@ -330,7 +329,7 @@ class NumberSelectFormField extends FormField<String> {
 }
 
 class _NumberSelectFormFieldState extends FormFieldState<String> {
-  TextEditingController? _controller;
+  TextEditingController? controller;
 
   TextEditingController? get _effectiveController => widget.controller;
 
@@ -355,7 +354,7 @@ class _NumberSelectFormFieldState extends FormFieldState<String> {
       oldWidget.controller.removeListener(_handleControllerChanged);
       widget.controller.addListener(_handleControllerChanged);
 
-      _controller = TextEditingController.fromValue(oldWidget.controller.value);
+      controller = TextEditingController.fromValue(oldWidget.controller.value);
       widget.controller.text = oldWidget.controller.text;
     }
   }
