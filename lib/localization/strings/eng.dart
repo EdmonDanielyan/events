@@ -22,6 +22,7 @@ class EnglishStrings implements LanguageStrings {
   final String birthdays = "Birthdays";
   final String noBirthdaysSoon = "No birthday in the next 3 days";
   final String today = "Today";
+  final String yesterday = "Yesterday";
   final String inComingDays = "In coming days";
   final String pageNotFound = "Page not found";
   final String nowParticipatingInTheEvent =
@@ -39,6 +40,8 @@ class EnglishStrings implements LanguageStrings {
   final String openUniversity = "Open university";
   final String comments = "Comments";
   final String answer = "Answer";
+  final String reply = "Reply";
+  final String writeHint = "Write";
   final String writeCommentHint = "Write a comment...";
   final String commentSendingError = "Occured an error while sending a comment";
   final String noCommentsNewsSection = "No comments yet";
@@ -62,6 +65,7 @@ class EnglishStrings implements LanguageStrings {
   final String noStaffMovements = "No staff movements";
   final String birthday = "Birthday";
   final String mainInformation = "Main information";
+  final String add = "Add";
   final String address = "Address";
   final String office = "Office";
   final String contacts = "Contacts";
@@ -156,6 +160,8 @@ class EnglishStrings implements LanguageStrings {
   final String deliveryMethodPostMail = "By post mail";
   final String childsBirthCertificate = "Child's birth certificate";
   final String files = "Files";
+  final String and = "And";
+  final String links = "Links";
   final String medicalServiceSection = "Medical service section";
   final String medicalInsuranceFormInfo =
       "For registration/renewal of voluntary medical insurance, you must fill out the form";
@@ -184,4 +190,37 @@ class EnglishStrings implements LanguageStrings {
       "Other services (massage, manual therapy, MRI, ultrasound etc.)";
   final String chooseService = "Choose service";
   final String clarification = "Clarification";
+  final String find = "Find";
+  final String online = "Online";
+  final String offline = "Offline";
+  final String create = "Create";
+  final String chat = "Chat";
+  final String chatInfo = "Chat info";
+  final String notifications = "Notifications";
+  final String turnOn = "Turn on";
+  final String turnOff = "Turn off";
+  final String clear = "Clear";
+  final String leave = "Leave";
+  final String delete = "Delete";
+  final String participant = "Participant";
+  final String participants = "Participants";
+  final String participantsAccusative = "Participants";
+  final String owner = "Owner";
+  final String admin = "Admin";
+  final String edit = "Edit";
+  final String cancel = "Cancel";
+  final String ready = "Ready";
+  final String sendOn = "Forward";
+  final String copy = "Copy";
+  final String attach = "Attach";
+  final String takePicture = "Take a picture";
+  final String picVidFromGallery = "Image or video from gallery";
+  final String document = "Document";
+  final String newChatHint = "Choose person (one or many)";
+  final String you = "You";
+  final String groupName = "Group name";
+  final String description = "Description";
+  final String name = "Name";
+  final String newGroup = "New group";
+  final String forwardedMsg = "Forwarded message";
 }

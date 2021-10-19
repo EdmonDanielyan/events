@@ -32,7 +32,7 @@ class _BodyState extends State<Body> {
           listener: (context, state) {
         if (state.type == NewsCommentStateType.LOADED) {
           countLoad += 1;
-          if (countLoad > 1) scrollToBottom(controller);
+          if (countLoad > 1) ScrollBottom(controller).scrollSmooth();
         }
       }, builder: (context, state) {
         final NewsCommentsCubit newsCommentsCubit =
@@ -113,14 +113,15 @@ class _BodyState extends State<Body> {
     data.comments?.forEach((comment) {
       comments.add(
         Comment(
-            id: comment.id,
-            authorId: comment.authorId,
-            avatar: comment.pathToAvatar,
-            name: comment.authorName,
-            text: comment.comment,
-            barrelChecked: comment.barrelsChecked,
-            barrelsCount: comment.barrels,
-            dateTime: comment.timeCreate,),
+          id: comment.id,
+          authorId: comment.authorId,
+          avatar: comment.pathToAvatar,
+          name: comment.authorName,
+          text: comment.comment,
+          barrelChecked: comment.barrelsChecked,
+          barrelsCount: comment.barrels,
+          dateTime: comment.timeCreate,
+        ),
       );
 
       comment.children?.forEach((childrenComment) {

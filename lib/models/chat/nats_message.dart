@@ -65,7 +65,7 @@ class SystemPayload {
 
   SystemPayload(this.action, this.data);
 
-  void pack(Packer packer){
+  void pack(Packer packer) {
     packer.packString(describeEnum(action));
     packer.packMapLength(data.length);
     data.forEach((key, value) {

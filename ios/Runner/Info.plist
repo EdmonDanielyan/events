@@ -38,6 +38,10 @@
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Used to pick images for a form section</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to set user picture, send pictures/videos between the app users</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to send videos between the app users</string>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>UIBackgroundModes</key>

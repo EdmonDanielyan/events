@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/models/chat/person_list_params.dart';
 import 'package:ink_mobile/screens/announcements_detail/announcements_detail_screen.dart';
 import 'package:ink_mobile/screens/announcements_list/announcements_list_screen.dart';
 import 'package:ink_mobile/screens/app_layer/app_layer_screen.dart';
@@ -11,6 +12,10 @@ import 'package:ink_mobile/screens/feedback/feedback_screen.dart';
 import 'package:ink_mobile/screens/initial/initial_screen.dart';
 import 'package:ink_mobile/screens/main/main_screen.dart';
 import 'package:ink_mobile/screens/medical_insurance/medical_insurance_screen.dart';
+import 'package:ink_mobile/screens/messages/chat/chat_screen.dart';
+import 'package:ink_mobile/screens/messages/chat_info/chat_info_screen.dart';
+import 'package:ink_mobile/screens/messages/chat_list/components/new_group_screen.dart';
+import 'package:ink_mobile/screens/messages/person_list/person_list_screen.dart';
 import 'package:ink_mobile/screens/news_comments/news_comment_screen.dart';
 import 'package:ink_mobile/screens/news_detail/news_detail.dart';
 import 'package:ink_mobile/screens/news_list/news_list_screen.dart';
@@ -65,6 +70,17 @@ class MainRoutes {
         RecreationalActivities(),
     '/birthdays': (BuildContext context) => BirthdaysScreen(),
     '/open_university': (BuildContext context) => OpenUniversityScreen(),
+    '/message': (BuildContext context) => ChatScreen(),
+    '/chat_info': (BuildContext context) => ChatInfoScreen(),
+    '/new_group': (BuildContext context) => NewGroupScreen(),
+    '/message_person_list': (BuildContext context) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args is PersonListParams) {
+        return PersonListScreen(params: args);
+      } else {
+        return PageNotFoundScreen();
+      }
+    },
     '/test': (BuildContext context) => TestScreen()
   };
 }
