@@ -73,14 +73,8 @@ class InkMobile extends StatelessWidget {
         navigatorKey: App.materialKey,
         title: 'ИНК',
         initialRoute: '/init',
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          DefaultMaterialLocalizations.delegate,
-          DefaultCupertinoLocalizations.delegate,
-          DefaultWidgetsLocalizations.delegate,
-        ],
+        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
         supportedLocales: [
-          const Locale('en'),
           const Locale('ru'),
         ],
         routes: MainRoutes.routes,
