@@ -82,19 +82,8 @@ class NatsProvider {
     if (!connected) {
       throw NoConnectionException();
     }
-
     _listenUserChannels();
     _listenPublicChannels();
-
-    // tests
-    var newChannel = Uuid().v4();
-    await createPublicChannel(newChannel, {
-      "name": "Избранное",
-      "description": "Канал для заметок",
-      "avatar_url": "https://startng.ru/wp-content/uploads/2018/03/ink-1.jpg",
-      "created_at": DateTime.now().toString(),
-    });
-    await publishMessageToChannel(newChannel, "Моя первая заметка!");
     return true;
   }
 
@@ -146,7 +135,7 @@ class NatsProvider {
   Future<bool> createPublicChannel(
       String channel, Map<String, String> settings) async {
     var userChannel = await _userChannel();
-    await registerPublicChannel(channel, userChannel);
+    await _registerPublicChannel(channel, userChannel);
     NatsMessage message =
         new NatsMessage(from: userChannel, to: channel + CHANNEL_SETTINGS);
     settings.addAll({CHANNEL_ADMIN: userChannel, channel: ''});
@@ -158,7 +147,7 @@ class NatsProvider {
         guid: message.id);
   }
 
-  Future<void> registerPublicChannel(String channel, String userChannel) async {
+  Future<void> _registerPublicChannel(String channel, String userChannel) async {
     if (!_userChannelIds.contains(channel) &&
         !_publicChannelIds.contains(channel)) {
       _userChannelIds.add(channel);
@@ -204,14 +193,14 @@ class NatsProvider {
         new NatsMessage(from: userChannel, to: channel + CHANNEL_SETTINGS);
     message.setSystemPayload(
         SystemMessageType.delete_channel, {channel: DELETE_CHANNEL});
-    unregisterPublicChannel(channel, userChannel);
+    _unregisterPublicChannel(channel, userChannel);
     return stan.pubBytes(
         subject: channel + CHANNEL_SETTINGS,
         bytes: message.toBytes(),
         guid: message.id);
   }
 
-  void unregisterPublicChannel(String channel, userChannel) async {
+  void _unregisterPublicChannel(String channel, userChannel) async {
     if (_userChannelIds.contains(channel) &&
         _publicChannelIds.contains(channel)) {
       _userChannelIds.remove(channel);
@@ -374,7 +363,7 @@ class NatsProvider {
   }
 
   Future<void> _listenBySubscription(channel, subscription) async {
-    await publishMessageToChannel(channel, "ECHO!");
+    await publishMessageToChannel(channel, "echo!");
     await for (final dataMessage in subscription!.stream) {
       NatsMessage message = _parseMessage(dataMessage);
       if (message.type == MessageType.system) {
