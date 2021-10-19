@@ -30,3 +30,11 @@ class UnknownErrorException implements CustomException {
   UnknownErrorException({this.message = ErrorMessages.UNKNOWN_ERROR_MESSAGE})
       : super();
 }
+
+class PermissionDeniedException implements CustomException {
+  String message;
+  int? offset;
+  dynamic source;
+
+  PermissionDeniedException({this.message = ''}) : super();
+}
