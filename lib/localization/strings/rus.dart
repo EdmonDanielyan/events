@@ -23,6 +23,7 @@ class RussianStrings extends LanguageStrings {
   final String birthdays = "Дни рождения";
   final String noBirthdaysSoon = "Сегодня и ближайшие 3 дня нет дней рождения";
   final String today = "Сегодня";
+  final String yesterday = "Вчера";
   final String inComingDays = "Ближайшие дни";
   final String pageNotFound = "Страница не найдена";
   final String nowParticipatingInTheEvent = "Вы участвуете в событии";
@@ -38,7 +39,9 @@ class RussianStrings extends LanguageStrings {
   final String msNews = "Молодежный совет";
   final String openUniversity = "Открытый университет";
   final String comments = "Комментарии";
-  final String answer = "Ответить";
+  final String answer = "Ответ";
+  final String reply = "Ответить";
+  final String writeHint = "Написать";
   final String writeCommentHint = "Написать комментарий...";
   final String commentSendingError =
       "Произошла ошибка при отправке комментария";
@@ -64,6 +67,7 @@ class RussianStrings extends LanguageStrings {
   final String noStaffMovements = "Кадровые перемещения отсутствуют";
   final String birthday = "День рождения";
   final String mainInformation = "Основная информация";
+  final String add = "Добавить";
   final String address = "Адрес";
   final String office = "Кабинет";
   final String contacts = "Контакты";
@@ -163,6 +167,8 @@ class RussianStrings extends LanguageStrings {
   final String deliveryMethodPostMail = "Почтой по адресу";
   final String childsBirthCertificate = "Свидетельство о рождении ребенка";
   final String files = "Файлы";
+  final String and = "И";
+  final String links = "Ссылки";
   final String medicalServiceSection = "Раздел Медслужбы";
   final String medicalInsuranceFormInfo =
       "Для оформления/продления ДМС необходимо заполнить форму";
@@ -189,4 +195,37 @@ class RussianStrings extends LanguageStrings {
       "Другие услуги (массаж, мануальная терапия, МРТ, УЗИ и т.д.)";
   final String chooseService = "Выберите услугу";
   final String clarification = "Уточнение";
+  final String find = "Найти";
+  final String online = "В сети";
+  final String offline = "Не в сети";
+  final String create = "Создать";
+  final String chat = "Чат";
+  final String chatInfo = "Информация о чате";
+  final String notifications = "Уведомления";
+  final String turnOn = "Включить";
+  final String turnOff = "Выключить";
+  final String clear = "Очистить";
+  final String leave = "Покинуть";
+  final String delete = "Удалить";
+  final String participant = "Участник";
+  final String participants = "Участники";
+  final String participantsAccusative = "Участников";
+  final String owner = "Создатель";
+  final String admin = "Админ";
+  final String edit = "Редактировать";
+  final String cancel = "Отмена";
+  final String ready = "Готово";
+  final String sendOn = "Переслать";
+  final String copy = "Скопировать";
+  final String attach = "Прикрепить";
+  final String takePicture = "Сделать фото";
+  final String picVidFromGallery = "Фото и видео из галереи";
+  final String document = "Документ";
+  final String newChatHint = "Выберите собеседников (один или несколько)";
+  final String you = "Вы";
+  final String groupName = "Название группы";
+  final String description = "Описание";
+  final String name = "Название";
+  final String newGroup = "Новая группа";
+  final String forwardedMsg = "Пересланное сообщение";
 }

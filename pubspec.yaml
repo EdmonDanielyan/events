@@ -55,6 +55,9 @@ dependencies:
   dart_nats_streaming:
     git: https://github.com/JetRabbits/dart-nats-streaming.git
   injectable:
+  flutter_linkify: ^5.0.2
+  flutter_keyboard_visibility: ^5.1.0
+  image_picker: ^0.8.3+2
 
 dev_dependencies:
   flutter_test:
