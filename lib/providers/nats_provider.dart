@@ -9,7 +9,16 @@ import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:ink_mobile/screens/references/components/permission_denied.dart';
+import 'package:uuid/uuid.dart';
+
+const CREATE_CHANNEL = 'created';
+const DELETE_CHANNEL = 'deleted';
+const UPDATE_CHANNEL = 'updated';
+const SUBSCRIBE_CHANNEL = 'subscribed';
+const UNSUBSCRIBE_CHANNEL = 'unsubscribed';
+const CHANNEL_SETTINGS = '-settings';
+const CHANNEL_ADMIN = 'admin';
+const CHANNEL_LIST = 'channels';
 
 @singleton
 class NatsProvider {
@@ -42,13 +51,13 @@ class NatsProvider {
       case SystemMessageType.channels:
         break;
       case SystemMessageType.create_channel:
-        createOrUpdateChannel(channel, systemPayload);
+        _createOrUpdateChannel(channel, systemPayload);
         break;
       case SystemMessageType.update_channel:
-        createOrUpdateChannel(channel, systemPayload);
+        _createOrUpdateChannel(channel, systemPayload);
         break;
       case SystemMessageType.delete_channel:
-        deleteChannel(channel, systemPayload);
+        _deleteChannel(channel, systemPayload);
         break;
       case SystemMessageType.subscribe:
         break;
@@ -74,6 +83,16 @@ class NatsProvider {
     _listenUserChannels();
     _listenPublicChannels();
 
+    // tests
+    var newChannel = Uuid().v4();
+    createPublicChannel(newChannel, {
+      "name": "Избранное",
+      "description": "Канал для заметок",
+      "avatar_url":
+          "https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/8bfdb754-1cc2-469a-9437-54ed95b0cbc9/300x",
+      "created_at": DateTime.now().toString(),
+    });
+    publishMessageToChannel(newChannel, "Моя первая заметка!");
     return true;
   }
 
@@ -108,40 +127,70 @@ class NatsProvider {
       String channel, String messageId) async {
     var userChannel = await _userChannel();
     NatsMessage message =
-        new NatsMessage(from: userChannel, to: channel + '-settings');
+        new NatsMessage(from: userChannel, to: channel + CHANNEL_SETTINGS);
     var channelMessages = _channel2messages[channel];
     // TODO: check permissions on delete
     if (channelMessages != null && channelMessages.containsKey(messageId))
       channelMessages.remove(messageId);
     message.setSystemPayload(SystemMessageType.delete_message, {messageId: ''});
     return stan.pubBytes(
-        subject: channel, bytes: message.toBytes(), guid: message.id);
+        subject: channel + CHANNEL_SETTINGS,
+        bytes: message.toBytes(),
+        guid: message.id);
   }
 
   /// Create [channel] in user and public channel list
   Future<bool> createPublicChannel(
       String channel, Map<String, String> settings) async {
-    await checkPermissions(channel);
     var userChannel = await _userChannel();
+    await registerPublicChannel(channel, userChannel);
     NatsMessage message =
-        new NatsMessage(from: userChannel, to: channel + '-settings');
-    settings.addAll({'admin': userChannel, channel: ''});
-    message.setSystemPayload(SystemMessageType.create_channel, {channel: ''});
+        new NatsMessage(from: userChannel, to: channel + CHANNEL_SETTINGS);
+    settings.addAll({CHANNEL_ADMIN: userChannel, channel: ''});
+    message.setSystemPayload(
+        SystemMessageType.create_channel, {channel: CREATE_CHANNEL});
     return stan.pubBytes(
-        subject: channel, bytes: message.toBytes(), guid: message.id);
+        subject: channel + CHANNEL_SETTINGS,
+        bytes: message.toBytes(),
+        guid: message.id);
+  }
+
+  Future<void> registerPublicChannel(String channel, String userChannel) async {
+    if (!_userChannelIds.contains(channel) &&
+        !_publicChannelIds.contains(channel)) {
+      _userChannelIds.add(channel);
+      _publicChannelIds.add(channel);
+      NatsMessage message;
+      message =
+          new NatsMessage(needAck: false, from: userChannel, to: userChannel);
+      message.setSystemPayload(
+          SystemMessageType.channels, {channel: CREATE_CHANNEL});
+      await _sendMessage(userChannel, message);
+      var publicChannel = this._publicChannel();
+      message =
+          new NatsMessage(needAck: false, from: userChannel, to: publicChannel);
+      message.setSystemPayload(
+          SystemMessageType.channels, {channel: CREATE_CHANNEL});
+      await _sendMessage(publicChannel, message);
+    } else {
+      throw ChannelAlreadyExistException();
+    }
   }
 
   /// Update [channel] in user and public channel list
-  Future<bool> editPublicChannel(
+  Future<bool> updatePublicChannel(
       String channel, Map<String, String> settings) async {
     await checkPermissions(channel);
     var userChannel = await _userChannel();
     NatsMessage message =
-        new NatsMessage(from: userChannel, to: channel + '-settings');
-    settings.addAll({'admin': userChannel, channel: ''});
-    message.setSystemPayload(SystemMessageType.update_channel, {channel: ''});
+        new NatsMessage(from: userChannel, to: channel + CHANNEL_SETTINGS);
+    settings.addAll({CHANNEL_ADMIN: userChannel, channel: ''});
+    message.setSystemPayload(
+        SystemMessageType.update_channel, {channel: UPDATE_CHANNEL});
     return stan.pubBytes(
-        subject: channel, bytes: message.toBytes(), guid: message.id);
+        subject: channel + CHANNEL_SETTINGS,
+        bytes: message.toBytes(),
+        guid: message.id);
   }
 
   /// Delete [channel] in user and public channel list
@@ -149,16 +198,41 @@ class NatsProvider {
     await checkPermissions(channel);
     var userChannel = await _userChannel();
     NatsMessage message =
-        new NatsMessage(from: userChannel, to: channel + '-settings');
-    message.setSystemPayload(SystemMessageType.delete_channel, {channel: ''});
+        new NatsMessage(from: userChannel, to: channel + CHANNEL_SETTINGS);
+    message.setSystemPayload(
+        SystemMessageType.delete_channel, {channel: DELETE_CHANNEL});
+    unregisterPublicChannel(channel, userChannel);
     return stan.pubBytes(
-        subject: channel, bytes: message.toBytes(), guid: message.id);
+        subject: channel + CHANNEL_SETTINGS,
+        bytes: message.toBytes(),
+        guid: message.id);
+  }
+
+  void unregisterPublicChannel(String channel, userChannel) async {
+    if (_userChannelIds.contains(channel) &&
+        _publicChannelIds.contains(channel)) {
+      _userChannelIds.remove(channel);
+      _publicChannelIds.remove(channel);
+
+      NatsMessage message;
+      message =
+          new NatsMessage(needAck: false, from: userChannel, to: userChannel);
+      message.setSystemPayload(
+          SystemMessageType.channels, {channel: DELETE_CHANNEL});
+      await _sendMessage(userChannel, message);
+      var publicChannel = this._publicChannel();
+      message =
+          new NatsMessage(needAck: false, from: userChannel, to: publicChannel);
+      message.setSystemPayload(
+          SystemMessageType.channels, {channel: DELETE_CHANNEL});
+      await _sendMessage(publicChannel, message);
+    }
   }
 
   Future<void> checkPermissions(String channel) async {
     var channelSettings = _channel2settings[channel];
     var userChannel = await _userChannel();
-    if (channelSettings!['admin'] != userChannel) {
+    if (channelSettings![CHANNEL_ADMIN] != userChannel) {
       throw PermissionDeniedException();
     }
   }
@@ -166,21 +240,39 @@ class NatsProvider {
   /// Subscribe user to existing [channel]
   Future<bool> subscribeToChannel(String channel) async {
     var userChannel = await _userChannel();
+    if (!_userChannelIds.contains(channel)) {
+      _userChannelIds.add(channel);
+      NatsMessage message;
+      message =
+          new NatsMessage(needAck: false, from: userChannel, to: userChannel);
+      message.setSystemPayload(
+          SystemMessageType.channels, {channel: SUBSCRIBE_CHANNEL});
+      await _sendMessage(userChannel, message);
+    } else {
+      throw SubscriptionAlreadyExistException();
+    }
+
     NatsMessage message =
-        new NatsMessage(from: userChannel, to: channel + '-settings');
-    message.setSystemPayload(SystemMessageType.subscribe, {channel: ''});
+        new NatsMessage(from: userChannel, to: channel + CHANNEL_SETTINGS);
+    message.setSystemPayload(SystemMessageType.subscribe,
+        {channel: SUBSCRIBE_CHANNEL, userChannel: ''});
     return stan.pubBytes(
-        subject: channel, bytes: message.toBytes(), guid: message.id);
+        subject: channel + CHANNEL_SETTINGS,
+        bytes: message.toBytes(),
+        guid: message.id);
   }
 
   /// Unsubscribe user from existing [channel]
   Future<bool> unsubscribeFromChannel(String channel) async {
     var userChannel = await _userChannel();
     NatsMessage message =
-        new NatsMessage(from: userChannel, to: channel + '-settings');
-    message.setSystemPayload(SystemMessageType.unsubscribe, {channel: ''});
+        new NatsMessage(from: userChannel, to: channel + CHANNEL_SETTINGS);
+    message.setSystemPayload(SystemMessageType.unsubscribe,
+        {channel: UNSUBSCRIBE_CHANNEL, userChannel: ''});
     return stan.pubBytes(
-        subject: channel, bytes: message.toBytes(), guid: message.id);
+        subject: channel + CHANNEL_SETTINGS,
+        bytes: message.toBytes(),
+        guid: message.id);
   }
 
   Future<String> _userChannel() async {
@@ -188,7 +280,7 @@ class NatsProvider {
     return authUser!.userId.toString();
   }
 
-  String _publicChannel() => "channels";
+  String _publicChannel() => CHANNEL_LIST;
 
   Future<bool> _sendMessage(String channel, NatsMessage message) async {
     print("channel: $channel, message: $message");
@@ -209,21 +301,15 @@ class NatsProvider {
       NatsMessage message = _parseMessage(dataMessage);
       var systemPayload = message.getSystemPayload();
       if (systemPayload.action == SystemMessageType.channels) {
-        if (systemPayload.action == SystemMessageType.channels) {
-          _userChannelIds.addAll(systemPayload.data.keys);
-        }
-        systemPayload.data.forEach((channel, value) async {
-          print("listen.channel: $channel");
-          if (!_channelSubscriptions.containsKey(channel)) {
-            var subscription = await _subscribeToChannel(channel);
-            _listenBySubscription(channel, subscription);
-            _channelSubscriptions[channel] = subscription;
-          }
-          var channelSettings = channel + '-settings';
-          if (!_channelSettingsSubscriptions.containsKey(channelSettings)) {
-            var subscription = await _subscribeToChannel(channelSettings);
-            _listenBySubscription(channelSettings, subscription);
-            _channelSettingsSubscriptions[channelSettings] = subscription;
+        systemPayload.data.forEach((channel, action) async {
+          print("channel: $channel, action: $action");
+          if (action == CREATE_CHANNEL || action == SUBSCRIBE_CHANNEL) {
+            _userChannelIds.add(channel);
+            await _subscribeToChannels(channel);
+          } else if (action == DELETE_CHANNEL ||
+              action == UNSUBSCRIBE_CHANNEL) {
+            _userChannelIds.remove(channel);
+            await _unsubscribeFromChannels(channel);
           }
         });
       }
@@ -233,13 +319,43 @@ class NatsProvider {
     }
   }
 
+  Future<void> _subscribeToChannels(String channel) async {
+    if (!_channelSubscriptions.containsKey(channel)) {
+      var subscription = await _subscribeToChannel(channel);
+      _listenBySubscription(channel, subscription);
+      _channelSubscriptions[channel] = subscription;
+    }
+    var channelSettings = channel + CHANNEL_SETTINGS;
+    if (!_channelSettingsSubscriptions.containsKey(channelSettings)) {
+      var subscription = await _subscribeToChannel(channelSettings);
+      _listenBySubscription(channelSettings, subscription);
+      _channelSettingsSubscriptions[channelSettings] = subscription;
+    }
+  }
+
+  Future<void> _unsubscribeFromChannels(String channel) async {
+    if (_channelSubscriptions.containsKey(channel)) {
+      _channelSubscriptions.remove(channel);
+    }
+    var channelSettings = channel + CHANNEL_SETTINGS;
+    if (!_channelSettingsSubscriptions.containsKey(channelSettings)) {
+      _channelSettingsSubscriptions.remove(channelSettings);
+    }
+  }
+
   Future<void> _listenPublicChannels() async {
     _subscriptionToPublicInbox = await _subscribeToChannel(_publicChannel());
     await for (final dataMessage in _subscriptionToPublicInbox!.stream) {
       NatsMessage message = _parseMessage(dataMessage);
       var systemPayload = message.getSystemPayload();
       if (systemPayload.action == SystemMessageType.channels) {
-        _publicChannelIds.addAll(systemPayload.data.keys);
+        systemPayload.data.forEach((channel, action) {
+          if (action == CREATE_CHANNEL) {
+            _publicChannelIds.add(channel);
+          } else if (action == DELETE_CHANNEL) {
+            _publicChannelIds.remove(channel);
+          }
+        });
       }
       if (message.needAck) {
         stan.acknowledge(_subscriptionToPublicInbox!, dataMessage);
@@ -250,6 +366,7 @@ class NatsProvider {
   Future<Subscription?> _subscribeToChannel(channel) async {
     var clientID = await _userChannel();
     var durableName = "$clientID-$channel";
+    // TODO: add device ID
     print("subscribe.channel: $channel, client: $clientID");
     var subscription =
         await stan.subscribe(subject: channel, durableName: durableName);
@@ -271,14 +388,14 @@ class NatsProvider {
     }
   }
 
-  void createOrUpdateChannel(String channel, SystemPayload systemPayload) {
+  void _createOrUpdateChannel(String channel, SystemPayload systemPayload) {
     if (!_channel2settings.containsKey(channel)) {
       _channel2settings[channel] = new HashMap<String, String>();
     }
     _channel2settings[channel]!.addAll(systemPayload.data);
   }
 
-  void deleteChannel(String channel, SystemPayload systemPayload) {
+  void _deleteChannel(String channel, SystemPayload systemPayload) {
     if (_channel2settings.containsKey(channel)) {
       _channel2settings.remove(channel);
     }
