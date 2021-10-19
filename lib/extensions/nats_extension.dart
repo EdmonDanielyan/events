@@ -7,9 +7,17 @@ extension MessageTypeEx on String {
       MessageType.values.firstWhere((d) => describeEnum(d) == toLowerCase());
 }
 
-enum SystemMessageType { channels }
+enum SystemMessageType {
+  channels,
+  subscribe,
+  unsubscribe,
+  create_channel,
+  delete_channel,
+  update_channel,
+  delete_message,
+}
 
 extension SystemMessageTypeEx on String {
-  SystemMessageType toSystemMessageType() =>
-      SystemMessageType.values.firstWhere((d) => describeEnum(d) == toLowerCase());
+  SystemMessageType toSystemMessageType() => SystemMessageType.values
+      .firstWhere((d) => describeEnum(d) == toLowerCase());
 }

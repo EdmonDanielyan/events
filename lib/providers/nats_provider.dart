@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:dart_nats_streaming/dart_nats_streaming.dart';
 import 'package:dart_nats_streaming/src/data_message.dart';
 import 'package:dart_nats_streaming/src/subscription.dart';
@@ -6,16 +8,24 @@ import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
+import 'package:ink_mobile/models/token.dart';
 
 @singleton
 class NatsProvider {
   final stan = Client();
-  final Map<String, String> _userChannels = {};
-  final Map<String, String> _publicChannels = {};
   final Map<String, Subscription?> _channelSubscriptions = {};
+  final Map<String, Subscription?> _channelSettingsSubscriptions = {};
 
-  late Subscription? _subscriptionToUserChannels;
-  late Subscription? _subscriptionToPublicChannels;
+  late Subscription? _subscriptionToUserInbox;
+  late Subscription? _subscriptionToPublicInbox;
+
+  final Set<String> _userChannelIds = {};
+  final Set<String> _publicChannelIds = {};
+  final Map<String, Map<String, String>> _channel2settings = {};
+
+  late Future<void> Function(String, NatsMessage) _onMessage =
+      (channel, message) async {};
+  late Future<void> Function(String, NatsMessage) _onSystemMessage;
 
   Future<bool> load() async {
     stan.onConnect(function: () {
@@ -29,23 +39,45 @@ class NatsProvider {
       throw NoConnectionException();
     }
 
-    _subscriptionToUserChannels =
-        await _subscribeToChannel(await _userChannel());
-    _listenUserChannels();
+    _onSystemMessage = (channel, message) async {
+      var systemPayload = message.payload as SystemPayload;
+      switch (systemPayload.action) {
+        case SystemMessageType.channels:
+          break;
+        case SystemMessageType.create_channel:
+          createOrUpdateChannel(channel, systemPayload);
+          break;
+        case SystemMessageType.update_channel:
+          createOrUpdateChannel(channel, systemPayload);
+          break;
+        case SystemMessageType.delete_channel:
+          deleteChannel(channel, systemPayload);
+          break;
+        case SystemMessageType.subscribe:
+          // TODO: Handle this case.
+          break;
+        case SystemMessageType.unsubscribe:
+          // TODO: Handle this case.
+          break;
+        case SystemMessageType.delete_message:
+          // TODO: Handle this case.
+          break;
+      }
+    };
 
-    _subscriptionToPublicChannels = await _subscribeToChannel(_publicChannel());
+    _listenUserChannels();
     _listenPublicChannels();
 
-    // registerPublicChannel("99999.F");
-    // publishMessageToChannel("99999.F", "TEST");
+    createPublicChannel("99999.F");
+    publishMessageToChannel("99999.F", "TEST");
     return true;
   }
 
-  Map<String, String> get userChannels => _userChannels;
-
-  Map<String, String> get publicChannels => _publicChannels;
-
   Map<String, Subscription?> get channelSubscriptions => _channelSubscriptions;
+
+  set onMessage(Future<void> Function(String, NatsMessage) value) {
+    _onMessage = value;
+  }
 
   /// Connect to NATS streaming server
   Future<bool> connect() async {
@@ -67,91 +99,45 @@ class NatsProvider {
         subject: channel, bytes: message.toBytes(), guid: message.id);
   }
 
-  /// Register [channel] in user and public channel list
-  Future<bool> registerPublicChannel(channel) async {
+  /// Delete [payload] from [channel]
+  Future<bool> deleteMessageInChannel(channel, payload) async {
     bool result = false;
-    if (!_userChannels.containsKey(channel) &&
-        !_publicChannels.containsKey(channel)) {
-      _userChannels[channel] = "";
-      _publicChannels[channel] = "";
-      NatsMessage message;
-
-      var userChannel = await _userChannel();
-      message =
-          new NatsMessage(needAck: false, from: userChannel, to: userChannel);
-      message.setSystemPayload(SystemMessageType.channels, _userChannels);
-      result = await _sendMessage(userChannel, message);
-
-      var publicChannel = this._publicChannel();
-      message =
-          new NatsMessage(needAck: false, from: userChannel, to: publicChannel);
-      message.setSystemPayload(SystemMessageType.channels, _publicChannels);
-      result = await _sendMessage(publicChannel, message);
-
-      subscribeToChannel(channel);
-    }
     return result;
   }
 
-  /// Unregister [channel] in user and public channel list
-  Future<bool> unregisterPublicChannel(channel) async {
+  /// Create [channel] in user and public channel list
+  Future<bool> createPublicChannel(channel) async {
     bool result = false;
-    if (_userChannels.containsKey(channel) &&
-        _publicChannels.containsKey(channel)) {
-      this._userChannels.remove(channel);
-      this._publicChannels.remove(channel);
-      NatsMessage message;
+    return result;
+  }
 
-      var userChannel = await _userChannel();
-      message =
-          new NatsMessage(needAck: false, from: userChannel, to: userChannel);
-      message.setSystemPayload(SystemMessageType.channels, this._userChannels);
-      result = await _sendMessage(userChannel, message);
+  /// Update [channel] in user and public channel list
+  Future<bool> editPublicChannel(channel) async {
+    bool result = false;
+    return result;
+  }
 
-      var publicChannel = this._publicChannel();
-      message =
-          new NatsMessage(needAck: false, from: userChannel, to: publicChannel);
-      message.setSystemPayload(
-          SystemMessageType.channels, this._publicChannels);
-      result = await _sendMessage(publicChannel, message);
-
-      unsubscribeFromChannel(channel);
-    }
+  /// Delete [channel] in user and public channel list
+  Future<bool> deletePublicChannel(channel) async {
+    bool result = false;
     return result;
   }
 
   /// Subscribe user to existing [channel]
   Future<bool> subscribeToChannel(channel) async {
     bool result = false;
-    if (!_userChannels.containsKey(channel)) {
-      _userChannels[channel] = "";
-      var userChannel = await _userChannel();
-      NatsMessage message =
-          new NatsMessage(needAck: false, from: userChannel, to: userChannel);
-      message.setSystemPayload(SystemMessageType.channels, _userChannels);
-      result = await _sendMessage(userChannel, message);
-    }
     return result;
   }
 
   /// Unsubscribe user from existing [channel]
   Future<bool> unsubscribeFromChannel(channel) async {
     bool result = false;
-    if (_userChannels.containsKey(channel)) {
-      _userChannels.remove(channel);
-      var userChannel = await _userChannel();
-      NatsMessage message =
-          new NatsMessage(needAck: false, from: userChannel, to: userChannel);
-      message.setSystemPayload(SystemMessageType.channels, _userChannels);
-      result = await _sendMessage(userChannel, message);
-    }
     return result;
   }
 
   Future<String> _userChannel() async {
-    // JwtPayload? authUser = await Token.getJwtPayloadObject();
-    // return authUser!.userId.toString();
-    return "99999";
+    JwtPayload? authUser = await Token.getJwtPayloadObject();
+    return authUser!.userId.toString();
   }
 
   String _publicChannel() => "channels";
@@ -169,45 +155,46 @@ class NatsProvider {
     return message;
   }
 
-  Future<void> _listenBySubscription(subscription) async {
-    await for (final dataMessage in subscription!.stream) {
-      NatsMessage message = _parseMessage(dataMessage);
-      if (message.needAck) {
-        stan.acknowledge(subscription!, dataMessage);
-      }
-    }
-  }
-
   Future<void> _listenUserChannels() async {
-    await for (final dataMessage in _subscriptionToUserChannels!.stream) {
+    _subscriptionToUserInbox = await _subscribeToChannel(await _userChannel());
+    await for (final dataMessage in _subscriptionToUserInbox!.stream) {
       NatsMessage message = _parseMessage(dataMessage);
       var systemPayload = message.getSystemPayload();
       if (systemPayload.action == SystemMessageType.channels) {
-        _userChannels.addAll(systemPayload.data);
+        if (systemPayload.action == SystemMessageType.channels) {
+          _userChannelIds.addAll(systemPayload.data.keys);
+        }
         systemPayload.data.forEach((channel, value) async {
           print("listen.channel: $channel");
           if (!_channelSubscriptions.containsKey(channel)) {
             var subscription = await _subscribeToChannel(channel);
-            _listenBySubscription(subscription);
+            _listenBySubscription(channel, subscription);
             _channelSubscriptions[channel] = subscription;
+          }
+          var channelSettings = channel + '-settings';
+          if (!_channelSettingsSubscriptions.containsKey(channelSettings)) {
+            var subscription = await _subscribeToChannel(channelSettings);
+            _listenBySubscription(channelSettings, subscription);
+            _channelSettingsSubscriptions[channelSettings] = subscription;
           }
         });
       }
       if (message.needAck) {
-        stan.acknowledge(_subscriptionToUserChannels!, dataMessage);
+        stan.acknowledge(_subscriptionToUserInbox!, dataMessage);
       }
     }
   }
 
   Future<void> _listenPublicChannels() async {
-    await for (final dataMessage in _subscriptionToPublicChannels!.stream) {
+    _subscriptionToPublicInbox = await _subscribeToChannel(_publicChannel());
+    await for (final dataMessage in _subscriptionToPublicInbox!.stream) {
       NatsMessage message = _parseMessage(dataMessage);
       var systemPayload = message.getSystemPayload();
       if (systemPayload.action == SystemMessageType.channels) {
-        _publicChannels.addAll(systemPayload.data);
+        _publicChannelIds.addAll(systemPayload.data.keys);
       }
       if (message.needAck) {
-        stan.acknowledge(_subscriptionToPublicChannels!, dataMessage);
+        stan.acknowledge(_subscriptionToPublicInbox!, dataMessage);
       }
     }
   }
@@ -219,5 +206,31 @@ class NatsProvider {
     var subscription =
         await stan.subscribe(subject: channel, durableName: durableName);
     return subscription;
+  }
+
+  Future<void> _listenBySubscription(channel, subscription) async {
+    await for (final dataMessage in subscription!.stream) {
+      NatsMessage message = _parseMessage(dataMessage);
+      if (message.type == MessageType.system) {
+        await _onSystemMessage(channel, message);
+      }
+      await _onMessage(channel, message);
+      if (message.needAck) {
+        stan.acknowledge(subscription!, dataMessage);
+      }
+    }
+  }
+
+  void createOrUpdateChannel(String channel, SystemPayload systemPayload) {
+    if (!_channel2settings.containsKey(channel)) {
+      _channel2settings[channel] = new HashMap<String, String>();
+    }
+    _channel2settings[channel]!.addAll(systemPayload.data);
+  }
+
+  void deleteChannel(String channel, SystemPayload systemPayload) {
+    if (_channel2settings.containsKey(channel)) {
+      _channel2settings.remove(channel);
+    }
   }
 }

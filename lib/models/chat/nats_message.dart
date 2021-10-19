@@ -27,8 +27,8 @@ class BaseMessage extends Message {
   late Packer _packer;
 
   BaseMessage(id, type, needAck, createdAt, from, to) {
-    this.id = id ?? Uuid().v4();
     this.type = type ?? MessageType.base;
+    this.id = id ?? Uuid().v4() + '-' + describeEnum(type);
     this.needAck = needAck ?? true;
     this.createdAt = createdAt ?? DateTime.now();
     this.from = from ?? "";
