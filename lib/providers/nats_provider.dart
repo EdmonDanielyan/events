@@ -20,7 +20,6 @@ const DELETE_CHANNEL = 'deleted';
 const UPDATE_CHANNEL = 'updated';
 const SUBSCRIBE_CHANNEL = 'subscribed';
 const UNSUBSCRIBE_CHANNEL = 'unsubscribed';
-const CHANNEL_SETTINGS = '-settings';
 const CHANNEL_ADMIN = 'admin';
 const DELETE_MESSAGE = 'deleted';
 const UPDATE_MESSAGE = 'updated';
