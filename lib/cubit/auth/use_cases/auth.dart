@@ -25,6 +25,7 @@ class AuthUser {
 
       await Token.setRefresh(refreshToken);
       await Token.setJwt(token);
+      await Token.setDeviceVirtualIdIfEmpty();
       GetIt.I<AuthHandler>().onSuccessAuth();
       return true;
     } else {

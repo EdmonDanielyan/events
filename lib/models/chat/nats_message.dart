@@ -5,7 +5,8 @@ import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:messagepack/messagepack.dart';
 import 'package:uuid/uuid.dart';
 
-// https://pub.dev/packages/messagepack/example
+
+//////////////////////////////// NATS Protocol ///////////////////////////////
 abstract class Message {
   abstract String id;
   abstract MessageType type;
@@ -27,7 +28,7 @@ class BaseMessage extends Message {
   late Packer _packer;
 
   BaseMessage(id, type, needAck, createdAt, from, to) {
-    this.type = type ?? MessageType.base;
+    this.type = type ?? MessageType.empty;
     this.id = id ?? Uuid().v4();
     this.needAck = needAck ?? true;
     this.createdAt = createdAt ?? DateTime.now();
@@ -60,15 +61,15 @@ class BaseMessage extends Message {
 }
 
 class SystemPayload {
-  final SystemMessageType action;
-  final Map<String, String> data;
+  final SystemMessageType type;
+  final Map<String, String> fields;
 
-  SystemPayload(this.action, this.data);
+  SystemPayload(this.type, this.fields);
 
   void pack(Packer packer) {
-    packer.packString(describeEnum(action));
-    packer.packMapLength(data.length);
-    data.forEach((key, value) {
+    packer.packString(describeEnum(type));
+    packer.packMapLength(fields.length);
+    fields.forEach((key, value) {
       packer.packString(key);
       packer.packString(value);
     });
@@ -81,12 +82,12 @@ class SystemPayload {
     for (int i = 0; i < dataMapLength; i++) {
       data[unpacker.unpackString()!] = unpacker.unpackString()!;
     }
-    return new SystemPayload(action.toSystemMessageType(), data);
+    return SystemPayload(action.toSystemMessageType(), data);
   }
 
   @override
   String toString() {
-    return '{action: $action, data: $data}';
+    return '{type: $type, fields: $fields}';
   }
 }
 
@@ -103,14 +104,14 @@ class NatsMessage extends BaseMessage {
   }
 
   void setBinaryPayload(List<int> payload) {
-    this.type = MessageType.binary;
+    this.type = MessageType.document;
     this.payload = payload;
     super.packer().packBinary(payload);
   }
 
-  void setSystemPayload(action, data) {
+  void setSystemPayload(type, fields) {
     this.type = MessageType.system;
-    this.payload = new SystemPayload(action, data);
+    this.payload = SystemPayload(type, fields);
     (this.payload as SystemPayload).pack(super.packer());
   }
 
@@ -128,7 +129,7 @@ class NatsMessage extends BaseMessage {
 
   static NatsMessage fromBytes(Uint8List bytes) {
     final unpacker = Unpacker(bytes);
-    NatsMessage message = new NatsMessage();
+    NatsMessage message = NatsMessage();
     message.id = unpacker.unpackString()!;
     message.type = unpacker.unpackString()!.toMessageType();
     message.createdAt = DateTime.parse(unpacker.unpackString()!);
@@ -138,7 +139,7 @@ class NatsMessage extends BaseMessage {
     if (message.type == MessageType.system) {
       message.payload = SystemPayload.fromUnpacker(unpacker);
     } else {
-      message.payload = message.type == MessageType.binary
+      message.payload = message.type == MessageType.document
           ? unpacker.unpackBinary()
           : unpacker.unpackString();
     }

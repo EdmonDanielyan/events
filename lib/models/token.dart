@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:main_api_client/api/auth_api.dart';
 import 'package:main_api_client/api.dart';
 import 'package:main_api_client/model/refresh_token_params.dart';
+import 'package:uuid/uuid.dart';
 
 class Token {
 
@@ -105,7 +106,6 @@ class Token {
 
   static Future<String?> _getTokenByType(TokenType type) async {
     FlutterSecureStorage storage = Storage.getInstance();
-
     return await storage.read(key: type.key);
   }
 
@@ -121,6 +121,17 @@ class Token {
     FlutterSecureStorage storage = Storage.getInstance();
 
     await storage.write(key: type.key, value: value);
+  }
+
+  static Future<void> setDeviceVirtualIdIfEmpty() async {
+    FlutterSecureStorage storage = Storage.getInstance();
+    if (!await storage.containsKey(key: DeviceTypes.virtualId.key))
+      await storage.write(key: DeviceTypes.virtualId.key, value: Uuid().v4());
+  }
+
+  static Future<String?> getDeviceVirtualId() async {
+    FlutterSecureStorage storage = Storage.getInstance();
+    return await storage.read(key: DeviceTypes.virtualId.key);
   }
 }
 
@@ -140,6 +151,15 @@ class TokenTypes {
 class TokenType {
   final String key;
   const TokenType(String key) : key = key;
+}
+
+class DeviceTypes {
+  static const TokenType virtualId = TokenType('virtualId');
+}
+
+class DeviceType {
+  final String key;
+  const DeviceType(String key) : key = key;
 }
 
 class JwtPayload {
