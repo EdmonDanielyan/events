@@ -5,6 +5,7 @@ import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/personnel_movements/components/body.dart';
+import 'package:ink_mobile/setup.dart';
 
 class PersonnelMovementsScreen extends StatelessWidget {
   const PersonnelMovementsScreen({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class PersonnelMovementsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return BlocProvider<PersonnelMovementsCubit>(
-      create: (BuildContext context) => PersonnelMovementsCubit(),
+      create: (BuildContext context) => sl.get<PersonnelMovementsCubit>(),
       child: Scaffold(
         appBar: InkAppBarWithText(title: _strings.staffMovements),
         body: Body(),

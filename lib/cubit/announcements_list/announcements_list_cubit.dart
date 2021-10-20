@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/core/scrolling_loader/scroll_bottom_to_load.dart';
-import 'package:ink_mobile/cubit/announcements_list/use_cases/fetch.dart';
+import 'package:ink_mobile/cubit/announcements_list/sources/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -10,11 +11,12 @@ import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/setup.dart';
 import 'announcements_list_state.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/extensions/get_announcements.dart';
 
-import 'domain/repository.dart';
-
+@injectable
 class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
   Pagination<AnnouncementData> pagination =
       Pagination<AnnouncementData>(countOnPage: 5);
@@ -27,12 +29,9 @@ class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
     try {
       if (pagination.next) {
         await Token.setNewTokensIfExpired();
-        Pagination<AnnouncementData> response = await AnnouncementsListFetch(
-                pagination: pagination,
-                dependency: AnnouncementListRepository(pagination: pagination)
-                    .getDependency())
-            .call();
-        pagination = response;
+        final response =
+            await sl.get<AnnouncementsListNetworkRequest>(param1: pagination)();
+        pagination = response.mapResponse(pagination);
         emitSuccess(pagination.items);
       }
     } on DioError catch (e) {

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
-import 'package:ink_mobile/cubit/events_list/domain/repository.dart';
-import 'package:ink_mobile/cubit/events_list/use_cases/fetch.dart';
+import 'package:ink_mobile/cubit/events_list/sources/network.dart';
 import 'package:ink_mobile/cubit/main_page/events_list_state.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -9,10 +9,14 @@ import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/get_events.dart';
 
-class EventsListCubit extends Cubit<EventsListState> {
+@injectable
+class MainEventsListCubit extends Cubit<EventsListState> {
   static List<EventData>? eventList;
-  EventsListCubit() : super(EventsListState(type: EventsListStateType.LOADING));
+  MainEventsListCubit()
+      : super(EventsListState(type: EventsListStateType.LOADING));
 
   Pagination<EventData> pagination =
       Pagination<EventData>(countOnPage: 5, pageNumber: 1);
@@ -20,12 +24,10 @@ class EventsListCubit extends Cubit<EventsListState> {
   Future<void> fetchEvents() async {
     try {
       if (eventList == null) {
-        Pagination<EventData> response = await EventListFetch(
-          pagination: pagination,
-          dependency:
-              EventListRepository(pagination: pagination).getDependency(),
-        ).call();
-        emitSuccess(response.items);
+        final response =
+            await sl.get<EventsListNetworkRequest>(param1: pagination)();
+        final mapResponse = response.mapResponse(pagination);
+        emitSuccess(mapResponse.items);
       } else {
         emitSuccess(eventList!);
       }

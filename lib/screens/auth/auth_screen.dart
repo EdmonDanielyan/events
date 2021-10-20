@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/screens/auth/components/body.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
+import 'package:ink_mobile/setup.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AuthCubit>(
-      create: (BuildContext context) => AuthCubit(),
+      create: (BuildContext context) => sl.get<AuthCubit>(),
       child: Scaffold(
         appBar: InkAppBar(),
         body: Container(

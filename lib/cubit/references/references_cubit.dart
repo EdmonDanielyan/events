@@ -1,13 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/cubit/references/domain/get_autofill_rep.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/references/references_state.dart';
-import 'package:ink_mobile/cubit/references/use_cases/check_permission.dart';
-import 'package:ink_mobile/cubit/references/use_cases/get_autofill_data.dart';
+import 'package:ink_mobile/cubit/references/sources/check_permission/network.dart';
+import 'package:ink_mobile/cubit/references/sources/get_autofill_data/network.dart';
 import 'package:ink_mobile/models/autofill.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/reference_autofill.dart';
 
-import 'domain/check_perm_rep.dart';
-
+@singleton
 class ReferencesPageCubit extends Cubit<ReferencesPageState> {
   ReferencesPageCubit()
       : super(ReferencesPageState(type: ReferencesStateType.LOADING));
@@ -17,9 +18,9 @@ class ReferencesPageCubit extends Cubit<ReferencesPageState> {
   Future<void> checkPermissions() async {
     await Token.setNewTokensIfExpired();
 
-    bool access = await CheckPermission(
-            dependency: CheckPermissionRepository().getDependency())
-        .call();
+    final response = await sl.get<CanInquireNetworkRequest>()();
+    bool access = response.data!.data;
+
     access
         ? emit(ReferencesPageState(type: ReferencesStateType.INIT))
         : emit(
@@ -28,8 +29,8 @@ class ReferencesPageCubit extends Cubit<ReferencesPageState> {
 
   Future<void> loadAutoFillData() async {
     await Token.setNewTokensIfExpired();
-    autofill =
-        await GetAutofill(dependency: GetAutofillRepository().getDependency())
-            .call();
+    final response = await sl.get<GetAutofillNetworkRequest>()();
+
+    autofill = response.mapResponse();
   }
 }

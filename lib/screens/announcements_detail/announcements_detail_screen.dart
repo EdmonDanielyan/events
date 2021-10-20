@@ -9,6 +9,7 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/announcements_detail/components/body.dart';
 import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_cubit.dart';
 import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_state.dart';
+import 'package:ink_mobile/setup.dart';
 
 class AnnouncementsDetailScreen extends StatelessWidget {
   const AnnouncementsDetailScreen({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class AnnouncementsDetailScreen extends StatelessWidget {
     final _strings = localizationInstance;
 
     return BlocProvider<AnnouncementCubit>(
-      create: (BuildContext context) => AnnouncementCubit(),
+      create: (BuildContext context) => sl.get<AnnouncementCubit>(),
       child: Scaffold(
         appBar: InkAppBarWithText(title: _strings.announcements),
         body: BlocBuilder<AnnouncementCubit, AnnouncementsDetailState>(

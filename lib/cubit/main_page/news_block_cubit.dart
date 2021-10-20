@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_state.dart';
-import 'package:ink_mobile/cubit/news_list/domain/repository.dart';
-import 'package:ink_mobile/cubit/news_list/use_cases/fetch.dart';
+import 'package:ink_mobile/cubit/news_list/sources/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
@@ -10,7 +10,10 @@ import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/get_news.dart';
 
+@injectable
 class NewsBlockCubit extends Cubit<NewsBlockState> {
   NewsBlockCubit() : super(NewsBlockState(type: NewsBlockStateType.LOADING));
 
@@ -21,12 +24,10 @@ class NewsBlockCubit extends Cubit<NewsBlockState> {
     try {
       await Token.setNewTokensIfExpired();
 
-      Pagination<NewsItemData> response = await NewsListFetch(
-        pagination: pagination,
-        dependency: NewsListRepository(filter: "news", pagination: pagination)
-            .getDependency(),
-      ).call();
-      emitSuccess(response.items);
+      final response = await sl.get<NewsListNetworkRequest>(
+          param1: pagination, param2: "news")();
+      final mapResponse = response.mapResponse(pagination);
+      emitSuccess(mapResponse.items);
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 

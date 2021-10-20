@@ -5,6 +5,7 @@ import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/news_comments/components/body.dart';
 import 'package:ink_mobile/screens/news_comments/components/comment_intput.dart';
+import 'package:ink_mobile/setup.dart';
 
 class NewsCommentScreen extends StatelessWidget {
   NewsCommentScreen({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class NewsCommentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return BlocProvider<NewsCommentsCubit>(
-      create: (BuildContext context) => NewsCommentsCubit(),
+      create: (BuildContext context) => sl.get<NewsCommentsCubit>(),
       child: Scaffold(
         appBar: InkAppBarWithText(title: _strings.comments),
         body: Column(

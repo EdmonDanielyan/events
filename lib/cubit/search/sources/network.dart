@@ -1,18 +1,22 @@
 import 'package:dio/src/response.dart';
 import 'package:dio/dio.dart';
-import 'package:main_api_client/api.dart';
+import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/providers/main_api.dart';
+import 'package:ink_mobile/setup.dart';
 import 'package:main_api_client/api/search_api.dart';
 import 'package:main_api_client/model/get_search_success.dart';
 
 import 'dependency.dart';
 
+@injectable
 class SearchNetworkRequest extends SearchRequestDependency {
-  String query;
-  SearchNetworkRequest({required this.query});
+  String? query;
+  SearchNetworkRequest({@factoryParam required this.query})
+      : assert(query != null);
 
   @override
-  Future<Response<GetSearchSuccess>> makeRequest() async {
-    SearchApi search = MainApiClient().getSearchApi();
+  Future<Response<GetSearchSuccess>> call() async {
+    SearchApi search = sl.get<MainApiProvider>().getSearchApi();
     return await search.searchGet(query: query);
   }
 }

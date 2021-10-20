@@ -5,6 +5,7 @@ import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/announcements_list/components/body.dart';
+import 'package:ink_mobile/setup.dart';
 
 class AnnouncementsListScreen extends StatelessWidget {
   const AnnouncementsListScreen({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class AnnouncementsListScreen extends StatelessWidget {
     final _strings = localizationInstance;
 
     return BlocProvider<AnnouncementsListCubit>(
-      create: (BuildContext context) => AnnouncementsListCubit(),
+      create: (BuildContext context) => sl.get<AnnouncementsListCubit>(),
       child: Scaffold(
         appBar: InkAppBarWithText(title: _strings.announcements),
         body: Body(),

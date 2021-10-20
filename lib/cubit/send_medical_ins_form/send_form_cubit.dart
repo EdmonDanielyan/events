@@ -1,14 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/cubit/btn/btn_state.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
-import 'package:ink_mobile/cubit/send_medical_ins_form/domain/send_form.dart';
-import 'package:ink_mobile/cubit/send_medical_ins_form/use_cases/send_form.dart';
+import 'package:ink_mobile/cubit/send_medical_ins_form/sources/network.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
+import 'package:ink_mobile/setup.dart';
 
+@injectable
 class SendMedicalInsFormCubit extends Cubit<BtnCubitState> {
   SendMedicalInsFormCubit()
       : super(BtnCubitState(state: BtnCubitStateEnums.INITIAL));
@@ -18,11 +20,8 @@ class SendMedicalInsFormCubit extends Cubit<BtnCubitState> {
 
     try {
       await Token.setNewTokensIfExpired();
-      final res = await SendMedicalInsForm(
-        dependency: SendMedicalInsFormRepository(
-          entities: entities,
-        ).getDependency(),
-      ).call();
+      final res =
+          await sl.get<SendMedicalInsFormNetworkRequest>(param1: entities)();
 
       res.data!.success
           ? emitSuccess(res.data!.data)

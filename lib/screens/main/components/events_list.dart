@@ -7,18 +7,19 @@ import 'package:ink_mobile/cubit/main_page/main_cubit.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/screens/main/components/events_list_element.dart';
 import 'package:ink_mobile/screens/main/components/events_list_element_placeholder.dart';
+import 'package:ink_mobile/setup.dart';
 
 class EventsList extends StatelessWidget {
   const EventsList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<EventsListCubit>(
-        create: (BuildContext context) => EventsListCubit(),
-        child: BlocBuilder<EventsListCubit, EventsListState>(
+    return BlocProvider<MainEventsListCubit>(
+        create: (BuildContext context) => sl.get<MainEventsListCubit>(),
+        child: BlocBuilder<MainEventsListCubit, EventsListState>(
             builder: (context, state) {
-          final EventsListCubit eventsCubit =
-              BlocProvider.of<EventsListCubit>(context);
+          final MainEventsListCubit eventsCubit =
+              BlocProvider.of<MainEventsListCubit>(context);
 
           switch (state.type) {
             case EventsListStateType.LOADED:

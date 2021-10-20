@@ -33,7 +33,7 @@ class Body extends StatelessWidget {
         displacement: 20,
         child: BlocBuilder<NewsListCubit, NewsListState>(
             builder: (context, state) {
-          Map arg = ModalRoute.of(context)!.settings.arguments as Map;
+          Map? arg = ModalRoute.of(context)!.settings.arguments as Map?;
           cubit = BlocProvider.of<NewsListCubit>(context);
 
           if (arg != null && arg.isNotEmpty) {

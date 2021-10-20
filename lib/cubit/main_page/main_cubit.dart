@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/events_list_cubit.dart';
@@ -8,6 +9,7 @@ import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:dio/dio.dart';
 
+@injectable
 class MainPageCubit extends Cubit<MainPageState> {
   MainPageCubit() : super(MainPageState(type: MainPageStateType.LOADING));
 
@@ -35,8 +37,8 @@ class MainPageCubit extends Cubit<MainPageState> {
   }
 
   void refresh() {
-    EventsListCubit.eventList = null;
-    AnnouncementsListCubit.announcementsList = null;
+    MainEventsListCubit.eventList = null;
+    MainAnnouncementsListCubit.announcementsList = null;
 
     emit(MainPageState(type: MainPageStateType.LOADING));
   }

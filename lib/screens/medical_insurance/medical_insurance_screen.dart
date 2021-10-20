@@ -5,6 +5,7 @@ import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/cubit/send_medical_ins_form/send_form_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/head.dart';
+import 'package:ink_mobile/setup.dart';
 
 import 'components/form/form.dart';
 
@@ -39,7 +40,7 @@ class _MedicalInsuranceScreenState extends State<MedicalInsuranceScreen>
               MultiBlocProvider(
                 providers: [
                   BlocProvider(
-                    create: (context) => SendMedicalInsFormCubit(),
+                    create: (context) => sl.get<SendMedicalInsFormCubit>(),
                   ),
                   BlocProvider(create: (context) => SelectfieldCubit()),
                 ],

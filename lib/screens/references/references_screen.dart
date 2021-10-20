@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/cubit/references/references_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/setup.dart';
 import 'components/body.dart';
 
 class ReferencesScreen extends StatefulWidget {
@@ -35,7 +36,7 @@ class _ReferencesScreenState extends State<ReferencesScreen>
               ),
             ),
             BlocProvider<ReferencesPageCubit>(
-              create: (BuildContext context) => ReferencesPageCubit(),
+              create: (BuildContext context) => sl.get<ReferencesPageCubit>(),
               child: Body(),
             ),
           ],

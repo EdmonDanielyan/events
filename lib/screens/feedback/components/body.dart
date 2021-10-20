@@ -5,6 +5,7 @@ import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_cubit.dart';
 import 'package:ink_mobile/cubit/send_feedback_form/send_form_cubit.dart';
 import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart';
+import 'package:ink_mobile/setup.dart';
 
 import 'management_feedback.dart';
 
@@ -22,9 +23,11 @@ class Body extends StatelessWidget {
         width: size.width,
         child: MultiBlocProvider(
           providers: [
-            BlocProvider(create: (context) => SendManagementFormCubit()),
-            BlocProvider(create: (context) => FeedbackAnswerListCubit()),
-            BlocProvider(create: (context) => TagsListCubit()),
+            BlocProvider(
+                create: (context) => sl.get<SendManagementFormCubit>()),
+            BlocProvider(
+                create: (context) => sl.get<FeedbackAnswerListCubit>()),
+            BlocProvider(create: (context) => sl.get<TagsListCubit>()),
             BlocProvider(create: (context) => SelectfieldCubit()),
           ],
           child: ManagementFeedback(),

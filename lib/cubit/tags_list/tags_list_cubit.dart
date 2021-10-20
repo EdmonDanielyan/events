@@ -1,14 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
-import 'package:ink_mobile/cubit/tags_list/domain/repository.dart';
+import 'package:ink_mobile/cubit/tags_list/sources/network.dart';
 import 'package:ink_mobile/cubit/tags_list/tags_list_state.dart';
-import 'package:ink_mobile/cubit/tags_list/use_cases/fetch.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/feedback_tag_list.dart';
 
+@singleton
 class TagsListCubit extends Cubit<TagsListCubitState> {
   TagsListCubit()
       : super(TagsListCubitState(state: TagsListCubitStateEnums.LOADING));
@@ -16,9 +19,8 @@ class TagsListCubit extends Cubit<TagsListCubitState> {
   Future<void> load() async {
     try {
       await Token.setNewTokensIfExpired();
-      List<Selectfield> items = await TagsListFetch(
-        dependency: TagsListRepository().getDependency(),
-      ).call();
+      final response = await sl.get<TagsListNetworkRequest>()();
+      List<Selectfield> items = response.mapResponse();
       emitSuccess(items);
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();

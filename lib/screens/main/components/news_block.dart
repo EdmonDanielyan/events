@@ -9,6 +9,7 @@ import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/main/components/news_filter_slider.dart';
 import 'package:ink_mobile/screens/main/components/news_list_slider.dart';
 import 'package:ink_mobile/screens/main/components/news_list_slider_element_placeholder.dart';
+import 'package:ink_mobile/setup.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class NewsBlock extends StatelessWidget {
@@ -21,7 +22,7 @@ class NewsBlock extends StatelessWidget {
     final _strings = localizationInstance;
     size = MediaQuery.of(context).size;
     return BlocProvider<NewsBlockCubit>(
-      create: (BuildContext context) => NewsBlockCubit(),
+      create: (BuildContext context) => sl.get<NewsBlockCubit>(),
       child: BlocBuilder<NewsBlockCubit, NewsBlockState>(
         builder: (context, state) {
           newsCubit = BlocProvider.of<NewsBlockCubit>(context);

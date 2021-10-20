@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/core/scrolling_loader/scroll_bottom_to_load.dart';
-import 'package:ink_mobile/cubit/news_list/use_cases/fetch.dart';
+import 'package:ink_mobile/cubit/news_list/sources/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -10,10 +11,12 @@ import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'domain/repository.dart';
+import 'package:ink_mobile/setup.dart';
 import 'news_list_state.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/extensions/get_news.dart';
 
+@injectable
 class NewsListCubit extends Cubit<NewsListState> {
   Pagination<NewsItemData> pagination =
       Pagination<NewsItemData>(countOnPage: 5);
@@ -27,12 +30,9 @@ class NewsListCubit extends Cubit<NewsListState> {
     try {
       if (pagination.next) {
         await Token.setNewTokensIfExpired();
-        Pagination<NewsItemData> response = await NewsListFetch(
-          pagination: pagination,
-          dependency: NewsListRepository(pagination: pagination, filter: filter)
-              .getDependency(),
-        ).call();
-        pagination = response;
+        final response = await sl.get<NewsListNetworkRequest>(
+            param1: pagination, param2: filter)();
+        pagination = response.mapResponse(pagination);
 
         emitSuccess(pagination.items);
       }

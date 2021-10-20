@@ -46,7 +46,6 @@ class _ContentState extends State<Content> {
           border: Border.symmetric(
               horizontal: BorderSide(color: Color(0xFFE5E5E5), width: 1))),
       padding: EdgeInsets.only(left: 10, right: 10),
-      margin: EdgeInsets.only(bottom: 35),
       child: Column(
         children: [
           Html(

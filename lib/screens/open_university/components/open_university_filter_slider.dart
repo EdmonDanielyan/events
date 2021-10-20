@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/filter_slider_element.dart';
-import 'package:ink_mobile/cubit/open_university/open_university_cubit.dart';
-import 'package:ink_mobile/cubit/open_university/open_university_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/screens/open_university/cubit/open_university_cubit.dart';
+import 'package:ink_mobile/screens/open_university/cubit/open_university_state.dart';
 
 class OpenUniversityFilterSlider extends StatefulWidget {
   final OpenUniversityFilterCodes selectedFilter;

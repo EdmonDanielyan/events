@@ -24,64 +24,67 @@ class OpenUniversityEventsList extends StatelessWidget {
     controller.addListener(_onScroll);
 
     return BlocBuilder<EventsListCubit, EventsListState>(
-        builder: (context, state) {
-      cubit = BlocProvider.of<EventsListCubit>(context);
+      builder: (context, state) {
+        cubit = BlocProvider.of<EventsListCubit>(context);
 
-      switch (state.type) {
-        case EventsListStateType.LOADING:
-          {
-            cubit.fetch();
-            return Container();
-          }
+        switch (state.type) {
+          case EventsListStateType.LOADING:
+            {
+              cubit.fetch();
+              return Container();
+            }
 
-        case EventsListStateType.LOADED:
-          {
-            List<EventsListElement> items = _getEventsWidgetList(state.data!);
-            return Container(
-              color: Color(0xfff9f9f9),
-              child: Column(children: [
-                Container(
-                    padding: EdgeInsets.only(
-                        left: 20, right: 20, top: 24, bottom: 20),
-                    child: Row(
-                      children: [
-                        Text(
-                          _strings.events,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24),
-                        )
-                      ],
-                    )),
-                Container(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: ScrollController(keepScrollOffset: false),
-                    itemCount: items.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        items[index],
-                  ),
-                )
-              ]),
-            );
-          }
+          case EventsListStateType.LOADED:
+            {
+              List<EventsListElement> items = _getEventsWidgetList(state.data!);
+              return Container(
+                color: Color(0xfff9f9f9),
+                child: Column(children: [
+                  Container(
+                      padding: EdgeInsets.only(
+                          left: 20, right: 20, top: 24, bottom: 20),
+                      child: Row(
+                        children: [
+                          Text(
+                            _strings.events,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 24),
+                          )
+                        ],
+                      )),
+                  Container(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      controller: ScrollController(keepScrollOffset: false),
+                      itemCount: items.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          items[index],
+                    ),
+                  )
+                ]),
+              );
+            }
 
-        case EventsListStateType.ERROR:
-          {
-            return Container(
+          case EventsListStateType.ERROR:
+            {
+              return Container(
                 height: size.height * 0.65,
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                          flex: 1,
-                          child: ErrorRefreshButton(
-                            onTap: cubit.refresh,
-                            text: state.errorMessage!,
-                          )),
-                    ]));
-          }
-      }
-    });
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        flex: 1,
+                        child: ErrorRefreshButton(
+                          onTap: cubit.refresh,
+                          text: state.errorMessage!,
+                        )),
+                  ],
+                ),
+              );
+            }
+        }
+      },
+    );
   }
 
   Future<void> _onScroll() async {

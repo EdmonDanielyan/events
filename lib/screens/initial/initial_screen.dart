@@ -3,8 +3,9 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
-import 'package:ink_mobile/cubit/initial/initial_cubit.dart';
-import 'package:ink_mobile/cubit/initial/initial_state.dart';
+import 'package:ink_mobile/screens/initial/cubit/initial_cubit.dart';
+import 'package:ink_mobile/screens/initial/cubit/initial_state.dart';
+import 'package:ink_mobile/setup.dart';
 
 class InitPage extends StatelessWidget {
   const InitPage({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class InitPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<InitialCubit>(
-        create: (context) => InitialCubit(),
+        create: (context) => sl.get<InitialCubit>(),
         child: Scaffold(
           body: BlocBuilder<InitialCubit, InitialState>(
             builder: (context, state) {

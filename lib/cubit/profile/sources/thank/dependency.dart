@@ -1,4 +1,4 @@
 abstract class ProfileThankRequestDependency {
-  abstract int id;
-  Future<void> makeRequest();
+  abstract int? id;
+  Future<void> call();
 }

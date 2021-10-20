@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/cubit/auth/domain/repository.dart';
-import 'package:ink_mobile/cubit/auth/use_cases/auth.dart';
+import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/cubit/auth/sources/network.dart';
 import 'package:ink_mobile/cubit/auth/auth_state.dart';
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/auth_success.dart';
 
+@injectable
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthState(type: AuthStateType.LOADED));
 
@@ -16,13 +19,9 @@ class AuthCubit extends Cubit<AuthState> {
   Future<bool> auth() async {
     emitState(type: AuthStateType.LOADING);
     try {
-      AuthUser authUser = AuthUser(
-        dependency:
-            AuthRepository(login: login, password: password).getDependency(),
-      );
-      final response = await authUser.call();
-
-      return authUser.handleResponse(response);
+      final response =
+          await sl.get<AuthNetworkRequest>(param1: login, param2: password)();
+      return await response.handleResponse();
     } on TimeoutException catch (_) {
       emitError(localizationInstance.noConnectionError);
       throw FormatException(localizationInstance.noConnectionError);

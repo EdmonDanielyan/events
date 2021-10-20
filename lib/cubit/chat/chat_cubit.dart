@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/models/chat/message.dart';
@@ -6,6 +7,7 @@ import 'package:ink_mobile/models/items_search.dart';
 
 import 'chat_state.dart';
 
+@injectable
 class ChatCubit extends Cubit<ChatCubitState> {
   int? previousSelectedMessageId;
   ChatCubit()

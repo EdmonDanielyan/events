@@ -1,16 +1,12 @@
-import 'package:main_api_client/api.dart';
+import 'package:ink_mobile/providers/main_api.dart';
+import 'package:ink_mobile/setup.dart';
 
 class SetOauthToken {
   final String token;
-  late MainApiClient? apiClient;
 
-  SetOauthToken({this.apiClient, required this.token}) {
-    if (apiClient == null) {
-      apiClient = MainApiClient();
-    }
-  }
+  SetOauthToken({required this.token});
 
   void setBearer() {
-    apiClient!.setOAuthToken("bearerAuth", token);
+    sl.get<MainApiProvider>().setOAuthToken("bearerAuth", token);
   }
 }

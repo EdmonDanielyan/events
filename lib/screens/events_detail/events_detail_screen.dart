@@ -11,6 +11,7 @@ import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/event_data.dart';
+import 'package:ink_mobile/setup.dart';
 import 'package:intl/intl.dart';
 
 class EventDetailScreen extends StatelessWidget {
@@ -22,7 +23,7 @@ class EventDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<EventDetailCubit>(
-      create: (BuildContext context) => EventDetailCubit(),
+      create: (BuildContext context) => sl.get<EventDetailCubit>(),
       child: Scaffold(
         body: BlocBuilder<EventDetailCubit, EventsDetailState>(
             builder: (context, state) {

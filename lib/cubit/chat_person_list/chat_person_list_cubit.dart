@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_state.dart';
 import 'package:ink_mobile/models/chat/chat_user_select.dart';
 
+@injectable
 class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
   ChatPersonListCubit() : super(ChatPersonListCubitState());
 

@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
-import 'package:ink_mobile/cubit/search/use_cases/search.dart';
+import 'package:ink_mobile/cubit/search/sources/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
@@ -9,9 +10,10 @@ import 'package:ink_mobile/models/search/search_model.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/cubit/search/search_state.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/get_search_success.dart';
 
-import 'domain/repository.dart';
-
+@injectable
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit() : super(SearchState(type: SearchStateType.STARTING));
 
@@ -20,14 +22,14 @@ class SearchCubit extends Cubit<SearchState> {
     try {
       await Token.setNewTokensIfExpired();
 
-      SearchModel? response = await GlobalSearch(
-        dependency: SearchRepository(query: query).getDependency(),
-      ).call();
-      if (response == null) {
+      final response = await sl.get<SearchNetworkRequest>(param1: query)();
+      SearchModel? searchModel = response.mapResponse();
+
+      if (searchModel == null) {
         emitEmpty();
         return;
       }
-      response.isEmpty() ? emitEmpty() : emitSuccess(response);
+      searchModel.isEmpty() ? emitEmpty() : emitSuccess(searchModel);
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);

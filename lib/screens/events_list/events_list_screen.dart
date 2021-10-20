@@ -5,6 +5,7 @@ import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart
 import 'package:ink_mobile/cubit/events_list/events_list_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/events_list/components/body.dart';
+import 'package:ink_mobile/setup.dart';
 
 class EventsListScreen extends StatelessWidget {
   const EventsListScreen({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class EventsListScreen extends StatelessWidget {
     final _strings = localizationInstance;
 
     return BlocProvider<EventsListCubit>(
-      create: (BuildContext context) => EventsListCubit(),
+      create: (BuildContext context) => sl.get<EventsListCubit>(),
       child: Scaffold(
         appBar: InkAppBarWithText(title: _strings.events),
         body: Body(),

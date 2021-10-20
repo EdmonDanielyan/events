@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
-import 'package:ink_mobile/cubit/feedback_answer_list/domain/repository.dart';
-import 'package:ink_mobile/cubit/feedback_answer_list/use_cases/fetch.dart';
+import 'package:ink_mobile/cubit/feedback_answer_list/sources/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
@@ -9,9 +9,12 @@ import 'package:ink_mobile/models/feedback/management_answer.dart';
 import 'package:ink_mobile/models/pagination.dart';
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/question_list.dart';
 
 import 'answer_list_state.dart';
 
+@injectable
 class FeedbackAnswerListCubit extends Cubit<FeedbackAnswerListCubitState> {
   FeedbackAnswerListCubit()
       : super(FeedbackAnswerListCubitState(
@@ -24,12 +27,9 @@ class FeedbackAnswerListCubit extends Cubit<FeedbackAnswerListCubitState> {
     try {
       if (pagination.next) {
         await Token.setNewTokensIfExpired();
-        Pagination<ManagementAnswer> response = await FeedbackAnswerListFetch(
-                pagination: pagination,
-                dependency: FeedbackAnswerListRepository(pagination: pagination)
-                    .getDependency())
-            .call();
-        pagination = response;
+        final response = await sl.get<FeedbackAnswerListNetworkRequest>(
+            param1: pagination)();
+        pagination = response.mapResponse(pagination);
         emitSuccess(pagination.items);
       }
     } on DioError catch (e) {

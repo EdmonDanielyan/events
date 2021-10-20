@@ -10,6 +10,7 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_other_days_element.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_today_element.dart';
+import 'package:ink_mobile/setup.dart';
 
 class BirthdaysScreen extends StatelessWidget {
   const BirthdaysScreen({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class BirthdaysScreen extends StatelessWidget {
     final _strings = localizationInstance;
 
     return BlocProvider<BirthdaysCubit>(
-        create: (BuildContext context) => BirthdaysCubit(),
+        create: (BuildContext context) => sl.get<BirthdaysCubit>(),
         child: Scaffold(
           appBar: InkAppBarWithText(
             title: _strings.birthdays,

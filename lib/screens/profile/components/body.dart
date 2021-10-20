@@ -40,10 +40,10 @@ class Body extends StatelessWidget {
 
             case ProfileStateType.LOADING:
               {
-                Map arg = ModalRoute.of(context)!.settings.arguments as Map;
+                Map? arg = ModalRoute.of(context)!.settings.arguments as Map?;
                 int? userId;
 
-                if (arg.isNotEmpty) {
+                if (arg != null && arg.isNotEmpty) {
                   userId = arg['id'];
                 }
 

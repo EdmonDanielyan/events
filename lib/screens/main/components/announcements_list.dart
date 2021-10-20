@@ -7,18 +7,19 @@ import 'package:ink_mobile/cubit/main_page/main_cubit.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/screens/main/components/announcements_list_element.dart';
 import 'package:ink_mobile/screens/main/components/announcements_list_element_placeholder.dart';
+import 'package:ink_mobile/setup.dart';
 
 class AnnouncementsList extends StatelessWidget {
   const AnnouncementsList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AnnouncementsListCubit>(
-        create: (BuildContext context) => AnnouncementsListCubit(),
-        child: BlocBuilder<AnnouncementsListCubit, AnnouncementsListState>(
+    return BlocProvider<MainAnnouncementsListCubit>(
+        create: (BuildContext context) => sl.get<MainAnnouncementsListCubit>(),
+        child: BlocBuilder<MainAnnouncementsListCubit, AnnouncementsListState>(
             builder: (context, state) {
-          final AnnouncementsListCubit announcementsCubit =
-              BlocProvider.of<AnnouncementsListCubit>(context);
+          final MainAnnouncementsListCubit announcementsCubit =
+              BlocProvider.of<MainAnnouncementsListCubit>(context);
 
           switch (state.type) {
             case AnnouncementsListStateType.LOADED:

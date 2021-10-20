@@ -31,13 +31,14 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
             case EventsAndAnnouncementsBlockStateType.EVENTS:
               {
                 return Container(
-                  margin: EdgeInsets.only(top: 25, bottom: 40),
+                  margin: EdgeInsets.only(top: 25),
                   padding: EdgeInsets.symmetric(vertical: 30.0),
                   decoration: BoxDecoration(color: Colors.white),
                   child: Column(
                     children: [
                       getNavigationRow(context, 'events'),
                       EventsList(),
+                      SizedBox(height: 15),
                       ElevatedFullWidthButton(
                         title: _strings.allEvents,
                         onTap: () {
@@ -52,13 +53,14 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
             case EventsAndAnnouncementsBlockStateType.ANNOUNCEMENTS:
               {
                 return Container(
-                  margin: EdgeInsets.only(top: 25, bottom: 40),
+                  margin: EdgeInsets.only(top: 25),
                   padding: EdgeInsets.symmetric(vertical: 30.0),
                   decoration: BoxDecoration(color: Colors.white),
                   child: Column(
                     children: [
                       getNavigationRow(context, 'announcements'),
                       AnnouncementsList(),
+                      SizedBox(height: 15),
                       ElevatedFullWidthButton(
                         title: _strings.allAnnouncements,
                         onTap: () {
