@@ -16,6 +16,7 @@ class MainPageCubit extends Cubit<MainPageState> {
   Future<void> load() async {
     try {
       await Token.setNewTokensIfExpired();
+
       emit(MainPageState(type: MainPageStateType.LOADED));
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();

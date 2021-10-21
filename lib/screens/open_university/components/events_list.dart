@@ -8,25 +8,28 @@ import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/screens/events_list/components/events_list_element.dart';
 
 class OpenUniversityEventsList extends StatelessWidget {
-  static late EventsListCubit cubit;
-  static late Size size;
+  final EventsListCubit cubit;
 
-  late ScrollController controller;
+  final ScrollController controller;
 
-  OpenUniversityEventsList({Key? key, required this.controller})
-      : super(key: key);
+  OpenUniversityEventsList({
+    Key? key,
+    required this.controller,
+    required this.cubit,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
+    final size = MediaQuery.of(context).size;
 
-    size = MediaQuery.of(context).size;
-    controller.addListener(_onScroll);
+    controller.addListener(() {
+      cubit.onScroll(controller);
+    });
 
     return BlocBuilder<EventsListCubit, EventsListState>(
+      bloc: cubit,
       builder: (context, state) {
-        cubit = BlocProvider.of<EventsListCubit>(context);
-
         switch (state.type) {
           case EventsListStateType.LOADING:
             {
@@ -85,10 +88,6 @@ class OpenUniversityEventsList extends StatelessWidget {
         }
       },
     );
-  }
-
-  Future<void> _onScroll() async {
-    cubit.onScroll(controller);
   }
 
   List<EventsListElement> _getEventsWidgetList(List<EventData> eventsList) {

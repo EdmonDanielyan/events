@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/static_slider/static_slider_effect.dart';
-import 'package:ink_mobile/cubit/main_page/main_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -9,7 +8,7 @@ import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/main/components/news_filter_slider.dart';
 import 'package:ink_mobile/screens/main/components/news_list_slider.dart';
 import 'package:ink_mobile/screens/main/components/news_list_slider_element_placeholder.dart';
-import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/screens/main/main_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class NewsBlock extends StatelessWidget {
@@ -21,31 +20,28 @@ class NewsBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     size = MediaQuery.of(context).size;
-    return BlocProvider<NewsBlockCubit>(
-      create: (BuildContext context) => sl.get<NewsBlockCubit>(),
-      child: BlocBuilder<NewsBlockCubit, NewsBlockState>(
-        builder: (context, state) {
-          newsCubit = BlocProvider.of<NewsBlockCubit>(context);
-
-          return Container(
-            padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 24.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      _strings.news,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w800, fontSize: 30.0),
-                    ),
-                  ],
-                ),
-                getCurrentStateWidget(context, state)
-              ],
-            ),
-          );
-        },
-      ),
+    newsCubit = MainScreen.of(context).newsBlockCubit;
+    return BlocBuilder<NewsBlockCubit, NewsBlockState>(
+      bloc: newsCubit,
+      builder: (context, state) {
+        return Container(
+          padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 24.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    _strings.news,
+                    style:
+                        TextStyle(fontWeight: FontWeight.w800, fontSize: 30.0),
+                  ),
+                ],
+              ),
+              getCurrentStateWidget(context, state)
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -64,9 +60,7 @@ class NewsBlock extends StatelessWidget {
 
       case NewsBlockStateType.ERROR:
         {
-          final MainPageCubit mainPageCubit =
-              BlocProvider.of<MainPageCubit>(context);
-          mainPageCubit.emitErrorState();
+          MainScreen.of(context).mainPageCubit.emitErrorState();
 
           return Container();
         }

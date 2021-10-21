@@ -1,10 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/screens/open_university/components/open_university_filter_slider.dart';
 
 import 'open_university_state.dart';
 
+@injectable
 class OpenUniversityCubit extends Cubit<OpenUniversityState> {
   OpenUniversityCubit()
       : super(OpenUniversityState(type: OpenUniversityStateType.ABOUT_PROJECT));

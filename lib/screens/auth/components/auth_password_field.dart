@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/screens/auth/auth_screen.dart';
 
 class AuthPasswordField extends StatefulWidget {
   const AuthPasswordField({
@@ -27,12 +26,11 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
     final _strings = localizationInstance;
 
     return TextFormField(
       onChanged: (value) {
-        authCubit.password = value;
+        AuthScreen.of(context).authCubit.password = value;
       },
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,

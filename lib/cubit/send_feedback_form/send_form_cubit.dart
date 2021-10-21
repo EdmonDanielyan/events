@@ -10,7 +10,7 @@ import 'package:ink_mobile/screens/feedback/components/form/entities.dart';
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/setup.dart';
 
-@injectable
+@singleton
 class SendManagementFormCubit extends Cubit<BtnCubitState> {
   SendManagementFormCubit()
       : super(BtnCubitState(state: BtnCubitStateEnums.INITIAL));

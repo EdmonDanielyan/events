@@ -9,16 +9,13 @@ import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/screens/announcements_list/components/announcements_list_element.dart';
 
 class Body extends StatelessWidget {
-  static late AnnouncementsListCubit cubit;
-  static late Size size;
-
+  final AnnouncementsListCubit cubit;
   final ScrollController _controller = ScrollController();
 
-  Body({Key? key}) : super(key: key);
+  Body({Key? key, required this.cubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    size = MediaQuery.of(context).size;
     _controller.addListener(_onScroll);
 
     return RefreshIndicator(
@@ -28,9 +25,8 @@ class Body extends StatelessWidget {
       color: Colors.green,
       displacement: 20,
       child: BlocBuilder<AnnouncementsListCubit, AnnouncementsListState>(
+        bloc: cubit,
         builder: (context, state) {
-          cubit = BlocProvider.of<AnnouncementsListCubit>(context);
-
           switch (state.type) {
             case AnnouncementsListStateType.LOADED:
               {

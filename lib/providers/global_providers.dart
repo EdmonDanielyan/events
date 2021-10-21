@@ -9,7 +9,7 @@ import 'package:ink_mobile/setup.dart';
 class GlobalProvider {
   static List<dynamic> getProviders(BuildContext context) {
     return [
-      BlocProvider(create: (context) => NewBottomNavBarCubit()),
+      BlocProvider(create: (context) => sl.get<NewBottomNavBarCubit>()),
       BlocProvider(create: (context) => sl.get<ChatListCubit>()),
       BlocProvider(create: (context) => sl.get<ChatCubit>()),
       BlocProvider(create: (context) => sl.get<ChatPersonListCubit>()),

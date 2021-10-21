@@ -9,32 +9,33 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/feedback/management_answer.dart';
 import 'package:ink_mobile/screens/feedback/components/load_more_btn.dart';
 
+import '../../feedback_screen.dart';
 import 'answer_widget.dart';
 
 class ManagementFeedbackAnswersList extends StatelessWidget {
   const ManagementFeedbackAnswersList({Key? key}) : super(key: key);
+  static late ScrollBottomLoadMoreCubit scrollBottomLoadMoreCubit;
 
-  void loadMore(FeedbackAnswerListCubit answersCubit, scrollBottomLoaderCubit) {
+  void loadMore(FeedbackAnswerListCubit answersCubit) {
     answersCubit.fetch();
 
     //Отключить реагирование на скроллинг вниз, если нет больше элементов
-    scrollBottomLoaderCubit.switchIsOn(answersCubit.pagination.next);
+    scrollBottomLoadMoreCubit.switchIsOn(answersCubit.pagination.next);
   }
 
   int currentPage(int page) => page - 1;
 
-  void linkScreenToCubit(ScrollBottomLoadMoreCubit cubit, Function loadMore) {
-    cubit.setLoadFunction(() => loadMore());
+  void linkScreenToCubit(Function loadMore) {
+    scrollBottomLoadMoreCubit.setLoadFunction(() => loadMore());
   }
 
   @override
   Widget build(BuildContext context) {
-    final _answers_cubit = BlocProvider.of<FeedbackAnswerListCubit>(context);
-    final _scrollBottomLoaderCubit =
-        BlocProvider.of<ScrollBottomLoadMoreCubit>(context);
+    final _answers_cubit = FeedBackScreen.of(context).feedbackAnswerListCubit;
+    scrollBottomLoadMoreCubit =
+        FeedBackScreen.of(context).scrollBottomLoadMoreCubit;
 
-    linkScreenToCubit(_scrollBottomLoaderCubit,
-        () => loadMore(_answers_cubit, _scrollBottomLoaderCubit));
+    linkScreenToCubit(() => loadMore(_answers_cubit));
 
     return BlocBuilder<FeedbackAnswerListCubit, FeedbackAnswerListCubitState>(
       bloc: _answers_cubit,
@@ -46,7 +47,7 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
           return _listWidget(
             state.data,
             _answers_cubit,
-            () => loadMore(_answers_cubit, _scrollBottomLoaderCubit),
+            () => loadMore(_answers_cubit),
           );
         } else if (state.state == FeedbackAnswerListCubitStateEnums.ERROR) {
           return ErrorLoadingWidget(

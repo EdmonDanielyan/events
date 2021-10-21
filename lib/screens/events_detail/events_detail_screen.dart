@@ -11,24 +11,23 @@ import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/event_data.dart';
-import 'package:ink_mobile/setup.dart';
 import 'package:intl/intl.dart';
 
 class EventDetailScreen extends StatelessWidget {
   static const String DEFAULT_PREVIEW_PICTURE_LINK =
       'assets/images/default_event.jpg';
 
-  const EventDetailScreen({Key? key}) : super(key: key);
+  final EventDetailCubit eventDetailCubit;
+
+  const EventDetailScreen({Key? key, required this.eventDetailCubit})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<EventDetailCubit>(
-      create: (BuildContext context) => sl.get<EventDetailCubit>(),
-      child: Scaffold(
-        body: BlocBuilder<EventDetailCubit, EventsDetailState>(
-            builder: (context, state) {
-          final EventDetailCubit eventDetailCubit =
-              BlocProvider.of<EventDetailCubit>(context);
+    return Scaffold(
+      body: BlocBuilder<EventDetailCubit, EventsDetailState>(
+        bloc: eventDetailCubit,
+        builder: (context, state) {
           Map arg = ModalRoute.of(context)!.settings.arguments as Map;
           int eventId = 0;
 
@@ -55,18 +54,15 @@ class EventDetailScreen extends StatelessWidget {
                     onTap: eventDetailCubit.refresh, text: state.errorMessage!);
               }
           }
-        }),
-        bottomNavigationBar: NewBottomNavBar(),
+        },
       ),
+      bottomNavigationBar: NewBottomNavBar(),
     );
   }
 
   Widget _getLoadedStateWidget(BuildContext context, EventsDetailState state) {
     EventData event = state.data!;
     Size size = MediaQuery.of(context).size;
-    final EventDetailCubit eventDetailCubit =
-        BlocProvider.of<EventDetailCubit>(context);
-
     final _strings = localizationInstance;
 
     return SingleChildScrollView(

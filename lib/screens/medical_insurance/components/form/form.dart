@@ -17,9 +17,15 @@ import 'package:ink_mobile/screens/medical_insurance/components/form/user_fields
 import 'entities.dart';
 
 class MedicalInsuranceForm extends StatefulWidget {
+  final SendMedicalInsFormCubit sendMedicalInsFormCubit;
   final EdgeInsetsGeometry sectionPadding;
-  const MedicalInsuranceForm({Key? key, required this.sectionPadding})
-      : super(key: key);
+  final SelectfieldCubit selectfieldCubit;
+  const MedicalInsuranceForm({
+    Key? key,
+    required this.sectionPadding,
+    required this.sendMedicalInsFormCubit,
+    required this.selectfieldCubit,
+  }) : super(key: key);
 
   @override
   _MedicalInsuranceFormState createState() => _MedicalInsuranceFormState();
@@ -29,8 +35,6 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
   MedicalInsuranceFormEntities entities = MedicalInsuranceFormEntities();
   final _formKey = GlobalKey<FormState>();
   CustomSectionSwitcher? tabsSwitcher;
-  late SelectfieldCubit selectfieldCubit;
-  late SendMedicalInsFormCubit sendMedicalInsFormCubit;
 
   void setTabsSwitcher() {
     setState(() {
@@ -39,7 +43,10 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
           index: 0,
           name: "policy",
           label: localizationInstance.regAppForMedIns,
-          widget: MedicalInsuranceRegAppFields(entities: entities),
+          widget: MedicalInsuranceRegAppFields(
+            entities: entities,
+            selectfieldCubit: widget.selectfieldCubit,
+          ),
         ),
         CustomSectionTab(
           index: 1,
@@ -62,9 +69,6 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
 
   @override
   Widget build(BuildContext context) {
-    selectfieldCubit = BlocProvider.of<SelectfieldCubit>(context);
-    sendMedicalInsFormCubit = BlocProvider.of<SendMedicalInsFormCubit>(context);
-
     return Container(
       child: Form(
         key: _formKey,
@@ -135,6 +139,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
 
   Widget btnWidget() {
     return BlocConsumer<SendMedicalInsFormCubit, BtnCubitState>(
+      bloc: widget.sendMedicalInsFormCubit,
       listener: (BuildContext context, state) {
         if (state.state == BtnCubitStateEnums.ERROR) {
           SimpleCustomSnackbar(context: context, txt: state.message);
@@ -155,7 +160,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
           return ServiceBtn(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                sendMedicalInsFormCubit.send(entities: entities);
+                widget.sendMedicalInsFormCubit.send(entities: entities);
               }
             },
             txt: localizationInstance.submit,
@@ -167,6 +172,6 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
 
   void clearForm() {
     _formKey.currentState!.reset();
-    selectfieldCubit.clear();
+    widget.selectfieldCubit.clear();
   }
 }

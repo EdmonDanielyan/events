@@ -5,22 +5,25 @@ import 'package:ink_mobile/cubit/references/references_state.dart';
 import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart';
 import 'package:ink_mobile/screens/references/components/form/form.dart';
 import 'package:ink_mobile/screens/references/components/permission_denied.dart';
-import 'package:ink_mobile/setup.dart';
 import 'loading.dart';
 
 class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
+  final SendReferenceFormCubit sendReferenceFormCubit;
+  final ReferencesPageCubit referencesPageCubit;
+  const Body({
+    Key? key,
+    required this.referencesPageCubit,
+    required this.sendReferenceFormCubit,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: BlocBuilder<ReferencesPageCubit, ReferencesPageState>(
+        bloc: referencesPageCubit,
         builder: (context, state) {
-          final ReferencesPageCubit referencesCubit =
-              BlocProvider.of<ReferencesPageCubit>(context);
-
           if (state.type == ReferencesStateType.LOADING) {
-            referencesCubit.checkPermissions();
+            referencesPageCubit.checkPermissions();
             return Loading();
           }
 
@@ -29,13 +32,13 @@ class Body extends StatelessWidget {
           }
 
           if (state.type == ReferencesStateType.INIT) {
-            referencesCubit.loadAutoFillData();
+            referencesPageCubit.loadAutoFillData();
           }
 
-          return BlocProvider(
-            create: (context) => sl.get<SendReferenceFormCubit>(),
-            child: SafeArea(
-              child: ReferencesForm(),
+          return SafeArea(
+            child: ReferencesForm(
+              referencesPageCubit: referencesPageCubit,
+              sendReferenceFormCubit: sendReferenceFormCubit,
             ),
           );
         },

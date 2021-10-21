@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/textfields/service_selectfield_cubit.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
@@ -16,16 +15,16 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class MedicalInsuranceRegAppFields extends StatelessWidget {
   final MedicalInsuranceFormEntities entities;
-  const MedicalInsuranceRegAppFields({Key? key, required this.entities})
+  final SelectfieldCubit selectfieldCubit;
+  const MedicalInsuranceRegAppFields(
+      {Key? key, required this.entities, required this.selectfieldCubit})
       : super(key: key);
   static late AppLocalizations _strings;
-  static late SelectfieldCubit _selectfieldCubit;
   static late MedicalServicesList _medicalServicesList;
   static late List<Selectfield> _servicesList;
 
   @override
   Widget build(BuildContext context) {
-    _selectfieldCubit = BlocProvider.of<SelectfieldCubit>(context);
     _strings = localizationInstance;
     _medicalServicesList = MedicalServicesList();
     _servicesList = _medicalServicesList.getList();
@@ -56,7 +55,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
   Widget _selectService(BuildContext context) {
     return ServiceSelectFieldCubit(
       hint: _strings.chooseService,
-      cubit: _selectfieldCubit,
+      cubit: selectfieldCubit,
       subWidget: subWidget,
       items: _servicesList,
       validator: (_) =>
