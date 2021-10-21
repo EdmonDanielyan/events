@@ -8,6 +8,8 @@ import 'package:ink_mobile/screens/main/components/announcements_list.dart';
 import 'package:ink_mobile/screens/main/components/events_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../main_screen.dart';
+
 class EventsAndAnnouncementsBlock extends StatelessWidget {
   static late EventsAndAnnouncementsBlockCubit cubit;
   static late Size? size;
@@ -20,60 +22,58 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
     _strings = localizationInstance;
     size = MediaQuery.of(context).size;
 
-    return BlocProvider<EventsAndAnnouncementsBlockCubit>(
-      create: (BuildContext context) => EventsAndAnnouncementsBlockCubit(),
-      child: BlocBuilder<EventsAndAnnouncementsBlockCubit,
-          EventsAndAnnouncementsBlockState>(
-        builder: (context, state) {
-          cubit = BlocProvider.of<EventsAndAnnouncementsBlockCubit>(context);
+    cubit = MainScreen.of(context).eventsAndAnnouncementsBlockCubit;
 
-          switch (state.type) {
-            case EventsAndAnnouncementsBlockStateType.EVENTS:
-              {
-                return Container(
-                  margin: EdgeInsets.only(top: 25),
-                  padding: EdgeInsets.symmetric(vertical: 30.0),
-                  decoration: BoxDecoration(color: Colors.white),
-                  child: Column(
-                    children: [
-                      getNavigationRow(context, 'events'),
-                      EventsList(),
-                      SizedBox(height: 15),
-                      ElevatedFullWidthButton(
-                        title: _strings.allEvents,
-                        onTap: () {
-                          Navigator.pushNamed(context, '/events_list');
-                        },
-                      )
-                    ],
-                  ),
-                );
-              }
+    return BlocBuilder<EventsAndAnnouncementsBlockCubit,
+        EventsAndAnnouncementsBlockState>(
+      bloc: cubit,
+      builder: (context, state) {
+        switch (state.type) {
+          case EventsAndAnnouncementsBlockStateType.EVENTS:
+            {
+              return Container(
+                margin: EdgeInsets.only(top: 25),
+                padding: EdgeInsets.symmetric(vertical: 30.0),
+                decoration: BoxDecoration(color: Colors.white),
+                child: Column(
+                  children: [
+                    getNavigationRow(context, 'events'),
+                    EventsList(),
+                    SizedBox(height: 15),
+                    ElevatedFullWidthButton(
+                      title: _strings.allEvents,
+                      onTap: () {
+                        Navigator.pushNamed(context, '/events_list');
+                      },
+                    )
+                  ],
+                ),
+              );
+            }
 
-            case EventsAndAnnouncementsBlockStateType.ANNOUNCEMENTS:
-              {
-                return Container(
-                  margin: EdgeInsets.only(top: 25),
-                  padding: EdgeInsets.symmetric(vertical: 30.0),
-                  decoration: BoxDecoration(color: Colors.white),
-                  child: Column(
-                    children: [
-                      getNavigationRow(context, 'announcements'),
-                      AnnouncementsList(),
-                      SizedBox(height: 15),
-                      ElevatedFullWidthButton(
-                        title: _strings.allAnnouncements,
-                        onTap: () {
-                          Navigator.pushNamed(context, '/announcements_list');
-                        },
-                      )
-                    ],
-                  ),
-                );
-              }
-          }
-        },
-      ),
+          case EventsAndAnnouncementsBlockStateType.ANNOUNCEMENTS:
+            {
+              return Container(
+                margin: EdgeInsets.only(top: 25),
+                padding: EdgeInsets.symmetric(vertical: 30.0),
+                decoration: BoxDecoration(color: Colors.white),
+                child: Column(
+                  children: [
+                    getNavigationRow(context, 'announcements'),
+                    AnnouncementsList(),
+                    SizedBox(height: 15),
+                    ElevatedFullWidthButton(
+                      title: _strings.allAnnouncements,
+                      onTap: () {
+                        Navigator.pushNamed(context, '/announcements_list');
+                      },
+                    )
+                  ],
+                ),
+              );
+            }
+        }
+      },
     );
   }
 

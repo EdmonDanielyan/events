@@ -16,7 +16,7 @@ class Body extends StatelessWidget {
     return Container(
       color: Colors.white,
       width: size.width,
-      margin: EdgeInsets.only(top: 18),
+      padding: EdgeInsets.only(top: 10),
       child: ListView.separated(
         separatorBuilder: (context, index) {
           return Divider(color: Colors.grey);

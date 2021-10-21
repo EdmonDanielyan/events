@@ -46,6 +46,10 @@ class MainEventsListCubit extends Cubit<EventsListState> {
     emitState(type: EventsListStateType.LOADED, data: items);
   }
 
+  void refresh() {
+    emitState(type: EventsListStateType.LOADING);
+  }
+
   void emitError(String errorMsg) {
     emitState(
       type: EventsListStateType.ERROR,

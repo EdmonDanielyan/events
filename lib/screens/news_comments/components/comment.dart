@@ -1,40 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/ink_icons.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:intl/intl.dart';
-import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/extensions/int_extension.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Comment extends StatefulWidget {
-  Comment(
-      {Key? key,
-      required this.id,
-      required this.authorId,
-      this.avatar,
-      this.name,
-      required this.text,
-      required this.barrelChecked,
-      required this.barrelsCount,
-      required this.dateTime})
-      : super(key: key);
+  const Comment({
+    Key? key,
+    required this.id,
+    required this.authorId,
+    this.avatar,
+    this.name,
+    required this.text,
+    required this.barrelChecked,
+    required this.barrelsCount,
+    required this.dateTime,
+    required this.newsCommentsCubit,
+  }) : super(key: key);
 
   final int id;
   final int authorId;
   final String? avatar;
   final String? name;
   final String text;
-  bool barrelChecked;
-  int barrelsCount;
+  final bool barrelChecked;
+  final int barrelsCount;
   final DateTime dateTime;
-  late NewsCommentsCubit cubit;
+  final NewsCommentsCubit newsCommentsCubit;
 
   @override
-  _CommentState createState() => _CommentState();
+  _CommentState createState() => _CommentState(barrelChecked, barrelsCount);
 }
 
 class _CommentState extends State<Comment> {
+  bool barrelChecked;
+  int barrelsCount;
+  _CommentState(this.barrelChecked, this.barrelsCount);
+
   static const String DEFAULT_AVATAR =
       'assets/images/avatars/avatar_default.png';
 
@@ -44,7 +48,6 @@ class _CommentState extends State<Comment> {
 
   @override
   Widget build(BuildContext context) {
-    widget.cubit = BlocProvider.of<NewsCommentsCubit>(context);
     _textColor = Theme.of(context).accentColor;
     _strings = localizationInstance;
 
@@ -109,39 +112,42 @@ class _CommentState extends State<Comment> {
                                     children: [
                                       Icon(
                                         InkIcons.barrel,
-                                        color: widget.barrelChecked
+                                        color: barrelChecked
                                             ? Theme.of(context).primaryColor
                                             : _textColor,
                                       ),
                                       Text(
-                                        widget.barrelsCount > 1000
-                                            ? widget.barrelsCount
-                                                .toThousandsString()
-                                            : widget.barrelsCount.toString(),
+                                        barrelsCount > 1000
+                                            ? barrelsCount.toThousandsString()
+                                            : barrelsCount.toString(),
                                         style: TextStyle(
-                                            color: widget.barrelChecked
-                                                ? Theme.of(context).primaryColor
-                                                : _textColor,
-                                            fontSize: 15),
+                                          color: barrelChecked
+                                              ? Theme.of(context).primaryColor
+                                              : _textColor,
+                                          fontSize: 15,
+                                        ),
                                       )
                                     ],
                                   ),
                                 ))),
                             Expanded(
-                                flex: 4,
-                                child: Container(
-                                    alignment: Alignment.topLeft,
-                                    child: TextButton(
-                                        onPressed: () {
-                                          _onAnswerButtonTap();
-                                        },
-                                        child: Text(
-                                          _strings.reply,
-                                          style: TextStyle(
-                                              color: _textColor,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500),
-                                        )))),
+                              flex: 4,
+                              child: Container(
+                                alignment: Alignment.topLeft,
+                                child: TextButton(
+                                  onPressed: () {
+                                    _onAnswerButtonTap();
+                                  },
+                                  child: Text(
+                                    _strings.reply,
+                                    style: TextStyle(
+                                        color: _textColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                            ),
                             Expanded(
                                 flex: 6,
                                 child: Text(
@@ -162,7 +168,7 @@ class _CommentState extends State<Comment> {
   }
 
   void _onAnswerButtonTap() {
-    NewsCommentsCubit _cubit = widget.cubit;
+    final _cubit = widget.newsCommentsCubit;
 
     _cubit.commentInputController.text =
         widget.name != null ? "${widget.name}, " : "";
@@ -174,7 +180,7 @@ class _CommentState extends State<Comment> {
   }
 
   Future<void> _onLike(BuildContext context) async {
-    await widget.cubit.like(widget.id).onError((error, stackTrace) {
+    await widget.newsCommentsCubit.like(widget.id).onError((error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(_strings.errorOccurred),
         duration: Duration(seconds: 1),
@@ -182,13 +188,15 @@ class _CommentState extends State<Comment> {
       return false;
     }).then((value) {
       if (value) {
-        if (widget.barrelChecked) {
-          widget.barrelsCount--;
-        } else {
-          widget.barrelsCount++;
-        }
+        setState(() {
+          if (barrelChecked) {
+            barrelsCount--;
+          } else {
+            barrelsCount++;
+          }
 
-        widget.barrelChecked = !widget.barrelChecked;
+          barrelChecked = !barrelChecked;
+        });
       }
     });
   }

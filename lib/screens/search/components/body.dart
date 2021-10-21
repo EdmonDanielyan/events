@@ -15,14 +15,13 @@ import 'package:ink_mobile/cubit/search/search_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
+  final SearchCubit searchCubit;
+  const Body({Key? key, required this.searchCubit}) : super(key: key);
   static late AppLocalizations _strings;
 
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    final SearchCubit searchCubit = BlocProvider.of<SearchCubit>(context);
-
     return Background(
         child: Column(
       children: [
@@ -41,56 +40,59 @@ class Body extends StatelessWidget {
             },
           ),
         ),
-        BlocBuilder<SearchCubit, SearchState>(builder: (context, state) {
-          switch (state.type) {
-            case SearchStateType.LOADING:
-              {
-                return InkPageLoader();
-              }
+        BlocBuilder<SearchCubit, SearchState>(
+            bloc: searchCubit,
+            builder: (context, state) {
+              switch (state.type) {
+                case SearchStateType.LOADING:
+                  {
+                    return InkPageLoader();
+                  }
 
-            case SearchStateType.LOADED:
-              {
-                List<SearchContainer> searchResult = _getSearchResult(state);
+                case SearchStateType.LOADED:
+                  {
+                    List<SearchContainer> searchResult =
+                        _getSearchResult(state);
 
-                return MediaQuery.removePadding(
-                  context: context,
-                  removeTop: true,
-                  removeBottom: true,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: ScrollController(keepScrollOffset: false),
-                    itemCount: searchResult.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        searchResult[index],
-                  ),
-                );
-              }
+                    return MediaQuery.removePadding(
+                      context: context,
+                      removeTop: true,
+                      removeBottom: true,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        controller: ScrollController(keepScrollOffset: false),
+                        itemCount: searchResult.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            searchResult[index],
+                      ),
+                    );
+                  }
 
-            case SearchStateType.EMPTY:
-              {
-                return Text(_strings.nothingFound);
-              }
+                case SearchStateType.EMPTY:
+                  {
+                    return Text(_strings.nothingFound);
+                  }
 
-            case SearchStateType.STARTING:
-              {
-                return Text(_strings.searchEmptyString);
-              }
+                case SearchStateType.STARTING:
+                  {
+                    return Text(_strings.searchEmptyString);
+                  }
 
-            case SearchStateType.ERROR:
-              {
-                return ErrorRefreshButton(
-                  onTap: () {
-                    if (SearchQuery.query.length >= 3) {
-                      searchCubit.search(SearchQuery.query);
-                    } else {
-                      searchCubit.refresh();
-                    }
-                  },
-                  text: state.errorMessage!,
-                );
+                case SearchStateType.ERROR:
+                  {
+                    return ErrorRefreshButton(
+                      onTap: () {
+                        if (SearchQuery.query.length >= 3) {
+                          searchCubit.search(SearchQuery.query);
+                        } else {
+                          searchCubit.refresh();
+                        }
+                      },
+                      text: state.errorMessage!,
+                    );
+                  }
               }
-          }
-        })
+            })
       ],
     ));
   }

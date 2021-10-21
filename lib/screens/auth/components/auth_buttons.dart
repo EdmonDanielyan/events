@@ -7,10 +7,12 @@ import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/cubit/auth/auth_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/screens/auth/auth_screen.dart';
 import 'package:ink_mobile/screens/auth/components/sign_in_instructions.dart';
 
 class AuthButtons extends StatelessWidget {
   final GlobalKey<FormState>? formKey;
+
   const AuthButtons({Key? key, this.formKey}) : super(key: key);
   static late AuthCubit authCubit;
   static late NewBottomNavBarCubit _bottomNavBar;
@@ -29,9 +31,8 @@ class AuthButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    authCubit = BlocProvider.of<AuthCubit>(context);
-    _bottomNavBar =
-        BlocProvider.of<NewBottomNavBarCubit>(context, listen: true);
+    authCubit = AuthScreen.of(context).authCubit;
+    _bottomNavBar = AuthScreen.of(context).newBottomNavBarCubit;
     Size size = MediaQuery.of(context).size;
 
     return SafeArea(
@@ -75,6 +76,7 @@ class AuthButtons extends StatelessWidget {
 
   Widget btnWidget(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
+      bloc: authCubit,
       builder: (BuildContext context, state) {
         if (state.type == AuthStateType.LOADING) {
           return CustomCircularProgressIndicator();

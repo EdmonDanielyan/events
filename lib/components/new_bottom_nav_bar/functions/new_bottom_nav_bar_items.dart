@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet.dart';
+import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart';
+import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_state.dart';
+import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
+import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_cubit.dart';
+import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
+import 'package:ink_mobile/cubit/main_page/events_and_announcements_block_cubit.dart';
+import 'package:ink_mobile/cubit/main_page/events_list_cubit.dart';
+import 'package:ink_mobile/cubit/main_page/main_cubit.dart';
+import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
+import 'package:ink_mobile/cubit/references/references_cubit.dart';
+import 'package:ink_mobile/cubit/search/search_cubit.dart';
+import 'package:ink_mobile/cubit/send_feedback_form/send_form_cubit.dart';
+import 'package:ink_mobile/cubit/send_medical_ins_form/send_form_cubit.dart';
+import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart';
+import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart';
 import 'package:ink_mobile/functions/navigation_utils.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/main/main_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/screens/search/search_screen.dart';
 import 'package:ink_mobile/screens/service_list/service_list_page_viewer.dart';
+import 'package:ink_mobile/setup.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 abstract class NavBottomNavBarItem {
@@ -18,7 +34,14 @@ abstract class NavBottomNavBarItem {
 class MainBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/home.svg';
   String label = localizationInstance.home;
-  Widget screen = MainScreen();
+  Widget screen = MainScreen(
+    mainAnnouncementsListCubit: sl.get<MainAnnouncementsListCubit>(),
+    eventsAndAnnouncementsBlockCubit:
+        sl.get<EventsAndAnnouncementsBlockCubit>(),
+    mainEventsListCubit: sl.get<MainEventsListCubit>(),
+    mainPageCubit: sl.get<MainPageCubit>(),
+    newsBlockCubit: sl.get<NewsBlockCubit>(),
+  );
 
   void onTap(BuildContext context, Function onChanged, int index) {
     NavigationUtils.popScreenIfCan(context);
@@ -29,7 +52,9 @@ class MainBottomNavBarItem extends NavBottomNavBarItem {
 class SearchBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/search.svg';
   String label = localizationInstance.search;
-  Widget screen = SearchScreen();
+  Widget screen = SearchScreen(
+    searchCubit: sl.get<SearchCubit>(),
+  );
 
   void onTap(BuildContext context, Function onChanged, int index) {
     NavigationUtils.popScreenIfCan(context);
@@ -51,7 +76,18 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
 class ServicesBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/services.svg';
   String label = localizationInstance.services;
-  Widget screen = ServiceListPageViewer();
+  Widget screen = ServiceListPageViewer(
+      feedbackAnswerListCubit: sl.get<FeedbackAnswerListCubit>(),
+      referencesPageCubit: sl.get<ReferencesPageCubit>(),
+      sendManagementFormCubit: sl.get<SendManagementFormCubit>(),
+      sendMedicalInsFormCubit: sl.get<SendMedicalInsFormCubit>(),
+      sendReferenceFormCubit: sl.get<SendReferenceFormCubit>(),
+      tagsListCubit: sl.get<TagsListCubit>(),
+      selectfieldCubitFeedback: sl.get<SelectfieldCubit>(),
+      selectfieldCubitMedical: sl.get<SelectfieldCubit>(),
+      scrollBottomLoadMoreCubit: sl.get<ScrollBottomLoadMoreCubit>(
+        param1: ScrollBottomLoadMoreState(isOn: false),
+      ));
 
   void onTap(BuildContext context, Function onChanged, int index) {
     NavigationUtils.popScreenIfCan(context);

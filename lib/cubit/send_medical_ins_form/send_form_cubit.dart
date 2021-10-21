@@ -10,7 +10,7 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
 import 'package:ink_mobile/setup.dart';
 
-@injectable
+@singleton
 class SendMedicalInsFormCubit extends Cubit<BtnCubitState> {
   SendMedicalInsFormCubit()
       : super(BtnCubitState(state: BtnCubitStateEnums.INITIAL));

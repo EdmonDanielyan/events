@@ -42,6 +42,10 @@ class MainAnnouncementsListCubit extends Cubit<AnnouncementsListState> {
     }
   }
 
+  void refresh() {
+    emitState(type: AnnouncementsListStateType.LOADING);
+  }
+
   void emitSuccess(List<AnnouncementData> items) {
     emitState(type: AnnouncementsListStateType.LOADED, data: items);
   }

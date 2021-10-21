@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/screens/search/components/body.dart';
 import 'package:ink_mobile/cubit/search/search_cubit.dart';
-import 'package:ink_mobile/setup.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  final SearchCubit searchCubit;
+  const SearchScreen({Key? key, required this.searchCubit}) : super(key: key);
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -16,10 +15,9 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocProvider<SearchCubit>(
-      create: (BuildContext context) => sl.get<SearchCubit>(),
-      child: Scaffold(
-        body: Body(),
+    return Scaffold(
+      body: Body(
+        searchCubit: widget.searchCubit,
       ),
     );
   }

@@ -13,7 +13,7 @@ import 'package:dio/dio.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/extensions/get_search_success.dart';
 
-@injectable
+@singleton
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit() : super(SearchState(type: SearchStateType.STARTING));
 

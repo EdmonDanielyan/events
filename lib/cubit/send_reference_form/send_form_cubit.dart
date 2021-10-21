@@ -13,7 +13,7 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/references/components/form/entities.dart';
 import 'package:ink_mobile/setup.dart';
 
-@injectable
+@singleton
 class SendReferenceFormCubit extends Cubit<BtnCubitState> {
   SendReferenceFormCubit()
       : super(BtnCubitState(state: BtnCubitStateEnums.INITIAL));

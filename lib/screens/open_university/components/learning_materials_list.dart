@@ -10,31 +10,29 @@ import 'package:ink_mobile/models/learning_materials_data.dart';
 import 'package:ink_mobile/screens/open_university/components/learning_materials_list_element.dart';
 
 class LearningMaterialsList extends StatelessWidget {
-  static late LearningMaterialsListCubit cubit;
-  static late Size size;
+  final LearningMaterialsListCubit cubit;
 
   final ScrollController controller;
 
-  LearningMaterialsList({Key? key, required this.controller}) : super(key: key);
+  const LearningMaterialsList(
+      {Key? key, required this.controller, required this.cubit})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
-
-    size = MediaQuery.of(context).size;
     controller.addListener(_onScroll);
 
     return RefreshIndicator(
-        onRefresh: () async {
-          cubit.refresh();
-        },
-        color: Colors.green,
-        displacement: 20,
-        child:
-            BlocBuilder<LearningMaterialsListCubit, LearningMaterialsListState>(
-                builder: (context, state) {
-          cubit = BlocProvider.of<LearningMaterialsListCubit>(context);
-
+      onRefresh: () async {
+        cubit.refresh();
+      },
+      color: Colors.green,
+      displacement: 20,
+      child:
+          BlocBuilder<LearningMaterialsListCubit, LearningMaterialsListState>(
+        bloc: cubit,
+        builder: (context, state) {
           switch (state.type) {
             case LearningMaterialsListStateType.LOADING:
               {
@@ -83,7 +81,9 @@ class LearningMaterialsList extends StatelessWidget {
                 ));
               }
           }
-        }));
+        },
+      ),
+    );
   }
 
   Future<void> _onScroll() async {

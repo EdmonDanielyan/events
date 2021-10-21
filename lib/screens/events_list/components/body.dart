@@ -9,15 +9,13 @@ import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/screens/events_list/components/events_list_element.dart';
 
 class Body extends StatelessWidget {
-  static late EventsListCubit cubit;
-  static late Size size;
+  final EventsListCubit cubit;
 
   final ScrollController _controller = ScrollController();
-  Body({Key? key}) : super(key: key);
+  Body({Key? key, required this.cubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    size = MediaQuery.of(context).size;
     _controller.addListener(_onScroll);
 
     return RefreshIndicator(
@@ -27,9 +25,8 @@ class Body extends StatelessWidget {
       color: Colors.green,
       displacement: 20,
       child: BlocBuilder<EventsListCubit, EventsListState>(
+        bloc: cubit,
         builder: (context, state) {
-          cubit = BlocProvider.of<EventsListCubit>(context);
-
           if (state.type == EventsListStateType.LOADING) {
             cubit.fetch();
             return InkPageLoader();

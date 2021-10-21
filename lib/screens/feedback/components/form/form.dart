@@ -20,6 +20,7 @@ import 'package:ink_mobile/models/selectfield.dart';
 import 'package:ink_mobile/screens/feedback/components/form/validator.dart';
 import 'package:ink_mobile/screens/feedback/components/hint_text.dart';
 
+import '../../feedback_screen.dart';
 import 'entities.dart';
 
 class ManagementFeedbackForm extends StatefulWidget {
@@ -35,6 +36,8 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
       ManagementFeedbackFormEntities();
 
   final _formKey = GlobalKey<FormState>();
+  late SendManagementFormCubit sendManagementFormCubit;
+  late SelectfieldCubit selectfieldCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +45,10 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
     final _strings = localizationInstance;
     _validator = ManagementFeedbackFormValidator();
 
-    final _formCubit = BlocProvider.of<SendManagementFormCubit>(context);
+    sendManagementFormCubit =
+        FeedBackScreen.of(context).sendManagementFormCubit;
 
-    final _addresseeCubit = BlocProvider.of<TagsListCubit>(context);
-    final _selectfieldCubit = BlocProvider.of<SelectfieldCubit>(context);
+    selectfieldCubit = FeedBackScreen.of(context).selectfieldCubit;
 
     return Container(
       color: Colors.white,
@@ -54,11 +57,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
         key: _formKey,
         child: Column(
           children: [
-            _selectAddresseesWidget(
-              entities: entities,
-              addresseeCubit: _addresseeCubit,
-              selectfieldCubit: _selectfieldCubit,
-            ),
+            _selectAddresseesWidget(entities: entities),
             SizedBox(height: 20.0),
             ServiceTextField(
               hint: "${_strings.fullnameHint} ${_strings.notRequired}",
@@ -90,8 +89,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
               onSuccesfullyPicked: (List<File> files) => entities.files = files,
             ),
             SizedBox(height: 20.0),
-            _btnWidget(_formKey, _pickFilesKey, _formCubit, _selectfieldCubit,
-                entities),
+            _btnWidget(_formKey, _pickFilesKey, entities),
           ],
         ),
       ),
@@ -99,13 +97,13 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
   }
 
   Widget _selectAddresseesWidget(
-      {required TagsListCubit addresseeCubit,
-      required SelectfieldCubit selectfieldCubit,
-      required ManagementFeedbackFormEntities entities}) {
+      {required ManagementFeedbackFormEntities entities}) {
+    final tagsListCubit = FeedBackScreen.of(context).tagsListCubit;
     return BlocBuilder<TagsListCubit, TagsListCubitState>(
+      bloc: tagsListCubit,
       builder: (BuildContext context, state) {
         if (state.state == TagsListCubitStateEnums.LOADING) {
-          addresseeCubit.load();
+          tagsListCubit.load();
         }
 
         List<Selectfield> getItems =
@@ -127,19 +125,15 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
   Widget _btnWidget(
       GlobalKey<FormState> key,
       GlobalKey<PickFilesState> pickFilesKey,
-      SendManagementFormCubit formCubit,
-      SelectfieldCubit selectCubit,
       ManagementFeedbackFormEntities entities) {
     return BlocConsumer<SendManagementFormCubit, BtnCubitState>(
+      bloc: sendManagementFormCubit,
       listener: (BuildContext context, state) {
         if (state.state == BtnCubitStateEnums.ERROR) {
           SimpleCustomSnackbar(context: context, txt: state.message);
         }
         if (state.state == BtnCubitStateEnums.SUCCESS) {
-          clearForm(
-              formKey: key,
-              selectfieldCubit: selectCubit,
-              pickFilesKey: pickFilesKey);
+          clearForm(formKey: key, pickFilesKey: pickFilesKey);
           SuccessCustomSnackbar(context: context, txt: state.message);
         }
       },
@@ -151,7 +145,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
             txt: localizationInstance.askQuestion,
             onPressed: () {
               if (key.currentState!.validate()) {
-                formCubit.send(entities);
+                sendManagementFormCubit.send(entities);
               }
             },
           );
@@ -162,7 +156,6 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
 
   void clearForm(
       {required GlobalKey<FormState> formKey,
-      required SelectfieldCubit selectfieldCubit,
       required GlobalKey<PickFilesState> pickFilesKey}) {
     pickFilesKey.currentState!.clearAll();
     formKey.currentState!.reset();
