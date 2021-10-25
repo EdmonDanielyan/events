@@ -203,5 +203,6 @@
     "description": "Description",
     "name": "Name",
     "newGroup": "New group",
-    "forwardedMsg": "Forwarded message"
+    "forwardedMsg": "Forwarded message",
+    "save": "Save"
 }

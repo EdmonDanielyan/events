@@ -17,8 +17,11 @@ class _ChangableAvatarState extends State<ChangableAvatar> {
   File? image;
 
   Future<void> _pickImageFromGallery() async {
-    image = await FileFunctions.getImageFromGallery();
-    if (image != null) setState(() {});
+    final imageFromGallery = await FileFunctions.getImageFromGallery();
+    if (imageFromGallery != null) {
+      image = await FileFunctions.cropImage(imageFromGallery);
+      if (image != null) setState(() {});
+    }
   }
 
   @override
