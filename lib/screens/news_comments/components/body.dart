@@ -38,11 +38,10 @@ class _BodyState extends State<Body> {
         final NewsCommentsCubit newsCommentsCubit =
             BlocProvider.of<NewsCommentsCubit>(context);
 
-        newsCommentsCubit.focusNode.unfocus();
-
         switch (state.type) {
           case NewsCommentStateType.LOADING:
             {
+              newsCommentsCubit.focusNode.unfocus();
               var arg = ModalRoute.of(context)!.settings.arguments as Map;
 
               var newsId;
@@ -113,14 +112,15 @@ class _BodyState extends State<Body> {
     data.comments?.forEach((comment) {
       comments.add(
         Comment(
-            id: comment.id,
-            authorId: comment.authorId,
-            avatar: comment.pathToAvatar,
-            name: comment.authorName,
-            text: comment.comment,
-            barrelChecked: comment.barrelsChecked,
-            barrelsCount: comment.barrels,
-            dateTime: comment.timeCreate,),
+          id: comment.id,
+          authorId: comment.authorId,
+          avatar: comment.pathToAvatar,
+          name: comment.authorName,
+          text: comment.comment,
+          barrelChecked: comment.barrelsChecked,
+          barrelsCount: comment.barrels,
+          dateTime: comment.timeCreate,
+        ),
       );
 
       comment.children?.forEach((childrenComment) {
