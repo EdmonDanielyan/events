@@ -68,10 +68,9 @@ class InkMobile extends StatelessWidget {
         title: 'ИНК',
         initialRoute: '/init',
         localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          DefaultMaterialLocalizations.delegate,
-          DefaultCupertinoLocalizations.delegate,
-          DefaultWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate
         ],
         supportedLocales: [
           const Locale('en'),
