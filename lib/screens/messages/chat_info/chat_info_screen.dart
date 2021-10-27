@@ -18,17 +18,17 @@ class ChatInfoScreen extends StatelessWidget {
 
     return BlocBuilder<ChatCubit, ChatCubitState>(
       builder: (BuildContext, state) {
-        final Chat chat = state.chat;
+        // final Chat chat = state.chat;
         return Scaffold(
           appBar: InkAppBarWithText(
             title: _strings.chatInfo,
             actions: [
-              if (chat.group != null) ...[
-                ChatInfoEditBtn(),
-              ],
+              // if (chat.group != null) ...[
+              //   ChatInfoEditBtn(),
+              // ],
             ],
           ),
-          body: Body(chat: chat),
+          //body: Body(chat: chat),
         );
       },
     );

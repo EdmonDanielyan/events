@@ -59,6 +59,11 @@ dependencies:
   flutter_keyboard_visibility: ^5.1.0
   image_picker: ^0.8.3+2
   image_cropper: ^1.4.1
+  moor: ^4.5.0
+  encrypted_moor:
+   git:
+    url: https://github.com/simolus3/moor.git
+    path: extras/encryption 
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +72,7 @@ dev_dependencies:
   mockito: ^5.0.12
   build_runner:
   injectable_generator:
+  moor_generator: ^4.4.1
 
 
 flutter_icons:

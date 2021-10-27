@@ -8,7 +8,7 @@ import 'chat_list_state.dart';
 @injectable
 class ChatListCubit extends Cubit<ChatListCubitState> {
   int selectedChat = 0;
-  ChatListCubit() : super(ChatListCubitState());
+  ChatListCubit() : super(ChatListCubitState(chats: [], searchList: []));
 
   List<Chat> get chats => state.chats;
   bool get selectedChatExists => chats.length > selectedChat;

@@ -440,6 +440,9 @@ class NatsProvider {
     }
   };
 
+  Set<String> get userChannels => _userChannels;
+  Set<String> get publicChannels => _publicChannels;
+
   final _stan = Client();
   final Map<String, Subscription?> _channelSubscriptions = {};
   final Map<String, Subscription?> _channelSettingsSubscriptions = {};

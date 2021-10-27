@@ -21,7 +21,8 @@ class MessageList extends StatelessWidget with MessageMixins {
         child: BlocBuilder<ChatCubit, ChatCubitState>(
           builder: (BuildContext context, state) {
             DateTimeSort dateSort = DateTimeSort();
-            List<Message> messages = state.chat.messages;
+            List<Message> messages = [];
+            // state.chat.messages;
 
             return ListView.builder(
               controller: ScrollController(keepScrollOffset: false),

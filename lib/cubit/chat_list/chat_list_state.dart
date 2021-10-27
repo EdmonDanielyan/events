@@ -6,9 +6,9 @@ class ChatListCubitState {
   String searchValue;
 
   ChatListCubitState({
-    this.chats = const [],
+    required this.chats,
     this.searchValue = "",
-    this.searchList = const [],
+    required this.searchList,
   });
 
   ChatListCubitState copyWith({

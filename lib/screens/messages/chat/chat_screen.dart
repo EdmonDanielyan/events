@@ -103,7 +103,8 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
     return InkAppBarWithText(
       titleWidget: BlocBuilder<ChatCubit, ChatCubitState>(
         builder: (BuildContext context, state) {
-          return ChatAppBarTitle(chat: state.chat);
+          return SizedBox();
+          // ChatAppBarTitle(chat: state.chat);
         },
       ),
       title: "",

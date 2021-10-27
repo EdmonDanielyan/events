@@ -37,7 +37,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
       );
       entities.clear();
       _chatCubit.addMessage(message);
-      _chatListCubit.updateAndSetToFirst(_chatCubit.state.chat);
+      //_chatListCubit.updateAndSetToFirst(_chatCubit.state.chat);
       ScrollBottom(widget.scrollController).jumpLazy();
     }
   }
@@ -108,16 +108,17 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
         if (state.selectedMessageId == null) {
           return SizedBox();
         } else {
-          Message? selectedMsg = MessageListView.getMessageById(
-              state.selectedMessageId!, state.chat.messages);
+          return SizedBox();
+          // Message? selectedMsg = MessageListView.getMessageById(
+          //     state.selectedMessageId!, state.chat.messages);
 
-          if (selectedMsg == null) return SizedBox();
+          // if (selectedMsg == null) return SizedBox();
 
-          return RespondMessageContainer(
-            horizontalPadding: _padding,
-            selectedMessage: selectedMsg,
-            onCancel: () => _chatCubit.emitSelectedMessageId(null),
-          );
+          // return RespondMessageContainer(
+          //   horizontalPadding: _padding,
+          //   selectedMessage: selectedMsg,
+          //   onCancel: () => _chatCubit.emitSelectedMessageId(null),
+          // );
         }
       },
     );

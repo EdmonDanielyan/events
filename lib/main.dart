@@ -15,6 +15,7 @@ import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/handlers/error_catcher.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/providers/global_providers.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
@@ -37,10 +38,9 @@ void main() async {
     };
     runApp(InkMobile(onAppStart: () async {
       NatsProvider natsProvider = sl<NatsProvider>();
-      natsProvider.onMessage = (channel, message) async {
-        print("onMessage.channel: $channel, message: $message");
-      };
-      return await natsProvider.load();
+      final loaded = await natsProvider.load();
+      MessageProvider(natsProvider).init();
+      return loaded;
     }));
   }, (Object error, StackTrace stack) {
     if (error is CustomException) {

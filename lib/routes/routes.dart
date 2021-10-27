@@ -107,12 +107,13 @@ class MainRoutes {
     '/chat_info': (BuildContext context) => ChatInfoScreen(),
     '/new_group': (BuildContext context) => NewGroupScreen(),
     '/message_person_list': (BuildContext context) {
-      final args = ModalRoute.of(context)?.settings.arguments;
-      if (args is PersonListParams) {
-        return PersonListScreen(params: args);
-      } else {
-        return PageNotFoundScreen();
-      }
+      return PageNotFoundScreen();
+      // final args = ModalRoute.of(context)?.settings.arguments;
+      // if (args is PersonListParams) {
+      //   return PersonListScreen(params: args);
+      // } else {
+      //   return PageNotFoundScreen();
+      // }
     },
     '/test': (BuildContext context) => TestScreen()
   };

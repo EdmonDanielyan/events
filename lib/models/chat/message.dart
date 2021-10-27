@@ -1,4 +1,6 @@
 import 'package:ink_mobile/models/chat/chat_user.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/token.dart';
 
 enum MessageStatus { SENDING, SENT, READ, ERROR }
 enum MessageType { TEXT, DOCUMENT, PICTURE_VIDEO }
@@ -88,6 +90,11 @@ class Message {
 }
 
 class MessageListView {
+  static bool isByMe(MessageTable msg, {int? myId}) {
+    myId = myId ?? JwtPayload.myId;
+    return msg.userId == myId;
+  }
+
   static List<Message> makeMessagesSendOn(List<Message> messages) {
     messages = messages
         .map((element) => element.copyWith(byMe: true, sentOn: true))
@@ -119,16 +126,12 @@ class MessageListView {
     return null;
   }
 
-  static int unreadMessages(List<Message> items) => items.fold(
-        0,
-        (previousValue, element) =>
-            element.status != MessageStatus.READ && !element.byMe
-                ? previousValue + 1
-                : previousValue + 0,
-      );
-
-  static int sortByDate(Message a, Message b) =>
-      a.messageDate.isAfter(b.messageDate) ? -1 : 1;
+  static int unreadMessages(List<MessageTable> items) =>
+      items.fold(0, (previousValue, element) {
+        return element.status != MessageStatus.READ && !isByMe(element)
+            ? previousValue + 1
+            : previousValue + 0;
+      });
 
   static int sortByDateReverse(Message a, Message b) =>
       a.messageDate.isAfter(b.messageDate) ? 1 : -1;

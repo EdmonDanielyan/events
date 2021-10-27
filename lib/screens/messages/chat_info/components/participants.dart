@@ -57,11 +57,11 @@ class ChatInfoParticipants extends StatelessWidget {
         controller: ScrollController(keepScrollOffset: false),
         itemBuilder: (BuildContext context, int index) => Column(
           children: [
-            ParticipantCard(
-              user: group.users[index],
-              owner: group.owner,
-              admins: group.admins,
-            ),
+            // ParticipantCard(
+            //   user: group.users[index],
+            //   owner: group.owner,
+            //   admins: group.admins,
+            // ),
             if (index != group.users.length - 1) ...[
               divider(),
             ],

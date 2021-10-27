@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class CustomCircleAvatar extends StatelessWidget {
   final String? url;
   final File? file;
+  final ImageProvider? imageProvider;
   final bool? indicator;
   final double indicatorSize;
   final double? avatarWidth;
@@ -13,11 +14,12 @@ class CustomCircleAvatar extends StatelessWidget {
     Key? key,
     this.url,
     this.file,
+    this.imageProvider,
     this.indicator,
     this.avatarWidth,
     this.avatarHeight,
     this.indicatorSize = 12.0,
-  })  : assert(url != null || file != null),
+  })  : assert(url != null || file != null || imageProvider != null),
         super(key: key);
 
   @override
@@ -54,15 +56,18 @@ class CustomCircleAvatar extends StatelessWidget {
   Widget getAvatar() {
     if (url != null) return getAvatarByUrl();
     if (file != null) return getAvatarByFile();
+    if (imageProvider != null)
+      return getAvatarByUrl(imgProvider: imageProvider);
 
     return SizedBox();
   }
 
-  Widget getAvatarByUrl() {
+  Widget getAvatarByUrl({ImageProvider? imgProvider}) {
     return CircleAvatar(
       radius: 30,
       backgroundColor: Colors.grey,
-      backgroundImage: AssetImage("assets/images/avatars/avatar_default.png"),
+      backgroundImage:
+          imgProvider ?? AssetImage("assets/images/avatars/avatar_default.png"),
       foregroundImage: NetworkImage(url!),
       onForegroundImageError: (Object exception, _) {},
     );

@@ -32,7 +32,7 @@ class ChatEntitiesFunctions {
       {required ChatEntities entities, int? selectedMessageId}) {
     return Message(
       id: 8,
-      user: ChatUser(avatarUrl: "", name: "IBRA CHEKAEV", online: true),
+      user: ChatUser(id: 0, avatarUrl: "", name: "IBRA CHEKAEV", online: true),
       message: entities.text,
       messageDate: DateTime.now(),
       type: getType(entities),

@@ -204,5 +204,6 @@
     "name": "Name",
     "newGroup": "New group",
     "forwardedMsg": "Forwarded message",
-    "save": "Save"
+    "save": "Save",
+    "noMessages": "No messages"
 }

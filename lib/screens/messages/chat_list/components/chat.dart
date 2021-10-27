@@ -1,38 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
-import 'package:ink_mobile/models/chat/message.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_date.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_divider.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message_trailing.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_name.dart';
-import 'package:ink_mobile/screens/messages/chat_list/functions/open_chat.dart';
 
 class ChatListTile extends StatelessWidget {
   final String highlightValue;
   final EdgeInsetsGeometry? contentPadding;
   final int index;
-  final Chat chat;
+  final ChatTable chat;
   final double leadingGap;
+  final List<MessageTable> messages;
+  final ChatDatabaseCubit chatDatabaseCubit;
   const ChatListTile(
       {Key? key,
       this.highlightValue = "",
       required this.index,
       required this.chat,
+      required this.messages,
+      required this.chatDatabaseCubit,
       this.contentPadding,
       this.leadingGap = 15.0})
       : super(key: key);
 
-  bool get hasMessage => chat.messages.isNotEmpty;
+  bool get hasMessage => messages.isNotEmpty;
 
-  Message? get lastMessage => hasMessage ? chat.messages.last : null;
+  MessageTable get lastMessage => messages.last;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        onTap: () => OpenChat(context, chat, index),
+        //onTap: () => OpenChat(context, chat, index),
         child: Container(
           padding: contentPadding,
           margin: EdgeInsets.only(bottom: 7.0, top: 7.0),
@@ -44,9 +48,7 @@ class ChatListTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomCircleAvatar(
-                    url: chat.avatarUrl,
-                    indicator:
-                        hasMessage && lastMessage!.user.online ? true : false,
+                    url: chat.avatar,
                   ),
                   SizedBox(width: leadingGap),
                   Expanded(
@@ -57,13 +59,13 @@ class ChatListTile extends StatelessWidget {
                           children: [
                             Expanded(
                               child: ChatName(
-                                name: chat.chatName,
+                                name: chat.name,
                                 highlightValue: highlightValue,
                               ),
                             ),
                             SizedBox(width: 2.0),
                             if (hasMessage) ...[
-                              ChatDate(chatDate: lastMessage!.messageDate),
+                              ChatDate(chatDate: lastMessage.created!),
                             ],
                           ],
                         ),
@@ -73,15 +75,9 @@ class ChatListTile extends StatelessWidget {
                           children: [
                             if (hasMessage) ...[
                               Expanded(
-                                child: ChatMessage(
-                                  displayName: chat.group != null
-                                      ? lastMessage!.user.name
-                                      : null,
-                                  message: lastMessage!.message,
-                                  highlightValue: highlightValue,
-                                ),
+                                child: _displayBody(),
                               ),
-                              ChatMessageTrailing(chat: chat),
+                              ChatMessageTrailing(messages: messages),
                             ],
                           ],
                         ),
@@ -96,7 +92,7 @@ class ChatListTile extends StatelessWidget {
                   SizedBox(
                     height: 0.0,
                     child: Opacity(
-                        child: CustomCircleAvatar(url: chat.avatarUrl),
+                        child: CustomCircleAvatar(url: chat.avatar),
                         opacity: 0.0),
                   ),
                   SizedBox(width: leadingGap),
@@ -107,6 +103,24 @@ class ChatListTile extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _displayBody() {
+    return StreamBuilder(
+      stream: chatDatabaseCubit.db.watchUser(lastMessage.userId),
+      builder: (context, AsyncSnapshot<UserTable> snapshot) {
+        UserTable? user = snapshot.data ?? null;
+
+        print(snapshot.data);
+
+        return ChatMessage(
+          displayName:
+              ChatListView.isGroup(chat) && user != null ? user.name : null,
+          message: lastMessage.message,
+          highlightValue: highlightValue,
+        );
+      },
     );
   }
 }

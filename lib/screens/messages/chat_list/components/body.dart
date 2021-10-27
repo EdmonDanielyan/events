@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_state.dart';
-import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:ink_mobile/components/loader/error_loading_widget.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/search_bar.dart';
 
 import 'chat.dart';
@@ -15,48 +17,83 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  late ChatListCubit _cubit;
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () {
-      _cubit.emitChats(items: ChatListView.getExampleList());
-    });
-  }
+  final _contentPadding = EdgeInsets.symmetric(horizontal: 10);
+  late ChatDatabaseCubit _chatDatabaseCubit;
 
   @override
   Widget build(BuildContext context) {
-    final _contentPadding = EdgeInsets.symmetric(horizontal: 10);
-    _cubit = BlocProvider.of<ChatListCubit>(context);
+    _chatDatabaseCubit = BlocProvider.of<ChatDatabaseCubit>(context);
 
     return SingleChildScrollView(
       child: Column(
         children: [
           SizedBox(height: 2.0),
-          SearchBar(
-            contentPadding: _contentPadding,
-            onChanged: (val) => _cubit.setSearchValue(val),
-          ),
           SizedBox(height: 10.0),
-          BlocBuilder<ChatListCubit, ChatListCubitState>(
-            builder: (BuildContext context, state) {
-              List<Chat> searchList = state.searchList;
-              return ListView.builder(
-                controller: ScrollController(keepScrollOffset: false),
-                shrinkWrap: true,
-                itemCount: searchList.length,
-                itemBuilder: (BuildContext context, int index) => ChatListTile(
-                  highlightValue: state.searchValue,
-                  index: index,
-                  chat: searchList[index],
-                  contentPadding: _contentPadding,
-                ),
-              );
-            },
-          ),
+          BlocBuilder<ChatDatabaseCubit, ChatDatabaseCubitState>(
+              builder: (_context, state) {
+            return StreamBuilder(
+              stream: state.searchValue.isNotEmpty
+                  ? state.db.searchChats(state.searchValue)
+                  : state.db.watchAllChats(),
+              builder: (context, AsyncSnapshot<List<ChatTable>> snapshot) {
+                if (snapshot.hasData) {
+                  final items = snapshot.data ?? [];
+                  if (items.isNotEmpty || state.searchValue.isNotEmpty) {
+                    return _buildItems(items);
+                  } else {
+                    return _noMessages();
+                  }
+                }
+
+                return SizedBox();
+              },
+            );
+          }),
         ],
       ),
+    );
+  }
+
+  Widget _buildItems(List<ChatTable> items) {
+    return Column(
+      children: [
+        SearchBar(
+          contentPadding: _contentPadding,
+          onChanged: (val) => _chatDatabaseCubit.updateSearch(val),
+        ),
+        ListView.builder(
+          itemCount: items.length,
+          shrinkWrap: true,
+          itemBuilder: (_, index) => InkWell(
+            onLongPress: () {
+              /*
+              TODO delete this
+              */
+              _chatDatabaseCubit.db.deleteChat(items[index]);
+            },
+            child: StreamBuilder(
+              stream: _chatDatabaseCubit.db.chatMessages(items[index].id!),
+              builder: (context, AsyncSnapshot<List<MessageTable>> snapshot) {
+                List<MessageTable> messages = snapshot.data ?? [];
+                return ChatListTile(
+                  highlightValue: _chatDatabaseCubit.searchVal,
+                  index: index,
+                  chat: items[index],
+                  contentPadding: _contentPadding,
+                  chatDatabaseCubit: _chatDatabaseCubit,
+                  messages: messages,
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _noMessages() {
+    return Center(
+      child: ErrorLoadingWidget(errorMsg: localizationInstance.noMessages),
     );
   }
 }

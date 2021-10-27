@@ -1,32 +1,55 @@
-import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/models/items_search.dart';
 
 class ChatCubitState {
-  Chat chat;
+  int? chatId;
   ChatAppBarEnums appBarEnum;
   int? selectedMessageId;
   ItemsSearch<Message> messagesSearch;
 
   ChatCubitState({
-    required this.chat,
+    this.chatId,
     this.appBarEnum = ChatAppBarEnums.INITIAL,
-    required this.messagesSearch,
     this.selectedMessageId,
+    required this.messagesSearch,
   });
 
   ChatCubitState copyWith({
-    Chat? chat,
+    int? chatId,
     ChatAppBarEnums? appBarEnum,
     int? selectedMessageId,
     ItemsSearch<Message>? messagesSearch,
   }) {
     return ChatCubitState(
-      chat: chat ?? this.chat,
+      chatId: chatId ?? this.chatId,
       appBarEnum: appBarEnum ?? this.appBarEnum,
-      selectedMessageId: selectedMessageId,
+      selectedMessageId: selectedMessageId ?? this.selectedMessageId,
       messagesSearch: messagesSearch ?? this.messagesSearch,
     );
+  }
+
+  @override
+  String toString() {
+    return 'ChatCubitState(chat: $chatId, appBarEnum: $appBarEnum, selectedMessageId: $selectedMessageId, messagesSearch: $messagesSearch)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ChatCubitState &&
+        other.chatId == chatId &&
+        other.appBarEnum == appBarEnum &&
+        other.selectedMessageId == selectedMessageId &&
+        other.messagesSearch == messagesSearch;
+  }
+
+  @override
+  int get hashCode {
+    return chatId.hashCode ^
+        appBarEnum.hashCode ^
+        selectedMessageId.hashCode ^
+        messagesSearch.hashCode;
   }
 }

@@ -32,7 +32,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
       Chat chat = ChatInfoEditEntitiesFunctions.copyChat(entities, _chat);
 
       _chatListCubit.updateChat(chat);
-      _chatCubit.emitChat(chat);
+      // _chatCubit.emitChat(chat);
     }
 
     Navigator.of(context).pop();
@@ -45,7 +45,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
     _chatCubit = BlocProvider.of<ChatCubit>(context);
     return BlocBuilder<ChatCubit, ChatCubitState>(
       builder: (BuildContext context, state) {
-        _chat = state.chat;
+        //_chat = state.chat;
 
         entities = ChatInfoEditEntities(
           name: _chat.chatName,

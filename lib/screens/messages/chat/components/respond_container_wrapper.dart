@@ -25,8 +25,9 @@ class RespondContainerWrapper extends StatelessWidget {
   CrossAxisAlignment get crossAxisAlignment =>
       message.byMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
 
-  Message? get selectedMessage => MessageListView.getMessageById(
-      message.selectedMessageId!, _chatCubit.state.chat.messages);
+  Message? get selectedMessage => null;
+  //  MessageListView.getMessageById(
+  //     message.selectedMessageId!, _chatCubit.state.chat.messages);
 
   @override
   Widget build(BuildContext context) {
