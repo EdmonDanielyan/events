@@ -1,6 +1,8 @@
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
 enum MessageStatus { SENDING, SENT, READ, ERROR }
 enum MessageType { TEXT, DOCUMENT, PICTURE_VIDEO }
@@ -95,6 +97,16 @@ class MessageListView {
     return msg.userId == myId;
   }
 
+  static MessageType getType(ChatEntities entities) {
+    if (entities.picsVids != null && entities.picsVids!.length > 0)
+      return MessageType.PICTURE_VIDEO;
+
+    if (entities.files != null && entities.files!.length > 0)
+      return MessageType.DOCUMENT;
+
+    return MessageType.TEXT;
+  }
+
   static List<Message> makeMessagesSendOn(List<Message> messages) {
     messages = messages
         .map((element) => element.copyWith(byMe: true, sentOn: true))
@@ -126,9 +138,10 @@ class MessageListView {
     return null;
   }
 
-  static int unreadMessages(List<MessageTable> items) =>
+  static int unreadMessages(List<MessageWithUser> items) =>
       items.fold(0, (previousValue, element) {
-        return element.status != MessageStatus.READ && !isByMe(element)
+        return element.message!.status != MessageStatus.READ &&
+                !isByMe(element.message!)
             ? previousValue + 1
             : previousValue + 0;
       });

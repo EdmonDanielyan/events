@@ -1,12 +1,21 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/models/token.dart';
 
 class ChatCreation {
   final ChatDatabaseCubit chatDatabaseCubit;
 
   const ChatCreation(this.chatDatabaseCubit);
+
+  // TODO DELETE THIS
+  addCustomUser() {
+    _insertUser(UserTable(
+      id: 10,
+      name: "Bo Burnham",
+      avatar:
+          "https://cs12.pikabu.ru/post_img/big/2021/04/30/6/161977553015206415.png",
+    ));
+  }
 
   Future<ChatTable> createSingleChat(UserTable user) async {
     ChatTable? chatExists = await _isChatExists(user);
@@ -15,10 +24,12 @@ class ChatCreation {
       return chatExists;
     }
 
-    final newChat = _makeChat(user.name, user.avatar, participantId: user.id);
+    var newChat = _makeChat(user.name, user.avatar, participantId: user.id);
 
-    await _insertChat(newChat);
+    int chatId = await _insertChat(newChat);
     await _insertUser(user);
+
+    newChat = newChat.copyWith(id: chatId);
 
     return newChat;
   }
@@ -27,20 +38,12 @@ class ChatCreation {
     required String name,
     required List<UserTable> users,
   }) async {
-    final newChat = _makeChat(name, "");
+    var newChat = _makeChat(name, "");
 
     final chatId = await _insertChat(newChat);
     await _insertUsers(users);
 
-    chatDatabaseCubit.db.insertMessage(
-      MessageTable(
-        message: "Привет от ${users[0].name}",
-        userId: users[0].id,
-        chatId: chatId,
-        read: false,
-        status: MessageStatus.SENDING,
-      ),
-    );
+    newChat = newChat.copyWith(id: chatId);
 
     return newChat;
   }
@@ -62,6 +65,7 @@ class ChatCreation {
   ChatTable _makeChat(String name, String avatar, {int? participantId}) {
     return ChatTable(
       name: name,
+      description: "",
       avatar: avatar,
       ownerId: JwtPayload.myId,
       participantId: participantId,

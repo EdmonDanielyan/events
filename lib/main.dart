@@ -80,7 +80,9 @@ class InkMobile extends StatelessWidget {
         initialRoute: '/init',
         localizationsDelegates: [
           AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate
         ],
         supportedLocales: I18n.all,
         routes: MainRoutes.routes,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
@@ -10,31 +11,39 @@ import 'package:ink_mobile/screens/messages/chat/components/app_bar_title.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/components/selective_app_bar.dart';
-import 'package:ink_mobile/screens/messages/chat/functions/message_cubit_functions.dart';
 import 'package:ink_mobile/screens/messages/chat/functions/message_functions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'components/body.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  static ChatScreenState of(BuildContext context) =>
+      context.findAncestorStateOfType<ChatScreenState>()!;
+
+  final ChatDatabaseCubit chatDatabaseCubit;
+  const ChatScreen({Key? key, required this.chatDatabaseCubit})
+      : super(key: key);
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  ChatScreenState createState() => ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class ChatScreenState extends State<ChatScreen> {
+  ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _GetAppBar(),
+      appBar: _GetAppBar(chatDatabaseCubit: chatDatabaseCubit),
       body: ChatBody(),
     );
   }
 }
 
 class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const _GetAppBar({Key? key}) : super(key: key);
+  final ChatDatabaseCubit chatDatabaseCubit;
+  const _GetAppBar({Key? key, required this.chatDatabaseCubit})
+      : super(key: key);
   static late ChatCubit _chatCubit;
   static late AppLocalizations _strings;
 
@@ -85,8 +94,8 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
         child: SelectiveAppBar(
           onDelete: () {
-            ChatMessageCubitFunctions(context)
-                .deleteMessages(_chatCubit.getSelectedMessages);
+            // ChatFunctions(chatDatabaseCubit)
+            //     .deleteMessages(_chatCubit.getSelectedMessages);
             _chatCubit.unselectAllMessages();
           },
           onSendOn: () {
@@ -101,12 +110,7 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   PreferredSizeWidget initialBar() {
     return InkAppBarWithText(
-      titleWidget: BlocBuilder<ChatCubit, ChatCubitState>(
-        builder: (BuildContext context, state) {
-          return SizedBox();
-          // ChatAppBarTitle(chat: state.chat);
-        },
-      ),
+      titleWidget: ChatAppBarTitle(chat: chatDatabaseCubit.selectedChat!),
       title: "",
       actions: [
         MessageSearchBtn(

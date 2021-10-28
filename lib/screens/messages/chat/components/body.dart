@@ -10,9 +10,6 @@ import 'package:ink_mobile/screens/messages/chat/components/bottom_bar.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_list.dart';
 
 class ChatBody extends StatefulWidget {
-  static ChatBodyState of(BuildContext context) =>
-      context.findAncestorStateOfType<ChatBodyState>()!;
-
   const ChatBody({Key? key}) : super(key: key);
 
   @override
@@ -34,7 +31,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration.zero, () {
+    Future.delayed(Duration(milliseconds: 200), () {
       ScrollBottom(controller).jump();
     });
     keyboardListener();

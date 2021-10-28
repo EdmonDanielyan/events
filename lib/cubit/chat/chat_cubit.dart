@@ -15,37 +15,6 @@ class ChatCubit extends Cubit<ChatCubitState> {
   List<Message> get getSelectedMessages =>
       MessageListView.getSelectedItems(getMessages);
 
-  void emitChat(int id) {
-    emit(state.copyWith(chatId: id));
-  }
-
-  void addMessage(Message message) {
-    List<Message> messages = getMessages.length > 0 ? getMessages : [];
-    _emitMessages(messages..add(message));
-  }
-
-  void clearMessages() {
-    _emitMessages([]);
-  }
-
-  void deleteMessage(List<Message> messages) {
-    // _emitMessages(
-    //   state.chat.messages
-    //     ..removeWhere(
-    //       (element) {
-    //         bool delete = false;
-    //         for (final message in messages) {
-    //           if (message == element) {
-    //             delete = true;
-    //             break;
-    //           }
-    //         }
-    //         return delete;
-    //       },
-    //     ),
-    // );
-  }
-
   void emitSelectedMessageId(int? selectedMessageId) {
     previousSelectedMessageId = state.selectedMessageId;
     emit(state.copyWith(selectedMessageId: selectedMessageId));

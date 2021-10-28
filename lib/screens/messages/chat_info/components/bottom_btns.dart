@@ -1,36 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/screens/messages/chat_info/chat_info_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatInfoBottomBtns extends StatelessWidget {
-  final Chat chat;
+  final ChatTable chat;
   const ChatInfoBottomBtns({Key? key, required this.chat}) : super(key: key);
-  static late AppLocalizations _strings;
-  static late ChatCubit _chatCubit;
-  static late ChatListCubit _chatListCubit;
 
-  bool get isGroup => chat.group != null;
+  static late ChatDatabaseCubit _chatDatabaseCubit;
+  static late ChatFunctions _chatFunctions;
+  static late AppLocalizations _strings;
+
+  bool get isGroup => ChatListView.isGroup(chat);
 
   void _clearMessages() {
-    _chatCubit.clearMessages();
-    _chatListCubit.updateMessages([]);
+    _chatFunctions.deleteAllChatMessages(chat.id!);
   }
 
   void _deleteChat(BuildContext context) {
-    _chatListCubit.deleteCurrentChat();
+    _chatFunctions.deleteChat(chat.id!);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    _chatCubit = BlocProvider.of<ChatCubit>(context);
-    _chatListCubit = BlocProvider.of<ChatListCubit>(context);
+    _chatDatabaseCubit = ChatInfoScreen.of(context).chatDatabaseCubit;
+    _chatFunctions = ChatFunctions(_chatDatabaseCubit);
 
     return Container(
       color: Colors.white,
@@ -39,10 +40,8 @@ class ChatInfoBottomBtns extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
         children: [
-          if (chat.messages.length > 0) ...[
-            clearChat(),
-            Divider(color: Colors.grey, height: 1.0),
-          ],
+          clearChat(),
+          Divider(color: Colors.grey, height: 1.0),
           leaveChat(context),
         ],
       ),

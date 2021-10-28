@@ -4,6 +4,7 @@ import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
+import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_user_select.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
@@ -30,7 +31,7 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
         .createGroup(name: chatName, users: users);
 
     Navigator.of(context).popUntil((route) => route.isFirst);
-    //OpenChat(context, groupChat, 0);
+    OpenChat(_chatDatabaseCubit, newChat).call(context);
   }
 
   @override

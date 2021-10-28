@@ -23,7 +23,7 @@ class PickFiles extends StatefulWidget {
 }
 
 class PickFilesState extends State<PickFiles> {
-  final String NO_FILE_PICKED = "Файл не выбран";
+  final String noFilePicked = "Файл не выбран";
   List<File> pickedFiles = [];
 
   Future<void> _pickFile() async {
@@ -112,7 +112,7 @@ class PickFilesState extends State<PickFiles> {
 
   Widget _fileStatusWidget(File? file) {
     return Text(
-      file == null ? NO_FILE_PICKED : basename(file.path),
+      file == null ? noFilePicked : basename(file.path),
       style: const TextStyle(color: Colors.grey),
       maxLines: 1,
     );

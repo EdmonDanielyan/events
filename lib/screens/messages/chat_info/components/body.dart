@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/bottom_btns.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/data_section.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/header.dart';
@@ -8,10 +9,10 @@ import 'package:ink_mobile/screens/messages/chat_info/components/participants.da
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
 
 class Body extends StatelessWidget {
-  final Chat chat;
+  final ChatTable chat;
   const Body({Key? key, required this.chat}) : super(key: key);
 
-  bool get isGroup => chat.group != null;
+  bool get isGroup => ChatListView.isGroup(chat);
 
   @override
   Widget build(BuildContext context) {

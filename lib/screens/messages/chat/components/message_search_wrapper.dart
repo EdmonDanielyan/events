@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/models/items_search.dart';
 
 class MessageSearchWrapper extends StatelessWidget {
-  final Message message;
+  final MessageTable message;
   final BorderRadiusGeometry? borderRadius;
   final Widget child;
   const MessageSearchWrapper({

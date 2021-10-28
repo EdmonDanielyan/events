@@ -5,6 +5,8 @@ import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
+import 'package:ink_mobile/screens/messages/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/search_bar.dart';
 
 import 'chat.dart';
@@ -22,7 +24,7 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    _chatDatabaseCubit = BlocProvider.of<ChatDatabaseCubit>(context);
+    _chatDatabaseCubit = ChatListScreen.of(context).chatDatabaseCubit;
 
     return SingleChildScrollView(
       child: Column(
@@ -30,25 +32,27 @@ class _BodyState extends State<Body> {
           SizedBox(height: 2.0),
           SizedBox(height: 10.0),
           BlocBuilder<ChatDatabaseCubit, ChatDatabaseCubitState>(
-              builder: (_context, state) {
-            return StreamBuilder(
-              stream: state.searchValue.isNotEmpty
-                  ? state.db.searchChats(state.searchValue)
-                  : state.db.watchAllChats(),
-              builder: (context, AsyncSnapshot<List<ChatTable>> snapshot) {
-                if (snapshot.hasData) {
-                  final items = snapshot.data ?? [];
-                  if (items.isNotEmpty || state.searchValue.isNotEmpty) {
-                    return _buildItems(items);
-                  } else {
-                    return _noMessages();
+            bloc: _chatDatabaseCubit,
+            builder: (_context, state) {
+              return StreamBuilder(
+                stream: state.searchValue.isNotEmpty
+                    ? state.db.searchChats(state.searchValue)
+                    : state.db.watchAllChats(),
+                builder: (context, AsyncSnapshot<List<ChatTable>> snapshot) {
+                  if (snapshot.hasData) {
+                    final items = snapshot.data ?? [];
+                    if (items.isNotEmpty || state.searchValue.isNotEmpty) {
+                      return _buildItems(items);
+                    } else {
+                      return _noMessages();
+                    }
                   }
-                }
 
-                return SizedBox();
-              },
-            );
-          }),
+                  return SizedBox();
+                },
+              );
+            },
+          ),
         ],
       ),
     );
@@ -64,27 +68,23 @@ class _BodyState extends State<Body> {
         ListView.builder(
           itemCount: items.length,
           shrinkWrap: true,
-          itemBuilder: (_, index) => InkWell(
-            onLongPress: () {
-              /*
-              TODO delete this
-              */
-              _chatDatabaseCubit.db.deleteChat(items[index]);
-            },
-            child: StreamBuilder(
-              stream: _chatDatabaseCubit.db.chatMessages(items[index].id!),
-              builder: (context, AsyncSnapshot<List<MessageTable>> snapshot) {
-                List<MessageTable> messages = snapshot.data ?? [];
+          controller: ScrollController(keepScrollOffset: false),
+          itemBuilder: (_, index) => StreamBuilder(
+            stream: _chatDatabaseCubit.db.watchChatMessages(items[index].id!),
+            builder: (context, AsyncSnapshot<List<MessageWithUser>?> snapshot) {
+              if (snapshot.hasData) {
+                List<MessageWithUser> messagesWithUser = snapshot.data ?? [];
                 return ChatListTile(
                   highlightValue: _chatDatabaseCubit.searchVal,
                   index: index,
                   chat: items[index],
                   contentPadding: _contentPadding,
                   chatDatabaseCubit: _chatDatabaseCubit,
-                  messages: messages,
+                  messagesWithUser: messagesWithUser,
                 );
-              },
-            ),
+              }
+              return SizedBox();
+            },
           ),
         ),
       ],

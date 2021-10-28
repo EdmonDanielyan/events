@@ -10,6 +10,7 @@ part of 'chat_db.dart';
 class ChatTable extends DataClass implements Insertable<ChatTable> {
   final int? id;
   final String name;
+  final String description;
   final String avatar;
   final int ownerId;
   final int? participantId;
@@ -17,6 +18,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   ChatTable(
       {this.id,
       required this.name,
+      required this.description,
       required this.avatar,
       required this.ownerId,
       this.participantId,
@@ -28,6 +30,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+      description: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
       avatar: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}avatar'])!,
       ownerId: const IntType()
@@ -45,6 +49,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       map['id'] = Variable<int?>(id);
     }
     map['name'] = Variable<String>(name);
+    map['description'] = Variable<String>(description);
     map['avatar'] = Variable<String>(avatar);
     map['owner_id'] = Variable<int>(ownerId);
     if (!nullToAbsent || participantId != null) {
@@ -60,6 +65,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
     return ChatTablesCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       name: Value(name),
+      description: Value(description),
       avatar: Value(avatar),
       ownerId: Value(ownerId),
       participantId: participantId == null && nullToAbsent
@@ -77,6 +83,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
     return ChatTable(
       id: serializer.fromJson<int?>(json['id']),
       name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String>(json['description']),
       avatar: serializer.fromJson<String>(json['avatar']),
       ownerId: serializer.fromJson<int>(json['ownerId']),
       participantId: serializer.fromJson<int?>(json['participantId']),
@@ -89,6 +96,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
     return <String, dynamic>{
       'id': serializer.toJson<int?>(id),
       'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String>(description),
       'avatar': serializer.toJson<String>(avatar),
       'ownerId': serializer.toJson<int>(ownerId),
       'participantId': serializer.toJson<int?>(participantId),
@@ -99,6 +107,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   ChatTable copyWith(
           {int? id,
           String? name,
+          String? description,
           String? avatar,
           int? ownerId,
           int? participantId,
@@ -106,6 +115,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       ChatTable(
         id: id ?? this.id,
         name: name ?? this.name,
+        description: description ?? this.description,
         avatar: avatar ?? this.avatar,
         ownerId: ownerId ?? this.ownerId,
         participantId: participantId ?? this.participantId,
@@ -116,6 +126,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
     return (StringBuffer('ChatTable(')
           ..write('id: $id, ')
           ..write('name: $name, ')
+          ..write('description: $description, ')
           ..write('avatar: $avatar, ')
           ..write('ownerId: $ownerId, ')
           ..write('participantId: $participantId, ')
@@ -130,15 +141,18 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       $mrjc(
           name.hashCode,
           $mrjc(
-              avatar.hashCode,
-              $mrjc(ownerId.hashCode,
-                  $mrjc(participantId.hashCode, updatedAt.hashCode))))));
+              description.hashCode,
+              $mrjc(
+                  avatar.hashCode,
+                  $mrjc(ownerId.hashCode,
+                      $mrjc(participantId.hashCode, updatedAt.hashCode)))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ChatTable &&
           other.id == this.id &&
           other.name == this.name &&
+          other.description == this.description &&
           other.avatar == this.avatar &&
           other.ownerId == this.ownerId &&
           other.participantId == this.participantId &&
@@ -148,6 +162,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
 class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   final Value<int?> id;
   final Value<String> name;
+  final Value<String> description;
   final Value<String> avatar;
   final Value<int> ownerId;
   final Value<int?> participantId;
@@ -155,6 +170,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   const ChatTablesCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
+    this.description = const Value.absent(),
     this.avatar = const Value.absent(),
     this.ownerId = const Value.absent(),
     this.participantId = const Value.absent(),
@@ -163,16 +179,19 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   ChatTablesCompanion.insert({
     this.id = const Value.absent(),
     required String name,
+    required String description,
     required String avatar,
     required int ownerId,
     this.participantId = const Value.absent(),
     this.updatedAt = const Value.absent(),
   })  : name = Value(name),
+        description = Value(description),
         avatar = Value(avatar),
         ownerId = Value(ownerId);
   static Insertable<ChatTable> custom({
     Expression<int?>? id,
     Expression<String>? name,
+    Expression<String>? description,
     Expression<String>? avatar,
     Expression<int>? ownerId,
     Expression<int?>? participantId,
@@ -181,6 +200,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
+      if (description != null) 'description': description,
       if (avatar != null) 'avatar': avatar,
       if (ownerId != null) 'owner_id': ownerId,
       if (participantId != null) 'participant_id': participantId,
@@ -191,6 +211,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   ChatTablesCompanion copyWith(
       {Value<int?>? id,
       Value<String>? name,
+      Value<String>? description,
       Value<String>? avatar,
       Value<int>? ownerId,
       Value<int?>? participantId,
@@ -198,6 +219,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     return ChatTablesCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
+      description: description ?? this.description,
       avatar: avatar ?? this.avatar,
       ownerId: ownerId ?? this.ownerId,
       participantId: participantId ?? this.participantId,
@@ -213,6 +235,9 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
     }
     if (avatar.present) {
       map['avatar'] = Variable<String>(avatar.value);
@@ -234,6 +259,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     return (StringBuffer('ChatTablesCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
+          ..write('description: $description, ')
           ..write('avatar: $avatar, ')
           ..write('ownerId: $ownerId, ')
           ..write('participantId: $participantId, ')
@@ -261,6 +287,11 @@ class $ChatTablesTable extends ChatTables
           GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 150),
       typeName: 'TEXT',
       requiredDuringInsert: true);
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+      'description', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _avatarMeta = const VerificationMeta('avatar');
   late final GeneratedColumn<String?> avatar = GeneratedColumn<String?>(
       'avatar', aliasedName, false,
@@ -282,7 +313,7 @@ class $ChatTablesTable extends ChatTables
       defaultValue: Constant(new DateTime.now()));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, name, avatar, ownerId, participantId, updatedAt];
+      [id, name, description, avatar, ownerId, participantId, updatedAt];
   @override
   String get aliasedName => _alias ?? 'chat_tables';
   @override
@@ -300,6 +331,14 @@ class $ChatTablesTable extends ChatTables
           _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
       context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
     }
     if (data.containsKey('avatar')) {
       context.handle(_avatarMeta,

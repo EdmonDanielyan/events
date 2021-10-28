@@ -4,6 +4,7 @@ import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_cubit
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart';
 import 'package:ink_mobile/cubit/events_list/events_list_cubit.dart';
 import 'package:ink_mobile/cubit/learning_materials_list/learning_materials_list_cubit.dart';
@@ -12,7 +13,6 @@ import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
-import 'package:ink_mobile/models/chat/person_list_params.dart';
 import 'package:ink_mobile/screens/announcements_detail/announcements_detail_screen.dart';
 import 'package:ink_mobile/screens/announcements_list/announcements_list_screen.dart';
 import 'package:ink_mobile/screens/app_layer/app_layer_screen.dart';
@@ -25,7 +25,6 @@ import 'package:ink_mobile/screens/initial/initial_screen.dart';
 import 'package:ink_mobile/screens/messages/chat/chat_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_info/chat_info_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/new_group_screen.dart';
-import 'package:ink_mobile/screens/messages/person_list/person_list_screen.dart';
 import 'package:ink_mobile/screens/news_comments/news_comment_screen.dart';
 import 'package:ink_mobile/screens/news_detail/news_detail.dart';
 import 'package:ink_mobile/screens/news_list/news_list_screen.dart';
@@ -103,8 +102,12 @@ class MainRoutes {
           newsListCubit: sl.get<NewsListCubit>(),
           openUniversityCubit: sl.get<OpenUniversityCubit>(),
         ),
-    '/message': (BuildContext context) => ChatScreen(),
-    '/chat_info': (BuildContext context) => ChatInfoScreen(),
+    '/message': (BuildContext context) => ChatScreen(
+          chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
+        ),
+    '/chat_info': (BuildContext context) => ChatInfoScreen(
+          chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
+        ),
     '/new_group': (BuildContext context) => NewGroupScreen(),
     '/message_person_list': (BuildContext context) {
       return PageNotFoundScreen();
