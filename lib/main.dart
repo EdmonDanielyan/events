@@ -10,11 +10,13 @@ import 'package:get_it/get_it.dart';
 import 'package:ink_mobile/app.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/core/errors/errors_to_server.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/handlers/error_catcher.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/providers/global_providers.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
@@ -37,7 +39,9 @@ void main() async {
     };
     runApp(InkMobile(onAppStart: () async {
       NatsProvider natsProvider = sl<NatsProvider>();
-      return await natsProvider.load();
+      final loaded = await natsProvider.load();
+      MessageProvider(natsProvider, sl.get<ChatDatabaseCubit>()).init();
+      return loaded;
     }));
   }, (Object error, StackTrace stack) {
     if (error is CustomException) {
@@ -77,7 +81,9 @@ class InkMobile extends StatelessWidget {
         initialRoute: '/init',
         localizationsDelegates: [
           AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate
         ],
         supportedLocales: I18n.all,
         routes: MainRoutes.routes,

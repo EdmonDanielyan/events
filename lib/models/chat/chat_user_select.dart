@@ -1,26 +1,27 @@
-import 'package:ink_mobile/models/chat/chat_user.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/search/data.dart';
 
-class ChatUserSelect extends ChatUser {
-  final String avatarUrl;
-  final bool online;
+class ChatUserSelect extends UserTable {
+  final int id;
+  final String avatar;
   final String name;
   final bool selected;
   ChatUserSelect({
-    required this.avatarUrl,
-    this.online = false,
+    required this.id,
+    required this.avatar,
     required this.name,
     this.selected = false,
-  }) : super(avatarUrl: avatarUrl, online: online, name: name);
+  }) : super(id: id, name: name, avatar: avatar);
 
   ChatUserSelect copyWith({
-    String? avatarUrl,
-    bool? online,
+    int? id,
+    String? avatar,
     String? name,
     bool? selected,
   }) {
     return ChatUserSelect(
-      avatarUrl: avatarUrl ?? this.avatarUrl,
-      online: online ?? this.online,
+      id: id ?? this.id,
+      avatar: avatar ?? this.avatar,
       name: name ?? this.name,
       selected: selected ?? this.selected,
     );
@@ -31,18 +32,15 @@ class ChatUserSelect extends ChatUser {
     if (identical(this, other)) return true;
 
     return other is ChatUserSelect &&
-        other.avatarUrl == avatarUrl &&
-        other.online == online &&
+        other.id == id &&
+        other.avatar == avatar &&
         other.name == name &&
         other.selected == selected;
   }
 
   @override
   int get hashCode {
-    return avatarUrl.hashCode ^
-        online.hashCode ^
-        name.hashCode ^
-        selected.hashCode;
+    return id.hashCode ^ avatar.hashCode ^ name.hashCode ^ selected.hashCode;
   }
 }
 
@@ -50,35 +48,19 @@ class ChatUserSelectViewModel {
   static List<ChatUserSelect> getSelectedItems(List<ChatUserSelect> items) =>
       items.where((element) => element.selected).toList();
 
-  static List<ChatUserSelect> getExampleList() {
-    return [
-      ChatUserSelect(
-        avatarUrl:
-            "https://static.wikia.nocookie.net/e4-misfits/images/6/6c/Nathh.jpg/revision/latest/scale-to-width-down/250?cb=20121220194143",
-        name: "Василий Шакуров",
-        online: true,
-      ),
-      ChatUserSelect(
-        avatarUrl:
-            "https://upload.wikimedia.org/wikipedia/en/5/5d/Rudy_Wade.jpg",
-        name: "Алексей Иванюк",
-        online: true,
-      ),
-      ChatUserSelect(
-        avatarUrl:
-            "https://i.pinimg.com/originals/e7/af/05/e7af054c9cb616b59af03ee61bb488a5.jpg",
-        name: "Михаил Круг",
-      ),
-      ChatUserSelect(
-        avatarUrl:
-            "https://static.wikia.nocookie.net/e4-misfits/images/6/6c/Nathh.jpg/revision/latest/scale-to-width-down/250?cb=20121220194143",
-        name: "Елена Юртаева",
-      ),
-      ChatUserSelect(
-        avatarUrl:
-            "https://upload.wikimedia.org/wikipedia/en/5/5d/Rudy_Wade.jpg",
-        name: "Константин Константинов",
-      ),
-    ];
+  static List<ChatUserSelect> bySearchModel(List<UsersSearchData> items) {
+    List<ChatUserSelect> users = [];
+    if (items.isNotEmpty) {
+      for (final user in items) {
+        users.add(
+          ChatUserSelect(
+            id: user.id,
+            avatar: user.avatar,
+            name: user.fullName,
+          ),
+        );
+      }
+    }
+    return users;
   }
 }

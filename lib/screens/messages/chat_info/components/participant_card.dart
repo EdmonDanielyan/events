@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/highlight_text.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/models/chat/chat_user.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ParticipantCard extends StatelessWidget {
-  final ChatUser? owner;
-  final List<ChatUser>? admins;
-  final ChatUser user;
+  final UserTable? owner;
+  final List<UserTable>? admins;
+  final UserTable user;
   final double? horizontalPadding;
   final double? titleGap;
   final double? avatarSize;
@@ -28,12 +28,12 @@ class ParticipantCard extends StatelessWidget {
   static late AppLocalizations _strings;
 
   String getPrivilegeLable() {
-    if (owner != null) {
-      if (ChatUserViewModel.isOwner(user, owner!)) return _strings.owner;
-    }
-    if (admins != null) {
-      if (ChatUserViewModel.isAdmin(user, admins!)) return _strings.admin;
-    }
+    // if (owner != null) {
+    //   if (ChatUserViewModel.isOwner(user, owner!)) return _strings.owner;
+    // }
+    // if (admins != null) {
+    //   if (ChatUserViewModel.isAdmin(user, admins!)) return _strings.admin;
+    // }
 
     return "";
   }
@@ -74,8 +74,8 @@ class ParticipantCard extends StatelessWidget {
     return CustomCircleAvatar(
       avatarHeight: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
       avatarWidth: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
-      url: user.avatarUrl,
-      indicator: user.online,
+      url: user.avatar,
+      //indicator: user.online,
       indicatorSize: 8.0,
     );
   }
@@ -94,13 +94,14 @@ class ParticipantCard extends StatelessWidget {
   }
 
   Widget onlineStatusWidget() {
-    return Text(
-      user.online ? _strings.online : _strings.offline,
-      style: TextStyle(
-        color: Colors.grey,
-        fontSize: 12.0,
-      ),
-    );
+    return SizedBox();
+    // return Text(
+    //   user.online ? _strings.online : _strings.offline,
+    //   style: TextStyle(
+    //     color: Colors.grey,
+    //     fontSize: 12.0,
+    //   ),
+    // );
   }
 
   Widget privilegeStatusWidget(String text) {

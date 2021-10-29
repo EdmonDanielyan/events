@@ -3,6 +3,7 @@ import 'package:ink_mobile/components/menu_sheet/menu_sheet.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_state.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/events_and_announcements_block_cubit.dart';
@@ -65,7 +66,9 @@ class SearchBottomNavBarItem extends NavBottomNavBarItem {
 class MessagesBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/message.svg';
   String label = localizationInstance.messages;
-  Widget screen = ChatListScreen();
+  Widget screen = ChatListScreen(
+    chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
+  );
 
   void onTap(BuildContext context, Function onChanged, int index) {
     NavigationUtils.popScreenIfCan(context);

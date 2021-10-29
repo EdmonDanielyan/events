@@ -165,8 +165,12 @@ class JwtPayload {
   int expirationTime = 0;
   int? userId;
 
+  static late int myId;
+
   JwtPayload(Map<String, dynamic> payloadMap) {
     this.expirationTime = payloadMap['exp'] ?? 0;
     this.userId = payloadMap['userId'];
+
+    myId = payloadMap['userId'];
   }
 }

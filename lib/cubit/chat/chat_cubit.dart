@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/models/items_search.dart';
@@ -10,44 +9,11 @@ import 'chat_state.dart';
 @injectable
 class ChatCubit extends Cubit<ChatCubitState> {
   int? previousSelectedMessageId;
-  ChatCubit()
-      : super(ChatCubitState(
-            chat: Chat(avatarUrl: "", messages: []),
-            messagesSearch: ItemsSearch<Message>()));
+  ChatCubit() : super(ChatCubitState(messagesSearch: ItemsSearch<Message>()));
 
-  List<Message> get getMessages => state.chat.messages;
+  List<Message> get getMessages => []; // state.chat.messages;
   List<Message> get getSelectedMessages =>
       MessageListView.getSelectedItems(getMessages);
-
-  void emitChat(Chat chat) {
-    emit(state.copyWith(chat: chat));
-  }
-
-  void addMessage(Message message) {
-    _emitMessages(state.chat.messages..add(message));
-  }
-
-  void clearMessages() {
-    _emitMessages([]);
-  }
-
-  void deleteMessage(List<Message> messages) {
-    _emitMessages(
-      state.chat.messages
-        ..removeWhere(
-          (element) {
-            bool delete = false;
-            for (final message in messages) {
-              if (message == element) {
-                delete = true;
-                break;
-              }
-            }
-            return delete;
-          },
-        ),
-    );
-  }
 
   void emitSelectedMessageId(int? selectedMessageId) {
     previousSelectedMessageId = state.selectedMessageId;
@@ -73,11 +39,11 @@ class ChatCubit extends Cubit<ChatCubitState> {
   }
 
   void emitSearchValue(String value) {
-    List<Message> messages =
-        MessageListView.searchMessagesByStr(value, state.chat.messages);
-    ItemsSearch<Message> item =
-        state.messagesSearch.copyWith(items: messages, searchValue: value);
-    emitMessageSearch(item);
+    // List<Message> messages =
+    //     MessageListView.searchMessagesByStr(value, state.chat.messages);
+    // ItemsSearch<Message> item =
+    //     state.messagesSearch.copyWith(items: messages, searchValue: value);
+    // emitMessageSearch(item);
   }
 
   void emptySearch() {
@@ -91,10 +57,10 @@ class ChatCubit extends Cubit<ChatCubitState> {
   }
 
   void _emitMessages(List<Message> messages) {
-    emit(
-      state.copyWith(
-        chat: state.chat.copyWith(messages: messages),
-      ),
-    );
+    // emit(
+    //   state.copyWith(
+    //     chat: state.chat.copyWith(messages: messages),
+    //   ),
+    // );
   }
 }

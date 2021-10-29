@@ -37,11 +37,10 @@ class _BodyState extends State<Body> {
             }
           },
           builder: (context, state) {
-            widget.newsCommentsCubit.focusNode.unfocus();
-
             switch (state.type) {
               case NewsCommentStateType.LOADING:
                 {
+                  widget.newsCommentsCubit.focusNode.unfocus();
                   var arg = ModalRoute.of(context)!.settings.arguments as Map;
 
                   var newsId;

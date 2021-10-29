@@ -1,10 +1,11 @@
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/custom_circle_avatar.dart';
 
 class SearchItemUser extends StatelessWidget {
   final int id;
   final String? fullName;
-  final ImageProvider<Object> avatar;
+  final String avatar;
   final String query;
   final String route;
 
@@ -29,10 +30,10 @@ class SearchItemUser extends StatelessWidget {
         child: Row(
           children: [
             Container(
-                child: CircleAvatar(
-              radius: 25,
-              backgroundImage: avatar,
-            )),
+              child: CustomCircleAvatar(
+                url: avatar,
+              ),
+            ),
             Flexible(
               child: Container(
                   margin: EdgeInsets.only(left: 15),

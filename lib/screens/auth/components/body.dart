@@ -6,12 +6,18 @@ import 'package:ink_mobile/screens/auth/components/auth_title.dart';
 
 import 'auth_form.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
 
   @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final formKey = GlobalKey<FormState>();
+
+  @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
     return Background(
       child: Container(
         height: MediaQuery.of(context).size.height,

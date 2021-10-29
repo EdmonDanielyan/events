@@ -3,20 +3,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.dart';
 import 'package:ink_mobile/components/loader/error_loading_widget.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_state.dart';
+import 'package:ink_mobile/functions/chat/chat_creation.dart';
+import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/models/chat/chat.dart';
-import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/chat_user_select.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/new_chat_person_container.dart';
-import 'package:ink_mobile/screens/messages/chat_list/functions/open_chat.dart';
 import 'package:ink_mobile/screens/search/components/search_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewChatScreen extends StatefulWidget {
-  const NewChatScreen({Key? key}) : super(key: key);
+  final ChatDatabaseCubit chatDatabaseCubit;
+  const NewChatScreen({Key? key, required this.chatDatabaseCubit})
+      : super(key: key);
 
   @override
   _NewChatScreenState createState() => _NewChatScreenState();
@@ -28,11 +30,9 @@ class _NewChatScreenState extends State<NewChatScreen> {
   double _horizontalPadding = 20.0;
   late AppLocalizations _strings;
   late ChatPersonListCubit _personListCubit;
-  late ChatListCubit _chatListCubit;
 
-  List<ChatUserSelect> get selectedItems =>
-      ChatUserSelectViewModel.getSelectedItems(
-          _personListCubit.state.searchUsers);
+  List<UserTable> get selectedItems => ChatUserSelectViewModel.getSelectedItems(
+      _personListCubit.state.searchUsers);
 
   @override
   void initState() {
@@ -43,15 +43,15 @@ class _NewChatScreenState extends State<NewChatScreen> {
     });
   }
 
-  void _createChat(ChatUserSelect user) {
-    Chat newChat = ChatUserViewModel.createSingleChat(user);
-    _chatListCubit.addChat(newChat);
+  Future<void> _createChat(UserTable user) async {
+    ChatTable newChat =
+        await ChatCreation(widget.chatDatabaseCubit).createSingleChat(user);
     Navigator.of(context).pop();
-    OpenChat(context, newChat, 0);
+    OpenChat(widget.chatDatabaseCubit, newChat).call(context);
   }
 
   void _onCreate() {
-    List<ChatUserSelect> items = selectedItems;
+    List<UserTable> items = selectedItems;
     if (items.length == 1)
       _createChat(items.first);
     else if (items.length > 1) Navigator.of(context).pushNamed("/new_group");
@@ -60,7 +60,6 @@ class _NewChatScreenState extends State<NewChatScreen> {
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    _chatListCubit = BlocProvider.of<ChatListCubit>(context);
     _personListCubit = BlocProvider.of<ChatPersonListCubit>(context);
 
     return BlocBuilder<ChatPersonListCubit, ChatPersonListCubitState>(

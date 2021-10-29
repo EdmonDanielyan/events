@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/components/changable_avatar.dart';
-import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
-import 'package:ink_mobile/cubit/chat/chat_state.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/edit_entities.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatInfoEditScreen extends StatefulWidget {
-  const ChatInfoEditScreen({Key? key}) : super(key: key);
+  final ChatDatabaseCubit chatDatabaseCubit;
+  const ChatInfoEditScreen({Key? key, required this.chatDatabaseCubit})
+      : super(key: key);
 
   @override
   _ChatInfoEditScreenState createState() => _ChatInfoEditScreenState();
 }
 
 class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
-  late ChatListCubit _chatListCubit;
-  late ChatCubit _chatCubit;
-  late Chat _chat;
-  bool get isGroup => _chat.group != null;
+  ChatTable get _chat => widget.chatDatabaseCubit.selectedChat!;
+  bool get isGroup => ChatListView.isGroup(_chat);
+
   double _horizontalPadding = 20.0;
   late ChatInfoEditEntities entities;
   final _formKey = GlobalKey<FormState>();
@@ -29,10 +29,8 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
 
   void onSave() {
     if (_formKey.currentState!.validate()) {
-      Chat chat = ChatInfoEditEntitiesFunctions.copyChat(entities, _chat);
-
-      _chatListCubit.updateChat(chat);
-      _chatCubit.emitChat(chat);
+      ChatTable chat = ChatInfoEditEntitiesFunctions.copyChat(entities, _chat);
+      ChatFunctions(widget.chatDatabaseCubit).updateChat(chat);
     }
 
     Navigator.of(context).pop();
@@ -41,60 +39,52 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    _chatListCubit = BlocProvider.of<ChatListCubit>(context);
-    _chatCubit = BlocProvider.of<ChatCubit>(context);
-    return BlocBuilder<ChatCubit, ChatCubitState>(
-      builder: (BuildContext context, state) {
-        _chat = state.chat;
 
-        entities = ChatInfoEditEntities(
-          name: _chat.chatName,
-          description: isGroup ? _chat.group!.description : "",
-        );
-        return SafeArea(
-          child: CustomBottomSheetChild(
-            title: _strings.edit,
-            onSubmit: onSave,
-            cancelBtnTxt: _strings.cancel,
-            submitBtnTxt: _strings.ready,
-            horizontalPadding: _horizontalPadding,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  avatarWidget(),
-                  SizedBox(height: 20.0),
-                  divider(),
-                  textfieldWidget(
-                    initalValue: _chat.chatName,
-                    hint: _strings.groupName,
-                    fontWeight: FontWeight.bold,
-                    onChanged: (val) => entities.name = val,
-                    validator: (val) =>
-                        val!.isEmpty ? _strings.fillTheField : null,
-                  ),
-                  divider(),
-                  if (isGroup) ...[
-                    textfieldWidget(
-                      initalValue: _chat.group!.description,
-                      hint: _strings.description,
-                      onChanged: (val) => entities.description = val,
-                    ),
-                    divider(),
-                  ],
-                  SizedBox(height: 50),
-                ],
+    entities = ChatInfoEditEntities(
+      name: _chat.name,
+      description: _chat.description,
+    );
+    return SafeArea(
+      child: CustomBottomSheetChild(
+        title: _strings.edit,
+        onSubmit: onSave,
+        cancelBtnTxt: _strings.cancel,
+        submitBtnTxt: _strings.ready,
+        horizontalPadding: _horizontalPadding,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              avatarWidget(),
+              SizedBox(height: 20.0),
+              divider(),
+              textfieldWidget(
+                initalValue: _chat.name,
+                hint: _strings.groupName,
+                fontWeight: FontWeight.bold,
+                onChanged: (val) => entities.name = val,
+                validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
               ),
-            ),
+              divider(),
+              if (isGroup) ...[
+                textfieldWidget(
+                  initalValue: _chat.description,
+                  hint: _strings.description,
+                  onChanged: (val) => entities.description = val,
+                ),
+                divider(),
+              ],
+              SizedBox(height: 50),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
   Widget avatarWidget() {
-    return ChangableAvatar(url: _chat.avatarUrl);
+    return ChangableAvatar(url: _chat.avatar);
   }
 
   Widget textfieldWidget({
