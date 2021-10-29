@@ -37,9 +37,6 @@ void main() async {
     };
     runApp(InkMobile(onAppStart: () async {
       NatsProvider natsProvider = sl<NatsProvider>();
-      natsProvider.onMessage = (channel, message) async {
-        print("onMessage.channel: $channel, message: $message");
-      };
       return await natsProvider.load();
     }));
   }, (Object error, StackTrace stack) {
