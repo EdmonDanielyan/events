@@ -17,6 +17,10 @@ class ChatCreation {
     ));
   }
 
+  void addUser(int id, String name, String avatar) {
+    _insertUser(UserTable(id: id, name: name, avatar: avatar));
+  }
+
   Future<ChatTable> createSingleChat(UserTable user) async {
     ChatTable? chatExists = await _isChatExists(user);
 

@@ -10,6 +10,7 @@ import 'package:get_it/get_it.dart';
 import 'package:ink_mobile/app.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/core/errors/errors_to_server.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/handlers/error_catcher.dart';
@@ -39,7 +40,7 @@ void main() async {
     runApp(InkMobile(onAppStart: () async {
       NatsProvider natsProvider = sl<NatsProvider>();
       final loaded = await natsProvider.load();
-      MessageProvider(natsProvider).init();
+      MessageProvider(natsProvider, sl.get<ChatDatabaseCubit>()).init();
       return loaded;
     }));
   }, (Object error, StackTrace stack) {

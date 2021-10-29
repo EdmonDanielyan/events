@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_date.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_divider.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message.dart';
@@ -112,11 +114,19 @@ class ChatListTile extends StatelessWidget {
 
   Widget _displayBody() {
     return ChatMessage(
-      displayName: ChatListView.isGroup(chat) && lastUser != null
-          ? lastUser!.name
-          : null,
+      displayName: _getDisplayName(),
       message: lastMessage.message,
       highlightValue: highlightValue,
     );
+  }
+
+  String? _getDisplayName() {
+    if (ChatListView.isGroup(chat) && lastUser != null) {
+      return lastUser!.id == JwtPayload.myId
+          ? localizationInstance.you
+          : lastUser!.name;
+    }
+
+    return null;
   }
 }
