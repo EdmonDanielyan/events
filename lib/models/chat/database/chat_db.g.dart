@@ -8,7 +8,7 @@ part of 'chat_db.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class ChatTable extends DataClass implements Insertable<ChatTable> {
-  final int? id;
+  final String id;
   final String name;
   final String description;
   final String avatar;
@@ -16,7 +16,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   final int? participantId;
   final DateTime? updatedAt;
   ChatTable(
-      {this.id,
+      {required this.id,
       required this.name,
       required this.description,
       required this.avatar,
@@ -27,7 +27,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return ChatTable(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       description: const StringType()
@@ -45,9 +46,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int?>(id);
-    }
+    map['id'] = Variable<String>(id);
     map['name'] = Variable<String>(name);
     map['description'] = Variable<String>(description);
     map['avatar'] = Variable<String>(avatar);
@@ -63,7 +62,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
 
   ChatTablesCompanion toCompanion(bool nullToAbsent) {
     return ChatTablesCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      id: Value(id),
       name: Value(name),
       description: Value(description),
       avatar: Value(avatar),
@@ -81,7 +80,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return ChatTable(
-      id: serializer.fromJson<int?>(json['id']),
+      id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       description: serializer.fromJson<String>(json['description']),
       avatar: serializer.fromJson<String>(json['avatar']),
@@ -94,7 +93,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int?>(id),
+      'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String>(name),
       'description': serializer.toJson<String>(description),
       'avatar': serializer.toJson<String>(avatar),
@@ -105,7 +104,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   }
 
   ChatTable copyWith(
-          {int? id,
+          {String? id,
           String? name,
           String? description,
           String? avatar,
@@ -160,7 +159,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
 }
 
 class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
-  final Value<int?> id;
+  final Value<String> id;
   final Value<String> name;
   final Value<String> description;
   final Value<String> avatar;
@@ -177,19 +176,20 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     this.updatedAt = const Value.absent(),
   });
   ChatTablesCompanion.insert({
-    this.id = const Value.absent(),
+    required String id,
     required String name,
     required String description,
     required String avatar,
     required int ownerId,
     this.participantId = const Value.absent(),
     this.updatedAt = const Value.absent(),
-  })  : name = Value(name),
+  })  : id = Value(id),
+        name = Value(name),
         description = Value(description),
         avatar = Value(avatar),
         ownerId = Value(ownerId);
   static Insertable<ChatTable> custom({
-    Expression<int?>? id,
+    Expression<String>? id,
     Expression<String>? name,
     Expression<String>? description,
     Expression<String>? avatar,
@@ -209,7 +209,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   }
 
   ChatTablesCompanion copyWith(
-      {Value<int?>? id,
+      {Value<String>? id,
       Value<String>? name,
       Value<String>? description,
       Value<String>? avatar,
@@ -231,7 +231,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<int?>(id.value);
+      map['id'] = Variable<String>(id.value);
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
@@ -275,11 +275,9 @@ class $ChatTablesTable extends ChatTables
   final String? _alias;
   $ChatTablesTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
-      'id', aliasedName, true,
-      typeName: 'INTEGER',
-      requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      'id', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
@@ -325,6 +323,8 @@ class $ChatTablesTable extends ChatTables
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -366,7 +366,7 @@ class $ChatTablesTable extends ChatTables
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
   @override
   ChatTable map(Map<String, dynamic> data, {String? tablePrefix}) {
     return ChatTable.fromData(data, _db,
@@ -381,7 +381,7 @@ class $ChatTablesTable extends ChatTables
 
 class MessageTable extends DataClass implements Insertable<MessageTable> {
   final int? id;
-  final int chatId;
+  final String chatId;
   final String message;
   final int userId;
   final bool read;
@@ -400,7 +400,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
     final effectivePrefix = prefix ?? '';
     return MessageTable(
       id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      chatId: const IntType()
+      chatId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}chat_id'])!,
       message: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}message'])!,
@@ -420,7 +420,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
     if (!nullToAbsent || id != null) {
       map['id'] = Variable<int?>(id);
     }
-    map['chat_id'] = Variable<int>(chatId);
+    map['chat_id'] = Variable<String>(chatId);
     map['message'] = Variable<String>(message);
     map['user_id'] = Variable<int>(userId);
     map['read'] = Variable<bool>(read);
@@ -453,7 +453,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return MessageTable(
       id: serializer.fromJson<int?>(json['id']),
-      chatId: serializer.fromJson<int>(json['chatId']),
+      chatId: serializer.fromJson<String>(json['chatId']),
       message: serializer.fromJson<String>(json['message']),
       userId: serializer.fromJson<int>(json['userId']),
       read: serializer.fromJson<bool>(json['read']),
@@ -466,7 +466,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int?>(id),
-      'chatId': serializer.toJson<int>(chatId),
+      'chatId': serializer.toJson<String>(chatId),
       'message': serializer.toJson<String>(message),
       'userId': serializer.toJson<int>(userId),
       'read': serializer.toJson<bool>(read),
@@ -477,7 +477,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
 
   MessageTable copyWith(
           {int? id,
-          int? chatId,
+          String? chatId,
           String? message,
           int? userId,
           bool? read,
@@ -532,7 +532,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
 
 class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
   final Value<int?> id;
-  final Value<int> chatId;
+  final Value<String> chatId;
   final Value<String> message;
   final Value<int> userId;
   final Value<bool> read;
@@ -549,7 +549,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
   });
   MessageTablesCompanion.insert({
     this.id = const Value.absent(),
-    required int chatId,
+    required String chatId,
     required String message,
     required int userId,
     this.read = const Value.absent(),
@@ -561,7 +561,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
         status = Value(status);
   static Insertable<MessageTable> custom({
     Expression<int?>? id,
-    Expression<int>? chatId,
+    Expression<String>? chatId,
     Expression<String>? message,
     Expression<int>? userId,
     Expression<bool>? read,
@@ -581,7 +581,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
 
   MessageTablesCompanion copyWith(
       {Value<int?>? id,
-      Value<int>? chatId,
+      Value<String>? chatId,
       Value<String>? message,
       Value<int>? userId,
       Value<bool>? read,
@@ -605,7 +605,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       map['id'] = Variable<int?>(id.value);
     }
     if (chatId.present) {
-      map['chat_id'] = Variable<int>(chatId.value);
+      map['chat_id'] = Variable<String>(chatId.value);
     }
     if (message.present) {
       map['message'] = Variable<String>(message.value);
@@ -653,9 +653,9 @@ class $MessageTablesTable extends MessageTables
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _chatIdMeta = const VerificationMeta('chatId');
-  late final GeneratedColumn<int?> chatId = GeneratedColumn<int?>(
+  late final GeneratedColumn<String?> chatId = GeneratedColumn<String?>(
       'chat_id', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _messageMeta = const VerificationMeta('message');
   late final GeneratedColumn<String?> message = GeneratedColumn<String?>(
       'message', aliasedName, false,
@@ -950,14 +950,14 @@ class $UserTablesTable extends UserTables
 }
 
 class AdminTable extends DataClass implements Insertable<AdminTable> {
-  final int chatId;
+  final String chatId;
   final int userId;
   AdminTable({required this.chatId, required this.userId});
   factory AdminTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return AdminTable(
-      chatId: const IntType()
+      chatId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}chat_id'])!,
       userId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
@@ -966,7 +966,7 @@ class AdminTable extends DataClass implements Insertable<AdminTable> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['chat_id'] = Variable<int>(chatId);
+    map['chat_id'] = Variable<String>(chatId);
     map['user_id'] = Variable<int>(userId);
     return map;
   }
@@ -982,7 +982,7 @@ class AdminTable extends DataClass implements Insertable<AdminTable> {
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return AdminTable(
-      chatId: serializer.fromJson<int>(json['chatId']),
+      chatId: serializer.fromJson<String>(json['chatId']),
       userId: serializer.fromJson<int>(json['userId']),
     );
   }
@@ -990,12 +990,12 @@ class AdminTable extends DataClass implements Insertable<AdminTable> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'chatId': serializer.toJson<int>(chatId),
+      'chatId': serializer.toJson<String>(chatId),
       'userId': serializer.toJson<int>(userId),
     };
   }
 
-  AdminTable copyWith({int? chatId, int? userId}) => AdminTable(
+  AdminTable copyWith({String? chatId, int? userId}) => AdminTable(
         chatId: chatId ?? this.chatId,
         userId: userId ?? this.userId,
       );
@@ -1019,19 +1019,19 @@ class AdminTable extends DataClass implements Insertable<AdminTable> {
 }
 
 class AdminTablesCompanion extends UpdateCompanion<AdminTable> {
-  final Value<int> chatId;
+  final Value<String> chatId;
   final Value<int> userId;
   const AdminTablesCompanion({
     this.chatId = const Value.absent(),
     this.userId = const Value.absent(),
   });
   AdminTablesCompanion.insert({
-    required int chatId,
+    required String chatId,
     required int userId,
   })  : chatId = Value(chatId),
         userId = Value(userId);
   static Insertable<AdminTable> custom({
-    Expression<int>? chatId,
+    Expression<String>? chatId,
     Expression<int>? userId,
   }) {
     return RawValuesInsertable({
@@ -1040,7 +1040,7 @@ class AdminTablesCompanion extends UpdateCompanion<AdminTable> {
     });
   }
 
-  AdminTablesCompanion copyWith({Value<int>? chatId, Value<int>? userId}) {
+  AdminTablesCompanion copyWith({Value<String>? chatId, Value<int>? userId}) {
     return AdminTablesCompanion(
       chatId: chatId ?? this.chatId,
       userId: userId ?? this.userId,
@@ -1051,7 +1051,7 @@ class AdminTablesCompanion extends UpdateCompanion<AdminTable> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (chatId.present) {
-      map['chat_id'] = Variable<int>(chatId.value);
+      map['chat_id'] = Variable<String>(chatId.value);
     }
     if (userId.present) {
       map['user_id'] = Variable<int>(userId.value);
@@ -1075,9 +1075,9 @@ class $AdminTablesTable extends AdminTables
   final String? _alias;
   $AdminTablesTable(this._db, [this._alias]);
   final VerificationMeta _chatIdMeta = const VerificationMeta('chatId');
-  late final GeneratedColumn<int?> chatId = GeneratedColumn<int?>(
+  late final GeneratedColumn<String?> chatId = GeneratedColumn<String?>(
       'chat_id', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _userIdMeta = const VerificationMeta('userId');
   late final GeneratedColumn<int?> userId = GeneratedColumn<int?>(
       'user_id', aliasedName, false,
@@ -1124,7 +1124,7 @@ class $AdminTablesTable extends AdminTables
 
 class ParticipantTable extends DataClass
     implements Insertable<ParticipantTable> {
-  final int chatId;
+  final String chatId;
   final int userId;
   ParticipantTable({required this.chatId, required this.userId});
   factory ParticipantTable.fromData(
@@ -1132,7 +1132,7 @@ class ParticipantTable extends DataClass
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return ParticipantTable(
-      chatId: const IntType()
+      chatId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}chat_id'])!,
       userId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
@@ -1141,7 +1141,7 @@ class ParticipantTable extends DataClass
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['chat_id'] = Variable<int>(chatId);
+    map['chat_id'] = Variable<String>(chatId);
     map['user_id'] = Variable<int>(userId);
     return map;
   }
@@ -1157,7 +1157,7 @@ class ParticipantTable extends DataClass
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return ParticipantTable(
-      chatId: serializer.fromJson<int>(json['chatId']),
+      chatId: serializer.fromJson<String>(json['chatId']),
       userId: serializer.fromJson<int>(json['userId']),
     );
   }
@@ -1165,12 +1165,12 @@ class ParticipantTable extends DataClass
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'chatId': serializer.toJson<int>(chatId),
+      'chatId': serializer.toJson<String>(chatId),
       'userId': serializer.toJson<int>(userId),
     };
   }
 
-  ParticipantTable copyWith({int? chatId, int? userId}) => ParticipantTable(
+  ParticipantTable copyWith({String? chatId, int? userId}) => ParticipantTable(
         chatId: chatId ?? this.chatId,
         userId: userId ?? this.userId,
       );
@@ -1194,19 +1194,19 @@ class ParticipantTable extends DataClass
 }
 
 class ParticipantTablesCompanion extends UpdateCompanion<ParticipantTable> {
-  final Value<int> chatId;
+  final Value<String> chatId;
   final Value<int> userId;
   const ParticipantTablesCompanion({
     this.chatId = const Value.absent(),
     this.userId = const Value.absent(),
   });
   ParticipantTablesCompanion.insert({
-    required int chatId,
+    required String chatId,
     required int userId,
   })  : chatId = Value(chatId),
         userId = Value(userId);
   static Insertable<ParticipantTable> custom({
-    Expression<int>? chatId,
+    Expression<String>? chatId,
     Expression<int>? userId,
   }) {
     return RawValuesInsertable({
@@ -1216,7 +1216,7 @@ class ParticipantTablesCompanion extends UpdateCompanion<ParticipantTable> {
   }
 
   ParticipantTablesCompanion copyWith(
-      {Value<int>? chatId, Value<int>? userId}) {
+      {Value<String>? chatId, Value<int>? userId}) {
     return ParticipantTablesCompanion(
       chatId: chatId ?? this.chatId,
       userId: userId ?? this.userId,
@@ -1227,7 +1227,7 @@ class ParticipantTablesCompanion extends UpdateCompanion<ParticipantTable> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (chatId.present) {
-      map['chat_id'] = Variable<int>(chatId.value);
+      map['chat_id'] = Variable<String>(chatId.value);
     }
     if (userId.present) {
       map['user_id'] = Variable<int>(userId.value);
@@ -1251,9 +1251,9 @@ class $ParticipantTablesTable extends ParticipantTables
   final String? _alias;
   $ParticipantTablesTable(this._db, [this._alias]);
   final VerificationMeta _chatIdMeta = const VerificationMeta('chatId');
-  late final GeneratedColumn<int?> chatId = GeneratedColumn<int?>(
+  late final GeneratedColumn<String?> chatId = GeneratedColumn<String?>(
       'chat_id', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _userIdMeta = const VerificationMeta('userId');
   late final GeneratedColumn<int?> userId = GeneratedColumn<int?>(
       'user_id', aliasedName, false,

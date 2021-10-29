@@ -46,14 +46,14 @@ class ChatDatabase extends _$ChatDatabase {
           (t) => OrderingTerm(expression: t.updatedAt, mode: OrderingMode.desc)
         ]))
       .watch();
-  Stream<ChatTable> watchChatById(int id) =>
+  Stream<ChatTable> watchChatById(String id) =>
       (select(chatTables)..where((tbl) => tbl.id.equals(id))).watchSingle();
   Future<int> insertChat(ChatTable chat) => into(chatTables).insert(chat);
   Future updateChat(ChatTable chat) => update(chatTables).replace(chat);
-  Future updateChatById(int id, ChatTable chat) =>
+  Future updateChatById(String id, ChatTable chat) =>
       (update(chatTables)..where((tbl) => tbl.id.equals(id))).write(chat);
   Future deleteChat(ChatTable chat) => delete(chatTables).delete(chat);
-  Future deleteChatById(int id) =>
+  Future deleteChatById(String id) =>
       (delete(chatTables)..where((tbl) => tbl.id.equals(id))).go();
 
   //MESSAGES
@@ -62,7 +62,7 @@ class ChatDatabase extends _$ChatDatabase {
   Future<MessageTable?> searchMessageByText(String query) =>
       (select(messageTables)..where((tbl) => tbl.message.contains(query)))
           .getSingleOrNull();
-  Stream<List<MessageWithUser>> watchChatMessages(int chatId) {
+  Stream<List<MessageWithUser>> watchChatMessages(String chatId) {
     return (select(messageTables)
           ..where((tbl) => tbl.chatId.equals(chatId))
           ..orderBy([
@@ -83,7 +83,7 @@ class ChatDatabase extends _$ChatDatabase {
         });
   }
 
-  Future deleteMessagesByChatId(int chatId) =>
+  Future deleteMessagesByChatId(String chatId) =>
       (delete(messageTables)..where((tbl) => tbl.chatId.equals(chatId))).go();
   Future deleteMessage(MessageTable message) =>
       delete(messageTables).delete(message);
@@ -96,5 +96,5 @@ class ChatDatabase extends _$ChatDatabase {
       (select(userTables)..where((tbl) => tbl.id.equals(userId))).watchSingle();
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 }

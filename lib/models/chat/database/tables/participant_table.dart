@@ -2,6 +2,6 @@ import 'package:moor/moor.dart';
 
 @DataClassName('ParticipantTable')
 class ParticipantTables extends Table {
-  IntColumn get chatId => integer()();
+  TextColumn get chatId => text()();
   IntColumn get userId => integer()();
 }

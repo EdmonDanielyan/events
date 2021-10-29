@@ -36,7 +36,7 @@ class NatsProvider {
     _listenPublicChatList();
     _listenPrivateUserChatList();
     var userId = await _getUserId();
-    var channel = _getPrivateUserTextChannel(userId);
+    var channel = getPrivateUserTextChannel(userId);
     await subscribeToChannel(channel);
     sendTextMessageToChannel(channel, userId);
     return true;
@@ -125,7 +125,7 @@ class NatsProvider {
   String _getPrivateUserChatList(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.ChatList)}.$userId';
 
-  String _getPrivateUserTextChannel(String userId) =>
+  String getPrivateUserTextChannel(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.Text)}.$userId';
 
   NatsMessage _parseMessage(dataMessage) {
@@ -144,7 +144,6 @@ class NatsProvider {
   Future<void> _listenPrivateUserChatList(
       {Int64 startSequence = Int64.ZERO}) async {
     var userId = await _getUserId();
-    print('userId: $userId');
     await listenChatList(_getPrivateUserChatList(userId), userChatIdList,
         startSequence: startSequence);
   }

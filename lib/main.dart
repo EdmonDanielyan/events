@@ -40,7 +40,9 @@ void main() async {
     runApp(InkMobile(onAppStart: () async {
       NatsProvider natsProvider = sl<NatsProvider>();
       final loaded = await natsProvider.load();
-      MessageProvider(natsProvider, sl.get<ChatDatabaseCubit>()).init();
+      UseMessageProvider.initMessageProvider(
+          natsProvider, sl.get<ChatDatabaseCubit>());
+      UseMessageProvider.messageProvider.init();
       return loaded;
     }));
   }, (Object error, StackTrace stack) {

@@ -22,7 +22,7 @@ class MessageList extends StatelessWidget with MessageMixins {
         removeTop: true,
         child: StreamBuilder(
           stream: chatDatabaseCubit.db
-              .watchChatMessages(chatDatabaseCubit.selectedChat!.id!),
+              .watchChatMessages(chatDatabaseCubit.selectedChat!.id),
           builder: (context, AsyncSnapshot<List<MessageWithUser>> snapshot) {
             if (snapshot.hasData) {
               List<MessageWithUser> messages = snapshot.data ?? [];

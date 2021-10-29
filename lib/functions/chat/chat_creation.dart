@@ -1,25 +1,14 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/token.dart';
 
 class ChatCreation {
   final ChatDatabaseCubit chatDatabaseCubit;
-
   const ChatCreation(this.chatDatabaseCubit);
 
-  // TODO DELETE THIS
-  addCustomUser() {
-    _insertUser(UserTable(
-      id: 10,
-      name: "Bo Burnham",
-      avatar:
-          "https://cs12.pikabu.ru/post_img/big/2021/04/30/6/161977553015206415.png",
-    ));
-  }
-
-  void addUser(int id, String name, String avatar) {
-    _insertUser(UserTable(id: id, name: name, avatar: avatar));
-  }
+  static String get generateChatId =>
+      "${JwtPayload.myId}_${new DateTime.now().millisecondsSinceEpoch}";
 
   Future<ChatTable> createSingleChat(UserTable user) async {
     ChatTable? chatExists = await _isChatExists(user);
@@ -30,24 +19,21 @@ class ChatCreation {
 
     var newChat = _makeChat(user.name, user.avatar, participantId: user.id);
 
-    int chatId = await _insertChat(newChat);
-    await _insertUser(user);
-
-    newChat = newChat.copyWith(id: chatId);
+    await _insertChat(newChat);
+    await UserFunctions(chatDatabaseCubit).insertUser(user);
 
     return newChat;
   }
 
   Future<ChatTable> createGroup({
     required String name,
+    required String avatar,
     required List<UserTable> users,
   }) async {
-    var newChat = _makeChat(name, "");
+    var newChat = _makeChat(name, avatar);
 
-    final chatId = await _insertChat(newChat);
-    await _insertUsers(users);
-
-    newChat = newChat.copyWith(id: chatId);
+    await _insertChat(newChat);
+    await UserFunctions(chatDatabaseCubit).insertUsers(users);
 
     return newChat;
   }
@@ -68,6 +54,7 @@ class ChatCreation {
 
   ChatTable _makeChat(String name, String avatar, {int? participantId}) {
     return ChatTable(
+      id: generateChatId,
       name: name,
       description: "",
       avatar: avatar,
@@ -79,22 +66,5 @@ class ChatCreation {
 
   Future<int> _insertChat(ChatTable chat) async {
     return await chatDatabaseCubit.db.insertChat(chat);
-  }
-
-  Future<int> _insertUser(UserTable user) async {
-    UserTable? userExists = await chatDatabaseCubit.db.selectUserById(user.id);
-    if (userExists == null) {
-      return await chatDatabaseCubit.db.insertUser(user);
-    }
-
-    return userExists.id;
-  }
-
-  Future<bool> _insertUsers(List<UserTable> users) async {
-    for (final user in users) {
-      await _insertUser(user);
-    }
-
-    return true;
   }
 }

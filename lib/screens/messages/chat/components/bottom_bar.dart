@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/send_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
@@ -35,8 +35,9 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
       //   entities: entities,
       //   selectedMessageId: _chatCubit.state.selectedMessageId,
       // );
-      ChatFunctions(_chatDatabaseCubit)
-          .sendTextMessage(_chatDatabaseCubit.selectedChat!, entities);
+
+      UseMessageProvider.messageProvider
+          .sendMessage(_chatDatabaseCubit.selectedChat!, entities);
       entities.clear();
       ScrollBottom(widget.scrollController).jumpLazy();
     }
