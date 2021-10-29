@@ -29,6 +29,6 @@ enum MessageType {
 }
 
 extension MessageTypeEx on String {
-  MessageType toMessageType() =>
-      MessageType.values.firstWhere((d) => describeEnum(d) == toLowerCase());
+  MessageType toMessageType() => MessageType.values
+      .firstWhere((d) => describeEnum(d) == toLowerCase());
 }
