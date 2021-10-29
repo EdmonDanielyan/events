@@ -14,8 +14,8 @@ import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
 
-const PUBLIC_CHATS = 'ink.messaging.public.';
-const PRIVATE_USER = 'ink.messaging.private.';
+const PUBLIC_CHATS = 'ink.messaging.public';
+const PRIVATE_USER = 'ink.messaging.private';
 
 const ADD_ACTION = 'add';
 const DELETE_ACTION = 'delete';
@@ -35,6 +35,10 @@ class NatsProvider {
     }
     _listenPublicChatList();
     _listenPrivateUserChatList();
+    var userId = await _getUserId();
+    var channel = _getPrivateUserTextChannel(userId);
+    await subscribeToChannel(channel);
+    sendTextMessageToChannel(channel, userId);
     return true;
   }
 
@@ -116,10 +120,13 @@ class NatsProvider {
   }
 
   String _getPublicChatList() =>
-      PUBLIC_CHATS + describeEnum(MessageType.ChatList);
+      '$PUBLIC_CHATS.${describeEnum(MessageType.ChatList)}';
 
   String _getPrivateUserChatList(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.ChatList)}.$userId';
+
+  String _getPrivateUserTextChannel(String userId) =>
+      '$PRIVATE_USER.${describeEnum(MessageType.Text)}.$userId';
 
   NatsMessage _parseMessage(dataMessage) {
     var payload = (dataMessage as DataMessage).encodedPayload;
