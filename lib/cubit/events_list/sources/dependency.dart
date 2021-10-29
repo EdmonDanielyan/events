@@ -4,6 +4,6 @@ import 'package:ink_mobile/models/pagination.dart';
 import 'package:main_api_client/model/get_events.dart';
 
 abstract class EventListRequestDependency {
-  abstract Pagination<EventData> pagination;
-  Future<Response<GetEvents>> makeRequest();
+  abstract Pagination<EventData>? pagination;
+  Future<Response<GetEvents>> call();
 }

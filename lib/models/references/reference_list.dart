@@ -1,5 +1,4 @@
-import 'package:ink_mobile/localization/strings/language.dart';
-
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'delivery_list.dart';
 
 enum ReferencesType {
@@ -20,11 +19,10 @@ enum ReferencesType {
 }
 
 class ReferencesList {
-  final LanguageStrings strings;
-  ReferencesList({required this.strings});
+  ReferencesList();
 
   ReferencesItem employmentCenter() => ReferencesItem(
-      title: strings.refEmploymentCenter,
+      title: localizationInstance.refEmploymentCenter,
       referencesType: 'employment_center',
       deliveryList: [
         DeliveryType.SECURITY_UK,
@@ -33,9 +31,9 @@ class ReferencesList {
         DeliveryType.POST
       ],
       fields: ReferencesField(quantity: true),
-      description: strings.productionTimeReferInfo);
+      description: localizationInstance.productionTimeReferInfo);
   ReferencesItem visa() => ReferencesItem(
-      title: strings.refVisa,
+      title: localizationInstance.refVisa,
       referencesType: 'visa',
       deliveryList: [
         DeliveryType.SECURITY_UK,
@@ -46,7 +44,7 @@ class ReferencesList {
       ],
       fields: ReferencesField());
   ReferencesItem sickLeave() => ReferencesItem(
-      title: strings.refSickLeave,
+      title: localizationInstance.refSickLeave,
       referencesType: 'sick_leave',
       deliveryList: [
         DeliveryType.SECURITY_UK,
@@ -56,7 +54,7 @@ class ReferencesList {
       ],
       fields: ReferencesField(quantity: true));
   ReferencesItem income2ndfl() => ReferencesItem(
-        title: strings.refIncome2ndfl,
+        title: localizationInstance.refIncome2ndfl,
         referencesType: 'income_2ndfl',
         deliveryList: [
           DeliveryType.SECURITY_UK,
@@ -66,10 +64,10 @@ class ReferencesList {
         ],
         fields:
             ReferencesField(period: true, toProvideIn: true, quantity: true),
-        description: strings.productionTimeReferInfo,
+        description: localizationInstance.productionTimeReferInfo,
       );
   ReferencesItem income() => ReferencesItem(
-        title: strings.refIncome,
+        title: localizationInstance.refIncome,
         referencesType: 'income',
         deliveryList: [
           DeliveryType.SECURITY_UK,
@@ -78,10 +76,10 @@ class ReferencesList {
           DeliveryType.POST
         ],
         fields: ReferencesField(period: true, toProvideIn: true),
-        description: strings.productionTimeReferInfo,
+        description: localizationInstance.productionTimeReferInfo,
       );
   ReferencesItem childAllowance() => ReferencesItem(
-        title: strings.refChildAllowance,
+        title: localizationInstance.refChildAllowance,
         referencesType: 'child_allowance',
         deliveryList: [
           DeliveryType.SECURITY_UK,
@@ -91,10 +89,10 @@ class ReferencesList {
           DeliveryType.POST
         ],
         fields: ReferencesField(fioChildren: true, files: true),
-        description: strings.childsAllowanceInfo,
+        description: localizationInstance.childsAllowanceInfo,
       );
   ReferencesItem childAllowanceOneAndHalfYears() => ReferencesItem(
-        title: strings.refChildAllowance1HalfYears,
+        title: localizationInstance.refChildAllowance1HalfYears,
         referencesType: 'child_allowance_1.5_years',
         deliveryList: [
           DeliveryType.SECURITY_UK,
@@ -104,10 +102,10 @@ class ReferencesList {
           DeliveryType.POST
         ],
         fields: ReferencesField(fioChildren: true, files: true),
-        description: strings.childsAllowanceInfo,
+        description: localizationInstance.childsAllowanceInfo,
       );
   ReferencesItem fifo() => ReferencesItem(
-      title: strings.refFifo,
+      title: localizationInstance.refFifo,
       referencesType: 'FIFO',
       deliveryList: [
         DeliveryType.SECURITY_UK,
@@ -118,7 +116,7 @@ class ReferencesList {
       ],
       fields: ReferencesField(periodFrom: true, periodTo: true));
   ReferencesItem workAtCompany() => ReferencesItem(
-      title: strings.refWorkAtCompany,
+      title: localizationInstance.refWorkAtCompany,
       referencesType: 'work_at_company',
       deliveryList: [
         DeliveryType.SECURITY_UK,
@@ -129,7 +127,7 @@ class ReferencesList {
       ],
       fields: ReferencesField());
   ReferencesItem averageEarnings() => ReferencesItem(
-        title: strings.refAverageEarnings,
+        title: localizationInstance.refAverageEarnings,
         referencesType: 'average_earnings',
         deliveryList: [
           DeliveryType.SECURITY_UK,
@@ -139,10 +137,10 @@ class ReferencesList {
         ],
         fields:
             ReferencesField(period: true, toProvideIn: true, quantity: true),
-        description: strings.productionTimeReferInfo,
+        description: localizationInstance.productionTimeReferInfo,
       );
   ReferencesItem payrollAccount() => ReferencesItem(
-        title: strings.refPayrollAccount,
+        title: localizationInstance.refPayrollAccount,
         referencesType: 'payroll_account',
         deliveryList: [
           DeliveryType.SECURITY_UK,
@@ -152,10 +150,10 @@ class ReferencesList {
         ],
         fields:
             ReferencesField(period: true, toProvideIn: true, quantity: true),
-        description: strings.productionTimeReferInfo,
+        description: localizationInstance.productionTimeReferInfo,
       );
   ReferencesItem fundsWithholding() => ReferencesItem(
-        title: strings.refFundsWithholding,
+        title: localizationInstance.refFundsWithholding,
         referencesType: 'funds_withholding',
         deliveryList: [
           DeliveryType.SECURITY_UK,
@@ -165,10 +163,10 @@ class ReferencesList {
         ],
         fields:
             ReferencesField(period: true, toProvideIn: true, quantity: true),
-        description: strings.productionTimeReferInfo,
+        description: localizationInstance.productionTimeReferInfo,
       );
   ReferencesItem laborActivity() => ReferencesItem(
-      title: strings.refLaborActivity,
+      title: localizationInstance.refLaborActivity,
       referencesType: 'labor_activity',
       deliveryList: [
         DeliveryType.SECURITY_UK,
@@ -179,7 +177,7 @@ class ReferencesList {
       ],
       fields: ReferencesField());
   ReferencesItem employmentRecord() => ReferencesItem(
-      title: strings.refEmploymentRecord,
+      title: localizationInstance.refEmploymentRecord,
       referencesType: 'employment_record',
       deliveryList: [
         DeliveryType.SECURITY_UK,

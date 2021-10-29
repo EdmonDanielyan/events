@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_state.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 
+@injectable
 class SelectfieldCubit extends Cubit<SelectfieldCubitState> {
-  SelectfieldCubit({List<Selectfield> initialState = const []})
-      : super(SelectfieldCubitState());
+  SelectfieldCubit() : super(SelectfieldCubitState());
 
   void setItems(List<Selectfield> items) {
     emit(state.copyWith(items: items));

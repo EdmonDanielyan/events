@@ -4,8 +4,7 @@ import 'package:ink_mobile/cubit/boot/boot_state.dart';
 
 @singleton
 class BootCubit extends Cubit<BootState> {
-  BootCubit()
-      : super(BootState(type: BootStateStateType.LOADING));
+  BootCubit() : super(BootState(type: BootStateStateType.LOADING));
 
   late Future<bool> Function() _onStart;
 

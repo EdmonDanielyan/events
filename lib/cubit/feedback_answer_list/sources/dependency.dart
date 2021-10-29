@@ -4,6 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:main_api_client/model/questions_list.dart';
 
 abstract class FeedbackAnswerListRequestDependency {
-  abstract Pagination<ManagementAnswer> pagination;
-  Future<Response<QuestionsList>> makeRequest();
+  abstract Pagination<ManagementAnswer>? pagination;
+  Future<Response<QuestionsList>> call();
 }

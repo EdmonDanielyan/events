@@ -3,71 +3,64 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/list_element_divider.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_state.dart';
-import 'package:ink_mobile/cubit/main_page/main_cubit.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/screens/main/components/announcements_list_element.dart';
 import 'package:ink_mobile/screens/main/components/announcements_list_element_placeholder.dart';
+
+import '../main_screen.dart';
 
 class AnnouncementsList extends StatelessWidget {
   const AnnouncementsList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
-    return BlocProvider<AnnouncementsListCubit>(
-        create: (BuildContext context) =>
-            AnnouncementsListCubit(languageStrings: _strings),
-        child: BlocBuilder<AnnouncementsListCubit, AnnouncementsListState>(
-            builder: (context, state) {
-          final AnnouncementsListCubit announcementsCubit =
-              BlocProvider.of<AnnouncementsListCubit>(context);
+    final announcementsCubit =
+        MainScreen.of(context).mainAnnouncementsListCubit;
+    return BlocBuilder<MainAnnouncementsListCubit, AnnouncementsListState>(
+      bloc: announcementsCubit,
+      builder: (context, state) {
+        switch (state.type) {
+          case AnnouncementsListStateType.LOADED:
+            {
+              List<Widget> items = getAnnouncementsWidgetList(state.data!);
+              return Container(
+                margin: EdgeInsets.only(top: 30),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: ScrollController(keepScrollOffset: false),
+                  itemCount: items.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      items[index],
+                ),
+              );
+            }
 
-          switch (state.type) {
-            case AnnouncementsListStateType.LOADED:
-              {
-                List<Widget> items = getAnnouncementsWidgetList(state.data!);
-                return Container(
+          case AnnouncementsListStateType.LOADING:
+            {
+              announcementsCubit.fetchAnnouncements();
+              return Container(
                   margin: EdgeInsets.only(top: 30),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: ScrollController(keepScrollOffset: false),
-                    itemCount: items.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        items[index],
-                  ),
-                );
-              }
+                  child: Column(children: [
+                    AnnouncementsListElementPlaceholder(),
+                    ListElementDivider(),
+                    AnnouncementsListElementPlaceholder(),
+                    ListElementDivider(),
+                    AnnouncementsListElementPlaceholder(),
+                    ListElementDivider(),
+                    AnnouncementsListElementPlaceholder(),
+                    ListElementDivider(),
+                    AnnouncementsListElementPlaceholder(),
+                  ]));
+            }
 
-            case AnnouncementsListStateType.LOADING:
-              {
-                announcementsCubit.fetchAnnouncements();
-                return Container(
-                    margin: EdgeInsets.only(top: 30),
-                    child: Column(children: [
-                      AnnouncementsListElementPlaceholder(),
-                      ListElementDivider(),
-                      AnnouncementsListElementPlaceholder(),
-                      ListElementDivider(),
-                      AnnouncementsListElementPlaceholder(),
-                      ListElementDivider(),
-                      AnnouncementsListElementPlaceholder(),
-                      ListElementDivider(),
-                      AnnouncementsListElementPlaceholder(),
-                    ]));
-              }
-
-            case AnnouncementsListStateType.ERROR:
-              {
-                final MainPageCubit mainPageCubit =
-                    BlocProvider.of<MainPageCubit>(context);
-                mainPageCubit.emitErrorState();
-
-                return Container();
-              }
-          }
-        }));
+          case AnnouncementsListStateType.ERROR:
+            {
+              MainScreen.of(context).mainPageCubit.emitErrorState();
+              return Container();
+            }
+        }
+      },
+    );
   }
 
   List<Widget> getAnnouncementsWidgetList(

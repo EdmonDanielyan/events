@@ -1,52 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Content extends StatefulWidget {
   final int viewCount;
   final int commentsCount;
-  int likeCount;
+  final int likeCount;
   final int id;
   final String text;
-  bool isLiked;
-  late NewsDetailCubit cubit;
+  final bool isLiked;
+  final NewsDetailCubit cubit;
 
-  Content(
-      {Key? key,
-      required this.viewCount,
-      required this.commentsCount,
-      required this.likeCount,
-      required this.id,
-      required this.text,
-      required this.isLiked})
-      : super(key: key);
+  const Content({
+    Key? key,
+    required this.viewCount,
+    required this.commentsCount,
+    required this.likeCount,
+    required this.id,
+    required this.text,
+    required this.isLiked,
+    required this.cubit,
+  }) : super(key: key);
 
   @override
   _ContentState createState() => _ContentState();
 }
 
 class _ContentState extends State<Content> {
-  late LanguageStrings _strings;
+  late AppLocalizations _strings;
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
-
-    widget.cubit = BlocProvider.of<NewsDetailCubit>(context);
+    _strings = localizationInstance;
 
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.symmetric(
-              horizontal: BorderSide(color: Color(0xFFE5E5E5), width: 1))),
+        color: Colors.white,
+        border: Border.symmetric(
+          horizontal: BorderSide(color: Color(0xFFE5E5E5), width: 1),
+        ),
+      ),
       padding: EdgeInsets.only(left: 10, right: 10),
-      margin: EdgeInsets.only(bottom: 35),
       child: Column(
         children: [
           Html(
@@ -58,75 +57,73 @@ class _ContentState extends State<Content> {
             },
           ),
           Container(
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              child: Row(children: [
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+            child: Row(
+              children: [
                 GestureDetector(
-                    onTap: () async {
-                      await _onLike(context);
-                      setState(() {});
-                    },
-                    child: Container(
-                        color: Colors.white,
-                        child: Row(children: [
-                          SvgPicture.asset(
-                            IconLinks.BARREL_SVG_LINK,
-                            width: 14,
+                  onTap: () async {
+                    await _onLike(context);
+                    setState(() {});
+                  },
+                  child: Container(
+                    color: Colors.white,
+                    child: Row(children: [
+                      SvgPicture.asset(
+                        IconLinks.BARREL_SVG_LINK,
+                        width: 14,
+                        color: widget.isLiked
+                            ? Theme.of(context).primaryColor
+                            : Theme.of(context).accentColor,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 4),
+                        child: Text(
+                          widget.likeCount.toString(),
+                          style: TextStyle(
+                            fontSize: 18,
                             color: widget.isLiked
                                 ? Theme.of(context).primaryColor
                                 : Theme.of(context).accentColor,
                           ),
-                          Container(
-                              margin: EdgeInsets.only(left: 4),
-                              child: Text(widget.likeCount.toString(),
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: widget.isLiked
-                                        ? Theme.of(context).primaryColor
-                                        : Theme.of(context).accentColor,
-                                  )))
-                        ]))),
+                        ),
+                      )
+                    ]),
+                  ),
+                ),
                 Container(
-                    margin: EdgeInsets.only(left: 24),
-                    child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/news_comment',
-                              arguments: {'id': widget.id});
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          child: Row(children: [
-                            SvgPicture.asset(
-                              IconLinks.COMMENT_SVG_LINK,
-                              width: 18,
-                              color: Color(0xFF757678),
+                  margin: EdgeInsets.only(left: 24),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/news_comment',
+                          arguments: {'id': widget.id});
+                    },
+                    child: Container(
+                      color: Colors.white,
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            IconLinks.COMMENT_SVG_LINK,
+                            width: 18,
+                            color: Color(0xFF757678),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 4),
+                            child: Text(
+                              widget.commentsCount.toString(),
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context).accentColor,
+                              ),
                             ),
-                            Container(
-                                margin: EdgeInsets.only(left: 4),
-                                child: Text(widget.commentsCount.toString(),
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Theme.of(context).accentColor,
-                                    )))
-                          ]),
-                        ))),
-                // Expanded(
-                //     child: Row(
-                //         mainAxisSize: MainAxisSize.max,
-                //         mainAxisAlignment: MainAxisAlignment.end,
-                //         children: [
-                //       Row(children: [
-                //         SvgPicture.asset(
-                //           IconLinks.VIEW_COUNT_SVG_LINK,
-                //         ),
-                //         Container(
-                //             margin: EdgeInsets.only(left: 4),
-                //             child: Text(widget.viewCount.toString(),
-                //                 style: TextStyle(
-                //                   color: Theme.of(context).accentColor,
-                //                 )))
-                //       ])
-                //     ]))
-              ]))
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

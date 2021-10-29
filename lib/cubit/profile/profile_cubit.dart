@@ -1,29 +1,29 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
-import 'package:ink_mobile/cubit/profile/domain/thank_repository.dart';
-import 'package:ink_mobile/cubit/profile/use_cases/fetch.dart';
-import 'package:ink_mobile/cubit/profile/use_cases/thank.dart';
+import 'package:ink_mobile/cubit/profile/sources/fetch/network.dart';
+import 'package:ink_mobile/cubit/profile/sources/thank/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/get_user_success.dart';
 
-import 'domain/fetch_repository.dart';
-
+@injectable
 class ProfileCubit extends Cubit<ProfileState> {
-  LanguageStrings languageStrings;
-  ProfileCubit({required this.languageStrings})
-      : super(ProfileState(type: ProfileStateType.LOADING));
+  ProfileCubit() : super(ProfileState(type: ProfileStateType.LOADING));
 
   Future<void> fetchUser(int? userId) async {
     try {
       await Token.setNewTokensIfExpired();
-      UserProfileData userData = await ProfileFetch(
-        dependency: ProfileFetchRepository(userId: userId).getDependency(),
-      ).call();
+      final response =
+          await sl.get<ProfileFetchNetworkRequest>(param1: userId)();
+      UserProfileData userData = response.mapResponse();
+
       JwtPayload? authUser = await Token.getJwtPayloadObject();
 
       if (userId == null || authUser != null && authUser.userId == userId)
@@ -31,12 +31,11 @@ class ProfileCubit extends Cubit<ProfileState> {
       else
         emitSuccessOtherUser(userData);
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccurred);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }
@@ -50,16 +49,13 @@ class ProfileCubit extends Cubit<ProfileState> {
         ),
       ));
       await Token.setNewTokensIfExpired();
-      ProfileThank(
-        dependency: ProfileThankRepository(userId: userId).getDependency(),
-      ).thank();
+      sl.get<ProfileThankNetworkRequest>(param1: userId)();
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccurred);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }

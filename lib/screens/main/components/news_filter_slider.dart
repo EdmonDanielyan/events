@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/filter_slider_element.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewsFilterSlider extends StatelessWidget {
-  static late LanguageStrings _strings;
   const NewsFilterSlider({Key? key}) : super(key: key);
+
+  static late AppLocalizations _strings;
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
-
+    _strings = localizationInstance;
     return Container(
-        height: 30,
-        margin: EdgeInsets.only(top: 8.0),
-        child: Container(child: getFilterListView(context)));
+      height: 30,
+      margin: EdgeInsets.only(top: 8.0),
+      child: Container(
+        child: getFilterListView(context),
+      ),
+    );
   }
 
   ListView getFilterListView(BuildContext context) {
@@ -55,7 +57,9 @@ class NewsFilterSlider extends StatelessWidget {
   List<FilterItem> _getFilterItems() {
     return [
       FilterItem(title: _strings.allNews, code: 'news'),
-      FilterItem(title: '# ${_strings.sustainableDevelopment}', code: 'stable_development'),
+      FilterItem(
+          title: '# ${_strings.sustainableDevelopment}',
+          code: 'stable_development'),
       FilterItem(title: '# ${_strings.volunteerNews}', code: 'volunteer_news'),
       FilterItem(title: '# ${_strings.sportNews}', code: 'information_sport'),
       FilterItem(title: '# ${_strings.msNews}', code: 'information_ms'),

@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet_item.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MenuSheet extends StatelessWidget {
   MenuSheet({Key? key}) : super(key: key);
   static late BuildContext _context;
-  static late LanguageStrings _strings;
+  static late AppLocalizations _strings;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     _context = context;
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
 
     return Container(
       height: 325,

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewsCommentInput extends StatelessWidget {
-  NewsCommentInput({Key? key}) : super(key: key);
+  NewsCommentInput({Key? key, required this.newsCommentsCubit})
+      : super(key: key);
   static const String SEND_COMMENT_SVG_LINK = 'assets/images/send_comment.svg';
-  static late LanguageStrings _strings;
-  static late NewsCommentsCubit _cubit;
+  static late AppLocalizations _strings;
+  final NewsCommentsCubit newsCommentsCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +20,7 @@ class NewsCommentInput extends StatelessWidget {
     Map arg = ModalRoute.of(context)!.settings.arguments as Map;
     int newsId = arg['id'];
 
-    _cubit = BlocProvider.of<NewsCommentsCubit>(context);
-
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
 
     return SafeArea(
       child: Container(
@@ -44,9 +42,9 @@ class NewsCommentInput extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: TextField(
-                  controller: _cubit.commentInputController,
+                  controller: newsCommentsCubit.commentInputController,
                   keyboardType: TextInputType.multiline,
-                  focusNode: _cubit.focusNode,
+                  focusNode: newsCommentsCubit.focusNode,
                   minLines: 1,
                   maxLines: 5,
                   inputFormatters: [LengthLimitingTextInputFormatter(1000)],
@@ -87,14 +85,11 @@ class NewsCommentInput extends StatelessWidget {
 
   void _onChanged(String value) {
     if (value == '') {
-      _cubit.answerId = null;
+      newsCommentsCubit.answerId = null;
     }
   }
 
   Future<void> _onMessageSend(BuildContext context, int id) async {
-    final NewsCommentsCubit newsCommentsCubit =
-        BlocProvider.of<NewsCommentsCubit>(context);
-
     await newsCommentsCubit.addComment(id).onError((error, stackTrace) {
       String errorMessage;
 

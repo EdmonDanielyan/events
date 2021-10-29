@@ -1,13 +1,20 @@
-import 'package:main_api_client/api.dart';
+import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/providers/main_api.dart';
+import 'package:ink_mobile/setup.dart';
 
 import 'dependency.dart';
 
+@injectable
 class NewsCommentsLikeNetworkRequest extends NewsCommentsLikeRequestDependency {
-  int commentId;
-  NewsCommentsLikeNetworkRequest({required this.commentId});
+  int? commentId;
+  NewsCommentsLikeNetworkRequest({@factoryParam required this.commentId})
+      : assert(commentId != null);
 
   @override
-  Future<void> makeRequest() async {
-    await MainApiClient().getNewsApi().newsCommentsLikeIdGet(commentId);
+  Future<void> call() async {
+    await sl
+        .get<MainApiProvider>()
+        .getNewsApi()
+        .newsCommentsLikeIdGet(commentId);
   }
 }

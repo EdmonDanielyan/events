@@ -5,38 +5,37 @@ import 'package:ink_mobile/components/centring_widget.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/news_list/components/news_list_element.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OpenUniversityLiteracyList extends StatelessWidget {
-  static late NewsListCubit cubit;
-  static late Size size;
-  static late LanguageStrings _strings;
-
-  String? filter;
+  final NewsListCubit cubit;
+  static late AppLocalizations _strings;
 
   final ScrollController controller;
 
-  OpenUniversityLiteracyList({Key? key, required this.controller})
-      : super(key: key);
+  const OpenUniversityLiteracyList({
+    Key? key,
+    required this.controller,
+    required this.cubit,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
-    size = MediaQuery.of(context).size;
+    _strings = localizationInstance;
     controller.addListener(_onScroll);
 
     return RefreshIndicator(
-        onRefresh: () async {
-          cubit.refresh();
-        },
-        color: Colors.green,
-        displacement: 20,
-        child: BlocBuilder<NewsListCubit, NewsListState>(
-            builder: (context, state) {
-          cubit = BlocProvider.of<NewsListCubit>(context);
+      onRefresh: () async {
+        cubit.refresh();
+      },
+      color: Colors.green,
+      displacement: 20,
+      child: BlocBuilder<NewsListCubit, NewsListState>(
+        bloc: cubit,
+        builder: (context, state) {
           cubit.filter = 'literacy';
 
           switch (state.type) {
@@ -58,7 +57,9 @@ class OpenUniversityLiteracyList extends StatelessWidget {
                 return _getErrorStateWidget(context, state);
               }
           }
-        }));
+        },
+      ),
+    );
   }
 
   Future<void> _onScroll() async {

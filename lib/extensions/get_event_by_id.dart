@@ -1,0 +1,15 @@
+import 'package:dio/dio.dart';
+import 'package:ink_mobile/exceptions/custom_exceptions.dart';
+import 'package:ink_mobile/models/event_data.dart';
+import 'package:main_api_client/model/get_event_by_id.dart';
+
+extension GetEventByIdExt on Response<GetEventById> {
+  EventData mapResponse() {
+    final responseData = this.data?.data;
+    if (responseData != null) {
+      return EventData.fromProperty(responseData);
+    } else {
+      throw UnknownErrorException();
+    }
+  }
+}

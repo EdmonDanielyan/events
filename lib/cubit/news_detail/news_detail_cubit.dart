@@ -1,50 +1,51 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
-import 'package:ink_mobile/cubit/news_detail/use_cases/fetch.dart';
-import 'package:ink_mobile/cubit/news_detail/use_cases/like.dart';
+import 'package:ink_mobile/cubit/news_detail/sources/fetch/network.dart';
+import 'package:ink_mobile/cubit/news_detail/sources/like/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'domain/fetch_repository.dart';
-import 'domain/like_repository.dart';
+import 'package:ink_mobile/setup.dart';
 import 'news_detail_state.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/extensions/get_news_by_id.dart';
 
+@injectable
 class NewsDetailCubit extends Cubit<NewsDetailState> {
-  LanguageStrings languageStrings;
-  NewsDetailCubit({required this.languageStrings})
-      : super(NewsDetailState(type: NewsDetailStateType.LOADING));
+  NewsDetailCubit() : super(NewsDetailState(type: NewsDetailStateType.LOADING));
+
+  bool get isLiked => state.data!.isLiked!;
+  int get countLikes => state.data!.likeCount!;
 
   Future<void> load(int newsId) async {
     try {
       await Token.setNewTokensIfExpired();
-
-      NewsItemData item = await NewsDetailFetch(
-        dependency: NewsDetailFetchRepository(newsId: newsId).getDependency(),
-      ).call();
-
-      emitSuccess(item);
+      final response = await sl.get<NewsDetailNetworkRequest>(param1: newsId)();
+      emitSuccess(response.mapResponse());
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccurred);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }
 
   Future<void> like(int newsId) async {
     try {
-      emitSuccess(state.data!.copyWith(isLiked: !state.data!.isLiked!));
+      emitSuccess(
+        state.data!.copyWith(
+          isLiked: !isLiked,
+          likeCount: isLiked ? countLikes - 1 : countLikes + 1,
+        ),
+      );
       await Token.setNewTokensIfExpired();
-      await NewsDetailLike(
-        dependency: NewsDetailLikeRepository(newsId: newsId).getDependency(),
-      ).like();
+      await sl.get<NewsLikeNetworkRequest>(param1: newsId)();
     } on DioError catch (e) {
       if (e.type == DioErrorType.other) throw NoConnectionException();
 

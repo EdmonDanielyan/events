@@ -7,9 +7,10 @@ class AuthError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Text(
-      error,
-      style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-    ));
+      child: Text(
+        error,
+        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+      ),
+    );
   }
 }

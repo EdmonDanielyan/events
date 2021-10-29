@@ -12,21 +12,24 @@ import 'package:ink_mobile/screens/profile/components/contacts.dart';
 import 'package:ink_mobile/screens/profile/components/header.dart';
 import 'package:ink_mobile/screens/profile/components/other_user_page_header.dart';
 
+import '../profile_screen.dart';
+
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ProfileCubit userCubit = BlocProvider.of<ProfileCubit>(context);
+    final ProfileCubit userCubit = ProfileScreen.of(context).profileCubit;
 
     return RefreshIndicator(
-        onRefresh: () async {
-          userCubit.refresh();
-        },
-        color: Colors.green,
-        displacement: 20,
-        child:
-            BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
+      onRefresh: () async {
+        userCubit.refresh();
+      },
+      color: Colors.green,
+      displacement: 20,
+      child: BlocBuilder<ProfileCubit, ProfileState>(
+        bloc: userCubit,
+        builder: (context, state) {
           switch (state.type) {
             case ProfileStateType.LOADED:
               {
@@ -40,10 +43,10 @@ class Body extends StatelessWidget {
 
             case ProfileStateType.LOADING:
               {
-                Map arg = ModalRoute.of(context)!.settings.arguments as Map;
+                Map? arg = ModalRoute.of(context)!.settings.arguments as Map?;
                 int? userId;
 
-                if (arg.isNotEmpty) {
+                if (arg != null && arg.isNotEmpty) {
                   userId = arg['id'];
                 }
 
@@ -57,7 +60,9 @@ class Body extends StatelessWidget {
                 return _getErrorStateWidget(context, state);
               }
           }
-        }));
+        },
+      ),
+    );
   }
 
   Widget getLoadedStateWidget(context, ProfileState state) {
@@ -111,7 +116,7 @@ class Body extends StatelessWidget {
   }
 
   Widget _getErrorStateWidget(BuildContext context, ProfileState state) {
-    final ProfileCubit cubit = BlocProvider.of<ProfileCubit>(context);
+    final cubit = ProfileScreen.of(context).profileCubit;
 
     return ErrorRefreshButton(
       onTap: cubit.refresh,

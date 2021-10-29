@@ -1,12 +1,14 @@
+import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/models/converter.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:ink_mobile/providers/main_api.dart';
+import 'package:ink_mobile/setup.dart';
 import 'package:main_api_client/api/auth_api.dart';
-import 'package:main_api_client/api.dart';
 import 'package:main_api_client/model/refresh_token_params.dart';
+import 'package:uuid/uuid.dart';
 
 class Token {
-
   static Future<JwtPayload?> getJwtPayloadObject() async {
     String? jwtToken = await Token.getJwt();
     if (jwtToken != null) {
@@ -42,8 +44,7 @@ class Token {
       DateTime curDateTime = DateTime.now();
 
       int curDateTimestamp =
-        (curDateTime.millisecondsSinceEpoch.toInt() / 1000).ceil()
-      ;
+          (curDateTime.millisecondsSinceEpoch.toInt() / 1000).ceil();
 
       if (curDateTimestamp > payload.expirationTime - 5) {
         return true;
@@ -64,19 +65,18 @@ class Token {
   }
 
   static Future<void> _setNewTokens() async {
-    MainApiClient api = MainApiClient();
-    AuthApi auth = api.getAuthApi();
+    AuthApi auth = sl.get<MainApiProvider>().getAuthApi();
 
-    RefreshTokenParamsBuilder refreshParamsBuilder = RefreshTokenParamsBuilder();
+    RefreshTokenParamsBuilder refreshParamsBuilder =
+        RefreshTokenParamsBuilder();
     String? refreshToken = await Token.getRefresh();
 
     if (refreshToken != null) {
       refreshParamsBuilder.token = refreshToken;
       RefreshTokenParams refreshParams = refreshParamsBuilder.build();
 
-      final _response = await auth.authRefreshPost(
-          refreshTokenParams: refreshParams
-      );
+      final _response =
+          await auth.authRefreshPost(refreshTokenParams: refreshParams);
 
       final refreshDataMap = _response.data?.data.asMap;
 
@@ -84,7 +84,7 @@ class Token {
         String newRefresh = refreshDataMap['refresh_token'];
         String newJwt = refreshDataMap['token'];
 
-        api.setOAuthToken('bearerAuth', newJwt);
+        SetOauthToken(token: newJwt).setBearer();
         await Token.setJwt(newJwt);
         await Token.setRefresh(newRefresh);
       } else {
@@ -105,7 +105,6 @@ class Token {
 
   static Future<String?> _getTokenByType(TokenType type) async {
     FlutterSecureStorage storage = Storage.getInstance();
-
     return await storage.read(key: type.key);
   }
 
@@ -122,11 +121,22 @@ class Token {
 
     await storage.write(key: type.key, value: value);
   }
+
+  static Future<void> setDeviceVirtualIdIfEmpty() async {
+    FlutterSecureStorage storage = Storage.getInstance();
+    if (!await storage.containsKey(key: DeviceTypes.virtualId.key))
+      await storage.write(key: DeviceTypes.virtualId.key, value: Uuid().v4());
+  }
+
+  static Future<String?> getDeviceVirtualId() async {
+    FlutterSecureStorage storage = Storage.getInstance();
+    return await storage.read(key: DeviceTypes.virtualId.key);
+  }
 }
 
 class Storage {
   static final FlutterSecureStorage prefs = new FlutterSecureStorage();
-  
+
   static FlutterSecureStorage getInstance() {
     return prefs;
   }
@@ -142,12 +152,25 @@ class TokenType {
   const TokenType(String key) : key = key;
 }
 
+class DeviceTypes {
+  static const TokenType virtualId = TokenType('virtualId');
+}
+
+class DeviceType {
+  final String key;
+  const DeviceType(String key) : key = key;
+}
+
 class JwtPayload {
   int expirationTime = 0;
   int? userId;
 
+  static late int myId;
+
   JwtPayload(Map<String, dynamic> payloadMap) {
     this.expirationTime = payloadMap['exp'] ?? 0;
     this.userId = payloadMap['userId'];
+
+    myId = payloadMap['userId'];
   }
 }

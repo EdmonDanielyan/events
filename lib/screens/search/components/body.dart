@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/search/data.dart';
 import 'package:ink_mobile/models/search/search_query.dart';
 import 'package:ink_mobile/screens/search/components/background.dart';
@@ -13,70 +12,87 @@ import 'package:ink_mobile/screens/search/components/search_item_text.dart';
 import 'package:ink_mobile/screens/search/components/search_item_user.dart';
 import 'package:ink_mobile/cubit/search/search_cubit.dart';
 import 'package:ink_mobile/cubit/search/search_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
-  static late LanguageStrings _strings;
+  final SearchCubit searchCubit;
+  const Body({Key? key, required this.searchCubit}) : super(key: key);
+  static late AppLocalizations _strings;
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
-    final SearchCubit searchCubit = BlocProvider.of<SearchCubit>(context);
-
+    _strings = localizationInstance;
     return Background(
         child: Column(
       children: [
-        SearchField(),
-        BlocBuilder<SearchCubit, SearchState>(builder: (context, state) {
-          switch (state.type) {
-            case SearchStateType.LOADING:
-              {
-                return InkPageLoader();
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 35, vertical: 40),
+          padding: EdgeInsets.only(top: 15),
+          child: SearchField(
+            hint: _strings.searchHint,
+            onChanged: (query) {
+              if (query.length >= 3) {
+                SearchQuery.query = query;
+                searchCubit.search(query);
+              } else {
+                searchCubit.refresh();
               }
+            },
+          ),
+        ),
+        BlocBuilder<SearchCubit, SearchState>(
+            bloc: searchCubit,
+            builder: (context, state) {
+              switch (state.type) {
+                case SearchStateType.LOADING:
+                  {
+                    return InkPageLoader();
+                  }
 
-            case SearchStateType.LOADED:
-              {
-                List<SearchContainer> searchResult = _getSearchResult(state);
+                case SearchStateType.LOADED:
+                  {
+                    List<SearchContainer> searchResult =
+                        _getSearchResult(state);
 
-                return MediaQuery.removePadding(
-                  context: context,
-                  removeTop: true,
-                  removeBottom: true,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: ScrollController(keepScrollOffset: false),
-                    itemCount: searchResult.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        searchResult[index],
-                  ),
-                );
+                    return MediaQuery.removePadding(
+                      context: context,
+                      removeTop: true,
+                      removeBottom: true,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        controller: ScrollController(keepScrollOffset: false),
+                        itemCount: searchResult.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            searchResult[index],
+                      ),
+                    );
+                  }
+
+                case SearchStateType.EMPTY:
+                  {
+                    return Text(_strings.nothingFound);
+                  }
+
+                case SearchStateType.STARTING:
+                  {
+                    return Text(_strings.searchEmptyString);
+                  }
+
+                case SearchStateType.ERROR:
+                  {
+                    return ErrorRefreshButton(
+                      onTap: () {
+                        if (SearchQuery.query.length >= 3) {
+                          searchCubit.search(SearchQuery.query);
+                        } else {
+                          searchCubit.refresh();
+                        }
+                      },
+                      text: state.errorMessage!,
+                    );
+                  }
               }
-
-            case SearchStateType.EMPTY:
-              {
-                return Text(_strings.nothingFound);
-              }
-
-            case SearchStateType.STARTING:
-              {
-                return Text(_strings.searchEmptyString);
-              }
-
-            case SearchStateType.ERROR:
-              {
-                return ErrorRefreshButton(
-                  onTap: () {
-                    if (SearchQuery.query.length >= 3) {
-                      searchCubit.search(SearchQuery.query);
-                    } else {
-                      searchCubit.refresh();
-                    }
-                  },
-                  text: state.errorMessage!,
-                );
-              }
-          }
-        })
+            })
       ],
     ));
   }

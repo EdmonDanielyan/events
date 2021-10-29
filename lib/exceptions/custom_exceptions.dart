@@ -30,3 +30,27 @@ class UnknownErrorException implements CustomException {
   UnknownErrorException({this.message = ErrorMessages.UNKNOWN_ERROR_MESSAGE})
       : super();
 }
+
+class PermissionDeniedException implements CustomException {
+  String message;
+  int? offset;
+  dynamic source;
+
+  PermissionDeniedException({this.message = ''}) : super();
+}
+
+class ChannelAlreadyExistException implements CustomException {
+  String message;
+  int? offset;
+  dynamic source;
+
+  ChannelAlreadyExistException({this.message = ''}) : super();
+}
+
+class SubscriptionAlreadyExistException implements CustomException {
+  String message;
+  int? offset;
+  dynamic source;
+
+  SubscriptionAlreadyExistException({this.message = ''}) : super();
+}

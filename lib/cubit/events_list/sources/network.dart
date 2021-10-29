@@ -1,22 +1,27 @@
 import 'package:dio/src/response.dart';
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
-import 'package:main_api_client/api.dart';
+import 'package:ink_mobile/providers/main_api.dart';
+import 'package:ink_mobile/setup.dart';
 import 'package:main_api_client/api/events_api.dart';
 import 'package:main_api_client/model/get_events.dart';
 
 import 'dependency.dart';
 
+@injectable
 class EventsListNetworkRequest extends EventListRequestDependency {
-  Pagination<EventData> pagination;
+  Pagination<EventData>? pagination;
 
-  EventsListNetworkRequest({required this.pagination});
+  EventsListNetworkRequest({@factoryParam required this.pagination})
+      : assert(pagination != null);
 
   @override
-  Future<Response<GetEvents>> makeRequest() async {
-    EventsApi eventsApi = MainApiClient().getEventsApi();
+  Future<Response<GetEvents>> call() async {
+    EventsApi eventsApi = sl.get<MainApiProvider>().getEventsApi();
     return await eventsApi.getEvents(
-        countOnPage: pagination.countOnPage, pageNumber: pagination.pageNumber);
+        countOnPage: pagination!.countOnPage,
+        pageNumber: pagination!.pageNumber);
   }
 }
