@@ -16,7 +16,9 @@ import 'package:ink_mobile/screens/search/components/search_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewChatScreen extends StatefulWidget {
-  const NewChatScreen({Key? key}) : super(key: key);
+  final ChatDatabaseCubit chatDatabaseCubit;
+  const NewChatScreen({Key? key, required this.chatDatabaseCubit})
+      : super(key: key);
 
   @override
   _NewChatScreenState createState() => _NewChatScreenState();
@@ -28,8 +30,6 @@ class _NewChatScreenState extends State<NewChatScreen> {
   double _horizontalPadding = 20.0;
   late AppLocalizations _strings;
   late ChatPersonListCubit _personListCubit;
-
-  late ChatDatabaseCubit _chatDatabaseCubit;
 
   List<UserTable> get selectedItems => ChatUserSelectViewModel.getSelectedItems(
       _personListCubit.state.searchUsers);
@@ -45,9 +45,9 @@ class _NewChatScreenState extends State<NewChatScreen> {
 
   Future<void> _createChat(UserTable user) async {
     ChatTable newChat =
-        await ChatCreation(_chatDatabaseCubit).createSingleChat(user);
+        await ChatCreation(widget.chatDatabaseCubit).createSingleChat(user);
     Navigator.of(context).pop();
-    OpenChat(_chatDatabaseCubit, newChat).call(context);
+    OpenChat(widget.chatDatabaseCubit, newChat).call(context);
   }
 
   void _onCreate() {
@@ -61,8 +61,6 @@ class _NewChatScreenState extends State<NewChatScreen> {
   Widget build(BuildContext context) {
     _strings = localizationInstance;
     _personListCubit = BlocProvider.of<ChatPersonListCubit>(context);
-    _chatDatabaseCubit =
-        BlocProvider.of<ChatDatabaseCubit>(context, listen: false);
 
     return BlocBuilder<ChatPersonListCubit, ChatPersonListCubitState>(
       builder: (BuildContext context, state) {

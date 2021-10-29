@@ -12,7 +12,9 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewGroupScreen extends StatefulWidget {
-  const NewGroupScreen({Key? key}) : super(key: key);
+  final ChatDatabaseCubit chatDatabaseCubit;
+  const NewGroupScreen({Key? key, required this.chatDatabaseCubit})
+      : super(key: key);
 
   @override
   _NewGroupScreenState createState() => _NewGroupScreenState();
@@ -22,16 +24,15 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
   late ChatPersonListCubit _personListCubit;
   late AppLocalizations _strings;
   final double horizontalPadding = 20;
-  late ChatDatabaseCubit _chatDatabaseCubit;
   List<ChatUserSelect> users = [];
   String chatName = "";
 
   Future<void> _onCreate(BuildContext context) async {
-    ChatTable newChat = await ChatCreation(_chatDatabaseCubit)
+    ChatTable newChat = await ChatCreation(widget.chatDatabaseCubit)
         .createGroup(name: chatName, users: users);
 
     Navigator.of(context).popUntil((route) => route.isFirst);
-    OpenChat(_chatDatabaseCubit, newChat).call(context);
+    OpenChat(widget.chatDatabaseCubit, newChat).call(context);
   }
 
   @override
@@ -40,8 +41,6 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
     _personListCubit = BlocProvider.of<ChatPersonListCubit>(context);
     users = ChatUserSelectViewModel.getSelectedItems(
         _personListCubit.state.searchUsers);
-    _chatDatabaseCubit =
-        BlocProvider.of<ChatDatabaseCubit>(context, listen: false);
 
     return Scaffold(
       appBar: InkAppBarWithText(

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
-import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/screens/messages/chat/components/app_bar_title.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_btn.dart';
@@ -49,19 +46,21 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    _chatCubit = BlocProvider.of<ChatCubit>(context);
-    _strings = localizationInstance;
-    return BlocBuilder<ChatCubit, ChatCubitState>(
-      builder: (context, state) {
-        if (state.appBarEnum == ChatAppBarEnums.SEARCH_BAR) {
-          return searchBar();
-        } else if (_chatCubit.getSelectedMessages.length > 0) {
-          return selectiveBar(context);
-        } else {
-          return initialBar();
-        }
-      },
-    );
+    return initialBar();
+
+    // _chatCubit = BlocProvider.of<ChatCubit>(context);
+    // _strings = localizationInstance;
+    // return BlocBuilder<ChatCubit, ChatCubitState>(
+    //   builder: (context, state) {
+    //     if (state.appBarEnum == ChatAppBarEnums.SEARCH_BAR) {
+    //       return searchBar();
+    //     } else if (_chatCubit.getSelectedMessages.length > 0) {
+    //       return selectiveBar(context);
+    //     } else {
+    //       return initialBar();
+    //     }
+    //   },
+    // );
   }
 
   PreferredSizeWidget searchBar() {

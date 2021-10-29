@@ -108,7 +108,9 @@ class MainRoutes {
     '/chat_info': (BuildContext context) => ChatInfoScreen(
           chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
         ),
-    '/new_group': (BuildContext context) => NewGroupScreen(),
+    '/new_group': (BuildContext context) => NewGroupScreen(
+          chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
+        ),
     '/message_person_list': (BuildContext context) {
       return PageNotFoundScreen();
       // final args = ModalRoute.of(context)?.settings.arguments;

@@ -14,34 +14,34 @@ class MessageList extends StatelessWidget with MessageMixins {
   @override
   Widget build(BuildContext context) {
     final chatDatabaseCubit = ChatScreen.of(context).chatDatabaseCubit;
+
     return Container(
       child: MediaQuery.removePadding(
         context: context,
         removeBottom: true,
         removeTop: true,
-        child: Text("${chatDatabaseCubit.selectedChat!.id!}"),
-        // child: StreamBuilder(
-        //   stream: chatDatabaseCubit.db
-        //       .watchChatMessages(chatDatabaseCubit.selectedChat!.id!),
-        //   builder: (context, AsyncSnapshot<List<MessageWithUser>> snapshot) {
-        //     if (snapshot.hasData) {
-        //       List<MessageWithUser> messages = snapshot.data ?? [];
-        //       DateTimeSort dateSort = DateTimeSort();
+        child: StreamBuilder(
+          stream: chatDatabaseCubit.db
+              .watchChatMessages(chatDatabaseCubit.selectedChat!.id!),
+          builder: (context, AsyncSnapshot<List<MessageWithUser>> snapshot) {
+            if (snapshot.hasData) {
+              List<MessageWithUser> messages = snapshot.data ?? [];
+              DateTimeSort dateSort = DateTimeSort();
 
-        //       if (messages.length > 0) {
-        //         return ListView.builder(
-        //           controller: ScrollController(keepScrollOffset: false),
-        //           itemCount: messages.length,
-        //           shrinkWrap: true,
-        //           itemBuilder: (BuildContext context, int index) {
-        //             return eachItem(messages[index], dateSort, index);
-        //           },
-        //         );
-        //       }
-        //     }
-        //     return SizedBox();
-        //   },
-        // ),
+              if (messages.length > 0) {
+                return ListView.builder(
+                  controller: ScrollController(keepScrollOffset: false),
+                  itemCount: messages.length,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return eachItem(messages[index], dateSort, index);
+                  },
+                );
+              }
+            }
+            return SizedBox();
+          },
+        ),
       ),
     );
   }

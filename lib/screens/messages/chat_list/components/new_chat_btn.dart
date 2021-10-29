@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
+import 'package:ink_mobile/screens/messages/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/new_chat_screen.dart';
 
 class NewChatBtn extends StatelessWidget {
@@ -11,7 +12,9 @@ class NewChatBtn extends StatelessWidget {
     return IconButton(
       onPressed: () => CustomBottomSheet(
         context: context,
-        child: NewChatScreen(),
+        child: NewChatScreen(
+          chatDatabaseCubit: ChatListScreen.of(context).chatDatabaseCubit,
+        ),
       ),
       icon: Icon(CupertinoIcons.chat_bubble_text, size: 30),
     );
