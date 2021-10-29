@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/group_chat.dart';
 import 'package:ink_mobile/models/chat/message.dart';
+import 'package:ink_mobile/models/token.dart';
 
 class Chat {
   final String chatName;
@@ -57,6 +58,10 @@ class Chat {
 
 class ChatListView {
   static bool isGroup(ChatTable chat) => chat.participantId == null;
+  static bool isOwner(ChatTable chat, {int? myId}) {
+    myId = myId ?? JwtPayload.myId;
+    return chat.ownerId == myId;
+  }
 
   static bool strContainsValue(String str, String value) =>
       str.toLowerCase().contains(value.toLowerCase());

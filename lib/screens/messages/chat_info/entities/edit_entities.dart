@@ -1,4 +1,4 @@
-import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 
 class ChatInfoEditEntities {
   String name;
@@ -8,12 +8,12 @@ class ChatInfoEditEntities {
 }
 
 class ChatInfoEditEntitiesFunctions {
-  static Chat copyChat(ChatInfoEditEntities entities, Chat chat) {
+  static ChatTable copyChat(ChatInfoEditEntities entities, ChatTable chat) {
     return chat.copyWith(
-      chatName: entities.name.isNotEmpty ? entities.name : chat.chatName,
-      group: chat.group != null
-          ? chat.group!.copyWith(description: entities.description)
-          : null,
+      name: entities.name.isNotEmpty ? entities.name : chat.name,
+      description: entities.description.isNotEmpty
+          ? entities.description
+          : chat.description,
     );
   }
 }

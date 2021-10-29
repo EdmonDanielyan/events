@@ -1,32 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/components/linkify_text.dart';
 import 'package:ink_mobile/functions/date_functions.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container_wrapper.dart';
-import 'package:ink_mobile/components/custom_circle_avatar.dart';
-import 'package:ink_mobile/screens/messages/chat/components/sent_on_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
 
 class MessageCardText extends StatelessWidget {
-  final Message message;
-  const MessageCardText({Key? key, required this.message}) : super(key: key);
+  final MessageWithUser messageWithUser;
+  const MessageCardText({Key? key, required this.messageWithUser})
+      : super(key: key);
 
-  Color get textColor => message.byMe ? Colors.white : Colors.black;
+  MessageTable get message => messageWithUser.message!;
+  UserTable? get user => messageWithUser.user;
 
-  Color get bgColor => message.byMe ? Color(0XFF46966E) : Colors.grey.shade200;
+  bool get byMe => MessageListView.isByMe(message);
+
+  Color get textColor => byMe ? Colors.white : Colors.black;
+
+  Color get bgColor => byMe ? Color(0XFF46966E) : Colors.grey.shade200;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment:
-          message.byMe ? CrossAxisAlignment.center : CrossAxisAlignment.end,
+          byMe ? CrossAxisAlignment.center : CrossAxisAlignment.end,
       children: [
         if (message.status == MessageStatus.ERROR) ...[
           Icon(Icons.error, color: Colors.red, size: 22),
           SizedBox(width: 5.0),
         ],
-        if (!message.byMe) ...[
+        if (!byMe) ...[
           userAvatarWidget(),
           SizedBox(width: 10.0),
         ],
@@ -40,10 +47,10 @@ class MessageCardText extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (message.sentOn) ...[
-                  SentOnWidget(),
-                  SizedBox(height: 5.0),
-                ],
+                // if (message.sentOn) ...[
+                //   SentOnWidget(),
+                //   SizedBox(height: 5.0),
+                // ],
                 RespondContainerWrapper(
                   message: message,
                   textColor: textColor,
@@ -60,7 +67,7 @@ class MessageCardText extends StatelessWidget {
                       ),
                       SizedBox(width: 5.0),
                       dateWidget(),
-                      if (message.byMe) ...[
+                      if (byMe) ...[
                         SizedBox(width: 4.0),
                         statusWidget(),
                       ],
@@ -77,7 +84,7 @@ class MessageCardText extends StatelessWidget {
 
   Widget userAvatarWidget() {
     return SizedBox(
-      child: CustomCircleAvatar(url: message.user.avatarUrl),
+      child: CustomCircleAvatar(url: user!.avatar),
       width: 45,
       height: 45,
     );
@@ -85,7 +92,7 @@ class MessageCardText extends StatelessWidget {
 
   Widget dateWidget() {
     return Text(
-      DateFunctions(passedDate: message.messageDate).hourMinute(),
+      DateFunctions(passedDate: message.created!).hourMinute(),
       style: TextStyle(
         fontSize: 11.0,
         color: textColor,
@@ -104,9 +111,9 @@ class MessageCardText extends StatelessWidget {
   BorderRadiusGeometry containerBorderRadius() {
     return BorderRadius.only(
       topLeft: Radius.circular(10.0),
-      bottomLeft: Radius.circular(message.byMe ? 10.0 : 2.0),
+      bottomLeft: Radius.circular(byMe ? 10.0 : 2.0),
       topRight: Radius.circular(10.0),
-      bottomRight: Radius.circular(message.byMe ? 2.0 : 10.0),
+      bottomRight: Radius.circular(byMe ? 2.0 : 10.0),
     );
   }
 }

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
-import 'package:ink_mobile/models/chat/message.dart';
-import 'package:ink_mobile/screens/messages/chat/components/respond_container.dart';
 import 'package:ink_mobile/screens/messages/chat/components/send_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
+
+import '../chat_screen.dart';
 
 class MessageBottomBar extends StatefulWidget {
   final ScrollController scrollController;
@@ -20,24 +21,23 @@ class MessageBottomBar extends StatefulWidget {
 }
 
 class _MessageBottomBarState extends State<MessageBottomBar> {
+  late ChatDatabaseCubit _chatDatabaseCubit;
   ChatEntities entities = ChatEntities();
   FocusNode textfieldFocus = FocusNode();
   late ChatCubit _chatCubit;
-  late ChatListCubit _chatListCubit;
   final _formKey = GlobalKey<FormState>();
   final _padding = 7.0;
 
   void onSend() {
     if (entities.text.isNotEmpty) {
       clearForm();
-
-      Message message = ChatEntitiesFunctions.buildMessage(
-        entities: entities,
-        selectedMessageId: _chatCubit.state.selectedMessageId,
-      );
+      // Message message = ChatEntitiesFunctions.buildMessage(
+      //   entities: entities,
+      //   selectedMessageId: _chatCubit.state.selectedMessageId,
+      // );
+      ChatFunctions(_chatDatabaseCubit)
+          .sendTextMessage(_chatDatabaseCubit.selectedChat!, entities);
       entities.clear();
-      _chatCubit.addMessage(message);
-      //_chatListCubit.updateAndSetToFirst(_chatCubit.state.chat);
       ScrollBottom(widget.scrollController).jumpLazy();
     }
   }
@@ -49,7 +49,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   @override
   Widget build(BuildContext context) {
     _chatCubit = BlocProvider.of<ChatCubit>(context);
-    _chatListCubit = BlocProvider.of<ChatListCubit>(context);
+    _chatDatabaseCubit = ChatScreen.of(context).chatDatabaseCubit;
     return SafeArea(
       child: Container(
         margin: EdgeInsets.only(bottom: _padding),

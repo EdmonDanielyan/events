@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 
 class OpenChat {
-  final BuildContext context;
-  final ChatTable chat;
+  final ChatTable chatTable;
+  final ChatDatabaseCubit chatDatabaseCubit;
 
-  OpenChat(this.context, this.chat) {
-    ChatCubit _chatCubit = BlocProvider.of<ChatCubit>(context);
-    _chatCubit.emitChat(chat.id!);
+  OpenChat(this.chatDatabaseCubit, this.chatTable);
+
+  void call(BuildContext context) {
+    chatDatabaseCubit.setSelectedChat(chatTable);
     Navigator.of(context).pushNamed("/message");
   }
 }

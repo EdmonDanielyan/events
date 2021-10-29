@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
-import 'package:ink_mobile/models/chat/group_chat.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/screens/messages/chat_info/chat_info_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatInfoHeader extends StatelessWidget {
-  final Chat chat;
+  final ChatTable chat;
   const ChatInfoHeader({Key? key, required this.chat}) : super(key: key);
 
+  static late ChatDatabaseCubit _chatDatabaseCubit;
   static late AppLocalizations _strings;
 
-  bool get isGroup => chat.group != null;
-  GroupChat get group => chat.group!;
+  bool get isGroup => ChatListView.isGroup(chat);
+  int get countParticipants => 1;
 
   String participantsLable() {
-    if (group.users.length == 1)
+    if (countParticipants == 1)
       return _strings.participant;
     else
       return _strings.participantsAccusative;
@@ -24,6 +29,7 @@ class ChatInfoHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _chatDatabaseCubit = ChatInfoScreen.of(context).chatDatabaseCubit;
     _strings = localizationInstance;
 
     return Container(
@@ -34,22 +40,31 @@ class ChatInfoHeader extends StatelessWidget {
         crossAxisAlignment:
             isGroup ? CrossAxisAlignment.start : CrossAxisAlignment.center,
         children: [
-          CustomCircleAvatar(url: chat.avatarUrl),
+          CustomCircleAvatar(url: chat.avatar),
           SizedBox(width: 20.0),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                nameWidget(),
-                if (isGroup && group.description.isNotEmpty) ...[
-                  SizedBox(height: 3.0),
-                  descriptionWidget(),
-                ],
-                if (isGroup) ...[
-                  SizedBox(height: 3.0),
-                  countUsersWidget(),
-                ]
-              ],
+            child: BlocBuilder<ChatDatabaseCubit, ChatDatabaseCubitState>(
+              bloc: _chatDatabaseCubit,
+              builder: (context, state) {
+                final chat = state.selectedChat;
+                if (chat != null) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      nameWidget(chat.name),
+                      if (isGroup && chat.description.isNotEmpty) ...[
+                        SizedBox(height: 3.0),
+                        descriptionWidget(chat.description),
+                      ],
+                      if (isGroup) ...[
+                        SizedBox(height: 3.0),
+                        countUsersWidget(),
+                      ]
+                    ],
+                  );
+                }
+                return SizedBox();
+              },
             ),
           ),
         ],
@@ -57,9 +72,9 @@ class ChatInfoHeader extends StatelessWidget {
     );
   }
 
-  Widget nameWidget() {
+  Widget nameWidget(String name) {
     return Text(
-      chat.chatName,
+      name,
       style: TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 21.0,
@@ -68,9 +83,9 @@ class ChatInfoHeader extends StatelessWidget {
     );
   }
 
-  Widget descriptionWidget() {
+  Widget descriptionWidget(String description) {
     return Text(
-      group.description,
+      description,
       style: TextStyle(
         color: Colors.grey,
         fontSize: 13.0,
@@ -82,7 +97,7 @@ class ChatInfoHeader extends StatelessWidget {
 
   Widget countUsersWidget() {
     return Text(
-      "${group.users.length} ${participantsLable().toLowerCase()}",
+      "$countParticipants ${participantsLable().toLowerCase()}",
       style: TextStyle(
         color: Colors.grey,
         fontSize: 13.0,
