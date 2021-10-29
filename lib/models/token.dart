@@ -166,11 +166,15 @@ class JwtPayload {
   int? userId;
 
   static late int myId;
+  static late String myAvatar;
+  static late String myName;
 
   JwtPayload(Map<String, dynamic> payloadMap) {
     this.expirationTime = payloadMap['exp'] ?? 0;
     this.userId = payloadMap['userId'];
 
     myId = payloadMap['userId'];
+    myAvatar = payloadMap['avatar'] ?? "";
+    myName = "${payloadMap['name']} ${payloadMap['last_name']}".trim();
   }
 }

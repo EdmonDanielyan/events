@@ -5,22 +5,25 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
+import 'chat_functions.dart';
+
 class SendMessage {
   final ChatDatabaseCubit chatDatabaseCubit;
   final NatsProvider natsProvider;
   final ChatTable chat;
+  final String channelName;
 
   const SendMessage({
     required this.chatDatabaseCubit,
     required this.natsProvider,
     required this.chat,
+    required this.channelName,
   });
-
-  bool get isGroup => chat.participantId == null;
 
   void call(ChatEntities entities) {
     _sendMessageToDatabase(entities);
     _sendMessageToNats(entities);
+    ChatFunctions(chatDatabaseCubit).setChatToFirst(chat);
   }
 
   void _sendMessageToDatabase(ChatEntities chatEntities) {
@@ -36,18 +39,10 @@ class SendMessage {
     );
   }
 
-  void _sendMessageToNats(ChatEntities chatEntities) {
+  void _sendMessageToNats(ChatEntities entities) {
     natsProvider.sendTextMessageToChannel(
-      getChannel(),
-      chatEntities.text,
+      channelName,
+      entities.text,
     );
-  }
-
-  String getChannel() {
-    if (isGroup)
-      return natsProvider.getPrivateUserTextChannel(chat.id);
-    else
-      return natsProvider
-          .getPrivateUserTextChannel(chat.participantId.toString());
   }
 }

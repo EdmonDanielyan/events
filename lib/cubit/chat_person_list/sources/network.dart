@@ -23,7 +23,7 @@ class ContactsNetworkRequest extends ContactsRequestDependency {
             pageNumber: 1,
             countOnPage: 10)
         .timeout(Duration(seconds: 4));
-
+    print(response);
     return response;
   }
 }

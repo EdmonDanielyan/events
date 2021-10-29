@@ -37,13 +37,9 @@ class NatsProvider {
     _listenPrivateUserChatList();
     var userId = await _getUserId();
     var channel = getPrivateUserTextChannel(userId);
-    await subscribeToChannel(channel);
+    await subscribeToChannel(channel, (channel, message) async {});
     sendTextMessageToChannel(channel, userId);
     return true;
-  }
-
-  set onMessage(Future<void> Function(String, NatsMessage) _onMessageFuture) {
-    _onMessage = _onMessageFuture;
   }
 
   /// Send [text] message to [channel]
@@ -76,12 +72,14 @@ class NatsProvider {
 
   /// Subscribe to [channel] using [startSequence] if needed
   Future<void> subscribeToChannel(String channel,
+      Future<void> Function(String, NatsMessage) onMessageFuture,
       {Int64 startSequence = Int64.ZERO}) async {
     if (!_channelSubscriptions.containsKey(channel)) {
       var subscription =
           await _subscribeToChannel(channel, startSequence: startSequence);
       _listenBySubscription(channel, subscription);
       _channelSubscriptions[channel] = subscription;
+      _channelCallbacks[channel] = onMessageFuture;
     }
   }
 
@@ -89,6 +87,9 @@ class NatsProvider {
   Future<void> unsubscribeFromChannel(String channel) async {
     if (_channelSubscriptions.containsKey(channel)) {
       _channelSubscriptions.remove(channel);
+    }
+    if (_channelCallbacks.containsKey(channel)) {
+      _channelCallbacks.remove(channel);
     }
   }
 
@@ -189,6 +190,9 @@ class NatsProvider {
       if (_channelSubscriptions.containsKey(channel)) {
         NatsMessage message = _parseMessage(dataMessage);
         await _onMessage(channel, message);
+        Future<void> Function(String, NatsMessage) channelCallback =
+            _channelCallbacks[channel]!;
+        await channelCallback(channel, message);
         if (message.needAck) {
           _stan.acknowledge(subscription!, dataMessage);
         }
@@ -198,13 +202,14 @@ class NatsProvider {
     }
   }
 
-  late Future<void> Function(String, NatsMessage) _onMessage =
+  final Future<void> Function(String, NatsMessage) _onMessage =
       (channel, message) async {
-    print("onMessage.channel: $channel, message: $message");
+    //print("_onMessage [channel: $channel, message: $message]");
   };
-
   final _stan = Client();
   final Set<String> userChatIdList = {};
   final Set<String> publicChatIdList = {};
   final Map<String, Subscription?> _channelSubscriptions = {};
+  final Map<String, Future<void> Function(String, NatsMessage)>
+      _channelCallbacks = {};
 }

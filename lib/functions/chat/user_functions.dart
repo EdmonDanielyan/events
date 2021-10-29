@@ -8,7 +8,7 @@ class UserFunctions {
   const UserFunctions(this.chatDatabaseCubit);
 
   void addMe() {
-    addUser(JwtPayload.myId, "Ibra", "Chekaev");
+    addUser(JwtPayload.myId, JwtPayload.myName, JwtPayload.myAvatar);
   }
 
   void addUser(int id, String name, String avatar) {

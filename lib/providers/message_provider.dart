@@ -1,11 +1,9 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
-import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
-import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
@@ -24,24 +22,15 @@ class MessageProvider {
 
   MessageProvider(this.natsProvider, this.chatDatabaseCubit);
 
+  bool isGroup(ChatTable chat) => chat.participantId == null;
+
   void init() async {
     UserFunctions(chatDatabaseCubit).addMe();
-    _onMessage();
   }
 
-  void _onMessage() async {
-    natsProvider.onMessage = (channel, message) async {
-      _hidePingPong(message, () {
-        print(channel);
-        print(message);
-      });
-    };
-  }
-
-  void _hidePingPong(NatsMessage message, void Function() callback) {
-    if (!message.from.contains(JwtPayload.myId.toString())) {
-      callback();
-    }
+  Future<void> _onMessage(String channel, NatsMessage message) async {
+    print(channel);
+    print(message);
   }
 
   Future<ChatTable> createChat(UserTable user) async {
@@ -59,11 +48,22 @@ class MessageProvider {
   }
 
   void sendMessage(ChatTable chat, ChatEntities chatEntities) {
+    String channel = getChannel(chat);
     SendMessage(
       chatDatabaseCubit: chatDatabaseCubit,
       natsProvider: natsProvider,
       chat: chat,
+      channelName: channel,
     ).call(chatEntities);
-    ChatFunctions(chatDatabaseCubit).setChatToFirst(chat);
+
+    //natsProvider.subscribeToChannel(channel, _onMessage);
+  }
+
+  String getChannel(ChatTable chat) {
+    if (isGroup(chat))
+      return natsProvider.getPrivateUserTextChannel(chat.id);
+    else
+      return natsProvider
+          .getPrivateUserTextChannel(chat.participantId.toString());
   }
 }
