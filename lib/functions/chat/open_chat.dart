@@ -10,8 +10,6 @@ class OpenChat {
 
   void call(BuildContext context) {
     chatDatabaseCubit.setSelectedChat(chatTable);
-    print("OP OPEN CHAT");
-    print(chatDatabaseCubit.selectedChat);
     Navigator.of(context).pushNamed("/message");
   }
 }
