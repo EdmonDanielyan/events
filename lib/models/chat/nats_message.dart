@@ -35,6 +35,7 @@ class BaseMessage extends Message {
     this.createdAt = createdAt ?? DateTime.now();
     this.from = from ?? "";
     this.to = to ?? "";
+    this.sequence = Int64.ZERO;
   }
 
   Packer packer() {
@@ -78,6 +79,7 @@ class SystemPayload {
 
   static SystemPayload fromUnpacker(Unpacker unpacker) {
     final action = unpacker.unpackString()!;
+
     final dataMapLength = unpacker.unpackMapLength();
     Map<String, String> data = {};
     for (int i = 0; i < dataMapLength; i++) {
@@ -132,11 +134,13 @@ class NatsMessage extends BaseMessage {
     final unpacker = Unpacker(bytes);
     NatsMessage message = NatsMessage();
     message.id = unpacker.unpackString()!;
+
     message.type = unpacker.unpackString()!.toPayloadType();
     message.createdAt = DateTime.parse(unpacker.unpackString()!);
     message.needAck = unpacker.unpackBool()!;
     message.from = unpacker.unpackString()!;
     message.to = unpacker.unpackString()!;
+
     if (message.type == PayloadType.system) {
       message.payload = SystemPayload.fromUnpacker(unpacker);
     } else {
@@ -144,6 +148,7 @@ class NatsMessage extends BaseMessage {
           ? unpacker.unpackBinary()
           : unpacker.unpackString();
     }
+    print(message.payload);
     return message;
   }
 

@@ -63,8 +63,13 @@ class NatsProvider {
   Future<bool> sendSystemMessageToChannel(
       String channel, MessageType type, Map<String, String> fields) async {
     var userId = await _getUserId();
-    NatsMessage message = NatsMessage(from: userId, to: channel);
+    NatsMessage message = NatsMessage(
+      from: userId,
+      to: channel,
+    );
     message.setSystemPayload(type, fields);
+    print(type);
+    print(message);
     return _sendMessage(channel, message);
   }
 
@@ -120,7 +125,7 @@ class NatsProvider {
     return deviceVirtualId!;
   }
 
-  String _getPublicChatList() =>
+  String getPublicChatList() =>
       '$PUBLIC_CHATS.${describeEnum(MessageType.ChatList)}';
 
   String _getPrivateUserChatList(String userId) =>
@@ -128,6 +133,9 @@ class NatsProvider {
 
   String getPrivateUserTextChannel(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.Text)}.$userId';
+
+  String getInviteUserToJoinChatChannel(int userId) =>
+      '$PRIVATE_USER.${describeEnum(MessageType.InviteUserToJoinChat)}.$userId';
 
   NatsMessage _parseMessage(dataMessage) {
     var payload = (dataMessage as DataMessage).encodedPayload;
@@ -138,7 +146,7 @@ class NatsProvider {
   }
 
   Future<void> _listenPublicChatList({Int64 startSequence = Int64.ZERO}) async {
-    await listenChatList(_getPublicChatList(), publicChatIdList,
+    await listenChatList(getPublicChatList(), publicChatIdList,
         startSequence: startSequence);
   }
 
