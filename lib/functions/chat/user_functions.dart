@@ -7,12 +7,14 @@ class UserFunctions {
 
   const UserFunctions(this.chatDatabaseCubit);
 
-  void addMe() {
-    addUser(JwtPayload.myId, JwtPayload.myName, JwtPayload.myAvatar);
-  }
+  static UserTable get getMe => UserTable(
+        id: JwtPayload.myId,
+        name: JwtPayload.myName,
+        avatar: JwtPayload.myAvatar,
+      );
 
-  void addUser(int id, String name, String avatar) {
-    insertUser(UserTable(id: id, name: name, avatar: avatar));
+  void addMe() {
+    insertUser(getMe);
   }
 
   Future<int> insertUser(UserTable user) async {

@@ -31,12 +31,12 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
       await Token.setNewTokensIfExpired();
       final response =
           await sl.get<ContactsNetworkRequest>(param1: searchValue)();
+
       List<ChatUserSelect> users = response.mapResponse(hideMe: true);
       emitUsers(items: users);
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
-      throw error.exception;
     } on Exception catch (_) {
       emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();

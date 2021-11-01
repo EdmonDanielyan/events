@@ -134,7 +134,6 @@ class NatsMessage extends BaseMessage {
     final unpacker = Unpacker(bytes);
     NatsMessage message = NatsMessage();
     message.id = unpacker.unpackString()!;
-
     message.type = unpacker.unpackString()!.toPayloadType();
     message.createdAt = DateTime.parse(unpacker.unpackString()!);
     message.needAck = unpacker.unpackBool()!;
@@ -148,7 +147,6 @@ class NatsMessage extends BaseMessage {
           ? unpacker.unpackBinary()
           : unpacker.unpackString();
     }
-    print(message.payload);
     return message;
   }
 

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:dart_nats_streaming/dart_nats_streaming.dart';
 
 // ignore: implementation_imports
@@ -15,6 +17,7 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
 
 const PUBLIC_CHATS = 'ink.messaging.public';
+const GROUP_CHANNEL = 'ink.messaging.group';
 const PRIVATE_USER = 'ink.messaging.private';
 
 const ADD_ACTION = 'add';
@@ -68,8 +71,6 @@ class NatsProvider {
       to: channel,
     );
     message.setSystemPayload(type, fields);
-    print(type);
-    print(message);
     return _sendMessage(channel, message);
   }
 
@@ -82,6 +83,7 @@ class NatsProvider {
     if (!_channelSubscriptions.containsKey(channel)) {
       var subscription =
           await _subscribeToChannel(channel, startSequence: startSequence);
+
       _listenBySubscription(channel, subscription);
       _channelSubscriptions[channel] = subscription;
       _channelCallbacks[channel] = onMessageFuture;
@@ -128,13 +130,16 @@ class NatsProvider {
   String getPublicChatList() =>
       '$PUBLIC_CHATS.${describeEnum(MessageType.ChatList)}';
 
-  String _getPrivateUserChatList(String userId) =>
+  String getPrivateUserChatList(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.ChatList)}.$userId';
 
   String getPrivateUserTextChannel(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.Text)}.$userId';
 
-  String getInviteUserToJoinChatChannel(int userId) =>
+  String getGroupTextChannel(String chatId) =>
+      '$GROUP_CHANNEL.${describeEnum(MessageType.Text)}.$chatId';
+
+  String getInvitations(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.InviteUserToJoinChat)}.$userId';
 
   NatsMessage _parseMessage(dataMessage) {
@@ -153,7 +158,7 @@ class NatsProvider {
   Future<void> _listenPrivateUserChatList(
       {Int64 startSequence = Int64.ZERO}) async {
     var userId = await _getUserId();
-    await listenChatList(_getPrivateUserChatList(userId), userChatIdList,
+    await listenChatList(getPrivateUserChatList(userId), userChatIdList,
         startSequence: startSequence);
   }
 
@@ -197,6 +202,7 @@ class NatsProvider {
     await for (final dataMessage in subscription!.stream) {
       if (_channelSubscriptions.containsKey(channel)) {
         NatsMessage message = _parseMessage(dataMessage);
+
         await _onMessage(channel, message);
         Future<void> Function(String, NatsMessage) channelCallback =
             _channelCallbacks[channel]!;
@@ -214,6 +220,7 @@ class NatsProvider {
       (channel, message) async {
     //print("_onMessage [channel: $channel, message: $message]");
   };
+
   final _stan = Client();
   final Set<String> userChatIdList = {};
   final Set<String> publicChatIdList = {};

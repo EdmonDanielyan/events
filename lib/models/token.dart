@@ -56,7 +56,6 @@ class Token {
 
   static Future<bool> setNewTokensIfExpired() async {
     bool isJwtExpired = await Token.isJwtExpired();
-
     if (isJwtExpired) {
       await Token._setNewTokens();
     }
@@ -79,7 +78,6 @@ class Token {
           await auth.authRefreshPost(refreshTokenParams: refreshParams);
 
       final refreshDataMap = _response.data?.data.asMap;
-
       if (refreshDataMap != null) {
         String newRefresh = refreshDataMap['refresh_token'];
         String newJwt = refreshDataMap['token'];
@@ -164,6 +162,10 @@ class DeviceType {
 class JwtPayload {
   int expirationTime = 0;
   int? userId;
+  String? avatar;
+  String? name;
+  String? last_name;
+  String? second_name;
 
   static late int myId;
   static late String myAvatar;
@@ -172,6 +174,10 @@ class JwtPayload {
   JwtPayload(Map<String, dynamic> payloadMap) {
     this.expirationTime = payloadMap['exp'] ?? 0;
     this.userId = payloadMap['userId'];
+    this.avatar = payloadMap['avatar'];
+    this.name = payloadMap['name'];
+    this.last_name = payloadMap['last_name'];
+    this.second_name = payloadMap['second_name'];
 
     myId = payloadMap['userId'];
     myAvatar = payloadMap['avatar'] ?? "";

@@ -29,6 +29,8 @@ class DioErrorHandler {
       switch (response.code) {
         case "QMA-6":
           return invalidRefreshToken();
+        case "QMA-13":
+          return unknownErrorException(response.title, response.detail);
         case "QMA-15":
           return unknownErrorException(localizationInstance.userNotFound,
               localizationInstance.userNotFound);
