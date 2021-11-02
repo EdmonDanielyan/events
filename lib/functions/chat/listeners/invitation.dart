@@ -25,7 +25,8 @@ class ChatInvitationListener {
     required this.chatDatabaseCubit,
   });
 
-  String get channel => natsProvider.getInvitations(JwtPayload.myId);
+  String get channel =>
+      natsProvider.getInviteUserToJoinChatChannel(JwtPayload.myId);
 
   Future<void> listen() async {
     await natsProvider.subscribeToChannel(channel, onMessage);
@@ -40,7 +41,7 @@ class ChatInvitationListener {
         ChatListView.changeChatForParticipant(fields.chat, fields.users);
 
     await chatMessageListener.listenTo(fields.channel);
-    await chatSendMessage.saveToChatList(
+    await chatSendMessage.saveToPrivateUserChatIdList(
         userId: JwtPayload.myId, channel: channel, chat: chat);
 
     await ChatCreation(chatDatabaseCubit).createDynamically(chat, fields.users);
@@ -53,7 +54,7 @@ class ChatInvitationListener {
     required String chatChannel,
   }) async {
     await natsProvider.sendSystemMessageToChannel(
-      natsProvider.getInvitations(user.id),
+      natsProvider.getInviteUserToJoinChatChannel(user.id),
       MessageType.InviteUserToJoinChat,
       ChatInvitationFields(
         channel: chatChannel,

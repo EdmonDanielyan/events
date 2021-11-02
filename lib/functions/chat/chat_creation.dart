@@ -7,6 +7,7 @@ import 'package:ink_mobile/models/token.dart';
 
 class ChatCreation {
   final ChatDatabaseCubit chatDatabaseCubit;
+
   const ChatCreation(this.chatDatabaseCubit);
 
   static String get generateChatId =>

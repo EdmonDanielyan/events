@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 enum PayloadType { empty, message, document, system }
 
 extension PayloadTypeEx on String {
-  PayloadType toPayloadType() =>
-      PayloadType.values.firstWhere((d) => describeEnum(d) == toLowerCase());
+  PayloadType toPayloadType() => PayloadType.values
+      .firstWhere((d) => describeEnum(d).toLowerCase() == toLowerCase());
 }
 
 enum MessageType {

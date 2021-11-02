@@ -41,9 +41,12 @@ class MessageProvider {
   }
 
   bool isGroup(ChatTable chat) => chat.participantId == null;
-  String get getPublicChatList => natsProvider.getPublicChatList();
-  String getPivateTextChannel(String userId) =>
+
+  String get getPublicChatList => natsProvider.getPublicChatIdList();
+
+  String getPrivateTextChannel(String userId) =>
       natsProvider.getPrivateUserTextChannel(userId);
+
   String getChatChannel(String chatId) =>
       natsProvider.getGroupTextChannel(chatId);
 
@@ -92,7 +95,7 @@ class MessageProvider {
       }
     }
 
-    await chatSendMessage.saveToChatList(
+    await chatSendMessage.saveToPrivateUserChatIdList(
         userId: JwtPayload.myId, channel: chatChannel, chat: chat);
   }
 

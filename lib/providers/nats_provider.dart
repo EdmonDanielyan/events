@@ -19,8 +19,6 @@ import 'package:ink_mobile/models/token.dart';
 const PUBLIC_CHATS = 'ink.messaging.public';
 const GROUP_CHANNEL = 'ink.messaging.group';
 const PRIVATE_USER = 'ink.messaging.private';
-
-const ADD_ACTION = 'add';
 const DELETE_ACTION = 'delete';
 
 @singleton
@@ -36,8 +34,8 @@ class NatsProvider {
     if (!connected) {
       throw NoConnectionException();
     }
-    _listenPublicChatList();
-    _listenPrivateUserChatList();
+    _listenPublicChatIdList();
+    _listenPrivateUserChatIdList();
     var userId = await _getUserId();
     var channel = getPrivateUserTextChannel(userId);
     await subscribeToChannel(channel, (channel, message) async {});
@@ -47,19 +45,27 @@ class NatsProvider {
 
   /// Send [text] message to [channel]
   Future<bool> sendTextMessageToChannel(String channel, String text) async {
-    var userId = await _getUserId();
-    NatsMessage message = NatsMessage(from: userId, to: channel);
-    message.setPayload(text);
-    return _sendMessage(channel, message);
+    if (channel.contains(describeEnum(MessageType.Text))) {
+      var userId = await _getUserId();
+      NatsMessage message = NatsMessage(from: userId, to: channel);
+      message.setPayload(text);
+      return _sendMessage(channel, message);
+    } else {
+      throw WrongChannelUsedToPubMessageException(message: 'channel: $channel');
+    }
   }
 
   /// Send [document] message to [channel]
   Future<bool> sendDocumentMessageToChannel(
       String channel, List<int> document) async {
-    var userId = await _getUserId();
-    NatsMessage message = NatsMessage(from: userId, to: channel);
-    message.setBinaryPayload(document);
-    return _sendMessage(channel, message);
+    if (channel.contains(describeEnum(MessageType.Document))) {
+      var userId = await _getUserId();
+      NatsMessage message = NatsMessage(from: userId, to: channel);
+      message.setBinaryPayload(document);
+      return _sendMessage(channel, message);
+    } else {
+      throw WrongChannelUsedToPubMessageException(message: 'channel: $channel');
+    }
   }
 
   /// Send system message which contains [fields] to [channel] by [type]
@@ -83,11 +89,13 @@ class NatsProvider {
     if (!_channelSubscriptions.containsKey(channel)) {
       var subscription =
           await _subscribeToChannel(channel, startSequence: startSequence);
-
       _listenBySubscription(channel, subscription);
       _channelSubscriptions[channel] = subscription;
       _channelCallbacks[channel] = onMessageFuture;
+    } else {
+      throw SubscriptionAlreadyExistException(message: 'channel: $channel');
     }
+    print('_channelSubscriptions: ${_channelSubscriptions.keys}');
   }
 
   /// Unsubscribe from [channel] using [startSequence] if needed
@@ -98,6 +106,7 @@ class NatsProvider {
     if (_channelCallbacks.containsKey(channel)) {
       _channelCallbacks.remove(channel);
     }
+    print('_channelSubscriptions: ${_channelSubscriptions.keys}');
   }
 
   //////////////////////////////// NATS Protocol ///////////////////////////////
@@ -127,10 +136,10 @@ class NatsProvider {
     return deviceVirtualId!;
   }
 
-  String getPublicChatList() =>
+  String getPublicChatIdList() =>
       '$PUBLIC_CHATS.${describeEnum(MessageType.ChatList)}';
 
-  String getPrivateUserChatList(String userId) =>
+  String getPrivateUserChatIdList(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.ChatList)}.$userId';
 
   String getPrivateUserTextChannel(String userId) =>
@@ -139,7 +148,7 @@ class NatsProvider {
   String getGroupTextChannel(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.Text)}.$chatId';
 
-  String getInvitations(int userId) =>
+  String getInviteUserToJoinChatChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.InviteUserToJoinChat)}.$userId';
 
   NatsMessage _parseMessage(dataMessage) {
@@ -150,15 +159,15 @@ class NatsProvider {
     return message;
   }
 
-  Future<void> _listenPublicChatList({Int64 startSequence = Int64.ZERO}) async {
-    await listenChatList(getPublicChatList(), publicChatIdList,
+  Future<void> _listenPublicChatIdList({Int64 startSequence = Int64.ZERO}) async {
+    await listenChatList(getPublicChatIdList(), publicChatIdList,
         startSequence: startSequence);
   }
 
-  Future<void> _listenPrivateUserChatList(
+  Future<void> _listenPrivateUserChatIdList(
       {Int64 startSequence = Int64.ZERO}) async {
     var userId = await _getUserId();
-    await listenChatList(getPrivateUserChatList(userId), userChatIdList,
+    await listenChatList(getPrivateUserChatIdList(userId), userChatIdList,
         startSequence: startSequence);
   }
 
@@ -171,10 +180,10 @@ class NatsProvider {
       var systemPayload = message.getSystemPayload();
       if (systemPayload.type == MessageType.ChatList) {
         systemPayload.fields.forEach((channel, action) {
-          if (action == ADD_ACTION || action.isEmpty) {
-            chatIdList.add(channel);
-          } else if (action == DELETE_ACTION) {
+          if (action == DELETE_ACTION) {
             chatIdList.remove(channel);
+          } else {
+            chatIdList.add(channel);
           }
         });
       }
@@ -202,7 +211,6 @@ class NatsProvider {
     await for (final dataMessage in subscription!.stream) {
       if (_channelSubscriptions.containsKey(channel)) {
         NatsMessage message = _parseMessage(dataMessage);
-
         await _onMessage(channel, message);
         Future<void> Function(String, NatsMessage) channelCallback =
             _channelCallbacks[channel]!;
@@ -216,15 +224,12 @@ class NatsProvider {
     }
   }
 
-  final Future<void> Function(String, NatsMessage) _onMessage =
-      (channel, message) async {
-    //print("_onMessage [channel: $channel, message: $message]");
-  };
-
   final _stan = Client();
   final Set<String> userChatIdList = {};
   final Set<String> publicChatIdList = {};
   final Map<String, Subscription?> _channelSubscriptions = {};
+  final Future<void> Function(String, NatsMessage) _onMessage =
+      (channel, message) async {};
   final Map<String, Future<void> Function(String, NatsMessage)>
       _channelCallbacks = {};
 }

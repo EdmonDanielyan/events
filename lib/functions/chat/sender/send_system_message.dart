@@ -7,17 +7,34 @@ class ChatSendMessage {
 
   const ChatSendMessage(this.natsProvider);
 
-  Future<void> saveToChatList({
+  Future<void> saveToPrivateUserChatIdList({
     required int userId,
     required String channel,
     required ChatTable chat,
     bool public = false,
   }) async {
     await natsProvider.sendSystemMessageToChannel(
-      natsProvider.getPrivateUserChatList(userId.toString()),
+      natsProvider.getPrivateUserChatIdList(userId.toString()),
       MessageType.ChatList,
       {
-        channel: ADD_ACTION,
+        chat.id: "",
+        "channel": channel,
+        "chat": chat.toJsonString(),
+      },
+    );
+  }
+
+  Future<void> removeFromPrivateUserChatIdList({
+    required int userId,
+    required String channel,
+    required ChatTable chat,
+    bool public = false,
+  }) async {
+    await natsProvider.sendSystemMessageToChannel(
+      natsProvider.getPrivateUserChatIdList(userId.toString()),
+      MessageType.ChatList,
+      {
+        chat.id: DELETE_ACTION,
         "channel": channel,
         "chat": chat.toJsonString(),
       },
