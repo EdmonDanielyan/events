@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/token.dart';
 
 class ChatUser {
   int id;
@@ -109,6 +110,10 @@ class ChatUserViewModel {
 
   static UserTable getOwnerFromList(ChatTable chat, List<UserTable> users) {
     return users.firstWhere((element) => element.id == chat.ownerId);
+  }
+
+  static UserTable getOppositeUser(List<UserTable> users) {
+    return users.firstWhere((element) => element.id != JwtPayload.myId);
   }
 
   static UserTable getNotOwnerFromList(ChatTable chat, List<UserTable> users) {

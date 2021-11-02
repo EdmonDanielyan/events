@@ -74,6 +74,7 @@ class _BodyState extends State<Body> {
             builder: (context, AsyncSnapshot<List<MessageWithUser>?> snapshot) {
               if (snapshot.hasData) {
                 List<MessageWithUser> messagesWithUser = snapshot.data ?? [];
+
                 return ChatListTile(
                   highlightValue: _chatDatabaseCubit.searchVal,
                   index: index,

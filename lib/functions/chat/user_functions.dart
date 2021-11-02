@@ -21,9 +21,10 @@ class UserFunctions {
     UserTable? userExists = await chatDatabaseCubit.db.selectUserById(user.id);
     if (userExists == null) {
       return await chatDatabaseCubit.db.insertUser(user);
+    } else {
+      await chatDatabaseCubit.db.updateUser(userExists.id, user);
     }
-
-    return userExists.id;
+    return user.id;
   }
 
   Future<bool> insertUsers(List<UserTable> users) async {

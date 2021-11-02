@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
+import 'package:moor/moor.dart';
 
 enum MessageStatus { SENDING, SENT, READ, ERROR }
 enum MessageType { TEXT, DOCUMENT, PICTURE_VIDEO }
@@ -95,6 +98,41 @@ class MessageListView {
   static bool isByMe(MessageTable msg, {int? myId}) {
     myId = myId ?? JwtPayload.myId;
     return msg.userId == myId;
+  }
+
+  static Map<String, dynamic> toJson(MessageTable message) {
+    final json = message.toJson();
+    json["status"] = messageStatusToString(json["status"]);
+    return json;
+  }
+
+  static String toJsonString(MessageTable message) {
+    return jsonEncode(toJson(message));
+  }
+
+  static MessageTable fromJson(Map<String, dynamic> json) {
+    json["status"] = messageStatusStringToObject(json["status"]);
+    return MessageTable.fromJson(json);
+  }
+
+  static MessageTable fromString(String str) {
+    return fromJson(jsonDecode(str));
+  }
+
+  static String messageStatusToString(dynamic json) {
+    return "${json}";
+  }
+
+  static MessageStatus messageStatusStringToObject(String json) {
+    for (final value in MessageStatus.values) {
+      if (json
+          .toString()
+          .toLowerCase()
+          .contains(value.toString().toLowerCase())) {
+        return value;
+      }
+    }
+    return MessageStatus.ERROR;
   }
 
   static MessageType getType(ChatEntities entities) {

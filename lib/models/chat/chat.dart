@@ -80,12 +80,11 @@ class ChatListView {
 
   static ChatTable changeChatForParticipant(
       ChatTable chat, List<UserTable> users) {
-    UserTable owner = ChatUserViewModel.getOwnerFromList(chat, users);
-
     if (!ChatListView.isGroup(chat)) {
+      UserTable oppositeUser = ChatUserViewModel.getOppositeUser(users);
       chat = chat.copyWith(
-        name: owner.name,
-        avatar: owner.avatar,
+        name: oppositeUser.name,
+        avatar: oppositeUser.avatar,
       );
     }
     return chat;

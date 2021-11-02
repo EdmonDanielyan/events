@@ -13,7 +13,7 @@ extension GetContactsExt on Response<GetContacts> {
       ChatUserSelect user = ChatUserSelect(
         id: item['id'],
         name: "${item['name']} ${item['last_name']}".trim(),
-        avatar: item["avatar"] ?? "",
+        avatar: item["photo"] ?? "",
       );
 
       if (hideMe == true) {

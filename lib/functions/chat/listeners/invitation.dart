@@ -1,13 +1,11 @@
-import 'dart:convert';
-
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat.dart';
 import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
 import 'package:ink_mobile/models/chat/chat.dart';
-import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
@@ -37,7 +35,7 @@ class ChatInvitationListener {
     final mapPayload = message.payload! as SystemPayload;
     ChatInvitationFields fields =
         ChatInvitationFields.fromMap(mapPayload.fields);
-    ChatTable chat =
+    late ChatTable chat =
         ChatListView.changeChatForParticipant(fields.chat, fields.users);
 
     await chatMessageListener.listenTo(fields.channel);
@@ -63,37 +61,4 @@ class ChatInvitationListener {
       ).toMap(),
     );
   }
-}
-
-class ChatInvitationFields {
-  final String channel;
-  final ChatTable chat;
-  final List<UserTable> users;
-
-  ChatInvitationFields({
-    required this.channel,
-    required this.chat,
-    required this.users,
-  });
-
-  Map<String, String> toMap() {
-    return {
-      'channel': channel,
-      'chat': chat.toJsonString(),
-      'users': ChatUserViewModel.listUsersToString(users),
-    };
-  }
-
-  factory ChatInvitationFields.fromMap(Map<String, dynamic> map) {
-    return ChatInvitationFields(
-      channel: map['channel'],
-      chat: ChatTable.fromJson(jsonDecode(map['chat'])),
-      users: ChatUserViewModel.getUsersFromString(map['users']),
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory ChatInvitationFields.fromJson(String source) =>
-      ChatInvitationFields.fromMap(json.decode(source));
 }

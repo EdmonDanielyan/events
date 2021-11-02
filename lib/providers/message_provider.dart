@@ -26,9 +26,15 @@ class MessageProvider {
   late ChatMessageListener chatMessageListener;
   late ChatSendMessage chatSendMessage;
   late ChatCreation chatCreation;
+  late UserFunctions userFunctions;
 
   MessageProvider(this.natsProvider, this.chatDatabaseCubit) {
-    this.chatMessageListener = ChatMessageListener(natsProvider);
+    this.userFunctions = UserFunctions(chatDatabaseCubit);
+    this.chatMessageListener = ChatMessageListener(
+      natsProvider: natsProvider,
+      userFunctions: userFunctions,
+      chatDatabaseCubit: chatDatabaseCubit,
+    );
     this.chatSendMessage = ChatSendMessage(natsProvider);
     this.chatInvitationListener = ChatInvitationListener(
       natsProvider: natsProvider,
@@ -103,11 +109,21 @@ class MessageProvider {
     sendTxtMessage(chat, chatEntities);
   }
 
-  Future<void> sendTxtMessage(ChatTable chat, ChatEntities chatEntities) async {
-    SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)(chatEntities);
+  Future<void> sendTxtMessage(
+    ChatTable chat,
+    ChatEntities chatEntities, {
+    UserTable? user,
+  }) async {
+    final message = await SendMessage(
+      chatDatabaseCubit: chatDatabaseCubit,
+      chat: chat,
+    ).call(chatEntities);
+
     await chatSendMessage.sendTextMessage(
       getChatChannel(chat.id),
-      chatEntities.text,
+      chat,
+      message,
+      user ?? UserFunctions.getMe,
     );
   }
 }

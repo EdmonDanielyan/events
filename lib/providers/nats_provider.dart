@@ -159,7 +159,8 @@ class NatsProvider {
     return message;
   }
 
-  Future<void> _listenPublicChatIdList({Int64 startSequence = Int64.ZERO}) async {
+  Future<void> _listenPublicChatIdList(
+      {Int64 startSequence = Int64.ZERO}) async {
     await listenChatList(getPublicChatIdList(), publicChatIdList,
         startSequence: startSequence);
   }

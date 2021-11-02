@@ -18,8 +18,12 @@ class ChatCreation {
     late ChatTable? newChat;
 
     if (ChatListView.isGroup(chat)) {
-      newChat =
-          await createGroup(name: chat.name, avatar: chat.avatar, users: users);
+      newChat = await createGroup(
+        name: chat.name,
+        avatar: chat.avatar,
+        users: users,
+        chat: chat,
+      );
     } else {
       newChat = await isChatExists(users);
 
@@ -57,8 +61,9 @@ class ChatCreation {
     required String name,
     required String avatar,
     required List<UserTable> users,
+    ChatTable? chat,
   }) async {
-    var newChat = _makeChat(generateChatId, name, avatar);
+    var newChat = chat ?? _makeChat(generateChatId, name, avatar);
 
     await _insertChat(newChat);
     await UserFunctions(chatDatabaseCubit).insertUsers(users);
@@ -81,8 +86,12 @@ class ChatCreation {
   Future<List<ChatTable>> get _getAllChats async =>
       await chatDatabaseCubit.db.getAllChats();
 
-  ChatTable _makeChat(String id, String name, String avatar,
-      {int? participantId}) {
+  ChatTable _makeChat(
+    String id,
+    String name,
+    String avatar, {
+    int? participantId,
+  }) {
     return ChatTable(
       id: id,
       name: name,

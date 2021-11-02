@@ -90,6 +90,8 @@ class ChatDatabase extends _$ChatDatabase {
 
   //USER
   Future<int> insertUser(UserTable user) => into(userTables).insert(user);
+  Future<int> updateUser(int id, UserTable user) =>
+      (update(userTables)..where((tbl) => tbl.id.equals(id))).write(user);
   Future<UserTable?> selectUserById(int id) =>
       (select(userTables)..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
   Stream<UserTable> watchUser(int userId) =>

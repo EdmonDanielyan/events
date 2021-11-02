@@ -15,21 +15,28 @@ class SendMessage {
     required this.chat,
   });
 
-  void call(ChatEntities entities) {
-    _sendMessageToDatabase(entities);
-    ChatFunctions(chatDatabaseCubit).setChatToFirst(chat);
+  Future<MessageTable> call(ChatEntities entities) async {
+    final message = await _sendMessageToDatabase(entities);
+    return message;
   }
 
-  void _sendMessageToDatabase(ChatEntities chatEntities) {
-    chatDatabaseCubit.db.insertMessage(
-      MessageTable(
-        chatId: chat.id,
-        message: chatEntities.text,
-        userId: JwtPayload.myId,
-        read: false,
-        status: MessageStatus.SENDING,
-        created: new DateTime.now(),
-      ),
+  Future<MessageTable> _sendMessageToDatabase(ChatEntities chatEntities) async {
+    MessageTable message = MessageTable(
+      chatId: chat.id,
+      message: chatEntities.text,
+      userId: JwtPayload.myId,
+      read: false,
+      status: MessageStatus.SENDING,
+      created: new DateTime.now(),
     );
+    final messageId = await addMessage(message);
+    message = message.copyWith(id: messageId);
+    return message;
+  }
+
+  Future<int> addMessage(MessageTable message) async {
+    final messageId = await chatDatabaseCubit.db.insertMessage(message);
+    ChatFunctions(chatDatabaseCubit).setChatToFirst(chat);
+    return messageId;
   }
 }

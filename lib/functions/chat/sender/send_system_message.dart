@@ -1,5 +1,6 @@
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/nats/message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 class ChatSendMessage {
@@ -41,7 +42,17 @@ class ChatSendMessage {
     );
   }
 
-  Future<void> sendTextMessage(String channel, String text) async {
-    await natsProvider.sendTextMessageToChannel(channel, text);
+  Future<void> sendTextMessage(String channel, ChatTable chat,
+      MessageTable message, UserTable user) async {
+    await natsProvider.sendSystemMessageToChannel(
+      channel,
+      MessageType.Text,
+      ChatMessageFields(
+        channel: channel,
+        chat: chat,
+        message: message,
+        user: user,
+      ).toMap(),
+    );
   }
 }
