@@ -1,6 +1,5 @@
-import 'dart:ffi';
-
 import 'package:dart_nats_streaming/dart_nats_streaming.dart';
+import 'package:dart_nats/dart_nats.dart' as nats;
 
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/data_message.dart';
@@ -38,8 +37,8 @@ class NatsProvider {
     _listenPrivateUserChatIdList();
     var userId = await _getUserId();
     var channel = getPrivateUserTextChannel(userId);
-    await subscribeToChannel(channel, (channel, message) async {});
     sendTextMessageToChannel(channel, userId);
+    await subscribeToChannel(channel, (channel, message) async {});
     return true;
   }
 
@@ -113,9 +112,11 @@ class NatsProvider {
 
   Future<bool> _connect() async {
     var clientID = await _getUserId();
+    var natsToken = await _getNatsToken();
     var connectResult = await _stan.connect(
         host: Urls.natsHost,
         port: Urls.natsPort,
+        connectOption: nats.ConnectOption(auth_token: natsToken),
         clusterID: Urls.natsCluster,
         clientID: clientID);
     return connectResult;
@@ -134,6 +135,11 @@ class NatsProvider {
   Future<String> _getDeviceVirtualId() async {
     var deviceVirtualId = await Token.getDeviceVirtualId();
     return deviceVirtualId!;
+  }
+
+  Future<String> _getNatsToken() async {
+    var natsToken = await Token.getNatsToken();
+    return natsToken!;
   }
 
   String getPublicChatIdList() =>
@@ -230,7 +236,9 @@ class NatsProvider {
   final Set<String> publicChatIdList = {};
   final Map<String, Subscription?> _channelSubscriptions = {};
   final Future<void> Function(String, NatsMessage) _onMessage =
-      (channel, message) async {};
+      (channel, message) async {
+    print(message);
+  };
   final Map<String, Future<void> Function(String, NatsMessage)>
       _channelCallbacks = {};
 }

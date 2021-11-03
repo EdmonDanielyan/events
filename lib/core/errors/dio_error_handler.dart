@@ -34,7 +34,8 @@ class DioErrorHandler {
           return unknownErrorException(localizationInstance.userNotFound,
               localizationInstance.userNotFound);
         default:
-          return unknownErrorException(localizationInstance.errorOccurred, "");
+          return unknownErrorException(
+              localizationInstance.errorOccurred, response.detail);
       }
     }
 
