@@ -39,7 +39,7 @@ void main() async {
     };
     runApp(InkMobile(onAppStart: () async {
       NatsProvider natsProvider = sl<NatsProvider>();
-      final loaded = true; //await natsProvider.load();
+      final loaded = await natsProvider.load();
       UseMessageProvider.initMessageProvider(
           natsProvider, sl.get<ChatDatabaseCubit>());
       UseMessageProvider.messageProvider.init();

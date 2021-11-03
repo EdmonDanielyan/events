@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/selectable_widget.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -44,6 +43,7 @@ class MessageCard extends StatelessWidget {
         index: index,
         message: message,
         child: MessageSearchWrapper(
+          chatCubit: _chatCubit,
           message: message,
           child: Container(
             padding: EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 7),

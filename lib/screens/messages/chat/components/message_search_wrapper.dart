@@ -5,17 +5,18 @@ import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/items_search.dart';
-import 'package:ink_mobile/screens/messages/chat/chat_screen.dart';
 
 class MessageSearchWrapper extends StatelessWidget {
   final MessageTable message;
   final BorderRadiusGeometry? borderRadius;
   final Widget child;
+  final ChatCubit chatCubit;
   const MessageSearchWrapper({
     Key? key,
     required this.child,
     required this.message,
     this.borderRadius,
+    required this.chatCubit,
   }) : super(key: key);
 
   bool canDarken(ChatCubitState state) {
@@ -35,7 +36,7 @@ class MessageSearchWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatCubit, ChatCubitState>(
-      bloc: ChatScreen.of(context).chatCubit,
+      bloc: chatCubit,
       builder: (context, state) {
         if (canDarken(state)) {
           scroll(context);

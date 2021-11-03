@@ -27,7 +27,6 @@ class AuthNetworkRequest extends AuthRequestDependency {
                   .build(),
         )
         .timeout(Duration(seconds: 4));
-    print('auth_response: $response');
     return response;
   }
 }

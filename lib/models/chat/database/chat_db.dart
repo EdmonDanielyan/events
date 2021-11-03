@@ -101,6 +101,18 @@ class ChatDatabase extends _$ChatDatabase {
   Stream<UserTable> watchUser(int userId) =>
       (select(userTables)..where((tbl) => tbl.id.equals(userId))).watchSingle();
 
+  //CHANNEL
+  Future<List<ChannelTable>> getAllChannels() => select(channelTables).get();
+  Future<ChannelTable?> getChannelByChannelName(String channelName) =>
+      (select(channelTables)..where((tbl) => tbl.to.equals(channelName)))
+          .getSingleOrNull();
+  Future<int> insertChannel(ChannelTable channel) =>
+      into(channelTables).insert(channel);
+  Future<int> updateChannelByChannelName(
+          String channelName, ChannelTable channel) =>
+      (update(channelTables)..where((tbl) => tbl.to.equals(channelName)))
+          .write(channel);
+
   @override
   int get schemaVersion => 11;
 

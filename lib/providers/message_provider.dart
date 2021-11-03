@@ -3,6 +3,7 @@ import 'package:ink_mobile/functions/chat/chat_creation.dart';
 import 'package:ink_mobile/functions/chat/listeners/all.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat.dart';
 import 'package:ink_mobile/functions/chat/listeners/invitation.dart';
+import 'package:ink_mobile/functions/chat/channel_functions.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
@@ -29,9 +30,11 @@ class MessageProvider {
   late ChatCreation chatCreation;
   late UserFunctions userFunctions;
   late NatsListener natsListener;
+  late ChannelFunctions channelFunctions;
 
   MessageProvider(this.natsProvider, this.chatDatabaseCubit) {
     this.userFunctions = UserFunctions(chatDatabaseCubit);
+    this.channelFunctions = ChannelFunctions(chatDatabaseCubit);
     this.chatMessageListener = ChatMessageListener(
       natsProvider: natsProvider,
       userFunctions: userFunctions,
@@ -44,8 +47,12 @@ class MessageProvider {
       chatSendMessage: chatSendMessage,
       chatDatabaseCubit: chatDatabaseCubit,
     );
-    natsListener = NatsListener(natsProvider: natsProvider);
-    chatCreation = ChatCreation(chatDatabaseCubit);
+    this.natsListener = NatsListener(
+      natsProvider: natsProvider,
+      chatDatabaseCubit: chatDatabaseCubit,
+      channelFunctions: channelFunctions,
+    );
+    this.chatCreation = ChatCreation(chatDatabaseCubit);
   }
 
   bool isGroup(ChatTable chat) => chat.participantId == null;
@@ -61,7 +68,8 @@ class MessageProvider {
   void init() async {
     UserFunctions(chatDatabaseCubit).addMe();
     chatInvitationListener.listen();
-    natsListener.listenToAll();
+    // natsListener.listenToAllMessages();
+    // natsListener.listenToMyStoredChannels();
 
     print(natsProvider.userChatIdList);
     print(natsProvider.publicChatIdList);
