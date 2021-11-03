@@ -109,22 +109,15 @@ class NatsProvider {
   Future<bool> _connect() async {
     var clientID = await _getUserId();
     var natsToken = await _getNatsToken();
-    // var natsCert = await rootBundle.load(Urls.natsCertPath);
-    // var connectResult = await _stan.connectUri(
-    //     Uri.parse("wss://${Urls.natsHost}:${Urls.natsWssPort}"),
-    //     certificate: natsCert.buffer
-    //         .asUint8List(natsCert.offsetInBytes, natsCert.lengthInBytes)
-    //         .cast<int>(),
-    //     clusterID: Urls.natsHost,
-    //     clientID: clientID,
-    //     connectOption:
-    //         nats.ConnectOption(tlsRequired: true, auth_token: natsToken));
-    var connectResult = await _stan.connect(
-        host: Urls.natsHost,
-        port: Urls.natsPort,
-        connectOption: nats.ConnectOption(auth_token: natsToken),
+    var natsCert = await rootBundle.load(Urls.natsCertPath);
+    var _certificate = natsCert.buffer.asUint8List();
+    var connectResult = await _stan.connectUri(
+        Uri.parse(Urls.natsWssUrl),
+        certificate: _certificate,
         clusterID: Urls.natsCluster,
-        clientID: clientID);
+        clientID: clientID,
+        connectOption:
+            nats.ConnectOption(tlsRequired: true, auth_token: natsToken));
     return connectResult;
   }
 
