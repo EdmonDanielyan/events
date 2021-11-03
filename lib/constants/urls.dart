@@ -4,6 +4,7 @@ class Urls {
   static bool appDebugMode = false;
   static String natsHost = "cloud.jetrabbits.com";
   static int natsPort = 7070;
+  static int natsWssPort = 9090;
   static String natsCluster = "test-cluster";
 
   static load() {
@@ -11,6 +12,7 @@ class Urls {
       appDebugMode = true;
       natsHost = "cloud.jetrabbits.com";
       natsPort = 7070;
+      natsWssPort = 9090;
       natsCluster = "test-cluster";
     }
   }
