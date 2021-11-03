@@ -1,13 +1,13 @@
-import 'package:dart_nats_streaming/dart_nats_streaming.dart';
-import 'package:dart_nats/dart_nats.dart' as nats;
 
+import 'package:dart_nats/dart_nats.dart' as nats;
+import 'package:dart_nats_streaming/dart_nats_streaming.dart';
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/data_message.dart';
-
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/subscription.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
@@ -35,10 +35,6 @@ class NatsProvider {
     }
     _listenPublicChatIdList();
     _listenPrivateUserChatIdList();
-    var userId = await _getUserId();
-    var channel = getPrivateUserTextChannel(userId);
-    sendTextMessageToChannel(channel, userId);
-    await subscribeToChannel(channel, (channel, message) async {});
     return true;
   }
 
@@ -113,6 +109,16 @@ class NatsProvider {
   Future<bool> _connect() async {
     var clientID = await _getUserId();
     var natsToken = await _getNatsToken();
+    // var natsCert = await rootBundle.load(Urls.natsCertPath);
+    // var connectResult = await _stan.connectUri(
+    //     Uri.parse("wss://${Urls.natsHost}:${Urls.natsWssPort}"),
+    //     certificate: natsCert.buffer
+    //         .asUint8List(natsCert.offsetInBytes, natsCert.lengthInBytes)
+    //         .cast<int>(),
+    //     clusterID: Urls.natsHost,
+    //     clientID: clientID,
+    //     connectOption:
+    //         nats.ConnectOption(tlsRequired: true, auth_token: natsToken));
     var connectResult = await _stan.connect(
         host: Urls.natsHost,
         port: Urls.natsPort,

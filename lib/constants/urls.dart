@@ -6,6 +6,7 @@ class Urls {
   static int natsPort = 7070;
   static int natsWssPort = 9090;
   static String natsCluster = "test-cluster";
+  static String natsCertPath = "assets/certs/default.pem";
 
   static load() {
     if(kReleaseMode){
