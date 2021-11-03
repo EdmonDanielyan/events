@@ -15,6 +15,9 @@ class SendMessage {
     required this.chat,
   });
 
+  static String get generateMessageId =>
+      "${JwtPayload.myId}_${new DateTime.now().millisecondsSinceEpoch}";
+
   Future<MessageTable> call(ChatEntities entities) async {
     final message = await _sendMessageToDatabase(entities);
     return message;
@@ -22,6 +25,7 @@ class SendMessage {
 
   Future<MessageTable> _sendMessageToDatabase(ChatEntities chatEntities) async {
     MessageTable message = MessageTable(
+      id: generateMessageId,
       chatId: chat.id,
       message: chatEntities.text,
       userId: JwtPayload.myId,
@@ -29,8 +33,7 @@ class SendMessage {
       status: MessageStatus.SENDING,
       created: new DateTime.now(),
     );
-    final messageId = await addMessage(message);
-    message = message.copyWith(id: messageId);
+    await addMessage(message);
     return message;
   }
 

@@ -274,7 +274,7 @@ packages:
     description:
       path: "extras/encryption"
       ref: HEAD
-      resolved-ref: "5f8b74c8df1450c1d585e0e124d15b9046f9dfa4"
+      resolved-ref: "594b5f43c54cf03218099c895f2ada5ff12d0b09"
       url: "https://github.com/simolus3/moor.git"
     source: git
     version: "1.0.0"

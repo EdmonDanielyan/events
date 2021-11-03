@@ -41,7 +41,7 @@ class HoverMessage extends StatelessWidget {
   }
 
   void _onRespond() {
-    _chatCubit.emitSelectedMessageId(message.id);
+    //_chatCubit.emitSelectedMessageId(message.id);
   }
 
   void _onSelect() {

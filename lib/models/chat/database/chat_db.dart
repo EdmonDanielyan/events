@@ -114,7 +114,7 @@ class ChatDatabase extends _$ChatDatabase {
           .write(channel);
 
   @override
-  int get schemaVersion => 11;
+  int get schemaVersion => 13;
 
   @override
   //USED TO AVOID APP CRASH AFTER CHANING DB

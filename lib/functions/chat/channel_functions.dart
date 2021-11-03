@@ -28,6 +28,14 @@ class ChannelFunctions {
     return await chatDatabaseCubit.db.insertChannel(channel);
   }
 
+  Future<int?> insertIfNotExists(ChannelTable channel) async {
+    bool isChannelExists = await channelExists(channel);
+
+    if (!isChannelExists) {
+      await insertChannel(channel);
+    }
+  }
+
   Future<int?> updateChannel(ChannelTable channel) async {
     return await chatDatabaseCubit.db
         .updateChannelByChannelName(channel.to, channel);

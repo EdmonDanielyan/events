@@ -51,6 +51,8 @@ class MessageProvider {
       natsProvider: natsProvider,
       chatDatabaseCubit: chatDatabaseCubit,
       channelFunctions: channelFunctions,
+      chatMessageListener: chatMessageListener,
+      chatInvitationListener: chatInvitationListener,
     );
     this.chatCreation = ChatCreation(chatDatabaseCubit);
   }
@@ -67,12 +69,8 @@ class MessageProvider {
 
   void init() async {
     UserFunctions(chatDatabaseCubit).addMe();
-    chatInvitationListener.listen();
-    // natsListener.listenToAllMessages();
-    // natsListener.listenToMyStoredChannels();
-
-    print(natsProvider.userChatIdList);
-    print(natsProvider.publicChatIdList);
+    natsListener.listenToAllMessages();
+    natsListener.listenToMyChannels();
   }
 
   Future<ChatTable> createChat(UserTable user) async {

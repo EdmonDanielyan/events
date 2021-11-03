@@ -9,6 +9,7 @@ import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
+import 'package:fixnum/fixnum.dart';
 
 class ChatInvitationListener {
   final NatsProvider natsProvider;
@@ -23,11 +24,13 @@ class ChatInvitationListener {
     required this.chatDatabaseCubit,
   });
 
-  String get channel =>
-      natsProvider.getInviteUserToJoinChatChannel(JwtPayload.myId);
-
-  Future<void> listen() async {
-    await natsProvider.subscribeToChannel(channel, onMessage);
+  Future<void> listenTo(String channel,
+      {Int64 startSequence = Int64.ZERO}) async {
+    await natsProvider.subscribeToChannel(
+      channel,
+      onMessage,
+      startSequence: Int64.parseInt("5"),
+    );
   }
 
   Future<void> onMessage(String channel, NatsMessage message) async {
