@@ -7,7 +7,7 @@ class Urls {
   static String natsCluster = "test-cluster";
 
   static load() {
-    if(kReleaseMode){
+    if (kReleaseMode) {
       appDebugMode = true;
       natsHost = "cloud.jetrabbits.com";
       natsPort = 7070;

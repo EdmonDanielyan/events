@@ -5,7 +5,8 @@ import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:intl/intl.dart';
 
 class AnnouncementsListElement extends StatelessWidget {
-  static const String DEFAULT_PREVIEW_PICTURE_LINK = 'assets/images/default_news.jpg';
+  static const String DEFAULT_PREVIEW_PICTURE_LINK =
+      'assets/images/default_news.jpg';
   final AnnouncementData announcement;
 
   const AnnouncementsListElement({Key? key, required this.announcement})

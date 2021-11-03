@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/constants/error_codes.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
@@ -9,7 +10,7 @@ class DioErrorHandler {
 
   DioErrorHandler({required this.e});
 
-  List<String> emptyResponseCodes = ["QMA-32", "QMA-33"];
+  List<String> emptyResponseCodes = [QMA_32, QMA_33];
 
   bool isEmpty() {
     if (e.type == DioErrorType.response) {
@@ -26,11 +27,11 @@ class DioErrorHandler {
     if (e.type == DioErrorType.response) {
       ErrorResponse response = ErrorResponse.fromException(e);
       switch (response.code) {
-        case "QMA-6":
+        case QMA_6:
           return invalidRefreshToken();
-        case "QMA-13":
+        case QMA_13:
           return unknownErrorException(response.title, response.detail);
-        case "QMA-15":
+        case QMA_15:
           return unknownErrorException(localizationInstance.userNotFound,
               localizationInstance.userNotFound);
         default:

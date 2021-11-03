@@ -4,11 +4,8 @@ class SearchContainer extends StatelessWidget {
   final String label;
   final List<Widget> items;
 
-  const SearchContainer({
-    Key? key,
-    required this.label,
-    required this.items
-  }) : super(key: key);
+  const SearchContainer({Key? key, required this.label, required this.items})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,18 +14,11 @@ class SearchContainer extends StatelessWidget {
         children: [
           Container(
               alignment: Alignment.bottomLeft,
-              margin: EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 10
-              ),
+              margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               child: Text(
                 label,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16
-                ),
-              )
-          ),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              )),
           Column(
             children: items,
           )

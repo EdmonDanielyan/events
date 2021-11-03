@@ -49,7 +49,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    _chatCubit = BlocProvider.of<ChatCubit>(context);
+    _chatCubit = ChatScreen.of(context).chatCubit;
     _chatDatabaseCubit = ChatScreen.of(context).chatDatabaseCubit;
     return SafeArea(
       child: Container(
@@ -96,6 +96,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
   Widget _respondContainerWidget() {
     return BlocConsumer<ChatCubit, ChatCubitState>(
+      bloc: _chatCubit,
       listener: (context, state) {
         if (state.selectedMessageId != _chatCubit.previousSelectedMessageId) {
           if (state.selectedMessageId != null) {

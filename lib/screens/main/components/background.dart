@@ -9,17 +9,13 @@ class Background extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
         child: Container(
-            child: Stack(
-              children: [
-                Container(
-                  alignment: Alignment.topLeft,
-                  width: size.width,
-                  child: child,
-                  decoration: BoxDecoration(color: Color(0xFFF9F9F9)),
-                )
-              ]
-            )
-        )
-    );
+            child: Stack(children: [
+      Container(
+        alignment: Alignment.topLeft,
+        width: size.width,
+        child: child,
+        decoration: BoxDecoration(color: Color(0xFFF9F9F9)),
+      )
+    ])));
   }
 }

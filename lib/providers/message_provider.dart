@@ -1,5 +1,6 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
+import 'package:ink_mobile/functions/chat/listeners/all.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat.dart';
 import 'package:ink_mobile/functions/chat/listeners/invitation.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
@@ -27,6 +28,7 @@ class MessageProvider {
   late ChatSendMessage chatSendMessage;
   late ChatCreation chatCreation;
   late UserFunctions userFunctions;
+  late NatsListener natsListener;
 
   MessageProvider(this.natsProvider, this.chatDatabaseCubit) {
     this.userFunctions = UserFunctions(chatDatabaseCubit);
@@ -42,7 +44,7 @@ class MessageProvider {
       chatSendMessage: chatSendMessage,
       chatDatabaseCubit: chatDatabaseCubit,
     );
-
+    natsListener = NatsListener(natsProvider: natsProvider);
     chatCreation = ChatCreation(chatDatabaseCubit);
   }
 
@@ -58,7 +60,8 @@ class MessageProvider {
 
   void init() async {
     UserFunctions(chatDatabaseCubit).addMe();
-    await chatInvitationListener.listen();
+    chatInvitationListener.listen();
+    natsListener.listenToAll();
 
     print(natsProvider.userChatIdList);
     print(natsProvider.publicChatIdList);
@@ -105,8 +108,8 @@ class MessageProvider {
         userId: JwtPayload.myId, channel: chatChannel, chat: chat);
   }
 
-  void sendMessage(ChatTable chat, ChatEntities chatEntities) {
-    sendTxtMessage(chat, chatEntities);
+  Future<void> sendMessage(ChatTable chat, ChatEntities chatEntities) async {
+    await sendTxtMessage(chat, chatEntities);
   }
 
   Future<void> sendTxtMessage(

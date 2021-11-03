@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message.dart';
 import 'package:ink_mobile/models/items_search.dart';
 
@@ -9,7 +10,8 @@ import 'chat_state.dart';
 @injectable
 class ChatCubit extends Cubit<ChatCubitState> {
   int? previousSelectedMessageId;
-  ChatCubit() : super(ChatCubitState(messagesSearch: ItemsSearch<Message>()));
+  ChatCubit()
+      : super(ChatCubitState(messagesSearch: ItemsSearch<MessageTable>()));
 
   List<Message> get getMessages => []; // state.chat.messages;
   List<Message> get getSelectedMessages =>
@@ -47,12 +49,12 @@ class ChatCubit extends Cubit<ChatCubitState> {
   }
 
   void emptySearch() {
-    ItemsSearch<Message> item = state.messagesSearch
-        .copyWith(items: List<Message>.empty(), searchValue: "");
+    ItemsSearch<MessageTable> item = state.messagesSearch
+        .copyWith(items: List<MessageTable>.empty(), searchValue: "");
     emitMessageSearch(item);
   }
 
-  void emitMessageSearch(ItemsSearch<Message> messagesSearch) {
+  void emitMessageSearch(ItemsSearch<MessageTable> messagesSearch) {
     emit(state.copyWith(messagesSearch: messagesSearch));
   }
 

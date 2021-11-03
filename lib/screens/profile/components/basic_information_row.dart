@@ -4,11 +4,8 @@ class BasicInfoRow extends StatelessWidget {
   final String title;
   final String value;
 
-  const BasicInfoRow({
-    Key? key,
-    required this.title,
-    required this.value
-  }) : super(key: key);
+  const BasicInfoRow({Key? key, required this.title, required this.value})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +19,9 @@ class BasicInfoRow extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border(
-            top: BorderSide(
-                color: Colors.grey.shade400,
-                width: 0.5
-            ),
-            bottom: BorderSide(
-                color: Colors.grey.shade400,
-                width: 0.5
-            ),
-          )
-      ),
+            top: BorderSide(color: Colors.grey.shade400, width: 0.5),
+            bottom: BorderSide(color: Colors.grey.shade400, width: 0.5),
+          )),
       width: size.width,
       child: Padding(
           padding: EdgeInsets.only(left: 20, top: 20, bottom: 20),
@@ -42,9 +32,7 @@ class BasicInfoRow extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                      color: Theme.of(context).accentColor,
-                      fontSize: 14
-                  ),
+                      color: Theme.of(context).accentColor, fontSize: 14),
                 ),
                 Text(
                   value,
@@ -52,9 +40,7 @@ class BasicInfoRow extends StatelessWidget {
                 )
               ],
             ),
-          )
-      ),
+          )),
     );
   }
-
 }

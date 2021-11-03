@@ -3,7 +3,6 @@ import 'package:ink_mobile/components/static_slider/static_slider_painer.dart';
 import 'package:smooth_page_indicator/src/effects/indicator_effect.dart';
 import 'package:smooth_page_indicator/src/painters/indicator_painter.dart';
 
-
 class StaticSliderEffect extends IndicatorEffect {
   final double activeDotHeight;
   final double activeDotRadius;
@@ -23,15 +22,15 @@ class StaticSliderEffect extends IndicatorEffect {
     double strokeWidth = 1.0,
     PaintingStyle paintStyle = PaintingStyle.fill,
   }) : super(
-    dotWidth: dotWidth,
-    dotHeight: dotHeight,
-    spacing: spacing,
-    radius: radius,
-    strokeWidth: strokeWidth,
-    paintStyle: paintStyle,
-    dotColor: dotColor,
-    activeDotColor: activeDotColor,
-  );
+          dotWidth: dotWidth,
+          dotHeight: dotHeight,
+          spacing: spacing,
+          radius: radius,
+          strokeWidth: strokeWidth,
+          paintStyle: paintStyle,
+          dotColor: dotColor,
+          activeDotColor: activeDotColor,
+        );
 
   get actDotRadius => Radius.circular(activeDotRadius);
 

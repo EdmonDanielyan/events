@@ -9,6 +9,8 @@ import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/screens/messages/chat/components/bottom_bar.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_list.dart';
 
+import '../chat_screen.dart';
+
 class ChatBody extends StatefulWidget {
   const ChatBody({Key? key}) : super(key: key);
 
@@ -49,6 +51,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
           ),
         ),
         BlocBuilder<ChatCubit, ChatCubitState>(
+          bloc: ChatScreen.of(context).chatCubit,
           builder: (context, state) {
             if (state.appBarEnum != ChatAppBarEnums.SEARCH_BAR) {
               return MessageBottomBar(scrollController: controller);

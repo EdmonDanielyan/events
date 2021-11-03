@@ -7,15 +7,12 @@ import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/setup.dart';
 
 class GlobalProvider {
-  static ChatDatabaseCubit get chatDatabaseCubit => sl.get<ChatDatabaseCubit>();
-
   static List<dynamic> getProviders(BuildContext context) {
     return [
       BlocProvider(create: (context) => sl.get<ChatDatabaseCubit>()),
       BlocProvider(create: (context) => sl.get<NewBottomNavBarCubit>()),
-      BlocProvider(create: (context) => sl.get<ChatCubit>()),
-      BlocProvider(create: (context) => sl.get<ChatPersonListCubit>()),
-      BlocProvider(create: (context) => ChatDatabaseCubit())
+      //BlocProvider(create: (context) => sl.get<ChatCubit>()),
+      BlocProvider(create: (context) => sl.get<ChatPersonListCubit>())
     ];
   }
 }

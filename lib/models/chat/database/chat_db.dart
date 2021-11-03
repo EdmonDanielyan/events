@@ -1,6 +1,9 @@
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/extensions/nats_extension.dart';
+
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/database/tables/admin_table.dart';
+import 'package:ink_mobile/models/chat/database/tables/channel.dart';
 import 'package:ink_mobile/models/chat/database/tables/chat_table.dart';
 import 'package:ink_mobile/models/chat/database/tables/message_table.dart';
 import 'package:ink_mobile/models/chat/database/tables/participant_table.dart';
@@ -17,7 +20,8 @@ part 'chat_db.g.dart';
   MessageTables,
   UserTables,
   AdminTables,
-  ParticipantTables
+  ParticipantTables,
+  ChannelTables
 ])
 class ChatDatabase extends _$ChatDatabase {
   ChatDatabase()
@@ -98,5 +102,11 @@ class ChatDatabase extends _$ChatDatabase {
       (select(userTables)..where((tbl) => tbl.id.equals(userId))).watchSingle();
 
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 11;
+
+  @override
+  //USED TO AVOID APP CRASH AFTER CHANING DB
+  MigrationStrategy get migration => MigrationStrategy(
+        onUpgrade: (migrator, from, to) async {},
+      );
 }

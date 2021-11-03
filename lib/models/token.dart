@@ -130,6 +130,18 @@ class Token {
     FlutterSecureStorage storage = Storage.getInstance();
     return await storage.read(key: DeviceTypes.virtualId.key);
   }
+
+  static Future<void> setNatsToken() async {
+    JwtPayload? payload = await Token.getJwtPayloadObject();
+    FlutterSecureStorage storage = Storage.getInstance();
+    await storage.write(
+        key: NatsTypes.natsToken.key, value: payload!.natsToken);
+  }
+
+  static Future<String?> getNatsToken() async {
+    FlutterSecureStorage storage = Storage.getInstance();
+    return await storage.read(key: NatsTypes.natsToken.key);
+  }
 }
 
 class Storage {
@@ -154,30 +166,37 @@ class DeviceTypes {
   static const TokenType virtualId = TokenType('virtualId');
 }
 
+class NatsTypes {
+  static const TokenType natsToken = TokenType('natsToken');
+}
+
 class DeviceType {
   final String key;
   const DeviceType(String key) : key = key;
 }
 
 class JwtPayload {
+  String natsToken = '';
+
   int expirationTime = 0;
-  int? userId;
-  String? avatar;
-  String? name;
-  String? last_name;
-  String? second_name;
+  int userId = 0;
+  String avatar = '';
+  String name = '';
+  String lastName = '';
+  String secondName = '';
 
   static late int myId;
   static late String myAvatar;
   static late String myName;
 
   JwtPayload(Map<String, dynamic> payloadMap) {
-    this.expirationTime = payloadMap['exp'] ?? 0;
+    this.natsToken = payloadMap['nats_token'] ?? null;
+    this.expirationTime = payloadMap['exp'];
     this.userId = payloadMap['userId'];
     this.avatar = payloadMap['avatar'];
     this.name = payloadMap['name'];
-    this.last_name = payloadMap['last_name'];
-    this.second_name = payloadMap['second_name'];
+    this.lastName = payloadMap['last_name'];
+    this.secondName = payloadMap['second_name'];
 
     myId = payloadMap['userId'];
     myAvatar = payloadMap['avatar'] ?? "";

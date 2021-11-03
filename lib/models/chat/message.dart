@@ -1,14 +1,13 @@
 import 'dart:convert';
 
+import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
-import 'package:moor/moor.dart';
 
 enum MessageStatus { SENDING, SENT, READ, ERROR }
-enum MessageType { TEXT, DOCUMENT, PICTURE_VIDEO }
 
 class Message {
   final int id;
@@ -28,7 +27,7 @@ class Message {
     required this.user,
     required this.message,
     required this.messageDate,
-    this.type = MessageType.TEXT,
+    this.type = MessageType.Text,
     this.status = MessageStatus.ERROR,
     this.selectedMessageId,
     this.sentOn = false,
@@ -136,13 +135,10 @@ class MessageListView {
   }
 
   static MessageType getType(ChatEntities entities) {
-    if (entities.picsVids != null && entities.picsVids!.length > 0)
-      return MessageType.PICTURE_VIDEO;
-
     if (entities.files != null && entities.files!.length > 0)
-      return MessageType.DOCUMENT;
+      return MessageType.Document;
 
-    return MessageType.TEXT;
+    return MessageType.Text;
   }
 
   static List<Message> makeMessagesSendOn(List<Message> messages) {

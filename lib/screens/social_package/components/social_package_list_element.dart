@@ -19,33 +19,25 @@ class SocialPackageListElement extends StatelessWidget {
             alignment: Alignment.center,
             padding: EdgeInsets.symmetric(vertical: 10),
             height: 60,
-            child: Row(
+            child: Row(children: [
+              Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Text(
+                    title,
+                    style: TextStyle(fontSize: 15),
+                    overflow: TextOverflow.ellipsis,
+                  )),
+              Expanded(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                            fontSize: 15
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      )
-                  ),
-                  Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: 12,
-                            color: Theme.of(context).primaryColor,
-                          )
-                        ],
-                      )
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 12,
+                    color: Theme.of(context).primaryColor,
                   )
-                ]
-            )
-        )
-    );
+                ],
+              ))
+            ])));
   }
 }

@@ -32,31 +32,19 @@ class Awards extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border(
-                        top: BorderSide(
-                            color: Colors.grey.shade400,
-                            width: 0.5
-                        ),
-                        bottom: BorderSide(
-                            color: Colors.grey.shade400,
-                            width: 0.5
-                        ),
-                      )
-                  ),
+                        top:
+                            BorderSide(color: Colors.grey.shade400, width: 0.5),
+                        bottom:
+                            BorderSide(color: Colors.grey.shade400, width: 0.5),
+                      )),
                   child: Container(
                       child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Container(
                               margin: EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Row(
-                                  children: getAwards()
-                              )
-                          )
-                      )
-                  )
-              )
+                              child: Row(children: getAwards())))))
             ],
-          )
-      );
+          ));
     } else {
       return Container();
     }
