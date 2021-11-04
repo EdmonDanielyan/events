@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/cubit/auth/sources/network.dart';
 import 'package:ink_mobile/cubit/auth/auth_state.dart';
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/extensions/auth_success.dart';
 
@@ -26,12 +28,9 @@ class AuthCubit extends Cubit<AuthState> {
       emitError(localizationInstance.noConnectionError);
       throw FormatException(localizationInstance.noConnectionError);
     } on DioError catch (e) {
-      String message = (e.type == DioErrorType.response)
-          ? e.response?.data['detail']
-          : localizationInstance.noConnectionError;
-
-      emitError(message);
-      throw FormatException(message);
+      ErrorModel error = DioErrorHandler(e: e).call();
+      emitError(error.msg);
+      throw error.exception;
     } on Exception catch (_) {
       emitError(localizationInstance.unknownError);
       throw FormatException(localizationInstance.unknownError);

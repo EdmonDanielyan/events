@@ -16,6 +16,7 @@ extension AuthSuccessExt on Response<AuthSuccess> {
 
       await Token.setRefresh(refreshToken);
       await Token.setJwt(token);
+      await Token.setNatsToken();
       await Token.setDeviceVirtualIdIfEmpty();
       GetIt.I<AuthHandler>().onSuccessAuth();
       return true;

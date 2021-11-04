@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 abstract class SearchData {
   int id;
 

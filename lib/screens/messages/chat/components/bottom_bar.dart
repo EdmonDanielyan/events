@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/send_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
@@ -28,15 +28,17 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   final _formKey = GlobalKey<FormState>();
   final _padding = 7.0;
 
-  void onSend() {
+  Future<void> onSend() async {
     if (entities.text.isNotEmpty) {
       clearForm();
       // Message message = ChatEntitiesFunctions.buildMessage(
       //   entities: entities,
       //   selectedMessageId: _chatCubit.state.selectedMessageId,
       // );
-      ChatFunctions(_chatDatabaseCubit)
-          .sendTextMessage(_chatDatabaseCubit.selectedChat!, entities);
+
+      await UseMessageProvider.messageProvider
+          .sendMessage(_chatDatabaseCubit.selectedChat!, entities);
+      _chatCubit.updateMessages(_chatDatabaseCubit);
       entities.clear();
       ScrollBottom(widget.scrollController).jumpLazy();
     }
@@ -48,7 +50,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    _chatCubit = BlocProvider.of<ChatCubit>(context);
+    _chatCubit = ChatScreen.of(context).chatCubit;
     _chatDatabaseCubit = ChatScreen.of(context).chatDatabaseCubit;
     return SafeArea(
       child: Container(
@@ -95,14 +97,15 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
   Widget _respondContainerWidget() {
     return BlocConsumer<ChatCubit, ChatCubitState>(
+      bloc: _chatCubit,
       listener: (context, state) {
-        if (state.selectedMessageId != _chatCubit.previousSelectedMessageId) {
-          if (state.selectedMessageId != null) {
-            textfieldFocus.requestFocus();
-          } else {
-            textfieldFocus.unfocus();
-          }
-        }
+        // if (state.selectedMessageId != _chatCubit.previousSelectedMessageId) {
+        //   if (state.selectedMessageId != null) {
+        //     textfieldFocus.requestFocus();
+        //   } else {
+        //     textfieldFocus.unfocus();
+        //   }
+        // }
       },
       builder: (context, state) {
         if (state.selectedMessageId == null) {

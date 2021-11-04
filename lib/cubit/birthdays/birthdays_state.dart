@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 
-enum BirthdaysStateType {LOADING, LOADED, ERROR, EMPTY}
+enum BirthdaysStateType { LOADING, LOADED, ERROR, EMPTY }
 
 @immutable
 class BirthdaysState {
@@ -10,14 +10,13 @@ class BirthdaysState {
   final BirthdaysStateType type;
   final String? errorMessage;
 
-  BirthdaysState({
-    required this.type,
-    this.birthdaysToday,
-    this.birthdaysOther,
-    this.errorMessage
-  }) : assert(
-    type != BirthdaysStateType.ERROR
-    || (type == BirthdaysStateType.ERROR && errorMessage != null),
-    'errorMessage must not be null in error state'
-  );
+  BirthdaysState(
+      {required this.type,
+      this.birthdaysToday,
+      this.birthdaysOther,
+      this.errorMessage})
+      : assert(
+            type != BirthdaysStateType.ERROR ||
+                (type == BirthdaysStateType.ERROR && errorMessage != null),
+            'errorMessage must not be null in error state');
 }

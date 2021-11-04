@@ -31,20 +31,12 @@ class UnknownErrorException implements CustomException {
       : super();
 }
 
-class PermissionDeniedException implements CustomException {
+class WrongChannelUsedToPubMessageException implements CustomException {
   String message;
   int? offset;
   dynamic source;
 
-  PermissionDeniedException({this.message = ''}) : super();
-}
-
-class ChannelAlreadyExistException implements CustomException {
-  String message;
-  int? offset;
-  dynamic source;
-
-  ChannelAlreadyExistException({this.message = ''}) : super();
+  WrongChannelUsedToPubMessageException({this.message = ''}) : super();
 }
 
 class SubscriptionAlreadyExistException implements CustomException {

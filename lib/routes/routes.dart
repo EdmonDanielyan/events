@@ -4,6 +4,7 @@ import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_cubit
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_cubit.dart';
+import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart';
 import 'package:ink_mobile/cubit/events_list/events_list_cubit.dart';
@@ -104,6 +105,7 @@ class MainRoutes {
         ),
     '/message': (BuildContext context) => ChatScreen(
           chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
+          chatCubit: sl.get<ChatCubit>(),
         ),
     '/chat_info': (BuildContext context) => ChatInfoScreen(
           chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),

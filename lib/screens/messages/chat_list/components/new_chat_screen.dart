@@ -6,11 +6,11 @@ import 'package:ink_mobile/components/loader/error_loading_widget.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_state.dart';
-import 'package:ink_mobile/functions/chat/chat_creation.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_user_select.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/new_chat_person_container.dart';
 import 'package:ink_mobile/screens/search/components/search_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -45,7 +45,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
 
   Future<void> _createChat(UserTable user) async {
     ChatTable newChat =
-        await ChatCreation(widget.chatDatabaseCubit).createSingleChat(user);
+        await UseMessageProvider.messageProvider.createChat(user);
     Navigator.of(context).pop();
     OpenChat(widget.chatDatabaseCubit, newChat).call(context);
   }
@@ -77,7 +77,21 @@ class _NewChatScreenState extends State<NewChatScreen> {
           child: Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: _horizontalPadding),
-              child: getChildWidget(state),
+              child: Column(
+                children: [
+                  SizedBox(height: 10),
+                  SearchField(
+                    hint: _strings.searchHint,
+                    onChanged: (val) {
+                      if (val.length >= 3) {
+                        _personListCubit.setSearchValue(val);
+                      }
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  Expanded(child: getChildWidget(state)),
+                ],
+              ),
             ),
           ),
         );
@@ -93,12 +107,6 @@ class _NewChatScreenState extends State<NewChatScreen> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 10),
-          SearchField(
-            hint: _strings.searchHint,
-            onChanged: (val) => _personListCubit.setSearchValue(val),
-          ),
-          SizedBox(height: 20),
           hintText(),
           SizedBox(height: 15),
           Expanded(

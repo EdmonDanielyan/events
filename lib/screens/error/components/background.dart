@@ -17,8 +17,7 @@ class Background extends StatelessWidget {
             begin: FractionalOffset.centerLeft,
             end: FractionalOffset.centerRight,
             stops: [0.0, 1.0],
-            tileMode: TileMode.decal
-        ),
+            tileMode: TileMode.decal),
       ),
       child: Stack(
         alignment: Alignment.center,

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/search/data.dart';
 
 class SearchModel {

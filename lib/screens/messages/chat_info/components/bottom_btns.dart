@@ -19,11 +19,11 @@ class ChatInfoBottomBtns extends StatelessWidget {
   bool get isGroup => ChatListView.isGroup(chat);
 
   void _clearMessages() {
-    _chatFunctions.deleteAllChatMessages(chat.id!);
+    _chatFunctions.deleteAllChatMessages(chat.id);
   }
 
   void _deleteChat(BuildContext context) {
-    _chatFunctions.deleteChat(chat.id!);
+    _chatFunctions.deleteChat(chat.id);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 

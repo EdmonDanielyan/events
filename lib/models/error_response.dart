@@ -32,16 +32,22 @@ class ErrorResponse {
 
   factory ErrorResponse.fromException(DioError error) {
     dynamic response = error.response?.data;
-    return ErrorResponse(
-        host: response['host'] ?? '',
-        version: response['version'] ?? '',
-        returned: response['returned'] ?? '',
-        type: response['type'] ?? '',
-        instance: response['instance'] ?? '',
-        title: response['title'] ?? '',
-        detail: response['detail'] ?? '',
-        status: response['status'] ?? -1,
-        code: response['code'] ?? '',
-        responseData: response ?? {});
+    try {
+      return ErrorResponse(
+          host: response['host'] ?? '',
+          version: response['version'] ?? '',
+          returned: response['returned'] ?? '',
+          type: response['type'] ?? '',
+          instance: response['instance'] ?? '',
+          title: response['title'] ?? '',
+          detail: response['detail'] ?? '',
+          status: response['status'] ?? -1,
+          code: response['code'] ?? '',
+          responseData: response ?? {});
+    } catch (_) {
+      dynamic statusCode = error.response?.statusCode ?? 500;
+      return ErrorResponse(
+          detail: response, status: statusCode, code: statusCode);
+    }
   }
 }

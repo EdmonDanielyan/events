@@ -119,7 +119,7 @@ packages:
       name: built_value
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.1.2"
+    version: "8.1.3"
   characters:
     dependency: transitive
     description:
@@ -196,7 +196,7 @@ packages:
       name: cross_file
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.1+5"
+    version: "0.3.2"
   crypto:
     dependency: transitive
     description:
@@ -224,13 +224,13 @@ packages:
       name: dart_nats
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0"
+    version: "0.3.5"
   dart_nats_streaming:
     dependency: "direct main"
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "0766f5aca99d483cce7fd4ac43b8b5e99f010530"
+      resolved-ref: "9ca6e4590f8500277b889f626767085ada01b1de"
       url: "https://github.com/JetRabbits/dart-nats-streaming.git"
     source: git
     version: "0.0.7"
@@ -247,7 +247,7 @@ packages:
       name: device_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "2.0.3"
   device_info_platform_interface:
     dependency: transitive
     description:
@@ -261,7 +261,7 @@ packages:
       name: dio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.0.1"
   easy_rich_text:
     dependency: "direct main"
     description:
@@ -274,7 +274,7 @@ packages:
     description:
       path: "extras/encryption"
       ref: HEAD
-      resolved-ref: "9b273449c308ebb305e3f7cf1d4fd15e2cf8efbb"
+      resolved-ref: "594b5f43c54cf03218099c895f2ada5ff12d0b09"
       url: "https://github.com/simolus3/moor.git"
     source: git
     version: "1.0.0"
@@ -305,7 +305,7 @@ packages:
       name: file_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.5"
+    version: "4.2.0"
   fixnum:
     dependency: transitive
     description:
@@ -399,7 +399,7 @@ packages:
       name: flutter_plugin_android_lifecycle
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.4"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -1107,7 +1107,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.9"
+    version: "2.2.10"
   xdg_directories:
     dependency: transitive
     description:

@@ -24,6 +24,7 @@ import 'package:ink_mobile/themes/light.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'cubit/boot/boot_cubit.dart';
+import 'cubit/chat/chat_observer.dart';
 
 void main() async {
   await setup();
@@ -37,10 +38,14 @@ void main() async {
       ).send();
       // exit(1);
     };
+
+    Bloc.observer = AppBlocObserver();
     runApp(InkMobile(onAppStart: () async {
       NatsProvider natsProvider = sl<NatsProvider>();
       final loaded = await natsProvider.load();
-      MessageProvider(natsProvider, sl.get<ChatDatabaseCubit>()).init();
+      UseMessageProvider.initMessageProvider(
+          natsProvider, sl.get<ChatDatabaseCubit>());
+      UseMessageProvider.messageProvider.init();
       return loaded;
     }));
   }, (Object error, StackTrace stack) {

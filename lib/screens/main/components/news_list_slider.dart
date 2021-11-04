@@ -17,9 +17,8 @@ class NewsListSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      height: 390,
-      child: Column(
-        children: [
+        height: 390,
+        child: Column(children: [
           Container(
               width: size.width,
               height: 334,
@@ -27,21 +26,13 @@ class NewsListSlider extends StatelessWidget {
               margin: EdgeInsets.only(top: 20.0),
               clipBehavior: Clip.none,
               child: SingleChildScrollView(
-                controller: _controllerOne,
-                clipBehavior: Clip.none,
-                scrollDirection: Axis.horizontal,
-                physics: AlwaysScrollableScrollPhysics(),
-                child: Row(
-                  children: getNewsList()
-                )
-              )
-          ),
-          Expanded(
-            child: getSlider(size)
-          )
-        ]
-      )
-    );
+                  controller: _controllerOne,
+                  clipBehavior: Clip.none,
+                  scrollDirection: Axis.horizontal,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Row(children: getNewsList()))),
+          Expanded(child: getSlider(size))
+        ]));
   }
 
   Widget getSlider(Size size) {
@@ -56,16 +47,15 @@ class NewsListSlider extends StatelessWidget {
           count: newsList.length,
           axisDirection: Axis.horizontal,
           effect: StaticSliderEffect(
-            activeDotColor: Color(0xff2c4155),
-            rowWidth: getRowWidth(),
-            dotWidth: size.width * 0.6
-          ),
-        )
-    );
+              activeDotColor: Color(0xff2c4155),
+              rowWidth: getRowWidth(),
+              dotWidth: size.width * 0.6),
+        ));
   }
 
   double getRowWidth() {
-    return ((elementWidth + marginBetweenElements) * newsList.length) - marginBetweenElements;
+    return ((elementWidth + marginBetweenElements) * newsList.length) -
+        marginBetweenElements;
   }
 
   List<Widget> getNewsList() {
@@ -74,21 +64,15 @@ class NewsListSlider extends StatelessWidget {
     if (newsList.length > 0) {
       for (int i = 0; i < newsList.length - 1; i++) {
         NewsItemData curNewsItem = newsList[i];
-        newsWidgetList.add(
-            Container(
-                margin: EdgeInsets.only(right: marginBetweenElements),
-                child: NewsListSliderElement(newsItem: curNewsItem)
-            )
-        );
+        newsWidgetList.add(Container(
+            margin: EdgeInsets.only(right: marginBetweenElements),
+            child: NewsListSliderElement(newsItem: curNewsItem)));
       }
 
       NewsItemData curNewsItem = newsList.last;
 
-      newsWidgetList.add(
-          Container(
-              child: NewsListSliderElement(newsItem: curNewsItem)
-          )
-      );
+      newsWidgetList
+          .add(Container(child: NewsListSliderElement(newsItem: curNewsItem)));
     }
 
     return newsWidgetList;

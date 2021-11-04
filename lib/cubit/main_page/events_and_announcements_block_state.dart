@@ -1,4 +1,4 @@
-enum EventsAndAnnouncementsBlockStateType {EVENTS, ANNOUNCEMENTS}
+enum EventsAndAnnouncementsBlockStateType { EVENTS, ANNOUNCEMENTS }
 
 class EventsAndAnnouncementsBlockState {
   final EventsAndAnnouncementsBlockStateType type;

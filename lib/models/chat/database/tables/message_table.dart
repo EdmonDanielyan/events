@@ -3,8 +3,8 @@ import 'package:moor/moor.dart';
 
 @DataClassName('MessageTable')
 class MessageTables extends Table {
-  IntColumn get id => integer().nullable().autoIncrement()();
-  IntColumn get chatId => integer()();
+  TextColumn get id => text()();
+  TextColumn get chatId => text()();
   TextColumn get message => text()();
   IntColumn get userId => integer()();
   BoolColumn get read => boolean().withDefault(Constant(false))();

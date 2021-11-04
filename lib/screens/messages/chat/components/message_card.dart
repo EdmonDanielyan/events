@@ -5,6 +5,7 @@ import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/message.dart';
+import 'package:ink_mobile/screens/messages/chat/chat_screen.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card_text.dart';
 import 'package:ink_mobile/screens/messages/chat/components/hover_message.dart';
 
@@ -21,7 +22,7 @@ class MessageCard extends StatelessWidget {
       required this.index})
       : super(key: key);
   static late ChatCubit _chatCubit;
-  static late List<Message> selectedMessages;
+  static late List<MessageTable> selectedMessages;
 
   MessageTable get message => messageWithUser.message!;
 
@@ -31,7 +32,7 @@ class MessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _chatCubit = BlocProvider.of<ChatCubit>(context, listen: true);
+    _chatCubit = ChatScreen.of(context).chatCubit;
     selectedMessages = _chatCubit.getSelectedMessages;
     bool showSelection = selectedMessages.length > 0;
 
@@ -43,6 +44,7 @@ class MessageCard extends StatelessWidget {
         index: index,
         message: message,
         child: MessageSearchWrapper(
+          chatCubit: _chatCubit,
           message: message,
           child: Container(
             padding: EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 7),

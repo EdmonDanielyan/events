@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/news_data.dart';
 
-enum NewsDetailStateType {LOADING, LOADED, ERROR}
+enum NewsDetailStateType { LOADING, LOADED, ERROR }
 
 @immutable
 class NewsDetailState {
@@ -9,13 +9,7 @@ class NewsDetailState {
   final NewsDetailStateType type;
   final String? errorMessage;
 
-  NewsDetailState({
-    required this.type,
-    this.data,
-    this.errorMessage
-  }) : assert(
-    type != NewsDetailStateType.ERROR
-    || errorMessage != null,
-    'errorMessage must not be null in error state'
-  );
+  NewsDetailState({required this.type, this.data, this.errorMessage})
+      : assert(type != NewsDetailStateType.ERROR || errorMessage != null,
+            'errorMessage must not be null in error state');
 }

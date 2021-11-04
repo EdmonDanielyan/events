@@ -42,7 +42,7 @@ class HoverMessage extends StatelessWidget {
   }
 
   void _onRespond() {
-    _chatCubit.emitSelectedMessageId(message.id);
+    //_chatCubit.emitSelectedMessageId(message.id);
   }
 
   void _onSelect() {
@@ -57,7 +57,7 @@ class HoverMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    _chatCubit = BlocProvider.of<ChatCubit>(context);
+    _chatCubit = ChatScreen.of(context).chatCubit;
     _chatDatabaseCubit = ChatScreen.of(context).chatDatabaseCubit;
     return PopupMenuContainer<String>(
       blurBackground: true,

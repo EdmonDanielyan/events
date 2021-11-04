@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
-enum OpenUniversityStateType {ABOUT_PROJECT, EVENTS, INK_LITERACY, LEARNING_MATERIALS, ERROR}
+enum OpenUniversityStateType {
+  ABOUT_PROJECT,
+  EVENTS,
+  INK_LITERACY,
+  LEARNING_MATERIALS,
+  ERROR
+}
 
 @immutable
 class OpenUniversityState {

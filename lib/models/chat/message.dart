@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
@@ -5,7 +8,6 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
 enum MessageStatus { SENDING, SENT, READ, ERROR }
-enum MessageType { TEXT, DOCUMENT, PICTURE_VIDEO }
 
 class Message {
   final int id;
@@ -25,7 +27,7 @@ class Message {
     required this.user,
     required this.message,
     required this.messageDate,
-    this.type = MessageType.TEXT,
+    this.type = MessageType.Text,
     this.status = MessageStatus.ERROR,
     this.selectedMessageId,
     this.sentOn = false,
@@ -97,14 +99,46 @@ class MessageListView {
     return msg.userId == myId;
   }
 
+  static Map<String, dynamic> toJson(MessageTable message) {
+    final json = message.toJson();
+    json["status"] = messageStatusToString(json["status"]);
+    return json;
+  }
+
+  static String toJsonString(MessageTable message) {
+    return jsonEncode(toJson(message));
+  }
+
+  static MessageTable fromJson(Map<String, dynamic> json) {
+    json["status"] = messageStatusStringToObject(json["status"]);
+    return MessageTable.fromJson(json);
+  }
+
+  static MessageTable fromString(String str) {
+    return fromJson(jsonDecode(str));
+  }
+
+  static String messageStatusToString(dynamic json) {
+    return "${json}";
+  }
+
+  static MessageStatus messageStatusStringToObject(String json) {
+    for (final value in MessageStatus.values) {
+      if (json
+          .toString()
+          .toLowerCase()
+          .contains(value.toString().toLowerCase())) {
+        return value;
+      }
+    }
+    return MessageStatus.ERROR;
+  }
+
   static MessageType getType(ChatEntities entities) {
-    if (entities.picsVids != null && entities.picsVids!.length > 0)
-      return MessageType.PICTURE_VIDEO;
-
     if (entities.files != null && entities.files!.length > 0)
-      return MessageType.DOCUMENT;
+      return MessageType.Document;
 
-    return MessageType.TEXT;
+    return MessageType.Text;
   }
 
   static List<Message> makeMessagesSendOn(List<Message> messages) {
@@ -115,12 +149,12 @@ class MessageListView {
     return messages;
   }
 
-  static List<Message> getSelectedItems(List<Message> items) =>
-      items.where((element) => element.selected == true).toList();
+  static List<MessageTable> getSelectedItems(List<MessageTable> items) => [];
+  //items.where((element) => element.selected == true).toList();
 
-  static List<Message> searchMessagesByStr(
-      String value, List<Message> messages) {
-    List<Message> search = [];
+  static List<MessageTable> searchMessagesByStr(
+      String value, List<MessageTable> messages) {
+    List<MessageTable> search = [];
     if (value.trim().isNotEmpty) {
       search = messages.where((element) {
         bool byBody =

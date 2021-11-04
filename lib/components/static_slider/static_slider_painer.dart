@@ -37,7 +37,8 @@ class StaticSliderPainter extends IndicatorPainter {
     double screenWidth = size.width;
     double activeDotWidth = lineWidth * screenWidth / effect.rowWidth;
 
-    final xPos = ((size.width / 2) - (effect.dotWidth / 2)) + (i * activeDotWidth);
+    final xPos =
+        ((size.width / 2) - (effect.dotWidth / 2)) + (i * activeDotWidth);
     final yPos = size.height / 2;
 
     double left = xPos;

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
+import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/screens/messages/chat/components/app_bar_title.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/components/selective_app_bar.dart';
-import 'package:ink_mobile/screens/messages/chat/functions/message_functions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'components/body.dart';
@@ -18,7 +20,9 @@ class ChatScreen extends StatefulWidget {
       context.findAncestorStateOfType<ChatScreenState>()!;
 
   final ChatDatabaseCubit chatDatabaseCubit;
-  const ChatScreen({Key? key, required this.chatDatabaseCubit})
+  final ChatCubit chatCubit;
+  const ChatScreen(
+      {Key? key, required this.chatDatabaseCubit, required this.chatCubit})
       : super(key: key);
 
   @override
@@ -27,11 +31,22 @@ class ChatScreen extends StatefulWidget {
 
 class ChatScreenState extends State<ChatScreen> {
   ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
+  ChatCubit get chatCubit => widget.chatCubit;
+
+  @override
+  void initState() {
+    super.initState();
+
+    chatCubit.updateMessages(chatDatabaseCubit);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _GetAppBar(chatDatabaseCubit: chatDatabaseCubit),
+      appBar: _GetAppBar(
+        chatDatabaseCubit: chatDatabaseCubit,
+        chatCubit: chatCubit,
+      ),
       body: ChatBody(),
     );
   }
@@ -39,28 +54,30 @@ class ChatScreenState extends State<ChatScreen> {
 
 class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
-  const _GetAppBar({Key? key, required this.chatDatabaseCubit})
+  final ChatCubit chatCubit;
+  const _GetAppBar(
+      {Key? key, required this.chatDatabaseCubit, required this.chatCubit})
       : super(key: key);
-  static late ChatCubit _chatCubit;
   static late AppLocalizations _strings;
 
   @override
   Widget build(BuildContext context) {
-    return initialBar();
-
-    // _chatCubit = BlocProvider.of<ChatCubit>(context);
-    // _strings = localizationInstance;
-    // return BlocBuilder<ChatCubit, ChatCubitState>(
-    //   builder: (context, state) {
-    //     if (state.appBarEnum == ChatAppBarEnums.SEARCH_BAR) {
-    //       return searchBar();
-    //     } else if (_chatCubit.getSelectedMessages.length > 0) {
-    //       return selectiveBar(context);
-    //     } else {
-    //       return initialBar();
-    //     }
-    //   },
-    // );
+    _strings = localizationInstance;
+    return BlocBuilder<ChatCubit, ChatCubitState>(
+      bloc: chatCubit,
+      buildWhen: (previous, current) {
+        return previous.appBarEnum != current.appBarEnum;
+      },
+      builder: (context, state) {
+        if (state.appBarEnum == ChatAppBarEnums.SEARCH_BAR) {
+          return searchBar();
+        } else if (chatCubit.getSelectedMessages.length > 0) {
+          return selectiveBar(context);
+        } else {
+          return initialBar();
+        }
+      },
+    );
   }
 
   PreferredSizeWidget searchBar() {
@@ -68,16 +85,14 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: "",
       titleWidget: WillPopScope(
         onWillPop: () async {
-          _chatCubit.emptySearch();
-          _chatCubit.emitAppBarEnum(ChatAppBarEnums.INITIAL);
+          chatCubit.emptySearch();
+          chatCubit.emitAppBarEnum(ChatAppBarEnums.INITIAL);
           return Future.value(false);
         },
         child: ChatSearchTextfield(
-          onFieldSubmitted: (val) => _chatCubit.emitSearchValue(val),
-          onUp: () => _chatCubit.emitMessageSearch(
-              _chatCubit.state.messagesSearch.decreaseIndexAndReturn()),
-          onDown: () => _chatCubit.emitMessageSearch(
-              _chatCubit.state.messagesSearch.increaseIndexAndReturn()),
+          onFieldSubmitted: (val) => chatCubit.emitSearchValue(val),
+          onUp: () => chatCubit.upSearch(),
+          onDown: () => chatCubit.downSearch(),
         ),
       ),
     );
@@ -88,19 +103,19 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: "",
       titleWidget: WillPopScope(
         onWillPop: () async {
-          _chatCubit.unselectAllMessages();
+          chatCubit.unselectAllMessages();
           return Future.value(false);
         },
         child: SelectiveAppBar(
           onDelete: () {
             // ChatFunctions(chatDatabaseCubit)
-            //     .deleteMessages(_chatCubit.getSelectedMessages);
-            _chatCubit.unselectAllMessages();
+            //     .deleteMessages(chatCubit.getSelectedMessages);
+            //chatCubit.unselectAllMessages();
           },
           onSendOn: () {
-            MessageFunctions(context: context, strings: _strings)
-                .sendOn(_chatCubit.getSelectedMessages);
-            _chatCubit.unselectAllMessages();
+            // MessageFunctions(context: context, strings: _strings)
+            //     .sendOn(chatCubit.getSelectedMessages);
+            // chatCubit.unselectAllMessages();
           },
         ),
       ),
@@ -115,7 +130,7 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
         MessageSearchBtn(
           onPressed: () {
             TextFieldUtils.loseTextFieldFocus();
-            _chatCubit.emitAppBarEnum(ChatAppBarEnums.SEARCH_BAR);
+            chatCubit.emitAppBarEnum(ChatAppBarEnums.SEARCH_BAR);
           },
         )
       ],

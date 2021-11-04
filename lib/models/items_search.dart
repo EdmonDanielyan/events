@@ -47,17 +47,6 @@ class ItemsSearch<T> {
   }
 
   @override
-  String toString() => 'ItemsSearch(items: $items, searchValue: $searchValue)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ItemsSearch &&
-        listEquals(other.items, items) &&
-        other.searchValue == searchValue;
-  }
-
-  @override
-  int get hashCode => items.hashCode ^ searchValue.hashCode;
+  String toString() =>
+      'ItemsSearch(items: $items, searchValue: $searchValue, currentIndex: $currentItemIndex)';
 }

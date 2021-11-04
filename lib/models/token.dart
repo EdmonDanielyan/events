@@ -56,7 +56,6 @@ class Token {
 
   static Future<bool> setNewTokensIfExpired() async {
     bool isJwtExpired = await Token.isJwtExpired();
-
     if (isJwtExpired) {
       await Token._setNewTokens();
     }
@@ -79,7 +78,6 @@ class Token {
           await auth.authRefreshPost(refreshTokenParams: refreshParams);
 
       final refreshDataMap = _response.data?.data.asMap;
-
       if (refreshDataMap != null) {
         String newRefresh = refreshDataMap['refresh_token'];
         String newJwt = refreshDataMap['token'];
@@ -132,6 +130,18 @@ class Token {
     FlutterSecureStorage storage = Storage.getInstance();
     return await storage.read(key: DeviceTypes.virtualId.key);
   }
+
+  static Future<void> setNatsToken() async {
+    JwtPayload? payload = await Token.getJwtPayloadObject();
+    FlutterSecureStorage storage = Storage.getInstance();
+    await storage.write(
+        key: NatsTypes.natsToken.key, value: payload!.natsToken);
+  }
+
+  static Future<String?> getNatsToken() async {
+    FlutterSecureStorage storage = Storage.getInstance();
+    return await storage.read(key: NatsTypes.natsToken.key);
+  }
 }
 
 class Storage {
@@ -156,21 +166,40 @@ class DeviceTypes {
   static const TokenType virtualId = TokenType('virtualId');
 }
 
+class NatsTypes {
+  static const TokenType natsToken = TokenType('natsToken');
+}
+
 class DeviceType {
   final String key;
   const DeviceType(String key) : key = key;
 }
 
 class JwtPayload {
+  String natsToken = '';
+
   int expirationTime = 0;
-  int? userId;
+  int userId = 0;
+  String avatar = '';
+  String name = '';
+  String lastName = '';
+  String secondName = '';
 
   static late int myId;
+  static late String myAvatar;
+  static late String myName;
 
   JwtPayload(Map<String, dynamic> payloadMap) {
-    this.expirationTime = payloadMap['exp'] ?? 0;
+    this.natsToken = payloadMap['nats_token'] ?? null;
+    this.expirationTime = payloadMap['exp'];
     this.userId = payloadMap['userId'];
+    this.avatar = payloadMap['avatar'];
+    this.name = payloadMap['name'];
+    this.lastName = payloadMap['last_name'];
+    this.secondName = payloadMap['second_name'];
 
     myId = payloadMap['userId'];
+    myAvatar = payloadMap['avatar'] ?? "";
+    myName = "${payloadMap['name']} ${payloadMap['last_name']}".trim();
   }
 }

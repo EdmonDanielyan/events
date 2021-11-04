@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 class Converter {
-
   static String decodeBase64(String str) {
     String output = str.replaceAll('-', '+').replaceAll('_', '/');
 
@@ -24,5 +23,4 @@ class Converter {
   static dynamic decodeJson(String string) {
     return json.decode(string);
   }
-
 }

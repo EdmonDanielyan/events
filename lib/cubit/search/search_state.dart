@@ -1,7 +1,6 @@
 import 'package:ink_mobile/models/search/data.dart';
 
-
-enum SearchStateType {STARTING, LOADING, EMPTY, LOADED, ERROR}
+enum SearchStateType { STARTING, LOADING, EMPTY, LOADED, ERROR }
 
 class SearchState {
   final SearchStateType type;
@@ -11,16 +10,13 @@ class SearchState {
   List<NewsSearchData>? news;
   String? errorMessage;
 
-  SearchState({
-    required this.type,
-    this.users,
-    this.announcements,
-    this.events,
-    this.news,
-    this.errorMessage
-  }) : assert(
-    type != SearchStateType.ERROR
-    || errorMessage != null,
-    'errorMessage must not be null in error state'
-  );
+  SearchState(
+      {required this.type,
+      this.users,
+      this.announcements,
+      this.events,
+      this.news,
+      this.errorMessage})
+      : assert(type != SearchStateType.ERROR || errorMessage != null,
+            'errorMessage must not be null in error state');
 }

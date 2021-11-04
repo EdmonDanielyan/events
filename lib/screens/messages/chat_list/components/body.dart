@@ -70,10 +70,11 @@ class _BodyState extends State<Body> {
           shrinkWrap: true,
           controller: ScrollController(keepScrollOffset: false),
           itemBuilder: (_, index) => StreamBuilder(
-            stream: _chatDatabaseCubit.db.watchChatMessages(items[index].id!),
+            stream: _chatDatabaseCubit.db.watchChatMessages(items[index].id),
             builder: (context, AsyncSnapshot<List<MessageWithUser>?> snapshot) {
               if (snapshot.hasData) {
                 List<MessageWithUser> messagesWithUser = snapshot.data ?? [];
+
                 return ChatListTile(
                   highlightValue: _chatDatabaseCubit.searchVal,
                   index: index,
