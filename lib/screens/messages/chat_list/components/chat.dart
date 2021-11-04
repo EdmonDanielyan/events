@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';

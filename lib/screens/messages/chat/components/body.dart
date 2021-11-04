@@ -33,7 +33,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(milliseconds: 200), () {
+    Future.delayed(Duration(milliseconds: 500), () {
       ScrollBottom(controller).jump();
     });
     keyboardListener();
