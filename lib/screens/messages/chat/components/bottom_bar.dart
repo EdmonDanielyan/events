@@ -28,7 +28,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   final _formKey = GlobalKey<FormState>();
   final _padding = 7.0;
 
-  void onSend() {
+  Future<void> onSend() async {
     if (entities.text.isNotEmpty) {
       clearForm();
       // Message message = ChatEntitiesFunctions.buildMessage(
@@ -36,8 +36,9 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
       //   selectedMessageId: _chatCubit.state.selectedMessageId,
       // );
 
-      UseMessageProvider.messageProvider
+      await UseMessageProvider.messageProvider
           .sendMessage(_chatDatabaseCubit.selectedChat!, entities);
+      _chatCubit.updateMessages(_chatDatabaseCubit);
       entities.clear();
       ScrollBottom(widget.scrollController).jumpLazy();
     }
@@ -98,13 +99,13 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
     return BlocConsumer<ChatCubit, ChatCubitState>(
       bloc: _chatCubit,
       listener: (context, state) {
-        if (state.selectedMessageId != _chatCubit.previousSelectedMessageId) {
-          if (state.selectedMessageId != null) {
-            textfieldFocus.requestFocus();
-          } else {
-            textfieldFocus.unfocus();
-          }
-        }
+        // if (state.selectedMessageId != _chatCubit.previousSelectedMessageId) {
+        //   if (state.selectedMessageId != null) {
+        //     textfieldFocus.requestFocus();
+        //   } else {
+        //     textfieldFocus.unfocus();
+        //   }
+        // }
       },
       builder: (context, state) {
         if (state.selectedMessageId == null) {

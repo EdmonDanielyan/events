@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/selectable_widget.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -21,7 +22,7 @@ class MessageCard extends StatelessWidget {
       required this.index})
       : super(key: key);
   static late ChatCubit _chatCubit;
-  static late List<Message> selectedMessages;
+  static late List<MessageTable> selectedMessages;
 
   MessageTable get message => messageWithUser.message!;
 

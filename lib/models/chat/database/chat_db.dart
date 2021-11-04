@@ -87,6 +87,27 @@ class ChatDatabase extends _$ChatDatabase {
         });
   }
 
+  Future<List<MessageWithUser>> getChatMessages(String chatId) async {
+    return await (select(messageTables)
+          ..where((tbl) => tbl.chatId.equals(chatId))
+          ..orderBy([
+            (t) => OrderingTerm(expression: t.created, mode: OrderingMode.asc)
+          ]))
+        .join([
+          leftOuterJoin(
+              userTables, userTables.id.equalsExp(messageTables.userId))
+        ])
+        .get()
+        .then((rows) {
+          return rows.map((row) {
+            return MessageWithUser(
+              message: row.readTableOrNull(messageTables),
+              user: row.readTableOrNull(userTables),
+            );
+          }).toList();
+        });
+  }
+
   Future deleteMessagesByChatId(String chatId) =>
       (delete(messageTables)..where((tbl) => tbl.chatId.equals(chatId))).go();
   Future deleteMessage(MessageTable message) =>

@@ -11,7 +11,6 @@ import 'package:ink_mobile/screens/messages/chat/components/app_bar_title.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/components/selective_app_bar.dart';
-import 'package:ink_mobile/screens/messages/chat/functions/message_functions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'components/body.dart';
@@ -33,6 +32,13 @@ class ChatScreen extends StatefulWidget {
 class ChatScreenState extends State<ChatScreen> {
   ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
   ChatCubit get chatCubit => widget.chatCubit;
+
+  @override
+  void initState() {
+    super.initState();
+
+    chatCubit.updateMessages(chatDatabaseCubit);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +65,9 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
     _strings = localizationInstance;
     return BlocBuilder<ChatCubit, ChatCubitState>(
       bloc: chatCubit,
+      buildWhen: (previous, current) {
+        return previous.appBarEnum != current.appBarEnum;
+      },
       builder: (context, state) {
         if (state.appBarEnum == ChatAppBarEnums.SEARCH_BAR) {
           return searchBar();
@@ -82,10 +91,8 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
         child: ChatSearchTextfield(
           onFieldSubmitted: (val) => chatCubit.emitSearchValue(val),
-          onUp: () => chatCubit.emitMessageSearch(
-              chatCubit.state.messagesSearch.decreaseIndexAndReturn()),
-          onDown: () => chatCubit.emitMessageSearch(
-              chatCubit.state.messagesSearch.increaseIndexAndReturn()),
+          onUp: () => chatCubit.upSearch(),
+          onDown: () => chatCubit.downSearch(),
         ),
       ),
     );
@@ -103,12 +110,12 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
           onDelete: () {
             // ChatFunctions(chatDatabaseCubit)
             //     .deleteMessages(chatCubit.getSelectedMessages);
-            chatCubit.unselectAllMessages();
+            //chatCubit.unselectAllMessages();
           },
           onSendOn: () {
-            MessageFunctions(context: context, strings: _strings)
-                .sendOn(chatCubit.getSelectedMessages);
-            chatCubit.unselectAllMessages();
+            // MessageFunctions(context: context, strings: _strings)
+            //     .sendOn(chatCubit.getSelectedMessages);
+            // chatCubit.unselectAllMessages();
           },
         ),
       ),

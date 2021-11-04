@@ -41,6 +41,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
 
   @override
   Widget build(BuildContext context) {
+    final chatCubit = ChatScreen.of(context).chatCubit;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -51,7 +52,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
           ),
         ),
         BlocBuilder<ChatCubit, ChatCubitState>(
-          bloc: ChatScreen.of(context).chatCubit,
+          bloc: chatCubit,
           builder: (context, state) {
             if (state.appBarEnum != ChatAppBarEnums.SEARCH_BAR) {
               return MessageBottomBar(scrollController: controller);

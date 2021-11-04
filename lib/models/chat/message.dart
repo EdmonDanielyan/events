@@ -149,12 +149,12 @@ class MessageListView {
     return messages;
   }
 
-  static List<Message> getSelectedItems(List<Message> items) =>
-      items.where((element) => element.selected == true).toList();
+  static List<MessageTable> getSelectedItems(List<MessageTable> items) => [];
+  //items.where((element) => element.selected == true).toList();
 
-  static List<Message> searchMessagesByStr(
-      String value, List<Message> messages) {
-    List<Message> search = [];
+  static List<MessageTable> searchMessagesByStr(
+      String value, List<MessageTable> messages) {
+    List<MessageTable> search = [];
     if (value.trim().isNotEmpty) {
       search = messages.where((element) {
         bool byBody =

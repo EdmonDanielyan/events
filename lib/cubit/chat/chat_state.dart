@@ -14,7 +14,6 @@ class ChatCubitState {
   });
 
   ChatCubitState copyWith({
-    int? chatId,
     ChatAppBarEnums? appBarEnum,
     int? selectedMessageId,
     ItemsSearch<MessageTable>? messagesSearch,
@@ -29,22 +28,5 @@ class ChatCubitState {
   @override
   String toString() {
     return 'ChatCubitState(chat: appBarEnum: $appBarEnum, selectedMessageId: $selectedMessageId, messagesSearch: $messagesSearch)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ChatCubitState &&
-        other.appBarEnum == appBarEnum &&
-        other.selectedMessageId == selectedMessageId &&
-        other.messagesSearch == messagesSearch;
-  }
-
-  @override
-  int get hashCode {
-    return appBarEnum.hashCode ^
-        selectedMessageId.hashCode ^
-        messagesSearch.hashCode;
   }
 }
