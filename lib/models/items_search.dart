@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class ItemsSearch<T> {
   int currentItemIndex;
   List<T> items;

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
+import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
+import 'package:ink_mobile/core/cubit/selectable/selectable_state.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
+import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/screens/messages/chat/components/app_bar_title.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/components/selective_app_bar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'components/body.dart';
 
@@ -21,9 +22,13 @@ class ChatScreen extends StatefulWidget {
 
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatCubit chatCubit;
-  const ChatScreen(
-      {Key? key, required this.chatDatabaseCubit, required this.chatCubit})
-      : super(key: key);
+  final SelectableCubit<MessageWithUser> selectableCubit;
+  const ChatScreen({
+    Key? key,
+    required this.chatDatabaseCubit,
+    required this.chatCubit,
+    required this.selectableCubit,
+  }) : super(key: key);
 
   @override
   ChatScreenState createState() => ChatScreenState();
@@ -32,6 +37,8 @@ class ChatScreen extends StatefulWidget {
 class ChatScreenState extends State<ChatScreen> {
   ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
   ChatCubit get chatCubit => widget.chatCubit;
+  SelectableCubit<MessageWithUser> get selectableCubit =>
+      widget.selectableCubit;
 
   @override
   void initState() {
@@ -46,6 +53,7 @@ class ChatScreenState extends State<ChatScreen> {
       appBar: _GetAppBar(
         chatDatabaseCubit: chatDatabaseCubit,
         chatCubit: chatCubit,
+        selectableCubit: selectableCubit,
       ),
       body: ChatBody(),
     );
@@ -55,27 +63,35 @@ class ChatScreenState extends State<ChatScreen> {
 class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatCubit chatCubit;
-  const _GetAppBar(
-      {Key? key, required this.chatDatabaseCubit, required this.chatCubit})
-      : super(key: key);
-  static late AppLocalizations _strings;
+  final SelectableCubit<MessageWithUser> selectableCubit;
+  const _GetAppBar({
+    Key? key,
+    required this.chatDatabaseCubit,
+    required this.chatCubit,
+    required this.selectableCubit,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _strings = localizationInstance;
     return BlocBuilder<ChatCubit, ChatCubitState>(
       bloc: chatCubit,
       buildWhen: (previous, current) {
         return previous.appBarEnum != current.appBarEnum;
       },
-      builder: (context, state) {
-        if (state.appBarEnum == ChatAppBarEnums.SEARCH_BAR) {
-          return searchBar();
-        } else if (chatCubit.getSelectedMessages.length > 0) {
-          return selectiveBar(context);
-        } else {
-          return initialBar();
-        }
+      builder: (context, chatCubitState) {
+        return BlocBuilder<SelectableCubit<MessageWithUser>,
+            SelectableCubitState<MessageWithUser>>(
+          bloc: selectableCubit,
+          builder: (context, selectableCubitState) {
+            if (chatCubitState.appBarEnum == ChatAppBarEnums.SEARCH_BAR) {
+              return searchBar();
+            } else if (selectableCubit.getItems.length > 0) {
+              return selectiveBar(context);
+            } else {
+              return initialBar();
+            }
+          },
+        );
       },
     );
   }
@@ -103,17 +119,19 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: "",
       titleWidget: WillPopScope(
         onWillPop: () async {
-          chatCubit.unselectAllMessages();
+          selectableCubit.clearAll();
           return Future.value(false);
         },
         child: SelectiveAppBar(
           onDelete: () {
+            print(selectableCubit.getItems);
             // ChatFunctions(chatDatabaseCubit)
             //     .deleteMessages(chatCubit.getSelectedMessages);
             //chatCubit.unselectAllMessages();
           },
           onSendOn: () {
-            // MessageFunctions(context: context, strings: _strings)
+            print(selectableCubit.getItems);
+            // MessageFunctions(context: context)
             //     .sendOn(chatCubit.getSelectedMessages);
             // chatCubit.unselectAllMessages();
           },

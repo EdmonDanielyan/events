@@ -30,12 +30,6 @@ class ChatCubit extends Cubit<ChatCubitState> {
     emit(state.copyWith(selectedMessageId: selectedMessageId));
   }
 
-  void selectMessage(int index, bool select) {
-    // List<Message> newMessages = getMessages;
-    // newMessages[index].selected = select;
-    // _emitMessages(newMessages);
-  }
-
   void unselectAllMessages() {
     // List<Message> newMessages = getMessages;
     // for (final message in newMessages) {
@@ -81,8 +75,6 @@ class ChatCubit extends Cubit<ChatCubitState> {
 
   void emitMessageSearch(ItemsSearch<MessageTable> messagesSearch) async {
     final currentState = state.copyWith(messagesSearch: messagesSearch);
-    print("EMITTING");
-    print(currentState.messagesSearch);
     emit(currentState);
   }
 }

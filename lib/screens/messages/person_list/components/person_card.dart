@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/models/chat/chat_user_select.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/participant_card.dart';
 
 class PersonListCard<T> extends StatelessWidget {
   final double horizontalPadding;
-  final ChatUserSelect user;
+  final UserTable user;
   final String? highlightText;
   final void Function()? onTap;
 

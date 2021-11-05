@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_state.dart';
+import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/events_and_announcements_block_cubit.dart';
@@ -18,6 +20,8 @@ import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart';
 import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart';
 import 'package:ink_mobile/functions/navigation_utils.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/providers/global_providers.dart';
 import 'package:ink_mobile/screens/main/main_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/screens/search/search_screen.dart';
@@ -68,6 +72,8 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
   String label = localizationInstance.messages;
   Widget screen = ChatListScreen(
     chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
+    selectableCubit: SelectableCubit<UserTable>(),
+    chatPersonListCubit: sl.get<ChatPersonListCubit>(),
   );
 
   void onTap(BuildContext context, Function onChanged, int index) {

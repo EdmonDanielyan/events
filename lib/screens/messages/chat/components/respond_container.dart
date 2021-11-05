@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/models/chat/message.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RespondMessageContainer extends StatelessWidget {
   final void Function()? onCancel;
-  final Message selectedMessage;
+  final MessageTable selectedMessage;
   final double horizontalPadding;
   final Color? txtColor;
   final Color? bgColor;
@@ -51,13 +51,14 @@ class RespondMessageContainer extends StatelessWidget {
   }
 
   Widget _titleWidget() {
-    return Text(
-      selectedMessage.byMe ? _strings.you : selectedMessage.user.name,
-      style: TextStyle(
-        color: selectedMessage.byMe ? Colors.green : Colors.purple[200],
-        fontSize: 12.5,
-      ),
-    );
+    return SizedBox();
+    // return Text(
+    //   selectedMessage.byMe ? _strings.you : selectedMessage.user.name,
+    //   style: TextStyle(
+    //     color: selectedMessage.byMe ? Colors.green : Colors.purple[200],
+    //     fontSize: 12.5,
+    //   ),
+    // );
   }
 
   Widget _cancelWidget() {

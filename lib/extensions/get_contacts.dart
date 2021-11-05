@@ -1,16 +1,16 @@
 import 'package:dio/dio.dart';
-import 'package:ink_mobile/models/chat/chat_user_select.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:main_api_client/model/get_contacts.dart';
 
 extension GetContactsExt on Response<GetContacts> {
-  List<ChatUserSelect> mapResponse({bool hideMe = false}) {
-    List<ChatUserSelect> users = [];
+  List<UserTable> mapResponse({bool hideMe = false}) {
+    List<UserTable> users = [];
 
     List items = this.data?.data.asMap['contacts'] ?? [];
 
     for (final item in items) {
-      ChatUserSelect user = ChatUserSelect(
+      UserTable user = UserTable(
         id: item['id'],
         name: "${item['name']} ${item['last_name']}".trim(),
         avatar: item["photo"] ?? "",

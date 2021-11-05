@@ -4,5 +4,20 @@ class MessageWithUser {
   final MessageTable? message;
   final UserTable? user;
 
-  const MessageWithUser({required this.message, required this.user});
+  const MessageWithUser({
+    required this.message,
+    required this.user,
+  });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is MessageWithUser &&
+        other.message == message &&
+        other.user == user;
+  }
+
+  @override
+  int get hashCode => message.hashCode ^ user.hashCode;
 }

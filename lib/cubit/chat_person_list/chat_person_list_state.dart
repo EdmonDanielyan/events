@@ -1,9 +1,9 @@
-import 'package:ink_mobile/models/chat/chat_user_select.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 
 enum ChatPersonListEnums { LOADING, LOADED, ERROR }
 
 class ChatPersonListCubitState {
-  List<ChatUserSelect> searchUsers;
+  List<UserTable> searchUsers;
   String searchValue;
   ChatPersonListEnums type;
   String errorMsg;
@@ -16,7 +16,7 @@ class ChatPersonListCubitState {
   });
 
   ChatPersonListCubitState copyWith({
-    List<ChatUserSelect>? searchUsers,
+    List<UserTable>? searchUsers,
     String? searchValue,
     ChatPersonListEnums? type,
     String? errorMsg,
