@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/models/chat/chat.dart';
+import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/bottom_btns.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/data_section.dart';

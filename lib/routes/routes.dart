@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
+import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_cubit.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
@@ -14,6 +15,9 @@ import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
+import 'package:ink_mobile/providers/global_providers.dart';
 import 'package:ink_mobile/screens/announcements_detail/announcements_detail_screen.dart';
 import 'package:ink_mobile/screens/announcements_list/announcements_list_screen.dart';
 import 'package:ink_mobile/screens/app_layer/app_layer_screen.dart';
@@ -106,13 +110,21 @@ class MainRoutes {
     '/message': (BuildContext context) => ChatScreen(
           chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
           chatCubit: sl.get<ChatCubit>(),
+          selectableCubit: SelectableCubit<MessageWithUser>(),
         ),
     '/chat_info': (BuildContext context) => ChatInfoScreen(
           chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
         ),
-    '/new_group': (BuildContext context) => NewGroupScreen(
+    '/new_group': (BuildContext context) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args is SelectableCubit<UserTable>) {
+        return NewGroupScreen(
           chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
-        ),
+          selectableCubit: args,
+        );
+      }
+      return _pageNotFound();
+    },
     '/message_person_list': (BuildContext context) {
       return PageNotFoundScreen();
       // final args = ModalRoute.of(context)?.settings.arguments;
@@ -124,4 +136,6 @@ class MainRoutes {
     },
     '/test': (BuildContext context) => TestScreen()
   };
+
+  static Widget _pageNotFound() => PageNotFoundScreen();
 }

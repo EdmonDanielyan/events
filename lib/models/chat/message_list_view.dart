@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:ink_mobile/extensions/nats_extension.dart';
-import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
+
+import 'database/chat_db.dart';
 
 enum MessageStatus { SENDING, SENT, READ, ERROR }
 
@@ -26,7 +27,7 @@ class MessageListView {
 
   static MessageTable fromJson(Map<String, dynamic> json) {
     json["status"] = messageStatusStringToObject(json["status"]);
-    return MessageTable.fromJson(json);
+    return MessageTable.fromJson(json) as MessageTable;
   }
 
   static MessageTable fromString(String str) {
@@ -60,6 +61,7 @@ class MessageListView {
     // messages = messages
     //     .map((element) => element.copyWith(byMe: true, sentOn: true))
     //     .toList();
+    // messages.sort(sortByDateReverse);
     return messages;
   }
 

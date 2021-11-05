@@ -22,7 +22,7 @@ class RespondContainerWrapper extends StatelessWidget {
   CrossAxisAlignment get crossAxisAlignment =>
       byMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
 
-  Message? get selectedMessage => null;
+  MessageTable? get selectedMessage => null;
   //  MessageListView.getMessageById(
   //     message.selectedMessageId!, _chatCubit.state.chat.messages);
 

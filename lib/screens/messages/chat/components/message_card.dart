@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/selectable_widget.dart';
+import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
+import 'package:ink_mobile/core/cubit/selectable/selectable_state.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
@@ -22,41 +24,47 @@ class MessageCard extends StatelessWidget {
       required this.index})
       : super(key: key);
   static late ChatCubit _chatCubit;
-  static late List<MessageTable> selectedMessages;
+  static late SelectableCubit<MessageWithUser> _selectableCubit;
 
   MessageTable get message => messageWithUser.message!;
 
   void _onSwitchSelected(bool enabled) {
-    _chatCubit.selectMessage(index, enabled);
+    _selectableCubit.addOrRemove(messageWithUser);
   }
 
   @override
   Widget build(BuildContext context) {
     _chatCubit = ChatScreen.of(context).chatCubit;
-    selectedMessages = _chatCubit.getSelectedMessages;
-    bool showSelection = selectedMessages.length > 0;
+    _selectableCubit = ChatScreen.of(context).selectableCubit;
 
-    return SelectableWidget(
-      isOn: showSelection,
-      selected: false, // message.selected,
-      onSwitch: _onSwitchSelected,
-      child: HoverMessage(
-        index: index,
-        message: message,
-        child: MessageSearchWrapper(
-          chatCubit: _chatCubit,
-          message: message,
-          child: Container(
-            padding: EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 7),
-            child: Align(
-              alignment: MessageListView.isByMe(message)
-                  ? Alignment.topRight
-                  : Alignment.topLeft,
-              child: _getMessageWidget(),
+    return BlocBuilder<SelectableCubit<MessageWithUser>,
+        SelectableCubitState<MessageWithUser>>(
+      bloc: _selectableCubit,
+      builder: (context, state) {
+        return SelectableWidget(
+          isOn: state.items.length > 0,
+          selected: _selectableCubit.isItemExists(messageWithUser),
+          onSwitch: _onSwitchSelected,
+          child: HoverMessage(
+            index: index,
+            messageWithUser: messageWithUser,
+            child: MessageSearchWrapper(
+              chatCubit: _chatCubit,
+              message: message,
+              child: Container(
+                padding:
+                    EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 7),
+                child: Align(
+                  alignment: MessageListView.isByMe(message)
+                      ? Alignment.topRight
+                      : Alignment.topLeft,
+                  child: _getMessageWidget(),
+                ),
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 

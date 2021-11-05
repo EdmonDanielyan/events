@@ -14,6 +14,8 @@ class NewChatBtn extends StatelessWidget {
         context: context,
         child: NewChatScreen(
           chatDatabaseCubit: ChatListScreen.of(context).chatDatabaseCubit,
+          selectableCubit: ChatListScreen.of(context).selectableCubit,
+          chatPersonListCubit: ChatListScreen.of(context).chatPersonListCubit,
         ),
       ),
       icon: Icon(CupertinoIcons.chat_bubble_text, size: 30),
