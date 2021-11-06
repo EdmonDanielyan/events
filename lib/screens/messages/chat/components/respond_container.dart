@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 
 class RespondMessageContainer extends StatelessWidget {
   final void Function()? onCancel;
-  final MessageTable selectedMessage;
+  final MessageWithUser selectedMessage;
   final double horizontalPadding;
   final Color? txtColor;
   final Color? bgColor;
@@ -51,14 +52,14 @@ class RespondMessageContainer extends StatelessWidget {
   }
 
   Widget _titleWidget() {
-    return SizedBox();
-    // return Text(
-    //   selectedMessage.byMe ? _strings.you : selectedMessage.user.name,
-    //   style: TextStyle(
-    //     color: selectedMessage.byMe ? Colors.green : Colors.purple[200],
-    //     fontSize: 12.5,
-    //   ),
-    // );
+    bool isByMe = MessageListView.isByMe(selectedMessage.message!);
+    return Text(
+      isByMe ? _strings.you : selectedMessage.user!.name,
+      style: TextStyle(
+        color: isByMe ? Colors.green : Colors.purple[200],
+        fontSize: 12.5,
+      ),
+    );
   }
 
   Widget _cancelWidget() {
@@ -73,7 +74,7 @@ class RespondMessageContainer extends StatelessWidget {
 
   Widget _textWidget() {
     return Text(
-      selectedMessage.message,
+      selectedMessage.message!.message,
       maxLines: 3,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(

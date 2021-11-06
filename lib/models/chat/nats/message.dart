@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/message.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 
 class ChatMessageFields {
   final String channel;

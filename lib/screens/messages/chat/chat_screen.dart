@@ -6,9 +6,12 @@ import 'package:ink_mobile/core/cubit/selectable/selectable_state.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/functions/chat/chat_creation.dart';
+import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/app_bar_title.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dart';
@@ -124,16 +127,16 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
         child: SelectiveAppBar(
           onDelete: () {
-            print(selectableCubit.getItems);
-            // ChatFunctions(chatDatabaseCubit)
-            //     .deleteMessages(chatCubit.getSelectedMessages);
-            //chatCubit.unselectAllMessages();
+            final messages = MessageWithUserListView.getMessagesFromList(
+                selectableCubit.getItems);
+            UseMessageProvider.messageProvider.deleteMessages(messages);
+            selectableCubit.clearAll();
           },
           onSendOn: () {
-            print(selectableCubit.getItems);
-            // MessageFunctions(context: context)
-            //     .sendOn(chatCubit.getSelectedMessages);
-            // chatCubit.unselectAllMessages();
+            final messages = MessageWithUserListView.getMessagesFromList(
+                selectableCubit.getItems);
+            ChatCreation.sendOn(messages, context);
+            selectableCubit.clearAll();
           },
         ),
       ),

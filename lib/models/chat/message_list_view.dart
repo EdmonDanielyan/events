@@ -27,7 +27,7 @@ class MessageListView {
 
   static MessageTable fromJson(Map<String, dynamic> json) {
     json["status"] = messageStatusStringToObject(json["status"]);
-    return MessageTable.fromJson(json) as MessageTable;
+    return MessageTable.fromJson(json);
   }
 
   static MessageTable fromString(String str) {
@@ -89,4 +89,35 @@ class MessageListView {
             ? previousValue + 1
             : previousValue + 0;
       });
+
+  static List<MessageTable> messageWithUsersToMessage(
+      List<MessageWithUser> items) {
+    List<MessageTable> messages = [];
+    for (final messageWithUser in items) {
+      if (messageWithUser.message != null) {
+        messages.add(messageWithUser.message!);
+      }
+    }
+
+    return messages;
+  }
+
+  static MessageTable renewMessage(
+    MessageTable message, {
+    int? userId,
+    ChatTable? newChat,
+    bool? sentOn,
+  }) {
+    MessageTable newMessage = message.copyWith(
+      userId: userId ?? JwtPayload.myId,
+      repliedMessageId: "",
+      created: new DateTime.now(),
+    );
+
+    if (newChat != null) newMessage = newMessage.copyWith(chatId: newChat.id);
+
+    if (sentOn != null) newMessage = newMessage.copyWith(sentOn: sentOn);
+
+    return newMessage;
+  }
 }

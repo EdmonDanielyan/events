@@ -4,8 +4,9 @@ import 'package:ink_mobile/components/linkify_text.dart';
 import 'package:ink_mobile/functions/date_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/models/chat/message.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container_wrapper.dart';
+import 'package:ink_mobile/screens/messages/chat/components/sent_on_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
 
 class MessageCardText extends StatelessWidget {
@@ -45,12 +46,13 @@ class MessageCardText extends StatelessWidget {
             ),
             padding: EdgeInsets.all(9.5),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  byMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
-                // if (message.sentOn) ...[
-                //   SentOnWidget(),
-                //   SizedBox(height: 5.0),
-                // ],
+                if (message.sentOn) ...[
+                  SentOnWidget(),
+                  SizedBox(height: 5.0),
+                ],
                 RespondContainerWrapper(
                   message: message,
                   textColor: textColor,

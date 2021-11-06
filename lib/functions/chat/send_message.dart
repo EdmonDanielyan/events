@@ -1,6 +1,6 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/message.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
@@ -30,8 +30,10 @@ class SendMessage {
       message: chatEntities.text,
       userId: JwtPayload.myId,
       read: false,
+      sentOn: false,
       status: MessageStatus.SENDING,
       created: new DateTime.now(),
+      repliedMessageId: chatEntities.repliedMessageId,
     );
     await addMessage(message);
     return message;

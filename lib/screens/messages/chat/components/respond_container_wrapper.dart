@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/message.dart';
+import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
+import 'package:ink_mobile/screens/messages/chat/components/respond_container.dart';
+
+import 'message_list.dart';
 
 class RespondContainerWrapper extends StatelessWidget {
   final Widget child;
@@ -22,24 +26,28 @@ class RespondContainerWrapper extends StatelessWidget {
   CrossAxisAlignment get crossAxisAlignment =>
       byMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
 
-  MessageTable? get selectedMessage => null;
-  //  MessageListView.getMessageById(
-  //     message.selectedMessageId!, _chatCubit.state.chat.messages);
+  MessageWithUser? selectedMessage() {
+    if (message.repliedMessageId == null) return null;
+
+    return MessageWithUserListView.getByMessageId(
+        message.repliedMessageId!, MessageList.messages!);
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(selectedMessage);
     return Column(
       crossAxisAlignment: crossAxisAlignment,
       children: [
-        // if (message.selectedMessageId != null && selectedMessage != null) ...[
-        //   RespondMessageContainer(
-        //     selectedMessage: selectedMessage!,
-        //     bgColor: bgColorDarker,
-        //     txtColor:
-        //         textColor?.withOpacity(0.8) ?? myTxtColor.withOpacity(0.8),
-        //   ),
-        //   SizedBox(height: 5.0),
-        // ],
+        if (message.repliedMessageId != null && selectedMessage() != null) ...[
+          RespondMessageContainer(
+            selectedMessage: selectedMessage()!,
+            bgColor: bgColorDarker,
+            txtColor:
+                textColor?.withOpacity(0.8) ?? myTxtColor.withOpacity(0.8),
+          ),
+          SizedBox(height: 5.0),
+        ],
         child,
       ],
     );

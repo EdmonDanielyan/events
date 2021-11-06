@@ -23,6 +23,7 @@ class ChatInfoBottomBtns extends StatelessWidget {
   }
 
   void _deleteChat(BuildContext context) {
+    _clearMessages();
     _chatFunctions.deleteChat(chat.id);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }

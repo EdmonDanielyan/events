@@ -9,11 +9,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ParticipantCard extends StatelessWidget {
   final UserTable? owner;
   final List<UserTable>? admins;
-  final UserTable user;
+  final UserTable? user;
   final double? horizontalPadding;
   final double? titleGap;
   final double? avatarSize;
   final String highlightTxt;
+  final String? overrideTitle;
+  final String? overrideAvatar;
   const ParticipantCard({
     Key? key,
     required this.user,
@@ -23,6 +25,8 @@ class ParticipantCard extends StatelessWidget {
     this.horizontalPadding,
     this.titleGap,
     this.avatarSize,
+    this.overrideTitle,
+    this.overrideAvatar,
   }) : super(key: key);
 
   static late AppLocalizations _strings;
@@ -74,7 +78,7 @@ class ParticipantCard extends StatelessWidget {
     return CustomCircleAvatar(
       avatarHeight: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
       avatarWidth: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
-      url: user.avatar,
+      url: overrideAvatar ?? user?.avatar,
       //indicator: user.online,
       indicatorSize: 8.0,
     );
@@ -82,7 +86,7 @@ class ParticipantCard extends StatelessWidget {
 
   Widget nameWidget(BuildContext context) {
     return HighlightText(
-      txt: user.name,
+      txt: overrideTitle ?? (user?.name ?? ""),
       highlightTxt: highlightTxt,
       textStyle: TextStyle(
         color: Colors.black,

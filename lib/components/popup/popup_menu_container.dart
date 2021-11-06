@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/popup/custom_popup_route.dart';
+import 'package:ink_mobile/functions/textfield_utils.dart';
 
 class PopupMenuContainer<T> extends StatefulWidget {
   final Widget child;
@@ -71,6 +72,7 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
   }
 
   void onTap() async {
+    TextFieldUtils.loseTextFieldFocus();
     final RenderBox overlay =
         Overlay.of(context)!.context.findRenderObject()! as RenderBox;
 

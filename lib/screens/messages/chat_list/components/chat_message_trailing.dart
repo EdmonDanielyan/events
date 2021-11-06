@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/models/chat/message.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_count.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
 

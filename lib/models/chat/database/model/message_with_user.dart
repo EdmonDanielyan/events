@@ -1,4 +1,5 @@
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:collection/collection.dart';
 
 class MessageWithUser {
   final MessageTable? message;
@@ -20,4 +21,19 @@ class MessageWithUser {
 
   @override
   int get hashCode => message.hashCode ^ user.hashCode;
+}
+
+class MessageWithUserListView {
+  static List<MessageTable> getMessagesFromList(
+      List<MessageWithUser> messagesWithUser) {
+    List<MessageTable> messages = [];
+    for (final messageWithUser in messagesWithUser) {
+      messages.add(messageWithUser.message!);
+    }
+    return messages;
+  }
+
+  static MessageWithUser? getByMessageId(
+          String id, List<MessageWithUser> messagesWithUser) =>
+      messagesWithUser.firstWhereOrNull((element) => element.message!.id == id);
 }

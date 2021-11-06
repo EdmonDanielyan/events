@@ -14,7 +14,7 @@ class ChatFunctions {
   void deleteMessages(List<MessageTable> messages) {
     if (messages.isNotEmpty) {
       for (final message in messages) {
-        chatDatabaseCubit.db.deleteMessage(message);
+        chatDatabaseCubit.db.deleteMessageById(message.id);
       }
     }
   }

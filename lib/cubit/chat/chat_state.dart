@@ -4,7 +4,7 @@ import 'package:ink_mobile/models/items_search.dart';
 
 class ChatCubitState {
   ChatAppBarEnums appBarEnum;
-  int? selectedMessageId;
+  String? selectedMessageId;
   ItemsSearch<MessageTable> messagesSearch;
 
   ChatCubitState({
@@ -15,12 +15,12 @@ class ChatCubitState {
 
   ChatCubitState copyWith({
     ChatAppBarEnums? appBarEnum,
-    int? selectedMessageId,
+    String? selectedMessageId,
     ItemsSearch<MessageTable>? messagesSearch,
   }) {
     return ChatCubitState(
       appBarEnum: appBarEnum ?? this.appBarEnum,
-      selectedMessageId: selectedMessageId ?? this.selectedMessageId,
+      selectedMessageId: selectedMessageId,
       messagesSearch: messagesSearch ?? this.messagesSearch,
     );
   }

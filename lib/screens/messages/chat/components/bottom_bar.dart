@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/screens/messages/chat/components/respond_container.dart';
 import 'package:ink_mobile/screens/messages/chat/components/send_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
@@ -28,16 +31,17 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   final _formKey = GlobalKey<FormState>();
   final _padding = 7.0;
 
+  ChatTable get getChat => _chatDatabaseCubit.selectedChat!;
+
   Future<void> onSend() async {
     if (entities.text.isNotEmpty) {
       clearForm();
-      // Message message = ChatEntitiesFunctions.buildMessage(
-      //   entities: entities,
-      //   selectedMessageId: _chatCubit.state.selectedMessageId,
-      // );
-
-      await UseMessageProvider.messageProvider
-          .sendMessage(_chatDatabaseCubit.selectedChat!, entities);
+      final message = await SendMessage(
+        chatDatabaseCubit: _chatDatabaseCubit,
+        chat: getChat,
+      ).call(entities);
+      await UseMessageProvider.messageProvider.sendMessage(getChat, message);
+      _chatCubit.clean();
       _chatCubit.updateMessages(_chatDatabaseCubit);
       entities.clear();
       ScrollBottom(widget.scrollController).jumpLazy();
@@ -98,31 +102,36 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   Widget _respondContainerWidget() {
     return BlocConsumer<ChatCubit, ChatCubitState>(
       bloc: _chatCubit,
+      listenWhen: (previous, current) {
+        bool previousNotSelected = previous.selectedMessageId == null;
+        bool isMessageSlected = current.selectedMessageId != null;
+
+        return (previousNotSelected && isMessageSlected) ||
+            previous.selectedMessageId != current.selectedMessageId;
+      },
       listener: (context, state) {
-        // if (state.selectedMessageId != _chatCubit.previousSelectedMessageId) {
-        //   if (state.selectedMessageId != null) {
-        //     textfieldFocus.requestFocus();
-        //   } else {
-        //     textfieldFocus.unfocus();
-        //   }
-        // }
+        if (state.selectedMessageId != null) {
+          textfieldFocus.requestFocus();
+        } else {
+          textfieldFocus.unfocus();
+        }
       },
       builder: (context, state) {
-        if (state.selectedMessageId == null) {
-          return SizedBox();
-        } else {
-          return SizedBox();
-          // Message? selectedMsg = MessageListView.getMessageById(
-          //     state.selectedMessageId!, state.chat.messages);
+        entities.repliedMessageId = state.selectedMessageId;
 
-          // if (selectedMsg == null) return SizedBox();
+        if (state.selectedMessageId != null) {
+          final selectedMsg =
+              _chatCubit.getMessageById(state.selectedMessageId!);
 
-          // return RespondMessageContainer(
-          //   horizontalPadding: _padding,
-          //   selectedMessage: selectedMsg,
-          //   onCancel: () => _chatCubit.emitSelectedMessageId(null),
-          // );
+          if (selectedMsg != null) {
+            return RespondMessageContainer(
+              horizontalPadding: _padding,
+              selectedMessage: selectedMsg,
+              onCancel: () => _chatCubit.emitSelectedMessageId(null),
+            );
+          }
         }
+        return SizedBox();
       },
     );
   }

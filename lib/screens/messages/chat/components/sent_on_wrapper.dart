@@ -11,7 +11,7 @@ class SentOnWidget extends StatelessWidget {
     final _strings = localizationInstance;
     final Color newColor = color ?? Colors.grey[400]!;
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(

@@ -384,7 +384,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
   final String chatId;
   final String message;
   final int userId;
+  final String? repliedMessageId;
   final bool read;
+  final bool sentOn;
   final MessageStatus status;
   final DateTime? created;
   MessageTable(
@@ -392,7 +394,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       required this.chatId,
       required this.message,
       required this.userId,
+      this.repliedMessageId,
       required this.read,
+      required this.sentOn,
       required this.status,
       this.created});
   factory MessageTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
@@ -407,8 +411,12 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}message'])!,
       userId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
+      repliedMessageId: const StringType().mapFromDatabaseResponse(
+          data['${effectivePrefix}replied_message_id']),
       read: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}read'])!,
+      sentOn: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}sent_on'])!,
       status: $MessageTablesTable.$converter0.mapToDart(const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}status']))!,
       created: const DateTimeType()
@@ -422,7 +430,11 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
     map['chat_id'] = Variable<String>(chatId);
     map['message'] = Variable<String>(message);
     map['user_id'] = Variable<int>(userId);
+    if (!nullToAbsent || repliedMessageId != null) {
+      map['replied_message_id'] = Variable<String?>(repliedMessageId);
+    }
     map['read'] = Variable<bool>(read);
+    map['sent_on'] = Variable<bool>(sentOn);
     {
       final converter = $MessageTablesTable.$converter0;
       map['status'] = Variable<int>(converter.mapToSql(status)!);
@@ -439,7 +451,11 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       chatId: Value(chatId),
       message: Value(message),
       userId: Value(userId),
+      repliedMessageId: repliedMessageId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(repliedMessageId),
       read: Value(read),
+      sentOn: Value(sentOn),
       status: Value(status),
       created: created == null && nullToAbsent
           ? const Value.absent()
@@ -455,7 +471,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       chatId: serializer.fromJson<String>(json['chatId']),
       message: serializer.fromJson<String>(json['message']),
       userId: serializer.fromJson<int>(json['userId']),
+      repliedMessageId: serializer.fromJson<String?>(json['repliedMessageId']),
       read: serializer.fromJson<bool>(json['read']),
+      sentOn: serializer.fromJson<bool>(json['sentOn']),
       status: serializer.fromJson<MessageStatus>(json['status']),
       created: serializer.fromJson<DateTime?>(json['created']),
     );
@@ -468,7 +486,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       'chatId': serializer.toJson<String>(chatId),
       'message': serializer.toJson<String>(message),
       'userId': serializer.toJson<int>(userId),
+      'repliedMessageId': serializer.toJson<String?>(repliedMessageId),
       'read': serializer.toJson<bool>(read),
+      'sentOn': serializer.toJson<bool>(sentOn),
       'status': serializer.toJson<MessageStatus>(status),
       'created': serializer.toJson<DateTime?>(created),
     };
@@ -479,7 +499,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           String? chatId,
           String? message,
           int? userId,
+          String? repliedMessageId,
           bool? read,
+          bool? sentOn,
           MessageStatus? status,
           DateTime? created}) =>
       MessageTable(
@@ -487,7 +509,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
         chatId: chatId ?? this.chatId,
         message: message ?? this.message,
         userId: userId ?? this.userId,
+        repliedMessageId: repliedMessageId ?? this.repliedMessageId,
         read: read ?? this.read,
+        sentOn: sentOn ?? this.sentOn,
         status: status ?? this.status,
         created: created ?? this.created,
       );
@@ -498,7 +522,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           ..write('chatId: $chatId, ')
           ..write('message: $message, ')
           ..write('userId: $userId, ')
+          ..write('repliedMessageId: $repliedMessageId, ')
           ..write('read: $read, ')
+          ..write('sentOn: $sentOn, ')
           ..write('status: $status, ')
           ..write('created: $created')
           ..write(')'))
@@ -514,8 +540,12 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
               message.hashCode,
               $mrjc(
                   userId.hashCode,
-                  $mrjc(read.hashCode,
-                      $mrjc(status.hashCode, created.hashCode)))))));
+                  $mrjc(
+                      repliedMessageId.hashCode,
+                      $mrjc(
+                          read.hashCode,
+                          $mrjc(sentOn.hashCode,
+                              $mrjc(status.hashCode, created.hashCode)))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -524,7 +554,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           other.chatId == this.chatId &&
           other.message == this.message &&
           other.userId == this.userId &&
+          other.repliedMessageId == this.repliedMessageId &&
           other.read == this.read &&
+          other.sentOn == this.sentOn &&
           other.status == this.status &&
           other.created == this.created);
 }
@@ -534,7 +566,9 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
   final Value<String> chatId;
   final Value<String> message;
   final Value<int> userId;
+  final Value<String?> repliedMessageId;
   final Value<bool> read;
+  final Value<bool> sentOn;
   final Value<MessageStatus> status;
   final Value<DateTime?> created;
   const MessageTablesCompanion({
@@ -542,7 +576,9 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     this.chatId = const Value.absent(),
     this.message = const Value.absent(),
     this.userId = const Value.absent(),
+    this.repliedMessageId = const Value.absent(),
     this.read = const Value.absent(),
+    this.sentOn = const Value.absent(),
     this.status = const Value.absent(),
     this.created = const Value.absent(),
   });
@@ -551,7 +587,9 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     required String chatId,
     required String message,
     required int userId,
+    this.repliedMessageId = const Value.absent(),
     this.read = const Value.absent(),
+    this.sentOn = const Value.absent(),
     required MessageStatus status,
     this.created = const Value.absent(),
   })  : id = Value(id),
@@ -564,7 +602,9 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     Expression<String>? chatId,
     Expression<String>? message,
     Expression<int>? userId,
+    Expression<String?>? repliedMessageId,
     Expression<bool>? read,
+    Expression<bool>? sentOn,
     Expression<MessageStatus>? status,
     Expression<DateTime?>? created,
   }) {
@@ -573,7 +613,9 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       if (chatId != null) 'chat_id': chatId,
       if (message != null) 'message': message,
       if (userId != null) 'user_id': userId,
+      if (repliedMessageId != null) 'replied_message_id': repliedMessageId,
       if (read != null) 'read': read,
+      if (sentOn != null) 'sent_on': sentOn,
       if (status != null) 'status': status,
       if (created != null) 'created': created,
     });
@@ -584,7 +626,9 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       Value<String>? chatId,
       Value<String>? message,
       Value<int>? userId,
+      Value<String?>? repliedMessageId,
       Value<bool>? read,
+      Value<bool>? sentOn,
       Value<MessageStatus>? status,
       Value<DateTime?>? created}) {
     return MessageTablesCompanion(
@@ -592,7 +636,9 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       chatId: chatId ?? this.chatId,
       message: message ?? this.message,
       userId: userId ?? this.userId,
+      repliedMessageId: repliedMessageId ?? this.repliedMessageId,
       read: read ?? this.read,
+      sentOn: sentOn ?? this.sentOn,
       status: status ?? this.status,
       created: created ?? this.created,
     );
@@ -613,8 +659,14 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     if (userId.present) {
       map['user_id'] = Variable<int>(userId.value);
     }
+    if (repliedMessageId.present) {
+      map['replied_message_id'] = Variable<String?>(repliedMessageId.value);
+    }
     if (read.present) {
       map['read'] = Variable<bool>(read.value);
+    }
+    if (sentOn.present) {
+      map['sent_on'] = Variable<bool>(sentOn.value);
     }
     if (status.present) {
       final converter = $MessageTablesTable.$converter0;
@@ -633,7 +685,9 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
           ..write('chatId: $chatId, ')
           ..write('message: $message, ')
           ..write('userId: $userId, ')
+          ..write('repliedMessageId: $repliedMessageId, ')
           ..write('read: $read, ')
+          ..write('sentOn: $sentOn, ')
           ..write('status: $status, ')
           ..write('created: $created')
           ..write(')'))
@@ -662,12 +716,24 @@ class $MessageTablesTable extends MessageTables
   late final GeneratedColumn<int?> userId = GeneratedColumn<int?>(
       'user_id', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
+  final VerificationMeta _repliedMessageIdMeta =
+      const VerificationMeta('repliedMessageId');
+  late final GeneratedColumn<String?> repliedMessageId =
+      GeneratedColumn<String?>('replied_message_id', aliasedName, true,
+          typeName: 'TEXT', requiredDuringInsert: false);
   final VerificationMeta _readMeta = const VerificationMeta('read');
   late final GeneratedColumn<bool?> read = GeneratedColumn<bool?>(
       'read', aliasedName, false,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (read IN (0, 1))',
+      defaultValue: Constant(false));
+  final VerificationMeta _sentOnMeta = const VerificationMeta('sentOn');
+  late final GeneratedColumn<bool?> sentOn = GeneratedColumn<bool?>(
+      'sent_on', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (sent_on IN (0, 1))',
       defaultValue: Constant(false));
   final VerificationMeta _statusMeta = const VerificationMeta('status');
   late final GeneratedColumnWithTypeConverter<MessageStatus, int?> status =
@@ -681,8 +747,17 @@ class $MessageTablesTable extends MessageTables
       requiredDuringInsert: false,
       defaultValue: Constant(new DateTime.now()));
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, chatId, message, userId, read, status, created];
+  List<GeneratedColumn> get $columns => [
+        id,
+        chatId,
+        message,
+        userId,
+        repliedMessageId,
+        read,
+        sentOn,
+        status,
+        created
+      ];
   @override
   String get aliasedName => _alias ?? 'message_tables';
   @override
@@ -715,9 +790,19 @@ class $MessageTablesTable extends MessageTables
     } else if (isInserting) {
       context.missing(_userIdMeta);
     }
+    if (data.containsKey('replied_message_id')) {
+      context.handle(
+          _repliedMessageIdMeta,
+          repliedMessageId.isAcceptableOrUnknown(
+              data['replied_message_id']!, _repliedMessageIdMeta));
+    }
     if (data.containsKey('read')) {
       context.handle(
           _readMeta, read.isAcceptableOrUnknown(data['read']!, _readMeta));
+    }
+    if (data.containsKey('sent_on')) {
+      context.handle(_sentOnMeta,
+          sentOn.isAcceptableOrUnknown(data['sent_on']!, _sentOnMeta));
     }
     context.handle(_statusMeta, const VerificationResult.success());
     if (data.containsKey('created')) {

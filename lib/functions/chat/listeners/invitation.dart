@@ -26,11 +26,7 @@ class ChatInvitationListener {
 
   Future<void> listenTo(String channel,
       {Int64 startSequence = Int64.ZERO}) async {
-    await natsProvider.subscribeToChannel(
-      channel,
-      onMessage,
-      startSequence: Int64.parseInt("5"),
-    );
+    await natsProvider.subscribeToChannel(channel, onMessage);
   }
 
   Future<void> onMessage(String channel, NatsMessage message) async {

@@ -8,7 +8,7 @@ import 'package:ink_mobile/models/chat/database/tables/chat_table.dart';
 import 'package:ink_mobile/models/chat/database/tables/message_table.dart';
 import 'package:ink_mobile/models/chat/database/tables/participant_table.dart';
 import 'package:ink_mobile/models/chat/database/tables/user_table.dart';
-import 'package:ink_mobile/models/chat/message.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:moor/moor.dart';
 import 'package:encrypted_moor/encrypted_moor.dart';
 
@@ -110,8 +110,8 @@ class ChatDatabase extends _$ChatDatabase {
 
   Future deleteMessagesByChatId(String chatId) =>
       (delete(messageTables)..where((tbl) => tbl.chatId.equals(chatId))).go();
-  Future deleteMessage(MessageTable message) =>
-      delete(messageTables).delete(message);
+  Future deleteMessageById(String id) =>
+      (delete(messageTables)..where((tbl) => tbl.id.equals(id))).go();
 
   //USER
   Future<int> insertUser(UserTable user) => into(userTables).insert(user);
@@ -135,7 +135,7 @@ class ChatDatabase extends _$ChatDatabase {
           .write(channel);
 
   @override
-  int get schemaVersion => 13;
+  int get schemaVersion => 15;
 
   @override
   //USED TO AVOID APP CRASH AFTER CHANING DB

@@ -4,14 +4,13 @@ import 'package:ink_mobile/components/popup/popup_menu_container.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
-import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/functions/chat/chat_functions.dart';
-import 'package:ink_mobile/functions/textfield_utils.dart';
+import 'package:ink_mobile/functions/chat/chat_creation.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/select_menu.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 
 import '../chat_screen.dart';
 
@@ -27,13 +26,13 @@ class HoverMessage extends StatelessWidget {
       : super(key: key);
 
   static late AppLocalizations _strings;
-  static late ChatDatabaseCubit _chatDatabaseCubit;
   static late SelectableCubit<MessageWithUser> _selectableCubit;
+  static late ChatCubit _chatCubit;
 
   MessageTable get message => messageWithUser.message!;
 
   void _onDelete(BuildContext context) =>
-      ChatFunctions(_chatDatabaseCubit).deleteMessages([message]);
+      UseMessageProvider.messageProvider.deleteMessages([message]);
 
   void _onCopy(BuildContext context) {
     Clipboard.setData(new ClipboardData(text: message.message));
@@ -45,23 +44,22 @@ class HoverMessage extends StatelessWidget {
   }
 
   void _onRespond() {
-    //_chatCubit.emitSelectedMessageId(message.id);
+    _chatCubit.emitSelectedMessageId(message.id);
   }
 
   void _onSelect() {
-    TextFieldUtils.loseTextFieldFocus();
     _selectableCubit.addItem(messageWithUser);
   }
 
   void _onSendOn(BuildContext context) {
-    //MessageFunctions(context: context, strings: _strings).sendOn([message]);
+    ChatCreation.sendOn([message], context);
   }
 
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    _chatDatabaseCubit = ChatScreen.of(context).chatDatabaseCubit;
     _selectableCubit = ChatScreen.of(context).selectableCubit;
+    _chatCubit = ChatScreen.of(context).chatCubit;
     return PopupMenuContainer<String>(
       blurBackground: true,
       child: child,

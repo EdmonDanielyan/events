@@ -29,17 +29,4 @@ class ChatDatabaseCubit extends Cubit<ChatDatabaseCubitState> {
 
     return messages;
   }
-
-  Future<List<MessageTable>> getSelectedChatMessages() async {
-    List<MessageTable> messages = [];
-    final messagesWithUser = await getSelectedChatMessagesWithUser();
-
-    for (final messageWithUser in messagesWithUser) {
-      if (messageWithUser.message != null) {
-        messages.add(messageWithUser.message!);
-      }
-    }
-
-    return messages;
-  }
 }

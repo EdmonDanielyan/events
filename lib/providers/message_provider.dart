@@ -1,5 +1,6 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
+import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/all.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat.dart';
 import 'package:ink_mobile/functions/chat/listeners/invitation.dart';
@@ -24,6 +25,7 @@ class UseMessageProvider {
 class MessageProvider {
   final ChatDatabaseCubit chatDatabaseCubit;
   final NatsProvider natsProvider;
+  late ChatFunctions chatFunctions;
   late ChatInvitationListener chatInvitationListener;
   late ChatMessageListener chatMessageListener;
   late ChatSendMessage chatSendMessage;
@@ -55,6 +57,7 @@ class MessageProvider {
       chatInvitationListener: chatInvitationListener,
     );
     this.chatCreation = ChatCreation(chatDatabaseCubit);
+    this.chatFunctions = ChatFunctions(chatDatabaseCubit);
   }
 
   bool isGroup(ChatTable chat) => chat.participantId == null;
@@ -114,25 +117,24 @@ class MessageProvider {
         userId: JwtPayload.myId, channel: chatChannel, chat: chat);
   }
 
-  Future<void> sendMessage(ChatTable chat, ChatEntities chatEntities) async {
-    await sendTxtMessage(chat, chatEntities);
+  Future<void> sendMessage(ChatTable chat, MessageTable message) async {
+    await sendTxtMessage(chat, message);
   }
 
   Future<void> sendTxtMessage(
     ChatTable chat,
-    ChatEntities chatEntities, {
+    MessageTable message, {
     UserTable? user,
   }) async {
-    final message = await SendMessage(
-      chatDatabaseCubit: chatDatabaseCubit,
-      chat: chat,
-    ).call(chatEntities);
-
     await chatSendMessage.sendTextMessage(
       getChatChannel(chat.id),
       chat,
       message,
       user ?? UserFunctions.getMe,
     );
+  }
+
+  Future<void> deleteMessages(List<MessageTable> messages) async {
+    chatFunctions.deleteMessages(messages);
   }
 }

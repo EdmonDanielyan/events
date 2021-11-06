@@ -11,6 +11,8 @@ import '../chat_screen.dart';
 class MessageList extends StatelessWidget with MessageMixins {
   const MessageList({Key? key}) : super(key: key);
 
+  static List<MessageWithUser>? messages;
+
   @override
   Widget build(BuildContext context) {
     final chatDatabaseCubit = ChatScreen.of(context).chatDatabaseCubit;
@@ -25,16 +27,16 @@ class MessageList extends StatelessWidget with MessageMixins {
               .watchChatMessages(chatDatabaseCubit.selectedChat!.id),
           builder: (context, AsyncSnapshot<List<MessageWithUser>> snapshot) {
             if (snapshot.hasData) {
-              List<MessageWithUser> messages = snapshot.data ?? [];
+              messages = snapshot.data ?? [];
               DateTimeSort dateSort = DateTimeSort();
 
-              if (messages.length > 0) {
+              if (messages!.length > 0) {
                 return ListView.builder(
                   controller: ScrollController(keepScrollOffset: false),
-                  itemCount: messages.length,
+                  itemCount: messages!.length,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
-                    return eachItem(messages[index], dateSort, index);
+                    return eachItem(messages![index], dateSort, index);
                   },
                 );
               }

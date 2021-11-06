@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/person_list_params.dart';
 import 'package:ink_mobile/models/token.dart';
 
 class ChatCreation {
@@ -105,5 +108,18 @@ class ChatCreation {
 
   Future<int> _insertChat(ChatTable chat) async {
     return await chatDatabaseCubit.db.insertChat(chat);
+  }
+
+  static void sendOn(List<MessageTable> messages, BuildContext context) {
+    Future.delayed(Duration(milliseconds: 200), () {
+      Navigator.of(context).pushNamed(
+        "/message_person_list",
+        arguments: PersonListParams(
+          messages: messages,
+          title: localizationInstance.sendOn,
+          type: PersonListParamsEnum.SEND_ON,
+        ),
+      );
+    });
   }
 }

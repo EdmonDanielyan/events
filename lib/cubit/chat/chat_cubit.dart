@@ -3,39 +3,39 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/message.dart';
+import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/items_search.dart';
 
 import 'chat_state.dart';
 
 @singleton
 class ChatCubit extends Cubit<ChatCubitState> {
-  //int? previousSelectedMessageId;
-  List<MessageTable> _currentMessages = [];
+  List<MessageWithUser> _currentMessages = [];
+
   ChatCubit()
       : super(ChatCubitState(messagesSearch: ItemsSearch<MessageTable>()));
 
   Future<void> updateMessages(ChatDatabaseCubit chatDatabaseCubit) async {
-    final messages = await chatDatabaseCubit.getSelectedChatMessages();
+    final messages = await chatDatabaseCubit.getSelectedChatMessagesWithUser();
     _currentMessages = messages;
   }
 
-  List<MessageTable> get getMessages => _currentMessages;
+  List<MessageTable> get getMessages =>
+      MessageListView.messageWithUsersToMessage(_currentMessages);
+  List<MessageWithUser> get getMessagesWithUser => _currentMessages;
 
-  List<MessageTable> get getSelectedMessages =>
-      MessageListView.getSelectedItems(getMessages);
-
-  void emitSelectedMessageId(int? selectedMessageId) {
-    //previousSelectedMessageId = state.selectedMessageId;
-    emit(state.copyWith(selectedMessageId: selectedMessageId));
+  MessageWithUser? getMessageById(String id) {
+    return getMessagesWithUser
+        .firstWhere((element) => element.message!.id == id, orElse: null);
   }
 
-  void unselectAllMessages() {
-    // List<Message> newMessages = getMessages;
-    // for (final message in newMessages) {
-    //   if (message.selected) message.selected = false;
-    // }
-    // _emitMessages(newMessages);
+  void clean() {
+    emitSelectedMessageId(null);
+  }
+
+  void emitSelectedMessageId(String? messageId) {
+    emit(state.copyWith(selectedMessageId: messageId));
   }
 
   void emitAppBarEnum(ChatAppBarEnums appBarEnum) {
@@ -55,9 +55,6 @@ class ChatCubit extends Cubit<ChatCubitState> {
   void upSearch() {
     ItemsSearch<MessageTable> item =
         state.messagesSearch.decreaseIndexAndReturn();
-
-    // ItemsSearch<MessageTable> item =
-    //     state.messagesSearch.decreaseIndexAndReturn();
     emitMessageSearch(item);
   }
 
