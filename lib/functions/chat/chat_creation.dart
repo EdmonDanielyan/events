@@ -69,7 +69,10 @@ class ChatCreation {
     var newChat = chat ?? _makeChat(generateChatId, name, avatar);
 
     await _insertChat(newChat);
-    await UserFunctions(chatDatabaseCubit).insertUsers(users);
+    final userFunctions = UserFunctions(chatDatabaseCubit);
+    await userFunctions.insertUsers(users);
+    await userFunctions.insertParticipants(
+        ChatUserViewModel.toParticipants(users, newChat), newChat);
 
     return newChat;
   }

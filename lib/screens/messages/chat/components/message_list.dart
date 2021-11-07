@@ -1,21 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/date_sort.dart';
 import 'package:ink_mobile/functions/message_mixins.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/screens/messages/chat/components/date_widget.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card.dart';
+import 'package:ink_mobile/screens/messages/chat/entities/chat_screen_params.dart';
 
 import '../chat_screen.dart';
 
 class MessageList extends StatelessWidget with MessageMixins {
   const MessageList({Key? key}) : super(key: key);
-
   static List<MessageWithUser>? messages;
+  static late ChatDatabaseCubit _chatDatabaseCubit;
+  static late ChatScreenParams _chatScreenParams;
+
+  Stream<List<MessageWithUser>> getStream() {
+    final String chatId = _chatDatabaseCubit.selectedChat!.id;
+    if (_chatScreenParams.showOnlyFilesAndLinks) {
+      return _chatDatabaseCubit.db.watchChatFilesMessages(chatId);
+    }
+
+    return _chatDatabaseCubit.db.watchChatMessages(chatId);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final chatDatabaseCubit = ChatScreen.of(context).chatDatabaseCubit;
+    _chatDatabaseCubit = ChatScreen.of(context).chatDatabaseCubit;
+    _chatScreenParams = ChatScreen.of(context).chatScreenParams;
 
     return Container(
       child: MediaQuery.removePadding(
@@ -23,8 +36,7 @@ class MessageList extends StatelessWidget with MessageMixins {
         removeBottom: true,
         removeTop: true,
         child: StreamBuilder(
-          stream: chatDatabaseCubit.db
-              .watchChatMessages(chatDatabaseCubit.selectedChat!.id),
+          stream: getStream(),
           builder: (context, AsyncSnapshot<List<MessageWithUser>> snapshot) {
             if (snapshot.hasData) {
               messages = snapshot.data ?? [];

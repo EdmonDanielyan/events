@@ -31,7 +31,24 @@ class UserFunctions {
     for (final user in users) {
       await insertUser(user);
     }
+    return true;
+  }
 
+  Future<int> insertParticipant(
+      ParticipantTable participant, ChatTable chat) async {
+    ParticipantTable? exists = await chatDatabaseCubit.db
+        .selectParticipantById(participant.userId, chat.id);
+    if (exists == null) {
+      return await chatDatabaseCubit.db.insertParticipant(participant);
+    }
+    return exists.id!;
+  }
+
+  Future<bool> insertParticipants(
+      List<ParticipantTable> participants, ChatTable chat) async {
+    for (final participant in participants) {
+      await insertParticipant(participant, chat);
+    }
     return true;
   }
 }

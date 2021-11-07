@@ -29,8 +29,6 @@ class NewChatPersonContainer extends StatelessWidget {
             child: ParticipantCard(
               highlightTxt: highlightTxt,
               user: user,
-              owner: null,
-              admins: null,
               horizontalPadding: 0.0,
               avatarSize: avatarSize,
               titleGap: titleGap,

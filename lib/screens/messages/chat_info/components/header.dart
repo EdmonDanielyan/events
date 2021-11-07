@@ -5,6 +5,7 @@ import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/database/model/participant_with_user.dart';
 import 'package:ink_mobile/screens/messages/chat_info/chat_info_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
@@ -12,13 +13,16 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatInfoHeader extends StatelessWidget {
   final ChatTable chat;
-  const ChatInfoHeader({Key? key, required this.chat}) : super(key: key);
+  final List<ParticipantWithUser> participantsWithUser;
+  const ChatInfoHeader(
+      {Key? key, required this.chat, required this.participantsWithUser})
+      : super(key: key);
 
   static late ChatDatabaseCubit _chatDatabaseCubit;
   static late AppLocalizations _strings;
 
   bool get isGroup => ChatListView.isGroup(chat);
-  int get countParticipants => 1;
+  int get countParticipants => participantsWithUser.length;
 
   String participantsLable() {
     if (countParticipants == 1)
@@ -58,7 +62,7 @@ class ChatInfoHeader extends StatelessWidget {
                       ],
                       if (isGroup) ...[
                         SizedBox(height: 3.0),
-                        countUsersWidget(),
+                        countParticipantsWidget(),
                       ]
                     ],
                   );
@@ -95,7 +99,7 @@ class ChatInfoHeader extends StatelessWidget {
     );
   }
 
-  Widget countUsersWidget() {
+  Widget countParticipantsWidget() {
     return Text(
       "$countParticipants ${participantsLable().toLowerCase()}",
       style: TextStyle(

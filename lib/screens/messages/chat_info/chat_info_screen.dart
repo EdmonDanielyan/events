@@ -25,7 +25,6 @@ class ChatInfoScreenState extends State<ChatInfoScreen> {
 
   ChatTable get chat => chatDatabaseCubit.selectedChat!;
   bool get isGroup => ChatListView.isGroup(chat);
-  bool get iAmOwner => ChatListView.isOwner(chat);
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +34,15 @@ class ChatInfoScreenState extends State<ChatInfoScreen> {
       appBar: InkAppBarWithText(
         title: _strings.chatInfo,
         actions: [
-          if (isGroup && iAmOwner) ...[
+          if (isGroup) ...[
             ChatInfoEditBtn(),
           ],
         ],
       ),
-      body: Body(chat: chat),
+      body: Body(
+        chat: chat,
+        chatDatabaseCubit: chatDatabaseCubit,
+      ),
     );
   }
 }

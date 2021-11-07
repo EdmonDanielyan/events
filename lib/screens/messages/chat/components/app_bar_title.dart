@@ -16,6 +16,7 @@ class ChatAppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
+    final _chatScrenParams = ChatScreen.of(context).chatScreenParams;
 
     return GestureDetector(
       onTap: () => Navigator.of(context).pushNamed("/chat_info"),
@@ -25,7 +26,7 @@ class ChatAppBarTitle extends StatelessWidget {
             bloc: ChatScreen.of(context).chatDatabaseCubit,
             builder: (context, state) {
               return Text(
-                state.selectedChat?.name ?? "",
+                _chatScrenParams.appBarText ?? (state.selectedChat?.name ?? ""),
                 style: TextStyle(fontSize: 17.0),
                 textAlign: TextAlign.center,
               );

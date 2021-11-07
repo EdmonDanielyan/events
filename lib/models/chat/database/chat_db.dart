@@ -2,7 +2,6 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/models/chat/database/tables/admin_table.dart';
 import 'package:ink_mobile/models/chat/database/tables/channel.dart';
 import 'package:ink_mobile/models/chat/database/tables/chat_table.dart';
 import 'package:ink_mobile/models/chat/database/tables/message_table.dart';
@@ -12,6 +11,8 @@ import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:moor/moor.dart';
 import 'package:encrypted_moor/encrypted_moor.dart';
 
+import 'model/participant_with_user.dart';
+
 part 'chat_db.g.dart';
 
 @singleton
@@ -19,7 +20,6 @@ part 'chat_db.g.dart';
   ChatTables,
   MessageTables,
   UserTables,
-  AdminTables,
   ParticipantTables,
   ChannelTables
 ])
@@ -87,6 +87,28 @@ class ChatDatabase extends _$ChatDatabase {
         });
   }
 
+  Stream<List<MessageWithUser>> watchChatFilesMessages(String chatId) {
+    return (select(messageTables)
+          ..where((tbl) =>
+              tbl.chatId.equals(chatId) & (tbl.message.contains("http")))
+          ..orderBy([
+            (t) => OrderingTerm(expression: t.created, mode: OrderingMode.asc)
+          ]))
+        .join([
+          leftOuterJoin(
+              userTables, userTables.id.equalsExp(messageTables.userId))
+        ])
+        .watch()
+        .map((rows) {
+          return rows.map((row) {
+            return MessageWithUser(
+              message: row.readTableOrNull(messageTables),
+              user: row.readTableOrNull(userTables),
+            );
+          }).toList();
+        });
+  }
+
   Future<List<MessageWithUser>> getChatMessages(String chatId) async {
     return await (select(messageTables)
           ..where((tbl) => tbl.chatId.equals(chatId))
@@ -134,8 +156,33 @@ class ChatDatabase extends _$ChatDatabase {
       (update(channelTables)..where((tbl) => tbl.to.equals(channelName)))
           .write(channel);
 
+  //PARTICIPANTS
+  Future<int> insertParticipant(ParticipantTable participant) =>
+      into(participantTables).insert(participant);
+  Future<ParticipantTable?> selectParticipantById(int id, String chatId) =>
+      (select(participantTables)
+            ..where((tbl) => tbl.userId.equals(id) & tbl.chatId.equals(chatId)))
+          .getSingleOrNull();
+  Stream<List<ParticipantWithUser>> watchParticipants(String chatId) {
+    return (select(participantTables)
+          ..where((tbl) => tbl.chatId.equals(chatId)))
+        .join([
+          leftOuterJoin(
+              userTables, userTables.id.equalsExp(participantTables.userId))
+        ])
+        .watch()
+        .map((rows) {
+          return rows.map((row) {
+            return ParticipantWithUser(
+              participant: row.readTableOrNull(participantTables),
+              user: row.readTableOrNull(userTables),
+            );
+          }).toList();
+        });
+  }
+
   @override
-  int get schemaVersion => 15;
+  int get schemaVersion => 17;
 
   @override
   //USED TO AVOID APP CRASH AFTER CHANING DB

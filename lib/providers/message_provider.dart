@@ -5,13 +5,11 @@ import 'package:ink_mobile/functions/chat/listeners/all.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat.dart';
 import 'package:ink_mobile/functions/chat/listeners/invitation.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
-import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
-import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
 class UseMessageProvider {
   static late MessageProvider messageProvider;
@@ -92,6 +90,7 @@ class MessageProvider {
 
   Future<ChatTable> createGroup(
       {required String name, required List<UserTable> users}) async {
+    users.insert(0, UserFunctions.getMe);
     final chat = await ChatCreation(chatDatabaseCubit)
         .createGroup(name: name, avatar: "", users: users);
     _afterChatCreation(chat, users);

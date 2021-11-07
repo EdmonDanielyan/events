@@ -60,6 +60,12 @@ class HoverMessage extends StatelessWidget {
     _strings = localizationInstance;
     _selectableCubit = ChatScreen.of(context).selectableCubit;
     _chatCubit = ChatScreen.of(context).chatCubit;
+    final _chatScreenParams = ChatScreen.of(context).chatScreenParams;
+
+    if (_chatScreenParams.ignoreHoverMessage) {
+      return child;
+    }
+
     return PopupMenuContainer<String>(
       blurBackground: true,
       child: child,

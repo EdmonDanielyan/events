@@ -7,7 +7,6 @@ import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
-import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
@@ -18,26 +17,32 @@ import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dar
 import 'package:ink_mobile/screens/messages/chat/components/selective_app_bar.dart';
 
 import 'components/body.dart';
+import 'entities/chat_screen_params.dart';
 
 class ChatScreen extends StatefulWidget {
   static ChatScreenState of(BuildContext context) =>
       context.findAncestorStateOfType<ChatScreenState>()!;
 
+  final ChatScreenParams chatScreenParams;
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatCubit chatCubit;
   final SelectableCubit<MessageWithUser> selectableCubit;
   const ChatScreen({
     Key? key,
+    required this.chatScreenParams,
     required this.chatDatabaseCubit,
     required this.chatCubit,
     required this.selectableCubit,
   }) : super(key: key);
 
   @override
-  ChatScreenState createState() => ChatScreenState();
+  ChatScreenState createState() => ChatScreenState(chatScreenParams);
 }
 
 class ChatScreenState extends State<ChatScreen> {
+  final ChatScreenParams chatScreenParams;
+  ChatScreenState(this.chatScreenParams);
+
   ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
   ChatCubit get chatCubit => widget.chatCubit;
   SelectableCubit<MessageWithUser> get selectableCubit =>
@@ -52,11 +57,13 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(chatScreenParams.showTextField);
     return Scaffold(
       appBar: _GetAppBar(
         chatDatabaseCubit: chatDatabaseCubit,
         chatCubit: chatCubit,
         selectableCubit: selectableCubit,
+        chatScreenParams: chatScreenParams,
       ),
       body: ChatBody(),
     );
@@ -64,11 +71,13 @@ class ChatScreenState extends State<ChatScreen> {
 }
 
 class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final ChatScreenParams chatScreenParams;
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatCubit chatCubit;
   final SelectableCubit<MessageWithUser> selectableCubit;
   const _GetAppBar({
     Key? key,
+    required this.chatScreenParams,
     required this.chatDatabaseCubit,
     required this.chatCubit,
     required this.selectableCubit,
@@ -145,7 +154,8 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   PreferredSizeWidget initialBar() {
     return InkAppBarWithText(
-      titleWidget: ChatAppBarTitle(chat: chatDatabaseCubit.selectedChat!),
+      titleWidget:
+          setIgnoring(ChatAppBarTitle(chat: chatDatabaseCubit.selectedChat!)),
       title: "",
       actions: [
         MessageSearchBtn(
@@ -155,6 +165,13 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
         )
       ],
+    );
+  }
+
+  Widget setIgnoring(Widget child) {
+    return IgnorePointer(
+      ignoring: chatScreenParams.ignoreChatInfo,
+      child: child,
     );
   }
 

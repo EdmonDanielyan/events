@@ -42,6 +42,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
   @override
   Widget build(BuildContext context) {
     final chatCubit = ChatScreen.of(context).chatCubit;
+    final chatScreenParams = ChatScreen.of(context).chatScreenParams;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -51,16 +52,18 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
             child: MessageList(),
           ),
         ),
-        BlocBuilder<ChatCubit, ChatCubitState>(
-          bloc: chatCubit,
-          builder: (context, state) {
-            if (state.appBarEnum != ChatAppBarEnums.SEARCH_BAR) {
-              return MessageBottomBar(scrollController: controller);
-            } else {
-              return SizedBox();
-            }
-          },
-        ),
+        if (chatScreenParams.showTextField) ...[
+          BlocBuilder<ChatCubit, ChatCubitState>(
+            bloc: chatCubit,
+            builder: (context, state) {
+              if (state.appBarEnum != ChatAppBarEnums.SEARCH_BAR) {
+                return MessageBottomBar(scrollController: controller);
+              } else {
+                return SizedBox();
+              }
+            },
+          ),
+        ],
       ],
     );
   }

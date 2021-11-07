@@ -28,6 +28,7 @@ import 'package:ink_mobile/screens/events_detail/events_detail_screen.dart';
 import 'package:ink_mobile/screens/events_list/events_list_screen.dart';
 import 'package:ink_mobile/screens/initial/initial_screen.dart';
 import 'package:ink_mobile/screens/messages/chat/chat_screen.dart';
+import 'package:ink_mobile/screens/messages/chat/entities/chat_screen_params.dart';
 import 'package:ink_mobile/screens/messages/chat_info/chat_info_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/new_group_screen.dart';
 import 'package:ink_mobile/screens/messages/person_list/person_list_screen.dart';
@@ -108,11 +109,18 @@ class MainRoutes {
           newsListCubit: sl.get<NewsListCubit>(),
           openUniversityCubit: sl.get<OpenUniversityCubit>(),
         ),
-    '/message': (BuildContext context) => ChatScreen(
+    '/message': (BuildContext context) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args is ChatScreenParams) {
+        return ChatScreen(
+          chatScreenParams: args,
           chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
           chatCubit: sl.get<ChatCubit>(),
           selectableCubit: SelectableCubit<MessageWithUser>(),
-        ),
+        );
+      }
+      return _pageNotFound();
+    },
     '/chat_info': (BuildContext context) => ChatInfoScreen(
           chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
         ),

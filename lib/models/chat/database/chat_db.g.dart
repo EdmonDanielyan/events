@@ -1034,207 +1034,49 @@ class $UserTablesTable extends UserTables
   }
 }
 
-class AdminTable extends DataClass implements Insertable<AdminTable> {
-  final String chatId;
-  final int userId;
-  AdminTable({required this.chatId, required this.userId});
-  factory AdminTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return AdminTable(
-      chatId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}chat_id'])!,
-      userId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['chat_id'] = Variable<String>(chatId);
-    map['user_id'] = Variable<int>(userId);
-    return map;
-  }
-
-  AdminTablesCompanion toCompanion(bool nullToAbsent) {
-    return AdminTablesCompanion(
-      chatId: Value(chatId),
-      userId: Value(userId),
-    );
-  }
-
-  factory AdminTable.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return AdminTable(
-      chatId: serializer.fromJson<String>(json['chatId']),
-      userId: serializer.fromJson<int>(json['userId']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'chatId': serializer.toJson<String>(chatId),
-      'userId': serializer.toJson<int>(userId),
-    };
-  }
-
-  AdminTable copyWith({String? chatId, int? userId}) => AdminTable(
-        chatId: chatId ?? this.chatId,
-        userId: userId ?? this.userId,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('AdminTable(')
-          ..write('chatId: $chatId, ')
-          ..write('userId: $userId')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => $mrjf($mrjc(chatId.hashCode, userId.hashCode));
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is AdminTable &&
-          other.chatId == this.chatId &&
-          other.userId == this.userId);
-}
-
-class AdminTablesCompanion extends UpdateCompanion<AdminTable> {
-  final Value<String> chatId;
-  final Value<int> userId;
-  const AdminTablesCompanion({
-    this.chatId = const Value.absent(),
-    this.userId = const Value.absent(),
-  });
-  AdminTablesCompanion.insert({
-    required String chatId,
-    required int userId,
-  })  : chatId = Value(chatId),
-        userId = Value(userId);
-  static Insertable<AdminTable> custom({
-    Expression<String>? chatId,
-    Expression<int>? userId,
-  }) {
-    return RawValuesInsertable({
-      if (chatId != null) 'chat_id': chatId,
-      if (userId != null) 'user_id': userId,
-    });
-  }
-
-  AdminTablesCompanion copyWith({Value<String>? chatId, Value<int>? userId}) {
-    return AdminTablesCompanion(
-      chatId: chatId ?? this.chatId,
-      userId: userId ?? this.userId,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (chatId.present) {
-      map['chat_id'] = Variable<String>(chatId.value);
-    }
-    if (userId.present) {
-      map['user_id'] = Variable<int>(userId.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('AdminTablesCompanion(')
-          ..write('chatId: $chatId, ')
-          ..write('userId: $userId')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $AdminTablesTable extends AdminTables
-    with TableInfo<$AdminTablesTable, AdminTable> {
-  final GeneratedDatabase _db;
-  final String? _alias;
-  $AdminTablesTable(this._db, [this._alias]);
-  final VerificationMeta _chatIdMeta = const VerificationMeta('chatId');
-  late final GeneratedColumn<String?> chatId = GeneratedColumn<String?>(
-      'chat_id', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
-  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
-  late final GeneratedColumn<int?> userId = GeneratedColumn<int?>(
-      'user_id', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
-  @override
-  List<GeneratedColumn> get $columns => [chatId, userId];
-  @override
-  String get aliasedName => _alias ?? 'admin_tables';
-  @override
-  String get actualTableName => 'admin_tables';
-  @override
-  VerificationContext validateIntegrity(Insertable<AdminTable> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('chat_id')) {
-      context.handle(_chatIdMeta,
-          chatId.isAcceptableOrUnknown(data['chat_id']!, _chatIdMeta));
-    } else if (isInserting) {
-      context.missing(_chatIdMeta);
-    }
-    if (data.containsKey('user_id')) {
-      context.handle(_userIdMeta,
-          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
-    } else if (isInserting) {
-      context.missing(_userIdMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
-  @override
-  AdminTable map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return AdminTable.fromData(data, _db,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
-  }
-
-  @override
-  $AdminTablesTable createAlias(String alias) {
-    return $AdminTablesTable(_db, alias);
-  }
-}
-
 class ParticipantTable extends DataClass
     implements Insertable<ParticipantTable> {
+  final int? id;
   final String chatId;
   final int userId;
-  ParticipantTable({required this.chatId, required this.userId});
+  final bool admin;
+  ParticipantTable(
+      {this.id,
+      required this.chatId,
+      required this.userId,
+      required this.admin});
   factory ParticipantTable.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return ParticipantTable(
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
       chatId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}chat_id'])!,
       userId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
+      admin: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}admin'])!,
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int?>(id);
+    }
     map['chat_id'] = Variable<String>(chatId);
     map['user_id'] = Variable<int>(userId);
+    map['admin'] = Variable<bool>(admin);
     return map;
   }
 
   ParticipantTablesCompanion toCompanion(bool nullToAbsent) {
     return ParticipantTablesCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       chatId: Value(chatId),
       userId: Value(userId),
+      admin: Value(admin),
     );
   }
 
@@ -1242,80 +1084,114 @@ class ParticipantTable extends DataClass
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return ParticipantTable(
+      id: serializer.fromJson<int?>(json['id']),
       chatId: serializer.fromJson<String>(json['chatId']),
       userId: serializer.fromJson<int>(json['userId']),
+      admin: serializer.fromJson<bool>(json['admin']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
+      'id': serializer.toJson<int?>(id),
       'chatId': serializer.toJson<String>(chatId),
       'userId': serializer.toJson<int>(userId),
+      'admin': serializer.toJson<bool>(admin),
     };
   }
 
-  ParticipantTable copyWith({String? chatId, int? userId}) => ParticipantTable(
+  ParticipantTable copyWith(
+          {int? id, String? chatId, int? userId, bool? admin}) =>
+      ParticipantTable(
+        id: id ?? this.id,
         chatId: chatId ?? this.chatId,
         userId: userId ?? this.userId,
+        admin: admin ?? this.admin,
       );
   @override
   String toString() {
     return (StringBuffer('ParticipantTable(')
+          ..write('id: $id, ')
           ..write('chatId: $chatId, ')
-          ..write('userId: $userId')
+          ..write('userId: $userId, ')
+          ..write('admin: $admin')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(chatId.hashCode, userId.hashCode));
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(chatId.hashCode, $mrjc(userId.hashCode, admin.hashCode))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ParticipantTable &&
+          other.id == this.id &&
           other.chatId == this.chatId &&
-          other.userId == this.userId);
+          other.userId == this.userId &&
+          other.admin == this.admin);
 }
 
 class ParticipantTablesCompanion extends UpdateCompanion<ParticipantTable> {
+  final Value<int?> id;
   final Value<String> chatId;
   final Value<int> userId;
+  final Value<bool> admin;
   const ParticipantTablesCompanion({
+    this.id = const Value.absent(),
     this.chatId = const Value.absent(),
     this.userId = const Value.absent(),
+    this.admin = const Value.absent(),
   });
   ParticipantTablesCompanion.insert({
+    this.id = const Value.absent(),
     required String chatId,
     required int userId,
+    this.admin = const Value.absent(),
   })  : chatId = Value(chatId),
         userId = Value(userId);
   static Insertable<ParticipantTable> custom({
+    Expression<int?>? id,
     Expression<String>? chatId,
     Expression<int>? userId,
+    Expression<bool>? admin,
   }) {
     return RawValuesInsertable({
+      if (id != null) 'id': id,
       if (chatId != null) 'chat_id': chatId,
       if (userId != null) 'user_id': userId,
+      if (admin != null) 'admin': admin,
     });
   }
 
   ParticipantTablesCompanion copyWith(
-      {Value<String>? chatId, Value<int>? userId}) {
+      {Value<int?>? id,
+      Value<String>? chatId,
+      Value<int>? userId,
+      Value<bool>? admin}) {
     return ParticipantTablesCompanion(
+      id: id ?? this.id,
       chatId: chatId ?? this.chatId,
       userId: userId ?? this.userId,
+      admin: admin ?? this.admin,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int?>(id.value);
+    }
     if (chatId.present) {
       map['chat_id'] = Variable<String>(chatId.value);
     }
     if (userId.present) {
       map['user_id'] = Variable<int>(userId.value);
+    }
+    if (admin.present) {
+      map['admin'] = Variable<bool>(admin.value);
     }
     return map;
   }
@@ -1323,8 +1199,10 @@ class ParticipantTablesCompanion extends UpdateCompanion<ParticipantTable> {
   @override
   String toString() {
     return (StringBuffer('ParticipantTablesCompanion(')
+          ..write('id: $id, ')
           ..write('chatId: $chatId, ')
-          ..write('userId: $userId')
+          ..write('userId: $userId, ')
+          ..write('admin: $admin')
           ..write(')'))
         .toString();
   }
@@ -1335,6 +1213,12 @@ class $ParticipantTablesTable extends ParticipantTables
   final GeneratedDatabase _db;
   final String? _alias;
   $ParticipantTablesTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, true,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _chatIdMeta = const VerificationMeta('chatId');
   late final GeneratedColumn<String?> chatId = GeneratedColumn<String?>(
       'chat_id', aliasedName, false,
@@ -1343,8 +1227,15 @@ class $ParticipantTablesTable extends ParticipantTables
   late final GeneratedColumn<int?> userId = GeneratedColumn<int?>(
       'user_id', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
+  final VerificationMeta _adminMeta = const VerificationMeta('admin');
+  late final GeneratedColumn<bool?> admin = GeneratedColumn<bool?>(
+      'admin', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (admin IN (0, 1))',
+      defaultValue: Constant(false));
   @override
-  List<GeneratedColumn> get $columns => [chatId, userId];
+  List<GeneratedColumn> get $columns => [id, chatId, userId, admin];
   @override
   String get aliasedName => _alias ?? 'participant_tables';
   @override
@@ -1354,6 +1245,9 @@ class $ParticipantTablesTable extends ParticipantTables
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
     if (data.containsKey('chat_id')) {
       context.handle(_chatIdMeta,
           chatId.isAcceptableOrUnknown(data['chat_id']!, _chatIdMeta));
@@ -1366,11 +1260,15 @@ class $ParticipantTablesTable extends ParticipantTables
     } else if (isInserting) {
       context.missing(_userIdMeta);
     }
+    if (data.containsKey('admin')) {
+      context.handle(
+          _adminMeta, admin.isAcceptableOrUnknown(data['admin']!, _adminMeta));
+    }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   ParticipantTable map(Map<String, dynamic> data, {String? tablePrefix}) {
     return ParticipantTable.fromData(data, _db,
@@ -1796,19 +1694,12 @@ abstract class _$ChatDatabase extends GeneratedDatabase {
   late final $ChatTablesTable chatTables = $ChatTablesTable(this);
   late final $MessageTablesTable messageTables = $MessageTablesTable(this);
   late final $UserTablesTable userTables = $UserTablesTable(this);
-  late final $AdminTablesTable adminTables = $AdminTablesTable(this);
   late final $ParticipantTablesTable participantTables =
       $ParticipantTablesTable(this);
   late final $ChannelTablesTable channelTables = $ChannelTablesTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [
-        chatTables,
-        messageTables,
-        userTables,
-        adminTables,
-        participantTables,
-        channelTables
-      ];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [chatTables, messageTables, userTables, participantTables, channelTables];
 }

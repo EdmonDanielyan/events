@@ -7,8 +7,7 @@ import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ParticipantCard extends StatelessWidget {
-  final UserTable? owner;
-  final List<UserTable>? admins;
+  final String trailingLable;
   final UserTable? user;
   final double? horizontalPadding;
   final double? titleGap;
@@ -19,34 +18,20 @@ class ParticipantCard extends StatelessWidget {
   const ParticipantCard({
     Key? key,
     required this.user,
-    this.owner,
-    this.admins,
     this.highlightTxt = "",
     this.horizontalPadding,
     this.titleGap,
     this.avatarSize,
     this.overrideTitle,
     this.overrideAvatar,
+    this.trailingLable = "",
   }) : super(key: key);
 
   static late AppLocalizations _strings;
 
-  String getPrivilegeLable() {
-    // if (owner != null) {
-    //   if (ChatUserViewModel.isOwner(user, owner!)) return _strings.owner;
-    // }
-    // if (admins != null) {
-    //   if (ChatUserViewModel.isAdmin(user, admins!)) return _strings.admin;
-    // }
-
-    return "";
-  }
-
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-
-    String privelegeLable = getPrivilegeLable();
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -66,8 +51,8 @@ class ParticipantCard extends StatelessWidget {
               ],
             ),
           ),
-          if (privelegeLable.isNotEmpty) ...[
-            privilegeStatusWidget(privelegeLable),
+          if (trailingLable.isNotEmpty) ...[
+            _trailingLableWidget(trailingLable),
           ],
         ],
       ),
@@ -79,7 +64,7 @@ class ParticipantCard extends StatelessWidget {
       avatarHeight: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
       avatarWidth: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
       url: overrideAvatar ?? user?.avatar,
-      //indicator: user.online,
+      indicator: true,
       indicatorSize: 8.0,
     );
   }
@@ -98,17 +83,16 @@ class ParticipantCard extends StatelessWidget {
   }
 
   Widget onlineStatusWidget() {
-    return SizedBox();
-    // return Text(
-    //   user.online ? _strings.online : _strings.offline,
-    //   style: TextStyle(
-    //     color: Colors.grey,
-    //     fontSize: 12.0,
-    //   ),
-    // );
+    return Text(
+      true ? _strings.online : _strings.offline,
+      style: TextStyle(
+        color: Colors.grey,
+        fontSize: 12.0,
+      ),
+    );
   }
 
-  Widget privilegeStatusWidget(String text) {
+  Widget _trailingLableWidget(String text) {
     return Text(
       text,
       style: TextStyle(
