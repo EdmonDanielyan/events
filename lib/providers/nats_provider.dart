@@ -101,6 +101,7 @@ class NatsProvider {
     if (_channelCallbacks.containsKey(channel)) {
       _channelCallbacks.remove(channel);
     }
+
     print('_channelSubscriptions: ${_channelSubscriptions.keys}');
   }
 
