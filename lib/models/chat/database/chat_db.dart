@@ -29,11 +29,14 @@ class ChatDatabase extends _$ChatDatabase {
           EncryptedExecutor.inDatabaseFolder(
             path: "chat_db.sqlite",
             password: "1234",
-            logStatements: true,
+            logStatements: false,
           ),
         );
 
   //CHATS
+  Future<ChatTable?> selectChatById(String chatId) =>
+      (select(chatTables)..where((tbl) => tbl.id.equals(chatId)))
+          .getSingleOrNull();
   Future<List<ChatTable>> getAllChats() => select(chatTables).get();
   Stream<List<ChatTable>> searchChats(String query) {
     return (select(chatTables)
@@ -61,6 +64,9 @@ class ChatDatabase extends _$ChatDatabase {
       (delete(chatTables)..where((tbl) => tbl.id.equals(id))).go();
 
   //MESSAGES
+  Future<MessageTable?> selectMessageById(String id) =>
+      (select(messageTables)..where((tbl) => tbl.id.equals(id)))
+          .getSingleOrNull();
   Future<int> insertMessage(MessageTable messageTable) =>
       into(messageTables).insert(messageTable);
   Future<MessageTable?> searchMessageByText(String query) =>

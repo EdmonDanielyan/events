@@ -35,18 +35,21 @@ class MessageProvider {
   MessageProvider(this.natsProvider, this.chatDatabaseCubit) {
     this.userFunctions = UserFunctions(chatDatabaseCubit);
     this.channelFunctions = ChannelFunctions(chatDatabaseCubit);
+
+    this.chatSendMessage = ChatSendMessage(natsProvider);
     this.chatMessageListener = ChatMessageListener(
       natsProvider: natsProvider,
       userFunctions: userFunctions,
       chatDatabaseCubit: chatDatabaseCubit,
+      chatSendMessage: chatSendMessage,
     );
-    this.chatSendMessage = ChatSendMessage(natsProvider);
     this.chatInvitationListener = ChatInvitationListener(
-      natsProvider: natsProvider,
       chatMessageListener: chatMessageListener,
+      natsProvider: natsProvider,
       chatSendMessage: chatSendMessage,
       chatDatabaseCubit: chatDatabaseCubit,
     );
+
     this.natsListener = NatsListener(
       natsProvider: natsProvider,
       chatDatabaseCubit: chatDatabaseCubit,
@@ -54,6 +57,7 @@ class MessageProvider {
       chatMessageListener: chatMessageListener,
       chatInvitationListener: chatInvitationListener,
     );
+
     this.chatCreation = ChatCreation(chatDatabaseCubit);
     this.chatFunctions = ChatFunctions(chatDatabaseCubit);
   }
@@ -62,24 +66,20 @@ class MessageProvider {
 
   String get getPublicChatList => natsProvider.getPublicChatIdList();
 
-  String getPrivateTextChannel(String userId) =>
-      natsProvider.getPrivateUserTextChannel(userId);
-
   String getChatChannel(String chatId) =>
       natsProvider.getGroupTextChannel(chatId);
 
   void init() async {
     UserFunctions(chatDatabaseCubit).addMe();
+    natsListener.init();
     natsListener.listenToAllMessages();
-    natsListener.listenToMyChannels();
   }
 
   Future<ChatTable> createChat(UserTable user) async {
     ChatTable? chat;
     List<UserTable> users = [user, UserFunctions.getMe];
-
-    chat = await chatCreation.isChatExists(users);
-
+    String chatId = ChatCreation.generateSingleChatId(users);
+    chat = await chatCreation.isChatExists(chatId);
     if (chat == null) {
       chat = await ChatCreation(chatDatabaseCubit).createSingleChat(user);
       _afterChatCreation(chat, users);
@@ -99,7 +99,9 @@ class MessageProvider {
 
   Future<void> _afterChatCreation(ChatTable chat, List<UserTable> users) async {
     final chatChannel = getChatChannel(chat.id);
-    await chatMessageListener.listenTo(chatChannel);
+    if (!natsListener.listeningToChannel(chatChannel)) {
+      await chatMessageListener.listenTo(chatChannel);
+    }
 
     for (final user in users) {
       if (user.id != JwtPayload.myId) {

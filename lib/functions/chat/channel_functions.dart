@@ -10,7 +10,7 @@ class ChannelFunctions {
 
   Future<void> saveNatsMessage(NatsMessage message) async {
     ChannelTable channel = ChannelListView.messageNatsToChannel(message);
-    bool isChannelExists = await channelExists(channel);
+    bool isChannelExists = await channelExists(channel.to);
 
     if (isChannelExists) {
       await updateChannel(channel);
@@ -19,8 +19,8 @@ class ChannelFunctions {
     }
   }
 
-  Future<bool> channelExists(ChannelTable channel) async {
-    return await chatDatabaseCubit.db.getChannelByChannelName(channel.to) !=
+  Future<bool> channelExists(String channelName) async {
+    return await chatDatabaseCubit.db.getChannelByChannelName(channelName) !=
         null;
   }
 
@@ -29,7 +29,7 @@ class ChannelFunctions {
   }
 
   Future<int?> insertIfNotExists(ChannelTable channel) async {
-    bool isChannelExists = await channelExists(channel);
+    bool isChannelExists = await channelExists(channel.to);
 
     if (!isChannelExists) {
       await insertChannel(channel);

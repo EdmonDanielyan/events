@@ -53,7 +53,9 @@ dependencies:
     get_it: ^7.2.0
     messagepack: ^0.2.1
     dart_nats_streaming:
-        git: https://github.com/JetRabbits/dart-nats-streaming.git
+        path: "./custom/libs/dart-nats-streaming"
+    # dart_nats_streaming:
+    #     git: https://github.com/JetRabbits/dart-nats-streaming.git
     injectable:
     flutter_linkify: ^5.0.2
     flutter_keyboard_visibility: ^5.1.0

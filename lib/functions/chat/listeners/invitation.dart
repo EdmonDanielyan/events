@@ -11,33 +11,44 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:fixnum/fixnum.dart';
 
+import 'all.dart';
+
 class ChatInvitationListener {
   final NatsProvider natsProvider;
   final ChatMessageListener chatMessageListener;
   final ChatSendMessage chatSendMessage;
   final ChatDatabaseCubit chatDatabaseCubit;
 
-  const ChatInvitationListener({
-    required this.natsProvider,
+  ChatInvitationListener({
     required this.chatMessageListener,
+    required this.natsProvider,
     required this.chatSendMessage,
     required this.chatDatabaseCubit,
   });
 
+  late final NatsListener _natsListener;
+
+  void init(NatsListener natsListener) {
+    _natsListener = natsListener;
+  }
+
   Future<void> listenTo(String channel,
       {Int64 startSequence = Int64.ZERO}) async {
-    await natsProvider.subscribeToChannel(channel, onMessage);
+    print("LISTENING TO ${channel} WITH SEQUENCE $startSequence");
+    await natsProvider.subscribeToChannel(channel, onMessage,
+        startSequence: startSequence);
   }
 
   Future<void> onMessage(String channel, NatsMessage message) async {
-    print("ON INVITATION");
+    print("ON INVITATION TRIGGERED");
     final mapPayload = message.payload! as SystemPayload;
     ChatInvitationFields fields =
         ChatInvitationFields.fromMap(mapPayload.fields);
     late ChatTable chat =
         ChatListView.changeChatForParticipant(fields.chat, fields.users);
-
-    await chatMessageListener.listenTo(fields.channel);
+    if (!_natsListener.listeningToChannel(fields.channel)) {
+      chatMessageListener.listenTo(fields.channel);
+    }
     await chatSendMessage.saveToPrivateUserChatIdList(
         userId: JwtPayload.myId, channel: channel, chat: chat);
 

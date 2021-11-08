@@ -6,6 +6,7 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
+import 'package:fixnum/fixnum.dart';
 
 import 'invitation.dart';
 
@@ -26,56 +27,55 @@ class NatsListener {
   String lastChannelStr = "";
   List<String> subscribedChannels = [];
 
+  String get _inviteUserChannel =>
+      natsProvider.getInviteUserToJoinChatChannel(JwtPayload.myId);
+
   Future<void> listenToAllMessages() async {
     natsProvider.onMessage = (String channelStr, NatsMessage message) async {
-      print(channelStr);
-      print(message);
-
-      _hideRepeats(message, () {
-        print("LISTENING TO ALL MESSAGES");
-        channelFunctions.saveNatsMessage(message);
-      });
+      print("LISTENING TO ALL MESSAGES");
+      channelFunctions.saveNatsMessage(message);
     };
   }
 
-  Future<void> listenToMyChannels() async {
+  Future<void> init() async {
+    chatInvitationListener.init(this);
     _listenToInvitations();
-    _listenToMyStoredChannels();
+    listenToMyStoredChannels();
   }
 
   Future<void> _listenToInvitations() async {
-    String channel =
-        natsProvider.getInviteUserToJoinChatChannel(JwtPayload.myId);
-    _subscribeToChannel(MessageType.InviteUserToJoinChat, channel);
+    final exists = await channelFunctions.channelExists(_inviteUserChannel);
+
+    if (!exists) {
+      _subscribeToChannel(MessageType.InviteUserToJoinChat, _inviteUserChannel);
+    }
   }
 
-  Future<void> _listenToMyStoredChannels() async {
+  Future<void> listenToMyStoredChannels() async {
     List<ChannelTable> channels = await channelFunctions.getAllChannels();
     if (channels.isNotEmpty) {
       for (final channel in channels) {
-        _subscribeToChannel(channel.messageType, channel.to);
+        print("CHANNEL ${channel.to} WITH SEQUENCE ${channel.sequence}");
+        Int64 sequence = Int64.parseInt(channel.sequence).toInt64() + 1;
+        await _subscribeToChannel(channel.messageType, channel.to,
+            startSequence: sequence);
       }
     }
   }
 
-  Future<void> _subscribeToChannel(MessageType type, String channel) async {
-    if (!subscribedChannels.contains(channel)) {
+  Future<void> _subscribeToChannel(MessageType type, String channel,
+      {Int64 startSequence = Int64.ZERO}) async {
+    if (!listeningToChannel(channel)) {
       if (type == MessageType.Text) {
-        chatMessageListener.listenTo(channel);
+        chatMessageListener.listenTo(channel, startSequence: startSequence);
       } else if (type == MessageType.InviteUserToJoinChat) {
-        chatInvitationListener.listenTo(channel);
+        chatInvitationListener.listenTo(channel, startSequence: startSequence);
       }
 
       subscribedChannels.add(channel);
     }
   }
 
-  void _hideRepeats(NatsMessage message, Function() callback) {
-    bool notPreviousOne = lastChannelStr != message.to;
-    if (notPreviousOne) {
-      callback();
-    }
-
-    lastChannelStr = message.to;
-  }
+  bool listeningToChannel(String channel) =>
+      subscribedChannels.contains(channel);
 }

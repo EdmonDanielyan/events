@@ -57,7 +57,6 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(chatScreenParams.showTextField);
     return Scaffold(
       appBar: _GetAppBar(
         chatDatabaseCubit: chatDatabaseCubit,

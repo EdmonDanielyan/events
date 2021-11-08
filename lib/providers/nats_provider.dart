@@ -32,6 +32,7 @@ class NatsProvider {
     if (!connected) {
       throw NoConnectionException();
     }
+
     _listenPublicChatIdList();
     _listenPrivateUserChatIdList();
     return true;
@@ -145,7 +146,7 @@ class NatsProvider {
   String getPrivateUserChatIdList(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.ChatList)}.$userId';
 
-  String getPrivateUserTextChannel(String userId) =>
+  String getPrivateUserTextChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.Text)}.$userId';
 
   String getGroupTextChannel(String chatId) =>
@@ -219,8 +220,9 @@ class NatsProvider {
         Future<void> Function(String, NatsMessage) channelCallback =
             _channelCallbacks[channel]!;
         await channelCallback(channel, message);
+
         if (message.needAck) {
-          _stan.acknowledge(subscription!, dataMessage);
+          _stan.acknowledge(subscription, dataMessage);
         }
       } else {
         break;

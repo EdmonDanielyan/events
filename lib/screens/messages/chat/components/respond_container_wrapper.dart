@@ -35,7 +35,6 @@ class RespondContainerWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(selectedMessage);
     return Column(
       crossAxisAlignment: crossAxisAlignment,
       children: [

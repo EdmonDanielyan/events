@@ -39,9 +39,10 @@ class SendMessage {
     return message;
   }
 
-  Future<int> addMessage(MessageTable message) async {
-    final messageId = await chatDatabaseCubit.db.insertMessage(message);
+  Future<String> addMessage(MessageTable message) async {
+    await chatDatabaseCubit.db.insertMessage(message);
     ChatFunctions(chatDatabaseCubit).setChatToFirst(chat);
-    return messageId;
+
+    return message.id;
   }
 }

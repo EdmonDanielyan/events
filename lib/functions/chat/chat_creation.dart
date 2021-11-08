@@ -13,8 +13,11 @@ class ChatCreation {
 
   const ChatCreation(this.chatDatabaseCubit);
 
-  static String get generateChatId =>
+  static String get generateGroupId =>
       "${JwtPayload.myId}_${new DateTime.now().millisecondsSinceEpoch}";
+
+  static String generateSingleChatId(List<UserTable> users) =>
+      ChatListView.getChatIdBetweenUsers(users);
 
   Future<ChatTable> createDynamically(
       ChatTable chat, List<UserTable> users) async {
@@ -28,7 +31,7 @@ class ChatCreation {
         chat: chat,
       );
     } else {
-      newChat = await isChatExists(users);
+      newChat = await isChatExists(chat.id);
 
       if (newChat == null) {
         newChat = await createSingleChat(
@@ -47,17 +50,22 @@ class ChatCreation {
       {String? name, String? avatar, List<UserTable>? users}) async {
     users = users ?? [user, UserFunctions.getMe];
 
-    var newChat = _makeChat(
-      ChatListView.getChatIdBetweenUsers(users),
-      name ?? user.name,
-      avatar ?? user.avatar,
-      participantId: user.id,
-    );
+    String chatId = generateSingleChatId(users);
 
-    await _insertChat(newChat);
+    ChatTable? chatExists = await isChatExists(chatId);
+    if (chatExists == null) {
+      chatExists = _makeChat(
+        chatId,
+        name ?? user.name,
+        avatar ?? user.avatar,
+        participantId: user.id,
+      );
+
+      await _insertChat(chatExists);
+    }
     await UserFunctions(chatDatabaseCubit).insertUsers(users);
 
-    return newChat;
+    return chatExists;
   }
 
   Future<ChatTable> createGroup({
@@ -66,9 +74,13 @@ class ChatCreation {
     required List<UserTable> users,
     ChatTable? chat,
   }) async {
-    var newChat = chat ?? _makeChat(generateChatId, name, avatar);
+    var newChat = chat ?? _makeChat(generateGroupId, name, avatar);
 
-    await _insertChat(newChat);
+    final chatExists = await isChatExists(newChat.id);
+    if (chatExists == null) {
+      await _insertChat(newChat);
+    }
+
     final userFunctions = UserFunctions(chatDatabaseCubit);
     await userFunctions.insertUsers(users);
     await userFunctions.insertParticipants(
@@ -77,20 +89,10 @@ class ChatCreation {
     return newChat;
   }
 
-  Future<ChatTable?> isChatExists(List<UserTable> users) async {
-    final chats = await _getAllChats;
-
-    for (final chat in chats) {
-      String chatId = ChatListView.getChatIdBetweenUsers(users);
-
-      if (chat.id == chatId) return chat;
-    }
-
-    return null;
+  Future<ChatTable?> isChatExists(String id) async {
+    final chatExists = await chatDatabaseCubit.db.selectChatById(id);
+    return chatExists;
   }
-
-  Future<List<ChatTable>> get _getAllChats async =>
-      await chatDatabaseCubit.db.getAllChats();
 
   ChatTable _makeChat(
     String id,

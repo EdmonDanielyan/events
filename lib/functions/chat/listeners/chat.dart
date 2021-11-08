@@ -1,6 +1,7 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
+import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -8,16 +9,29 @@ import 'package:ink_mobile/models/chat/nats/message.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
+import 'package:fixnum/fixnum.dart';
 
 class ChatMessageListener {
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
+  final ChatSendMessage chatSendMessage;
 
-  const ChatMessageListener(
-      {required this.natsProvider,
-      required this.userFunctions,
-      required this.chatDatabaseCubit});
+  const ChatMessageListener({
+    required this.natsProvider,
+    required this.userFunctions,
+    required this.chatDatabaseCubit,
+    required this.chatSendMessage,
+  });
+
+  Future<void> listenTo(String channel,
+      {Int64 startSequence = Int64.ZERO}) async {
+    try {
+      print("LISTENING TO ${channel} WITH SEQUENCE $startSequence");
+      await natsProvider.subscribeToChannel(channel, onMessage,
+          startSequence: startSequence);
+    } on SubscriptionAlreadyExistException {}
+  }
 
   Future<void> onMessage(String channel, NatsMessage message) async {
     print("ON MESSAGE");
@@ -29,12 +43,8 @@ class ChatMessageListener {
       await userFunctions.insertUser(fields.user);
       await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
           .addMessage(fields.message);
+      await chatSendMessage.saveToPrivateUserChatIdList(
+          userId: JwtPayload.myId, channel: channel, chat: chat);
     }
-  }
-
-  Future<void> listenTo(String channel) async {
-    try {
-      await natsProvider.subscribeToChannel(channel, onMessage);
-    } on SubscriptionAlreadyExistException {}
   }
 }
