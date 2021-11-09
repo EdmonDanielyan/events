@@ -57,17 +57,6 @@ class MessageListView {
     return MessageType.Text;
   }
 
-  static List<MessageTable> makeMessagesSendOn(List<MessageTable> messages) {
-    // messages = messages
-    //     .map((element) => element.copyWith(byMe: true, sentOn: true))
-    //     .toList();
-    // messages.sort(sortByDateReverse);
-    return messages;
-  }
-
-  static List<MessageTable> getSelectedItems(List<MessageTable> items) => [];
-  //items.where((element) => element.selected == true).toList();
-
   static List<MessageTable> searchMessagesByStr(
       String value, List<MessageTable> messages) {
     List<MessageTable> search = [];
@@ -119,5 +108,35 @@ class MessageListView {
     if (sentOn != null) newMessage = newMessage.copyWith(sentOn: sentOn);
 
     return newMessage;
+  }
+
+  static List<MessageTable> oppositeNotReadMessage(List<MessageTable> items) {
+    return items
+        .where((element) =>
+            !isByMe(element) && element.status != MessageStatus.READ)
+        .toList();
+  }
+
+  static String listMessagesToString(List<MessageTable> messages) {
+    List<String> object = [];
+
+    for (final message in messages) {
+      object.add(toJsonString(message));
+    }
+
+    return jsonEncode(object);
+  }
+
+  static List<MessageTable> getMessagesFromString(String data) {
+    List<MessageTable> messages = [];
+    try {
+      final items = jsonDecode(data) as List<dynamic>;
+
+      for (final item in items) {
+        messages.add(MessageListView.fromString(item));
+      }
+    } on NoSuchMethodError {}
+
+    return messages;
   }
 }

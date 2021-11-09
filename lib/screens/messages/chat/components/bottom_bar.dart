@@ -4,8 +4,10 @@ import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
+import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container.dart';
 import 'package:ink_mobile/screens/messages/chat/components/send_btn.dart';
@@ -52,6 +54,21 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
     _formKey.currentState!.reset();
   }
 
+  void _sendTexting() async {
+    await UseMessageProvider.messageProvider.sendTextingMessage(
+      getChat.id,
+      CustomTexting(
+        user: UserFunctions.getMe,
+        customTextingEnum: CustomTextingEnum.TEXTING,
+      ),
+    );
+  }
+
+  void _onMessaging(String val) {
+    entities.text = val;
+    _sendTexting();
+  }
+
   @override
   Widget build(BuildContext context) {
     _chatCubit = ChatScreen.of(context).chatCubit;
@@ -84,7 +101,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
                 children: [
                   Expanded(
                     child: MessageTextfield(
-                      onChanged: (val) => entities.text = val,
+                      onChanged: _onMessaging,
                       focusNode: textfieldFocus,
                     ),
                   ),

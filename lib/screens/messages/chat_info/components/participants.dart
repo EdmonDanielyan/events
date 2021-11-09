@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/participant_with_user.dart';
-import 'package:ink_mobile/screens/messages/chat_info/chat_info_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/btn_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/participant_card.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
@@ -31,8 +29,8 @@ class ChatInfoParticipants extends StatelessWidget {
         children: [
           if (iAmOwner) ...[
             addUserWidget(),
+            divider(),
           ],
-          divider(),
           userListWidget(context),
         ],
       ),

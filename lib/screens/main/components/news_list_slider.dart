@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/static_slider/static_slider_effect.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/main/components/news_list_slider_element.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class NewsListSlider extends StatelessWidget {

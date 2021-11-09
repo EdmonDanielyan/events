@@ -29,4 +29,6 @@ class ChatDatabaseCubit extends Cubit<ChatDatabaseCubitState> {
 
     return messages;
   }
+
+  String get getSelectedChatId => selectedChat != null ? selectedChat!.id : "";
 }

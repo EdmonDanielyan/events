@@ -67,6 +67,8 @@ class ChatDatabase extends _$ChatDatabase {
   Future<MessageTable?> selectMessageById(String id) =>
       (select(messageTables)..where((tbl) => tbl.id.equals(id)))
           .getSingleOrNull();
+  Future<int> updateMessageById(String id, MessageTable message) =>
+      (update(messageTables)..where((tbl) => tbl.id.equals(id))).write(message);
   Future<int> insertMessage(MessageTable messageTable) =>
       into(messageTables).insert(messageTable);
   Future<MessageTable?> searchMessageByText(String query) =>

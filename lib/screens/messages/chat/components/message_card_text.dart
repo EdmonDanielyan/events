@@ -3,21 +3,25 @@ import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/components/linkify_text.dart';
 import 'package:ink_mobile/functions/date_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat/components/sent_on_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
 
 class MessageCardText extends StatelessWidget {
-  final MessageWithUser messageWithUser;
-  const MessageCardText({Key? key, required this.messageWithUser})
-      : super(key: key);
+  final UserTable user;
+  final MessageTable? message;
+  final String? messageStr;
 
-  MessageTable get message => messageWithUser.message!;
-  UserTable? get user => messageWithUser.user;
+  const MessageCardText({
+    Key? key,
+    required this.user,
+    required this.message,
+    this.messageStr,
+  })  : assert(message != null || messageStr != null),
+        super(key: key);
 
-  bool get byMe => MessageListView.isByMe(message);
+  bool get byMe => message != null ? MessageListView.isByMe(message!) : false;
 
   Color get textColor => byMe ? Colors.white : Colors.black;
 
@@ -30,12 +34,9 @@ class MessageCardText extends StatelessWidget {
       crossAxisAlignment:
           byMe ? CrossAxisAlignment.center : CrossAxisAlignment.end,
       children: [
-        if (message.status == MessageStatus.ERROR) ...[
-          Icon(Icons.error, color: Colors.red, size: 22),
-          SizedBox(width: 5.0),
-        ],
+        _errorIcon(),
         if (!byMe) ...[
-          userAvatarWidget(),
+          _userAvatarWidget(),
           SizedBox(width: 10.0),
         ],
         Flexible(
@@ -46,36 +47,12 @@ class MessageCardText extends StatelessWidget {
             ),
             padding: EdgeInsets.all(9.5),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment:
                   byMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
-                if (message.sentOn) ...[
-                  SentOnWidget(),
-                  SizedBox(height: 5.0),
-                ],
-                RespondContainerWrapper(
-                  message: message,
-                  textColor: textColor,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Flexible(
-                        child: LinkifyText(
-                          text: message.message,
-                          style: TextStyle(color: textColor),
-                          linkStyle: TextStyle(color: textColor),
-                        ),
-                      ),
-                      SizedBox(width: 5.0),
-                      dateWidget(),
-                      if (byMe) ...[
-                        SizedBox(width: 4.0),
-                        statusWidget(),
-                      ],
-                    ],
-                  ),
-                ),
+                _sentOn(),
+                _respondContainer(),
               ],
             ),
           ),
@@ -84,17 +61,73 @@ class MessageCardText extends StatelessWidget {
     );
   }
 
-  Widget userAvatarWidget() {
+  Widget _errorIcon() {
+    if (message != null && message!.status == MessageStatus.ERROR) {
+      return Container(
+        margin: EdgeInsets.only(right: 5),
+        child: Icon(Icons.error, color: Colors.red, size: 22),
+      );
+    }
+
+    return SizedBox();
+  }
+
+  Widget _sentOn() {
+    if (message != null && message!.sentOn) {
+      return Container(
+        margin: EdgeInsets.only(bottom: 5),
+        child: SentOnWidget(),
+      );
+    }
+
+    return SizedBox();
+  }
+
+  Widget _respondContainer() {
+    if (message == null) {
+      return _showMessage();
+    }
+
+    return RespondContainerWrapper(
+      message: message!,
+      textColor: textColor,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          _showMessage(),
+          SizedBox(width: 5.0),
+          _dateWidget(),
+          if (byMe) ...[
+            SizedBox(width: 4.0),
+            _statusWidget(),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _showMessage() {
+    return Flexible(
+      child: LinkifyText(
+        text: messageStr != null ? messageStr! : (message?.message ?? ""),
+        style: TextStyle(color: textColor),
+        linkStyle: TextStyle(color: textColor),
+      ),
+    );
+  }
+
+  Widget _userAvatarWidget() {
     return SizedBox(
-      child: CustomCircleAvatar(url: user!.avatar),
+      child: CustomCircleAvatar(url: user.avatar),
       width: 45,
       height: 45,
     );
   }
 
-  Widget dateWidget() {
+  Widget _dateWidget() {
     return Text(
-      DateFunctions(passedDate: message.created!).hourMinute(),
+      DateFunctions(passedDate: message!.created!).hourMinute(),
       style: TextStyle(
         fontSize: 11.0,
         color: textColor,
@@ -102,11 +135,11 @@ class MessageCardText extends StatelessWidget {
     );
   }
 
-  Widget statusWidget() {
+  Widget _statusWidget() {
     return SizedBox(
       width: 14,
       height: 14,
-      child: ChatTick(chatStatus: message.status),
+      child: ChatTick(chatStatus: message!.status),
     );
   }
 

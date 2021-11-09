@@ -1,5 +1,3 @@
-import 'package:ink_mobile/localization/i18n/i18n.dart';
-
 class ChatScreenParams {
   final bool showTextField;
   final bool ignoreChatInfo;

@@ -7,11 +7,13 @@ import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
+import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/app_bar_title.dart';
+import 'package:ink_mobile/screens/messages/chat/components/scroll_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/components/selective_app_bar.dart';
@@ -43,6 +45,8 @@ class ChatScreenState extends State<ChatScreen> {
   final ChatScreenParams chatScreenParams;
   ChatScreenState(this.chatScreenParams);
 
+  ScrollController controller = ScrollController();
+
   ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
   ChatCubit get chatCubit => widget.chatCubit;
   SelectableCubit<MessageWithUser> get selectableCubit =>
@@ -55,6 +59,10 @@ class ChatScreenState extends State<ChatScreen> {
     chatCubit.updateMessages(chatDatabaseCubit);
   }
 
+  void _onScrollBtnClick() {
+    ScrollBottom(controller).animateTo(duration: Duration(seconds: 1));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +72,18 @@ class ChatScreenState extends State<ChatScreen> {
         selectableCubit: selectableCubit,
         chatScreenParams: chatScreenParams,
       ),
-      body: ChatBody(),
+      body: ChatBody(controller: controller),
+      floatingActionButton: BlocBuilder<ChatCubit, ChatCubitState>(
+        bloc: chatCubit,
+        buildWhen: (previous, current) {
+          return previous.scrollBtn != current.scrollBtn;
+        },
+        builder: (context, state) {
+          return state.scrollBtn
+              ? ChatScrollBtn(onPressed: _onScrollBtnClick)
+              : SizedBox();
+        },
+      ),
     );
   }
 }

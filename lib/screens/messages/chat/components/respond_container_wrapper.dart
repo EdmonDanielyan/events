@@ -30,7 +30,7 @@ class RespondContainerWrapper extends StatelessWidget {
     if (message.repliedMessageId == null) return null;
 
     return MessageWithUserListView.getByMessageId(
-        message.repliedMessageId!, MessageList.messages!);
+        message.repliedMessageId!, MessageList.messagesWithUser!);
   }
 
   @override

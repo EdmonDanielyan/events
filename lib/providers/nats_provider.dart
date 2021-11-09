@@ -72,7 +72,7 @@ class NatsProvider {
       to: channel,
     );
     message.setSystemPayload(type, fields);
-    return _sendMessage(channel, message);
+    return await _sendMessage(channel, message);
   }
 
   Iterable<String> get subscribedChannels => _channelSubscriptions.keys;
@@ -150,8 +150,14 @@ class NatsProvider {
   String getPrivateUserTextChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.Text)}.$userId';
 
-  String getGroupTextChannel(String chatId) =>
+  String getGroupTextChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.Text)}.$chatId';
+
+  String getGroupReactedChannelById(String chatId) =>
+      '$GROUP_CHANNEL.${describeEnum(MessageType.UserReacted)}.$chatId';
+
+  String getGroupTextingChannelById(String chatId) =>
+      '$GROUP_CHANNEL.${describeEnum(MessageType.Texting)}.$chatId';
 
   String getInviteUserToJoinChatChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.InviteUserToJoinChat)}.$userId';

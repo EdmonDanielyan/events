@@ -21,7 +21,6 @@ import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart';
 import 'package:ink_mobile/functions/navigation_utils.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/providers/global_providers.dart';
 import 'package:ink_mobile/screens/main/main_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/screens/search/search_screen.dart';

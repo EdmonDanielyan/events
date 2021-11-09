@@ -5,6 +5,7 @@ import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
+import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/models/items_search.dart';
 
 import 'chat_state.dart';
@@ -24,10 +25,19 @@ class ChatCubit extends Cubit<ChatCubitState> {
   List<MessageTable> get getMessages =>
       MessageListView.messageWithUsersToMessage(_currentMessages);
   List<MessageWithUser> get getMessagesWithUser => _currentMessages;
+  bool get scrollBtn => state.scrollBtn;
 
   MessageWithUser? getMessageById(String id) {
     return getMessagesWithUser
         .firstWhere((element) => element.message!.id == id, orElse: null);
+  }
+
+  void setScrollBtn(bool set) {
+    emit(state.copyWith(scrollBtn: set));
+  }
+
+  void emitTexting(CustomTexting texting) {
+    emit(state.copyWith(texting: texting));
   }
 
   void clean() {

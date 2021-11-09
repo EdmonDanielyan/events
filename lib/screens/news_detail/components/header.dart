@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:video_player/video_player.dart';
@@ -94,7 +95,9 @@ class _HeaderState extends State<Header> {
               color: Colors.black.withOpacity(0.15),
             );
           },
-          image: NetworkImage(image),
+          image: NetworkImage(
+            image,
+          ),
           placeholder: AssetImage(Header.DEFAULT_PREVIEW_PICTURE_LINK),
         )));
       });

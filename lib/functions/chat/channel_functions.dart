@@ -19,6 +19,10 @@ class ChannelFunctions {
     }
   }
 
+  Future<ChannelTable?> getChannel(String channelName) async {
+    return await chatDatabaseCubit.db.getChannelByChannelName(channelName);
+  }
+
   Future<bool> channelExists(String channelName) async {
     return await chatDatabaseCubit.db.getChannelByChannelName(channelName) !=
         null;

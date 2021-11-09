@@ -1,3 +1,4 @@
+import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
@@ -5,11 +6,17 @@ import 'package:ink_mobile/functions/chat/listeners/all.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat.dart';
 import 'package:ink_mobile/functions/chat/listeners/invitation.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
+import 'package:ink_mobile/functions/chat/listeners/message_status.dart';
+import 'package:ink_mobile/functions/chat/listeners/texting.dart';
 import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
+import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
+
+import '../setup.dart';
 
 class UseMessageProvider {
   static late MessageProvider messageProvider;
@@ -31,35 +38,47 @@ class MessageProvider {
   late UserFunctions userFunctions;
   late NatsListener natsListener;
   late ChannelFunctions channelFunctions;
+  late MessageStatusListener messageStatusListener;
+  late MessageTextingListener messageTextingListener;
+  late ChatCubit chatCubit;
 
   MessageProvider(this.natsProvider, this.chatDatabaseCubit) {
+    this.chatCubit = sl.get<ChatCubit>();
     this.userFunctions = UserFunctions(chatDatabaseCubit);
     this.channelFunctions = ChannelFunctions(chatDatabaseCubit);
-
+    this.chatFunctions = ChatFunctions(chatDatabaseCubit);
     this.chatSendMessage = ChatSendMessage(natsProvider);
+    this.messageStatusListener = MessageStatusListener(
+      natsProvider: natsProvider,
+      chatFunctions: chatFunctions,
+    );
+    this.messageTextingListener = MessageTextingListener(
+      natsProvider: natsProvider,
+      chatDatabaseCubit: chatDatabaseCubit,
+      chatCubit: chatCubit,
+    );
     this.chatMessageListener = ChatMessageListener(
       natsProvider: natsProvider,
       userFunctions: userFunctions,
       chatDatabaseCubit: chatDatabaseCubit,
       chatSendMessage: chatSendMessage,
+      messageStatusListener: messageStatusListener,
+      messageTextingListener: messageTextingListener,
     );
     this.chatInvitationListener = ChatInvitationListener(
-      chatMessageListener: chatMessageListener,
       natsProvider: natsProvider,
       chatSendMessage: chatSendMessage,
       chatDatabaseCubit: chatDatabaseCubit,
     );
-
     this.natsListener = NatsListener(
       natsProvider: natsProvider,
-      chatDatabaseCubit: chatDatabaseCubit,
       channelFunctions: channelFunctions,
       chatMessageListener: chatMessageListener,
       chatInvitationListener: chatInvitationListener,
+      messageStatusListener: messageStatusListener,
+      messageTextingListener: messageTextingListener,
     );
-
     this.chatCreation = ChatCreation(chatDatabaseCubit);
-    this.chatFunctions = ChatFunctions(chatDatabaseCubit);
   }
 
   bool isGroup(ChatTable chat) => chat.participantId == null;
@@ -67,7 +86,11 @@ class MessageProvider {
   String get getPublicChatList => natsProvider.getPublicChatIdList();
 
   String getChatChannel(String chatId) =>
-      natsProvider.getGroupTextChannel(chatId);
+      natsProvider.getGroupTextChannelById(chatId);
+  String getMessageStatusChannel(String chatId) =>
+      natsProvider.getGroupReactedChannelById(chatId);
+  String getTextingChannel(String chatId) =>
+      natsProvider.getGroupTextingChannelById(chatId);
 
   void init() async {
     UserFunctions(chatDatabaseCubit).addMe();
@@ -99,9 +122,7 @@ class MessageProvider {
 
   Future<void> _afterChatCreation(ChatTable chat, List<UserTable> users) async {
     final chatChannel = getChatChannel(chat.id);
-    if (!natsListener.listeningToChannel(chatChannel)) {
-      await chatMessageListener.listenTo(chatChannel);
-    }
+    await messagesListeners(chat);
 
     for (final user in users) {
       if (user.id != JwtPayload.myId) {
@@ -118,16 +139,25 @@ class MessageProvider {
         userId: JwtPayload.myId, channel: chatChannel, chat: chat);
   }
 
-  Future<void> sendMessage(ChatTable chat, MessageTable message) async {
-    await sendTxtMessage(chat, message);
+  Future<void> messagesListeners(ChatTable chat) async {
+    final chatChannel = getChatChannel(chat.id);
+    if (!natsListener.listeningToChannel(chatChannel)) {
+      await chatMessageListener.listenTo(chatChannel);
+    }
   }
 
-  Future<void> sendTxtMessage(
+  Future<void> sendMessage(ChatTable chat, MessageTable message) async {
+    bool success = await sendTxtMessage(chat, message);
+    MessageStatus status = success ? MessageStatus.SENT : MessageStatus.ERROR;
+    chatFunctions.updateMessageStatus(message, status);
+  }
+
+  Future<bool> sendTxtMessage(
     ChatTable chat,
     MessageTable message, {
     UserTable? user,
   }) async {
-    await chatSendMessage.sendTextMessage(
+    return await chatSendMessage.sendTextMessage(
       getChatChannel(chat.id),
       chat,
       message,
@@ -137,5 +167,21 @@ class MessageProvider {
 
   Future<void> deleteMessages(List<MessageTable> messages) async {
     chatFunctions.deleteMessages(messages);
+  }
+
+  Future<bool> setMessagesToRead(List<MessageTable> messages) async {
+    String chatId = messages.last.chatId;
+    final channel = getMessageStatusChannel(chatId);
+    bool send = await chatSendMessage.sendMessageStatus(channel, messages);
+    await MessageStatusListener.messagesToRead(messages, chatFunctions);
+    return send;
+  }
+
+  Future<bool> sendTextingMessage(
+      String chatId, CustomTexting customTexting) async {
+    final channel = getTextingChannel(chatId);
+    bool send = await chatSendMessage.sendTextingMessage(channel,
+        customTexting: customTexting, chatId: chatId);
+    return send;
   }
 }
