@@ -166,7 +166,7 @@ class ChatDatabase extends _$ChatDatabase {
   Future deleteChannelByChannelName(String channelName) =>
       (delete(channelTables)..where((tbl) => tbl.to.equals(channelName))).go();
 
-  //PARTICIPANTS
+  /// PARTICIPANTS
   Future<int> insertParticipant(ParticipantTable participant) =>
       into(participantTables).insert(participant);
   Future deleteParticipant(int userId, String chatId) =>
@@ -196,11 +196,11 @@ class ChatDatabase extends _$ChatDatabase {
         });
   }
 
+  //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
   int get schemaVersion => 19;
 
   @override
-  //USED TO AVOID APP CRASH AFTER CHANING DB
   MigrationStrategy get migration => MigrationStrategy(
         onUpgrade: (migrator, from, to) async {},
       );

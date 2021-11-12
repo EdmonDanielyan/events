@@ -11,5 +11,5 @@ class CanInquireNetworkRequest extends CanInquireRequestDependency {
 
   @override
   Future<Response<CanInquire>> call() async =>
-      await sl.get<MainApiProvider>().getUserApi().userCaninquireGet();
+      await sl<MainApiProvider>().getUserApi().userCaninquireGet();
 }

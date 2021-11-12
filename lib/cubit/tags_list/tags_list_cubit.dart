@@ -19,7 +19,7 @@ class TagsListCubit extends Cubit<TagsListCubitState> {
   Future<void> load() async {
     try {
       await Token.setNewTokensIfExpired();
-      final response = await sl.get<TagsListNetworkRequest>()();
+      final response = await sl<TagsListNetworkRequest>()();
       List<Selectfield> items = response.mapResponse();
       emitSuccess(items);
     } on DioError catch (e) {

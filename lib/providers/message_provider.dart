@@ -49,7 +49,7 @@ class MessageProvider {
   late ChatCubit chatCubit;
 
   MessageProvider(this.natsProvider, this.chatDatabaseCubit) {
-    this.chatCubit = sl.get<ChatCubit>();
+    this.chatCubit = sl<ChatCubit>();
     this.userFunctions = UserFunctions(chatDatabaseCubit);
     this.channelFunctions = ChannelFunctions(chatDatabaseCubit);
     this.chatFunctions = ChatFunctions(chatDatabaseCubit);

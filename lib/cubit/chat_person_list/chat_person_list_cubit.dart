@@ -34,7 +34,7 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
     try {
       await Token.setNewTokensIfExpired();
       final response =
-          await sl.get<ContactsNetworkRequest>(param1: searchValue)();
+          await sl<ContactsNetworkRequest>(param1: searchValue)();
 
       List<UserTable> users = response.mapResponse(hideIds: hideIds);
       emitUsers(items: users);

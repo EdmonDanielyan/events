@@ -22,7 +22,7 @@ class AuthCubit extends Cubit<AuthState> {
     emitState(type: AuthStateType.LOADING);
     try {
       final response =
-          await sl.get<AuthNetworkRequest>(param1: login, param2: password)();
+          await sl<AuthNetworkRequest>(param1: login, param2: password)();
       return await response.handleResponse();
     } on TimeoutException catch (_) {
       emitError(localizationInstance.noConnectionError);

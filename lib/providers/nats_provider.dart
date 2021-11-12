@@ -236,10 +236,12 @@ class NatsProvider {
         NatsMessage message = _parseMessage(dataMessage);
 
         //if (!dataMessage.isRedelivery) {
-        await onMessage(channel, message);
-        Future<void> Function(String, NatsMessage) channelCallback =
-            _channelCallbacks[channel]!;
-        await channelCallback(channel, message);
+        onMessage(channel, message);
+        var channelCallback =
+            _channelCallbacks[channel];
+        if (channelCallback != null) {
+          channelCallback(channel, message);
+        }
         //}
 
         if (message.needAck) {

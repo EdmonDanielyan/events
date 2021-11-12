@@ -30,7 +30,7 @@ class NewsListCubit extends Cubit<NewsListState> {
     try {
       if (pagination.next) {
         await Token.setNewTokensIfExpired();
-        final response = await sl.get<NewsListNetworkRequest>(
+        final response = await sl<NewsListNetworkRequest>(
             param1: pagination, param2: filter)();
         pagination = response.mapResponse(pagination);
 

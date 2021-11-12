@@ -56,41 +56,41 @@ class MainRoutes {
   static Map<String, Widget Function(BuildContext)> routes = {
     '/init': (BuildContext context) => InitPage(),
     '/app_layer': (BuildContext context) => AppLayerScreen(
-          newBottomNavBarCubit: sl.get<NewBottomNavBarCubit>(),
+          newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
         ),
     '/welcome': (BuildContext context) => WelcomeScreen(),
     '/auth': (BuildContext context) => AuthScreen(
-          authCubit: sl.get<AuthCubit>(),
-          newBottomNavBarCubit: sl.get<NewBottomNavBarCubit>(),
+          authCubit: sl<AuthCubit>(),
+          newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
         ),
     '/personal': (BuildContext context) => ProfileScreen(
-          profileCubit: sl.get<ProfileCubit>(),
+          profileCubit: sl<ProfileCubit>(),
         ),
     '/news_detail': (BuildContext context) => NewsDetailScreen(
-          newsDetailCubit: sl.get<NewsDetailCubit>(),
+          newsDetailCubit: sl<NewsDetailCubit>(),
         ),
     '/news_comment': (BuildContext context) => NewsCommentScreen(
-          newsCommentsCubit: sl.get<NewsCommentsCubit>(),
+          newsCommentsCubit: sl<NewsCommentsCubit>(),
         ),
     '/announcement_detail': (BuildContext context) => AnnouncementsDetailScreen(
-          announcementCubit: sl.get<AnnouncementCubit>(),
+          announcementCubit: sl<AnnouncementCubit>(),
         ),
     '/404': (BuildContext context) => PageNotFoundScreen(),
     '/event_detail': (BuildContext context) => EventDetailScreen(
-          eventDetailCubit: sl.get<EventDetailCubit>(),
+          eventDetailCubit: sl<EventDetailCubit>(),
         ),
     '/events_list': (BuildContext context) => EventsListScreen(
-          eventsListCubit: sl.get<EventsListCubit>(),
+          eventsListCubit: sl<EventsListCubit>(),
         ),
     '/news_list': (BuildContext context) => NewsListScreen(
-          newsListCubit: sl.get<NewsListCubit>(),
+          newsListCubit: sl<NewsListCubit>(),
         ),
     '/announcements_list': (BuildContext context) => AnnouncementsListScreen(
-          announcementsListCubit: sl.get<AnnouncementsListCubit>(),
+          announcementsListCubit: sl<AnnouncementsListCubit>(),
         ),
     '/services': (BuildContext context) => ServiceListScreen(),
     '/personnel_movements': (BuildContext context) => PersonnelMovementsScreen(
-          personnelMovementsCubit: sl.get<PersonnelMovementsCubit>(),
+          personnelMovementsCubit: sl<PersonnelMovementsCubit>(),
         ),
     '/social_package': (BuildContext context) => SocialPackageScreen(),
     '/voluntary_medical_insurance': (BuildContext context) =>
@@ -102,28 +102,28 @@ class MainRoutes {
     '/recreational_activities': (BuildContext context) =>
         RecreationalActivities(),
     '/birthdays': (BuildContext context) => BirthdaysScreen(
-          birthdaysCubit: sl.get<BirthdaysCubit>(),
+          birthdaysCubit: sl<BirthdaysCubit>(),
         ),
     '/open_university': (BuildContext context) => OpenUniversityScreen(
-          eventsListCubit: sl.get<EventsListCubit>(),
-          learningMaterialsListCubit: sl.get<LearningMaterialsListCubit>(),
-          newsListCubit: sl.get<NewsListCubit>(),
-          openUniversityCubit: sl.get<OpenUniversityCubit>(),
+          eventsListCubit: sl<EventsListCubit>(),
+          learningMaterialsListCubit: sl<LearningMaterialsListCubit>(),
+          newsListCubit: sl<NewsListCubit>(),
+          openUniversityCubit: sl<OpenUniversityCubit>(),
         ),
     '/message': (BuildContext context) {
       final args = ModalRoute.of(context)?.settings.arguments;
       if (args is ChatScreenParams) {
         return ChatScreen(
           chatScreenParams: args,
-          chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
-          chatCubit: sl.get<ChatCubit>(),
+          chatDatabaseCubit: sl<ChatDatabaseCubit>(),
+          chatCubit: sl<ChatCubit>(),
           selectableCubit: SelectableCubit<MessageWithUser>(),
         );
       }
       return _pageNotFound();
     },
     '/chat_info': (BuildContext context) => ChatInfoScreen(
-          chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
+          chatDatabaseCubit: sl<ChatDatabaseCubit>(),
           selectableCubit: SelectableCubit<UserTable>(),
           chatPersonListCubit: sl.get<ChatPersonListCubit>(),
         ),
@@ -131,7 +131,7 @@ class MainRoutes {
       final args = ModalRoute.of(context)?.settings.arguments;
       if (args is SelectableCubit<UserTable>) {
         return NewGroupScreen(
-          chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
+          chatDatabaseCubit: sl<ChatDatabaseCubit>(),
           selectableCubit: args,
         );
       }
@@ -142,7 +142,7 @@ class MainRoutes {
       if (args is PersonListParams) {
         return PersonListScreen(
           params: args,
-          chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
+          chatDatabaseCubit: sl<ChatDatabaseCubit>(),
         );
       }
 

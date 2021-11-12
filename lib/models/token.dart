@@ -64,7 +64,7 @@ class Token {
   }
 
   static Future<void> _setNewTokens() async {
-    AuthApi auth = sl.get<MainApiProvider>().getAuthApi();
+    AuthApi auth = sl<MainApiProvider>().getAuthApi();
 
     RefreshTokenParamsBuilder refreshParamsBuilder =
         RefreshTokenParamsBuilder();

@@ -16,7 +16,7 @@ class NewsCommentsFetchNetworkRequest
 
   @override
   Future<Response<GetCommentsById>> call() async {
-    NewsApi newsApi = sl.get<MainApiProvider>().getNewsApi();
+    NewsApi newsApi = sl<MainApiProvider>().getNewsApi();
     return await newsApi.newsCommentsIdGet(newsId);
   }
 }

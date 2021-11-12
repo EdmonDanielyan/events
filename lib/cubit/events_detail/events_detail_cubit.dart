@@ -24,7 +24,7 @@ class EventDetailCubit extends Cubit<EventsDetailState> {
     try {
       await Token.setNewTokensIfExpired();
       final response =
-          await sl.get<EventsDetailNetworkRequest>(param1: eventId)();
+          await sl<EventsDetailNetworkRequest>(param1: eventId)();
       emitSuccess(response.mapResponse());
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
@@ -41,7 +41,7 @@ class EventDetailCubit extends Cubit<EventsDetailState> {
     try {
       emitSuccess(state.data!.copyWith(isMember: !state.data!.isMember!));
       await Token.setNewTokensIfExpired();
-      await sl.get<EventInviteNetworkRequest>(param1: eventId).call();
+      await sl<EventInviteNetworkRequest>(param1: eventId).call();
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 

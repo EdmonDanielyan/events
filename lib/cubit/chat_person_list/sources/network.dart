@@ -16,7 +16,7 @@ class ContactsNetworkRequest extends ContactsRequestDependency {
 
   @override
   Future<Response<GetContacts>> call() async {
-    ContactsApi contactsApi = sl.get<MainApiProvider>().getContactsApi();
+    ContactsApi contactsApi = sl<MainApiProvider>().getContactsApi();
     final response = await contactsApi
         .getContacts(
             search: query!.length < 3 ? null : query,

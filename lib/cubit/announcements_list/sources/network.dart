@@ -20,7 +20,7 @@ class AnnouncementsListNetworkRequest
   @override
   Future<Response<GetAnnouncements>> call() async {
     AnnouncementsApi announcementsApi =
-        sl.get<MainApiProvider>().getAnnouncementsApi();
+        sl<MainApiProvider>().getAnnouncementsApi();
     return await announcementsApi.getAnnouncements(
         countOnPage: pagination!.countOnPage,
         pageNumber: pagination!.pageNumber);

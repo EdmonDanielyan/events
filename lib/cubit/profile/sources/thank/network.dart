@@ -13,7 +13,7 @@ class ProfileThankNetworkRequest extends ProfileThankRequestDependency {
 
   @override
   Future<void> call() async {
-    ThankApi thank = sl.get<MainApiProvider>().getThankApi();
+    ThankApi thank = sl<MainApiProvider>().getThankApi();
     await thank.thankIdGet(id);
   }
 }

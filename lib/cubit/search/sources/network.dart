@@ -16,7 +16,7 @@ class SearchNetworkRequest extends SearchRequestDependency {
 
   @override
   Future<Response<GetSearchSuccess>> call() async {
-    SearchApi search = sl.get<MainApiProvider>().getSearchApi();
+    SearchApi search = sl<MainApiProvider>().getSearchApi();
     return await search.searchGet(query: query);
   }
 }

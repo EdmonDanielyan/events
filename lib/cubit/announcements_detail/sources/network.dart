@@ -18,7 +18,7 @@ class AnnouncementsDetailNetworkRequest
   @override
   Future<Response<GetAnnouncementById>> call() async {
     AnnouncementsApi announcementsApi =
-        sl.get<MainApiProvider>().getAnnouncementsApi();
+        sl<MainApiProvider>().getAnnouncementsApi();
     return await announcementsApi.getAnnouncementById(announcementId);
   }
 }

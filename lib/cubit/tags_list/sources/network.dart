@@ -13,7 +13,7 @@ class TagsListNetworkRequest extends TagsListRequestDependency {
 
   @override
   Future<Response<FeedbackTagsList>> call() async {
-    UserApi api = sl.get<MainApiProvider>().getUserApi();
+    UserApi api = sl<MainApiProvider>().getUserApi();
     return await api.userGetfeedbacktagsGet();
   }
 }

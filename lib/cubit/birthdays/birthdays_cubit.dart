@@ -20,7 +20,7 @@ class BirthdaysCubit extends Cubit<BirthdaysState> {
   Future<void> load() async {
     try {
       await Token.setNewTokensIfExpired();
-      final response = await sl.get<BirthdaysNetworkRequest>()();
+      final response = await sl<BirthdaysNetworkRequest>()();
       final mapResponse = response.mapResponse();
       emitSuccess(mapResponse.birthdaysToday, mapResponse.birthdaysOther);
     } on DioError catch (e) {

@@ -13,7 +13,7 @@ class InitPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<InitialCubit>(
-        create: (context) => sl.get<InitialCubit>(),
+        create: (context) => sl<InitialCubit>(),
         child: Scaffold(
           body: BlocBuilder<InitialCubit, InitialState>(
             builder: (context, state) {

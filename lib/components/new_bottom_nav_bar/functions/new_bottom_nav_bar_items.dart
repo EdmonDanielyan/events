@@ -39,12 +39,12 @@ class MainBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/home.svg';
   String label = localizationInstance.home;
   Widget screen = MainScreen(
-    mainAnnouncementsListCubit: sl.get<MainAnnouncementsListCubit>(),
+    mainAnnouncementsListCubit: sl<MainAnnouncementsListCubit>(),
     eventsAndAnnouncementsBlockCubit:
-        sl.get<EventsAndAnnouncementsBlockCubit>(),
-    mainEventsListCubit: sl.get<MainEventsListCubit>(),
-    mainPageCubit: sl.get<MainPageCubit>(),
-    newsBlockCubit: sl.get<NewsBlockCubit>(),
+        sl<EventsAndAnnouncementsBlockCubit>(),
+    mainEventsListCubit: sl<MainEventsListCubit>(),
+    mainPageCubit: sl<MainPageCubit>(),
+    newsBlockCubit: sl<NewsBlockCubit>(),
   );
 
   void onTap(BuildContext context, Function onChanged, int index) {
@@ -57,7 +57,7 @@ class SearchBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/search.svg';
   String label = localizationInstance.search;
   Widget screen = SearchScreen(
-    searchCubit: sl.get<SearchCubit>(),
+    searchCubit: sl<SearchCubit>(),
   );
 
   void onTap(BuildContext context, Function onChanged, int index) {
@@ -70,9 +70,9 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/message.svg';
   String label = localizationInstance.messages;
   Widget screen = ChatListScreen(
-    chatDatabaseCubit: sl.get<ChatDatabaseCubit>(),
+    chatDatabaseCubit: sl<ChatDatabaseCubit>(),
     selectableCubit: SelectableCubit<UserTable>(),
-    chatPersonListCubit: sl.get<ChatPersonListCubit>(),
+    chatPersonListCubit: sl<ChatPersonListCubit>(),
   );
 
   void onTap(BuildContext context, Function onChanged, int index) {
@@ -85,15 +85,15 @@ class ServicesBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/services.svg';
   String label = localizationInstance.services;
   Widget screen = ServiceListPageViewer(
-      feedbackAnswerListCubit: sl.get<FeedbackAnswerListCubit>(),
-      referencesPageCubit: sl.get<ReferencesPageCubit>(),
-      sendManagementFormCubit: sl.get<SendManagementFormCubit>(),
-      sendMedicalInsFormCubit: sl.get<SendMedicalInsFormCubit>(),
-      sendReferenceFormCubit: sl.get<SendReferenceFormCubit>(),
-      tagsListCubit: sl.get<TagsListCubit>(),
-      selectfieldCubitFeedback: sl.get<SelectfieldCubit>(),
-      selectfieldCubitMedical: sl.get<SelectfieldCubit>(),
-      scrollBottomLoadMoreCubit: sl.get<ScrollBottomLoadMoreCubit>(
+      feedbackAnswerListCubit: sl<FeedbackAnswerListCubit>(),
+      referencesPageCubit: sl<ReferencesPageCubit>(),
+      sendManagementFormCubit: sl<SendManagementFormCubit>(),
+      sendMedicalInsFormCubit: sl<SendMedicalInsFormCubit>(),
+      sendReferenceFormCubit: sl<SendReferenceFormCubit>(),
+      tagsListCubit: sl<TagsListCubit>(),
+      selectfieldCubitFeedback: sl<SelectfieldCubit>(),
+      selectfieldCubitMedical: sl<SelectfieldCubit>(),
+      scrollBottomLoadMoreCubit: sl<ScrollBottomLoadMoreCubit>(
         param1: ScrollBottomLoadMoreState(isOn: false),
       ));
 

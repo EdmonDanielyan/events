@@ -23,7 +23,7 @@ class NewsDetailCubit extends Cubit<NewsDetailState> {
   Future<void> load(int newsId) async {
     try {
       await Token.setNewTokensIfExpired();
-      final response = await sl.get<NewsDetailNetworkRequest>(param1: newsId)();
+      final response = await sl<NewsDetailNetworkRequest>(param1: newsId)();
       emitSuccess(response.mapResponse());
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
@@ -45,7 +45,7 @@ class NewsDetailCubit extends Cubit<NewsDetailState> {
         ),
       );
       await Token.setNewTokensIfExpired();
-      await sl.get<NewsLikeNetworkRequest>(param1: newsId)();
+      await sl<NewsLikeNetworkRequest>(param1: newsId)();
     } on DioError catch (e) {
       if (e.type == DioErrorType.other) throw NoConnectionException();
 

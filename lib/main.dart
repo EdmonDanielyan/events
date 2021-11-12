@@ -43,7 +43,7 @@ void main() async {
 
       final loaded = await natsProvider.load();
       UseMessageProvider.initMessageProvider(
-          natsProvider, sl.get<ChatDatabaseCubit>());
+          natsProvider, sl<ChatDatabaseCubit>());
       UseMessageProvider.messageProvider.init();
       return loaded;
     }));

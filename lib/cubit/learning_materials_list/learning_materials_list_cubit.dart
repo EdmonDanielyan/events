@@ -30,7 +30,7 @@ class LearningMaterialsListCubit extends Cubit<LearningMaterialsListState> {
     try {
       if (pagination.next) {
         await Token.setNewTokensIfExpired();
-        final response = await sl.get<LearningMaterialListNetworkRequest>(
+        final response = await sl<LearningMaterialListNetworkRequest>(
             param1: pagination)();
         pagination = response.mapResponse(pagination);
 

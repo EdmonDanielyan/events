@@ -18,7 +18,7 @@ class ReferencesPageCubit extends Cubit<ReferencesPageState> {
   Future<void> checkPermissions() async {
     await Token.setNewTokensIfExpired();
 
-    final response = await sl.get<CanInquireNetworkRequest>()();
+    final response = await sl<CanInquireNetworkRequest>()();
     bool access = response.data!.data;
 
     access
@@ -29,7 +29,7 @@ class ReferencesPageCubit extends Cubit<ReferencesPageState> {
 
   Future<void> loadAutoFillData() async {
     await Token.setNewTokensIfExpired();
-    final response = await sl.get<GetAutofillNetworkRequest>()();
+    final response = await sl<GetAutofillNetworkRequest>()();
 
     autofill = response.mapResponse();
   }

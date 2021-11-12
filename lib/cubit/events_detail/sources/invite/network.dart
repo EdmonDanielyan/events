@@ -16,7 +16,7 @@ class EventInviteNetworkRequest extends EventInviteRequestDependency {
 
   @override
   Future<Response<AddEventMember>> call() async {
-    EventsApi eventApi = sl.get<MainApiProvider>().getEventsApi();
+    EventsApi eventApi = sl<MainApiProvider>().getEventsApi();
     return await eventApi.eventsAddeventmemberIdGet(eventId);
   }
 }

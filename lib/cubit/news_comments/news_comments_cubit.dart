@@ -30,7 +30,7 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
     try {
       await Token.setNewTokensIfExpired();
       final response =
-          await sl.get<NewsCommentsFetchNetworkRequest>(param1: newsId)();
+          await sl<NewsCommentsFetchNetworkRequest>(param1: newsId)();
       List<CommentData> comments = response.mapResponse(newsId);
       emitSuccess(comments);
     } on DioError catch (e) {
@@ -53,7 +53,7 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       await Token.setNewTokensIfExpired();
       final comment = NewCommentEntities(
           id: newsId, answerId: answerId, text: commentInputController.text);
-      await sl.get<NewsCommentsAddNetworkRequest>(param1: comment)();
+      await sl<NewsCommentsAddNetworkRequest>(param1: comment)();
       clear();
       emitState(type: NewsCommentStateType.LOADING);
       return;
@@ -67,7 +67,7 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
   Future<bool> like(int commentId) async {
     try {
       await Token.setNewTokensIfExpired();
-      await sl.get<NewsCommentsLikeNetworkRequest>(param1: commentId)();
+      await sl<NewsCommentsLikeNetworkRequest>(param1: commentId)();
       return true;
     } catch (e) {
       throw UnknownErrorException();

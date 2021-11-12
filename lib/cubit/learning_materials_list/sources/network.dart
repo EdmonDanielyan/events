@@ -21,7 +21,7 @@ class LearningMaterialListNetworkRequest
   @override
   Future<Response<GetPublications>> call() async {
     PublicationsApi learningMaterialsApi =
-        sl.get<MainApiProvider>().getPublicationsApi();
+        sl<MainApiProvider>().getPublicationsApi();
 
     return await learningMaterialsApi.publicationsGet(
         countOnPage: pagination!.countOnPage,

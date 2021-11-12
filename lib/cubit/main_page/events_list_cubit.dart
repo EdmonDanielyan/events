@@ -25,7 +25,7 @@ class MainEventsListCubit extends Cubit<EventsListState> {
     try {
       if (eventList == null) {
         final response =
-            await sl.get<EventsListNetworkRequest>(param1: pagination)();
+            await sl<EventsListNetworkRequest>(param1: pagination)();
         final mapResponse = response.mapResponse(pagination);
         emitSuccess(mapResponse.items);
       } else {
