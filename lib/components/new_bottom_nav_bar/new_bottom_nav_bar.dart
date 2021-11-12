@@ -8,7 +8,7 @@ import 'cubit/new_bottom_nav_bar_cubit.dart';
 
 class NewBottomNavBar extends StatelessWidget with NewBottomNavBarMixin {
   NewBottomNavBar({Key? key}) : super(key: key);
-  static NewBottomNavBarCubit _cubit = sl.get<NewBottomNavBarCubit>();
+  static NewBottomNavBarCubit _cubit = sl<NewBottomNavBarCubit>();
 
   @override
   Widget build(BuildContext context) {
