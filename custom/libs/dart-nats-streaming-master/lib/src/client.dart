@@ -420,10 +420,6 @@ class Client {
       ..subject = dataMessage.subject
       ..sequence = dataMessage.sequence;
 
-    return _natsClient.pub(
-      subscription.ackInbox,
-      ack.writeToBuffer(),
-      replyTo: subscription.subject,
-    );
+    return _natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
   }
 }

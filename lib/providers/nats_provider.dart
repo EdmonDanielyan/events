@@ -203,6 +203,7 @@ class NatsProvider {
           }
         });
       }
+
       if (message.needAck) {
         _stan.acknowledge(_subscriptionToPublicChannel, dataMessage);
       }
@@ -234,12 +235,12 @@ class NatsProvider {
       if (_channelSubscriptions.containsKey(channel)) {
         NatsMessage message = _parseMessage(dataMessage);
 
-        if (!dataMessage.isRedelivery) {
-          await onMessage(channel, message);
-          Future<void> Function(String, NatsMessage) channelCallback =
-              _channelCallbacks[channel]!;
-          await channelCallback(channel, message);
-        }
+        //if (!dataMessage.isRedelivery) {
+        await onMessage(channel, message);
+        Future<void> Function(String, NatsMessage) channelCallback =
+            _channelCallbacks[channel]!;
+        await channelCallback(channel, message);
+        //}
 
         if (message.needAck) {
           _stan.acknowledge(subscription, dataMessage);
