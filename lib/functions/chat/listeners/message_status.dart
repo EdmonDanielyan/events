@@ -22,15 +22,13 @@ class MessageStatusListener {
 
   ChannelFunctions get channelFunctions =>
       UseMessageProvider.messageProvider.channelFunctions;
+  bool isListeningToChannel(String channel) =>
+      natsListener.listeningToChannel(channel);
 
   Future<void> listenTo(String channel,
-      {String? chatChannel, Int64 startSequence = Int64.ZERO}) async {
+      {Int64 startSequence = Int64.ZERO}) async {
     try {
-      if (chatChannel != null) {
-        channel = _getChanneByChatChannel(chatChannel);
-      }
-
-      if (!natsListener.listeningToChannel(channel)) {
+      if (!isListeningToChannel(channel)) {
         await natsProvider.subscribeToChannel(channel, onMessage,
             startSequence: startSequence);
       }
@@ -38,6 +36,10 @@ class MessageStatusListener {
   }
 
   Future<void> onMessage(String channel, NatsMessage message) async {
+    if (!isListeningToChannel(channel)) {
+      return;
+    }
+
     final mapPayload = message.payload! as SystemPayload;
     ChatMessageStatusFields fields =
         ChatMessageStatusFields.fromMap(mapPayload.fields);
@@ -45,16 +47,6 @@ class MessageStatusListener {
       List<MessageTable> messages = fields.messages;
       messagesToRead(messages, chatFunctions);
     }
-  }
-
-  String _getChanneByChatChannel(String chatChannel) {
-    final list = chatChannel.split(".");
-
-    if (list.length > 0) {
-      String chatId = list[list.length - 1];
-      return natsProvider.getGroupReactedChannelById(chatId);
-    }
-    return "";
   }
 
   static Future<void> messagesToRead(

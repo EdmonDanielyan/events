@@ -84,6 +84,7 @@ class NatsProvider {
     if (!_channelSubscriptions.containsKey(channel)) {
       var subscription =
           await _subscribeToChannel(channel, startSequence: startSequence);
+
       _listenBySubscription(channel, subscription);
       _channelSubscriptions[channel] = subscription;
       _channelCallbacks[channel] = onMessageFuture;
@@ -143,22 +144,22 @@ class NatsProvider {
 
   String getPublicChatIdList() =>
       '$PUBLIC_CHATS.${describeEnum(MessageType.ChatList)}';
-
   String getPrivateUserChatIdList(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.ChatList)}.$userId';
-
   String getPrivateUserTextChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.Text)}.$userId';
-
   String getGroupTextChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.Text)}.$chatId';
-
   String getGroupReactedChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UserReacted)}.$chatId';
-
+  String getGroupJoinedChannelById(String chatId) =>
+      '$GROUP_CHANNEL.${describeEnum(MessageType.UserJoined)}.$chatId';
+  String getGroupLeftChannelById(String chatId) =>
+      '$GROUP_CHANNEL.${describeEnum(MessageType.UserLeftChat)}.$chatId';
+  String getGroupDeleteMessageChannelById(String chatId) =>
+      '$GROUP_CHANNEL.${describeEnum(MessageType.RemoveMessage)}.$chatId';
   String getGroupTextingChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.Texting)}.$chatId';
-
   String getInviteUserToJoinChatChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.InviteUserToJoinChat)}.$userId';
 
@@ -187,7 +188,10 @@ class NatsProvider {
       {Int64 startSequence = Int64.ZERO}) async {
     var _subscriptionToPublicChannel =
         await _subscribeToChannel(channel, startSequence: startSequence);
-    await for (final dataMessage in _subscriptionToPublicChannel!.stream) {
+    if (_subscriptionToPublicChannel == null) {
+      return;
+    }
+    await for (final dataMessage in _subscriptionToPublicChannel.stream) {
       NatsMessage message = _parseMessage(dataMessage);
       var systemPayload = message.getSystemPayload();
       if (systemPayload.type == MessageType.ChatList) {
@@ -213,28 +217,53 @@ class NatsProvider {
     var subscription = startSequence != Int64.ZERO
         ? await _stan.subscribe(
             subject: channel,
-            durableName: durableName,
+            maxInFlight: 1,
+            durableName: null,
             startSequence: startSequence)
-        : await _stan.subscribe(subject: channel, durableName: durableName);
+        : await _stan.subscribe(
+            subject: channel,
+            maxInFlight: 1,
+            durableName: null,
+          );
     return subscription;
   }
 
-  Future<void> _listenBySubscription(channel, subscription) async {
-    await for (final dataMessage in subscription!.stream) {
+  Future<void> _listenBySubscription(
+      channel, Subscription? subscription) async {
+    subscription?.stream.listen((dataMessage) async {
       if (_channelSubscriptions.containsKey(channel)) {
         NatsMessage message = _parseMessage(dataMessage);
-        await onMessage(channel, message);
-        Future<void> Function(String, NatsMessage) channelCallback =
-            _channelCallbacks[channel]!;
-        await channelCallback(channel, message);
+
+        if (!dataMessage.isRedelivery) {
+          await onMessage(channel, message);
+          Future<void> Function(String, NatsMessage) channelCallback =
+              _channelCallbacks[channel]!;
+          await channelCallback(channel, message);
+        }
 
         if (message.needAck) {
           _stan.acknowledge(subscription, dataMessage);
         }
       } else {
-        break;
+        return;
       }
-    }
+    });
+
+    // await for (final dataMessage in subscription!.stream) {
+    //   if (_channelSubscriptions.containsKey(channel)) {
+    //     NatsMessage message = _parseMessage(dataMessage);
+    //     await onMessage(channel, message);
+    //     Future<void> Function(String, NatsMessage) channelCallback =
+    //         _channelCallbacks[channel]!;
+    //     await channelCallback(channel, message);
+
+    //     if (message.needAck) {
+    //       _stan.acknowledge(subscription, dataMessage);
+    //     }
+    //   } else {
+    //     break;
+    //   }
+    // }
   }
 
   final _stan = Client();

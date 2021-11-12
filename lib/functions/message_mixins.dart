@@ -4,8 +4,10 @@ import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 class MessageMixins {
   bool isInBottom(ScrollController controller, {num gap = 70}) {
     if (controller.hasClients) {
-      num bottomGap = controller.position.maxScrollExtent - controller.offset;
-      if (bottomGap < gap) return true;
+      try {
+        num bottomGap = controller.position.maxScrollExtent - controller.offset;
+        if (bottomGap < gap) return true;
+      } catch (_) {}
     }
 
     return false;

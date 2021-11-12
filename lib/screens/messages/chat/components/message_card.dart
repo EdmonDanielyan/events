@@ -4,6 +4,7 @@ import 'package:ink_mobile/components/selectable_widget.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_state.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
+import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
@@ -12,6 +13,7 @@ import 'package:ink_mobile/screens/messages/chat/components/message_card_text.da
 import 'package:ink_mobile/screens/messages/chat/components/hover_message.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/paddings.dart';
 
+import 'message_card_action.dart';
 import 'message_search_wrapper.dart';
 
 class MessageCard extends StatelessWidget {
@@ -45,6 +47,7 @@ class MessageCard extends StatelessWidget {
           child: HoverMessage(
             index: index,
             messageWithUser: messageWithUser,
+            ignore: message.type != MessageType.Text,
             child: MessageSearchWrapper(
               chatCubit: _chatCubit,
               message: message,
@@ -65,9 +68,18 @@ class MessageCard extends StatelessWidget {
   }
 
   Widget _getMessageWidget() {
+    final message = messageWithUser.message!;
+    final user = messageWithUser.user!;
+
+    if (message.type == MessageType.UserLeftChat ||
+        message.type == MessageType.UserJoined) {
+      return MessageCardAction(
+        text: message.message,
+      );
+    }
     return MessageCardText(
-      message: messageWithUser.message!,
-      user: messageWithUser.user!,
+      message: message,
+      user: user,
     );
   }
 }

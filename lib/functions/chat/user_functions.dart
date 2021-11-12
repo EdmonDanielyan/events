@@ -11,6 +11,7 @@ class UserFunctions {
         id: JwtPayload.myId,
         name: JwtPayload.myName,
         avatar: JwtPayload.myAvatar,
+        online: false,
       );
 
   void addMe() {
@@ -34,6 +35,11 @@ class UserFunctions {
     return true;
   }
 
+  Future<bool> deleteParticipant(int userId, String chatId) async {
+    await chatDatabaseCubit.db.deleteParticipant(userId, chatId);
+    return true;
+  }
+
   Future<int> insertParticipant(
       ParticipantTable participant, ChatTable chat) async {
     ParticipantTable? exists = await chatDatabaseCubit.db
@@ -48,6 +54,14 @@ class UserFunctions {
       List<ParticipantTable> participants, ChatTable chat) async {
     for (final participant in participants) {
       await insertParticipant(participant, chat);
+    }
+    return true;
+  }
+
+  Future<bool> deleteParticipants(
+      List<ParticipantTable> participants, ChatTable chat) async {
+    for (final participant in participants) {
+      await deleteParticipant(participant.userId, chat.id);
     }
     return true;
   }

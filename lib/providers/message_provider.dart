@@ -4,8 +4,11 @@ import 'package:ink_mobile/functions/chat/chat_creation.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/all.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat.dart';
+import 'package:ink_mobile/functions/chat/listeners/delete_message.dart';
 import 'package:ink_mobile/functions/chat/listeners/invitation.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
+import 'package:ink_mobile/functions/chat/listeners/joined.dart';
+import 'package:ink_mobile/functions/chat/listeners/left.dart';
 import 'package:ink_mobile/functions/chat/listeners/message_status.dart';
 import 'package:ink_mobile/functions/chat/listeners/texting.dart';
 import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
@@ -40,6 +43,9 @@ class MessageProvider {
   late ChannelFunctions channelFunctions;
   late MessageStatusListener messageStatusListener;
   late MessageTextingListener messageTextingListener;
+  late ChatJoinedListener chatJoinedListener;
+  late ChatLeftListener chatLeftListener;
+  late MessageDeletedListener messageDeletedListener;
   late ChatCubit chatCubit;
 
   MessageProvider(this.natsProvider, this.chatDatabaseCubit) {
@@ -48,6 +54,20 @@ class MessageProvider {
     this.channelFunctions = ChannelFunctions(chatDatabaseCubit);
     this.chatFunctions = ChatFunctions(chatDatabaseCubit);
     this.chatSendMessage = ChatSendMessage(natsProvider);
+    this.messageDeletedListener = MessageDeletedListener(
+      natsProvider: natsProvider,
+      chatFunctions: chatFunctions,
+    );
+    this.chatJoinedListener = ChatJoinedListener(
+      natsProvider: natsProvider,
+      userFunctions: userFunctions,
+      chatDatabaseCubit: chatDatabaseCubit,
+    );
+    this.chatLeftListener = ChatLeftListener(
+      natsProvider: natsProvider,
+      userFunctions: userFunctions,
+      chatDatabaseCubit: chatDatabaseCubit,
+    );
     this.messageStatusListener = MessageStatusListener(
       natsProvider: natsProvider,
       chatFunctions: chatFunctions,
@@ -64,6 +84,9 @@ class MessageProvider {
       chatSendMessage: chatSendMessage,
       messageStatusListener: messageStatusListener,
       messageTextingListener: messageTextingListener,
+      chatJoinedListener: chatJoinedListener,
+      chatLeftListener: chatLeftListener,
+      messageDeletedListener: messageDeletedListener,
     );
     this.chatInvitationListener = ChatInvitationListener(
       natsProvider: natsProvider,
@@ -77,6 +100,9 @@ class MessageProvider {
       chatInvitationListener: chatInvitationListener,
       messageStatusListener: messageStatusListener,
       messageTextingListener: messageTextingListener,
+      chatJoinedListener: chatJoinedListener,
+      chatLeftListener: chatLeftListener,
+      messageDeletedListener: messageDeletedListener,
     );
     this.chatCreation = ChatCreation(chatDatabaseCubit);
   }
@@ -91,6 +117,12 @@ class MessageProvider {
       natsProvider.getGroupReactedChannelById(chatId);
   String getTextingChannel(String chatId) =>
       natsProvider.getGroupTextingChannelById(chatId);
+  String getUserJoinedChannel(String chatId) =>
+      natsProvider.getGroupJoinedChannelById(chatId);
+  String getUserLeftChannel(String chatId) =>
+      natsProvider.getGroupLeftChannelById(chatId);
+  String getDeletedMessageChannel(String chatId) =>
+      natsProvider.getGroupDeleteMessageChannelById(chatId);
 
   void init() async {
     UserFunctions(chatDatabaseCubit).addMe();
@@ -121,28 +153,23 @@ class MessageProvider {
   }
 
   Future<void> _afterChatCreation(ChatTable chat, List<UserTable> users) async {
-    final chatChannel = getChatChannel(chat.id);
-    await messagesListeners(chat);
+    natsListener.subscribeOnChatCreate(chat.id);
 
+    await inviteUsers(chat, users);
+    await chatSendMessage.saveToPrivateUserChatIdList(
+        userId: JwtPayload.myId, channel: getChatChannel(chat.id), chat: chat);
+  }
+
+  Future<void> inviteUsers(ChatTable chat, List<UserTable> users) async {
     for (final user in users) {
       if (user.id != JwtPayload.myId) {
-        await chatInvitationListener.inviteUser(
+        await chatSendMessage.inviteUser(
           user: user,
           chat: chat,
-          chatChannel: chatChannel,
+          chatChannel: getChatChannel(chat.id),
           users: users,
         );
       }
-    }
-
-    await chatSendMessage.saveToPrivateUserChatIdList(
-        userId: JwtPayload.myId, channel: chatChannel, chat: chat);
-  }
-
-  Future<void> messagesListeners(ChatTable chat) async {
-    final chatChannel = getChatChannel(chat.id);
-    if (!natsListener.listeningToChannel(chatChannel)) {
-      await chatMessageListener.listenTo(chatChannel);
     }
   }
 
@@ -166,7 +193,14 @@ class MessageProvider {
   }
 
   Future<void> deleteMessages(List<MessageTable> messages) async {
-    chatFunctions.deleteMessages(messages);
+    if (messages.isNotEmpty) {
+      final chatId = messages.last.chatId;
+      final channel = getDeletedMessageChannel(chatId);
+      final success =
+          await chatSendMessage.sendDeleteMessage(channel, messages: messages);
+
+      if (success) chatFunctions.deleteMessages(messages);
+    }
   }
 
   Future<bool> setMessagesToRead(List<MessageTable> messages) async {
@@ -182,6 +216,26 @@ class MessageProvider {
     final channel = getTextingChannel(chatId);
     bool send = await chatSendMessage.sendTextingMessage(channel,
         customTexting: customTexting, chatId: chatId);
+    return send;
+  }
+
+  Future<bool> sendUserJoinedMessage(
+      ChatTable chat, List<UserTable> users) async {
+    bool send = await chatSendMessage.sendUserJoinedMessage(
+      getUserJoinedChannel(chat.id),
+      chat: chat,
+      users: users,
+    );
+    return send;
+  }
+
+  Future<bool> sendUserLeftMessage(
+      ChatTable chat, List<UserTable> users) async {
+    bool send = await chatSendMessage.sendUserLeftMessage(
+      getUserLeftChannel(chat.id),
+      chat: chat,
+      users: users,
+    );
     return send;
   }
 }

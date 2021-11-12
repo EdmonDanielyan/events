@@ -163,10 +163,17 @@ class ChatDatabase extends _$ChatDatabase {
           String channelName, ChannelTable channel) =>
       (update(channelTables)..where((tbl) => tbl.to.equals(channelName)))
           .write(channel);
+  Future deleteChannelByChannelName(String channelName) =>
+      (delete(channelTables)..where((tbl) => tbl.to.equals(channelName))).go();
 
   //PARTICIPANTS
   Future<int> insertParticipant(ParticipantTable participant) =>
       into(participantTables).insert(participant);
+  Future deleteParticipant(int userId, String chatId) =>
+      (delete(participantTables)
+            ..where(
+                (tbl) => tbl.userId.equals(userId) & tbl.chatId.equals(chatId)))
+          .go();
   Future<ParticipantTable?> selectParticipantById(int id, String chatId) =>
       (select(participantTables)
             ..where((tbl) => tbl.userId.equals(id) & tbl.chatId.equals(chatId)))
@@ -190,7 +197,7 @@ class ChatDatabase extends _$ChatDatabase {
   }
 
   @override
-  int get schemaVersion => 17;
+  int get schemaVersion => 19;
 
   @override
   //USED TO AVOID APP CRASH AFTER CHANING DB

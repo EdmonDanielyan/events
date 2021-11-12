@@ -1,7 +1,12 @@
 import 'dart:convert';
 
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/token.dart';
+
+import 'chat_list_view.dart';
+import 'database/model/message_with_user.dart';
+import 'package:collection/collection.dart';
 
 class ChatUserViewModel {
   static bool isAdmin(UserTable user, List<UserTable> admins) {
@@ -58,5 +63,34 @@ class ChatUserViewModel {
     }
 
     return participants;
+  }
+
+  static Future<UserTable?> getUserForChatList(
+    ChatTable chat,
+    ChatDatabaseCubit chatDatabaseCubit, {
+    List<MessageWithUser>? messages,
+    int? userId,
+  }) async {
+    if (ChatListView.isGroup(chat) && messages != null) {
+      return messages.last.user;
+    }
+
+    if (userId == null) {
+      userId = JwtPayload.myId;
+    }
+
+    int oppositeId = getOppositeUserIdFromChat(chat)!;
+
+    return await chatDatabaseCubit.db.selectUserById(oppositeId);
+  }
+
+  static int? getOppositeUserIdFromChat(ChatTable chat, {int? userId}) {
+    if (!ChatListView.isGroup(chat)) {
+      if (userId == null) userId = JwtPayload.myId;
+
+      return chat.ownerId == userId ? chat.participantId! : chat.ownerId;
+    }
+
+    return null;
   }
 }

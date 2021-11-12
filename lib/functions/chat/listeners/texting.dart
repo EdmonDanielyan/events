@@ -29,15 +29,13 @@ class MessageTextingListener {
 
   ChannelFunctions get channelFunctions =>
       UseMessageProvider.messageProvider.channelFunctions;
+  bool isListeningToChannel(String channel) =>
+      natsListener.listeningToChannel(channel);
 
   Future<void> listenTo(String channel,
-      {String? chatChannel, Int64 startSequence = Int64.ZERO}) async {
+      {Int64 startSequence = Int64.ZERO}) async {
     try {
-      if (chatChannel != null) {
-        channel = _getChanneByChatChannel(chatChannel);
-      }
-
-      if (!natsListener.listeningToChannel(channel)) {
+      if (!isListeningToChannel(channel)) {
         await natsProvider.subscribeToChannel(channel, onMessage,
             startSequence: startSequence);
       }
@@ -45,6 +43,9 @@ class MessageTextingListener {
   }
 
   Future<void> onMessage(String channel, NatsMessage message) async {
+    if (!isListeningToChannel(channel)) {
+      return;
+    }
     final mapPayload = message.payload! as SystemPayload;
     ChatTextingFields fields = ChatTextingFields.fromMap(mapPayload.fields);
     _handleState(fields.texting, fields.chatId);
@@ -60,15 +61,5 @@ class MessageTextingListener {
       });
       chatCubit.emitTexting(texting);
     }
-  }
-
-  String _getChanneByChatChannel(String chatChannel) {
-    final list = chatChannel.split(".");
-
-    if (list.length > 0) {
-      String chatId = list[list.length - 1];
-      return natsProvider.getGroupTextingChannelById(chatId);
-    }
-    return "";
   }
 }

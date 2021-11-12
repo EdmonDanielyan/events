@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
+import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat_info/chat_info_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -25,6 +27,10 @@ class ChatInfoBottomBtns extends StatelessWidget {
   void _deleteChat(BuildContext context) {
     _clearMessages();
     _chatFunctions.deleteChat(chat.id);
+    UseMessageProvider.messageProvider
+        .sendUserLeftMessage(chat, [UserFunctions.getMe]);
+    UseMessageProvider.messageProvider.natsListener
+        .unSubscribeOnChatDelete(chat.id);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 

@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/bottom_sheet.dart';
+import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/participant_with_user.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/btn_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/participant_card.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
+import 'package:ink_mobile/screens/messages/chat_list/components/new_chat_screen.dart';
+import 'package:ink_mobile/screens/messages/chat_list/entities/new_chat_screen_params.dart';
+
+import '../chat_info_screen.dart';
 
 class ChatInfoParticipants extends StatelessWidget {
   final ChatTable chat;
@@ -15,12 +23,17 @@ class ChatInfoParticipants extends StatelessWidget {
       {Key? key, required this.chat, required this.participants})
       : super(key: key);
   static late AppLocalizations _strings;
+  static late ChatDatabaseCubit _chatDatabaseCubit;
+  static late SelectableCubit<UserTable> _selectableCubit;
 
   bool get iAmOwner => ChatListView.isOwner(chat);
 
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
+    _chatDatabaseCubit = ChatInfoScreen.of(context).chatDatabaseCubit;
+    _selectableCubit = ChatInfoScreen.of(context).selectableCubit;
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       color: Colors.white,
@@ -28,7 +41,7 @@ class ChatInfoParticipants extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (iAmOwner) ...[
-            addUserWidget(),
+            addUserWidget(context),
             divider(),
           ],
           userListWidget(context),
@@ -37,11 +50,38 @@ class ChatInfoParticipants extends StatelessWidget {
     );
   }
 
-  Widget addUserWidget() {
+  NewChatScreenParams _getNewChatScreenParams() {
+    return NewChatScreenParams(
+      title: _strings.add,
+      chosenOneText: _strings.add,
+      chosenMultipleText: _strings.add,
+      hideIds: ParticipantWithUserListView.getUserIds(participants),
+      onSubmit: _onSubmit,
+    );
+  }
+
+  void _onSubmit(BuildContext context) async {
+    List<UserTable> selectedUsers = _selectableCubit.getItems;
+    List<UserTable> userParticipants =
+        ParticipantWithUserListView.getUsers(participants);
+    UseMessageProvider.messageProvider
+        .inviteUsers(chat, userParticipants..addAll(selectedUsers));
+    UseMessageProvider.messageProvider
+        .sendUserJoinedMessage(chat, selectedUsers);
+    Navigator.of(context).pop();
+  }
+
+  Widget addUserWidget(BuildContext context) {
     return ChatInfoBtnWrapper(
-      onTap: () {
-        print("ADD USER");
-      },
+      onTap: () => CustomBottomSheet(
+        context: context,
+        child: NewChatScreen(
+          newChatScreenParams: _getNewChatScreenParams(),
+          chatDatabaseCubit: _chatDatabaseCubit,
+          selectableCubit: _selectableCubit,
+          chatPersonListCubit: ChatInfoScreen.of(context).chatPersonListCubit,
+        ),
+      ),
       icon: addUserIcon(),
       children: [
         Text(

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/token.dart';
@@ -7,7 +8,7 @@ import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
 import 'database/chat_db.dart';
 
-enum MessageStatus { SENDING, SENT, READ, ERROR }
+enum MessageStatus { EMPTY, SENDING, SENT, READ, ERROR }
 
 class MessageListView {
   static bool isByMe(MessageTable msg, {int? myId}) {
@@ -17,7 +18,8 @@ class MessageListView {
 
   static Map<String, dynamic> toJson(MessageTable message) {
     final json = message.toJson();
-    json["status"] = messageStatusToString(json["status"]);
+    json["status"] = messageEnumToString(json["status"]);
+    json["type"] = messageEnumToString(json["type"]);
     return json;
   }
 
@@ -27,6 +29,7 @@ class MessageListView {
 
   static MessageTable fromJson(Map<String, dynamic> json) {
     json["status"] = messageStatusStringToObject(json["status"]);
+    json["type"] = messageTypeStringToObject(json["type"]);
     return MessageTable.fromJson(json);
   }
 
@@ -34,7 +37,7 @@ class MessageListView {
     return fromJson(jsonDecode(str));
   }
 
-  static String messageStatusToString(dynamic json) {
+  static String messageEnumToString(dynamic json) {
     return "${json}";
   }
 
@@ -50,11 +53,34 @@ class MessageListView {
     return MessageStatus.ERROR;
   }
 
+  static MessageType messageTypeStringToObject(String json) {
+    for (final value in MessageType.values) {
+      if (json
+          .toString()
+          .toLowerCase()
+          .contains(value.toString().toLowerCase())) {
+        return value;
+      }
+    }
+    return MessageType.Text;
+  }
+
   static MessageType getType(ChatEntities entities) {
     if (entities.files != null && entities.files!.length > 0)
       return MessageType.Document;
 
     return MessageType.Text;
+  }
+
+  static MessageType? getTypeByChannel(String channel) {
+    for (final value in MessageType.values) {
+      final channelComparing = channel.toLowerCase();
+      final valueToComparing = describeEnum(value).toLowerCase();
+      if (channelComparing.contains(valueToComparing)) {
+        return value;
+      }
+    }
+    return null;
   }
 
   static List<MessageTable> searchMessagesByStr(
@@ -136,6 +162,21 @@ class MessageListView {
         messages.add(MessageListView.fromString(item));
       }
     } on NoSuchMethodError {}
+
+    return messages;
+  }
+
+  static List<MessageTable> getUserMessages(
+      List<MessageTable> items, int userId) {
+    List<MessageTable> messages = [];
+
+    if (items.isNotEmpty) {
+      for (final item in items) {
+        if (isByMe(item, myId: userId)) {
+          messages.add(item);
+        }
+      }
+    }
 
     return messages;
   }

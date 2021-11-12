@@ -30,7 +30,8 @@ class ChatTick extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (chatStatus == MessageStatus.ERROR) return SizedBox();
+    if (chatStatus == MessageStatus.ERROR || chatStatus == MessageStatus.EMPTY)
+      return SizedBox();
 
     return SvgPicture.asset(
       getTickImage(),

@@ -228,11 +228,9 @@ packages:
   dart_nats_streaming:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "9ca6e4590f8500277b889f626767085ada01b1de"
-      url: "https://github.com/JetRabbits/dart-nats-streaming.git"
-    source: git
+      path: "custom/libs/dart-nats-streaming-master"
+      relative: true
+    source: path
     version: "0.0.7"
   dart_style:
     dependency: transitive

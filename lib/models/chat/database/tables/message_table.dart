@@ -1,3 +1,4 @@
+import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:moor/moor.dart';
 
@@ -11,6 +12,7 @@ class MessageTables extends Table {
   BoolColumn get read => boolean().withDefault(Constant(false))();
   BoolColumn get sentOn => boolean().withDefault(Constant(false))();
   IntColumn get status => intEnum<MessageStatus>()();
+  IntColumn get type => intEnum<MessageType>()();
   DateTimeColumn get created =>
       dateTime().withDefault(Constant(new DateTime.now())).nullable()();
 }

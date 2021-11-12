@@ -205,5 +205,7 @@
     "newGroup": "New group",
     "forwardedMsg": "Forwarded message",
     "save": "Save",
-    "noMessages": "No messages"
+    "noMessages": "No messages",
+    "joinedChat": "joined",
+    "leftChat": "left"
 }

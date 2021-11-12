@@ -388,6 +388,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
   final bool read;
   final bool sentOn;
   final MessageStatus status;
+  final MessageType type;
   final DateTime? created;
   MessageTable(
       {required this.id,
@@ -398,6 +399,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       required this.read,
       required this.sentOn,
       required this.status,
+      required this.type,
       this.created});
   factory MessageTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
@@ -419,6 +421,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}sent_on'])!,
       status: $MessageTablesTable.$converter0.mapToDart(const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}status']))!,
+      type: $MessageTablesTable.$converter1.mapToDart(const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type']))!,
       created: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}created']),
     );
@@ -439,6 +443,10 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       final converter = $MessageTablesTable.$converter0;
       map['status'] = Variable<int>(converter.mapToSql(status)!);
     }
+    {
+      final converter = $MessageTablesTable.$converter1;
+      map['type'] = Variable<int>(converter.mapToSql(type)!);
+    }
     if (!nullToAbsent || created != null) {
       map['created'] = Variable<DateTime?>(created);
     }
@@ -457,6 +465,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       read: Value(read),
       sentOn: Value(sentOn),
       status: Value(status),
+      type: Value(type),
       created: created == null && nullToAbsent
           ? const Value.absent()
           : Value(created),
@@ -475,6 +484,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       read: serializer.fromJson<bool>(json['read']),
       sentOn: serializer.fromJson<bool>(json['sentOn']),
       status: serializer.fromJson<MessageStatus>(json['status']),
+      type: serializer.fromJson<MessageType>(json['type']),
       created: serializer.fromJson<DateTime?>(json['created']),
     );
   }
@@ -490,6 +500,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       'read': serializer.toJson<bool>(read),
       'sentOn': serializer.toJson<bool>(sentOn),
       'status': serializer.toJson<MessageStatus>(status),
+      'type': serializer.toJson<MessageType>(type),
       'created': serializer.toJson<DateTime?>(created),
     };
   }
@@ -503,6 +514,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           bool? read,
           bool? sentOn,
           MessageStatus? status,
+          MessageType? type,
           DateTime? created}) =>
       MessageTable(
         id: id ?? this.id,
@@ -513,6 +525,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
         read: read ?? this.read,
         sentOn: sentOn ?? this.sentOn,
         status: status ?? this.status,
+        type: type ?? this.type,
         created: created ?? this.created,
       );
   @override
@@ -526,6 +539,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           ..write('read: $read, ')
           ..write('sentOn: $sentOn, ')
           ..write('status: $status, ')
+          ..write('type: $type, ')
           ..write('created: $created')
           ..write(')'))
         .toString();
@@ -544,8 +558,12 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
                       repliedMessageId.hashCode,
                       $mrjc(
                           read.hashCode,
-                          $mrjc(sentOn.hashCode,
-                              $mrjc(status.hashCode, created.hashCode)))))))));
+                          $mrjc(
+                              sentOn.hashCode,
+                              $mrjc(
+                                  status.hashCode,
+                                  $mrjc(
+                                      type.hashCode, created.hashCode))))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -558,6 +576,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           other.read == this.read &&
           other.sentOn == this.sentOn &&
           other.status == this.status &&
+          other.type == this.type &&
           other.created == this.created);
 }
 
@@ -570,6 +589,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
   final Value<bool> read;
   final Value<bool> sentOn;
   final Value<MessageStatus> status;
+  final Value<MessageType> type;
   final Value<DateTime?> created;
   const MessageTablesCompanion({
     this.id = const Value.absent(),
@@ -580,6 +600,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     this.read = const Value.absent(),
     this.sentOn = const Value.absent(),
     this.status = const Value.absent(),
+    this.type = const Value.absent(),
     this.created = const Value.absent(),
   });
   MessageTablesCompanion.insert({
@@ -591,12 +612,14 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     this.read = const Value.absent(),
     this.sentOn = const Value.absent(),
     required MessageStatus status,
+    required MessageType type,
     this.created = const Value.absent(),
   })  : id = Value(id),
         chatId = Value(chatId),
         message = Value(message),
         userId = Value(userId),
-        status = Value(status);
+        status = Value(status),
+        type = Value(type);
   static Insertable<MessageTable> custom({
     Expression<String>? id,
     Expression<String>? chatId,
@@ -606,6 +629,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     Expression<bool>? read,
     Expression<bool>? sentOn,
     Expression<MessageStatus>? status,
+    Expression<MessageType>? type,
     Expression<DateTime?>? created,
   }) {
     return RawValuesInsertable({
@@ -617,6 +641,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       if (read != null) 'read': read,
       if (sentOn != null) 'sent_on': sentOn,
       if (status != null) 'status': status,
+      if (type != null) 'type': type,
       if (created != null) 'created': created,
     });
   }
@@ -630,6 +655,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       Value<bool>? read,
       Value<bool>? sentOn,
       Value<MessageStatus>? status,
+      Value<MessageType>? type,
       Value<DateTime?>? created}) {
     return MessageTablesCompanion(
       id: id ?? this.id,
@@ -640,6 +666,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       read: read ?? this.read,
       sentOn: sentOn ?? this.sentOn,
       status: status ?? this.status,
+      type: type ?? this.type,
       created: created ?? this.created,
     );
   }
@@ -672,6 +699,10 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       final converter = $MessageTablesTable.$converter0;
       map['status'] = Variable<int>(converter.mapToSql(status.value)!);
     }
+    if (type.present) {
+      final converter = $MessageTablesTable.$converter1;
+      map['type'] = Variable<int>(converter.mapToSql(type.value)!);
+    }
     if (created.present) {
       map['created'] = Variable<DateTime?>(created.value);
     }
@@ -689,6 +720,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
           ..write('read: $read, ')
           ..write('sentOn: $sentOn, ')
           ..write('status: $status, ')
+          ..write('type: $type, ')
           ..write('created: $created')
           ..write(')'))
         .toString();
@@ -740,6 +772,11 @@ class $MessageTablesTable extends MessageTables
       GeneratedColumn<int?>('status', aliasedName, false,
               typeName: 'INTEGER', requiredDuringInsert: true)
           .withConverter<MessageStatus>($MessageTablesTable.$converter0);
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  late final GeneratedColumnWithTypeConverter<MessageType, int?> type =
+      GeneratedColumn<int?>('type', aliasedName, false,
+              typeName: 'INTEGER', requiredDuringInsert: true)
+          .withConverter<MessageType>($MessageTablesTable.$converter1);
   final VerificationMeta _createdMeta = const VerificationMeta('created');
   late final GeneratedColumn<DateTime?> created = GeneratedColumn<DateTime?>(
       'created', aliasedName, true,
@@ -756,6 +793,7 @@ class $MessageTablesTable extends MessageTables
         read,
         sentOn,
         status,
+        type,
         created
       ];
   @override
@@ -805,6 +843,7 @@ class $MessageTablesTable extends MessageTables
           sentOn.isAcceptableOrUnknown(data['sent_on']!, _sentOnMeta));
     }
     context.handle(_statusMeta, const VerificationResult.success());
+    context.handle(_typeMeta, const VerificationResult.success());
     if (data.containsKey('created')) {
       context.handle(_createdMeta,
           created.isAcceptableOrUnknown(data['created']!, _createdMeta));
@@ -827,13 +866,20 @@ class $MessageTablesTable extends MessageTables
 
   static TypeConverter<MessageStatus, int> $converter0 =
       const EnumIndexConverter<MessageStatus>(MessageStatus.values);
+  static TypeConverter<MessageType, int> $converter1 =
+      const EnumIndexConverter<MessageType>(MessageType.values);
 }
 
 class UserTable extends DataClass implements Insertable<UserTable> {
   final int id;
   final String name;
   final String avatar;
-  UserTable({required this.id, required this.name, required this.avatar});
+  final bool online;
+  UserTable(
+      {required this.id,
+      required this.name,
+      required this.avatar,
+      required this.online});
   factory UserTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -844,6 +890,8 @@ class UserTable extends DataClass implements Insertable<UserTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       avatar: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}avatar'])!,
+      online: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}online'])!,
     );
   }
   @override
@@ -852,6 +900,7 @@ class UserTable extends DataClass implements Insertable<UserTable> {
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
     map['avatar'] = Variable<String>(avatar);
+    map['online'] = Variable<bool>(online);
     return map;
   }
 
@@ -860,6 +909,7 @@ class UserTable extends DataClass implements Insertable<UserTable> {
       id: Value(id),
       name: Value(name),
       avatar: Value(avatar),
+      online: Value(online),
     );
   }
 
@@ -870,6 +920,7 @@ class UserTable extends DataClass implements Insertable<UserTable> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       avatar: serializer.fromJson<String>(json['avatar']),
+      online: serializer.fromJson<bool>(json['online']),
     );
   }
   @override
@@ -879,69 +930,83 @@ class UserTable extends DataClass implements Insertable<UserTable> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'avatar': serializer.toJson<String>(avatar),
+      'online': serializer.toJson<bool>(online),
     };
   }
 
-  UserTable copyWith({int? id, String? name, String? avatar}) => UserTable(
+  UserTable copyWith({int? id, String? name, String? avatar, bool? online}) =>
+      UserTable(
         id: id ?? this.id,
         name: name ?? this.name,
         avatar: avatar ?? this.avatar,
+        online: online ?? this.online,
       );
   @override
   String toString() {
     return (StringBuffer('UserTable(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('avatar: $avatar')
+          ..write('avatar: $avatar, ')
+          ..write('online: $online')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(name.hashCode, avatar.hashCode)));
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(name.hashCode, $mrjc(avatar.hashCode, online.hashCode))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is UserTable &&
           other.id == this.id &&
           other.name == this.name &&
-          other.avatar == this.avatar);
+          other.avatar == this.avatar &&
+          other.online == this.online);
 }
 
 class UserTablesCompanion extends UpdateCompanion<UserTable> {
   final Value<int> id;
   final Value<String> name;
   final Value<String> avatar;
+  final Value<bool> online;
   const UserTablesCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.avatar = const Value.absent(),
+    this.online = const Value.absent(),
   });
   UserTablesCompanion.insert({
     this.id = const Value.absent(),
     required String name,
     required String avatar,
+    this.online = const Value.absent(),
   })  : name = Value(name),
         avatar = Value(avatar);
   static Insertable<UserTable> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? avatar,
+    Expression<bool>? online,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (avatar != null) 'avatar': avatar,
+      if (online != null) 'online': online,
     });
   }
 
   UserTablesCompanion copyWith(
-      {Value<int>? id, Value<String>? name, Value<String>? avatar}) {
+      {Value<int>? id,
+      Value<String>? name,
+      Value<String>? avatar,
+      Value<bool>? online}) {
     return UserTablesCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       avatar: avatar ?? this.avatar,
+      online: online ?? this.online,
     );
   }
 
@@ -957,6 +1022,9 @@ class UserTablesCompanion extends UpdateCompanion<UserTable> {
     if (avatar.present) {
       map['avatar'] = Variable<String>(avatar.value);
     }
+    if (online.present) {
+      map['online'] = Variable<bool>(online.value);
+    }
     return map;
   }
 
@@ -965,7 +1033,8 @@ class UserTablesCompanion extends UpdateCompanion<UserTable> {
     return (StringBuffer('UserTablesCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('avatar: $avatar')
+          ..write('avatar: $avatar, ')
+          ..write('online: $online')
           ..write(')'))
         .toString();
   }
@@ -991,8 +1060,15 @@ class $UserTablesTable extends UserTables
   late final GeneratedColumn<String?> avatar = GeneratedColumn<String?>(
       'avatar', aliasedName, false,
       typeName: 'TEXT', requiredDuringInsert: true);
+  final VerificationMeta _onlineMeta = const VerificationMeta('online');
+  late final GeneratedColumn<bool?> online = GeneratedColumn<bool?>(
+      'online', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (online IN (0, 1))',
+      defaultValue: Constant(false));
   @override
-  List<GeneratedColumn> get $columns => [id, name, avatar];
+  List<GeneratedColumn> get $columns => [id, name, avatar, online];
   @override
   String get aliasedName => _alias ?? 'user_tables';
   @override
@@ -1016,6 +1092,10 @@ class $UserTablesTable extends UserTables
           avatar.isAcceptableOrUnknown(data['avatar']!, _avatarMeta));
     } else if (isInserting) {
       context.missing(_avatarMeta);
+    }
+    if (data.containsKey('online')) {
+      context.handle(_onlineMeta,
+          online.isAcceptableOrUnknown(data['online']!, _onlineMeta));
     }
     return context;
   }

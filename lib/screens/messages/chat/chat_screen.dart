@@ -172,8 +172,10 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   PreferredSizeWidget initialBar() {
     return InkAppBarWithText(
-      titleWidget:
-          setIgnoring(ChatAppBarTitle(chat: chatDatabaseCubit.selectedChat!)),
+      titleWidget: setIgnoring(ChatAppBarTitle(
+        chat: chatDatabaseCubit.selectedChat!,
+        chatDatabaseCubit: chatDatabaseCubit,
+      )),
       title: "",
       actions: [
         MessageSearchBtn(

@@ -23,6 +23,8 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
 
   String get searchValue => state.searchValue;
 
+  List<int> hideIds = [];
+
   void init() {
     setSearchValue("");
   }
@@ -34,7 +36,7 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
       final response =
           await sl.get<ContactsNetworkRequest>(param1: searchValue)();
 
-      List<UserTable> users = response.mapResponse(hideMe: true);
+      List<UserTable> users = response.mapResponse(hideIds: hideIds);
       emitUsers(items: users);
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();

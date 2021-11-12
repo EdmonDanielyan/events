@@ -40,14 +40,14 @@ class ParticipantCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          avatarWidget(),
+          _avatarWidget(),
           SizedBox(width: titleGap ?? ChatInfoDesignEntities.titleGap - 7),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 nameWidget(context),
-                onlineStatusWidget(),
+                _onlineStatusWidget(),
               ],
             ),
           ),
@@ -59,12 +59,12 @@ class ParticipantCard extends StatelessWidget {
     );
   }
 
-  Widget avatarWidget() {
+  Widget _avatarWidget() {
     return CustomCircleAvatar(
       avatarHeight: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
       avatarWidth: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
       url: overrideAvatar ?? user?.avatar,
-      indicator: true,
+      indicator: user?.online ?? false,
       indicatorSize: 8.0,
     );
   }
@@ -82,9 +82,9 @@ class ParticipantCard extends StatelessWidget {
     );
   }
 
-  Widget onlineStatusWidget() {
+  Widget _onlineStatusWidget() {
     return Text(
-      true ? _strings.online : _strings.offline,
+      user != null && user!.online ? _strings.online : _strings.offline,
       style: TextStyle(
         color: Colors.grey,
         fontSize: 12.0,

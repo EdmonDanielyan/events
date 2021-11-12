@@ -1,4 +1,6 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/extensions/nats_extension.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/token.dart';
@@ -15,6 +17,27 @@ class SendMessage {
     required this.chat,
   });
 
+  static MessageTable generateMessage(
+    String chatId,
+    String message, {
+    String? repliedMessageId,
+    MessageStatus status = MessageStatus.SENDING,
+    MessageType type = MessageType.Text,
+  }) {
+    return MessageTable(
+      id: generateMessageId,
+      chatId: chatId,
+      message: message,
+      userId: JwtPayload.myId,
+      read: false,
+      sentOn: false,
+      status: status,
+      created: new DateTime.now(),
+      type: type,
+      repliedMessageId: repliedMessageId,
+    );
+  }
+
   static String get generateMessageId =>
       "${JwtPayload.myId}_${new DateTime.now().millisecondsSinceEpoch}";
 
@@ -24,17 +47,12 @@ class SendMessage {
   }
 
   Future<MessageTable> _sendMessageToDatabase(ChatEntities chatEntities) async {
-    MessageTable message = MessageTable(
-      id: generateMessageId,
-      chatId: chat.id,
-      message: chatEntities.text,
-      userId: JwtPayload.myId,
-      read: false,
-      sentOn: false,
-      status: MessageStatus.SENDING,
-      created: new DateTime.now(),
+    MessageTable message = generateMessage(
+      chat.id,
+      chatEntities.text,
       repliedMessageId: chatEntities.repliedMessageId,
     );
+
     await addMessage(message);
     return message;
   }
@@ -44,5 +62,24 @@ class SendMessage {
     ChatFunctions(chatDatabaseCubit).setChatToFirst(chat);
 
     return message.id;
+  }
+
+  static MessageTable? joinedLeftMessage(
+      {required String chatId,
+      required String userName,
+      required MessageType type}) {
+    bool isJoined = type == MessageType.UserJoined;
+    bool isLeft = type == MessageType.UserLeftChat;
+    if (isJoined || isLeft) {
+      String action = isJoined
+          ? localizationInstance.joinedChat
+          : localizationInstance.leftChat;
+
+      final text = "$userName $action";
+
+      return generateMessage(chatId, text,
+          status: MessageStatus.EMPTY, type: type);
+    }
+    return null;
   }
 }

@@ -18,7 +18,7 @@ enum MessageType {
   UpdateUserChatRole,
   Text,
   Document,
-  DeleteMessage,
+  RemoveMessage,
   UpdateMessage,
   UserJoined,
   UserLeftChat,

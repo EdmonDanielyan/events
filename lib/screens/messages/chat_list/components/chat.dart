@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
+import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
@@ -37,6 +39,8 @@ class ChatListTile extends StatelessWidget {
   MessageTable get lastMessage => messagesWithUser.last.message!;
   UserTable? get lastUser => messagesWithUser.last.user;
 
+  int? get oppositeUserId => ChatUserViewModel.getOppositeUserIdFromChat(chat);
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -52,9 +56,7 @@ class ChatListTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomCircleAvatar(
-                    url: chat.avatar,
-                  ),
+                  _avatarWidget(),
                   SizedBox(width: leadingGap),
                   Expanded(
                     child: Column(
@@ -112,6 +114,27 @@ class ChatListTile extends StatelessWidget {
     );
   }
 
+  Widget _avatarWidget() {
+    if (oppositeUserId != null) {
+      return StreamBuilder(
+        stream: chatDatabaseCubit.db.watchUser(oppositeUserId!),
+        builder: (context, AsyncSnapshot<UserTable> snapshot) {
+          bool indicator = false;
+          if (snapshot.hasData && snapshot.data != null) {
+            UserTable user = snapshot.data!;
+            indicator = user.online;
+          }
+          return CustomCircleAvatar(
+            url: chat.avatar,
+            indicator: indicator,
+          );
+        },
+      );
+    }
+
+    return CustomCircleAvatar(url: chat.avatar);
+  }
+
   Widget _displayBody() {
     return ChatMessage(
       displayName: _getDisplayName(),
@@ -121,10 +144,12 @@ class ChatListTile extends StatelessWidget {
   }
 
   String? _getDisplayName() {
-    if (ChatListView.isGroup(chat) && lastUser != null) {
-      return lastUser!.id == JwtPayload.myId
-          ? localizationInstance.you
-          : lastUser!.name;
+    if (lastMessage.type == MessageType.Text) {
+      if (ChatListView.isGroup(chat) && lastUser != null) {
+        return lastUser!.id == JwtPayload.myId
+            ? localizationInstance.you
+            : lastUser!.name;
+      }
     }
 
     return null;

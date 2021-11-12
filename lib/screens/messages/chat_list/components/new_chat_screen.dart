@@ -7,20 +7,21 @@ import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_state.dart';
-import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/new_chat_person_container.dart';
+import 'package:ink_mobile/screens/messages/chat_list/entities/new_chat_screen_params.dart';
 import 'package:ink_mobile/screens/search/components/search_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewChatScreen extends StatefulWidget {
+  final NewChatScreenParams newChatScreenParams;
   final SelectableCubit<UserTable> selectableCubit;
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatPersonListCubit chatPersonListCubit;
   const NewChatScreen({
     Key? key,
+    required this.newChatScreenParams,
     required this.chatDatabaseCubit,
     required this.selectableCubit,
     required this.chatPersonListCubit,
@@ -37,9 +38,11 @@ class _NewChatScreenState extends State<NewChatScreen> {
   late AppLocalizations _strings;
   ChatPersonListCubit get chatPersonListCubit => widget.chatPersonListCubit;
   SelectableCubit<UserTable> get selectableCubit => widget.selectableCubit;
+  NewChatScreenParams get newChatScreenParams => widget.newChatScreenParams;
 
   @override
   void dispose() {
+    chatPersonListCubit.hideIds = [];
     selectableCubit.clearAll();
     super.dispose();
   }
@@ -48,27 +51,9 @@ class _NewChatScreenState extends State<NewChatScreen> {
   void initState() {
     super.initState();
 
-    if (chatPersonListCubit.items.isEmpty) {
-      chatPersonListCubit.init();
-    }
-  }
+    chatPersonListCubit.hideIds = newChatScreenParams.hideIds;
 
-  Future<void> _createChat(UserTable user) async {
-    ChatTable newChat =
-        await UseMessageProvider.messageProvider.createChat(user);
-    Navigator.of(context).pop();
-    OpenChat(widget.chatDatabaseCubit, newChat).call(context);
-  }
-
-  void _onCreate() {
-    List<UserTable> items = selectableCubit.getItems;
-    if (items.length == 1)
-      _createChat(items.first);
-    else if (items.length > 1)
-      Navigator.of(context).pushNamed(
-        "/new_group",
-        arguments: selectableCubit,
-      );
+    chatPersonListCubit.init();
   }
 
   @override
@@ -85,10 +70,14 @@ class _NewChatScreenState extends State<NewChatScreen> {
                 minHeight: 250.0,
                 maxHeight: MediaQuery.of(context).size.height * 0.9,
               ),
-              title: _strings.writeHint,
+              title: newChatScreenParams.title,
               cancelBtnTxt: _strings.cancel,
               submitBtnTxt: submitBtnText(personCubitState.searchUsers),
-              onSubmit: _onCreate,
+              onSubmit: () {
+                if (newChatScreenParams.onSubmit != null) {
+                  newChatScreenParams.onSubmit!(context);
+                }
+              },
               horizontalPadding: _horizontalPadding,
               child: Expanded(
                 child: Container(
@@ -158,10 +147,14 @@ class _NewChatScreenState extends State<NewChatScreen> {
   }
 
   Widget hintText() {
-    return Text(
-      _strings.newChatHint,
-      style: TextStyle(color: Colors.grey),
-    );
+    if (newChatScreenParams.description.isNotEmpty) {
+      return Text(
+        newChatScreenParams.description,
+        style: TextStyle(color: Colors.grey),
+      );
+    }
+
+    return SizedBox();
   }
 
   Widget divider() {
@@ -179,9 +172,8 @@ class _NewChatScreenState extends State<NewChatScreen> {
   String submitBtnText(List<UserTable> items) {
     int count = selectableCubit.getItems.length;
 
-    if (count == 1) return _strings.writeHint;
-    if (count > 1)
-      return "${_strings.create} ${_strings.chat.toLowerCase()} ($count)";
+    if (count == 1) return newChatScreenParams.chosenOneText;
+    if (count > 1) return "${newChatScreenParams.chosenMultipleText} ($count)";
 
     return "";
   }

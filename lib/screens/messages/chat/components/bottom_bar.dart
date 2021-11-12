@@ -55,13 +55,13 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   }
 
   void _sendTexting() async {
-    await UseMessageProvider.messageProvider.sendTextingMessage(
-      getChat.id,
-      CustomTexting(
-        user: UserFunctions.getMe,
-        customTextingEnum: CustomTextingEnum.TEXTING,
-      ),
-    );
+    // await UseMessageProvider.messageProvider.sendTextingMessage(
+    //   getChat.id,
+    //   CustomTexting(
+    //     user: UserFunctions.getMe,
+    //     customTextingEnum: CustomTextingEnum.TEXTING,
+    //   ),
+    // );
   }
 
   void _onMessaging(String val) {

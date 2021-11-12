@@ -18,12 +18,14 @@ class HoverMessage extends StatelessWidget {
   final int index;
   final MessageWithUser messageWithUser;
   final Widget child;
-  const HoverMessage(
-      {Key? key,
-      required this.index,
-      required this.child,
-      required this.messageWithUser})
-      : super(key: key);
+  final bool ignore;
+  const HoverMessage({
+    Key? key,
+    required this.index,
+    required this.child,
+    required this.messageWithUser,
+    this.ignore = false,
+  }) : super(key: key);
 
   static late AppLocalizations _strings;
   static late SelectableCubit<MessageWithUser> _selectableCubit;
@@ -62,7 +64,7 @@ class HoverMessage extends StatelessWidget {
     _chatCubit = ChatScreen.of(context).chatCubit;
     final _chatScreenParams = ChatScreen.of(context).chatScreenParams;
 
-    if (_chatScreenParams.ignoreHoverMessage) {
+    if (_chatScreenParams.ignoreHoverMessage || ignore) {
       return child;
     }
 

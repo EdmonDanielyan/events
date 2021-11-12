@@ -1,5 +1,8 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
+import 'package:ink_mobile/functions/chat/listeners/delete_message.dart';
+import 'package:ink_mobile/functions/chat/listeners/joined.dart';
+import 'package:ink_mobile/functions/chat/listeners/left.dart';
 import 'package:ink_mobile/functions/chat/listeners/message_status.dart';
 import 'package:ink_mobile/functions/chat/listeners/texting.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
@@ -23,6 +26,9 @@ class ChatMessageListener {
   final ChatSendMessage chatSendMessage;
   final MessageStatusListener messageStatusListener;
   final MessageTextingListener messageTextingListener;
+  final ChatJoinedListener chatJoinedListener;
+  final ChatLeftListener chatLeftListener;
+  final MessageDeletedListener messageDeletedListener;
 
   const ChatMessageListener({
     required this.natsProvider,
@@ -31,24 +37,32 @@ class ChatMessageListener {
     required this.chatSendMessage,
     required this.messageStatusListener,
     required this.messageTextingListener,
+    required this.chatJoinedListener,
+    required this.chatLeftListener,
+    required this.messageDeletedListener,
   });
 
   NatsListener get natsListener =>
       UseMessageProvider.messageProvider.natsListener;
 
+  bool isListeningToChannel(String channel) =>
+      natsListener.listeningToChannel(channel);
+
   Future<void> listenTo(String channel,
       {Int64 startSequence = Int64.ZERO}) async {
     try {
-      if (!natsListener.listeningToChannel(channel)) {
+      if (!isListeningToChannel(channel)) {
         await natsProvider.subscribeToChannel(channel, onMessage,
             startSequence: startSequence);
-        await messageStatusListener.listenTo("", chatChannel: channel);
-        await messageTextingListener.listenTo("", chatChannel: channel);
       }
     } on SubscriptionAlreadyExistException {}
   }
 
   Future<void> onMessage(String channel, NatsMessage message) async {
+    if (!isListeningToChannel(channel)) {
+      return;
+    }
+
     final mapPayload = message.payload! as SystemPayload;
     ChatMessageFields fields = ChatMessageFields.fromMap(mapPayload.fields);
     if (fields.user.id != JwtPayload.myId) {
