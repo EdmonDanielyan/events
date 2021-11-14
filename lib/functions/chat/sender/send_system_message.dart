@@ -21,15 +21,15 @@ class ChatSendMessage {
     required ChatTable chat,
     bool public = false,
   }) async {
-    await natsProvider.sendSystemMessageToChannel(
-      natsProvider.getPrivateUserChatIdList(userId.toString()),
-      MessageType.ChatList,
-      {
-        chat.id: "",
-        "channel": channel,
-        "chat": chat.toJsonString(),
-      },
-    );
+    // await natsProvider.sendSystemMessageToChannel(
+    //   natsProvider.getPrivateUserChatIdList(userId.toString()),
+    //   MessageType.ChatList,
+    //   {
+    //     chat.id: "",
+    //     "channel": channel,
+    //     "chat": chat.toJsonString(),
+    //   },
+    // );
   }
 
   Future<void> removeFromPrivateUserChatIdList({

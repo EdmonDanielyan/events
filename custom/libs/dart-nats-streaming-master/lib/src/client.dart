@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:dart_nats/dart_nats.dart' as nats;
 import 'package:dart_nats_streaming/src/data_message.dart';
@@ -42,7 +41,7 @@ class Client {
   //                      Attributes
   // ####################################################
 
-  final nats.Client _natsClient = nats.Client();
+  static final nats.Client natsClient = nats.Client();
   final String connectionID = Uuid().v4();
   String _clientID = Uuid().v4();
   bool _connected = false;
@@ -66,7 +65,6 @@ class Client {
   int timeout = 10;
   nats.ConnectOption? connectOption;
   String clusterID = 'default';
-  HttpClient? _overridedClient;
 
   // ####################################################
   //                      Getters
@@ -186,7 +184,7 @@ class Client {
     }
 
     Future.delayed(Duration(seconds: pingInterval), () => _heartbeat());
-    if (_natsClient.status == nats.Status.connected) {
+    if (natsClient.status == nats.Status.connected) {
       // Generante new clientID for reconnection
       _clientID = Uuid().v4();
       ConnectRequest connectRequest = ConnectRequest()
@@ -198,7 +196,7 @@ class Client {
         ..pingMaxOut = this.pingMaxAttempts;
 
       // Connecting to Streaming Server
-      _connectResponse = ConnectResponse.fromBuffer((await _natsClient.request(
+      _connectResponse = ConnectResponse.fromBuffer((await natsClient.request(
               '_STAN.discover.$clusterID', connectRequest.writeToBuffer()))
           .data);
       unawaited(pingResponseWatchdog());
@@ -215,7 +213,7 @@ class Client {
 
   Future<void> _tcpConnect() async {
     try {
-      await _natsClient.tcpConnect(
+      await natsClient.tcpConnect(
         host,
         port: port,
         connectOption: connectOption,
@@ -231,7 +229,7 @@ class Client {
 
   Future<void> _wssConnect() async {
     try {
-      await _natsClient.connect(
+      await natsClient.connect(
         uri!,
         connectOption: connectOption,
         timeout: timeout,
@@ -245,7 +243,7 @@ class Client {
   }
 
   Future<void> _disconnect() async {
-    _natsClient.close();
+    natsClient.close();
     if (_onDisconnect != null && _connected) {
       _onDisconnect!();
     }
@@ -259,10 +257,10 @@ class Client {
     } else {
       failPings++;
       print('PING Fail. Attempt: [$failPings/$pingMaxAttempts] '
-          'NATS: [${_natsClient.status == nats.Status.connected ? 'connected' : 'disconnected'}]');
+          'NATS: [${natsClient.status == nats.Status.connected ? 'connected' : 'disconnected'}]');
     }
     if (failPings >= pingMaxAttempts ||
-        _natsClient.status != nats.Status.connected) {
+        natsClient.status != nats.Status.connected) {
       if (retryReconnect) {
         await _reconnect();
       } else {
@@ -281,9 +279,9 @@ class Client {
   }
 
   Future<void> pingResponseWatchdog() async {
-    _inboxSub = _natsClient.sub(connectionID);
+    _inboxSub = natsClient.sub(connectionID);
     await for (nats.Message message in _inboxSub!.stream!) {
-      _natsClient.pubString(message.replyTo!, '');
+      natsClient.pubString(message.replyTo!, '');
     }
   }
 
@@ -296,12 +294,12 @@ class Client {
   }
 
   Future<bool> ping() async {
-    if (!_connected || _natsClient.status != nats.Status.connected) {
+    if (!_connected || natsClient.status != nats.Status.connected) {
       return false;
     }
     Ping ping = Ping()..connID = connectionIDAscii;
     try {
-      nats.Message message = await _natsClient.request(
+      nats.Message message = await natsClient.request(
           _connectResponse!.pingRequests, ping.writeToBuffer());
       return message.string.isEmpty;
     } catch (e) {
@@ -311,7 +309,7 @@ class Client {
 
   void close() {
     _connected = false;
-    _natsClient.close();
+    natsClient.close();
     _onDisconnect!();
   }
 
@@ -331,7 +329,7 @@ class Client {
           ..subject = subject
           ..data = encoding.encode(string)
           ..connID = this.connectionIDAscii;
-        return _natsClient.pub('${this._connectResponse!.pubPrefix}.$subject',
+        return natsClient.pub('${this._connectResponse!.pubPrefix}.$subject',
             pubMsg.writeToBuffer());
       } catch (e) {
         print('Publishing Fail: $e');
@@ -355,13 +353,19 @@ class Client {
           ..subject = subject
           ..data = bytes
           ..connID = this.connectionIDAscii;
-        return _natsClient.pub('${this._connectResponse!.pubPrefix}.$subject',
-            pubMsg.writeToBuffer());
+
+        String to = '${this._connectResponse!.pubPrefix}.$subject';
+
+        return natsClient.pub(to, pubMsg.writeToBuffer());
       } catch (e) {
         print('Publishing Fail: $e');
         return false;
       }
     });
+  }
+
+  void unsubscribeById(int sid) {
+    natsClient.unSubscribeBySid(sid);
   }
 
   Future<Subscription?> subscribe({
@@ -373,11 +377,13 @@ class Client {
     String? durableName,
     Int64? startSequence,
     Int64? startTimeDelta,
+    int? sid,
   }) async {
     try {
       // Listen Inbox before subscribing
       final String inbox = '${subject}_${queueGroup ?? ''}_${Uuid().v4()}';
-      final natsSubscription = _natsClient.sub(inbox, queueGroup: queueGroup);
+      final natsSubscription =
+          natsClient.sub(inbox, customSsid: sid, queueGroup: queueGroup);
 
       // Subscribing
       SubscriptionRequest subscriptionRequest = SubscriptionRequest()
@@ -397,11 +403,14 @@ class Client {
         subscriptionRequest.startTimeDelta = startTimeDelta;
       }
 
+      final _req = await natsClient.request(
+        _connectResponse!.subRequests,
+        subscriptionRequest.writeToBuffer(),
+      );
+
       SubscriptionResponse subscriptionResponse =
-          SubscriptionResponse.fromBuffer((await _natsClient.request(
-                  _connectResponse!.subRequests,
-                  subscriptionRequest.writeToBuffer()))
-              .data);
+          SubscriptionResponse.fromBuffer(_req.data);
+
       if (subscriptionResponse.hasError()) {
         throw Exception(subscriptionResponse.error);
       }
@@ -415,11 +424,11 @@ class Client {
     }
   }
 
-  bool acknowledge(Subscription subscription, DataMessage dataMessage) {
+  void acknowledge(Subscription subscription, DataMessage dataMessage) {
     Ack ack = Ack()
       ..subject = dataMessage.subject
       ..sequence = dataMessage.sequence;
 
-    return _natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
+    natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
   }
 }

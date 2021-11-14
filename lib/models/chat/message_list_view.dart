@@ -29,7 +29,7 @@ class MessageListView {
 
   static MessageTable fromJson(Map<String, dynamic> json) {
     json["status"] = messageStatusStringToObject(json["status"]);
-    json["type"] = messageTypeStringToObject(json["type"]);
+    json["type"] = messageTypeStringToEnum(json["type"]);
     return MessageTable.fromJson(json);
   }
 
@@ -38,7 +38,7 @@ class MessageListView {
   }
 
   static String messageEnumToString(dynamic json) {
-    return "${json}";
+    return "$json";
   }
 
   static MessageStatus messageStatusStringToObject(String json) {
@@ -53,7 +53,7 @@ class MessageListView {
     return MessageStatus.ERROR;
   }
 
-  static MessageType messageTypeStringToObject(String json) {
+  static MessageType messageTypeStringToEnum(String json) {
     for (final value in MessageType.values) {
       if (json
           .toString()

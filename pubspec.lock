@@ -221,9 +221,9 @@ packages:
   dart_nats:
     dependency: transitive
     description:
-      name: dart_nats
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "custom/libs/dart-nats-master"
+      relative: true
+    source: path
     version: "0.3.5"
   dart_nats_streaming:
     dependency: "direct main"

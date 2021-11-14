@@ -90,7 +90,8 @@ class NatsListener {
     if (channels.isNotEmpty) {
       for (final channel in channels) {
         Int64 currentSeq = Int64.parseInt(channel.sequence).toInt64();
-        Int64 sequence = currentSeq == 0 ? currentSeq : currentSeq + 1;
+        Int64 sequence = currentSeq == 0 ? currentSeq : currentSeq;
+
         await _subscribeToChannel(channel.messageType, channel.to,
             startSequence: sequence);
       }

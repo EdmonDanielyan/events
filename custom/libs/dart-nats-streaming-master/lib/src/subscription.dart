@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:dart_nats/dart_nats.dart' as nats;
+import 'package:dart_nats_streaming/dart_nats_streaming.dart';
 import 'package:dart_nats_streaming/src/data_message.dart';
 import 'package:dart_nats_streaming/src/protocol.dart';
 
@@ -10,14 +13,19 @@ class Subscription {
   final String subject;
   final String ackInbox;
 
+  static late String _ackInbox;
+
   Stream<DataMessage>? _stream;
   Stream<DataMessage> get stream => _stream ??=
       subscription.stream!.transform(_protoTransformer).asBroadcastStream();
 
-  Subscription(
-      {required this.subscription,
-      required this.subject,
-      required this.ackInbox});
+  Subscription({
+    required this.subscription,
+    required this.subject,
+    required this.ackInbox,
+  }) {
+    _ackInbox = ackInbox;
+  }
 
   StreamSubscription<DataMessage> listen(
       void Function(DataMessage dataMessage) onData,
@@ -36,10 +44,20 @@ class Subscription {
     handleData: (nats.Message message, EventSink<DataMessage> sink) {
       var messageProto = MsgProto.fromBuffer(message.data);
       var stanMessage = DataMessage.fromProto(messageProto);
-    
-      // print('Subject: [${stanMessage.subject}] Sequence: [${stanMessage.sequence}] isRedelivery: [${stanMessage.isRedelivery}]');
 
+      print(
+          'Subject: [${stanMessage.subject}] Sequence: [${stanMessage.sequence}] isRedelivery: [${stanMessage.isRedelivery}]');
+
+      acknowledge(stanMessage);
       sink.add(stanMessage);
     },
   );
+
+  static bool acknowledge(DataMessage dataMessage) {
+    Ack ack = Ack()
+      ..subject = dataMessage.subject
+      ..sequence = dataMessage.sequence;
+
+    return Client.natsClient.pub(_ackInbox, ack.writeToBuffer());
+  }
 }

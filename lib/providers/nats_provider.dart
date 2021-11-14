@@ -11,6 +11,7 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
 
@@ -80,7 +81,7 @@ class NatsProvider {
   /// Subscribe to [channel] using [startSequence] if needed
   Future<void> subscribeToChannel(String channel,
       Future<void> Function(String, NatsMessage) onMessageFuture,
-      {Int64 startSequence = Int64.ZERO}) async {
+      {Int64 startSequence = Int64.ZERO, int? sid}) async {
     if (!_channelSubscriptions.containsKey(channel)) {
       var subscription =
           await _subscribeToChannel(channel, startSequence: startSequence);
@@ -205,69 +206,63 @@ class NatsProvider {
       }
 
       if (message.needAck) {
-        _stan.acknowledge(_subscriptionToPublicChannel, dataMessage);
+        //_stan.acknowledge(_subscriptionToPublicChannel, dataMessage);
       }
     }
   }
 
   Future<Subscription?> _subscribeToChannel(channel,
-      {Int64 startSequence = Int64.ZERO}) async {
+      {int? sid, Int64 startSequence = Int64.ZERO}) async {
     var clientId = await _getUserId();
     var deviceVirtualId = await _getDeviceVirtualId();
     var durableName = "$clientId-$deviceVirtualId-$channel";
+
+    if (sid == null) {
+      sid = getSsid(channel);
+    }
+
+    if (sid != null) {
+      _stan.unsubscribeById(sid);
+      await Future.delayed(Duration(milliseconds: 800));
+    }
+
     var subscription = startSequence != Int64.ZERO
         ? await _stan.subscribe(
             subject: channel,
             maxInFlight: 1,
-            durableName: null,
+            durableName: durableName,
+            sid: sid,
             startSequence: startSequence)
         : await _stan.subscribe(
             subject: channel,
             maxInFlight: 1,
-            durableName: null,
+            sid: sid,
+            durableName: durableName,
           );
     return subscription;
   }
 
   Future<void> _listenBySubscription(
       channel, Subscription? subscription) async {
-    subscription?.stream.listen((dataMessage) async {
+    await for (final dataMessage in subscription!.stream) {
       if (_channelSubscriptions.containsKey(channel)) {
         NatsMessage message = _parseMessage(dataMessage);
-
-        //if (!dataMessage.isRedelivery) {
-        onMessage(channel, message);
-        var channelCallback =
-            _channelCallbacks[channel];
-        if (channelCallback != null) {
-          channelCallback(channel, message);
-        }
-        //}
+        await onMessage(channel, message);
+        Future<void> Function(String, NatsMessage) channelCallback =
+            _channelCallbacks[channel]!;
+        await channelCallback(channel, message);
 
         if (message.needAck) {
           _stan.acknowledge(subscription, dataMessage);
         }
       } else {
-        return;
+        break;
       }
-    });
-
-    // await for (final dataMessage in subscription!.stream) {
-    //   if (_channelSubscriptions.containsKey(channel)) {
-    //     NatsMessage message = _parseMessage(dataMessage);
-    //     await onMessage(channel, message);
-    //     Future<void> Function(String, NatsMessage) channelCallback =
-    //         _channelCallbacks[channel]!;
-    //     await channelCallback(channel, message);
-
-    //     if (message.needAck) {
-    //       _stan.acknowledge(subscription, dataMessage);
-    //     }
-    //   } else {
-    //     break;
-    //   }
-    // }
+    }
   }
+
+  int? getSsid(String channel) =>
+      int.parse("${200}${MessageListView.getTypeByChannel(channel)?.index}");
 
   final _stan = Client();
   final Set<String> userChatIdList = {};
