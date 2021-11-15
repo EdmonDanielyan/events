@@ -302,8 +302,8 @@ class Client {
     if (customSsid == null) {
       _ssid++;
     }
-    print(subject);
-    print(newSsid);
+    //print("$subject - $newSsid");
+
     var s = Subscription(newSsid, subject, this, queueGroup: queueGroup);
     _subs[newSsid] = s;
     if (status == Status.connected) {
@@ -408,19 +408,21 @@ class Client {
   ///   timeout = true;
   /// }
   /// ```
+
   Future<Message> request(String subj, Uint8List data,
-      {String? queueGroup, Duration? timeout}) {
+      {String? queueGroup, Duration? timeout}) async {
     if (_inboxs[subj] == null) {
       var inbox = newInbox();
       _inboxs[subj] = sub(inbox, queueGroup: queueGroup);
     }
 
-    var stream = _inboxs[subj]!.stream!;
-
-    var respond = stream.take(1).single;
     pub(subj, data, replyTo: _inboxs[subj]!.subject);
 
-    if (timeout != null) return respond.timeout(timeout);
+    var stream = _inboxs[subj]!.stream!;
+    var respond = await stream.take(1).single;
+
+    if (timeout != null) return respond;
+
     return respond;
   }
 

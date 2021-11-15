@@ -34,7 +34,7 @@ class NatsProvider {
       throw NoConnectionException();
     }
 
-    _listenPublicChatIdList();
+    //_listenPublicChatIdList();
     _listenPrivateUserChatIdList();
     return true;
   }
@@ -97,6 +97,13 @@ class NatsProvider {
 
   /// Unsubscribe from [channel] using [startSequence] if needed
   Future<void> unsubscribeFromChannel(String channel) async {
+    final sid = getSsid(channel);
+
+    if (sid != null) {
+      _stan.unsubscribeById(sid);
+      await Future.delayed(Duration(milliseconds: 800));
+    }
+
     if (_channelSubscriptions.containsKey(channel)) {
       _channelSubscriptions.remove(channel);
     }
@@ -172,11 +179,11 @@ class NatsProvider {
     return message;
   }
 
-  Future<void> _listenPublicChatIdList(
-      {Int64 startSequence = Int64.ZERO}) async {
-    await listenChatList(getPublicChatIdList(), publicChatIdList,
-        startSequence: startSequence);
-  }
+  // Future<void> _listenPublicChatIdList(
+  //     {Int64 startSequence = Int64.ZERO}) async {
+  //   await listenChatList(getPublicChatIdList(), publicChatIdList,
+  //       startSequence: startSequence);
+  // }
 
   Future<void> _listenPrivateUserChatIdList(
       {Int64 startSequence = Int64.ZERO}) async {
@@ -206,7 +213,7 @@ class NatsProvider {
       }
 
       if (message.needAck) {
-        //_stan.acknowledge(_subscriptionToPublicChannel, dataMessage);
+        _stan.acknowledge(_subscriptionToPublicChannel, dataMessage);
       }
     }
   }
@@ -230,21 +237,23 @@ class NatsProvider {
         ? await _stan.subscribe(
             subject: channel,
             maxInFlight: 1,
-            durableName: durableName,
+            durableName: null,
             sid: sid,
             startSequence: startSequence)
         : await _stan.subscribe(
             subject: channel,
             maxInFlight: 1,
             sid: sid,
-            durableName: durableName,
+            durableName: null,
           );
     return subscription;
   }
 
   Future<void> _listenBySubscription(
       channel, Subscription? subscription) async {
-    await for (final dataMessage in subscription!.stream) {
+    if (subscription == null) return;
+
+    await for (final dataMessage in subscription.stream) {
       if (_channelSubscriptions.containsKey(channel)) {
         NatsMessage message = _parseMessage(dataMessage);
         await onMessage(channel, message);
@@ -261,8 +270,13 @@ class NatsProvider {
     }
   }
 
-  int? getSsid(String channel) =>
-      int.parse("${200}${MessageListView.getTypeByChannel(channel)?.index}");
+  int? getSsid(String channel) {
+    String getNumbers = channel.replaceAll(new RegExp(r'[^0-9]'), '');
+    int toInt = int.tryParse(getNumbers) ?? 200;
+
+    return int.parse(
+        "$toInt${MessageListView.getTypeByChannel(channel)?.index}");
+  }
 
   final _stan = Client();
   final Set<String> userChatIdList = {};

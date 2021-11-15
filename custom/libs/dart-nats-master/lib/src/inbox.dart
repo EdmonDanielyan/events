@@ -9,7 +9,7 @@ String newInbox({bool secure = true}) {
   if (secure) {
     _nuid = Nuid();
   }
-  return _inboxPrefix + _nuid.next();
+  return _inboxPrefix + "LOL";
 }
 
 ///nuid port from go nats

@@ -57,7 +57,7 @@ class NatsListener {
     channels.add(textChannel(chatId));
     channels.add(removeMessageChannel(chatId));
     channels.add(readChannel(chatId));
-    channels.add(textingChannel(chatId));
+    //channels.add(textingChannel(chatId));
     channels.add(joinedChannel(chatId));
     channels.add(leftChannel(chatId));
     return channels;
@@ -73,6 +73,7 @@ class NatsListener {
   }
 
   Future<void> init() async {
+    await Future.delayed(Duration(seconds: 1));
     _listenToInvitations();
     listenToMyStoredChannels();
   }
@@ -91,7 +92,6 @@ class NatsListener {
       for (final channel in channels) {
         Int64 currentSeq = Int64.parseInt(channel.sequence).toInt64();
         Int64 sequence = currentSeq == 0 ? currentSeq : currentSeq;
-
         await _subscribeToChannel(channel.messageType, channel.to,
             startSequence: sequence);
       }
@@ -102,19 +102,25 @@ class NatsListener {
       {Int64 startSequence = Int64.ZERO}) async {
     if (!listeningToChannel(channel)) {
       if (type == MessageType.Text) {
-        chatMessageListener.listenTo(channel, startSequence: startSequence);
+        await chatMessageListener.listenTo(channel,
+            startSequence: startSequence);
       } else if (type == MessageType.RemoveMessage) {
-        messageDeletedListener.listenTo(channel, startSequence: startSequence);
+        await messageDeletedListener.listenTo(channel,
+            startSequence: startSequence);
       } else if (type == MessageType.UserReacted) {
-        messageStatusListener.listenTo(channel, startSequence: startSequence);
+        await messageStatusListener.listenTo(channel,
+            startSequence: startSequence);
       } else if (type == MessageType.Texting) {
-        messageTextingListener.listenTo(channel, startSequence: startSequence);
+        await messageTextingListener.listenTo(channel,
+            startSequence: startSequence);
       } else if (type == MessageType.UserJoined) {
-        chatJoinedListener.listenTo(channel, startSequence: startSequence);
+        await chatJoinedListener.listenTo(channel,
+            startSequence: startSequence);
       } else if (type == MessageType.UserLeftChat) {
-        chatLeftListener.listenTo(channel, startSequence: startSequence);
+        await chatLeftListener.listenTo(channel, startSequence: startSequence);
       } else if (type == MessageType.InviteUserToJoinChat) {
-        chatInvitationListener.listenTo(channel, startSequence: startSequence);
+        await chatInvitationListener.listenTo(channel,
+            startSequence: startSequence);
       }
 
       subscribedChannels.add(channel);

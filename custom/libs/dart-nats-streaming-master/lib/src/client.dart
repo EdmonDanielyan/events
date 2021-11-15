@@ -41,7 +41,7 @@ class Client {
   //                      Attributes
   // ####################################################
 
-  static final nats.Client natsClient = nats.Client();
+  final nats.Client natsClient = nats.Client();
   final String connectionID = Uuid().v4();
   String _clientID = Uuid().v4();
   bool _connected = false;
@@ -88,7 +88,7 @@ class Client {
     int retryIntervalSeconds = 10,
     String? clientID,
     String clusterID = 'default',
-    int pingIntervalSeconds = 10,
+    int pingIntervalSeconds = 5,
     int pingMaxAttempts = 3,
     List<int>? certificate,
   }) {
@@ -368,6 +368,8 @@ class Client {
     natsClient.unSubscribeBySid(sid);
   }
 
+  final Set<String> _subscriptionInboxes = {};
+
   Future<Subscription?> subscribe({
     required String subject,
     int maxInFlight = 1,
@@ -379,55 +381,74 @@ class Client {
     Int64? startTimeDelta,
     int? sid,
   }) async {
-    try {
-      // Listen Inbox before subscribing
-      final String inbox = '${subject}_${queueGroup ?? ''}_${Uuid().v4()}';
-      final natsSubscription =
-          natsClient.sub(inbox, customSsid: sid, queueGroup: queueGroup);
+    // Listen Inbox before subscribing
+    final String inbox = '${subject}_${queueGroup ?? ''}_${Uuid().v4()}';
 
-      // Subscribing
-      SubscriptionRequest subscriptionRequest = SubscriptionRequest()
-        ..clientID = this.clientID
-        ..subject = subject
-        ..maxInFlight = maxInFlight
-        ..ackWaitInSecs = ackWaitSeconds
-        ..startPosition = startPosition
-        ..inbox = inbox;
+    final natsSubscription =
+        natsClient.sub(inbox, customSsid: sid, queueGroup: queueGroup);
 
-      if (queueGroup != null) subscriptionRequest.qGroup = queueGroup;
-      if (durableName != null) subscriptionRequest.durableName = durableName;
-      if (startSequence != null) {
-        subscriptionRequest.startSequence = startSequence;
-      }
-      if (startTimeDelta != null) {
-        subscriptionRequest.startTimeDelta = startTimeDelta;
-      }
+    // Subscribing
+    SubscriptionRequest subscriptionRequest = SubscriptionRequest()
+      ..clientID = this.clientID
+      ..subject = subject
+      ..maxInFlight = maxInFlight
+      ..ackWaitInSecs = ackWaitSeconds
+      ..startPosition = startPosition
+      ..inbox = inbox;
 
-      final _req = await natsClient.request(
-        _connectResponse!.subRequests,
-        subscriptionRequest.writeToBuffer(),
-      );
+    if (queueGroup != null) subscriptionRequest.qGroup = queueGroup;
+    if (durableName != null) subscriptionRequest.durableName = durableName;
+    if (startSequence != null) {
+      subscriptionRequest.startSequence = startSequence;
+    }
+    if (startTimeDelta != null) {
+      subscriptionRequest.startTimeDelta = startTimeDelta;
+    }
 
-      SubscriptionResponse subscriptionResponse =
-          SubscriptionResponse.fromBuffer(_req.data);
-
-      if (subscriptionResponse.hasError()) {
-        throw Exception(subscriptionResponse.error);
-      }
-
-      return Subscription(
+    for (int i = 1; i <= 3; i++) {
+      final subscriptionResponse = await tryToSubscribe(subscriptionRequest);
+      print("Subject - $subject AND ATTEMPT #$i");
+      if (!_subscriptionInboxes.contains(subscriptionResponse.ackInbox)) {
+        print('ACK INBOX - $subject - ${subscriptionResponse.ackInbox}');
+        _subscriptionInboxes.add(subscriptionResponse.ackInbox);
+        return Subscription(
           subject: subject,
           subscription: natsSubscription,
-          ackInbox: subscriptionResponse.ackInbox);
-    } catch (e) {
-      print('Subscribe Error: [$e]');
+          ackInbox: subscriptionResponse.ackInbox,
+        );
+      } else {
+        print("TRYING TO RECONNECT $subject - $i");
+      }
+      await Future.delayed(Duration(milliseconds: i * 300));
     }
+
+    throw 'Could not subscribe to channel $subject';
+  }
+
+  Future<SubscriptionResponse> tryToSubscribe(
+      SubscriptionRequest subscriptionRequest) async {
+    final _req = await natsClient.request(
+      _connectResponse!.subRequests,
+      subscriptionRequest.writeToBuffer(),
+      timeout: Duration(seconds: 7),
+    );
+
+    SubscriptionResponse subscriptionResponse =
+        SubscriptionResponse.fromBuffer(_req.data);
+
+    if (subscriptionResponse.hasError()) {
+      throw Exception(subscriptionResponse.error);
+    }
+
+    return subscriptionResponse;
   }
 
   void acknowledge(Subscription subscription, DataMessage dataMessage) {
     Ack ack = Ack()
       ..subject = dataMessage.subject
       ..sequence = dataMessage.sequence;
+
+    print("TRYING TO ACKNOWLEDGE ${subscription.ackInbox}");
 
     natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
   }
