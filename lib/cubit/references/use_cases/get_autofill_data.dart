@@ -3,10 +3,10 @@ import 'package:ink_mobile/cubit/references/sources/get_autofill_data/dependency
 import 'package:ink_mobile/models/autofill.dart';
 import 'package:main_api_client/model/reference_auto_fill.dart';
 
-class GetAutofill {
+class GetAutofillRequest {
   final GetAutofillRequestDependency dependency;
 
-  GetAutofill({required this.dependency});
+  GetAutofillRequest({required this.dependency});
 
   Future<Autofill> call() async {
     Response<ReferenceAutoFill> response = await dependency.makeRequest();

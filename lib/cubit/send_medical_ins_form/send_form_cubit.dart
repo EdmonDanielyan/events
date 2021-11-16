@@ -11,6 +11,7 @@ import 'package:ink_mobile/screens/medical_insurance/components/form/entities.da
 
 class SendMedicalInsFormCubit extends Cubit<BtnCubitState> {
   final LanguageStrings languageStrings;
+
   SendMedicalInsFormCubit({required this.languageStrings})
       : super(BtnCubitState(state: BtnCubitStateEnums.INITIAL));
 

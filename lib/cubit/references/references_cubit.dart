@@ -30,8 +30,8 @@ class ReferencesPageCubit extends Cubit<ReferencesPageState> {
 
   Future<void> loadAutoFillData() async {
     await Token.setNewTokensIfExpired();
-    autofill =
-        await GetAutofill(dependency: GetAutofillRepository().getDependency())
-            .call();
+    autofill = await GetAutofillRequest(
+            dependency: GetAutofillRepository().getDependency())
+        .call();
   }
 }

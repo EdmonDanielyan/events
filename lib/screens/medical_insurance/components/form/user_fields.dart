@@ -4,17 +4,46 @@ import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/core/masks/input_formatters.dart';
 import 'package:ink_mobile/core/masks/textfield_masks.dart';
 import 'package:ink_mobile/core/validator/field_validator.dart';
+import 'package:ink_mobile/cubit/autofill/get_autofill.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
 import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'entities.dart';
 
-class MedicalInsuranceFormUserFields extends StatelessWidget {
+class MedicalInsuranceFormUserFields extends StatefulWidget {
   final MedicalInsuranceFormEntities entities;
-  const MedicalInsuranceFormUserFields({Key? key, required this.entities})
-      : super(key: key);
-  static late LanguageStrings _strings;
+  const MedicalInsuranceFormUserFields({
+    Key? key,
+    required this.entities,
+  }) : super(key: key);
+
+  @override
+  _MedicalInsuranceFormUserFieldsState createState() =>
+      _MedicalInsuranceFormUserFieldsState();
+}
+
+class _MedicalInsuranceFormUserFieldsState
+    extends State<MedicalInsuranceFormUserFields> {
+  late LanguageStrings _strings;
+  TextEditingController fioController = TextEditingController();
+  TextEditingController positionController = TextEditingController();
+  GetAutofill getAutofill = GetAutofill();
+
+  Future<void> loadData() async {
+    await getAutofill.load();
+    fioController.text = getAutofill.autofill.fio;
+    widget.entities.fio = getAutofill.autofill.fio;
+    positionController.text = getAutofill.autofill.position;
+    widget.entities.position = getAutofill.autofill.position;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +65,16 @@ class MedicalInsuranceFormUserFields extends StatelessWidget {
 
   Widget _fioWidget() {
     return ServiceTextField(
+      controller: fioController,
       hint: _strings.fullnameHint,
       requiredIcon: true,
       validator: (val) =>
           val!.split(" ").length < 3 ? _strings.fillTheField : null,
       autocorrect: false,
       inputFormatters: [InputFormatters.lettersOnly],
-      onChanged: (val) => entities.fio = val,
+      onChanged: (val) {
+        widget.entities.fio = val;
+      },
     );
   }
 
@@ -53,7 +85,7 @@ class MedicalInsuranceFormUserFields extends StatelessWidget {
       requiredIcon: true,
       validator: (val) =>
           !mask.isFill() || val!.isEmpty ? _strings.fillTheField : null,
-      onChanged: (val) => entities.birthDate = val,
+      onChanged: (val) => widget.entities.birthDate = val,
       keyboardType: TextInputType.datetime,
       inputFormatters: [mask],
     );
@@ -61,11 +93,14 @@ class MedicalInsuranceFormUserFields extends StatelessWidget {
 
   Widget _positionWidget() {
     return ServiceTextField(
+      controller: positionController,
       hint: _strings.position,
       requiredIcon: true,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       inputFormatters: [InputFormatters.lettersOnly],
-      onChanged: (val) => entities.position = val,
+      onChanged: (val) {
+        widget.entities.position = val;
+      },
     );
   }
 
@@ -76,7 +111,7 @@ class MedicalInsuranceFormUserFields extends StatelessWidget {
       requiredIcon: true,
       validator: (val) =>
           !mask.isFill() || val!.isEmpty ? _strings.fillTheField : null,
-      onChanged: (val) => entities.phone = val,
+      onChanged: (val) => widget.entities.phone = val,
       keyboardType: TextInputType.phone,
       inputFormatters: [mask],
     );
@@ -89,7 +124,7 @@ class MedicalInsuranceFormUserFields extends StatelessWidget {
       validator: (val) => FieldValidator.emailValidator(val, _strings),
       keyboardType: TextInputType.emailAddress,
       autocorrect: false,
-      onChanged: (val) => entities.email = val,
+      onChanged: (val) => widget.entities.email = val,
     );
   }
 }
