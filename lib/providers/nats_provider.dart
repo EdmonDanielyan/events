@@ -1,27 +1,45 @@
 import 'package:dart_nats/dart_nats.dart' as nats;
 import 'package:dart_nats_streaming/dart_nats_streaming.dart';
+
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/data_message.dart';
+
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/subscription.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
-import 'package:ink_mobile/models/token.dart';
 
 const PUBLIC_CHATS = 'ink.messaging.public';
 const GROUP_CHANNEL = 'ink.messaging.group';
 const PRIVATE_USER = 'ink.messaging.private';
 const DELETE_ACTION = 'delete';
 
-@singleton
+@lazySingleton
 class NatsProvider {
+  late Client _stan;
+  final String natsWssUrl;
+  final String natsCluster;
+  final String natsCertPath;
+
+  final String userId;
+  final String deviceVirtualId;
+  final String natsToken;
+
+  NatsProvider(
+      {@Named("natsWssUrl") required this.natsWssUrl,
+      @Named("natsCluster") required this.natsCluster,
+      @Named("natsCertPath") required this.natsCertPath,
+      @Named("userId") required this.userId,
+      @Named("deviceVirtualId") required this.deviceVirtualId,
+      @Named("natsToken") required this.natsToken});
+
   Future<bool> load() async {
+    this._stan = Client();
     _stan.onConnect(function: () {
       print('Stan connected..');
     });
@@ -41,7 +59,6 @@ class NatsProvider {
   /// Send [text] message to [channel]
   Future<bool> sendTextMessageToChannel(String channel, String text) async {
     if (channel.contains(describeEnum(MessageType.Text))) {
-      var userId = await _getUserId();
       NatsMessage message = NatsMessage(from: userId, to: channel);
       message.setPayload(text);
       return _sendMessage(channel, message);
@@ -54,7 +71,6 @@ class NatsProvider {
   Future<bool> sendDocumentMessageToChannel(
       String channel, List<int> document) async {
     if (channel.contains(describeEnum(MessageType.Document))) {
-      var userId = await _getUserId();
       NatsMessage message = NatsMessage(from: userId, to: channel);
       message.setBinaryPayload(document);
       return _sendMessage(channel, message);
@@ -66,7 +82,6 @@ class NatsProvider {
   /// Send system message which contains [fields] to [channel] by [type]
   Future<bool> sendSystemMessageToChannel(
       String channel, MessageType type, Map<String, String> fields) async {
-    var userId = await _getUserId();
     NatsMessage message = NatsMessage(
       from: userId,
       to: channel,
@@ -96,6 +111,9 @@ class NatsProvider {
 
   /// Unsubscribe from [channel] using [startSequence] if needed
   Future<void> unsubscribeFromChannel(String channel) async {
+    _stan.unsubscribeByChannel(channel);
+    await Future.delayed(Duration(milliseconds: 800));
+
     if (_channelSubscriptions.containsKey(channel)) {
       _channelSubscriptions.remove(channel);
     }
@@ -109,14 +127,12 @@ class NatsProvider {
   //////////////////////////////// NATS Protocol ///////////////////////////////
 
   Future<bool> _connect() async {
-    var clientID = await _getUserId();
-    var natsToken = await _getNatsToken();
-    var natsCert = await rootBundle.load(Urls.natsCertPath);
+    var natsCert = await rootBundle.load(natsCertPath);
     var _certificate = natsCert.buffer.asUint8List();
-    var connectResult = await _stan.connectUri(Uri.parse(Urls.natsWssUrl),
+    var connectResult = await _stan.connectUri(Uri.parse(natsWssUrl),
         certificate: _certificate,
-        clusterID: Urls.natsCluster,
-        clientID: clientID,
+        clusterID: natsCluster,
+        clientID: userId,
         connectOption:
             nats.ConnectOption(tlsRequired: true, auth_token: natsToken));
     return connectResult;
@@ -127,39 +143,33 @@ class NatsProvider {
         subject: channel, bytes: message.toBytes(), guid: message.id);
   }
 
-  Future<String> _getUserId() async {
-    JwtPayload? authUser = await Token.getJwtPayloadObject();
-    return authUser!.userId.toString();
-  }
-
-  Future<String> _getDeviceVirtualId() async {
-    var deviceVirtualId = await Token.getDeviceVirtualId();
-    return deviceVirtualId!;
-  }
-
-  Future<String> _getNatsToken() async {
-    var natsToken = await Token.getNatsToken();
-    return natsToken!;
-  }
-
   String getPublicChatIdList() =>
       '$PUBLIC_CHATS.${describeEnum(MessageType.ChatList)}';
+
   String getPrivateUserChatIdList(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.ChatList)}.$userId';
+
   String getPrivateUserTextChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.Text)}.$userId';
+
   String getGroupTextChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.Text)}.$chatId';
+
   String getGroupReactedChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UserReacted)}.$chatId';
+
   String getGroupJoinedChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UserJoined)}.$chatId';
+
   String getGroupLeftChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UserLeftChat)}.$chatId';
+
   String getGroupDeleteMessageChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.RemoveMessage)}.$chatId';
+
   String getGroupTextingChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.Texting)}.$chatId';
+
   String getInviteUserToJoinChatChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.InviteUserToJoinChat)}.$userId';
 
@@ -179,7 +189,6 @@ class NatsProvider {
 
   Future<void> _listenPrivateUserChatIdList(
       {Int64 startSequence = Int64.ZERO}) async {
-    var userId = await _getUserId();
     await listenChatList(getPrivateUserChatIdList(userId), userChatIdList,
         startSequence: startSequence);
   }
@@ -212,9 +221,7 @@ class NatsProvider {
 
   Future<Subscription?> _subscribeToChannel(channel,
       {Int64 startSequence = Int64.ZERO}) async {
-    var clientId = await _getUserId();
-    var deviceVirtualId = await _getDeviceVirtualId();
-    var durableName = "$clientId-$deviceVirtualId-$channel";
+    var durableName = "$userId-$deviceVirtualId-$channel";
 
     var subscription = startSequence != Int64.ZERO
         ? await _stan.subscribe(
@@ -251,7 +258,6 @@ class NatsProvider {
     }
   }
 
-  final _stan = Client();
   final Set<String> userChatIdList = {};
   final Set<String> publicChatIdList = {};
   final Map<String, Subscription?> _channelSubscriptions = {};

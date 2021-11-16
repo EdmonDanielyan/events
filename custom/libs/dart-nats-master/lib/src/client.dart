@@ -339,10 +339,12 @@ class Client {
     return unSub(_subs[sid]!);
   }
 
-  //Unsubscribe by Sub Id
+  //Unsubscribe by Subject
   // ignore: public_member_api_docs
-  void unSubscribeBySid(int sid) {
-    _unSub(sid);
+  void unSubscribeBySubject(String subject) {
+    _subs.values.where((element) => element.subject == subject).forEach((element) {
+      _unSub(element.sid);
+    });
   }
 
   //todo unsub with max msgs

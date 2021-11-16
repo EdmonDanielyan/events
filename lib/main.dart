@@ -15,6 +15,7 @@ import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/handlers/error_catcher.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/global_providers.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
@@ -42,7 +43,6 @@ void main() async {
     runApp(InkMobile(onAppStart: () async {
       NotificationsProvider.init();
       NatsProvider natsProvider = sl<NatsProvider>();
-
       final loaded = await natsProvider.load();
       UseMessageProvider.initMessageProvider(
           natsProvider, sl<ChatDatabaseCubit>());
