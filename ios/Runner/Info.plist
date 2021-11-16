@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>ink_mobile</string>
+	<string>ИНК-Портал</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -48,6 +48,15 @@
 	<array>
 	<string>fetch</string>
 	<string>remote-notification</string>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+		<string>http</string>
+		<string>mailto</string>
+		<string>tel</string>
+		<string>facetime</string>
+		<string>sms</string>
 	</array>
 </dict>
 </plist>
