@@ -64,6 +64,9 @@ dependencies:
         git:
             url: https://github.com/simolus3/moor.git
             path: extras/encryption
+dependency_overrides:
+    dart_nats:
+        path: "./custom/libs/dart-nats-master"
 
 dev_dependencies:
     flutter_test:

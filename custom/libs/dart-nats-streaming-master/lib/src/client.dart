@@ -364,8 +364,8 @@ class Client {
     });
   }
 
-  void unsubscribeById(int sid) {
-    natsClient.unSubscribeBySid(sid);
+  void unsubscribeByChannel(String channel) {
+    natsClient.unSubscribeBySubject(channel);
   }
 
   final Set<String> _subscriptionInboxes = {};
@@ -430,6 +430,7 @@ class Client {
     final _req = await natsClient.request(
       _connectResponse!.subRequests,
       subscriptionRequest.writeToBuffer(),
+      queueGroup: subscriptionRequest.qGroup,
       timeout: Duration(seconds: 7),
     );
 

@@ -5,6 +5,8 @@ import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:main_api_client/model/auth_success.dart';
 
+import '../setup.dart';
+
 extension AuthSuccessExt on Response<AuthSuccess> {
   Future<bool> handleResponse() async {
     final responseData = this.data?.data.asMap;
@@ -18,7 +20,7 @@ extension AuthSuccessExt on Response<AuthSuccess> {
       await Token.setJwt(token);
       await Token.setNatsToken();
       await Token.setDeviceVirtualIdIfEmpty();
-      GetIt.I<AuthHandler>().onSuccessAuth();
+      sl<AuthHandler>().onSuccessAuth();
       return true;
     } else {
       return false;

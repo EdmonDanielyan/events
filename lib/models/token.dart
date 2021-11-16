@@ -1,3 +1,5 @@
+import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/models/converter.dart';
@@ -8,7 +10,14 @@ import 'package:main_api_client/api/auth_api.dart';
 import 'package:main_api_client/model/refresh_token_params.dart';
 import 'package:uuid/uuid.dart';
 
-class Token {
+
+abstract class Token {
+
+  static Future<String> getUserId() async {
+    JwtPayload? authUser = await Token.getJwtPayloadObject();
+    return authUser!.userId.toString();
+  }
+
   static Future<JwtPayload?> getJwtPayloadObject() async {
     String? jwtToken = await Token.getJwt();
     if (jwtToken != null) {
@@ -122,8 +131,9 @@ class Token {
 
   static Future<void> setDeviceVirtualIdIfEmpty() async {
     FlutterSecureStorage storage = Storage.getInstance();
-    if (!await storage.containsKey(key: DeviceTypes.virtualId.key))
+    if (!await storage.containsKey(key: DeviceTypes.virtualId.key)) {
       await storage.write(key: DeviceTypes.virtualId.key, value: Uuid().v4());
+    }
   }
 
   static Future<String?> getDeviceVirtualId() async {
@@ -142,6 +152,8 @@ class Token {
     FlutterSecureStorage storage = Storage.getInstance();
     return await storage.read(key: NatsTypes.natsToken.key);
   }
+
+
 }
 
 class Storage {
@@ -202,4 +214,46 @@ class JwtPayload {
     myAvatar = payloadMap['avatar'] ?? "";
     myName = "${payloadMap['name']} ${payloadMap['last_name']}".trim();
   }
+}
+
+@module
+abstract class TokenDataInjectorModule {
+  @Named("userId")
+  @injectable
+  String get userId => GetIt.I.get<TokenDataHolder>().userId;
+
+  @Named("natsToken")
+  @injectable
+  String get natsToken => GetIt.I.get<TokenDataHolder>().natsToken;
+
+  @Named("deviceVirtualId")
+  @injectable
+  String get deviceVirtualId => GetIt.I.get<TokenDataHolder>().deviceVirtualId;
+}
+
+@lazySingleton
+class TokenDataHolder {
+  late String _userId;
+
+  late String _deviceVirtualId;
+
+  late String _natsToken;
+
+  String get userId => _userId;
+  String get deviceVirtualId => _deviceVirtualId;
+  String get natsToken => _natsToken;
+
+  Future<void> update() async {
+    print('!!!!update');
+    _userId = await Token.getUserId();
+    _deviceVirtualId = await Token.getDeviceVirtualId() ?? "";
+    _natsToken = await Token.getNatsToken() ?? "";
+    // sl.unregister(instanceName: "userId");
+    // sl.unregister(instanceName: "deviceVirtualId");
+    // sl.unregister(instanceName: "natsToken");
+    // sl.registerFactory(() => userId, instanceName: "userId");
+    // sl.registerFactory(() => deviceVirtualId, instanceName: "deviceVirtualId");
+    // sl.registerFactory(() => natsToken, instanceName: "natsToken");
+  }
+
 }

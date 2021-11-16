@@ -1,17 +1,14 @@
 import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
 
-class Urls {
-  static bool appDebugMode = false;
-  static String natsWssUrl = "wss://cloud.jetrabbits.com:9090";
-  static String natsCluster = "test-cluster";
-  static String natsCertPath = "assets/certs/cloud.jetrabbits.com.pem";
+@module
+abstract class Urls {
+  @Named("natsWssUrl")
+  String get natsWssUrl => kReleaseMode ? "wss://cloud.jetrabbits.com:9090": "wss://cloud.jetrabbits.com:9090";
 
-  static load() {
-    if (!kReleaseMode) {
-      appDebugMode = true;
-      natsWssUrl = "wss://cloud.jetrabbits.com:9090";
-      natsCluster = "test-cluster";
-      natsCertPath = "assets/certs/cloud.jetrabbits.com.pem";
-    }
-  }
+  @Named("natsCluster")
+  String get natsCluster => kReleaseMode ? "test-cluster": "test-cluster";
+
+  @Named("natsCertPath")
+  String get natsCertPath => kReleaseMode ? "assets/certs/cloud.jetrabbits.com.pem": "assets/certs/cloud.jetrabbits.com.pem";
 }
