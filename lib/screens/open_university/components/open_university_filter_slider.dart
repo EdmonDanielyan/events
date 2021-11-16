@@ -81,9 +81,9 @@ class _OpenUniversityFilterSliderState
       FilterItem(
           title: _strings.inkLiteracy,
           code: OpenUniversityFilterCodes.ink_literacy),
-      FilterItem(
-          title: _strings.learningMaterials,
-          code: OpenUniversityFilterCodes.learning_materials)
+      // FilterItem(
+      //     title: _strings.learningMaterials,
+      //     code: OpenUniversityFilterCodes.learning_materials)
     ];
   }
 }

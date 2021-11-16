@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/screens/open_university/components/about_project.dart';
 
 class AboutProjectContact extends StatelessWidget {
-  const AboutProjectContact({Key? key, required this.text, this.title})
+  const AboutProjectContact({Key? key, required this.text, this.title, required this.type, required this.data})
       : super(key: key);
 
   final String? title;
   final String text;
+  final AboutProjectType type;
+  final String data;
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +21,16 @@ class AboutProjectContact extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Clipboard.setData(ClipboardData(text: text)).then(
-            (value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(_strings.textCopied),
-                  duration: Duration(seconds: 1),
-                )));
+        if (type == AboutProjectType.URL) {
+          launchUrl(data);
+        } else if (type == AboutProjectType.CLIPBOARD) {
+          Clipboard.setData(ClipboardData(text: data)).then(
+                  (value) =>
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(_strings.textCopied),
+                    duration: Duration(seconds: 1),
+                  )));
+        }
       },
       child: Container(
           width: MediaQuery.of(context).size.width,

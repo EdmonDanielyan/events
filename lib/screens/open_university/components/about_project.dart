@@ -110,9 +110,9 @@ class AboutProject extends StatelessWidget {
 
   List<AboutProjectItem> _getContactInfoItemList() {
     return [
-      AboutProjectItem(text: 'efimenko_tn@irkutskoil.ru', title: 'Email'),
-      AboutProjectItem(text: '+7 (914) 001 71 22', title: 'Телефон'),
-      AboutProjectItem(text: '2028', title: 'Внутренний телефон'),
+      AboutProjectItem(text: 'efimenko_tn@irkutskoil.ru', title: 'Email', type: AboutProjectType.URL, data: 'mailto:efimenko_tn@irkutskoil.ru'),
+      AboutProjectItem(text: '+7 (914) 001 71 22', title: 'Телефон', type: AboutProjectType.URL, data: 'tel:+79140017122'),
+      AboutProjectItem(text: '2028', title: 'Внутренний телефон', type: AboutProjectType.CLIPBOARD, data: '2028'),
     ];
   }
 
@@ -124,7 +124,7 @@ class AboutProject extends StatelessWidget {
       _widgetList.add(Container(
         margin: EdgeInsets.only(bottom: 10),
         child:
-            AboutProjectContact(title: _items[i].title, text: _items[i].text),
+            AboutProjectContact(title: _items[i].title, text: _items[i].text, type: _items[i].type, data: _items[i].data,),
       ));
     }
 
@@ -132,9 +132,13 @@ class AboutProject extends StatelessWidget {
   }
 }
 
+enum AboutProjectType {CLIPBOARD, URL}
+
 class AboutProjectItem {
   final String? title;
   final String text;
+  final AboutProjectType type;
+  final String data;
 
-  AboutProjectItem({required this.text, this.title});
+  AboutProjectItem({required this.text, this.title, required this.type, required this.data});
 }

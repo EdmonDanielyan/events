@@ -47,7 +47,7 @@ class RussianStrings extends LanguageStrings {
   final String multipleCommentsNoun = "Комментария";
   final String lotOfCommentsNoun = "Комментариев";
   final String aboutProject = "О проекте";
-  final String inkLiteracy = "ИНК-грамотность";
+  final String inkLiteracy = "ИНК-Грамотность";
   final String learningMaterials = "Обучающие материалы";
   final String phone = "Телефон";
   final String contactPhone = "Контактный телефон";
@@ -99,26 +99,26 @@ class RussianStrings extends LanguageStrings {
   final String errorLoadingQuestions = "Не удалось загрузить вопросы";
   final String answersToQuestions = "Ответы на вопросы";
   final String notRequired = "(не обязательно)";
-  final String fullnameHint = "Ваше ФИО";
+  final String fullnameHint = "Ваши ФИО";
   final String email = "Электронная почта";
   final String question = "Вопрос";
   final String addresseeHint = "Кому адресован вопрос";
   final String feedbackFormHint =
-      "Ответы на вопросы, в которых не будет указаны ФИО и/или адрес электронной почты, будут опубликованы на этой странице.";
+      "Ответы на вопросы, в которых не будет указаны ФИО и/или адрес электронной почты, будут опубликованы на этой странице.\nРекомендуем указывать ваши ФИО и адрес электронной почты для ответа.\nНа анонимный вопрос не всегда можно ответить, так как не хватает информации.\nКомпания оставляет за собой право не публиковать ответы на анонимные вопросы на портале.\nКомпания оставляет за собой право сохранять отправляемые сообщения и вложения на портале.";
   final String chooseAddressee = "Выберите адресата";
   final String incorrectEmail = "Неправильная электронная почта";
   final String fillTheField = "Заполните поле";
   final String askQuestion = "Задать вопрос";
   final String allAnswers = "Все ответы";
   final String toWhomLable = "Кому";
-  final String feedbackSuccessfullySent = "Успешное оформление заявки";
+  final String feedbackSuccessfullySent = "Спасибо за вопрос!";
   final String requiredParamsAreNotFilled =
       "Отсутствуют обязательные параметры";
   final String select = "Выбрать";
   final String choose = "Выберите";
   final String back = "Назад";
   final String accessRightsReferInfo =
-      "Данный функционал доступен только работникам ООО «ИНК», ООО «ИНК-Сервис» и ООО «ИНК-ТКРС»";
+      "Данный функционал доступен только работникам ООО «ИНК», ООО «ИНК-Сервис» и ООО «ИНК-ТКРС». \nМы уже работаем над расширением этого функционала на другие компании группы";
   final String childsFullname = "ФИО ребенка";
   final String countInstances = "Количество экземпляров";
   final String order = "Заказать";
