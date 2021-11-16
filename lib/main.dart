@@ -29,6 +29,7 @@ import 'cubit/boot/boot_cubit.dart';
 
 void main() async {
   await setup();
+  NotificationsProvider.init();
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     FlutterError.onError = (FlutterErrorDetails details) {
@@ -41,7 +42,7 @@ void main() async {
     };
 
     runApp(InkMobile(onAppStart: () async {
-      NotificationsProvider.init();
+      await sl<TokenDataHolder>().update();
       NatsProvider natsProvider = sl<NatsProvider>();
       final loaded = await natsProvider.load();
       UseMessageProvider.initMessageProvider(

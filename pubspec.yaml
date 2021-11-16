@@ -66,6 +66,10 @@ dependencies:
             path: extras/encryption
     flutter_local_notifications: ^9.1.2
 
+dependency_overrides:
+    dart_nats:
+        path: "./custom/libs/dart-nats-master"
+
 dev_dependencies:
     flutter_test:
         sdk: flutter

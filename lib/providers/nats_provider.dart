@@ -51,7 +51,6 @@ class NatsProvider {
       throw NoConnectionException();
     }
 
-    //_listenPublicChatIdList();
     _listenPrivateUserChatIdList();
     return true;
   }
@@ -95,7 +94,7 @@ class NatsProvider {
   /// Subscribe to [channel] using [startSequence] if needed
   Future<void> subscribeToChannel(String channel,
       Future<void> Function(String, NatsMessage) onMessageFuture,
-      {Int64 startSequence = Int64.ZERO, int? sid}) async {
+      {Int64 startSequence = Int64.ZERO}) async {
     if (!_channelSubscriptions.containsKey(channel)) {
       var subscription =
           await _subscribeToChannel(channel, startSequence: startSequence);
@@ -180,12 +179,6 @@ class NatsProvider {
     message.sequence = sequence;
     return message;
   }
-
-  // Future<void> _listenPublicChatIdList(
-  //     {Int64 startSequence = Int64.ZERO}) async {
-  //   await listenChatList(getPublicChatIdList(), publicChatIdList,
-  //       startSequence: startSequence);
-  // }
 
   Future<void> _listenPrivateUserChatIdList(
       {Int64 startSequence = Int64.ZERO}) async {

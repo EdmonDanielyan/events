@@ -70,7 +70,7 @@ class ChatMessageListener {
     if (fields.user.id != JwtPayload.myId) {
       late ChatTable chat =
           ChatListView.changeChatForParticipant(fields.chat, [fields.user]);
-      _pushNotification(fields.user, fields.message);
+      _pushNotification(chat.id, fields.user, fields.message);
       await userFunctions.insertUser(fields.user);
       await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
           .addMessage(fields.message);
@@ -79,11 +79,27 @@ class ChatMessageListener {
     }
   }
 
-  void _pushNotification(UserTable user, MessageTable message) {
-    NotificationsProvider.showNotification(
-      user.name,
-      message.message,
-      id: user.id,
-    );
+  Future<void> _pushNotification(
+      String chatId, UserTable user, MessageTable message) async {
+    bool showNotification = true;
+
+    ChatTable? myChat = await chatDatabaseCubit.db.selectChatById(chatId);
+    final selectedChat = chatDatabaseCubit.selectedChat;
+
+    if (myChat != null && !myChat.notificationsOn) {
+      showNotification = false;
+    }
+
+    if (selectedChat != null && selectedChat.id == chatId) {
+      showNotification = false;
+    }
+
+    if (showNotification) {
+      NotificationsProvider.showNotification(
+        user.name,
+        message.message,
+        id: user.id,
+      );
+    }
   }
 }
