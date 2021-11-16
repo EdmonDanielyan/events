@@ -11,7 +11,6 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
-import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
 
@@ -97,13 +96,6 @@ class NatsProvider {
 
   /// Unsubscribe from [channel] using [startSequence] if needed
   Future<void> unsubscribeFromChannel(String channel) async {
-    final sid = getSsid(channel);
-
-    if (sid != null) {
-      _stan.unsubscribeById(sid);
-      await Future.delayed(Duration(milliseconds: 800));
-    }
-
     if (_channelSubscriptions.containsKey(channel)) {
       _channelSubscriptions.remove(channel);
     }
@@ -219,31 +211,20 @@ class NatsProvider {
   }
 
   Future<Subscription?> _subscribeToChannel(channel,
-      {int? sid, Int64 startSequence = Int64.ZERO}) async {
+      {Int64 startSequence = Int64.ZERO}) async {
     var clientId = await _getUserId();
     var deviceVirtualId = await _getDeviceVirtualId();
     var durableName = "$clientId-$deviceVirtualId-$channel";
-
-    if (sid == null) {
-      sid = getSsid(channel);
-    }
-
-    if (sid != null) {
-      _stan.unsubscribeById(sid);
-      await Future.delayed(Duration(milliseconds: 800));
-    }
 
     var subscription = startSequence != Int64.ZERO
         ? await _stan.subscribe(
             subject: channel,
             maxInFlight: 1,
             durableName: null,
-            sid: sid,
             startSequence: startSequence)
         : await _stan.subscribe(
             subject: channel,
             maxInFlight: 1,
-            sid: sid,
             durableName: null,
           );
     return subscription;
@@ -268,14 +249,6 @@ class NatsProvider {
         break;
       }
     }
-  }
-
-  int? getSsid(String channel) {
-    String getNumbers = channel.replaceAll(new RegExp(r'[^0-9]'), '');
-    int toInt = int.tryParse(getNumbers) ?? 200;
-
-    return int.parse(
-        "$toInt${MessageListView.getTypeByChannel(channel)?.index}");
   }
 
   final _stan = Client();

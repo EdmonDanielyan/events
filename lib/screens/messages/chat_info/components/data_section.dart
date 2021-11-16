@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
+import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -73,25 +76,41 @@ class ChatInfoDataSection extends StatelessWidget {
   }
 
   Widget notificationBtnWidget() {
-    return ChatInfoBtnWrapper(
-      onTap: () {
-        print("Notifications");
+    return BlocBuilder<ChatDatabaseCubit, ChatDatabaseCubitState>(
+      bloc: _chatDatabaseCubit,
+      builder: (context, state) {
+        final selectedChat = state.selectedChat!;
+        var str = _strings.turnOff;
+        var icon = Icons.volume_off_rounded;
+
+        if (!selectedChat.notificationsOn) {
+          str = _strings.turnOn;
+          icon = Icons.volume_up_rounded;
+        }
+
+        return ChatInfoBtnWrapper(
+          onTap: () {
+            final chat = selectedChat.copyWith(
+                notificationsOn: !selectedChat.notificationsOn);
+            ChatFunctions(_chatDatabaseCubit).updateChat(chat);
+          },
+          icon: Container(
+            padding: const EdgeInsets.all(2.0),
+            color: Colors.red,
+            child: Icon(
+              icon,
+              color: Colors.white,
+              size: ChatInfoDesignEntities.iconSize,
+            ),
+          ),
+          children: [
+            Text(
+              "$str ${_strings.notifications.toLowerCase()}",
+              maxLines: 1,
+            ),
+          ],
+        );
       },
-      icon: Container(
-        padding: const EdgeInsets.all(2.0),
-        color: Colors.red,
-        child: Icon(
-          Icons.volume_off_rounded,
-          color: Colors.white,
-          size: ChatInfoDesignEntities.iconSize,
-        ),
-      ),
-      children: [
-        Text(
-          "${_strings.turnOff} ${_strings.notifications.toLowerCase()}",
-          maxLines: 1,
-        ),
-      ],
     );
   }
 

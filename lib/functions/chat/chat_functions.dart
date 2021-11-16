@@ -30,7 +30,7 @@ class ChatFunctions {
 
   void updateChat(ChatTable chat) {
     chatDatabaseCubit.setSelectedChat(chat);
-    chatDatabaseCubit.db.updateChat(chat);
+    chatDatabaseCubit.db.updateChatById(chat.id, chat);
   }
 
   Future<void> updateMessageStatus(

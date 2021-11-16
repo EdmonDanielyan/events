@@ -15,6 +15,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   final int ownerId;
   final int? participantId;
   final DateTime? updatedAt;
+  final bool notificationsOn;
   ChatTable(
       {required this.id,
       required this.name,
@@ -22,7 +23,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       required this.avatar,
       required this.ownerId,
       this.participantId,
-      this.updatedAt});
+      this.updatedAt,
+      required this.notificationsOn});
   factory ChatTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -41,6 +43,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}participant_id']),
       updatedAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
+      notificationsOn: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}notifications_on'])!,
     );
   }
   @override
@@ -57,6 +61,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
     if (!nullToAbsent || updatedAt != null) {
       map['updated_at'] = Variable<DateTime?>(updatedAt);
     }
+    map['notifications_on'] = Variable<bool>(notificationsOn);
     return map;
   }
 
@@ -73,6 +78,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       updatedAt: updatedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(updatedAt),
+      notificationsOn: Value(notificationsOn),
     );
   }
 
@@ -87,6 +93,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       ownerId: serializer.fromJson<int>(json['ownerId']),
       participantId: serializer.fromJson<int?>(json['participantId']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+      notificationsOn: serializer.fromJson<bool>(json['notificationsOn']),
     );
   }
   @override
@@ -100,6 +107,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       'ownerId': serializer.toJson<int>(ownerId),
       'participantId': serializer.toJson<int?>(participantId),
       'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+      'notificationsOn': serializer.toJson<bool>(notificationsOn),
     };
   }
 
@@ -110,7 +118,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           String? avatar,
           int? ownerId,
           int? participantId,
-          DateTime? updatedAt}) =>
+          DateTime? updatedAt,
+          bool? notificationsOn}) =>
       ChatTable(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -119,6 +128,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
         ownerId: ownerId ?? this.ownerId,
         participantId: participantId ?? this.participantId,
         updatedAt: updatedAt ?? this.updatedAt,
+        notificationsOn: notificationsOn ?? this.notificationsOn,
       );
   @override
   String toString() {
@@ -129,7 +139,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           ..write('avatar: $avatar, ')
           ..write('ownerId: $ownerId, ')
           ..write('participantId: $participantId, ')
-          ..write('updatedAt: $updatedAt')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('notificationsOn: $notificationsOn')
           ..write(')'))
         .toString();
   }
@@ -143,8 +154,12 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
               description.hashCode,
               $mrjc(
                   avatar.hashCode,
-                  $mrjc(ownerId.hashCode,
-                      $mrjc(participantId.hashCode, updatedAt.hashCode)))))));
+                  $mrjc(
+                      ownerId.hashCode,
+                      $mrjc(
+                          participantId.hashCode,
+                          $mrjc(updatedAt.hashCode,
+                              notificationsOn.hashCode))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -155,7 +170,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           other.avatar == this.avatar &&
           other.ownerId == this.ownerId &&
           other.participantId == this.participantId &&
-          other.updatedAt == this.updatedAt);
+          other.updatedAt == this.updatedAt &&
+          other.notificationsOn == this.notificationsOn);
 }
 
 class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
@@ -166,6 +182,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   final Value<int> ownerId;
   final Value<int?> participantId;
   final Value<DateTime?> updatedAt;
+  final Value<bool> notificationsOn;
   const ChatTablesCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -174,6 +191,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     this.ownerId = const Value.absent(),
     this.participantId = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.notificationsOn = const Value.absent(),
   });
   ChatTablesCompanion.insert({
     required String id,
@@ -183,6 +201,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     required int ownerId,
     this.participantId = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.notificationsOn = const Value.absent(),
   })  : id = Value(id),
         name = Value(name),
         description = Value(description),
@@ -196,6 +215,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     Expression<int>? ownerId,
     Expression<int?>? participantId,
     Expression<DateTime?>? updatedAt,
+    Expression<bool>? notificationsOn,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -205,6 +225,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       if (ownerId != null) 'owner_id': ownerId,
       if (participantId != null) 'participant_id': participantId,
       if (updatedAt != null) 'updated_at': updatedAt,
+      if (notificationsOn != null) 'notifications_on': notificationsOn,
     });
   }
 
@@ -215,7 +236,8 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       Value<String>? avatar,
       Value<int>? ownerId,
       Value<int?>? participantId,
-      Value<DateTime?>? updatedAt}) {
+      Value<DateTime?>? updatedAt,
+      Value<bool>? notificationsOn}) {
     return ChatTablesCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -224,6 +246,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       ownerId: ownerId ?? this.ownerId,
       participantId: participantId ?? this.participantId,
       updatedAt: updatedAt ?? this.updatedAt,
+      notificationsOn: notificationsOn ?? this.notificationsOn,
     );
   }
 
@@ -251,6 +274,9 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime?>(updatedAt.value);
     }
+    if (notificationsOn.present) {
+      map['notifications_on'] = Variable<bool>(notificationsOn.value);
+    }
     return map;
   }
 
@@ -263,7 +289,8 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
           ..write('avatar: $avatar, ')
           ..write('ownerId: $ownerId, ')
           ..write('participantId: $participantId, ')
-          ..write('updatedAt: $updatedAt')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('notificationsOn: $notificationsOn')
           ..write(')'))
         .toString();
   }
@@ -309,9 +336,25 @@ class $ChatTablesTable extends ChatTables
       typeName: 'INTEGER',
       requiredDuringInsert: false,
       defaultValue: Constant(new DateTime.now()));
+  final VerificationMeta _notificationsOnMeta =
+      const VerificationMeta('notificationsOn');
+  late final GeneratedColumn<bool?> notificationsOn = GeneratedColumn<bool?>(
+      'notifications_on', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (notifications_on IN (0, 1))',
+      defaultValue: Constant(true));
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, name, description, avatar, ownerId, participantId, updatedAt];
+  List<GeneratedColumn> get $columns => [
+        id,
+        name,
+        description,
+        avatar,
+        ownerId,
+        participantId,
+        updatedAt,
+        notificationsOn
+      ];
   @override
   String get aliasedName => _alias ?? 'chat_tables';
   @override
@@ -361,6 +404,12 @@ class $ChatTablesTable extends ChatTables
     if (data.containsKey('updated_at')) {
       context.handle(_updatedAtMeta,
           updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('notifications_on')) {
+      context.handle(
+          _notificationsOnMeta,
+          notificationsOn.isAcceptableOrUnknown(
+              data['notifications_on']!, _notificationsOnMeta));
     }
     return context;
   }

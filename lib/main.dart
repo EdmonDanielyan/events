@@ -18,6 +18,7 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/providers/global_providers.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
+import 'package:ink_mobile/providers/notifications.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/themes/light.dart';
@@ -39,6 +40,7 @@ void main() async {
     };
 
     runApp(InkMobile(onAppStart: () async {
+      NotificationsProvider.init();
       NatsProvider natsProvider = sl<NatsProvider>();
 
       final loaded = await natsProvider.load();

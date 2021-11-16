@@ -16,6 +16,7 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:fixnum/fixnum.dart';
+import 'package:ink_mobile/providers/notifications.dart';
 
 import 'all.dart';
 
@@ -65,14 +66,24 @@ class ChatMessageListener {
 
     final mapPayload = message.payload! as SystemPayload;
     ChatMessageFields fields = ChatMessageFields.fromMap(mapPayload.fields);
+
     if (fields.user.id != JwtPayload.myId) {
       late ChatTable chat =
           ChatListView.changeChatForParticipant(fields.chat, [fields.user]);
+      _pushNotification(fields.user, fields.message);
       await userFunctions.insertUser(fields.user);
       await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
           .addMessage(fields.message);
       await chatSendMessage.saveToPrivateUserChatIdList(
           userId: JwtPayload.myId, channel: channel, chat: chat);
     }
+  }
+
+  void _pushNotification(UserTable user, MessageTable message) {
+    NotificationsProvider.showNotification(
+      user.name,
+      message.message,
+      id: user.id,
+    );
   }
 }

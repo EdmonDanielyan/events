@@ -56,7 +56,6 @@ class ChatDatabase extends _$ChatDatabase {
   Stream<ChatTable> watchChatById(String id) =>
       (select(chatTables)..where((tbl) => tbl.id.equals(id))).watchSingle();
   Future<int> insertChat(ChatTable chat) => into(chatTables).insert(chat);
-  Future updateChat(ChatTable chat) => update(chatTables).replace(chat);
   Future updateChatById(String id, ChatTable chat) =>
       (update(chatTables)..where((tbl) => tbl.id.equals(id))).write(chat);
   Future deleteChat(ChatTable chat) => delete(chatTables).delete(chat);
@@ -198,7 +197,7 @@ class ChatDatabase extends _$ChatDatabase {
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
-  int get schemaVersion => 19;
+  int get schemaVersion => 20;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
