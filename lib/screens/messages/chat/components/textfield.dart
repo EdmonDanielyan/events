@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/messages/chat/components/attach_icon.dart';
+import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
 class MessageTextfield extends StatelessWidget {
   final FocusNode? focusNode;
   final Function(String)? onChanged;
+  final Function(ChatEntities)? onSend;
   const MessageTextfield({
     Key? key,
     this.onChanged,
     this.focusNode,
+    this.onSend,
   }) : super(key: key);
 
   @override
@@ -39,7 +42,9 @@ class MessageTextfield extends StatelessWidget {
               ),
             ),
           ),
-          Container(padding: EdgeInsets.only(right: 10.0), child: AttachIcon()),
+          Container(
+              padding: EdgeInsets.only(right: 10.0),
+              child: AttachIcon(onSend: onSend)),
         ],
       ),
     );

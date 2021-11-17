@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/components/linkify_text.dart';
+import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/date_functions.dart';
+import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
+import 'package:ink_mobile/screens/messages/chat/components/message_card_picture.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat/components/sent_on_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
@@ -23,9 +26,19 @@ class MessageCardText extends StatelessWidget {
 
   bool get byMe => message != null ? MessageListView.isByMe(message!) : false;
 
-  Color get textColor => byMe ? Colors.white : Colors.black;
+  Color textColor() {
+    if (message?.type == MessageType.Document) {
+      return Colors.black;
+    }
+    return byMe ? Colors.white : Colors.black;
+  }
 
-  Color get bgColor => byMe ? Color(0XFF46966E) : Colors.grey.shade200;
+  Color bgColor() {
+    if (message?.type == MessageType.Document) {
+      return Colors.transparent;
+    }
+    return byMe ? Color(0XFF46966E) : Colors.grey.shade200;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +56,7 @@ class MessageCardText extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: containerBorderRadius(),
-              color: bgColor,
+              color: bgColor(),
             ),
             padding: EdgeInsets.all(9.5),
             child: Column(
@@ -90,7 +103,7 @@ class MessageCardText extends StatelessWidget {
 
     return RespondContainerWrapper(
       message: message!,
-      textColor: textColor,
+      textColor: textColor(),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -108,11 +121,18 @@ class MessageCardText extends StatelessWidget {
   }
 
   Widget _showMessage() {
+    final String msg = message?.message ?? "";
+    if (message?.type == MessageType.Document) {
+      if (isStrPicture(msg)) {
+        return MessageCardPicture(url: msg);
+      }
+    }
+
     return Flexible(
       child: LinkifyText(
-        text: messageStr != null ? messageStr! : (message?.message ?? ""),
-        style: TextStyle(color: textColor),
-        linkStyle: TextStyle(color: textColor),
+        text: messageStr != null ? messageStr! : msg,
+        style: TextStyle(color: textColor()),
+        linkStyle: TextStyle(color: textColor()),
       ),
     );
   }
@@ -130,7 +150,7 @@ class MessageCardText extends StatelessWidget {
       DateFunctions(passedDate: message!.created!).hourMinute(),
       style: TextStyle(
         fontSize: 11.0,
-        color: textColor,
+        color: textColor(),
       ),
     );
   }
@@ -139,7 +159,12 @@ class MessageCardText extends StatelessWidget {
     return SizedBox(
       width: 14,
       height: 14,
-      child: ChatTick(chatStatus: message!.status),
+      child: ChatTick(
+        chatStatus: message!.status,
+        brightness: message?.type == MessageType.Document
+            ? Brightness.light
+            : Brightness.dark,
+      ),
     );
   }
 

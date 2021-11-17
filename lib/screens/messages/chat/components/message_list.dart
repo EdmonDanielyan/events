@@ -3,15 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/extensions/nats_extension.dart';
-import 'package:ink_mobile/functions/chat/send_message.dart';
-import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/functions/date_sort.dart';
 import 'package:ink_mobile/functions/message_mixins.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/screens/messages/chat/components/date_widget.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card.dart';
@@ -74,6 +68,7 @@ class MessageList extends StatelessWidget with MessageMixins {
 
                   if (messagesWithUser!.length > 0) {
                     _messagesLoaded();
+
                     return ListView.builder(
                       controller: ScrollController(keepScrollOffset: false),
                       itemCount: messagesWithUser!.length,

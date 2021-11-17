@@ -11,6 +11,11 @@ import 'database/chat_db.dart';
 enum MessageStatus { EMPTY, SENDING, SENT, READ, ERROR }
 
 class MessageListView {
+  static List<MessageType> notIgnoringHoverTypes = [
+    MessageType.Text,
+    MessageType.Document
+  ];
+
   static bool isByMe(MessageTable msg, {int? myId}) {
     myId = myId ?? JwtPayload.myId;
     return msg.userId == myId;

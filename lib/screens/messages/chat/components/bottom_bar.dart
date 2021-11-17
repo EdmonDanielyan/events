@@ -4,10 +4,8 @@ import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
-import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container.dart';
 import 'package:ink_mobile/screens/messages/chat/components/send_btn.dart';
@@ -35,7 +33,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
   ChatTable get getChat => _chatDatabaseCubit.selectedChat!;
 
-  Future<void> onSend() async {
+  Future<void> onSend(ChatEntities entities) async {
     if (entities.text.isNotEmpty) {
       clearForm();
       final message = await SendMessage(
@@ -103,10 +101,11 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
                     child: MessageTextfield(
                       onChanged: _onMessaging,
                       focusNode: textfieldFocus,
+                      onSend: onSend,
                     ),
                   ),
                   SizedBox(width: 8.0),
-                  MessageSendBtn(onPressed: onSend),
+                  MessageSendBtn(onPressed: () => onSend(entities)),
                 ],
               ),
             ],

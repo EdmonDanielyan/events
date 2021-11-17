@@ -51,6 +51,7 @@ class SendMessage {
       chat.id,
       chatEntities.text,
       repliedMessageId: chatEntities.repliedMessageId,
+      type: chatEntities.type,
     );
 
     await addMessage(message);

@@ -1,3 +1,4 @@
+import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 
 class ChatInfoEditEntities {
@@ -11,7 +12,7 @@ class ChatInfoEditEntities {
 
 class ChatInfoEditEntitiesFunctions {
   static ChatTable copyChat(ChatInfoEditEntities entities, ChatTable chat) {
-    bool isValidAvatar = Uri.parse(entities.avatarUrl).isAbsolute;
+    bool isValidAvatar = isStringUrl(entities.avatarUrl);
 
     return chat.copyWith(
       avatar: isValidAvatar ? entities.avatarUrl : chat.avatar,

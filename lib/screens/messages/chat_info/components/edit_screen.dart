@@ -3,6 +3,7 @@ import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/components/changable_avatar.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
+import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -62,9 +63,8 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
                 initalValue: _chat.avatar,
                 hint: _strings.avatarUrl,
                 onChanged: (val) => entities.avatarUrl = val,
-                validator: (val) => !Uri.parse(entities.avatarUrl).isAbsolute
-                    ? _strings.fillTheFieldCorrectly
-                    : null,
+                validator: (val) =>
+                    !isStringUrl(val!) ? _strings.fillTheFieldCorrectly : null,
               ),
               //avatarWidget(),
               const SizedBox(height: 5.0),

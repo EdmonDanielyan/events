@@ -209,5 +209,6 @@
     "noMessages": "No messages",
     "joinedChat": "joined",
     "leftChat": "left",
-    "avatarUrl": "Avatar url"
+    "avatarUrl": "Avatar url",
+    "addLink": "Add any link"
 }
