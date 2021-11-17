@@ -14,7 +14,6 @@ dependencies:
   fixnum: ^1.0.0
   pedantic: ^1.9.0
   retry: ^3.1.0
-
   
 
 dev_dependencies:

@@ -365,7 +365,11 @@ class Client {
   }
 
   void unsubscribeByChannel(String channel) {
-    natsClient.unSubscribeBySubject(channel);
+    // natsClient.unSubscribeBySubject(channel);
+  }
+
+  void unsubscribeBySid(int sid) {
+    //natsClient.unSubBySid(sid);
   }
 
   final Set<String> _subscriptionInboxes = {};
@@ -384,8 +388,7 @@ class Client {
     // Listen Inbox before subscribing
     final String inbox = '${subject}_${queueGroup ?? ''}_${Uuid().v4()}';
 
-    final natsSubscription =
-        natsClient.sub(inbox, customSsid: sid, queueGroup: queueGroup);
+    final natsSubscription = natsClient.sub(inbox, queueGroup: queueGroup);
 
     // Subscribing
     SubscriptionRequest subscriptionRequest = SubscriptionRequest()
@@ -427,21 +430,25 @@ class Client {
 
   Future<SubscriptionResponse> tryToSubscribe(
       SubscriptionRequest subscriptionRequest) async {
-    final _req = await natsClient.request(
-      _connectResponse!.subRequests,
-      subscriptionRequest.writeToBuffer(),
-      queueGroup: subscriptionRequest.qGroup,
-      timeout: Duration(seconds: 7),
-    );
+    try {
+      final _req = await natsClient.request(
+        _connectResponse!.subRequests,
+        subscriptionRequest.writeToBuffer(),
+        queueGroup: subscriptionRequest.qGroup,
+        timeout: Duration(seconds: 2),
+      );
 
-    SubscriptionResponse subscriptionResponse =
-        SubscriptionResponse.fromBuffer(_req.data);
+      SubscriptionResponse subscriptionResponse =
+          SubscriptionResponse.fromBuffer(_req.data);
 
-    if (subscriptionResponse.hasError()) {
-      throw Exception(subscriptionResponse.error);
+      if (subscriptionResponse.hasError()) {
+        throw Exception(subscriptionResponse.error);
+      }
+
+      return subscriptionResponse;
+    } catch (e) {
+      throw Exception(e.toString());
     }
-
-    return subscriptionResponse;
   }
 
   void acknowledge(Subscription subscription, DataMessage dataMessage) {

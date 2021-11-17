@@ -52,6 +52,8 @@ dependencies:
     mask_text_input_formatter: ^2.0.0
     get_it: ^7.2.0
     messagepack: ^0.2.1
+    # dart_nats_streaming:
+    #     git: https://github.com/JetRabbits/dart-nats-streaming.git
     dart_nats_streaming:
         path: "./custom/libs/dart-nats-streaming-master"
     injectable:
@@ -66,9 +68,9 @@ dependencies:
             path: extras/encryption
     flutter_local_notifications: ^9.1.2
 
-dependency_overrides:
-    dart_nats:
-        path: "./custom/libs/dart-nats-master"
+# dependency_overrides:
+#     dart_nats:
+#         path: "./custom/libs/dart-nats-master"
 
 dev_dependencies:
     flutter_test:

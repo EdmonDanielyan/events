@@ -6,6 +6,7 @@ import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/edit_entities.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -31,9 +32,9 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
     if (_formKey.currentState!.validate()) {
       ChatTable chat = ChatInfoEditEntitiesFunctions.copyChat(entities, _chat);
       ChatFunctions(widget.chatDatabaseCubit).updateChat(chat);
+      UseMessageProvider.messageProvider.sendNewChatInfo(chat);
+      Navigator.of(context).pop();
     }
-
-    Navigator.of(context).pop();
   }
 
   @override
@@ -41,6 +42,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
     _strings = localizationInstance;
 
     entities = ChatInfoEditEntities(
+      avatarUrl: _chat.avatar,
       name: _chat.name,
       description: _chat.description,
     );
@@ -56,8 +58,16 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              avatarWidget(),
-              SizedBox(height: 20.0),
+              textfieldWidget(
+                initalValue: _chat.avatar,
+                hint: _strings.avatarUrl,
+                onChanged: (val) => entities.avatarUrl = val,
+                validator: (val) => !Uri.parse(entities.avatarUrl).isAbsolute
+                    ? _strings.fillTheFieldCorrectly
+                    : null,
+              ),
+              //avatarWidget(),
+              const SizedBox(height: 5.0),
               divider(),
               textfieldWidget(
                 initalValue: _chat.name,
@@ -66,6 +76,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
                 onChanged: (val) => entities.name = val,
                 validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
               ),
+              const SizedBox(height: 5.0),
               divider(),
               if (isGroup) ...[
                 textfieldWidget(
@@ -116,7 +127,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
 
   Widget divider() {
     return Divider(
-      height: 2.0,
+      height: 3.0,
       color: Colors.grey,
     );
   }

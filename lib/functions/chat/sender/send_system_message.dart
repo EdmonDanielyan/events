@@ -1,6 +1,7 @@
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/nats/chat_info.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/chat/nats/message.dart';
 import 'package:ink_mobile/models/chat/nats/message_delete.dart';
@@ -150,6 +151,19 @@ class ChatSendMessage {
       ChatMessageDeleteFields(
         messages: messages,
         user: user ?? UserFunctions.getMe,
+      ).toMap(),
+    );
+  }
+
+  Future<bool> sendNewChatInfo(String channel,
+      {required ChatTable chat, required UserTable user}) async {
+    return await natsProvider.sendSystemMessageToChannel(
+      channel,
+      MessageType.UpdateChatInfo,
+      ChatInfoFields(
+        channel: channel,
+        chat: chat,
+        user: user,
       ).toMap(),
     );
   }

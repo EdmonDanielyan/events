@@ -104,6 +104,7 @@
     "chooseAddressee": "Choose addressee",
     "incorrectEmail": "Incorrect e-mail",
     "fillTheField": "Fill the field",
+    "fillTheFieldCorrectly": "Fill the field correctly",
     "askQuestion": "Ask question",
     "allAnswers": "All answers",
     "toWhomLable": "To whom",
@@ -207,5 +208,6 @@
     "save": "Save",
     "noMessages": "No messages",
     "joinedChat": "joined",
-    "leftChat": "left"
+    "leftChat": "left",
+    "avatarUrl": "Avatar url"
 }

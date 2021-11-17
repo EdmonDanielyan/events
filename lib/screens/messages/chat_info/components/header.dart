@@ -40,38 +40,39 @@ class ChatInfoHeader extends StatelessWidget {
       color: Colors.white,
       padding: EdgeInsets.symmetric(
           horizontal: ChatInfoDesignEntities.horizontalPadding, vertical: 20.0),
-      child: Row(
-        crossAxisAlignment:
-            isGroup ? CrossAxisAlignment.start : CrossAxisAlignment.center,
-        children: [
-          CustomCircleAvatar(url: chat.avatar),
-          SizedBox(width: 20.0),
-          Expanded(
-            child: BlocBuilder<ChatDatabaseCubit, ChatDatabaseCubitState>(
-              bloc: _chatDatabaseCubit,
-              builder: (context, state) {
-                final chat = state.selectedChat;
-                if (chat != null) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      nameWidget(chat.name),
-                      if (isGroup && chat.description.isNotEmpty) ...[
-                        SizedBox(height: 3.0),
-                        descriptionWidget(chat.description),
-                      ],
-                      if (isGroup) ...[
-                        SizedBox(height: 3.0),
-                        countParticipantsWidget(),
-                      ]
+      child: StreamBuilder<ChatTable>(
+        stream: _chatDatabaseCubit.db.watchChatById(chat.id),
+        builder: (context, state) {
+          var newChat = chat;
+          if (state.hasData && state.data != null) {
+            newChat = state.data!;
+          }
+
+          return Row(
+            crossAxisAlignment:
+                isGroup ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+            children: [
+              CustomCircleAvatar(url: newChat.avatar),
+              SizedBox(width: 20.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    nameWidget(newChat.name),
+                    if (isGroup && chat.description.isNotEmpty) ...[
+                      SizedBox(height: 3.0),
+                      descriptionWidget(newChat.description),
                     ],
-                  );
-                }
-                return SizedBox();
-              },
-            ),
-          ),
-        ],
+                    if (isGroup) ...[
+                      SizedBox(height: 3.0),
+                      countParticipantsWidget(),
+                    ]
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

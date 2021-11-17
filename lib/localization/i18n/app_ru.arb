@@ -105,6 +105,7 @@
     "chooseAddressee": "Выберите адресата",
     "incorrectEmail": "Неправильная электронная почта",
     "fillTheField": "Заполните поле",
+    "fillTheFieldCorrectly": "Заполните поле корректно",
     "askQuestion": "Задать вопрос",
     "allAnswers": "Все ответы",
     "toWhomLable": "Кому",
@@ -207,5 +208,6 @@
     "save": "Сохранить",
     "noMessages": "Нет сообщений",
     "joinedChat": "добавлен(а) в чат",
-    "leftChat": "покинул(а) в чат"
+    "leftChat": "покинул(а) в чат",
+    "avatarUrl": "Ссылка на аватар"
 }

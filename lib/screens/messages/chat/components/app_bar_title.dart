@@ -27,11 +27,16 @@ class ChatAppBarTitle extends StatelessWidget {
       onTap: () => Navigator.of(context).pushNamed("/chat_info"),
       child: Column(
         children: [
-          BlocBuilder<ChatDatabaseCubit, ChatDatabaseCubitState>(
-            bloc: ChatScreen.of(context).chatDatabaseCubit,
+          StreamBuilder<ChatTable>(
+            stream: chatDatabaseCubit.db.watchChatById(chat.id),
             builder: (context, state) {
+              var newChat = chat;
+              if (state.hasData && state.data != null) {
+                newChat = state.data!;
+              }
+
               return Text(
-                _chatScrenParams.appBarText ?? (state.selectedChat?.name ?? ""),
+                _chatScrenParams.appBarText ?? (newChat.name),
                 style: TextStyle(fontSize: 17.0),
                 textAlign: TextAlign.center,
               );

@@ -219,11 +219,11 @@ packages:
     source: hosted
     version: "1.0.3"
   dart_nats:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "custom/libs/dart-nats-master"
-      relative: true
-    source: path
+      name: dart_nats
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.3.5"
   dart_nats_streaming:
     dependency: "direct main"

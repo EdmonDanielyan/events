@@ -6,7 +6,6 @@ import 'package:ink_mobile/models/token.dart';
 
 import 'chat_list_view.dart';
 import 'database/model/message_with_user.dart';
-import 'package:collection/collection.dart';
 
 class ChatUserViewModel {
   static bool isAdmin(UserTable user, List<UserTable> admins) {

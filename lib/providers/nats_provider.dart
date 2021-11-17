@@ -12,6 +12,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 
 const PUBLIC_CHATS = 'ink.messaging.public';
@@ -110,8 +111,7 @@ class NatsProvider {
 
   /// Unsubscribe from [channel] using [startSequence] if needed
   Future<void> unsubscribeFromChannel(String channel) async {
-    _stan.unsubscribeByChannel(channel);
-    await Future.delayed(Duration(milliseconds: 800));
+    //await _unsubscribeByChannel(channel);
 
     if (_channelSubscriptions.containsKey(channel)) {
       _channelSubscriptions.remove(channel);
@@ -171,6 +171,8 @@ class NatsProvider {
 
   String getInviteUserToJoinChatChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.InviteUserToJoinChat)}.$userId';
+  String getGroupChatInfoById(String chatId) =>
+      '$GROUP_CHANNEL.${describeEnum(MessageType.UpdateChatInfo)}.$chatId';
 
   NatsMessage _parseMessage(dataMessage) {
     var payload = (dataMessage as DataMessage).encodedPayload;
@@ -212,20 +214,35 @@ class NatsProvider {
     }
   }
 
+  Future<void> _unsubscribeByChannel(String channel, {int? sid}) async {
+    if (sid == null) {
+      sid = getSidByChannelName(channel);
+    }
+
+    if (sid != null) {
+      //_stan.unsubscribeBySid(sid);
+      await Future.delayed(Duration(milliseconds: 800));
+    }
+  }
+
   Future<Subscription?> _subscribeToChannel(channel,
-      {Int64 startSequence = Int64.ZERO}) async {
+      {int? sid, Int64 startSequence = Int64.ZERO}) async {
     var durableName = "$userId-$deviceVirtualId-$channel";
+
+    sid = getSidByChannelName(channel);
+    //await _unsubscribeByChannel(channel);
+    print(durableName);
 
     var subscription = startSequence != Int64.ZERO
         ? await _stan.subscribe(
             subject: channel,
             maxInFlight: 1,
-            durableName: null,
+            durableName: durableName,
             startSequence: startSequence)
         : await _stan.subscribe(
             subject: channel,
             maxInFlight: 1,
-            durableName: null,
+            durableName: durableName,
           );
     return subscription;
   }
@@ -250,6 +267,9 @@ class NatsProvider {
       }
     }
   }
+
+  int? getSidByChannelName(String channel) =>
+      int.parse("${200}${MessageListView.getTypeByChannel(channel)?.index}");
 
   final Set<String> userChatIdList = {};
   final Set<String> publicChatIdList = {};

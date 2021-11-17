@@ -4,6 +4,7 @@ import 'package:ink_mobile/functions/chat/chat_creation.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/all.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat.dart';
+import 'package:ink_mobile/functions/chat/listeners/chat_info.dart';
 import 'package:ink_mobile/functions/chat/listeners/delete_message.dart';
 import 'package:ink_mobile/functions/chat/listeners/invitation.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
@@ -46,6 +47,7 @@ class MessageProvider {
   late ChatJoinedListener chatJoinedListener;
   late ChatLeftListener chatLeftListener;
   late MessageDeletedListener messageDeletedListener;
+  late ChatInfoListener chatInfoListener;
   late ChatCubit chatCubit;
 
   MessageProvider(this.natsProvider, this.chatDatabaseCubit) {
@@ -57,6 +59,10 @@ class MessageProvider {
     this.messageDeletedListener = MessageDeletedListener(
       natsProvider: natsProvider,
       chatFunctions: chatFunctions,
+    );
+    this.chatInfoListener = ChatInfoListener(
+      natsProvider: natsProvider,
+      chatDatabaseCubit: chatDatabaseCubit,
     );
     this.chatJoinedListener = ChatJoinedListener(
       natsProvider: natsProvider,
@@ -103,6 +109,7 @@ class MessageProvider {
       chatJoinedListener: chatJoinedListener,
       chatLeftListener: chatLeftListener,
       messageDeletedListener: messageDeletedListener,
+      chatInfoListener: chatInfoListener,
     );
     this.chatCreation = ChatCreation(chatDatabaseCubit);
   }
@@ -123,6 +130,8 @@ class MessageProvider {
       natsProvider.getGroupLeftChannelById(chatId);
   String getDeletedMessageChannel(String chatId) =>
       natsProvider.getGroupDeleteMessageChannelById(chatId);
+  String getChatInfoChannel(String chatId) =>
+      natsProvider.getGroupChatInfoById(chatId);
 
   void init() async {
     UserFunctions(chatDatabaseCubit).addMe();
@@ -235,6 +244,15 @@ class MessageProvider {
       getUserLeftChannel(chat.id),
       chat: chat,
       users: users,
+    );
+    return send;
+  }
+
+  Future<bool> sendNewChatInfo(ChatTable chat, {UserTable? user}) async {
+    bool send = await chatSendMessage.sendNewChatInfo(
+      getChatInfoChannel(chat.id),
+      chat: chat,
+      user: user ?? UserFunctions.getMe,
     );
     return send;
   }

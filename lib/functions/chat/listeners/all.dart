@@ -1,6 +1,7 @@
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat.dart';
+import 'package:ink_mobile/functions/chat/listeners/chat_info.dart';
 import 'package:ink_mobile/functions/chat/listeners/delete_message.dart';
 import 'package:ink_mobile/functions/chat/listeners/joined.dart';
 import 'package:ink_mobile/functions/chat/listeners/left.dart';
@@ -24,6 +25,8 @@ class NatsListener {
   final ChatJoinedListener chatJoinedListener;
   final ChatLeftListener chatLeftListener;
   final MessageDeletedListener messageDeletedListener;
+  final ChatInfoListener chatInfoListener;
+
   NatsListener({
     required this.natsProvider,
     required this.channelFunctions,
@@ -34,6 +37,7 @@ class NatsListener {
     required this.chatJoinedListener,
     required this.chatLeftListener,
     required this.messageDeletedListener,
+    required this.chatInfoListener,
   });
 
   String lastChannelStr = "";
@@ -51,6 +55,7 @@ class NatsListener {
       natsProvider.getGroupJoinedChannelById(chatId);
   String leftChannel(String chatId) =>
       natsProvider.getGroupLeftChannelById(chatId);
+  String chatInfo(String chatId) => natsProvider.getGroupChatInfoById(chatId);
 
   List<String> getLinkedChannelsById(String chatId) {
     List<String> channels = [];
@@ -60,6 +65,7 @@ class NatsListener {
     //channels.add(textingChannel(chatId));
     channels.add(joinedChannel(chatId));
     channels.add(leftChannel(chatId));
+    channels.add(chatInfo(chatId));
     return channels;
   }
 
@@ -101,7 +107,10 @@ class NatsListener {
   Future<void> _subscribeToChannel(MessageType type, String channel,
       {Int64 startSequence = Int64.ZERO}) async {
     if (!listeningToChannel(channel)) {
-      if (type == MessageType.Text) {
+      if (type == MessageType.InviteUserToJoinChat) {
+        await chatInvitationListener.listenTo(channel,
+            startSequence: startSequence);
+      } else if (type == MessageType.Text) {
         await chatMessageListener.listenTo(channel,
             startSequence: startSequence);
       } else if (type == MessageType.RemoveMessage) {
@@ -118,9 +127,8 @@ class NatsListener {
             startSequence: startSequence);
       } else if (type == MessageType.UserLeftChat) {
         await chatLeftListener.listenTo(channel, startSequence: startSequence);
-      } else if (type == MessageType.InviteUserToJoinChat) {
-        await chatInvitationListener.listenTo(channel,
-            startSequence: startSequence);
+      } else if (type == MessageType.UpdateChatInfo) {
+        await chatInfoListener.listenTo(channel, startSequence: startSequence);
       }
 
       subscribedChannels.add(channel);

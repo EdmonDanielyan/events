@@ -12,7 +12,7 @@ enum MessageType {
   InviteUserToJoinChat,
   RequestToJoinChat,
   ApproveUserToJoinChat,
-  UpdateChatName,
+  UpdateChatInfo,
   PinMessage,
   UnpinMessage,
   UpdateUserChatRole,

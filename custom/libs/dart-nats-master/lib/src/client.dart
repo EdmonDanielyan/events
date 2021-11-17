@@ -296,10 +296,10 @@ class Client {
   }
 
   ///subscribe to subject option with queuegroup
-  Subscription sub(String subject, {int? customSsid, String? queueGroup}) {
+  Subscription sub(String subject, {int? customSid, String? queueGroup}) {
     //customSsid = null;
-    final newSsid = customSsid ?? _ssid;
-    if (customSsid == null) {
+    final newSsid = customSid ?? _ssid;
+    if (customSid == null) {
       _ssid++;
     }
     //print("$subject - $newSsid");
@@ -339,10 +339,24 @@ class Client {
     return unSub(_subs[sid]!);
   }
 
+  //unsubscribe by force
+  // ignore: public_member_api_docs
+  bool unSubBySid(int sid) {
+    print("UNSUBBING $sid");
+    _unSub(sid);
+    if (_subs[sid] != null) {
+      _subs.remove(sid);
+      _backendSubs.remove(sid);
+    }
+    return true;
+  }
+
   //Unsubscribe by Subject
   // ignore: public_member_api_docs
   void unSubscribeBySubject(String subject) {
-    _subs.values.where((element) => element.subject == subject).forEach((element) {
+    _subs.values
+        .where((element) => element.subject == subject)
+        .forEach((element) {
       _unSub(element.sid);
     });
   }
