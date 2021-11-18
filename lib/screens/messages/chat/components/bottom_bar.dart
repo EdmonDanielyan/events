@@ -42,7 +42,6 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
       ).call(entities);
       await UseMessageProvider.messageProvider.sendMessage(getChat, message);
       _chatCubit.clean();
-      _chatCubit.updateMessages(_chatDatabaseCubit);
       entities.clear();
       ScrollBottom(widget.scrollController).jumpLazy();
     }

@@ -69,12 +69,17 @@ class NatsListener {
     return channels;
   }
 
+  List<MessageType> notStorableTypes = [MessageType.Online];
+
   String get _inviteUserChannel =>
       natsProvider.getInviteUserToJoinChatChannel(JwtPayload.myId);
 
   Future<void> listenToAllMessages() async {
     natsProvider.onMessage = (String channelStr, NatsMessage message) async {
-      channelFunctions.saveNatsMessage(message);
+      final payload = message.payload as SystemPayload;
+      if (!notStorableTypes.contains(payload.type)) {
+        channelFunctions.saveNatsMessage(message);
+      }
     };
   }
 

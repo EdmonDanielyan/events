@@ -52,13 +52,6 @@ class ChatScreenState extends State<ChatScreen> {
   SelectableCubit<MessageWithUser> get selectableCubit =>
       widget.selectableCubit;
 
-  @override
-  void initState() {
-    super.initState();
-
-    chatCubit.updateMessages(chatDatabaseCubit);
-  }
-
   void _onScrollBtnClick() {
     ScrollBottom(controller).animateTo(duration: Duration(seconds: 1));
   }

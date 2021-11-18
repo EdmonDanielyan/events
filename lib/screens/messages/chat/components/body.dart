@@ -8,7 +8,6 @@ import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
-import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/bottom_bar.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_list.dart';
@@ -24,7 +23,6 @@ class ChatBody extends StatefulWidget {
 }
 
 class ChatBodyState extends State<ChatBody> with MessageMixins {
-  final Debouncer _debouncer = Debouncer(milliseconds: 200);
   ScrollController get controller => widget.controller;
   late KeyboardVisibilityController keyboardVisibilityController;
   int loadedMessagesCount = 0;

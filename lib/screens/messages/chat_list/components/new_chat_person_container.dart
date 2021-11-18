@@ -32,6 +32,7 @@ class NewChatPersonContainer extends StatelessWidget {
               horizontalPadding: 0.0,
               avatarSize: avatarSize,
               titleGap: titleGap,
+              indicatorIsOn: false,
             ),
           ),
           Radio<bool>(

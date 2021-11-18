@@ -242,8 +242,14 @@ class Client {
     }
   }
 
+  Future<void> manualDisconnect() async {
+    retryReconnect = false;
+    failPings = 0;
+    await _disconnect();
+  }
+
   Future<void> _disconnect() async {
-    natsClient.close();
+    await natsClient.close();
     if (_onDisconnect != null && _connected) {
       _onDisconnect!();
     }
@@ -410,7 +416,6 @@ class Client {
 
     for (int i = 1; i <= 3; i++) {
       final subscriptionResponse = await tryToSubscribe(subscriptionRequest);
-      print("Subject - $subject AND ATTEMPT #$i");
       if (!_subscriptionInboxes.contains(subscriptionResponse.ackInbox)) {
         print('ACK INBOX - $subject - ${subscriptionResponse.ackInbox}');
         _subscriptionInboxes.add(subscriptionResponse.ackInbox);
@@ -419,8 +424,6 @@ class Client {
           subscription: natsSubscription,
           ackInbox: subscriptionResponse.ackInbox,
         );
-      } else {
-        print("TRYING TO RECONNECT $subject - $i");
       }
       await Future.delayed(Duration(milliseconds: i * 300));
     }
@@ -456,7 +459,9 @@ class Client {
       ..subject = dataMessage.subject
       ..sequence = dataMessage.sequence;
 
-    print("TRYING TO ACKNOWLEDGE ${subscription.ackInbox}");
+    if (dataMessage.isRedelivery) {
+      print('NOT ACKNOWLEDGING ${subscription.ackInbox}');
+    }
 
     natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
   }

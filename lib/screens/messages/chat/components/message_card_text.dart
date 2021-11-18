@@ -122,10 +122,8 @@ class MessageCardText extends StatelessWidget {
 
   Widget _showMessage() {
     final String msg = message?.message ?? "";
-    if (message?.type == MessageType.Document) {
-      if (isStrPicture(msg)) {
-        return MessageCardPicture(url: msg);
-      }
+    if (isStrPicture(msg)) {
+      return MessageCardPicture(url: msg);
     }
 
     return Flexible(

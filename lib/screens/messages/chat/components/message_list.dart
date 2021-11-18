@@ -41,6 +41,7 @@ class MessageList extends StatelessWidget with MessageMixins {
     if (messagesLoaded != null) {
       messagesLoaded!();
     }
+    _chatCubit.updateMessages(_chatDatabaseCubit);
   }
 
   @override

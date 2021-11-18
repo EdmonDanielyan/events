@@ -9,6 +9,7 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_date.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_divider.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message.dart';
@@ -123,6 +124,7 @@ class ChatListTile extends StatelessWidget {
           if (snapshot.hasData && snapshot.data != null) {
             UserTable user = snapshot.data!;
             indicator = user.online;
+            UseMessageProvider.messageProvider.subscribeToUserOnline(user);
           }
           return CustomCircleAvatar(
             url: chat.avatar,

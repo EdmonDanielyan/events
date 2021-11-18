@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/highlight_text.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,6 +16,7 @@ class ParticipantCard extends StatelessWidget {
   final String highlightTxt;
   final String? overrideTitle;
   final String? overrideAvatar;
+  final bool indicatorIsOn;
   const ParticipantCard({
     Key? key,
     required this.user,
@@ -25,6 +27,7 @@ class ParticipantCard extends StatelessWidget {
     this.overrideTitle,
     this.overrideAvatar,
     this.trailingLable = "",
+    this.indicatorIsOn = true,
   }) : super(key: key);
 
   static late AppLocalizations _strings;
@@ -32,6 +35,10 @@ class ParticipantCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
+
+    if (indicatorIsOn && user != null) {
+      UseMessageProvider.messageProvider.subscribeToUserOnline(user!);
+    }
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -64,7 +71,7 @@ class ParticipantCard extends StatelessWidget {
       avatarHeight: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
       avatarWidth: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
       url: overrideAvatar ?? user?.avatar,
-      indicator: user?.online ?? false,
+      indicator: indicatorIsOn && user != null && user!.online ? true : false,
       indicatorSize: 8.0,
     );
   }
@@ -83,13 +90,17 @@ class ParticipantCard extends StatelessWidget {
   }
 
   Widget _onlineStatusWidget() {
-    return Text(
-      user != null && user!.online ? _strings.online : _strings.offline,
-      style: TextStyle(
-        color: Colors.grey,
-        fontSize: 12.0,
-      ),
-    );
+    if (indicatorIsOn) {
+      return Text(
+        user != null && user!.online ? _strings.online : _strings.offline,
+        style: TextStyle(
+          color: Colors.grey,
+          fontSize: 12.0,
+        ),
+      );
+    }
+
+    return SizedBox();
   }
 
   Widget _trailingLableWidget(String text) {

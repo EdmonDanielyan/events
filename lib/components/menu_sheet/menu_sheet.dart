@@ -4,6 +4,7 @@ import 'package:ink_mobile/components/menu_sheet/menu_sheet_item.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 
 class MenuSheet extends StatelessWidget {
   MenuSheet({Key? key}) : super(key: key);
@@ -91,6 +92,7 @@ class MenuSheet extends StatelessWidget {
       MenuSheetItem(
         title: _strings.signOff,
         onTap: () async {
+          UseMessageProvider.messageProvider.dispose();
           await Token.deleteTokens();
           Navigator.pushNamedAndRemoveUntil(
               _context, '/auth', (route) => false);

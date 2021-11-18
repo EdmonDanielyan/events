@@ -11,7 +11,6 @@ import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/screens/messages/chat/chat_screen.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card_text.dart';
 import 'package:ink_mobile/screens/messages/chat/components/hover_message.dart';
-import 'package:ink_mobile/screens/messages/chat/components/message_list.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/paddings.dart';
 
 import 'message_card_action.dart';

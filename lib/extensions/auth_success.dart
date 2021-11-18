@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
 import 'package:ink_mobile/core/handlers/AuthHandler.dart';
 import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/models/token.dart';

@@ -6,6 +6,7 @@ import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/chat/nats/message.dart';
 import 'package:ink_mobile/models/chat/nats/message_delete.dart';
 import 'package:ink_mobile/models/chat/nats/message_status.dart';
+import 'package:ink_mobile/models/chat/nats/online.dart';
 import 'package:ink_mobile/models/chat/nats/texting.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/models/token.dart';
@@ -165,6 +166,14 @@ class ChatSendMessage {
         chat: chat,
         user: user,
       ).toMap(),
+    );
+  }
+
+  Future<bool> sendUserOnlinePing(String channel, UserTable user) async {
+    return await natsProvider.sendSystemMessageToChannel(
+      channel,
+      MessageType.Online,
+      UserOnlineFields(user: user).toMap(),
     );
   }
 }

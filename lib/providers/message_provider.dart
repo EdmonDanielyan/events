@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
@@ -11,6 +13,7 @@ import 'package:ink_mobile/functions/chat/channel_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/joined.dart';
 import 'package:ink_mobile/functions/chat/listeners/left.dart';
 import 'package:ink_mobile/functions/chat/listeners/message_status.dart';
+import 'package:ink_mobile/functions/chat/listeners/online.dart';
 import 'package:ink_mobile/functions/chat/listeners/texting.dart';
 import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
@@ -48,7 +51,9 @@ class MessageProvider {
   late ChatLeftListener chatLeftListener;
   late MessageDeletedListener messageDeletedListener;
   late ChatInfoListener chatInfoListener;
+  late UserOnlineListener userOnlineListener;
   late ChatCubit chatCubit;
+  late Timer userOnlineTimer;
 
   MessageProvider(this.natsProvider, this.chatDatabaseCubit) {
     this.chatCubit = sl<ChatCubit>();
@@ -56,6 +61,10 @@ class MessageProvider {
     this.channelFunctions = ChannelFunctions(chatDatabaseCubit);
     this.chatFunctions = ChatFunctions(chatDatabaseCubit);
     this.chatSendMessage = ChatSendMessage(natsProvider);
+    this.userOnlineListener = UserOnlineListener(
+      natsProvider: natsProvider,
+      chatDatabaseCubit: chatDatabaseCubit,
+    );
     this.messageDeletedListener = MessageDeletedListener(
       natsProvider: natsProvider,
       chatFunctions: chatFunctions,
@@ -132,11 +141,19 @@ class MessageProvider {
       natsProvider.getGroupDeleteMessageChannelById(chatId);
   String getChatInfoChannel(String chatId) =>
       natsProvider.getGroupChatInfoById(chatId);
+  String getUserOnlineChannel(int userId) =>
+      natsProvider.getUserOnlineChannel(userId);
 
   void init() async {
     UserFunctions(chatDatabaseCubit).addMe();
     natsListener.init();
     natsListener.listenToAllMessages();
+    sendUserOnlinePing();
+  }
+
+  void dispose() async {
+    userOnlineTimer.cancel();
+    natsProvider.dispose();
   }
 
   Future<ChatTable> createChat(UserTable user) async {
@@ -255,5 +272,21 @@ class MessageProvider {
       user: user ?? UserFunctions.getMe,
     );
     return send;
+  }
+
+  Future<void> subscribeToUserOnline(UserTable user) async {
+    await userOnlineListener.listenTo(user);
+  }
+
+  Future<void> sendUserOnlinePing({UserTable? user}) async {
+    user = user ?? UserFunctions.getMe;
+    final channel = getUserOnlineChannel(user.id);
+
+    userOnlineTimer = Timer.periodic(
+      Duration(seconds: 5),
+      (timer) {
+        chatSendMessage.sendUserOnlinePing(channel, user!);
+      },
+    );
   }
 }

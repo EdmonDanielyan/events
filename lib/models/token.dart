@@ -10,9 +10,7 @@ import 'package:main_api_client/api/auth_api.dart';
 import 'package:main_api_client/model/refresh_token_params.dart';
 import 'package:uuid/uuid.dart';
 
-
 abstract class Token {
-
   static Future<String> getUserId() async {
     JwtPayload? authUser = await Token.getJwtPayloadObject();
     return authUser!.userId.toString();
@@ -152,8 +150,6 @@ abstract class Token {
     FlutterSecureStorage storage = Storage.getInstance();
     return await storage.read(key: NatsTypes.natsToken.key);
   }
-
-
 }
 
 class Storage {
@@ -255,5 +251,4 @@ class TokenDataHolder {
     // sl.registerFactory(() => deviceVirtualId, instanceName: "deviceVirtualId");
     // sl.registerFactory(() => natsToken, instanceName: "natsToken");
   }
-
 }

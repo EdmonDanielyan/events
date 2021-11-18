@@ -25,7 +25,8 @@ enum MessageType {
   UserBanned,
   UserReacted,
   Texting,
-  SendingDocument
+  SendingDocument,
+  Online
 }
 
 extension MessageTypeEx on String {
