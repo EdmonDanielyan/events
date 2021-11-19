@@ -75,7 +75,9 @@ class CustomCircleAvatar extends StatelessWidget {
               : null),
       foregroundImage: NetworkImage(url!),
       onForegroundImageError: (Object exception, _) {},
-      child: name.isEmpty ? null : Text(ChatUserViewModel.cutName(name)),
+      child: name.isEmpty
+          ? null
+          : Text(ChatUserViewModel.cutName(name).toUpperCase()),
     );
   }
 

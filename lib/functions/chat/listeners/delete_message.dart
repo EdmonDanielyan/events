@@ -43,6 +43,7 @@ class MessageDeletedListener {
         MessageListView.getUserMessages(fields.messages, sender.id);
     if (myMessages.isNotEmpty && sender.id != JwtPayload.myId) {
       chatFunctions.deleteMessages(myMessages);
+      await UseMessageProvider.messageProvider.saveChats(newChat: null);
     }
   }
 }

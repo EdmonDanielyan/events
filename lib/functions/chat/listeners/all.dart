@@ -83,18 +83,22 @@ class NatsListener {
 
   Future<void> listenToAllMessages() async {
     natsProvider.onMessage = (String channelStr, NatsMessage message) async {
-      final payload = message.payload as SystemPayload;
-      if (!notStorableTypes.contains(payload.type)) {
-        channelFunctions.saveNatsMessage(message);
-      }
+      saveChannel(message);
     };
+  }
+
+  Future<void> saveChannel(NatsMessage message) async {
+    final payload = message.payload as SystemPayload;
+    if (!notStorableTypes.contains(payload.type)) {
+      await channelFunctions.saveNatsMessage(message);
+    }
   }
 
   Future<void> init() async {
     await Future.delayed(Duration(seconds: 1));
     await _listenToChatList();
+    //await listenToMyStoredChannels();
     await _listenToInvitations();
-    await listenToMyStoredChannels();
   }
 
   Future<void> _listenToChatList() async {

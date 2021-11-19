@@ -54,6 +54,7 @@ class ChatLeftListener {
           ChatUserViewModel.toParticipants(users, chat), chat);
 
       setMessage(users, chat);
+      await UseMessageProvider.messageProvider.saveChats(newChat: null);
     }
   }
 

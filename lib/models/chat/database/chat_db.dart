@@ -1,6 +1,5 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
-import 'package:ink_mobile/models/chat/database/model/chat_with_users.dart';
 
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/database/tables/channel.dart';
@@ -200,6 +199,14 @@ class ChatDatabase extends _$ChatDatabase {
             );
           }).toList();
         });
+  }
+
+  Future<void> deleteEverything() {
+    return transaction(() async {
+      for (final table in allTables) {
+        await delete(table).go();
+      }
+    });
   }
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB

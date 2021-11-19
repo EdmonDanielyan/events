@@ -69,6 +69,7 @@ class MessageProvider {
       natsProvider: natsProvider,
       chatDatabaseCubit: chatDatabaseCubit,
       userFunctions: userFunctions,
+      channelFunctions: channelFunctions,
     );
     this.userOnlineListener = UserOnlineListener(
       natsProvider: natsProvider,
@@ -156,14 +157,15 @@ class MessageProvider {
 
   void init() async {
     UserFunctions(chatDatabaseCubit).addMe();
-    natsListener.init();
     natsListener.listenToAllMessages();
+    natsListener.init();
     sendUserOnlinePing();
   }
 
   void dispose() async {
     userOnlineTimer.cancel();
     natsProvider.dispose();
+    chatDatabaseCubit.db.deleteEverything();
   }
 
   Future<void> removeChat(ChatTable chat) async {
@@ -322,6 +324,7 @@ class MessageProvider {
     final users = await chatDatabaseCubit.db.getAllUsers();
     final participants = await chatDatabaseCubit.db.getAllParticipants();
     final messages = await chatDatabaseCubit.db.getAllMessages();
+    final channels = await chatDatabaseCubit.db.getAllChannels();
 
     if (newChat != null) {
       for (int i = 0; i < chats.length; i++) {
@@ -339,6 +342,7 @@ class MessageProvider {
       chats: chats,
       participants: participants,
       messages: messages,
+      channels: channels,
     );
   }
 }

@@ -74,6 +74,7 @@ class ChatMessageListener {
       await userFunctions.insertUser(fields.user);
       await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
           .addMessage(fields.message);
+      await UseMessageProvider.messageProvider.saveChats(newChat: null);
     }
   }
 
@@ -84,7 +85,7 @@ class ChatMessageListener {
     ChatTable? myChat = await chatDatabaseCubit.db.selectChatById(chatId);
     final selectedChat = chatDatabaseCubit.selectedChat;
 
-    if (myChat != null && !myChat.notificationsOn) {
+    if (myChat != null && !myChat.notificationsOn!) {
       showNotification = false;
     }
 

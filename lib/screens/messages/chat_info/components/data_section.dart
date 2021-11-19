@@ -83,7 +83,7 @@ class ChatInfoDataSection extends StatelessWidget {
         var str = _strings.turnOff;
         var icon = Icons.volume_off_rounded;
 
-        if (!selectedChat.notificationsOn) {
+        if (!selectedChat.notificationsOn!) {
           str = _strings.turnOn;
           icon = Icons.volume_up_rounded;
         }
@@ -91,7 +91,7 @@ class ChatInfoDataSection extends StatelessWidget {
         return ChatInfoBtnWrapper(
           onTap: () {
             final chat = selectedChat.copyWith(
-                notificationsOn: !selectedChat.notificationsOn);
+                notificationsOn: !selectedChat.notificationsOn!);
             ChatFunctions(_chatDatabaseCubit).updateChat(chat);
           },
           icon: Container(

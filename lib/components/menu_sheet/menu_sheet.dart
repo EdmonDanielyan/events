@@ -92,7 +92,9 @@ class MenuSheet extends StatelessWidget {
       MenuSheetItem(
         title: _strings.signOff,
         onTap: () async {
-          UseMessageProvider.messageProvider.dispose();
+          if (UseMessageProvider.initialized) {
+            UseMessageProvider.messageProvider.dispose();
+          }
           await Token.deleteTokens();
           Navigator.pushNamedAndRemoveUntil(
               _context, '/auth', (route) => false);

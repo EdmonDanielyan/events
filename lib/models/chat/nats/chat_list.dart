@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ink_mobile/functions/chat/channel_functions.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 
@@ -11,12 +12,14 @@ class ChatListFields {
   final List<UserTable> users;
   final List<ParticipantTable> participants;
   final List<MessageTable> messages;
+  final List<ChannelTable> channels;
 
   const ChatListFields({
     required this.chats,
     required this.users,
     required this.participants,
     required this.messages,
+    required this.channels,
   });
 
   Map<String, String> toMap() {
@@ -25,6 +28,7 @@ class ChatListFields {
       'users': ChatUserViewModel.listUsersToString(users),
       'participants': ChatUserViewModel.listParticipantsToString(participants),
       'messages': MessageListView.listMessagesToString(messages),
+      'channels': ChannelFunctions.listChannelsToString(channels),
     };
   }
 
@@ -35,6 +39,7 @@ class ChatListFields {
       participants:
           ChatUserViewModel.getParticipantsFromString(map['participants']),
       messages: MessageListView.getMessagesFromString(map['messages']),
+      channels: ChannelFunctions.getChannelsFromString(map['channels']),
     );
   }
 

@@ -131,12 +131,16 @@ class ChatListTile extends StatelessWidget {
           return CustomCircleAvatar(
             url: chat.avatar,
             indicator: indicator,
+            name: chat.name,
           );
         },
       );
     }
 
-    return CustomCircleAvatar(url: chat.avatar);
+    return CustomCircleAvatar(
+      url: chat.avatar,
+      name: chat.name,
+    );
   }
 
   Widget _displayBody() {

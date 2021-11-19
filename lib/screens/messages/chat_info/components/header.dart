@@ -50,7 +50,10 @@ class ChatInfoHeader extends StatelessWidget {
             crossAxisAlignment:
                 isGroup ? CrossAxisAlignment.start : CrossAxisAlignment.center,
             children: [
-              CustomCircleAvatar(url: newChat.avatar),
+              CustomCircleAvatar(
+                url: newChat.avatar,
+                name: newChat.name,
+              ),
               SizedBox(width: 20.0),
               Expanded(
                 child: Column(

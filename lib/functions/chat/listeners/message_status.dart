@@ -46,6 +46,7 @@ class MessageStatusListener {
     if (fields.senderId != JwtPayload.myId) {
       List<MessageTable> messages = fields.messages;
       messagesToRead(messages, chatFunctions);
+      await UseMessageProvider.messageProvider.saveChats(newChat: null);
     }
   }
 

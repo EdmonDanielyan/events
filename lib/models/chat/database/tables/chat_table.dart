@@ -10,5 +10,6 @@ class ChatTables extends Table {
   IntColumn get participantId => integer().nullable()();
   DateTimeColumn get updatedAt =>
       dateTime().withDefault(Constant(new DateTime.now())).nullable()();
-  BoolColumn get notificationsOn => boolean().withDefault(Constant(true))();
+  BoolColumn get notificationsOn =>
+      boolean().nullable().withDefault(Constant(true))();
 }

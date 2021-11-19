@@ -46,8 +46,6 @@ class ChatJoinedListener {
     ChatInvitationFields fields =
         ChatInvitationFields.fromMap(mapPayload.fields);
 
-    print("ON USER JOINED");
-
     final users = fields.users;
     final chat = fields.chat;
 
@@ -56,6 +54,7 @@ class ChatJoinedListener {
       await userFunctions.addParticipants(
           ChatUserViewModel.toParticipants(users, chat), chat);
       setMessage(users, chat);
+      await UseMessageProvider.messageProvider.saveChats(newChat: null);
     }
   }
 

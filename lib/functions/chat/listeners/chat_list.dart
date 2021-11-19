@@ -1,5 +1,6 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
+import 'package:ink_mobile/functions/chat/channel_functions.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -15,10 +16,12 @@ class ChatListListener {
   final NatsProvider natsProvider;
   final ChatDatabaseCubit chatDatabaseCubit;
   final UserFunctions userFunctions;
+  final ChannelFunctions channelFunctions;
   ChatListListener({
     required this.natsProvider,
     required this.chatDatabaseCubit,
     required this.userFunctions,
+    required this.channelFunctions,
   });
 
   NatsListener get natsListener =>
@@ -42,30 +45,34 @@ class ChatListListener {
 
   Future<void> onMessage(NatsMessage message) async {
     final mapPayload = message.payload! as SystemPayload;
+
     ChatListFields fields = ChatListFields.fromMap(mapPayload.fields);
-    final chats = fields.chats;
+    var chats = fields.chats;
     final users = fields.users;
     final participants = fields.participants;
     final messages = fields.messages;
+    final channels = fields.channels;
 
     if (chats.length > 0) {
+      chats = chats.reversed.toList();
       _insertChats(chats, messages);
     }
 
     _insertUsers(users);
     _insertParticipants(participants);
+    _insertChannels(channels);
   }
 
   Future<void> _insertChats(
       List<ChatTable> chats, List<MessageTable> messages) async {
     final storedChats = await chatDatabaseCubit.db.getAllChats();
+
     for (final chat in chats) {
       bool insert = _chatExistsInStoredChannels(chat, storedChats);
 
       if (insert) {
         await ChatCreation(chatDatabaseCubit).insertChat(chat);
         await _insertMessages(chat, messages);
-        await natsListener.subscribeOnChatCreate(chat.id);
       }
     }
   }
@@ -95,6 +102,16 @@ class ChatListListener {
 
       SendMessage(chat: chat, chatDatabaseCubit: chatDatabaseCubit)
           .addMessagesIfNotExists(insertMessages);
+    }
+  }
+
+  Future<void> _insertChannels(List<ChannelTable> channels) async {
+    if (channels.isNotEmpty) {
+      for (final channel in channels) {
+        await channelFunctions.insertOrUpdate(channel);
+      }
+
+      natsListener.listenToMyStoredChannels();
     }
   }
 }

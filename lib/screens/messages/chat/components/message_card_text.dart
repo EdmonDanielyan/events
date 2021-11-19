@@ -137,7 +137,10 @@ class MessageCardText extends StatelessWidget {
 
   Widget _userAvatarWidget() {
     return SizedBox(
-      child: CustomCircleAvatar(url: user.avatar),
+      child: CustomCircleAvatar(
+        url: user.avatar,
+        name: user.name,
+      ),
       width: 45,
       height: 45,
     );

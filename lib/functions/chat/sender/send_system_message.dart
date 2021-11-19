@@ -24,6 +24,7 @@ class ChatSendMessage {
     required List<UserTable> users,
     required List<ParticipantTable> participants,
     required List<MessageTable> messages,
+    required List<ChannelTable> channels,
   }) async {
     await natsProvider.sendSystemMessageToChannel(
       natsProvider.getPrivateUserChatIdList(userId.toString()),
@@ -33,6 +34,7 @@ class ChatSendMessage {
         users: users,
         participants: participants,
         messages: messages,
+        channels: channels,
       ).toMap(),
     );
   }
