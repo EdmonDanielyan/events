@@ -94,7 +94,10 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
           children: List.generate(
             users.length,
             (index) => Container(
-              child: CustomCircleAvatar(url: users[index].avatar),
+              child: CustomCircleAvatar(
+                url: users[index].avatar,
+                name: users[index].name,
+              ),
             ),
           ),
         ),

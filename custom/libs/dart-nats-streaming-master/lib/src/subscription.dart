@@ -38,8 +38,8 @@ class Subscription {
       var messageProto = MsgProto.fromBuffer(message.data);
       var stanMessage = DataMessage.fromProto(messageProto);
 
-      // print(
-      //     'Subject: [${stanMessage.subject}] Sequence: [${stanMessage.sequence}] isRedelivery: [${stanMessage.isRedelivery}]');
+      print(
+          'Subject: [${stanMessage.subject}] Sequence: [${stanMessage.sequence}] isRedelivery: [${stanMessage.isRedelivery}]');
 
       sink.add(stanMessage);
     },

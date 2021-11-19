@@ -287,7 +287,11 @@ class Client {
   Future<void> pingResponseWatchdog() async {
     _inboxSub = natsClient.sub(connectionID);
     await for (nats.Message message in _inboxSub!.stream!) {
-      natsClient.pubString(message.replyTo!, '');
+      try {
+        natsClient.pubString(message.replyTo!, '');
+      } catch (_) {
+        //COULD throw on manual disconnect
+      }
     }
   }
 
@@ -438,7 +442,7 @@ class Client {
         _connectResponse!.subRequests,
         subscriptionRequest.writeToBuffer(),
         queueGroup: subscriptionRequest.qGroup,
-        timeout: Duration(seconds: 2),
+        timeout: Duration(seconds: 5),
       );
 
       SubscriptionResponse subscriptionResponse =
@@ -460,7 +464,8 @@ class Client {
       ..sequence = dataMessage.sequence;
 
     if (dataMessage.isRedelivery) {
-      print('NOT ACKNOWLEDGING ${subscription.ackInbox}');
+      print(
+          'NOT ACKNOWLEDGING ${subscription.ackInbox} from ${dataMessage.subject} with seq ${dataMessage.sequence}');
     }
 
     natsClient.pub(subscription.ackInbox, ack.writeToBuffer());

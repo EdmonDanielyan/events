@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/token.dart';
 
 import 'chat_user.dart';
@@ -37,4 +40,49 @@ class ChatListView {
 
   static bool strContainsValue(String str, String value) =>
       str.toLowerCase().contains(value.toLowerCase());
+
+  static String listChatsToString(List<ChatTable> chats) {
+    List<String> object = [];
+
+    for (final chat in chats) {
+      object.add(chat.toJsonString());
+    }
+
+    return jsonEncode(object);
+  }
+
+  static List<ChatTable> getChatsFromString(String data) {
+    List<ChatTable> chats = [];
+
+    final items = jsonDecode(data) as List<dynamic>;
+
+    for (final item in items) {
+      chats.add(ChatTable.fromJson(jsonDecode(item)));
+    }
+
+    return chats;
+  }
+
+  static String listChatsWithParticipantsToString(
+      List<ChatInvitationFields> chats) {
+    List<String> object = [];
+
+    for (final chat in chats) {
+      object.add(chat.toJson());
+    }
+
+    return jsonEncode(object);
+  }
+
+  static List<ChatInvitationFields> listChatsFromString(String data) {
+    List<ChatInvitationFields> chats = [];
+
+    final items = jsonDecode(data) as List<dynamic>;
+
+    for (final item in items) {
+      chats.add(ChatInvitationFields.fromJson(jsonDecode(item)));
+    }
+
+    return chats;
+  }
 }

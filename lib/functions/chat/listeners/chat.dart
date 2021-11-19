@@ -74,8 +74,6 @@ class ChatMessageListener {
       await userFunctions.insertUser(fields.user);
       await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
           .addMessage(fields.message);
-      await chatSendMessage.saveToPrivateUserChatIdList(
-          userId: JwtPayload.myId, channel: channel, chat: chat);
     }
   }
 

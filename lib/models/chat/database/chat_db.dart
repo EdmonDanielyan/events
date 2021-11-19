@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
+import 'package:ink_mobile/models/chat/database/model/chat_with_users.dart';
 
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/database/tables/channel.dart';
@@ -38,6 +39,7 @@ class ChatDatabase extends _$ChatDatabase {
       (select(chatTables)..where((tbl) => tbl.id.equals(chatId)))
           .getSingleOrNull();
   Future<List<ChatTable>> getAllChats() => select(chatTables).get();
+
   Stream<List<ChatTable>> searchChats(String query) {
     return (select(chatTables)
           ..where((tbl) => tbl.name.like('%$query%'))
@@ -63,6 +65,7 @@ class ChatDatabase extends _$ChatDatabase {
       (delete(chatTables)..where((tbl) => tbl.id.equals(id))).go();
 
   //MESSAGES
+  Future<List<MessageTable>> getAllMessages() => select(messageTables).get();
   Future<MessageTable?> selectMessageById(String id) =>
       (select(messageTables)..where((tbl) => tbl.id.equals(id)))
           .getSingleOrNull();
@@ -143,6 +146,7 @@ class ChatDatabase extends _$ChatDatabase {
       (delete(messageTables)..where((tbl) => tbl.id.equals(id))).go();
 
   //USER
+  Future<List<UserTable>> getAllUsers() => select(userTables).get();
   Future<int> insertUser(UserTable user) => into(userTables).insert(user);
   Future<int> updateUser(int id, UserTable user) =>
       (update(userTables)..where((tbl) => tbl.id.equals(id))).write(user);
@@ -166,6 +170,8 @@ class ChatDatabase extends _$ChatDatabase {
       (delete(channelTables)..where((tbl) => tbl.to.equals(channelName))).go();
 
   /// PARTICIPANTS
+  Future<List<ParticipantTable>> getAllParticipants() =>
+      select(participantTables).get();
   Future<int> insertParticipant(ParticipantTable participant) =>
       into(participantTables).insert(participant);
   Future deleteParticipant(int userId, String chatId) =>
@@ -177,6 +183,7 @@ class ChatDatabase extends _$ChatDatabase {
       (select(participantTables)
             ..where((tbl) => tbl.userId.equals(id) & tbl.chatId.equals(chatId)))
           .getSingleOrNull();
+
   Stream<List<ParticipantWithUser>> watchParticipants(String chatId) {
     return (select(participantTables)
           ..where((tbl) => tbl.chatId.equals(chatId)))

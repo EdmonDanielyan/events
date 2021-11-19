@@ -73,6 +73,7 @@ class ParticipantCard extends StatelessWidget {
       url: overrideAvatar ?? user?.avatar,
       indicator: indicatorIsOn && user != null && user!.online ? true : false,
       indicatorSize: 8.0,
+      name: user?.name ?? "",
     );
   }
 

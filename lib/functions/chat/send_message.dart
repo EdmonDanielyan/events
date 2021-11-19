@@ -65,6 +65,18 @@ class SendMessage {
     return message.id;
   }
 
+  Future<void> addMessagesIfNotExists(List<MessageTable> messages) async {
+    if (messages.isNotEmpty) {
+      for (final message in messages) {
+        final msg = await chatDatabaseCubit.db.selectMessageById(message.id);
+
+        if (msg == null) {
+          addMessage(message);
+        }
+      }
+    }
+  }
+
   static MessageTable? joinedLeftMessage(
       {required String chatId,
       required String userName,

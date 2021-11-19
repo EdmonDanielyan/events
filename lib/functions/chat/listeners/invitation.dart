@@ -5,7 +5,6 @@ import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
-import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:fixnum/fixnum.dart';
@@ -45,9 +44,9 @@ class ChatInvitationListener {
         ChatInvitationFields.fromMap(mapPayload.fields);
     late ChatTable chat =
         ChatListView.changeChatForParticipant(fields.chat, fields.users);
-    await chatSendMessage.saveToPrivateUserChatIdList(
-        userId: JwtPayload.myId, channel: channel, chat: chat);
+
     await ChatCreation(chatDatabaseCubit).createDynamically(chat, fields.users);
+    await UseMessageProvider.messageProvider.saveChats(newChat: chat);
 
     _chatLinkedListeners(chat.id);
   }

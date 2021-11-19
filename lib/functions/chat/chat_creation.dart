@@ -61,7 +61,7 @@ class ChatCreation {
         participantId: user.id,
       );
 
-      await _insertChat(chatExists);
+      await insertChat(chatExists);
     }
     await UserFunctions(chatDatabaseCubit).insertUsers(users);
 
@@ -78,12 +78,12 @@ class ChatCreation {
 
     final chatExists = await isChatExists(newChat.id);
     if (chatExists == null) {
-      await _insertChat(newChat);
+      await insertChat(newChat);
     }
 
     final userFunctions = UserFunctions(chatDatabaseCubit);
     await userFunctions.insertUsers(users);
-    await userFunctions.insertParticipants(
+    await userFunctions.addParticipants(
         ChatUserViewModel.toParticipants(users, newChat), newChat);
 
     return newChat;
@@ -112,7 +112,7 @@ class ChatCreation {
     );
   }
 
-  Future<int> _insertChat(ChatTable chat) async {
+  Future<int> insertChat(ChatTable chat) async {
     return await chatDatabaseCubit.db.insertChat(chat);
   }
 

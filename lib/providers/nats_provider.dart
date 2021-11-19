@@ -12,7 +12,10 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
+// ignore: implementation_imports
+import 'package:dart_nats_streaming/src/protocol.dart';
 
 const PUBLIC_CHATS = 'ink.messaging.public';
 const GROUP_CHANNEL = 'ink.messaging.group';
@@ -51,7 +54,6 @@ class NatsProvider {
       throw NoConnectionException();
     }
 
-    _listenPrivateUserChatIdList();
     return true;
   }
 
@@ -100,12 +102,15 @@ class NatsProvider {
   Iterable<String> get subscribedChannels => _channelSubscriptions.keys;
 
   /// Subscribe to [channel] using [startSequence] if needed
-  Future<bool> subscribeToChannel(String channel,
-      Future<void> Function(String, NatsMessage) onMessageFuture,
-      {Int64 startSequence = Int64.ZERO}) async {
+  Future<bool> subscribeToChannel(
+    String channel,
+    Future<void> Function(String, NatsMessage) onMessageFuture, {
+    Int64 startSequence = Int64.ZERO,
+    StartPosition? startPosition,
+  }) async {
     if (!_channelSubscriptions.containsKey(channel)) {
-      var subscription =
-          await _subscribeToChannel(channel, startSequence: startSequence);
+      var subscription = await _subscribeToChannel(channel,
+          startPosition: startPosition, startSequence: startSequence);
 
       _listenBySubscription(channel, subscription);
       _channelSubscriptions[channel] = subscription;
@@ -154,31 +159,22 @@ class NatsProvider {
 
   String getPublicChatIdList() =>
       '$PUBLIC_CHATS.${describeEnum(MessageType.ChatList)}';
-
   String getPrivateUserChatIdList(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.ChatList)}.$userId';
-
   String getPrivateUserTextChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.Text)}.$userId';
-
   String getGroupTextChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.Text)}.$chatId';
-
   String getGroupReactedChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UserReacted)}.$chatId';
-
   String getGroupJoinedChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UserJoined)}.$chatId';
-
   String getGroupLeftChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UserLeftChat)}.$chatId';
-
   String getGroupDeleteMessageChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.RemoveMessage)}.$chatId';
-
   String getGroupTextingChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.Texting)}.$chatId';
-
   String getInviteUserToJoinChatChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.InviteUserToJoinChat)}.$userId';
   String getGroupChatInfoById(String chatId) =>
@@ -186,7 +182,7 @@ class NatsProvider {
   String getUserOnlineChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.Online)}.$userId';
 
-  NatsMessage _parseMessage(dataMessage) {
+  NatsMessage parseMessage(dataMessage) {
     var payload = (dataMessage as DataMessage).encodedPayload;
     var sequence = dataMessage.sequence;
     var message = NatsMessage.fromBytes(payload);
@@ -194,54 +190,45 @@ class NatsProvider {
     return message;
   }
 
-  Future<void> _listenPrivateUserChatIdList(
+  Future<Subscription?> listenChatList(String channel,
       {Int64 startSequence = Int64.ZERO}) async {
-    await listenChatList(getPrivateUserChatIdList(userId), userChatIdList,
-        startSequence: startSequence);
-  }
+    var _subscriptionToPublicChannel = await _subscribeToChannel(channel,
+        startPosition: StartPosition.LastReceived);
 
-  Future<void> listenChatList(String channel, Set<String> chatIdList,
-      {Int64 startSequence = Int64.ZERO}) async {
-    var _subscriptionToPublicChannel =
-        await _subscribeToChannel(channel, startSequence: startSequence);
-    if (_subscriptionToPublicChannel == null) {
-      return;
-    }
-    await for (final dataMessage in _subscriptionToPublicChannel.stream) {
-      NatsMessage message = _parseMessage(dataMessage);
-      var systemPayload = message.getSystemPayload();
-      if (systemPayload.type == MessageType.ChatList) {
-        systemPayload.fields.forEach((channel, action) {
-          if (action == DELETE_ACTION) {
-            chatIdList.remove(channel);
-          } else {
-            chatIdList.add(channel);
-          }
-        });
-      }
-
-      if (message.needAck) {
-        _stan.acknowledge(_subscriptionToPublicChannel, dataMessage);
-      }
-    }
+    return _subscriptionToPublicChannel;
   }
 
   Future<Subscription?> _subscribeToChannel(channel,
-      {Int64 startSequence = Int64.ZERO}) async {
+      {StartPosition? startPosition, Int64 startSequence = Int64.ZERO}) async {
     var durableName = "$userId-$deviceVirtualId-$channel";
 
     var subscription = startSequence != Int64.ZERO
         ? await _stan.subscribe(
             subject: channel,
             maxInFlight: 1,
+            startPosition: startPosition ?? _getPosition(channel),
             durableName: durableName,
             startSequence: startSequence)
         : await _stan.subscribe(
             subject: channel,
             maxInFlight: 1,
+            startPosition: startPosition ?? StartPosition.NewOnly,
             durableName: durableName,
           );
     return subscription;
+  }
+
+  StartPosition _getPosition(String channel) {
+    final msgType = MessageListView.getTypeByChannel(channel);
+
+    if (msgType != null) {
+      if (_startSeqTypes.contains(msgType)) return StartPosition.SequenceStart;
+
+      if (_lastReceivedType.contains(msgType))
+        return StartPosition.LastReceived;
+    }
+
+    return StartPosition.NewOnly;
   }
 
   Future<void> _listenBySubscription(
@@ -250,14 +237,17 @@ class NatsProvider {
 
     await for (final dataMessage in subscription.stream) {
       if (_channelSubscriptions.containsKey(channel)) {
-        NatsMessage message = _parseMessage(dataMessage);
-        await onMessage(channel, message);
-        Future<void> Function(String, NatsMessage) channelCallback =
-            _channelCallbacks[channel]!;
-        await channelCallback(channel, message);
+        NatsMessage message = parseMessage(dataMessage);
+
+        if (!dataMessage.isRedelivery) {
+          await onMessage(channel, message);
+          Future<void> Function(String, NatsMessage) channelCallback =
+              _channelCallbacks[channel]!;
+          await channelCallback(channel, message);
+        }
 
         if (message.needAck) {
-          _stan.acknowledge(subscription, dataMessage);
+          acknowledge(subscription, dataMessage);
         }
       } else {
         break;
@@ -265,9 +255,23 @@ class NatsProvider {
     }
   }
 
+  void acknowledge(Subscription subscription, DataMessage message) {
+    _stan.acknowledge(subscription, message);
+  }
+
   final Set<String> userChatIdList = {};
   final Set<String> publicChatIdList = {};
   final Map<String, Subscription?> _channelSubscriptions = {};
+  final Set<MessageType> _lastReceivedType = {
+    MessageType.UpdateChatInfo,
+    MessageType.ChatList,
+  };
+  final Set<MessageType> _startSeqTypes = {
+    MessageType.InviteUserToJoinChat,
+    MessageType.Text,
+    MessageType.Document,
+    MessageType.RemoveMessage,
+  };
   Future<void> Function(String, NatsMessage) onMessage =
       (channel, message) async {
     print(message);

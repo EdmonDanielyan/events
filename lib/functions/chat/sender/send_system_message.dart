@@ -2,6 +2,7 @@ import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/chat_info.dart';
+import 'package:ink_mobile/models/chat/nats/chat_list.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/chat/nats/message.dart';
 import 'package:ink_mobile/models/chat/nats/message_delete.dart';
@@ -19,19 +20,21 @@ class ChatSendMessage {
 
   Future<void> saveToPrivateUserChatIdList({
     required int userId,
-    required String channel,
-    required ChatTable chat,
-    bool public = false,
+    required List<ChatTable> chats,
+    required List<UserTable> users,
+    required List<ParticipantTable> participants,
+    required List<MessageTable> messages,
   }) async {
-    // await natsProvider.sendSystemMessageToChannel(
-    //   natsProvider.getPrivateUserChatIdList(userId.toString()),
-    //   MessageType.ChatList,
-    //   {
-    //     chat.id: "",
-    //     "channel": channel,
-    //     "chat": chat.toJsonString(),
-    //   },
-    // );
+    await natsProvider.sendSystemMessageToChannel(
+      natsProvider.getPrivateUserChatIdList(userId.toString()),
+      MessageType.ChatList,
+      ChatListFields(
+        chats: chats,
+        users: users,
+        participants: participants,
+        messages: messages,
+      ).toMap(),
+    );
   }
 
   Future<void> removeFromPrivateUserChatIdList({
@@ -61,7 +64,6 @@ class ChatSendMessage {
       natsProvider.getInviteUserToJoinChatChannel(user.id),
       MessageType.InviteUserToJoinChat,
       ChatInvitationFields(
-        channel: chatChannel,
         chat: chat,
         users: users,
       ).toMap(),
@@ -118,7 +120,6 @@ class ChatSendMessage {
       channel,
       MessageType.UserJoined,
       ChatInvitationFields(
-        channel: channel,
         users: users,
         chat: chat,
       ).toMap(),
@@ -134,7 +135,6 @@ class ChatSendMessage {
       channel,
       MessageType.UserLeftChat,
       ChatInvitationFields(
-        channel: channel,
         users: users,
         chat: chat,
       ).toMap(),

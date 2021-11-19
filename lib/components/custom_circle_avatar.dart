@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/models/chat/chat_user.dart';
 
 class CustomCircleAvatar extends StatelessWidget {
   final String? url;
@@ -10,6 +11,7 @@ class CustomCircleAvatar extends StatelessWidget {
   final double indicatorSize;
   final double? avatarWidth;
   final double? avatarHeight;
+  final String name;
   const CustomCircleAvatar({
     Key? key,
     this.url,
@@ -18,6 +20,7 @@ class CustomCircleAvatar extends StatelessWidget {
     this.indicator,
     this.avatarWidth,
     this.avatarHeight,
+    this.name = "",
     this.indicatorSize = 12.0,
   })  : assert(url != null || file != null || imageProvider != null),
         super(key: key);
@@ -65,11 +68,14 @@ class CustomCircleAvatar extends StatelessWidget {
   Widget getAvatarByUrl({ImageProvider? imgProvider}) {
     return CircleAvatar(
       radius: 30,
-      backgroundColor: Colors.grey,
-      backgroundImage:
-          imgProvider ?? AssetImage("assets/images/avatars/avatar_default.png"),
+      backgroundColor: Colors.purple,
+      backgroundImage: imgProvider ??
+          (name.isEmpty
+              ? AssetImage("assets/images/avatars/avatar_default.png")
+              : null),
       foregroundImage: NetworkImage(url!),
       onForegroundImageError: (Object exception, _) {},
+      child: name.isEmpty ? null : Text(ChatUserViewModel.cutName(name)),
     );
   }
 

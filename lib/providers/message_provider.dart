@@ -7,6 +7,7 @@ import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/all.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat_info.dart';
+import 'package:ink_mobile/functions/chat/listeners/chat_list.dart';
 import 'package:ink_mobile/functions/chat/listeners/delete_message.dart';
 import 'package:ink_mobile/functions/chat/listeners/invitation.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
@@ -26,11 +27,13 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 import '../setup.dart';
 
 class UseMessageProvider {
+  static late bool initialized = false;
   static late MessageProvider messageProvider;
 
   static void initMessageProvider(
       NatsProvider natsProvider, ChatDatabaseCubit chatDatabaseCubit) {
     messageProvider = MessageProvider(natsProvider, chatDatabaseCubit);
+    initialized = true;
   }
 }
 
@@ -52,6 +55,7 @@ class MessageProvider {
   late MessageDeletedListener messageDeletedListener;
   late ChatInfoListener chatInfoListener;
   late UserOnlineListener userOnlineListener;
+  late ChatListListener chatListListener;
   late ChatCubit chatCubit;
   late Timer userOnlineTimer;
 
@@ -61,6 +65,11 @@ class MessageProvider {
     this.channelFunctions = ChannelFunctions(chatDatabaseCubit);
     this.chatFunctions = ChatFunctions(chatDatabaseCubit);
     this.chatSendMessage = ChatSendMessage(natsProvider);
+    this.chatListListener = ChatListListener(
+      natsProvider: natsProvider,
+      chatDatabaseCubit: chatDatabaseCubit,
+      userFunctions: userFunctions,
+    );
     this.userOnlineListener = UserOnlineListener(
       natsProvider: natsProvider,
       chatDatabaseCubit: chatDatabaseCubit,
@@ -119,6 +128,7 @@ class MessageProvider {
       chatLeftListener: chatLeftListener,
       messageDeletedListener: messageDeletedListener,
       chatInfoListener: chatInfoListener,
+      chatListListener: chatListListener,
     );
     this.chatCreation = ChatCreation(chatDatabaseCubit);
   }
@@ -156,6 +166,12 @@ class MessageProvider {
     natsProvider.dispose();
   }
 
+  Future<void> removeChat(ChatTable chat) async {
+    await sendUserLeftMessage(chat, [UserFunctions.getMe]);
+    await natsListener.unSubscribeOnChatDelete(chat.id);
+    saveChats(newChat: null);
+  }
+
   Future<ChatTable> createChat(UserTable user) async {
     ChatTable? chat;
     List<UserTable> users = [user, UserFunctions.getMe];
@@ -182,8 +198,7 @@ class MessageProvider {
     natsListener.subscribeOnChatCreate(chat.id);
 
     await inviteUsers(chat, users);
-    await chatSendMessage.saveToPrivateUserChatIdList(
-        userId: JwtPayload.myId, channel: getChatChannel(chat.id), chat: chat);
+    await saveChats(newChat: null);
   }
 
   Future<void> inviteUsers(ChatTable chat, List<UserTable> users) async {
@@ -197,12 +212,15 @@ class MessageProvider {
         );
       }
     }
+    saveChats(newChat: null);
   }
 
   Future<void> sendMessage(ChatTable chat, MessageTable message) async {
     bool success = await sendTxtMessage(chat, message);
     MessageStatus status = success ? MessageStatus.SENT : MessageStatus.ERROR;
     chatFunctions.updateMessageStatus(message, status);
+
+    saveChats(newChat: null);
   }
 
   Future<bool> sendTxtMessage(
@@ -226,6 +244,8 @@ class MessageProvider {
           await chatSendMessage.sendDeleteMessage(channel, messages: messages);
 
       if (success) chatFunctions.deleteMessages(messages);
+
+      saveChats(newChat: null);
     }
   }
 
@@ -252,6 +272,7 @@ class MessageProvider {
       chat: chat,
       users: users,
     );
+    saveChats(newChat: null);
     return send;
   }
 
@@ -262,6 +283,7 @@ class MessageProvider {
       chat: chat,
       users: users,
     );
+    saveChats(newChat: null);
     return send;
   }
 
@@ -271,6 +293,7 @@ class MessageProvider {
       chat: chat,
       user: user ?? UserFunctions.getMe,
     );
+    saveChats(newChat: null);
     return send;
   }
 
@@ -287,6 +310,35 @@ class MessageProvider {
       (timer) {
         chatSendMessage.sendUserOnlinePing(channel, user!);
       },
+    );
+  }
+
+  Future<void> saveChats({
+    required ChatTable? newChat,
+    List<ChatTable>? chats,
+    int? userId,
+  }) async {
+    chats = chats ?? await chatDatabaseCubit.db.getAllChats();
+    final users = await chatDatabaseCubit.db.getAllUsers();
+    final participants = await chatDatabaseCubit.db.getAllParticipants();
+    final messages = await chatDatabaseCubit.db.getAllMessages();
+
+    if (newChat != null) {
+      for (int i = 0; i < chats.length; i++) {
+        if (chats[i].id == newChat.id) {
+          chats.removeAt(i);
+        }
+      }
+
+      chats.add(newChat);
+    }
+
+    await chatSendMessage.saveToPrivateUserChatIdList(
+      userId: userId ?? JwtPayload.myId,
+      users: users,
+      chats: chats,
+      participants: participants,
+      messages: messages,
     );
   }
 }

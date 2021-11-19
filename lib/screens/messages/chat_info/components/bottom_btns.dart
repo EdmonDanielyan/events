@@ -27,10 +27,7 @@ class ChatInfoBottomBtns extends StatelessWidget {
   void _deleteChat(BuildContext context) {
     _clearMessages();
     _chatFunctions.deleteChat(chat.id);
-    UseMessageProvider.messageProvider
-        .sendUserLeftMessage(chat, [UserFunctions.getMe]);
-    UseMessageProvider.messageProvider.natsListener
-        .unSubscribeOnChatDelete(chat.id);
+    UseMessageProvider.messageProvider.removeChat(chat);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 

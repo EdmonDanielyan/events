@@ -17,10 +17,14 @@ class ChatUserViewModel {
   static List<UserTable> getUsersFromString(String data) {
     List<UserTable> users = [];
 
-    final items = jsonDecode(data) as List<dynamic>;
+    try {
+      final items = jsonDecode(data) as List<dynamic>;
 
-    for (final item in items) {
-      users.add(UserTable.fromJson(jsonDecode(item)));
+      for (final item in items) {
+        users.add(UserTable.fromJson(jsonDecode(item)));
+      }
+    } on NoSuchMethodError {
+      //DATA IS EMPTY
     }
 
     return users;
@@ -91,5 +95,45 @@ class ChatUserViewModel {
     }
 
     return null;
+  }
+
+  static String listParticipantsToString(List<ParticipantTable> participants) {
+    List<String> object = [];
+
+    for (final participant in participants) {
+      object.add(participant.toJsonString());
+    }
+
+    return jsonEncode(object);
+  }
+
+  static List<ParticipantTable> getParticipantsFromString(String data) {
+    List<ParticipantTable> participants = [];
+
+    try {
+      final items = jsonDecode(data) as List<dynamic>;
+
+      for (final item in items) {
+        participants.add(ParticipantTable.fromJson(jsonDecode(item)));
+      }
+    } on NoSuchMethodError {
+      //DATA IS EMPTY
+    }
+
+    return participants;
+  }
+
+  static String cutName(String name) {
+    String newName = name;
+    final splitName = newName.split(" ");
+    if (splitName.length >= 2 &&
+        splitName[0].length > 1 &&
+        splitName[1].length > 1) {
+      newName = "${splitName[0][0]}${splitName[1][0]}".trim();
+    } else if (name.length >= 2) {
+      newName = "${name[0]}${name[1]}".trim();
+    }
+
+    return newName;
   }
 }

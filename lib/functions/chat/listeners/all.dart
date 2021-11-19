@@ -2,11 +2,13 @@ import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat_info.dart';
+import 'package:ink_mobile/functions/chat/listeners/chat_list.dart';
 import 'package:ink_mobile/functions/chat/listeners/delete_message.dart';
 import 'package:ink_mobile/functions/chat/listeners/joined.dart';
 import 'package:ink_mobile/functions/chat/listeners/left.dart';
 import 'package:ink_mobile/functions/chat/listeners/message_status.dart';
 import 'package:ink_mobile/functions/chat/listeners/texting.dart';
+import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
@@ -26,6 +28,7 @@ class NatsListener {
   final ChatLeftListener chatLeftListener;
   final MessageDeletedListener messageDeletedListener;
   final ChatInfoListener chatInfoListener;
+  final ChatListListener chatListListener;
 
   NatsListener({
     required this.natsProvider,
@@ -38,6 +41,7 @@ class NatsListener {
     required this.chatLeftListener,
     required this.messageDeletedListener,
     required this.chatInfoListener,
+    required this.chatListListener,
   });
 
   String lastChannelStr = "";
@@ -69,7 +73,10 @@ class NatsListener {
     return channels;
   }
 
-  List<MessageType> notStorableTypes = [MessageType.Online];
+  Set<MessageType> notStorableTypes = {
+    MessageType.Online,
+    MessageType.ChatList
+  };
 
   String get _inviteUserChannel =>
       natsProvider.getInviteUserToJoinChatChannel(JwtPayload.myId);
@@ -85,15 +92,21 @@ class NatsListener {
 
   Future<void> init() async {
     await Future.delayed(Duration(seconds: 1));
-    _listenToInvitations();
-    listenToMyStoredChannels();
+    await _listenToChatList();
+    await _listenToInvitations();
+    await listenToMyStoredChannels();
+  }
+
+  Future<void> _listenToChatList() async {
+    await chatListListener.listenTo(UserFunctions.getMe);
   }
 
   Future<void> _listenToInvitations() async {
     final exists = await channelFunctions.channelExists(_inviteUserChannel);
 
     if (!exists) {
-      _subscribeToChannel(MessageType.InviteUserToJoinChat, _inviteUserChannel);
+      await _subscribeToChannel(
+          MessageType.InviteUserToJoinChat, _inviteUserChannel);
     }
   }
 
@@ -102,7 +115,7 @@ class NatsListener {
     if (channels.isNotEmpty) {
       for (final channel in channels) {
         Int64 currentSeq = Int64.parseInt(channel.sequence).toInt64();
-        Int64 sequence = currentSeq == 0 ? currentSeq : currentSeq;
+        Int64 sequence = currentSeq == 0 ? currentSeq : currentSeq + 1;
         await _subscribeToChannel(channel.messageType, channel.to,
             startSequence: sequence);
       }
@@ -122,11 +135,9 @@ class NatsListener {
         await messageDeletedListener.listenTo(channel,
             startSequence: startSequence);
       } else if (type == MessageType.UserReacted) {
-        await messageStatusListener.listenTo(channel,
-            startSequence: startSequence);
+        await messageStatusListener.listenTo(channel);
       } else if (type == MessageType.Texting) {
-        await messageTextingListener.listenTo(channel,
-            startSequence: startSequence);
+        await messageTextingListener.listenTo(channel);
       } else if (type == MessageType.UserJoined) {
         await chatJoinedListener.listenTo(channel,
             startSequence: startSequence);

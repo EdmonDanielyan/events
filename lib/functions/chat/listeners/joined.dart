@@ -53,7 +53,7 @@ class ChatJoinedListener {
 
     if (users.isNotEmpty) {
       await userFunctions.insertUsers(users);
-      await userFunctions.insertParticipants(
+      await userFunctions.addParticipants(
           ChatUserViewModel.toParticipants(users, chat), chat);
       setMessage(users, chat);
     }
