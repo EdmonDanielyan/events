@@ -149,7 +149,9 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
           onDelete: () {
             final messages = MessageWithUserListView.getMessagesFromList(
                 selectableCubit.getItems);
-            UseMessageProvider.messageProvider.deleteMessages(messages);
+            if (UseMessageProvider.initialized) {
+              UseMessageProvider.messageProvider.deleteMessages(messages);
+            }
             selectableCubit.clearAll();
           },
           onSendOn: () {

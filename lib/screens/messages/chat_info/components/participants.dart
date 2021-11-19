@@ -64,10 +64,12 @@ class ChatInfoParticipants extends StatelessWidget {
     List<UserTable> selectedUsers = _selectableCubit.getItems;
     List<UserTable> userParticipants =
         ParticipantWithUserListView.getUsers(participants);
-    UseMessageProvider.messageProvider
-        .inviteUsers(chat, userParticipants..addAll(selectedUsers));
-    UseMessageProvider.messageProvider
-        .sendUserJoinedMessage(chat, selectedUsers);
+    if (UseMessageProvider.initialized) {
+      UseMessageProvider.messageProvider
+          .inviteUsers(chat, userParticipants..addAll(selectedUsers));
+      UseMessageProvider.messageProvider
+          .sendUserJoinedMessage(chat, selectedUsers);
+    }
     Navigator.of(context).pop();
   }
 

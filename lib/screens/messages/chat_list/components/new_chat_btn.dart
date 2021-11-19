@@ -60,9 +60,11 @@ class NewChatBtn extends StatelessWidget {
   }
 
   Future<void> _createChat(UserTable user, BuildContext context) async {
-    ChatTable newChat =
-        await UseMessageProvider.messageProvider.createChat(user);
-    Navigator.of(context).pop();
-    OpenChat(_chatDatabaseCubit, newChat).call(context);
+    if (UseMessageProvider.initialized) {
+      ChatTable newChat =
+          await UseMessageProvider.messageProvider.createChat(user);
+      Navigator.of(context).pop();
+      OpenChat(_chatDatabaseCubit, newChat).call(context);
+    }
   }
 }

@@ -29,11 +29,13 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
   String chatName = "";
 
   Future<void> _onCreate(BuildContext context) async {
-    ChatTable newChat = await UseMessageProvider.messageProvider
-        .createGroup(name: chatName, users: users);
+    if (UseMessageProvider.initialized) {
+      ChatTable newChat = await UseMessageProvider.messageProvider
+          .createGroup(name: chatName, users: users);
 
-    Navigator.of(context).popUntil((route) => route.isFirst);
-    OpenChat(widget.chatDatabaseCubit, newChat).call(context);
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      OpenChat(widget.chatDatabaseCubit, newChat).call(context);
+    }
   }
 
   @override

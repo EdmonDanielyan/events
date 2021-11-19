@@ -128,7 +128,10 @@ class NatsProvider {
 
   /// Unsubscribe from [channel] using [startSequence] if needed
   Future<void> unsubscribeFromChannel(String channel) async {
+    _stan.unsubscribeByChannel(channel);
+
     if (_channelSubscriptions.containsKey(channel)) {
+      _channelSubscriptions[channel]?.subscription.close();
       _channelSubscriptions.remove(channel);
     }
     if (_channelCallbacks.containsKey(channel)) {

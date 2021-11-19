@@ -256,6 +256,7 @@ class MessageProvider {
     final channel = getMessageStatusChannel(chatId);
     bool send = await chatSendMessage.sendMessageStatus(channel, messages);
     await MessageStatusListener.messagesToRead(messages, chatFunctions);
+    saveChats(newChat: null);
     return send;
   }
 

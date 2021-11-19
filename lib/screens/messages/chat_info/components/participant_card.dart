@@ -36,7 +36,7 @@ class ParticipantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     _strings = localizationInstance;
 
-    if (indicatorIsOn && user != null) {
+    if (indicatorIsOn && user != null && UseMessageProvider.initialized) {
       UseMessageProvider.messageProvider.subscribeToUserOnline(user!);
     }
 

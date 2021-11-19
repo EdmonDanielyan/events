@@ -34,7 +34,10 @@ class _PersonListBodyState extends State<PersonListBody> {
         chatDatabaseCubit: _chatDatabaseCubit,
         chat: chat,
       ).addMessage(newMessage);
-      await UseMessageProvider.messageProvider.sendMessage(chat, newMessage);
+
+      if (UseMessageProvider.initialized) {
+        await UseMessageProvider.messageProvider.sendMessage(chat, newMessage);
+      }
     }
     Future.delayed(Duration(milliseconds: 300), () {
       Navigator.of(context).popUntil((route) => route.isFirst);

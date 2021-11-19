@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
+import 'dart:math';
 
 class CustomCircleAvatar extends StatelessWidget {
   final String? url;
@@ -77,7 +78,10 @@ class CustomCircleAvatar extends StatelessWidget {
       onForegroundImageError: (Object exception, _) {},
       child: name.isEmpty
           ? null
-          : Text(ChatUserViewModel.cutName(name).toUpperCase()),
+          : Text(
+              ChatUserViewModel.cutName(name).toUpperCase(),
+              style: TextStyle(color: Colors.white),
+            ),
     );
   }
 

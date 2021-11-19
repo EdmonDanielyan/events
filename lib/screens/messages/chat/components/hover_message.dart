@@ -33,8 +33,11 @@ class HoverMessage extends StatelessWidget {
 
   MessageTable get message => messageWithUser.message!;
 
-  void _onDelete(BuildContext context) =>
+  void _onDelete(BuildContext context) {
+    if (UseMessageProvider.initialized) {
       UseMessageProvider.messageProvider.deleteMessages([message]);
+    }
+  }
 
   void _onCopy(BuildContext context) {
     Clipboard.setData(new ClipboardData(text: message.message));
