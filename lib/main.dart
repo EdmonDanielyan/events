@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ink_mobile/app.dart';
@@ -19,27 +20,15 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/global_providers.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
-import 'package:ink_mobile/providers/notifications.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/themes/light.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:logging/logging.dart';
 import 'cubit/boot/boot_cubit.dart';
 
 void main() async {
-  await setup();
-  NotificationsProvider.init();
   runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    FlutterError.onError = (FlutterErrorDetails details) {
-      FlutterError.dumpErrorToConsole(details);
-      ErrorsToServer(
-        error: details.exception.toString(),
-        stack: details.stack.toString(),
-      ).send();
-      // exit(1);
-    };
+    await setup();
 
     runApp(InkMobile(onAppStart: () async {
       await sl<TokenDataHolder>().update();
@@ -53,11 +42,9 @@ void main() async {
   }, (Object error, StackTrace stack) {
     if (error is CustomException) {
       ErrorCatcher catcher = ErrorCatcher.getInstance();
-
       catcher.onError(error, stack);
     } else {
-      print(error);
-      print(stack.toString());
+      Logger('general').severe('Unexpected error', error, stack);
       showErrorDialog(ErrorMessages.UNKNOWN_ERROR_MESSAGE);
     }
   });

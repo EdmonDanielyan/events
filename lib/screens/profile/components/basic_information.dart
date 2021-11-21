@@ -28,7 +28,7 @@ class BasicInformation extends StatelessWidget {
       Size size = MediaQuery.of(context).size;
       return Container(
         width: size.width,
-        margin: EdgeInsets.only(top: 24, bottom: 70),
+        margin: EdgeInsets.only(top: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
-import 'package:ink_mobile/screens/profile/components/body.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
+import 'package:ink_mobile/screens/profile/components/body.dart';
 
 class ProfileScreen extends StatefulWidget {
+  final String logFile;
+
   static ProfileScreenState of(BuildContext context) =>
       context.findAncestorStateOfType<ProfileScreenState>()!;
 
   final ProfileCubit profileCubit;
-  const ProfileScreen({Key? key, required this.profileCubit}) : super(key: key);
+
+  const ProfileScreen(
+      {Key? key, required this.profileCubit, required this.logFile})
+      : super(key: key);
 
   @override
   ProfileScreenState createState() => ProfileScreenState();

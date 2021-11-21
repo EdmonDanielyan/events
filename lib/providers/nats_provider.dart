@@ -16,6 +16,7 @@ import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/protocol.dart';
+import 'package:logging/logging.dart';
 
 const PUBLIC_CHATS = 'ink.messaging.public';
 const GROUP_CHANNEL = 'ink.messaging.group';
@@ -24,6 +25,8 @@ const DELETE_ACTION = 'delete';
 
 @lazySingleton
 class NatsProvider {
+  static final _logger = Logger('NatsProvider');
+
   late Client _stan;
   final String natsWssUrl;
   final String natsCluster;
@@ -44,10 +47,10 @@ class NatsProvider {
   Future<bool> load() async {
     this._stan = Client();
     _stan.onConnect(function: () {
-      print('Stan connected..');
+      _logger.info('Stan connected..');
     });
     _stan.onDisconnect(function: () {
-      print('Stan disconnected..');
+      _logger.info('Stan disconnected..');
     });
     var connected = await _connect();
     if (!connected) {
@@ -117,7 +120,7 @@ class NatsProvider {
       _channelCallbacks[channel] = onMessageFuture;
 
       if (subscription != null) {
-        print('_channelSubscriptions: ${_channelSubscriptions.keys}');
+        _logger.info('_channelSubscriptions: ${_channelSubscriptions.keys}');
         return true;
       }
       return false;
@@ -138,7 +141,7 @@ class NatsProvider {
       _channelCallbacks.remove(channel);
     }
 
-    print('_channelSubscriptions: ${_channelSubscriptions.keys}');
+    _logger.info('_channelSubscriptions: ${_channelSubscriptions.keys}');
   }
 
   //////////////////////////////// NATS Protocol ///////////////////////////////
@@ -277,7 +280,7 @@ class NatsProvider {
   };
   Future<void> Function(String, NatsMessage) onMessage =
       (channel, message) async {
-    print(message);
+        _logger.info(message);
   };
   final Map<String, Future<void> Function(String, NatsMessage)>
       _channelCallbacks = {};

@@ -3,8 +3,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:ink_mobile/screens/initial/initial_screen.dart';
 
 import '../app.dart';
+import 'package:logging/logging.dart';
 
 class NotificationsProvider {
+  static final _logger = Logger('NotificationsProvider');
+
   static late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   static final AndroidInitializationSettings _initializationSettingsAndroid =
       AndroidInitializationSettings('note_icon');
@@ -12,6 +15,7 @@ class NotificationsProvider {
   static late MacOSInitializationSettings _initializationSettingsMacOS;
   static late InitializationSettings _initializationSettings;
   static late NotificationAppLaunchDetails? _notificationAppLaunchDetails;
+
 
   NotificationsProvider.init() {
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -38,7 +42,7 @@ class NotificationsProvider {
 
   Future<void> selectNotification(String? payload) async {
     if (payload != null) {
-      debugPrint('notification payload: $payload');
+      _logger.info('notification payload: $payload');
     }
     await Navigator.push(
       App.materialKey!.currentContext!,

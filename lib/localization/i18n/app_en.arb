@@ -210,5 +210,7 @@
     "joinedChat": "joined",
     "leftChat": "left",
     "avatarUrl": "Avatar url",
-    "addLink": "Add any link"
+    "addLink": "Add any link",
+    "sendLogs": "Send logs",
+    "diagnostics": "Diagnostics"
 }

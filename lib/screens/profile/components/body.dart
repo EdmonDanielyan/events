@@ -13,6 +13,7 @@ import 'package:ink_mobile/screens/profile/components/header.dart';
 import 'package:ink_mobile/screens/profile/components/other_user_page_header.dart';
 
 import '../profile_screen.dart';
+import 'diagnostics.dart';
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
@@ -67,6 +68,7 @@ class Body extends StatelessWidget {
 
   Widget getLoadedStateWidget(context, ProfileState state) {
     UserProfileData user = state.data!;
+    final logFile = ProfileScreen.of(context).widget.logFile;
 
     return Container(
         child: Background(
@@ -81,6 +83,7 @@ class Body extends StatelessWidget {
             children: [
               Contacts(contacts: user.contacts),
               BasicInformation(info: user.basicInformation),
+              Diagnostics(logFile: logFile)
             ],
           ),
         )
@@ -98,12 +101,13 @@ class Body extends StatelessWidget {
       child: Column(children: [
         OtherUserPageHeader(user: user),
         Awards(awards: user.awards),
+        Text("123123"),
         Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Contacts(contacts: user.contacts),
-              BasicInformation(info: user.basicInformation),
+              BasicInformation(info: user.basicInformation)
             ],
           ),
         )

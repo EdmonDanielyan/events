@@ -240,15 +240,8 @@ class TokenDataHolder {
   String get natsToken => _natsToken;
 
   Future<void> update() async {
-    print('!!!!update');
     _userId = await Token.getUserId();
     _deviceVirtualId = await Token.getDeviceVirtualId() ?? "";
     _natsToken = await Token.getNatsToken() ?? "";
-    // sl.unregister(instanceName: "userId");
-    // sl.unregister(instanceName: "deviceVirtualId");
-    // sl.unregister(instanceName: "natsToken");
-    // sl.registerFactory(() => userId, instanceName: "userId");
-    // sl.registerFactory(() => deviceVirtualId, instanceName: "deviceVirtualId");
-    // sl.registerFactory(() => natsToken, instanceName: "natsToken");
   }
 }

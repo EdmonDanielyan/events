@@ -64,7 +64,8 @@ class MainRoutes {
           newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
         ),
     '/personal': (BuildContext context) => ProfileScreen(
-          profileCubit: sl<ProfileCubit>(),
+          profileCubit: sl(),
+          logFile: sl(instanceName: "logFile")
         ),
     '/news_detail': (BuildContext context) => NewsDetailScreen(
           newsDetailCubit: sl<NewsDetailCubit>(),
