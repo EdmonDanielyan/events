@@ -106,12 +106,12 @@ class FileLogAppender {
       sink.flush();
       sink.close();
     } catch (e) {
-      _printLog("Error during close file $_file");
+      //_printLog("Error during close file $_file");
     }
   }
 
   Future<void> _writeReportToFile(String report, IOSink sink) async {
-    _printLog("Writing report to file");
+    //_printLog("Writing report to file");
     _writeLineToFile(report, sink);
   }
 

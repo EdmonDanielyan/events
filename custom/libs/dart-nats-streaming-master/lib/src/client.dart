@@ -184,6 +184,7 @@ class Client {
     }
 
     Future.delayed(Duration(seconds: pingInterval), () => _heartbeat());
+
     if (natsClient.status == nats.Status.connected) {
       // Generante new clientID for reconnection
       _clientID = Uuid().v4();
@@ -196,9 +197,10 @@ class Client {
         ..pingMaxOut = this.pingMaxAttempts;
 
       // Connecting to Streaming Server
-      _connectResponse = ConnectResponse.fromBuffer((await natsClient.request(
-              '_STAN.discover.$clusterID', connectRequest.writeToBuffer()))
-          .data);
+      final _req = await natsClient.request(
+          '_STAN.discover.$clusterID', connectRequest.writeToBuffer());
+
+      _connectResponse = ConnectResponse.fromBuffer((_req).data);
       unawaited(pingResponseWatchdog());
 
       if (_onConnect != null) {
@@ -249,7 +251,7 @@ class Client {
   }
 
   Future<void> _disconnect() async {
-    await natsClient.close();
+    unawaited(natsClient.close());
     if (_onDisconnect != null && _connected) {
       _onDisconnect!();
     }
@@ -257,7 +259,8 @@ class Client {
   }
 
   Future<void> _heartbeat() async {
-    if (await ping()) {
+    bool p = await ping();
+    if (p) {
       failPings = 0;
       _connected = true;
     } else {
@@ -269,11 +272,12 @@ class Client {
         natsClient.status != nats.Status.connected) {
       if (retryReconnect) {
         await _reconnect();
+        return;
       } else {
         await _disconnect();
       }
     }
-    if (retryReconnect || _connected) {
+    if (_connected) {
       Future.delayed(Duration(seconds: pingInterval), () => _heartbeat());
     }
   }

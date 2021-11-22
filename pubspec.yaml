@@ -70,9 +70,6 @@ dependencies:
     archive:
     share_plus:
     logging:
-dependency_overrides:
-#     dart_nats:
-#         path: "./custom/libs/dart-nats-master"
 
 dev_dependencies:
     flutter_test:
