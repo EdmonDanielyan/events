@@ -76,7 +76,6 @@ ios:debug:
     - ${FLUTTER_EXEC} --version
     - ${FLUTTER_EXEC} doctor
     - ${FLUTTER_EXEC} pub upgrade
-    - ${FLUTTER_EXEC} clean
     - ${FLUTTER_EXEC} build ios --no-sound-null-safety
     - cd ios
     - xcodebuild archive -workspace Runner.xcworkspace -scheme Runner -archivePath Runner.xcarchive -destination 'generic/platform=iOS'
