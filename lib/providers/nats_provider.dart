@@ -259,6 +259,9 @@ class NatsProvider {
     await for (final dataMessage in subscription.stream) {
       if (_channelSubscriptions.containsKey(channel)) {
         NatsMessage message = parseMessage(dataMessage);
+        if (message.needAck) {
+          acknowledge(subscription, dataMessage);
+        }
 
         if (!dataMessage.isRedelivery) {
           await onMessage(channel, message);
@@ -267,9 +270,6 @@ class NatsProvider {
           await channelCallback(channel, message);
         }
 
-        if (message.needAck) {
-          acknowledge(subscription, dataMessage);
-        }
       } else {
         break;
       }
