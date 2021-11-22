@@ -14,6 +14,7 @@ import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
+
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/protocol.dart';
 import 'package:logging/logging.dart';
@@ -168,26 +169,37 @@ class NatsProvider {
 
   String getPublicChatIdList() =>
       '$PUBLIC_CHATS.${describeEnum(MessageType.ChatList)}';
+
   String getPrivateUserChatIdList(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.ChatList)}.$userId';
+
   String getPrivateUserTextChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.Text)}.$userId';
+
   String getGroupTextChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.Text)}.$chatId';
+
   String getGroupReactedChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UserReacted)}.$chatId';
+
   String getGroupJoinedChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UserJoined)}.$chatId';
+
   String getGroupLeftChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UserLeftChat)}.$chatId';
+
   String getGroupDeleteMessageChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.RemoveMessage)}.$chatId';
+
   String getGroupTextingChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.Texting)}.$chatId';
+
   String getInviteUserToJoinChatChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.InviteUserToJoinChat)}.$userId';
+
   String getGroupChatInfoById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UpdateChatInfo)}.$chatId';
+
   String getUserOnlineChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.Online)}.$userId';
 

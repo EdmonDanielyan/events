@@ -106,7 +106,7 @@ class FileLogAppender {
       sink.flush();
       sink.close();
     } catch (e) {
-      //_printLog("Error during close file $_file");
+      //_printLog("Error during close file $_file: $e");
     }
   }
 
