@@ -34,12 +34,12 @@ class ChatListFields {
 
   factory ChatListFields.fromMap(Map<String, dynamic> map) {
     return ChatListFields(
-      chats: ChatListView.getChatsFromString(map['chats']),
-      users: ChatUserViewModel.getUsersFromString(map['users']),
+      chats: ChatListView.getChatsFromString(map['chats'] ?? "[]"),
+      users: ChatUserViewModel.getUsersFromString(map['users'] ?? "[]"),
       participants:
-          ChatUserViewModel.getParticipantsFromString(map['participants']),
-      messages: MessageListView.getMessagesFromString(map['messages']),
-      channels: ChannelFunctions.getChannelsFromString(map['channels']),
+          ChatUserViewModel.getParticipantsFromString(map['participants'] ?? "[]"),
+      messages: MessageListView.getMessagesFromString(map['messages'] ?? "[]"),
+      channels: ChannelFunctions.getChannelsFromString(map['channels'] ?? "[]"),
     );
   }
 
