@@ -150,20 +150,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          name.hashCode,
-          $mrjc(
-              description.hashCode,
-              $mrjc(
-                  avatar.hashCode,
-                  $mrjc(
-                      ownerId.hashCode,
-                      $mrjc(
-                          participantId.hashCode,
-                          $mrjc(updatedAt.hashCode,
-                              notificationsOn.hashCode))))))));
+  int get hashCode => Object.hash(id, name, description, avatar, ownerId,
+      participantId, updatedAt, notificationsOn);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -599,24 +587,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          chatId.hashCode,
-          $mrjc(
-              message.hashCode,
-              $mrjc(
-                  userId.hashCode,
-                  $mrjc(
-                      repliedMessageId.hashCode,
-                      $mrjc(
-                          read.hashCode,
-                          $mrjc(
-                              sentOn.hashCode,
-                              $mrjc(
-                                  status.hashCode,
-                                  $mrjc(
-                                      type.hashCode, created.hashCode))))))))));
+  int get hashCode => Object.hash(id, chatId, message, userId, repliedMessageId,
+      read, sentOn, status, type, created);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1006,8 +978,7 @@ class UserTable extends DataClass implements Insertable<UserTable> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(name.hashCode, $mrjc(avatar.hashCode, online.hashCode))));
+  int get hashCode => Object.hash(id, name, avatar, online);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1169,21 +1140,16 @@ class $UserTablesTable extends UserTables
 
 class ParticipantTable extends DataClass
     implements Insertable<ParticipantTable> {
-  final int? id;
   final String chatId;
   final int userId;
   final bool admin;
   ParticipantTable(
-      {this.id,
-      required this.chatId,
-      required this.userId,
-      required this.admin});
+      {required this.chatId, required this.userId, required this.admin});
   factory ParticipantTable.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return ParticipantTable(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
       chatId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}chat_id'])!,
       userId: const IntType()
@@ -1195,9 +1161,6 @@ class ParticipantTable extends DataClass
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int?>(id);
-    }
     map['chat_id'] = Variable<String>(chatId);
     map['user_id'] = Variable<int>(userId);
     map['admin'] = Variable<bool>(admin);
@@ -1206,7 +1169,6 @@ class ParticipantTable extends DataClass
 
   ParticipantTablesCompanion toCompanion(bool nullToAbsent) {
     return ParticipantTablesCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       chatId: Value(chatId),
       userId: Value(userId),
       admin: Value(admin),
@@ -1217,7 +1179,6 @@ class ParticipantTable extends DataClass
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return ParticipantTable(
-      id: serializer.fromJson<int?>(json['id']),
       chatId: serializer.fromJson<String>(json['chatId']),
       userId: serializer.fromJson<int>(json['userId']),
       admin: serializer.fromJson<bool>(json['admin']),
@@ -1227,17 +1188,14 @@ class ParticipantTable extends DataClass
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int?>(id),
       'chatId': serializer.toJson<String>(chatId),
       'userId': serializer.toJson<int>(userId),
       'admin': serializer.toJson<bool>(admin),
     };
   }
 
-  ParticipantTable copyWith(
-          {int? id, String? chatId, int? userId, bool? admin}) =>
+  ParticipantTable copyWith({String? chatId, int? userId, bool? admin}) =>
       ParticipantTable(
-        id: id ?? this.id,
         chatId: chatId ?? this.chatId,
         userId: userId ?? this.userId,
         admin: admin ?? this.admin,
@@ -1245,7 +1203,6 @@ class ParticipantTable extends DataClass
   @override
   String toString() {
     return (StringBuffer('ParticipantTable(')
-          ..write('id: $id, ')
           ..write('chatId: $chatId, ')
           ..write('userId: $userId, ')
           ..write('admin: $admin')
@@ -1254,44 +1211,37 @@ class ParticipantTable extends DataClass
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(chatId.hashCode, $mrjc(userId.hashCode, admin.hashCode))));
+  int get hashCode => Object.hash(chatId, userId, admin);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ParticipantTable &&
-          other.id == this.id &&
           other.chatId == this.chatId &&
           other.userId == this.userId &&
           other.admin == this.admin);
 }
 
 class ParticipantTablesCompanion extends UpdateCompanion<ParticipantTable> {
-  final Value<int?> id;
   final Value<String> chatId;
   final Value<int> userId;
   final Value<bool> admin;
   const ParticipantTablesCompanion({
-    this.id = const Value.absent(),
     this.chatId = const Value.absent(),
     this.userId = const Value.absent(),
     this.admin = const Value.absent(),
   });
   ParticipantTablesCompanion.insert({
-    this.id = const Value.absent(),
     required String chatId,
     required int userId,
     this.admin = const Value.absent(),
   })  : chatId = Value(chatId),
         userId = Value(userId);
   static Insertable<ParticipantTable> custom({
-    Expression<int?>? id,
     Expression<String>? chatId,
     Expression<int>? userId,
     Expression<bool>? admin,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
       if (chatId != null) 'chat_id': chatId,
       if (userId != null) 'user_id': userId,
       if (admin != null) 'admin': admin,
@@ -1299,12 +1249,8 @@ class ParticipantTablesCompanion extends UpdateCompanion<ParticipantTable> {
   }
 
   ParticipantTablesCompanion copyWith(
-      {Value<int?>? id,
-      Value<String>? chatId,
-      Value<int>? userId,
-      Value<bool>? admin}) {
+      {Value<String>? chatId, Value<int>? userId, Value<bool>? admin}) {
     return ParticipantTablesCompanion(
-      id: id ?? this.id,
       chatId: chatId ?? this.chatId,
       userId: userId ?? this.userId,
       admin: admin ?? this.admin,
@@ -1314,9 +1260,6 @@ class ParticipantTablesCompanion extends UpdateCompanion<ParticipantTable> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int?>(id.value);
-    }
     if (chatId.present) {
       map['chat_id'] = Variable<String>(chatId.value);
     }
@@ -1332,7 +1275,6 @@ class ParticipantTablesCompanion extends UpdateCompanion<ParticipantTable> {
   @override
   String toString() {
     return (StringBuffer('ParticipantTablesCompanion(')
-          ..write('id: $id, ')
           ..write('chatId: $chatId, ')
           ..write('userId: $userId, ')
           ..write('admin: $admin')
@@ -1346,12 +1288,6 @@ class $ParticipantTablesTable extends ParticipantTables
   final GeneratedDatabase _db;
   final String? _alias;
   $ParticipantTablesTable(this._db, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
-      'id', aliasedName, true,
-      typeName: 'INTEGER',
-      requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _chatIdMeta = const VerificationMeta('chatId');
   late final GeneratedColumn<String?> chatId = GeneratedColumn<String?>(
       'chat_id', aliasedName, false,
@@ -1368,7 +1304,7 @@ class $ParticipantTablesTable extends ParticipantTables
       defaultConstraints: 'CHECK (admin IN (0, 1))',
       defaultValue: Constant(false));
   @override
-  List<GeneratedColumn> get $columns => [id, chatId, userId, admin];
+  List<GeneratedColumn> get $columns => [chatId, userId, admin];
   @override
   String get aliasedName => _alias ?? 'participant_tables';
   @override
@@ -1378,9 +1314,6 @@ class $ParticipantTablesTable extends ParticipantTables
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
     if (data.containsKey('chat_id')) {
       context.handle(_chatIdMeta,
           chatId.isAcceptableOrUnknown(data['chat_id']!, _chatIdMeta));
@@ -1401,7 +1334,7 @@ class $ParticipantTablesTable extends ParticipantTables
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
   @override
   ParticipantTable map(Map<String, dynamic> data, {String? tablePrefix}) {
     return ParticipantTable.fromData(data, _db,
@@ -1555,18 +1488,8 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          payloadType.hashCode,
-          $mrjc(
-              createdAt.hashCode,
-              $mrjc(
-                  needAck.hashCode,
-                  $mrjc(
-                      from.hashCode,
-                      $mrjc(to.hashCode,
-                          $mrjc(sequence.hashCode, messageType.hashCode))))))));
+  int get hashCode => Object.hash(
+      id, payloadType, createdAt, needAck, from, to, sequence, messageType);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

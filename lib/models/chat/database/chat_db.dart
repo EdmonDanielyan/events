@@ -173,11 +173,10 @@ class ChatDatabase extends _$ChatDatabase {
       select(participantTables).get();
   Future<int> insertParticipant(ParticipantTable participant) =>
       into(participantTables).insert(participant);
-  Future deleteParticipant(int userId, String chatId) =>
-      (delete(participantTables)
-            ..where(
-                (tbl) => tbl.userId.equals(userId) & tbl.chatId.equals(chatId)))
-          .go();
+  Future deleteParticipant(int userId, String chatId) => (delete(
+          participantTables)
+        ..where((tbl) => tbl.userId.equals(userId) & tbl.chatId.equals(chatId)))
+      .go();
   Future<ParticipantTable?> selectParticipantById(int id, String chatId) =>
       (select(participantTables)
             ..where((tbl) => tbl.userId.equals(id) & tbl.chatId.equals(chatId)))
@@ -211,7 +210,7 @@ class ChatDatabase extends _$ChatDatabase {
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
-  int get schemaVersion => 20;
+  int get schemaVersion => 21;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
