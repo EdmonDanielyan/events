@@ -71,6 +71,8 @@ ios:debug:
     IPA_SSH_PATH: "${IPA_SSH_PATH}"
     IPA_BUILD_RELATIVE_PATH: "${IPA_BUILD_RELATIVE_PATH}"
     PUB_CACHE: "${FLUTTER_IOS_PUB_CACHE}"
+#    GIT_STRATEGY: fetch
+#    GIT_CLEAN_FLAGS: none
   script:
     - du -h -d 1 ${PUB_CACHE} && ls -la ${PUB_CACHE} && echo ${CI_JOB_ID} > "${PUB_CACHE}/last_job_id"
     - ${FLUTTER_EXEC} --version
