@@ -311,7 +311,9 @@ class MessageProvider {
     userOnlineTimer = Timer.periodic(
       Duration(seconds: 5),
       (timer) {
-        chatSendMessage.sendUserOnlinePing(channel, user!);
+        if (natsProvider.isConnected) {
+          chatSendMessage.sendUserOnlinePing(channel, user!);
+        }
       },
     );
   }

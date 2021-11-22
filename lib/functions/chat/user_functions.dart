@@ -47,7 +47,7 @@ class UserFunctions {
     if (exists == null) {
       return await chatDatabaseCubit.db.insertParticipant(participant);
     }
-    return exists.id!;
+    return exists.userId;
   }
 
   Future<bool> addParticipants(
@@ -64,7 +64,7 @@ class UserFunctions {
     if (exists == null) {
       return await chatDatabaseCubit.db.insertParticipant(participant);
     }
-    return exists.id!;
+    return exists.userId;
   }
 
   Future<bool> insertParticipants(List<ParticipantTable> participants) async {

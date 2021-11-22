@@ -48,9 +48,11 @@ class NatsProvider {
   Future<bool> load() async {
     this._stan = Client();
     _stan.onConnect(function: () {
+      print("CONNECTED");
       _logger.info('Stan connected..');
     });
     _stan.onDisconnect(function: () {
+      print("CONNECTED");
       _logger.info('Stan disconnected..');
     });
     var connected = await _connect();
@@ -153,6 +155,7 @@ class NatsProvider {
     var connectResult = await _stan.connectUri(Uri.parse(natsWssUrl),
         certificate: _certificate,
         clusterID: natsCluster,
+        pingMaxAttempts: 10,
         clientID: userId,
         connectOption:
             nats.ConnectOption(tlsRequired: true, auth_token: natsToken));
@@ -296,4 +299,6 @@ class NatsProvider {
   };
   final Map<String, Future<void> Function(String, NatsMessage)>
       _channelCallbacks = {};
+
+  bool get isConnected => _stan.connected;
 }

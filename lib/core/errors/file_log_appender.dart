@@ -111,7 +111,7 @@ class FileLogAppender {
   }
 
   Future<void> _writeReportToFile(String report, IOSink sink) async {
-    _printLog("Writing report to file");
+    //_printLog("Writing report to file");
     _writeLineToFile(report, sink);
   }
 

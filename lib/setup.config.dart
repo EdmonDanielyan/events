@@ -9,8 +9,8 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import 'components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart'
     as _i39;
-import 'constants/files.dart' as _i81;
-import 'constants/urls.dart' as _i80;
+import 'constants/files.dart' as _i80;
+import 'constants/urls.dart' as _i81;
 import 'core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart'
     as _i58;
 import 'core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_state.dart'
@@ -97,9 +97,9 @@ import 'screens/open_university/cubit/open_university_cubit.dart'
 _i1.GetIt $initGetIt(_i1.GetIt get,
     {String? environment, _i2.EnvironmentFilter? environmentFilter}) {
   final gh = _i2.GetItHelper(get, environment, environmentFilter);
+  final fileConstants = _$FileConstants();
   final urls = _$Urls();
   final tokenDataInjectorModule = _$TokenDataInjectorModule();
-  final fileConstants = _$FileConstants();
   gh.factory<_i3.AnnouncementCubit>(() => _i3.AnnouncementCubit());
   gh.factoryParam<_i4.AnnouncementsDetailNetworkRequest, int?, dynamic>(
       (announcementId, _) => _i4.AnnouncementsDetailNetworkRequest(
@@ -209,6 +209,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
           _i71.SendReferenceFormNetworkRequest(entities: entities));
   gh.singleton<_i73.StaffMovementsNetworkRequest>(
       _i73.StaffMovementsNetworkRequest());
+  gh.factory<String>(() => fileConstants.logFile, instanceName: 'logFile');
+  gh.factory<String>(() => urls.natsCluster, instanceName: 'natsCluster');
   gh.factory<String>(() => urls.natsCertPath, instanceName: 'natsCertPath');
   gh.factory<String>(() => tokenDataInjectorModule.userId,
       instanceName: 'userId');
@@ -216,9 +218,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       instanceName: 'natsToken');
   gh.factory<String>(() => tokenDataInjectorModule.deviceVirtualId,
       instanceName: 'deviceVirtualId');
-  gh.factory<String>(() => urls.natsCluster, instanceName: 'natsCluster');
   gh.factory<String>(() => urls.natsWssUrl, instanceName: 'natsWssUrl');
-  gh.factory<String>(() => fileConstants.logFile, instanceName: 'logFile');
   gh.singleton<_i74.TagsListCubit>(_i74.TagsListCubit());
   gh.singleton<_i75.TagsListNetworkRequest>(_i75.TagsListNetworkRequest());
   gh.lazySingleton<_i76.TokenDataHolder>(() => _i76.TokenDataHolder());
@@ -235,8 +235,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   return get;
 }
 
-class _$Urls extends _i80.Urls {}
+class _$FileConstants extends _i80.FileConstants {}
+
+class _$Urls extends _i81.Urls {}
 
 class _$TokenDataInjectorModule extends _i76.TokenDataInjectorModule {}
-
-class _$FileConstants extends _i81.FileConstants {}
