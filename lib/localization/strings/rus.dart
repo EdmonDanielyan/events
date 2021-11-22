@@ -23,6 +23,7 @@ class RussianStrings extends LanguageStrings {
   final String birthdays = "Дни рождения";
   final String noBirthdaysSoon = "Сегодня и ближайшие 3 дня нет дней рождения";
   final String today = "Сегодня";
+  final String topic = "Тема";
   final String inComingDays = "Ближайшие дни";
   final String pageNotFound = "Страница не найдена";
   final String nowParticipatingInTheEvent = "Вы участвуете в событии";

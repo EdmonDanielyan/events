@@ -21,6 +21,7 @@ abstract class LanguageStrings {
   abstract final String birthdays;
   abstract final String noBirthdaysSoon;
   abstract final String today;
+  abstract final String topic;
   abstract final String inComingDays;
   abstract final String pageNotFound;
   abstract final String iWillParticipate;

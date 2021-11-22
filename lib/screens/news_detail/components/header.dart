@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/aseets.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:video_player/video_player.dart';
@@ -12,11 +13,7 @@ class Header extends StatefulWidget {
 
   static const DEFAULT_PREVIEW_PICTURE_LINK = 'assets/images/default_news.jpg';
 
-  const Header({
-    Key? key,
-    this.imageLinks,
-    this.videoLinks
-  }) : super(key: key);
+  const Header({Key? key, this.imageLinks, this.videoLinks}) : super(key: key);
 
   @override
   _HeaderState createState() => _HeaderState();
@@ -52,37 +49,35 @@ class _HeaderState extends State<Header> {
               },
               scrollDirection: Axis.horizontal,
               children: slider,
-            )
-        ),
+            )),
+        if (slider.length > 1) ...[
+          Positioned.fill(
+              child: Align(
+                  alignment: AlignmentDirectional(0, 0.9),
+                  child: AnimatedSmoothIndicator(
+                    activeIndex: _sliderIndex,
+                    count: slider.length,
+                    effect: ScrollingDotsEffect(
+                        dotColor: Color(0xFFFFFFFF).withOpacity(0.5),
+                        dotWidth: 10,
+                        dotHeight: 10,
+                        activeDotColor: Colors.white),
+                  ))),
+        ],
         Positioned.fill(
-            child: Align(
-              alignment: AlignmentDirectional(0, 0.9),
-              child: AnimatedSmoothIndicator(
-                activeIndex: _sliderIndex,
-                count:  slider.length,
-                effect:  ScrollingDotsEffect(
-                    dotColor: Color(0xFFFFFFFF).withOpacity(0.5),
-                    dotWidth: 10,
-                    dotHeight: 10,
-                    activeDotColor: Colors.white
-                ),
-              )
-            )
-        ),
-        Positioned.fill(
-            child: Align(
-                alignment: AlignmentDirectional(-1.1, -0.7),
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: SvgPicture.asset(
-                    IconLinks.CLOSE_BUTTON_SVG_LINK,
-                    width: 40,
-                    height: 40,
-                  ),
-                )
-            )
+          child: Align(
+            alignment: AlignmentDirectional(-1.1, -0.7),
+            child: MaterialButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: SvgPicture.asset(
+                IconLinks.CLOSE_BUTTON_SVG_LINK,
+                width: 40,
+                height: 40,
+              ),
+            ),
+          ),
         ),
       ],
     );
@@ -93,33 +88,28 @@ class _HeaderState extends State<Header> {
 
     if (images != null && images.isNotEmpty) {
       images.forEach((image) {
-        imagesContainer.add(
-            Container(
-                child: FadeInImage(
-                  fit: BoxFit.fill,
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      Header.DEFAULT_PREVIEW_PICTURE_LINK,
-                      fit: BoxFit.fill,
-                      colorBlendMode: BlendMode.darken,
-                      color: Colors.black.withOpacity(0.15),
-                    );
-                  },
-                  image: NetworkImage(image),
-                  placeholder: AssetImage(Header.DEFAULT_PREVIEW_PICTURE_LINK),
-                )
-            )
-        );
+        imagesContainer.add(Container(
+            child: FadeInImage(
+          fit: BoxFit.fill,
+          imageErrorBuilder: (context, error, stackTrace) {
+            return Image.asset(
+              Header.DEFAULT_PREVIEW_PICTURE_LINK,
+              fit: BoxFit.fill,
+              colorBlendMode: BlendMode.darken,
+              color: Colors.black.withOpacity(0.15),
+            );
+          },
+          image: NetworkImage(image),
+          placeholder: AssetImage(DEFAULT_WHITE_PICTURE_LINK),
+        )));
       });
     } else {
-      imagesContainer.add(
-          Image.asset(
-            Header.DEFAULT_PREVIEW_PICTURE_LINK,
-            fit: BoxFit.fill,
-            colorBlendMode: BlendMode.darken,
-            color: Colors.black.withOpacity(0.15),
-          )
-      );
+      imagesContainer.add(Image.asset(
+        Header.DEFAULT_PREVIEW_PICTURE_LINK,
+        fit: BoxFit.fill,
+        colorBlendMode: BlendMode.darken,
+        color: Colors.black.withOpacity(0.15),
+      ));
     }
 
     return imagesContainer;
@@ -132,9 +122,8 @@ class _HeaderState extends State<Header> {
       FlickManager flickManager;
 
       video.forEach((linkVideo) {
-        VideoPlayerController _controller = VideoPlayerController.network(
-            linkVideo
-        );
+        VideoPlayerController _controller =
+            VideoPlayerController.network(linkVideo);
 
         _videoControllers.add(_controller);
 
@@ -143,13 +132,11 @@ class _HeaderState extends State<Header> {
           autoPlay: false,
         );
 
-        videoContainer.add(
-            Container(
-              child: FlickVideoPlayer(
-                flickManager: flickManager,
-              ),
-            )
-        );
+        videoContainer.add(Container(
+          child: FlickVideoPlayer(
+            flickManager: flickManager,
+          ),
+        ));
       });
     }
 

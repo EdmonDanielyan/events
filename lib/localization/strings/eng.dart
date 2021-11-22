@@ -22,6 +22,7 @@ class EnglishStrings implements LanguageStrings {
   final String birthdays = "Birthdays";
   final String noBirthdaysSoon = "No birthday in the next 3 days";
   final String today = "Today";
+  final String topic = "Topic";
   final String inComingDays = "In coming days";
   final String pageNotFound = "Page not found";
   final String nowParticipatingInTheEvent =
