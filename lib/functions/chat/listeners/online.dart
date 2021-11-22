@@ -30,22 +30,27 @@ class UserOnlineListener {
           throw "offline";
         }
       }
-    } on SubscriptionAlreadyExistException {} catch (e) {
+    } on SubscriptionAlreadyExistException {
+    } catch (e) {
       //CLIENT IS OFFLINE
       updateUserStatus(user, false);
     }
   }
 
   Future<void> onMessage(String channel, NatsMessage message) async {
-    final mapPayload = message.payload! as SystemPayload;
-    UserOnlineFields fields = UserOnlineFields.fromMap(mapPayload.fields);
-    final user = fields.user;
+    try {
+      final mapPayload = message.payload! as SystemPayload;
+      UserOnlineFields fields = UserOnlineFields.fromMap(mapPayload.fields);
+      final user = fields.user;
 
-    updateUserStatus(user, true);
+      updateUserStatus(user, true);
 
-    _debouncer.run(() {
-      updateUserStatus(user, false);
-    });
+      _debouncer.run(() {
+        updateUserStatus(user, false);
+      });
+    } on NoSuchMethodError {
+      return;
+    }
   }
 
   void updateUserStatus(UserTable user, bool online) {

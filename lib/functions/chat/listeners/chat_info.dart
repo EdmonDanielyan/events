@@ -35,14 +35,19 @@ class ChatInfoListener {
     if (!isListeningToChannel(channel)) {
       return;
     }
-    final mapPayload = message.payload! as SystemPayload;
-    ChatInfoFields fields = ChatInfoFields.fromMap(mapPayload.fields);
 
-    final chat = fields.chat;
-    final user = fields.user;
+    try {
+      final mapPayload = message.payload! as SystemPayload;
+      ChatInfoFields fields = ChatInfoFields.fromMap(mapPayload.fields);
 
-    if (user.id != JwtPayload.myId) {
-      chatDatabaseCubit.db.updateChatById(chat.id, chat);
+      final chat = fields.chat;
+      final user = fields.user;
+
+      if (user.id != JwtPayload.myId) {
+        chatDatabaseCubit.db.updateChatById(chat.id, chat);
+      }
+    } on NoSuchMethodError {
+      return;
     }
   }
 }

@@ -40,13 +40,17 @@ class MessageStatusListener {
       return;
     }
 
-    final mapPayload = message.payload! as SystemPayload;
-    ChatMessageStatusFields fields =
-        ChatMessageStatusFields.fromMap(mapPayload.fields);
-    if (fields.senderId != JwtPayload.myId) {
-      List<MessageTable> messages = fields.messages;
-      messagesToRead(messages, chatFunctions);
-      await UseMessageProvider.messageProvider.saveChats(newChat: null);
+    try {
+      final mapPayload = message.payload! as SystemPayload;
+      ChatMessageStatusFields fields =
+          ChatMessageStatusFields.fromMap(mapPayload.fields);
+      if (fields.senderId != JwtPayload.myId) {
+        List<MessageTable> messages = fields.messages;
+        messagesToRead(messages, chatFunctions);
+        await UseMessageProvider.messageProvider.saveChats(newChat: null);
+      }
+    } on NoSuchMethodError {
+      return;
     }
   }
 

@@ -35,15 +35,19 @@ class MessageDeletedListener {
       return;
     }
 
-    final mapPayload = message.payload! as SystemPayload;
-    ChatMessageDeleteFields fields =
-        ChatMessageDeleteFields.fromMap(mapPayload.fields);
-    final sender = fields.user;
-    final myMessages =
-        MessageListView.getUserMessages(fields.messages, sender.id);
-    if (myMessages.isNotEmpty && sender.id != JwtPayload.myId) {
-      chatFunctions.deleteMessages(myMessages);
-      await UseMessageProvider.messageProvider.saveChats(newChat: null);
+    try {
+      final mapPayload = message.payload! as SystemPayload;
+      ChatMessageDeleteFields fields =
+          ChatMessageDeleteFields.fromMap(mapPayload.fields);
+      final sender = fields.user;
+      final myMessages =
+          MessageListView.getUserMessages(fields.messages, sender.id);
+      if (myMessages.isNotEmpty && sender.id != JwtPayload.myId) {
+        chatFunctions.deleteMessages(myMessages);
+        await UseMessageProvider.messageProvider.saveChats(newChat: null);
+      }
+    } on NoSuchMethodError {
+      return;
     }
   }
 }

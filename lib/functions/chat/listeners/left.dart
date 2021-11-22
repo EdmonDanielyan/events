@@ -42,19 +42,24 @@ class ChatLeftListener {
     if (!isListeningToChannel(channel)) {
       return;
     }
-    final mapPayload = message.payload! as SystemPayload;
-    ChatInvitationFields fields =
-        ChatInvitationFields.fromMap(mapPayload.fields);
 
-    final users = fields.users;
-    final chat = fields.chat;
+    try {
+      final mapPayload = message.payload! as SystemPayload;
+      ChatInvitationFields fields =
+          ChatInvitationFields.fromMap(mapPayload.fields);
 
-    if (users.isNotEmpty) {
-      await userFunctions.deleteParticipants(
-          ChatUserViewModel.toParticipants(users, chat), chat);
+      final users = fields.users;
+      final chat = fields.chat;
 
-      setMessage(users, chat);
-      await UseMessageProvider.messageProvider.saveChats(newChat: null);
+      if (users.isNotEmpty) {
+        await userFunctions.deleteParticipants(
+            ChatUserViewModel.toParticipants(users, chat), chat);
+
+        setMessage(users, chat);
+        await UseMessageProvider.messageProvider.saveChats(newChat: null);
+      }
+    } on NoSuchMethodError {
+      return;
     }
   }
 

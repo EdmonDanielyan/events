@@ -52,7 +52,7 @@ class NatsProvider {
       _logger.info('Stan connected..');
     });
     _stan.onDisconnect(function: () {
-      print("CONNECTED");
+      print("DISCONNECTED");
       _logger.info('Stan disconnected..');
     });
     var connected = await _connect();

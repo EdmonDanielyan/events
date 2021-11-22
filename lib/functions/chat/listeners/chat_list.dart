@@ -45,22 +45,25 @@ class ChatListListener {
 
   Future<void> onMessage(NatsMessage message) async {
     final mapPayload = message.payload! as SystemPayload;
+    try {
+      ChatListFields fields = ChatListFields.fromMap(mapPayload.fields);
+      var chats = fields.chats;
+      final users = fields.users;
+      final participants = fields.participants;
+      final messages = fields.messages;
+      final channels = fields.channels;
 
-    ChatListFields fields = ChatListFields.fromMap(mapPayload.fields);
-    var chats = fields.chats;
-    final users = fields.users;
-    final participants = fields.participants;
-    final messages = fields.messages;
-    final channels = fields.channels;
+      if (chats.length > 0) {
+        chats = chats.reversed.toList();
+        _insertChats(chats, messages);
+      }
 
-    if (chats.length > 0) {
-      chats = chats.reversed.toList();
-      _insertChats(chats, messages);
+      _insertUsers(users);
+      _insertParticipants(participants);
+      _insertChannels(channels);
+    } on NoSuchMethodError {
+      return;
     }
-
-    _insertUsers(users);
-    _insertParticipants(participants);
-    _insertChannels(channels);
   }
 
   Future<void> _insertChats(

@@ -42,8 +42,8 @@ class UserFunctions {
 
   Future<int> addParticipant(
       ParticipantTable participant, ChatTable chat) async {
-    ParticipantTable? exists = await chatDatabaseCubit.db
-        .selectParticipantById(participant.userId, chat.id);
+    ParticipantTable? exists =
+        await getParticipant(participant.userId, chat.id);
     if (exists == null) {
       return await chatDatabaseCubit.db.insertParticipant(participant);
     }
@@ -59,12 +59,22 @@ class UserFunctions {
   }
 
   Future<int> insertParticipant(ParticipantTable participant) async {
-    ParticipantTable? exists = await chatDatabaseCubit.db
-        .selectParticipantById(participant.userId, participant.chatId);
+    ParticipantTable? exists =
+        await getParticipant(participant.userId, participant.chatId);
     if (exists == null) {
       return await chatDatabaseCubit.db.insertParticipant(participant);
     }
     return exists.userId;
+  }
+
+  Future<ParticipantTable?> getParticipant(int userId, String chatId) async {
+    final participants =
+        await chatDatabaseCubit.db.selectParticipantsById(userId, chatId);
+
+    if (participants.isNotEmpty) {
+      return participants.last;
+    }
+    return null;
   }
 
   Future<bool> insertParticipants(List<ParticipantTable> participants) async {

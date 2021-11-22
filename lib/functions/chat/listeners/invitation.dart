@@ -39,16 +39,21 @@ class ChatInvitationListener {
       return;
     }
 
-    final mapPayload = message.payload! as SystemPayload;
-    ChatInvitationFields fields =
-        ChatInvitationFields.fromMap(mapPayload.fields);
-    late ChatTable chat =
-        ChatListView.changeChatForParticipant(fields.chat, fields.users);
+    try {
+      final mapPayload = message.payload! as SystemPayload;
+      ChatInvitationFields fields =
+          ChatInvitationFields.fromMap(mapPayload.fields);
+      late ChatTable chat =
+          ChatListView.changeChatForParticipant(fields.chat, fields.users);
 
-    await ChatCreation(chatDatabaseCubit).createDynamically(chat, fields.users);
-    await UseMessageProvider.messageProvider.saveChats(newChat: chat);
+      await ChatCreation(chatDatabaseCubit)
+          .createDynamically(chat, fields.users);
+      await UseMessageProvider.messageProvider.saveChats(newChat: chat);
 
-    _chatLinkedListeners(chat.id);
+      _chatLinkedListeners(chat.id);
+    } on NoSuchMethodError {
+      return;
+    }
   }
 
   Future<void> _chatLinkedListeners(String chatId) async {

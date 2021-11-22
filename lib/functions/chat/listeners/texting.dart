@@ -46,9 +46,13 @@ class MessageTextingListener {
     if (!isListeningToChannel(channel)) {
       return;
     }
-    final mapPayload = message.payload! as SystemPayload;
-    ChatTextingFields fields = ChatTextingFields.fromMap(mapPayload.fields);
-    _handleState(fields.texting, fields.chatId);
+    try {
+      final mapPayload = message.payload! as SystemPayload;
+      ChatTextingFields fields = ChatTextingFields.fromMap(mapPayload.fields);
+      _handleState(fields.texting, fields.chatId);
+    } on NoSuchMethodError {
+      return;
+    }
   }
 
   void _handleState(CustomTexting texting, String chatId) {

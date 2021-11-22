@@ -63,18 +63,21 @@ class ChatMessageListener {
     if (!isListeningToChannel(channel)) {
       return;
     }
+    try {
+      final mapPayload = message.payload! as SystemPayload;
+      ChatMessageFields fields = ChatMessageFields.fromMap(mapPayload.fields);
 
-    final mapPayload = message.payload! as SystemPayload;
-    ChatMessageFields fields = ChatMessageFields.fromMap(mapPayload.fields);
-
-    if (fields.user.id != JwtPayload.myId) {
-      late ChatTable chat =
-          ChatListView.changeChatForParticipant(fields.chat, [fields.user]);
-      _pushNotification(chat.id, fields.user, fields.message);
-      await userFunctions.insertUser(fields.user);
-      await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
-          .addMessage(fields.message);
-      await UseMessageProvider.messageProvider.saveChats(newChat: null);
+      if (fields.user.id != JwtPayload.myId) {
+        late ChatTable chat =
+            ChatListView.changeChatForParticipant(fields.chat, [fields.user]);
+        _pushNotification(chat.id, fields.user, fields.message);
+        await userFunctions.insertUser(fields.user);
+        await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
+            .addMessage(fields.message);
+        await UseMessageProvider.messageProvider.saveChats(newChat: null);
+      }
+    } on NoSuchMethodError {
+      return;
     }
   }
 

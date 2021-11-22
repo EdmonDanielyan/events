@@ -42,19 +42,24 @@ class ChatJoinedListener {
     if (!isListeningToChannel(channel)) {
       return;
     }
-    final mapPayload = message.payload! as SystemPayload;
-    ChatInvitationFields fields =
-        ChatInvitationFields.fromMap(mapPayload.fields);
 
-    final users = fields.users;
-    final chat = fields.chat;
+    try {
+      final mapPayload = message.payload! as SystemPayload;
+      ChatInvitationFields fields =
+          ChatInvitationFields.fromMap(mapPayload.fields);
 
-    if (users.isNotEmpty) {
-      await userFunctions.insertUsers(users);
-      await userFunctions.addParticipants(
-          ChatUserViewModel.toParticipants(users, chat), chat);
-      setMessage(users, chat);
-      await UseMessageProvider.messageProvider.saveChats(newChat: null);
+      final users = fields.users;
+      final chat = fields.chat;
+
+      if (users.isNotEmpty) {
+        await userFunctions.insertUsers(users);
+        await userFunctions.addParticipants(
+            ChatUserViewModel.toParticipants(users, chat), chat);
+        setMessage(users, chat);
+        await UseMessageProvider.messageProvider.saveChats(newChat: null);
+      }
+    } on NoSuchMethodError {
+      return;
     }
   }
 
