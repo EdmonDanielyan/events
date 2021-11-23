@@ -10,6 +10,7 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:fixnum/fixnum.dart';
 
 import 'all.dart';
+import 'chat_list.dart';
 
 class ChatInvitationListener {
   final NatsProvider natsProvider;
@@ -26,11 +27,17 @@ class ChatInvitationListener {
   bool isListeningToChannel(String channel) =>
       natsListener.listeningToChannel(channel);
 
-  Future<void> listenTo(String channel,
-      {Int64 startSequence = Int64.ZERO}) async {
+  Future<void> listenTo(
+    String channel, {
+    Int64 startSequence = Int64.ZERO,
+  }) async {
     if (!isListeningToChannel(channel)) {
-      await natsProvider.subscribeToChannel(channel, onMessage,
-          startSequence: startSequence);
+      print("LISTENING TO INVITATION WITH $startSequence");
+      await natsProvider.subscribeToChannel(
+        channel,
+        onMessage,
+        startSequence: startSequence,
+      );
     }
   }
 

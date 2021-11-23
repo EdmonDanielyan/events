@@ -16,7 +16,7 @@ class UserOnlineListener {
     required this.chatDatabaseCubit,
   });
 
-  Debouncer _debouncer = Debouncer(milliseconds: 20000);
+  Debouncer _debouncer = Debouncer(milliseconds: 90000);
 
   Future<void> listenTo(UserTable user) async {
     try {

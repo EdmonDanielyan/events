@@ -66,8 +66,6 @@ class NatsProvider {
   void dispose() {
     userChatIdList.clear();
     publicChatIdList.clear();
-    _channelCallbacks.clear();
-    _channelSubscriptions.clear();
     _stan.manualDisconnect();
   }
 
@@ -223,19 +221,14 @@ class NatsProvider {
       {StartPosition? startPosition, Int64 startSequence = Int64.ZERO}) async {
     var durableName = "$userId-$deviceVirtualId-$channel";
 
-    var subscription = startSequence != Int64.ZERO
-        ? await _stan.subscribe(
-            subject: channel,
-            maxInFlight: 1,
-            startPosition: startPosition ?? _getPosition(channel),
-            durableName: durableName,
-            startSequence: startSequence)
-        : await _stan.subscribe(
-            subject: channel,
-            maxInFlight: 1,
-            startPosition: startPosition ?? StartPosition.NewOnly,
-            durableName: durableName,
-          );
+    var subscription = await _stan.subscribe(
+      subject: channel,
+      maxInFlight: 1,
+      startPosition: startPosition ?? _getPosition(channel),
+      durableName: durableName,
+      startSequence: startSequence,
+    );
+
     return subscription;
   }
 
@@ -259,16 +252,15 @@ class NatsProvider {
     await for (final dataMessage in subscription.stream) {
       if (_channelSubscriptions.containsKey(channel)) {
         NatsMessage message = parseMessage(dataMessage);
+        if (message.needAck) {
+          acknowledge(subscription, dataMessage);
+        }
 
         if (!dataMessage.isRedelivery) {
           await onMessage(channel, message);
           Future<void> Function(String, NatsMessage) channelCallback =
               _channelCallbacks[channel]!;
           await channelCallback(channel, message);
-        }
-
-        if (message.needAck) {
-          acknowledge(subscription, dataMessage);
         }
       } else {
         break;

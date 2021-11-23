@@ -12,6 +12,8 @@ import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/message.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
+import 'package:ink_mobile/models/debouncer.dart';
+import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
@@ -43,6 +45,10 @@ class ChatMessageListener {
     required this.messageDeletedListener,
   });
 
+  static ChatMessageFields? lastChatMessageFields;
+
+  Debouncer get _debouncer => Debouncer(milliseconds: 400);
+
   NatsListener get natsListener =>
       UseMessageProvider.messageProvider.natsListener;
 
@@ -53,8 +59,11 @@ class ChatMessageListener {
       {Int64 startSequence = Int64.ZERO}) async {
     try {
       if (!isListeningToChannel(channel)) {
-        await natsProvider.subscribeToChannel(channel, onMessage,
-            startSequence: startSequence);
+        await natsProvider.subscribeToChannel(
+          channel,
+          onMessage,
+          startSequence: startSequence,
+        );
       }
     } on SubscriptionAlreadyExistException {}
   }
@@ -68,9 +77,13 @@ class ChatMessageListener {
       ChatMessageFields fields = ChatMessageFields.fromMap(mapPayload.fields);
 
       if (fields.user.id != JwtPayload.myId) {
+        lastChatMessageFields = fields;
         late ChatTable chat =
             ChatListView.changeChatForParticipant(fields.chat, [fields.user]);
-        _pushNotification(chat.id, fields.user, fields.message);
+        _debouncer.run(() {
+          // _pushNotification();
+        });
+
         await userFunctions.insertUser(fields.user);
         await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
             .addMessage(fields.message);
@@ -81,9 +94,14 @@ class ChatMessageListener {
     }
   }
 
-  Future<void> _pushNotification(
-      String chatId, UserTable user, MessageTable message) async {
+  Future<void> _pushNotification() async {
+    if (lastChatMessageFields == null) {
+      return;
+    }
     bool showNotification = true;
+    final chatId = lastChatMessageFields!.chat.id;
+    final user = lastChatMessageFields!.user;
+    final message = lastChatMessageFields!.message;
 
     ChatTable? myChat = await chatDatabaseCubit.db.selectChatById(chatId);
     final selectedChat = chatDatabaseCubit.selectedChat;

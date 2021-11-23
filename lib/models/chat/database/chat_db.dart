@@ -156,8 +156,9 @@ class ChatDatabase extends _$ChatDatabase {
 
   //CHANNEL
   Future<List<ChannelTable>> getAllChannels() => select(channelTables).get();
-  Future<List<ChannelTable>> getChannelsByChannelName(String channelName) =>
-      (select(channelTables)..where((tbl) => tbl.to.equals(channelName))).get();
+  Future<ChannelTable?> getChannelByChannelName(String channelName) =>
+      (select(channelTables)..where((tbl) => tbl.to.equals(channelName)))
+          .getSingleOrNull();
   Future<int> insertChannel(ChannelTable channel) =>
       into(channelTables).insert(channel);
   Future<int> updateChannelByChannelName(
@@ -176,10 +177,10 @@ class ChatDatabase extends _$ChatDatabase {
           participantTables)
         ..where((tbl) => tbl.userId.equals(userId) & tbl.chatId.equals(chatId)))
       .go();
-  Future<List<ParticipantTable>> selectParticipantsById(int id, String chatId) =>
+  Future<ParticipantTable?> selectParticipantById(int id, String chatId) =>
       (select(participantTables)
             ..where((tbl) => tbl.userId.equals(id) & tbl.chatId.equals(chatId)))
-          .get();
+          .getSingleOrNull();
 
   Stream<List<ParticipantWithUser>> watchParticipants(String chatId) {
     return (select(participantTables)
@@ -209,7 +210,7 @@ class ChatDatabase extends _$ChatDatabase {
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
-  int get schemaVersion => 21;
+  int get schemaVersion => 22;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

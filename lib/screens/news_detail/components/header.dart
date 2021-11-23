@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/aseets.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flick_video_player/flick_video_player.dart';
@@ -50,18 +51,22 @@ class _HeaderState extends State<Header> {
               scrollDirection: Axis.horizontal,
               children: slider,
             )),
-        Positioned.fill(
+        if (slider.length > 1) ...[
+          Positioned.fill(
             child: Align(
-                alignment: AlignmentDirectional(0, 0.9),
-                child: AnimatedSmoothIndicator(
-                  activeIndex: _sliderIndex,
-                  count: slider.length,
-                  effect: ScrollingDotsEffect(
-                      dotColor: Color(0xFFFFFFFF).withOpacity(0.5),
-                      dotWidth: 10,
-                      dotHeight: 10,
-                      activeDotColor: Colors.white),
-                ))),
+              alignment: AlignmentDirectional(0, 0.9),
+              child: AnimatedSmoothIndicator(
+                activeIndex: _sliderIndex,
+                count: slider.length,
+                effect: ScrollingDotsEffect(
+                    dotColor: Color(0xFFFFFFFF).withOpacity(0.5),
+                    dotWidth: 10,
+                    dotHeight: 10,
+                    activeDotColor: Colors.white),
+              ),
+            ),
+          ),
+        ],
         Positioned.fill(
             child: Align(
                 alignment: AlignmentDirectional(-1.1, -0.7),
@@ -98,7 +103,7 @@ class _HeaderState extends State<Header> {
           image: NetworkImage(
             image,
           ),
-          placeholder: AssetImage(Header.DEFAULT_PREVIEW_PICTURE_LINK),
+          placeholder: AssetImage(DEFAULT_WHITE_PICTURE_LINK),
         )));
       });
     } else {

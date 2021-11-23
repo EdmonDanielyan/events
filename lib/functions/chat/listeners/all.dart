@@ -97,7 +97,6 @@ class NatsListener {
   Future<void> init() async {
     await Future.delayed(Duration(seconds: 1));
     await _listenToChatList();
-    //await listenToMyStoredChannels();
     await _listenToInvitations();
   }
 
@@ -120,8 +119,12 @@ class NatsListener {
       for (final channel in channels) {
         Int64 currentSeq = Int64.parseInt(channel.sequence).toInt64();
         Int64 sequence = currentSeq == 0 ? currentSeq : currentSeq + 1;
-        await _subscribeToChannel(channel.messageType, channel.to,
-            startSequence: sequence);
+
+        await _subscribeToChannel(
+          channel.messageType,
+          channel.to,
+          startSequence: sequence,
+        );
       }
     }
   }
@@ -168,9 +171,11 @@ class NatsListener {
 
     if (getChannels.isNotEmpty) {
       for (final channel in getChannels) {
-        await channelFunctions.saveByChannelName(channel);
+        if (!ChatListListener.busyChannels.contains(channel)) {
+          await channelFunctions.saveByChannelName(channel);
+        }
       }
-      listenToMyStoredChannels();
+      await listenToMyStoredChannels();
     }
   }
 
@@ -186,4 +191,10 @@ class NatsListener {
 
   bool listeningToChannel(String channel) =>
       subscribedChannels.contains(channel);
+
+  void unsubscribeFromAll() {
+    subscribedChannels.forEach((element) {
+      natsProvider.unsubscribeFromChannel(element);
+    });
+  }
 }

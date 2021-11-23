@@ -26,16 +26,18 @@ class ChatSendMessage {
     required List<MessageTable> messages,
     required List<ChannelTable> channels,
   }) async {
+    final chatListFields = ChatListFields(
+      chats: chats.toSet().toList(),
+      users: users.toSet().toList(),
+      participants: participants.toSet().toList(),
+      messages: messages.toSet().toList(),
+      channels: channels.toSet().toList(),
+    );
+
     await natsProvider.sendSystemMessageToChannel(
       natsProvider.getPrivateUserChatIdList(userId.toString()),
       MessageType.ChatList,
-      ChatListFields(
-        chats: chats,
-        users: users,
-        participants: participants,
-        messages: messages,
-        channels: channels,
-      ).toMap(),
+      chatListFields.toMap(),
     );
   }
 

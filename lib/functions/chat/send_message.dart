@@ -58,9 +58,14 @@ class SendMessage {
     return message;
   }
 
-  Future<String> addMessage(MessageTable message) async {
-    await chatDatabaseCubit.db.insertMessage(message);
-    ChatFunctions(chatDatabaseCubit).setChatToFirst(chat);
+  Future<String> addMessage(
+    MessageTable message,
+  ) async {
+    final msg = await chatDatabaseCubit.db.selectMessageById(message.id);
+    if (msg == null) {
+      await chatDatabaseCubit.db.insertMessage(message);
+      ChatFunctions(chatDatabaseCubit).setChatToFirst(chat);
+    }
 
     return message.id;
   }
@@ -68,11 +73,7 @@ class SendMessage {
   Future<void> addMessagesIfNotExists(List<MessageTable> messages) async {
     if (messages.isNotEmpty) {
       for (final message in messages) {
-        final msg = await chatDatabaseCubit.db.selectMessageById(message.id);
-
-        if (msg == null) {
-          addMessage(message);
-        }
+        await addMessage(message);
       }
     }
   }

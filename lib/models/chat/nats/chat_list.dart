@@ -36,8 +36,8 @@ class ChatListFields {
     return ChatListFields(
       chats: ChatListView.getChatsFromString(map['chats'] ?? "[]"),
       users: ChatUserViewModel.getUsersFromString(map['users'] ?? "[]"),
-      participants:
-          ChatUserViewModel.getParticipantsFromString(map['participants'] ?? "[]"),
+      participants: ChatUserViewModel.getParticipantsFromString(
+          map['participants'] ?? "[]"),
       messages: MessageListView.getMessagesFromString(map['messages'] ?? "[]"),
       channels: ChannelFunctions.getChannelsFromString(map['channels'] ?? "[]"),
     );

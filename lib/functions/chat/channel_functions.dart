@@ -28,11 +28,10 @@ class ChannelFunctions {
   }
 
   Future<void> insertOrUpdate(ChannelTable channel) async {
-    final exists = await channelExists(channel.to);
+    final storedChannel = await getChannel(channel.to);
 
-    if (exists) {
-      final storedChannel = await getChannel(channel.to);
-      int currentChannelSeq = int.tryParse(storedChannel!.sequence) ?? 0;
+    if (storedChannel != null) {
+      int currentChannelSeq = int.tryParse(storedChannel.sequence) ?? 0;
       int updateChannelSeq = int.tryParse(channel.sequence) ?? 0;
 
       if (updateChannelSeq >= currentChannelSeq) {
@@ -44,12 +43,7 @@ class ChannelFunctions {
   }
 
   Future<ChannelTable?> getChannel(String channelName) async {
-    final channels =
-        await chatDatabaseCubit.db.getChannelsByChannelName(channelName);
-    if (channels.isNotEmpty) {
-      return channels.last;
-    }
-    return null;
+    return await chatDatabaseCubit.db.getChannelByChannelName(channelName);
   }
 
   Future<bool> channelExists(String channelName) async {

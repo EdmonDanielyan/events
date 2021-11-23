@@ -12,4 +12,7 @@ class ChannelTables extends Table {
   TextColumn get to => text()();
   TextColumn get sequence => text()();
   IntColumn get messageType => intEnum<MessageType>()();
+
+  @override
+  Set<Column> get primaryKey => {to};
 }

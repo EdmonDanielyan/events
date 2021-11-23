@@ -425,7 +425,8 @@ class Client {
     for (int i = 1; i <= 3; i++) {
       final subscriptionResponse = await tryToSubscribe(subscriptionRequest);
       if (!_subscriptionInboxes.contains(subscriptionResponse.ackInbox)) {
-        print('ACK INBOX - $subject - ${subscriptionResponse.ackInbox}');
+        print(
+            'ACK INBOX - $subject - ${subscriptionResponse.ackInbox} WITH POSITION - $startPosition AND SEQUENCE - $startSequence');
         _subscriptionInboxes.add(subscriptionResponse.ackInbox);
         return Subscription(
           subject: subject,

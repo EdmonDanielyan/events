@@ -1727,7 +1727,7 @@ class $ChannelTablesTable extends ChannelTables
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {to};
   @override
   ChannelTable map(Map<String, dynamic> data, {String? tablePrefix}) {
     return ChannelTable.fromData(data, _db,

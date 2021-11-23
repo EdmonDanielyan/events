@@ -163,6 +163,7 @@ class MessageProvider {
   }
 
   void dispose() async {
+    natsListener.unsubscribeFromAll();
     userOnlineTimer.cancel();
     natsProvider.dispose();
     chatDatabaseCubit.db.deleteEverything();
@@ -308,14 +309,20 @@ class MessageProvider {
     user = user ?? UserFunctions.getMe;
     final channel = getUserOnlineChannel(user.id);
 
+    _sendOnline(channel, user);
+
     userOnlineTimer = Timer.periodic(
-      Duration(seconds: 5),
+      Duration(seconds: 60),
       (timer) {
-        if (natsProvider.isConnected) {
-          chatSendMessage.sendUserOnlinePing(channel, user!);
-        }
+        _sendOnline(channel, user!);
       },
     );
+  }
+
+  void _sendOnline(String channel, UserTable user) {
+    if (natsProvider.isConnected) {
+      chatSendMessage.sendUserOnlinePing(channel, user);
+    }
   }
 
   Future<void> saveChats({

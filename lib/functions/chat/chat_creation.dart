@@ -61,7 +61,7 @@ class ChatCreation {
         participantId: user.id,
       );
 
-      await insertChat(chatExists);
+      await insertChat(chatExists, shouldCheck: false);
     }
     await UserFunctions(chatDatabaseCubit).insertUsers(users);
 
@@ -76,10 +76,7 @@ class ChatCreation {
   }) async {
     var newChat = chat ?? _makeChat(generateGroupId, name, avatar);
 
-    final chatExists = await isChatExists(newChat.id);
-    if (chatExists == null) {
-      await insertChat(newChat);
-    }
+    await insertChat(newChat);
 
     final userFunctions = UserFunctions(chatDatabaseCubit);
     await userFunctions.insertUsers(users);
@@ -112,8 +109,12 @@ class ChatCreation {
     );
   }
 
-  Future<int> insertChat(ChatTable chat) async {
-    return await chatDatabaseCubit.db.insertChat(chat);
+  Future<String> insertChat(ChatTable chat, {bool shouldCheck = true}) async {
+    ChatTable? chatExists = shouldCheck ? await isChatExists(chat.id) : null;
+    if (chatExists == null) {
+      await chatDatabaseCubit.db.insertChat(chat);
+    }
+    return chat.id;
   }
 
   static void sendOn(List<MessageTable> messages, BuildContext context) {

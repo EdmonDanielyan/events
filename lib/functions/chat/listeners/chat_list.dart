@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
@@ -8,6 +10,9 @@ import 'package:ink_mobile/models/chat/nats/chat_list.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
+
+// ignore: implementation_imports
+import 'package:dart_nats_streaming/src/data_message.dart';
 
 import '../chat_creation.dart';
 import 'all.dart';
@@ -27,26 +32,39 @@ class ChatListListener {
   NatsListener get natsListener =>
       UseMessageProvider.messageProvider.natsListener;
 
+  static Set<String> busyChannels = {};
+
   Future<void> listenTo(UserTable user) async {
     try {
       final channel = natsProvider.getPrivateUserChatIdList(user.id.toString());
       final sub = await natsProvider.listenChatList(channel);
-
       if (sub != null) {
-        sub.listen((dataMessage) {
-          NatsMessage message = natsProvider.parseMessage(dataMessage);
-          onMessage(message);
-          natsProvider.acknowledge(sub, dataMessage);
-          sub.subscription.close();
+        DataMessage? dataMessage;
+        dataMessage = await sub.stream.first
+            .timeout(Duration(seconds: 3))
+            .catchError((_err) {
+          dataMessage = null;
         });
+
+        if (dataMessage != null) {
+          natsProvider.acknowledge(sub, dataMessage!);
+          NatsMessage message = natsProvider.parseMessage(dataMessage);
+          await onMessage(message);
+
+          sub.subscription.close();
+        }
       }
-    } on SubscriptionAlreadyExistException {}
+    } on SubscriptionAlreadyExistException {
+    } catch (_e) {
+      return;
+    }
   }
 
   Future<void> onMessage(NatsMessage message) async {
     final mapPayload = message.payload! as SystemPayload;
     try {
       ChatListFields fields = ChatListFields.fromMap(mapPayload.fields);
+
       var chats = fields.chats;
       final users = fields.users;
       final participants = fields.participants;
@@ -55,12 +73,12 @@ class ChatListListener {
 
       if (chats.length > 0) {
         chats = chats.reversed.toList();
-        _insertChats(chats, messages);
+        await _insertChats(chats, messages);
       }
-
-      _insertUsers(users);
-      _insertParticipants(participants);
-      _insertChannels(channels);
+      await _insertUsers(users);
+      await _insertParticipants(participants, chats);
+      await _insertChannels(channels);
+      await UseMessageProvider.messageProvider.saveChats(newChat: null);
     } on NoSuchMethodError {
       return;
     }
@@ -68,15 +86,17 @@ class ChatListListener {
 
   Future<void> _insertChats(
       List<ChatTable> chats, List<MessageTable> messages) async {
+    final distinctChats = chats.toSet().toList();
+
     final storedChats = await chatDatabaseCubit.db.getAllChats();
 
-    for (final chat in chats) {
+    for (final chat in distinctChats) {
       bool insert = _chatExistsInStoredChannels(chat, storedChats);
 
       if (insert) {
         await ChatCreation(chatDatabaseCubit).insertChat(chat);
-        await _insertMessages(chat, messages);
       }
+      await _insertMessages(chat, messages);
     }
   }
 
@@ -93,28 +113,67 @@ class ChatListListener {
     await userFunctions.insertUsers(users);
   }
 
-  Future<void> _insertParticipants(List<ParticipantTable> participants) async {
-    await userFunctions.insertParticipants(participants);
+  Future<void> _insertParticipants(
+      List<ParticipantTable> participants, List<ChatTable> chats) async {
+    var distinctParticipants = _getParticipantThatAreInChats(
+      participants,
+      chats,
+    );
+    await userFunctions.insertParticipants(distinctParticipants);
+  }
+
+  List<ParticipantTable> _getParticipantThatAreInChats(
+      List<ParticipantTable> participants, List<ChatTable> chats) {
+    var distinctParticipants = participants.toSet().toList();
+
+    distinctParticipants.removeWhere((element) {
+      bool _notInChat = true;
+      for (final chat in chats) {
+        if (chat.id == element.chatId) {
+          _notInChat = false;
+        }
+      }
+
+      return _notInChat;
+    });
+
+    return distinctParticipants;
   }
 
   Future<void> _insertMessages(
       ChatTable chat, List<MessageTable> messages) async {
     if (messages.isNotEmpty) {
-      List<MessageTable> insertMessages =
-          messages.where((element) => element.chatId == chat.id).toList();
+      final distinctMessages = messages.toSet().toList();
+      List<MessageTable> insertMessages = distinctMessages
+          .where((element) => element.chatId == chat.id)
+          .toList();
 
-      SendMessage(chat: chat, chatDatabaseCubit: chatDatabaseCubit)
-          .addMessagesIfNotExists(insertMessages);
+      if (insertMessages.isNotEmpty) {
+        try {
+          await SendMessage(chat: chat, chatDatabaseCubit: chatDatabaseCubit)
+              .addMessagesIfNotExists(insertMessages);
+        } catch (e) {
+          print("ERROR ${e.toString()}");
+        }
+      }
     }
   }
 
   Future<void> _insertChannels(List<ChannelTable> channels) async {
     if (channels.isNotEmpty) {
-      for (final channel in channels) {
+      final distinctChannels = channels.toSet().toList();
+      _setBusyChannels(distinctChannels);
+      for (final channel in distinctChannels) {
         await channelFunctions.insertOrUpdate(channel);
       }
 
-      natsListener.listenToMyStoredChannels();
+      await natsListener.listenToMyStoredChannels();
+    }
+  }
+
+  void _setBusyChannels(List<ChannelTable> channels) {
+    for (final channel in channels) {
+      busyChannels.add(channel.to);
     }
   }
 }

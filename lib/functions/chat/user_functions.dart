@@ -68,13 +68,7 @@ class UserFunctions {
   }
 
   Future<ParticipantTable?> getParticipant(int userId, String chatId) async {
-    final participants =
-        await chatDatabaseCubit.db.selectParticipantsById(userId, chatId);
-
-    if (participants.isNotEmpty) {
-      return participants.last;
-    }
-    return null;
+    return await chatDatabaseCubit.db.selectParticipantById(userId, chatId);
   }
 
   Future<bool> insertParticipants(List<ParticipantTable> participants) async {
