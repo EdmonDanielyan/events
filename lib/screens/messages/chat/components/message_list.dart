@@ -74,14 +74,18 @@ class MessageList extends StatelessWidget with MessageMixins {
 
                   if (messagesWithUser!.length > 0) {
                     _messagesLoaded();
-
+                    messagesWithUser!.sort((a, b) =>
+                        a.message!.created!.compareTo(b.message!.created!));
                     return ListView.builder(
                       controller: ScrollController(keepScrollOffset: false),
                       itemCount: messagesWithUser!.length,
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         return eachItem(
-                            messagesWithUser![index], dateSort, index);
+                          messagesWithUser![index],
+                          dateSort,
+                          index,
+                        );
                       },
                     );
                   }
@@ -108,6 +112,7 @@ class MessageList extends StatelessWidget with MessageMixins {
         MessageCard(
           messageWithUser: messageWithUser,
           index: index,
+          chatDatabaseCubit: _chatDatabaseCubit,
         ),
       ],
     );
@@ -131,6 +136,7 @@ class MessageList extends StatelessWidget with MessageMixins {
               user: state.texting!.user,
               messageStr: "...",
               message: null,
+              chatDatabaseCubit: _chatDatabaseCubit,
             ),
           );
         }

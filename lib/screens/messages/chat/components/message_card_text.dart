@@ -20,18 +20,18 @@ class MessageCardText extends StatelessWidget {
   final UserTable user;
   final MessageTable? message;
   final String? messageStr;
+  final ChatDatabaseCubit chatDatabaseCubit;
 
   const MessageCardText({
     Key? key,
     required this.user,
     required this.message,
     this.messageStr,
+    required this.chatDatabaseCubit,
   })  : assert(message != null || messageStr != null),
         super(key: key);
 
-  static late ChatDatabaseCubit _chatDatabaseCubit;
-
-  ChatTable get getChat => _chatDatabaseCubit.selectedChat!;
+  ChatTable get getChat => chatDatabaseCubit.selectedChat!;
 
   bool get byMe => message != null ? MessageListView.isByMe(message!) : false;
 
@@ -57,7 +57,7 @@ class MessageCardText extends StatelessWidget {
       );
       final renewedMessage = MessageListView.renewMessage(message!);
       await SendMessage(
-        chatDatabaseCubit: _chatDatabaseCubit,
+        chatDatabaseCubit: chatDatabaseCubit,
         chat: getChat,
       ).addMessage(renewedMessage);
       await UseMessageProvider.messageProvider
@@ -67,7 +67,6 @@ class MessageCardText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _chatDatabaseCubit = ChatScreen.of(context).chatDatabaseCubit;
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment:

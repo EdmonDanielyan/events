@@ -4,6 +4,7 @@ import 'package:ink_mobile/components/selectable_widget.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_state.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
@@ -19,9 +20,13 @@ import 'message_search_wrapper.dart';
 class MessageCard extends StatelessWidget {
   final int index;
   final MessageWithUser messageWithUser;
-  const MessageCard(
-      {Key? key, required this.messageWithUser, required this.index})
-      : super(key: key);
+  final ChatDatabaseCubit chatDatabaseCubit;
+  const MessageCard({
+    Key? key,
+    required this.messageWithUser,
+    required this.index,
+    required this.chatDatabaseCubit,
+  }) : super(key: key);
   static late ChatCubit _chatCubit;
   static late SelectableCubit<MessageWithUser> _selectableCubit;
 
@@ -81,6 +86,7 @@ class MessageCard extends StatelessWidget {
     return MessageCardText(
       message: message,
       user: user,
+      chatDatabaseCubit: chatDatabaseCubit,
     );
   }
 }
