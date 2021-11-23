@@ -32,7 +32,6 @@ class ChatInvitationListener {
     Int64 startSequence = Int64.ZERO,
   }) async {
     if (!isListeningToChannel(channel)) {
-      print("LISTENING TO INVITATION WITH $startSequence");
       await natsProvider.subscribeToChannel(
         channel,
         onMessage,

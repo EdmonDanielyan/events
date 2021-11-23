@@ -34,8 +34,6 @@ class InitialCubit extends Cubit<InitialState> {
       GetIt.I<AuthHandler>().onSuccessAuth();
       emitState(type: InitialStateType.LOAD_MAIN);
     } on DioError catch (e) {
-      print(e.message);
-
       if (e.type == DioErrorType.other) {
         emitError(localizationInstance.noConnectionError);
       } else {

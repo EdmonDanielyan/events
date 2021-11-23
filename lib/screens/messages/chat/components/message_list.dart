@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
@@ -5,8 +7,11 @@ import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/date_sort.dart';
 import 'package:ink_mobile/functions/message_mixins.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/date_widget.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/chat_screen_params.dart';
@@ -93,11 +98,12 @@ class MessageList extends StatelessWidget with MessageMixins {
 
   Widget eachItem(
       MessageWithUser messageWithUser, DateTimeSort dateSort, int index) {
+    final message = messageWithUser.message!;
+
     return Column(
       children: [
         DateWidget(
-          dateTime:
-              dateSort.getMessageDateTime(messageWithUser.message!.created!),
+          dateTime: dateSort.getMessageDateTime(message.created!),
         ),
         MessageCard(
           messageWithUser: messageWithUser,

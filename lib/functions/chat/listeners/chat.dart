@@ -81,7 +81,7 @@ class ChatMessageListener {
         late ChatTable chat =
             ChatListView.changeChatForParticipant(fields.chat, [fields.user]);
         _debouncer.run(() {
-          // _pushNotification();
+          _pushNotification();
         });
 
         await userFunctions.insertUser(fields.user);

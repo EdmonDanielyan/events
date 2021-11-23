@@ -21,6 +21,7 @@ class ChatInfoBottomBtns extends StatelessWidget {
 
   void _clearMessages() {
     _chatFunctions.deleteAllChatMessages(chat.id);
+    UseMessageProvider.messageProvider.saveChats(newChat: null);
   }
 
   void _deleteChat(BuildContext context) {

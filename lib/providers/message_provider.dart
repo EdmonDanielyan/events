@@ -239,16 +239,17 @@ class MessageProvider {
     );
   }
 
-  Future<void> deleteMessages(List<MessageTable> messages) async {
+  Future<void> deleteMessages(List<MessageTable> messages,
+      {bool makeRequest = true}) async {
     if (messages.isNotEmpty) {
       final chatId = messages.last.chatId;
       final channel = getDeletedMessageChannel(chatId);
-      final success =
-          await chatSendMessage.sendDeleteMessage(channel, messages: messages);
+      chatFunctions.deleteMessages(messages);
 
-      if (success) chatFunctions.deleteMessages(messages);
-
-      saveChats(newChat: null);
+      if (makeRequest) {
+        await chatSendMessage.sendDeleteMessage(channel, messages: messages);
+        saveChats(newChat: null);
+      }
     }
   }
 

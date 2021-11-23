@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/components/linkify_text.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
+import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/date_functions.dart';
 import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card_picture.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat/components/sent_on_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
+
+import '../chat_screen.dart';
 
 class MessageCardText extends StatelessWidget {
   final UserTable user;
@@ -23,6 +28,10 @@ class MessageCardText extends StatelessWidget {
     this.messageStr,
   })  : assert(message != null || messageStr != null),
         super(key: key);
+
+  static late ChatDatabaseCubit _chatDatabaseCubit;
+
+  ChatTable get getChat => _chatDatabaseCubit.selectedChat!;
 
   bool get byMe => message != null ? MessageListView.isByMe(message!) : false;
 
@@ -40,14 +49,31 @@ class MessageCardText extends StatelessWidget {
     return byMe ? Color(0XFF46966E) : Colors.grey.shade200;
   }
 
+  void _resend() async {
+    if (UseMessageProvider.initialized) {
+      UseMessageProvider.messageProvider.deleteMessages(
+        [message!],
+        makeRequest: false,
+      );
+      final renewedMessage = MessageListView.renewMessage(message!);
+      await SendMessage(
+        chatDatabaseCubit: _chatDatabaseCubit,
+        chat: getChat,
+      ).addMessage(renewedMessage);
+      await UseMessageProvider.messageProvider
+          .sendMessage(getChat, renewedMessage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _chatDatabaseCubit = ChatScreen.of(context).chatDatabaseCubit;
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment:
           byMe ? CrossAxisAlignment.center : CrossAxisAlignment.end,
       children: [
-        _errorIcon(),
+        _errorIconReload(),
         if (!byMe) ...[
           _userAvatarWidget(),
           SizedBox(width: 10.0),
@@ -74,11 +100,24 @@ class MessageCardText extends StatelessWidget {
     );
   }
 
-  Widget _errorIcon() {
+  Widget _errorIconReload() {
     if (message != null && message!.status == MessageStatus.ERROR) {
-      return Container(
-        margin: EdgeInsets.only(right: 5),
-        child: Icon(Icons.error, color: Colors.red, size: 22),
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: EdgeInsets.only(right: 5),
+            child: InkWell(
+              onTap: _resend,
+              child: Icon(Icons.replay, color: Colors.blue, size: 22),
+            ),
+          ),
+          const SizedBox(width: 5.0),
+          Container(
+            margin: EdgeInsets.only(right: 5),
+            child: Icon(Icons.error, color: Colors.red, size: 22),
+          ),
+        ],
       );
     }
 
