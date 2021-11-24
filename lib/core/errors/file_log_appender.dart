@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:injectable/injectable.dart';
@@ -10,9 +9,6 @@ class FileLogAppender {
   final String logFile;
   List<String> _recordsCache = [];
   Timer? _timer;
-  bool _fileValidated = false;
-  bool _fileValidationResult = false;
-
   File? _file;
 
   bool printLogs = false;
@@ -21,26 +17,21 @@ class FileLogAppender {
 
   FileLogAppender(@Named('logFile') this.logFile) {
     assert(logFile.isNotEmpty, "logFile should not be empty");
-    _createLogFile();
+    _ensureLogFile();
   }
 
-  Future<bool> append(String record) async {
+  void append(String record) async {
     _recordsCache.add(record);
 
     if (_timer != null) {
       _timer?.cancel();
     }
     _timer = Timer(retentionCachePeriod, () => _processCache());
-
-    return true;
   }
 
   Future<void> _processCache() async {
     try {
-      if (!_fileValidated) {
-        _fileValidationResult = await _createLogFile();
-        _fileValidated = true;
-      }
+      await _ensureLogFile();
       var _list = _recordsCache.toList();
       _list.forEach((r) async => await _processRecord(r));
       _recordsCache.removeRange(0, _list.length);
@@ -50,39 +41,31 @@ class FileLogAppender {
   }
 
   Future<bool> _processRecord(String record) async {
-    if (_fileValidationResult) {
-      var sink = _openFileForAppend();
-
+    if (_file != null) {
       try {
-        _writeReportToFile(record, sink);
+        _writeReportToFile(record);
+        _printLog(record);
+        return true;
       } catch (e) {
-        _printLog(e.toString());
-      } finally {
-        await _closeFile(sink);
+        print(e);
       }
-      return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
-  Future<bool> _createLogFile() async {
+  Future<bool> _ensureLogFile() async {
     try {
       if (_file == null) {
         var directory = await getApplicationDocumentsDirectory();
         _file = File("${directory.path}/$logFile");
       }
-      bool exists = await _file!.exists();
+      bool exists = _file!.existsSync();
       if (!exists) {
         _file!.createSync();
       } else if (_file!.lengthSync() > logFileSizeBytes) {
         _file!.deleteSync();
         _file!.createSync();
       }
-      IOSink sink = _file!.openWrite(mode: FileMode.append);
-      sink.write("");
-      await sink.flush();
-      await sink.close();
       return true;
     } catch (exc, stackTrace) {
       _printLog(
@@ -91,28 +74,13 @@ class FileLogAppender {
     }
   }
 
-  IOSink _openFileForAppend() {
-    return _file!.openWrite(mode: FileMode.append);
+  void _writeLineToFile(String text) {
+    _file?.writeAsStringSync('$text\n', mode: FileMode.append, flush: true);
   }
 
-  void _writeLineToFile(String text, IOSink sink) {
-    try {
-      sink.add(utf8.encode('$text\n'));
-    } catch (e) {}
-  }
-
-  Future<void> _closeFile(IOSink sink) async {
-    try {
-      sink.flush();
-      sink.close();
-    } catch (e) {
-      //_printLog("Error during close file $_file: $e");
-    }
-  }
-
-  Future<void> _writeReportToFile(String report, IOSink sink) async {
+  Future<void> _writeReportToFile(String report) async {
     //_printLog("Writing report to file");
-    _writeLineToFile(report, sink);
+    _writeLineToFile(report);
   }
 
   void _printLog(String log) {
@@ -120,4 +88,5 @@ class FileLogAppender {
       print(log);
     }
   }
+
 }
