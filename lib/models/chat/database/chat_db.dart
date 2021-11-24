@@ -58,7 +58,11 @@ class ChatDatabase extends _$ChatDatabase {
       (select(chatTables)..where((tbl) => tbl.id.equals(id))).watchSingle();
   Future<int> insertChat(ChatTable chat) => into(chatTables).insert(chat);
   Future updateChatById(String id, ChatTable chat) =>
-      (update(chatTables)..where((tbl) => tbl.id.equals(id))).write(chat);
+      (update(chatTables)..where((tbl) => tbl.id.equals(id)))
+          .write(chat)
+          .catchError((_e) {
+        throw "Sql migration error. Reinstall the app, please";
+      });
   Future deleteChat(ChatTable chat) => delete(chatTables).delete(chat);
   Future deleteChatById(String id) =>
       (delete(chatTables)..where((tbl) => tbl.id.equals(id))).go();
@@ -210,7 +214,7 @@ class ChatDatabase extends _$ChatDatabase {
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
-  int get schemaVersion => 28;
+  int get schemaVersion => 29;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

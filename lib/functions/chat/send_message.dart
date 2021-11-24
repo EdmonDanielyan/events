@@ -64,7 +64,12 @@ class SendMessage {
     final msg = await chatDatabaseCubit.db.selectMessageById(message.id);
     if (msg == null) {
       await chatDatabaseCubit.db.insertMessage(message);
-      ChatFunctions(chatDatabaseCubit).setChatToFirst(chat);
+      try {
+        ChatFunctions(chatDatabaseCubit).setChatToFirst(chat);
+      } catch (_e) {
+        print("ERROR");
+        print(_e.toString());
+      }
     }
 
     return message.id;

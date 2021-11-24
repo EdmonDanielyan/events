@@ -10,7 +10,8 @@ class ChatTables extends Table {
   IntColumn get participantId => integer().nullable()();
   DateTimeColumn get updatedAt =>
       dateTime().withDefault(Constant(new DateTime.now().toUtc()))();
-
+  TextColumn get millisecondsSinceEpoch => text().nullable().withDefault(
+      Constant(new DateTime.now().millisecondsSinceEpoch.toString()))();
   BoolColumn get notificationsOn =>
       boolean().nullable().withDefault(Constant(true))();
 }
