@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:multi_select_flutter/dialog/mult_select_dialog.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ServiceSelectFieldCubit extends StatelessWidget {
   final SelectfieldCubit cubit;
@@ -27,7 +27,8 @@ class ServiceSelectFieldCubit extends StatelessWidget {
     required this.items,
     required this.onChanged,
   }) : super(key: key);
-  static late LanguageStrings _strings;
+
+  static late AppLocalizations _strings;
 
   Future<void> showModalOptions(BuildContext context) async {
     await showDialog(
@@ -47,7 +48,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
     return InkWell(
       onTap: () => showModalOptions(context),
       child: IgnorePointer(

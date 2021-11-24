@@ -1,5 +1,6 @@
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/selectfield.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MedicalServicesList {
   static String dentistId = "dentist";
@@ -7,9 +8,11 @@ class MedicalServicesList {
   static String researchId = "research";
   static String otherId = "other";
 
-  final LanguageStrings strings;
+  late AppLocalizations strings;
 
-  MedicalServicesList({required this.strings});
+  MedicalServicesList() {
+    strings = localizationInstance;
+  }
 
   static Selectfield? getElementFromListById(
       List<Selectfield> items, String id) {

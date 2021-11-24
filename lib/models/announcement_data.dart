@@ -15,74 +15,44 @@ class AnnouncementData extends Data {
     this.viewCount,
     this.detailText,
   });
-  
+
   void fillFromMap(Map map) {
-    id =
-      map['id'] is int
-        ? map['id']
-        : int.tryParse(map['id'].toString());
+    id = map['id'] is int ? map['id'] : int.tryParse(map['id'].toString());
 
-    title =
-      map['title'] is String
-        ? map['title']
-        : null;
+    title = map['title'] is String ? map['title'] : null;
 
-    viewCount =
-      map['view_count'] is int
+    viewCount = map['view_count'] is int
         ? map['view_count']
         : int.tryParse(map['view_count'].toString());
 
-    dateCreate =
-      map['date_create'] is String
+    dateCreate = map['date_create'] is String
         ? DateTime.tryParse(map['date_create'])
         : null;
 
-    detailText =
-      map['detail_text'] is String
-        ? map['detail_text']
-        : null;
+    detailText = map['detail_text'] is String ? map['detail_text'] : null;
   }
 
-  factory AnnouncementData.fromMap(Map map)
-  {
+  factory AnnouncementData.fromMap(Map map) {
     return AnnouncementData(
-        id:
-          map['id'] is int
-            ? map['id']
-            : int.tryParse(map['id'].toString()),
-
-        title:
-          map['title'] is String
-            ? map['title']
-            : null,
-
-        viewCount:
-          map['view_count'] is int
-            ? map['view_count']
-            : int.tryParse(map['view_count'].toString()),
-
-        dateCreate:
-          map['date_create'] is String
-            ? DateTime.tryParse(map['date_create'])
-            : null,
-
-        detailText:
-          map['detail_text'] is String
-              ? map['detail_text']
-              : null,
+      id: map['id'] is int ? map['id'] : int.tryParse(map['id'].toString()),
+      title: map['title'] is String ? map['title'] : null,
+      viewCount: map['view_count'] is int
+          ? map['view_count']
+          : int.tryParse(map['view_count'].toString()),
+      dateCreate: map['date_create'] is String
+          ? DateTime.tryParse(map['date_create'])
+          : null,
+      detailText: map['detail_text'] is String ? map['detail_text'] : null,
     );
   }
 
-  factory AnnouncementData.fromProperty(
-      AnnouncementProperty property
-  ) {
-      return AnnouncementData(
+  factory AnnouncementData.fromProperty(AnnouncementProperty property) {
+    return AnnouncementData(
         id: property.id,
         title: property.title,
         viewCount: property.viewCount,
         detailText: property.detailText,
-        dateCreate: property.dateCreate
-      );
+        dateCreate: property.dateCreate);
   }
 
   static List<AnnouncementData> getListFromMap(List listData) {

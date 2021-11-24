@@ -1,14 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/cubit/references/references_cubit.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'components/body.dart';
 
 class ReferencesScreen extends StatefulWidget {
+  final ReferencesPageCubit referencesPageCubit;
+  final SendReferenceFormCubit sendReferenceFormCubit;
   final PreferredSizeWidget? appBar;
-  const ReferencesScreen({Key? key, this.appBar}) : super(key: key);
+  const ReferencesScreen({
+    Key? key,
+    this.appBar,
+    required this.referencesPageCubit,
+    required this.sendReferenceFormCubit,
+  }) : super(key: key);
 
   @override
   _ReferencesScreenState createState() => _ReferencesScreenState();
@@ -19,8 +26,7 @@ class _ReferencesScreenState extends State<ReferencesScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
 
     return Scaffold(
       appBar: widget.appBar ?? InkAppBarWithText(title: _strings.orderInquiry),
@@ -35,10 +41,9 @@ class _ReferencesScreenState extends State<ReferencesScreen>
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ),
-            BlocProvider<ReferencesPageCubit>(
-              create: (BuildContext context) =>
-                  ReferencesPageCubit(languageStrings: _strings),
-              child: Body(),
+            Body(
+              referencesPageCubit: widget.referencesPageCubit,
+              sendReferenceFormCubit: widget.sendReferenceFormCubit,
             ),
           ],
         ),

@@ -1,43 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.dart';
+import 'package:ink_mobile/components/loader/error_loading_widget.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_cubit.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/feedback/management_answer.dart';
 import 'package:ink_mobile/screens/feedback/components/load_more_btn.dart';
 
+import '../../feedback_screen.dart';
 import 'answer_widget.dart';
 
 class ManagementFeedbackAnswersList extends StatelessWidget {
   const ManagementFeedbackAnswersList({Key? key}) : super(key: key);
+  static late ScrollBottomLoadMoreCubit scrollBottomLoadMoreCubit;
 
-  static late LanguageStrings _strings;
-
-  void loadMore(FeedbackAnswerListCubit answersCubit, scrollBottomLoaderCubit) {
+  void loadMore(FeedbackAnswerListCubit answersCubit) {
     answersCubit.fetch();
 
     //Отключить реагирование на скроллинг вниз, если нет больше элементов
-    scrollBottomLoaderCubit.switchIsOn(answersCubit.pagination.next);
+    scrollBottomLoadMoreCubit.switchIsOn(answersCubit.pagination.next);
   }
 
   int currentPage(int page) => page - 1;
 
-  void linkScreenToCubit(ScrollBottomLoadMoreCubit cubit, Function loadMore) {
-    cubit.setLoadFunction(() => loadMore());
+  void linkScreenToCubit(Function loadMore) {
+    scrollBottomLoadMoreCubit.setLoadFunction(() => loadMore());
   }
 
   @override
   Widget build(BuildContext context) {
-    final _answers_cubit = BlocProvider.of<FeedbackAnswerListCubit>(context);
-    final _scrollBottomLoaderCubit =
-        BlocProvider.of<ScrollBottomLoadMoreCubit>(context);
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _answers_cubit = FeedBackScreen.of(context).feedbackAnswerListCubit;
+    scrollBottomLoadMoreCubit =
+        FeedBackScreen.of(context).scrollBottomLoadMoreCubit;
 
-    linkScreenToCubit(_scrollBottomLoaderCubit,
-        () => loadMore(_answers_cubit, _scrollBottomLoaderCubit));
+    linkScreenToCubit(() => loadMore(_answers_cubit));
 
     return BlocBuilder<FeedbackAnswerListCubit, FeedbackAnswerListCubitState>(
       bloc: _answers_cubit,
@@ -49,10 +47,11 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
           return _listWidget(
             state.data,
             _answers_cubit,
-            () => loadMore(_answers_cubit, _scrollBottomLoaderCubit),
+            () => loadMore(_answers_cubit),
           );
         } else if (state.state == FeedbackAnswerListCubitStateEnums.ERROR) {
-          return _errorLoadingWidget();
+          return ErrorLoadingWidget(
+              errorMsg: localizationInstance.errorLoadingQuestions);
         }
 
         return SizedBox();
@@ -84,23 +83,10 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
               cubit.pagination.next) ...[
             LoadMoreBtn(
               onPressed: () => loadMore(),
-              text: _strings.allAnswers,
+              text: localizationInstance.allAnswers,
             ),
           ],
         ],
-      ),
-    );
-  }
-
-  Widget _errorLoadingWidget() {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Text(
-        _strings.errorLoadingQuestions,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16.0,
-        ),
       ),
     );
   }

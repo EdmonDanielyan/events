@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/open_university/components/about_project.dart';
 
 class AboutProjectContact extends StatelessWidget {
-  const AboutProjectContact({Key? key, required this.text, this.title, required this.type, required this.data})
+  const AboutProjectContact(
+      {Key? key,
+      required this.text,
+      this.title,
+      required this.type,
+      required this.data})
       : super(key: key);
 
   final String? title;
@@ -16,8 +20,7 @@ class AboutProjectContact extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
 
     return GestureDetector(
       onTap: () {
@@ -25,8 +28,7 @@ class AboutProjectContact extends StatelessWidget {
           launchUrl(data);
         } else if (type == AboutProjectType.CLIPBOARD) {
           Clipboard.setData(ClipboardData(text: data)).then(
-                  (value) =>
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              (value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(_strings.textCopied),
                     duration: Duration(seconds: 1),
                   )));

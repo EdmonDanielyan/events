@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/core/masks/input_formatters.dart';
 import 'package:ink_mobile/core/masks/textfield_masks.dart';
 import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/cubit/autofill/get_autofill.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'entities.dart';
 
 class MedicalInsuranceFormUserFields extends StatefulWidget {
   final MedicalInsuranceFormEntities entities;
-  const MedicalInsuranceFormUserFields({
-    Key? key,
-    required this.entities,
-  }) : super(key: key);
+  const MedicalInsuranceFormUserFields({Key? key, required this.entities})
+      : super(key: key);
 
   @override
   _MedicalInsuranceFormUserFieldsState createState() =>
@@ -25,7 +22,7 @@ class MedicalInsuranceFormUserFields extends StatefulWidget {
 
 class _MedicalInsuranceFormUserFieldsState
     extends State<MedicalInsuranceFormUserFields> {
-  late LanguageStrings _strings;
+  late AppLocalizations _strings;
   TextEditingController fioController = TextEditingController();
   TextEditingController positionController = TextEditingController();
   GetAutofill getAutofill = GetAutofill();
@@ -47,7 +44,7 @@ class _MedicalInsuranceFormUserFieldsState
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
     return Column(
       children: [
         _fioWidget(),
@@ -72,9 +69,7 @@ class _MedicalInsuranceFormUserFieldsState
           val!.split(" ").length < 3 ? _strings.fillTheField : null,
       autocorrect: false,
       inputFormatters: [InputFormatters.lettersOnly],
-      onChanged: (val) {
-        widget.entities.fio = val;
-      },
+      onChanged: (val) => widget.entities.fio = val,
     );
   }
 
@@ -98,9 +93,7 @@ class _MedicalInsuranceFormUserFieldsState
       requiredIcon: true,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       inputFormatters: [InputFormatters.lettersOnly],
-      onChanged: (val) {
-        widget.entities.position = val;
-      },
+      onChanged: (val) => widget.entities.position = val,
     );
   }
 
@@ -121,7 +114,7 @@ class _MedicalInsuranceFormUserFieldsState
     return ServiceTextField(
       hint: _strings.email,
       requiredIcon: true,
-      validator: (val) => FieldValidator.emailValidator(val, _strings),
+      validator: (val) => FieldValidator.emailValidator(val),
       keyboardType: TextInputType.emailAddress,
       autocorrect: false,
       onChanged: (val) => widget.entities.email = val,

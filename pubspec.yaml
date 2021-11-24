@@ -1,5 +1,5 @@
 name: ink_mobile
-description: A new Flutter project.
+description: INK Group mobile application.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -36,7 +36,7 @@ dependencies:
         path: "./main_api_client"
     flutter_bloc: ">=6.0.0"
     awesome_loader: ">=0.0.3 <1.0.0"
-    path_provider: ">=2.0.1 <3.0.0"
+    path_provider: ^2.0.7
     easy_rich_text: ">=0.5.5 <1.0.0"
     flutter_secure_storage: ">=4.2.0 <5.0.0"
     smooth_page_indicator: ">=0.2.3 <1.0.0"
@@ -44,17 +44,41 @@ dependencies:
     flick_video_player: ">=0.3.1"
     flutter_launcher_icons: ">=0.8.0 <1.0.0"
     shimmer: ">=2.0.0 <3.0.0"
-    modal_bottom_sheet: ">=1.0.0 <2.0.0"
+    modal_bottom_sheet: ^2.0.0
     device_info: ^2.0.2
     multi_select_flutter:
         path: "./custom/libs/multi_select"
     file_picker: ^4.1.1
     mask_text_input_formatter: ^2.0.0
-    mailto: ^2.0.0
+    get_it: ^7.2.0
+    messagepack: ^0.2.1
+    # dart_nats_streaming:
+    #     git: https://github.com/JetRabbits/dart-nats-streaming.git
+    dart_nats_streaming:
+        path: "./custom/libs/dart-nats-streaming-master"
+    injectable:
+    flutter_linkify: ^5.0.2
+    flutter_keyboard_visibility: ^5.1.0
+    image_picker: ^0.8.3+2
+    image_cropper: ^1.4.1
+    moor: ^4.5.0
+    encrypted_moor:
+        git:
+            url: https://github.com/simolus3/moor.git
+            path: extras/encryption
+    flutter_local_notifications: ^9.1.2
+    archive:
+    share_plus:
+    logging:
 
 dev_dependencies:
     flutter_test:
         sdk: flutter
+
+    mockito: ^5.0.12
+    build_runner:
+    injectable_generator:
+    moor_generator: ^4.4.1
 
 flutter_icons:
     android: true
@@ -69,8 +93,10 @@ flutter:
     # The following line ensures that the Material Icons font is
     # included with your application, so that you can use the icons in
     # the material Icons class.
+    generate: true
     uses-material-design: true
     assets:
+        - assets/certs/
         - assets/images/
         - assets/images/avatars/
 

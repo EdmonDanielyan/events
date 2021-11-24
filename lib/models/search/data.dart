@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 abstract class SearchData {
   int id;
 
@@ -13,7 +11,8 @@ abstract class TextSearchData extends SearchData {
 }
 
 class AnnouncementsSearchData extends TextSearchData {
-  AnnouncementsSearchData({required id, required title}) : super(id: id, title: title);
+  AnnouncementsSearchData({required id, required title})
+      : super(id: id, title: title);
 }
 
 class EventsSearchData extends TextSearchData {
@@ -26,7 +25,8 @@ class NewsSearchData extends TextSearchData {
 
 class UsersSearchData extends SearchData {
   String fullName;
-  ImageProvider<Object> avatar;
+  String avatar;
 
-  UsersSearchData({required id, required this.fullName, required this.avatar}) : super(id: id);
+  UsersSearchData({required id, required this.fullName, required this.avatar})
+      : super(id: id);
 }

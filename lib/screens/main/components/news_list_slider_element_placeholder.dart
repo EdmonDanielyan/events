@@ -6,7 +6,8 @@ import 'package:shimmer/shimmer.dart';
 class NewsListSliderElementPlaceholder extends StatelessWidget {
   static const double ELEMENT_WIDTH = 276.0;
   static const double ELEMENT_HEIGHT = 334.0;
-  static const String DEFAULT_PREVIEW_PICTURE_LINK = 'assets/images/default_news.jpg';
+  static const String DEFAULT_PREVIEW_PICTURE_LINK =
+      'assets/images/default_news.jpg';
 
   const NewsListSliderElementPlaceholder({
     Key? key,

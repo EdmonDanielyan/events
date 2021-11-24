@@ -1,16 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/cubit/auth/domain/repository.dart';
-import 'package:ink_mobile/cubit/auth/use_cases/auth.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/core/errors/dio_error_handler.dart';
+import 'package:ink_mobile/cubit/auth/sources/network.dart';
 import 'package:ink_mobile/cubit/auth/auth_state.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/models/error_model.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/auth_success.dart';
 
+@injectable
 class AuthCubit extends Cubit<AuthState> {
-  LanguageStrings languageStrings;
-  AuthCubit({required this.languageStrings})
-      : super(AuthState(type: AuthStateType.LOADED));
+  AuthCubit() : super(AuthState(type: AuthStateType.LOADED));
 
   String login = '';
   String password = '';
@@ -18,26 +21,19 @@ class AuthCubit extends Cubit<AuthState> {
   Future<bool> auth() async {
     emitState(type: AuthStateType.LOADING);
     try {
-      AuthUser authUser = AuthUser(
-        dependency:
-            AuthRepository(login: login, password: password).getDependency(),
-      );
-      final response = await authUser.call();
-
-      return authUser.handleResponse(response);
+      final response =
+          await sl<AuthNetworkRequest>(param1: login, param2: password)();
+      return await response.handleResponse();
     } on TimeoutException catch (_) {
-      emitError(languageStrings.noConnectionError);
-      throw FormatException(languageStrings.noConnectionError);
+      emitError(localizationInstance.noConnectionError);
+      throw FormatException(localizationInstance.noConnectionError);
     } on DioError catch (e) {
-      String message = (e.type == DioErrorType.response)
-          ? e.response?.data['detail']
-          : languageStrings.noConnectionError;
-
-      emitError(message);
-      throw FormatException(message);
+      ErrorModel error = DioErrorHandler(e: e).call();
+      emitError(error.msg);
+      throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.unknownError);
-      throw FormatException(languageStrings.unknownError);
+      emitError(localizationInstance.unknownError);
+      throw FormatException(localizationInstance.unknownError);
     }
   }
 

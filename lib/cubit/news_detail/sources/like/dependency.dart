@@ -1,4 +1,4 @@
 abstract class NewsLikeRequestDependency {
-  abstract int newsId;
-  Future<void> makeRequest();
+  abstract int? newsId;
+  Future<void> call();
 }

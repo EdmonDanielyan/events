@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+
+import '../profile_screen.dart';
 
 class ThanksButton extends StatelessWidget {
   final int userId;
@@ -10,9 +11,8 @@ class ThanksButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
-    final ProfileCubit userCubit = BlocProvider.of<ProfileCubit>(context);
+    final _strings = localizationInstance;
+    final ProfileCubit userCubit = ProfileScreen.of(context).profileCubit;
     return Column(
       children: [
         Divider(
@@ -26,22 +26,23 @@ class ThanksButton extends StatelessWidget {
               userCubit.thanks(userId);
             },
             child: Container(
-                padding: EdgeInsets.only(
-                  bottom: 1,
-                ),
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
+              padding: EdgeInsets.only(
+                bottom: 1,
+              ),
+              decoration: BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(
+                color: Theme.of(context).primaryColor,
+                width: 1.0,
+              ))),
+              child: Text(
+                _strings.thank,
+                style: TextStyle(
                   color: Theme.of(context).primaryColor,
-                  width: 1.0,
-                ))),
-                child: Text(
-                  _strings.thank,
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 19,
-                  ),
-                )),
+                  fontSize: 19,
+                ),
+              ),
+            ),
           ),
         )
       ],

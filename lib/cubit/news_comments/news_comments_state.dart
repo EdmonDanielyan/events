@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/comment_data.dart';
 
-enum NewsCommentStateType {EMPTY, LOADING, LOADED, ERROR}
+enum NewsCommentStateType { EMPTY, LOADING, LOADED, ERROR }
 
 class NewsCommentsData {
   List<CommentData>? comments;
@@ -16,12 +16,6 @@ class NewsCommentState {
   final NewsCommentStateType type;
   final String? errorMessage;
 
-  NewsCommentState({
-    required this.type,
-    this.data,
-    this.errorMessage
-  }) : assert(
-    type != NewsCommentStateType.ERROR
-    || errorMessage != null
-  );
+  NewsCommentState({required this.type, this.data, this.errorMessage})
+      : assert(type != NewsCommentStateType.ERROR || errorMessage != null);
 }

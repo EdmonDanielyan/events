@@ -1,49 +1,45 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/core/scrolling_loader/scroll_bottom_to_load.dart';
-import 'package:ink_mobile/cubit/announcements_list/use_cases/fetch.dart';
+import 'package:ink_mobile/cubit/announcements_list/sources/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/setup.dart';
 import 'announcements_list_state.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/extensions/get_announcements.dart';
 
-import 'domain/repository.dart';
-
+@injectable
 class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
-  LanguageStrings languageStrings;
-
   Pagination<AnnouncementData> pagination =
       Pagination<AnnouncementData>(countOnPage: 5);
   ScrollBottomToLoad scrollBottomToLoad = ScrollBottomToLoad();
 
-  AnnouncementsListCubit({required this.languageStrings})
+  AnnouncementsListCubit()
       : super(AnnouncementsListState(type: AnnouncementsListStateType.LOADING));
 
   Future<void> fetch() async {
     try {
       if (pagination.next) {
         await Token.setNewTokensIfExpired();
-        Pagination<AnnouncementData> response = await AnnouncementsListFetch(
-                pagination: pagination,
-                dependency: AnnouncementListRepository(pagination: pagination)
-                    .getDependency())
-            .call();
-        pagination = response;
+        final response =
+            await sl<AnnouncementsListNetworkRequest>(param1: pagination)();
+        pagination = response.mapResponse(pagination);
         emitSuccess(pagination.items);
       }
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccuried);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }
@@ -86,8 +82,8 @@ class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
         scrollBottomToLoad.isLoading = false;
       }).onError((error, stackTrace) {
         String message = error is NoConnectionException
-            ? languageStrings.noConnectionError
-            : languageStrings.unknownError;
+            ? localizationInstance.noConnectionError
+            : localizationInstance.unknownError;
 
         showErrorDialog(message);
         scrollBottomToLoad.isLoading = false;

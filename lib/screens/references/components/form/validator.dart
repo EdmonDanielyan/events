@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
 import 'package:ink_mobile/models/references/reference_list.dart';
 import 'package:ink_mobile/screens/references/components/form/entities.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReferencesFormValidator {
-  final LanguageStrings strings;
+  final AppLocalizations strings;
   final ReferencesItem referencesItem;
   final GlobalKey<FormState> formKey;
   ReferencesFormValidator(

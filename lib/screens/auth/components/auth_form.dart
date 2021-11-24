@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/screens/auth/auth_screen.dart';
 import 'auth_password_field.dart';
 
 class AuthForm extends StatelessWidget {
@@ -9,31 +8,30 @@ class AuthForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
-    final _strings =
-        BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
     Size size = MediaQuery.of(context).size;
 
     return Container(
-        margin: EdgeInsets.only(top: size.height * 0.03),
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: _strings.login,
-                border: OutlineInputBorder(),
-                fillColor: Colors.white,
-                filled: true,
-              ),
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
-              onChanged: (login) {
-                authCubit.login = login;
-              },
+      margin: EdgeInsets.only(top: size.height * 0.03),
+      child: Column(
+        children: [
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: _strings.login,
+              border: OutlineInputBorder(),
+              fillColor: Colors.white,
+              filled: true,
             ),
-            SizedBox(height: size.height * 0.03),
-            AuthPasswordField(),
-          ],
-        ));
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+            onChanged: (login) {
+              AuthScreen.of(context).authCubit.login = login;
+            },
+          ),
+          SizedBox(height: size.height * 0.03),
+          AuthPasswordField(),
+        ],
+      ),
+    );
   }
 }

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/filter_slider_element.dart';
-import 'package:ink_mobile/cubit/open_university/open_university_cubit.dart';
-import 'package:ink_mobile/cubit/open_university/open_university_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/screens/open_university/cubit/open_university_cubit.dart';
+import 'package:ink_mobile/screens/open_university/cubit/open_university_state.dart';
 
 class OpenUniversityFilterSlider extends StatefulWidget {
   final OpenUniversityFilterCodes selectedFilter;
+  final OpenUniversityCubit openUniversityCubit;
 
-  const OpenUniversityFilterSlider(
-      {Key? key, this.selectedFilter = OpenUniversityFilterCodes.about_project})
-      : super(key: key);
+  const OpenUniversityFilterSlider({
+    Key? key,
+    this.selectedFilter = OpenUniversityFilterCodes.about_project,
+    required this.openUniversityCubit,
+  }) : super(key: key);
 
   @override
   _OpenUniversityFilterSliderState createState() =>
@@ -20,14 +23,14 @@ class OpenUniversityFilterSlider extends StatefulWidget {
 
 class _OpenUniversityFilterSliderState
     extends State<OpenUniversityFilterSlider> {
-  late LanguageStrings _strings;
+  late AppLocalizations _strings;
   OpenUniversityFilterCodes? selectedFilter;
 
   _OpenUniversityFilterSliderState({required this.selectedFilter}) : super();
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
 
     return Container(
         height: 30,
@@ -47,23 +50,21 @@ class _OpenUniversityFilterSliderState
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return BlocBuilder<OpenUniversityCubit, OpenUniversityState>(
+              bloc: widget.openUniversityCubit,
               builder: (context, state) {
-            OpenUniversityCubit cubit =
-                BlocProvider.of<OpenUniversityCubit>(context);
-
-            return Container(
-                child: FilterSliderElement(
-              title: items[index].title,
-              onTap: () async {
-                await cubit.load(items[index].code);
-                setState(() {
-                  selectedFilter = items[index].code;
-                });
-              },
-              isSelected: items[index].code == selectedFilter,
-              selectedColor: Theme.of(context).primaryColor,
-            ));
-          });
+                return Container(
+                    child: FilterSliderElement(
+                  title: items[index].title,
+                  onTap: () async {
+                    await widget.openUniversityCubit.load(items[index].code);
+                    setState(() {
+                      selectedFilter = items[index].code;
+                    });
+                  },
+                  isSelected: items[index].code == selectedFilter,
+                  selectedColor: Theme.of(context).primaryColor,
+                ));
+              });
         },
         separatorBuilder: (context, index) {
           return Container(margin: EdgeInsets.only(right: 10.0));

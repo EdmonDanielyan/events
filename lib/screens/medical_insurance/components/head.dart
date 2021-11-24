@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class Head extends StatelessWidget {
   final EdgeInsetsGeometry sectionPadding;
   const Head({Key? key, required this.sectionPadding}) : super(key: key);
 
-  static late LanguageStrings _strings;
-
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
     return Container(
       color: Colors.white,
       padding: sectionPadding,
@@ -42,7 +38,7 @@ class Head extends StatelessWidget {
         launchUrl("https://portal.irkutskoil.ru/medicine/");
       },
       child: Text(
-        _strings.medicalServiceSection,
+        localizationInstance.medicalServiceSection,
         style: TextStyle(
           color: Colors.green[900],
           decoration: TextDecoration.underline,
@@ -53,27 +49,8 @@ class Head extends StatelessWidget {
 
   Widget _infoWidget() {
     return Text(
-      _strings.medicalInsuranceFormInfo,
+      localizationInstance.medicalInsuranceFormInfo,
       style: TextStyle(color: Colors.grey[700]),
-    );
-  }
-
-  Widget _sampleWidget() {
-    return InkWell(
-      onTap: () {
-        launchUrl("https://portal.irkutskoil.ru/services/dms/help.jpg");
-      },
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(Icons.info, color: Colors.blue),
-          SizedBox(width: 7.0),
-          Text(
-            _strings.formFillingSample,
-            style: TextStyle(color: Colors.blue),
-          )
-        ],
-      ),
     );
   }
 }

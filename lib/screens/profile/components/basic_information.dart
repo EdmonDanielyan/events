@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/basic_information_row.dart';
 import 'package:ink_mobile/screens/profile/components/section_title.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BasicInformation extends StatelessWidget {
-  static late LanguageStrings _strings;
+  static late AppLocalizations _strings;
   final UserBasicInfo? info;
   const BasicInformation({Key? key, required this.info}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
     if (info != null) {
       return getBasicInfoWidget(context);
     } else {
@@ -29,7 +28,7 @@ class BasicInformation extends StatelessWidget {
       Size size = MediaQuery.of(context).size;
       return Container(
         width: size.width,
-        margin: EdgeInsets.only(top: 24, bottom: 70),
+        margin: EdgeInsets.only(top: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

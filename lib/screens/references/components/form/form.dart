@@ -18,8 +18,8 @@ import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/cubit/references/references_cubit.dart';
 import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart';
 import 'package:ink_mobile/functions/parser.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/references/delivery_list.dart';
 import 'package:ink_mobile/models/references/reference_list.dart';
 import 'package:ink_mobile/screens/references/components/form/entities.dart';
@@ -27,7 +27,13 @@ import 'package:ink_mobile/screens/references/components/form/validator.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ReferencesForm extends StatefulWidget {
-  const ReferencesForm({Key? key}) : super(key: key);
+  final ReferencesPageCubit referencesPageCubit;
+  final SendReferenceFormCubit sendReferenceFormCubit;
+  const ReferencesForm({
+    Key? key,
+    required this.referencesPageCubit,
+    required this.sendReferenceFormCubit,
+  }) : super(key: key);
 
   @override
   _ReferencesFormState createState() => _ReferencesFormState();
@@ -39,15 +45,13 @@ class _ReferencesFormState extends State<ReferencesForm> {
   TextEditingController periodToController = TextEditingController();
   final _key = GlobalKey<FormState>();
   final GlobalKey<PickFilesState> _pickFilesKey = GlobalKey<PickFilesState>();
-  late ReferencesPageCubit referencesCubit;
-  late LanguageStrings _strings;
+  late AppLocalizations _strings;
   late ReferencesList referencesList;
   late DeliveryList deliveryList;
   late ReferencesFormEntities entities = ReferencesFormEntities();
   late ReferencesItem currentReferenceItem;
   late DeliveryItem? deliveryItem;
   late ReferencesFormValidator validatorMixin;
-  late SendReferenceFormCubit _sendReferenceFormCubit;
 
   int stage = 1;
 
@@ -59,12 +63,10 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    _strings = localizationInstance;
 
-    referencesList = ReferencesList(strings: _strings);
-    deliveryList = DeliveryList(strings: _strings);
-    referencesCubit = BlocProvider.of<ReferencesPageCubit>(context);
-    _sendReferenceFormCubit = BlocProvider.of<SendReferenceFormCubit>(context);
+    referencesList = ReferencesList();
+    deliveryList = DeliveryList();
     currentReferenceItem =
         referencesList.getReferenceItemByInt(entities.referencesType ?? 1)!;
 
@@ -168,7 +170,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget fioWidget() {
     return ServiceTextField(
       hint: _strings.fullnameHint,
-      initialValue: referencesCubit.autofill.fio,
+      initialValue: widget.referencesPageCubit.autofill.fio,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.fio = val,
     );
@@ -177,7 +179,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget positionWidget() {
     return ServiceTextField(
       hint: _strings.position,
-      initialValue: referencesCubit.autofill.position,
+      initialValue: widget.referencesPageCubit.autofill.position,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.position = val,
     );
@@ -186,7 +188,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget departmentWidget() {
     return ServiceTextField(
       hint: _strings.department,
-      initialValue: referencesCubit.autofill.department,
+      initialValue: widget.referencesPageCubit.autofill.department,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.department = val,
     );
@@ -237,7 +239,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget deliveryAddressWidget() {
     return ServiceTextField(
       hint: _strings.address,
-      validator: (val) => FieldValidator.addressValidator(val!, _strings),
+      validator: (val) => FieldValidator.addressValidator(val!),
       onChanged: (val) => entities.address = val,
       keyboardType: TextInputType.streetAddress,
       autocorrect: false,
@@ -247,7 +249,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget deliveryZipCodeWidget() {
     return ServiceTextField(
       hint: _strings.zipIndex,
-      validator: (val) => FieldValidator.zipCodeValidator(val!, _strings),
+      validator: (val) => FieldValidator.zipCodeValidator(val!),
       onChanged: (val) => entities.postCode = val,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.number,
@@ -324,6 +326,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget btnWidget(BuildContext context) {
     return BlocConsumer<SendReferenceFormCubit, BtnCubitState>(
+      bloc: widget.sendReferenceFormCubit,
       listener: (BuildContext context, state) {
         if (state.state == BtnCubitStateEnums.ERROR) {
           SimpleCustomSnackbar(context: context, txt: state.message);
@@ -344,7 +347,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
           return ServiceBtn(
             onPressed: () {
               if (validatorMixin.validateForm(context, entities)) {
-                _sendReferenceFormCubit.send(
+                widget.sendReferenceFormCubit.send(
                   entities: entities,
                   referencesItem: currentReferenceItem,
                   deliveryItem: deliveryItem!,

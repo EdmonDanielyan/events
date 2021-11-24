@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/static_slider/static_slider_effect.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_page_indicator/src/painters/indicator_painter.dart';
 
 class StaticSliderPainter extends IndicatorPainter {
@@ -37,7 +38,8 @@ class StaticSliderPainter extends IndicatorPainter {
     double screenWidth = size.width;
     double activeDotWidth = lineWidth * screenWidth / effect.rowWidth;
 
-    final xPos = ((size.width / 2) - (effect.dotWidth / 2)) + (i * activeDotWidth);
+    final xPos =
+        ((size.width / 2) - (effect.dotWidth / 2)) + (i * activeDotWidth);
     final yPos = size.height / 2;
 
     double left = xPos;

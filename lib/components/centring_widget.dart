@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CentringWrapper extends StatelessWidget {
-  const CentringWrapper({
-    Key? key,
-    required this.child
-  }) : super(key: key);
+  const CentringWrapper({Key? key, required this.child}) : super(key: key);
 
   final Widget child;
 
@@ -14,15 +11,8 @@ class CentringWrapper extends StatelessWidget {
 
     return Container(
         height: size.height * 0.65,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  flex: 1,
-                  child: child
-              ),
-            ]
-        )
-    );
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Expanded(flex: 1, child: child),
+        ]));
   }
 }

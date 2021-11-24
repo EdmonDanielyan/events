@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/open_university/components/about_project_contact_container.dart';
 
 class AboutProject extends StatelessWidget {
-  static late LanguageStrings _strings;
   AboutProject({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
+    final _strings = localizationInstance;
     return Container(
         margin: EdgeInsets.only(bottom: 24),
         padding: EdgeInsets.symmetric(horizontal: 20),

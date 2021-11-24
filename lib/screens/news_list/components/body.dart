@@ -4,25 +4,22 @@ import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_state.dart';
-import 'package:ink_mobile/localization/localization_cubit/localization_cubit.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/news_list/components/news_list_element.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Body extends StatelessWidget {
-  static late NewsListCubit cubit;
-  static late Size size;
-  static late LanguageStrings _strings;
+  final NewsListCubit cubit;
+  static late AppLocalizations _strings;
 
   final ScrollController _controller = ScrollController();
 
-  Body({Key? key}) : super(key: key);
+  Body({Key? key, required this.cubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _strings = BlocProvider.of<LocalizationCubit>(context, listen: true).state;
-
-    size = MediaQuery.of(context).size;
+    _strings = localizationInstance;
     _controller.addListener(_onScroll);
 
     return RefreshIndicator(
@@ -32,36 +29,36 @@ class Body extends StatelessWidget {
         color: Colors.green,
         displacement: 20,
         child: BlocBuilder<NewsListCubit, NewsListState>(
+            bloc: cubit,
             builder: (context, state) {
-          Map arg = ModalRoute.of(context)!.settings.arguments as Map;
-          cubit = BlocProvider.of<NewsListCubit>(context);
+              Map? arg = ModalRoute.of(context)!.settings.arguments as Map?;
 
-          if (arg != null && arg.isNotEmpty) {
-            cubit.filter = arg['filter'];
-          }
-
-          switch (state.type) {
-            case (NewsListStateType.LOADING):
-              {
-                cubit.fetch();
-                return _getLoadingStateWidget();
+              if (arg != null && arg.isNotEmpty) {
+                cubit.filter = arg['filter'];
               }
 
-            case (NewsListStateType.LOADED):
-              {
-                List<NewsItemData> newsList = state.data!;
+              switch (state.type) {
+                case (NewsListStateType.LOADING):
+                  {
+                    cubit.fetch();
+                    return _getLoadingStateWidget();
+                  }
 
-                return _getLoadedStateWidget(newsList);
+                case (NewsListStateType.LOADED):
+                  {
+                    List<NewsItemData> newsList = state.data!;
+
+                    return _getLoadedStateWidget(newsList);
+                  }
+
+                case (NewsListStateType.ERROR):
+                  {
+                    return _getErrorStateWidget(context, state);
+                  }
               }
 
-            case (NewsListStateType.ERROR):
-              {
-                return _getErrorStateWidget(context, state);
-              }
-          }
-
-          return Container();
-        }));
+              return Container();
+            }));
   }
 
   Future<void> _onScroll() async {

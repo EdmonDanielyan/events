@@ -15,51 +15,29 @@ class LearningMaterialsData extends Data {
   });
 
   void fillFromMap(Map map) {
-    id =
-      map['id'] is int
-        ? map['id']
-        : int.tryParse(map['id'].toString());
+    id = map['id'] is int ? map['id'] : int.tryParse(map['id'].toString());
 
-    title =
-      map['title'] is String
-        ? map['title']
-        : null;
+    title = map['title'] is String ? map['title'] : null;
 
-    dateCreate =
-      map['date_create'] is String
+    dateCreate = map['date_create'] is String
         ? DateTime.tryParse(map['date_create'])
         : null;
 
-    barrels =
-      map['barrels'] is int
+    barrels = map['barrels'] is int
         ? map['barrels']
         : int.tryParse(map['barrels'].toString());
-
   }
 
   factory LearningMaterialsData.fromMap(Map map) {
     return LearningMaterialsData(
-      id:
-        map['id'] is int
-          ? map['id']
-          : int.tryParse(map['id'].toString()),
-
-      title:
-        map['title'] is String
-          ? map['title']
-          : null,
-
-      dateCreate:
-        map['date_create'] is String
-          ? DateTime.tryParse(map['date_create'])
-          : null,
-
-      barrels:
-        map['barrels'] is int
-          ? map['barrels']
-          : int.tryParse(map['barrels'].toString())
-
-    );
+        id: map['id'] is int ? map['id'] : int.tryParse(map['id'].toString()),
+        title: map['title'] is String ? map['title'] : null,
+        dateCreate: map['date_create'] is String
+            ? DateTime.tryParse(map['date_create'])
+            : null,
+        barrels: map['barrels'] is int
+            ? map['barrels']
+            : int.tryParse(map['barrels'].toString()));
   }
 
   factory LearningMaterialsData.fromProperty(PublicationsProperty property) {
@@ -67,10 +45,8 @@ class LearningMaterialsData extends Data {
         id: property.id,
         title: property.title,
         barrels: property.votes,
-        dateCreate: property.dateCreate
-    );
+        dateCreate: property.dateCreate);
   }
-
 
   static List<LearningMaterialsData> getListFromMap(List list) {
     List<LearningMaterialsData> learningMaterialsList = [];

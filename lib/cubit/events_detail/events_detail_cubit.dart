@@ -1,21 +1,21 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
-import 'package:ink_mobile/cubit/events_detail/domain/invite_repository.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_state.dart';
-import 'package:ink_mobile/cubit/events_detail/use_cases/fetch.dart';
-import 'package:ink_mobile/cubit/events_detail/use_cases/invite.dart';
+import 'package:ink_mobile/cubit/events_detail/sources/fetch/network.dart';
+import 'package:ink_mobile/cubit/events_detail/sources/invite/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/localization/strings/language.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/get_event_by_id.dart';
 
-import 'domain/fetch_repository.dart';
-
+@injectable
 class EventDetailCubit extends Cubit<EventsDetailState> {
-  LanguageStrings languageStrings;
-  EventDetailCubit({required this.languageStrings})
+  EventDetailCubit()
       : super(EventsDetailState(type: EventsDetailStateType.LOADING));
 
   Future<void> load(int eventId) async {
@@ -23,18 +23,16 @@ class EventDetailCubit extends Cubit<EventsDetailState> {
 
     try {
       await Token.setNewTokensIfExpired();
-      EventData eventData = await EventDetailFetch(
-        dependency: EventsDetailRepository(eventId: eventId).getDependency(),
-      ).call();
-      emitSuccess(eventData);
+      final response =
+          await sl<EventsDetailNetworkRequest>(param1: eventId)();
+      emitSuccess(response.mapResponse());
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccuried);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }
@@ -43,17 +41,14 @@ class EventDetailCubit extends Cubit<EventsDetailState> {
     try {
       emitSuccess(state.data!.copyWith(isMember: !state.data!.isMember!));
       await Token.setNewTokensIfExpired();
-      await EventInvite(
-        dependency: EventsInviteRepository(eventId: eventId).getDependency(),
-      ).invite();
+      await sl<EventInviteNetworkRequest>(param1: eventId).call();
     } on DioError catch (e) {
-      ErrorModel error =
-          DioErrorHandler(e: e, languageStrings: languageStrings).call();
+      ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
-      emitError(languageStrings.errorOccuried);
+      emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
     }
   }

@@ -3,6 +3,6 @@ import 'package:ink_mobile/screens/medical_insurance/components/form/entities.da
 import 'package:main_api_client/model/order_dms_success.dart';
 
 abstract class SendMedicalInsFormRequestDependency {
-  abstract MedicalInsuranceFormEntities entities;
-  Future<Response<OrderDMSSuccess>> makeRequest();
+  abstract MedicalInsuranceFormEntities? entities;
+  Future<Response<OrderDMSSuccess>> call();
 }

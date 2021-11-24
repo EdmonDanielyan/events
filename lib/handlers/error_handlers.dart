@@ -8,28 +8,20 @@ abstract class ErrorHandler {
 }
 
 class AuthErrorHandler implements ErrorHandler {
-
   void handle(CustomException error, StackTrace stackTrace) {
     switch (error.runtimeType) {
-
-      case InvalidRefreshTokenException: {
-        Navigator.pushNamedAndRemoveUntil(
-            App.materialKey!.currentContext!,
-            '/auth',
-            (route) => false
-        );
-        break;
-      }
-
+      case InvalidRefreshTokenException:
+        {
+          Navigator.pushNamedAndRemoveUntil(
+              App.materialKey!.currentContext!, '/auth', (route) => false);
+          break;
+        }
     }
   }
-
 }
 
 class NoConnectionHandler implements ErrorHandler {
-
   void handle(CustomException error, StackTrace stackTrace) {
     showErrorDialog(error.message);
   }
-
 }

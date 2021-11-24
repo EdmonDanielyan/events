@@ -10,6 +10,8 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleDisplayName</key>
+	<string>ИНК-Портал</string>
 	<key>CFBundleName</key>
 	<string>ИНК-Портал</string>
 	<key>CFBundlePackageType</key>
@@ -47,6 +49,23 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used to pick images for a form section</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to set user picture, send pictures/videos between the app users</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to send videos between the app users</string>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>https</string>
+		<string>http</string>
+		<string>mailto</string>
+		<string>tel</string>
+		<string>facetime</string>
+		<string>sms</string>
+	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>https</string>

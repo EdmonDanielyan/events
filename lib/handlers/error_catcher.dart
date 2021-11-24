@@ -2,8 +2,10 @@ import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/handlers/error_handlers.dart';
+import 'package:logging/logging.dart';
 
 class ErrorCatcher {
+  static final _logger = Logger('ErrorCatcher');
   static ErrorCatcher? _instance;
   late ErrorHandler _handler;
 
@@ -33,6 +35,7 @@ class ErrorCatcher {
 
       _handler.handle(error, stackTrace);
     } catch (e) {
+      _logger.severe('Unexpected error', error, stackTrace);
       showErrorDialog(ErrorMessages.SIMPLE_ERROR_MESSAGE);
     }
   }

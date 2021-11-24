@@ -1,11 +1,20 @@
+import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/models/converter.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:ink_mobile/providers/main_api.dart';
+import 'package:ink_mobile/setup.dart';
 import 'package:main_api_client/api/auth_api.dart';
-import 'package:main_api_client/api.dart';
 import 'package:main_api_client/model/refresh_token_params.dart';
+import 'package:uuid/uuid.dart';
 
-class Token {
+abstract class Token {
+  static Future<String> getUserId() async {
+    JwtPayload? authUser = await Token.getJwtPayloadObject();
+    return authUser!.userId.toString();
+  }
 
   static Future<JwtPayload?> getJwtPayloadObject() async {
     String? jwtToken = await Token.getJwt();
@@ -42,8 +51,7 @@ class Token {
       DateTime curDateTime = DateTime.now();
 
       int curDateTimestamp =
-        (curDateTime.millisecondsSinceEpoch.toInt() / 1000).ceil()
-      ;
+          (curDateTime.millisecondsSinceEpoch.toInt() / 1000).ceil();
 
       if (curDateTimestamp > payload.expirationTime - 5) {
         return true;
@@ -55,7 +63,6 @@ class Token {
 
   static Future<bool> setNewTokensIfExpired() async {
     bool isJwtExpired = await Token.isJwtExpired();
-
     if (isJwtExpired) {
       await Token._setNewTokens();
     }
@@ -64,27 +71,25 @@ class Token {
   }
 
   static Future<void> _setNewTokens() async {
-    MainApiClient api = MainApiClient();
-    AuthApi auth = api.getAuthApi();
+    AuthApi auth = sl<MainApiProvider>().getAuthApi();
 
-    RefreshTokenParamsBuilder refreshParamsBuilder = RefreshTokenParamsBuilder();
+    RefreshTokenParamsBuilder refreshParamsBuilder =
+        RefreshTokenParamsBuilder();
     String? refreshToken = await Token.getRefresh();
 
     if (refreshToken != null) {
       refreshParamsBuilder.token = refreshToken;
       RefreshTokenParams refreshParams = refreshParamsBuilder.build();
 
-      final _response = await auth.authRefreshPost(
-          refreshTokenParams: refreshParams
-      );
+      final _response =
+          await auth.authRefreshPost(refreshTokenParams: refreshParams);
 
       final refreshDataMap = _response.data?.data.asMap;
-
       if (refreshDataMap != null) {
         String newRefresh = refreshDataMap['refresh_token'];
         String newJwt = refreshDataMap['token'];
 
-        api.setOAuthToken('bearerAuth', newJwt);
+        SetOauthToken(token: newJwt).setBearer();
         await Token.setJwt(newJwt);
         await Token.setRefresh(newRefresh);
       } else {
@@ -105,7 +110,6 @@ class Token {
 
   static Future<String?> _getTokenByType(TokenType type) async {
     FlutterSecureStorage storage = Storage.getInstance();
-
     return await storage.read(key: type.key);
   }
 
@@ -122,11 +126,35 @@ class Token {
 
     await storage.write(key: type.key, value: value);
   }
+
+  static Future<void> setDeviceVirtualIdIfEmpty() async {
+    FlutterSecureStorage storage = Storage.getInstance();
+    if (!await storage.containsKey(key: DeviceTypes.virtualId.key)) {
+      await storage.write(key: DeviceTypes.virtualId.key, value: Uuid().v4());
+    }
+  }
+
+  static Future<String?> getDeviceVirtualId() async {
+    FlutterSecureStorage storage = Storage.getInstance();
+    return await storage.read(key: DeviceTypes.virtualId.key);
+  }
+
+  static Future<void> setNatsToken() async {
+    JwtPayload? payload = await Token.getJwtPayloadObject();
+    FlutterSecureStorage storage = Storage.getInstance();
+    await storage.write(
+        key: NatsTypes.natsToken.key, value: payload!.natsToken);
+  }
+
+  static Future<String?> getNatsToken() async {
+    FlutterSecureStorage storage = Storage.getInstance();
+    return await storage.read(key: NatsTypes.natsToken.key);
+  }
 }
 
 class Storage {
   static final FlutterSecureStorage prefs = new FlutterSecureStorage();
-  
+
   static FlutterSecureStorage getInstance() {
     return prefs;
   }
@@ -142,12 +170,78 @@ class TokenType {
   const TokenType(String key) : key = key;
 }
 
+class DeviceTypes {
+  static const TokenType virtualId = TokenType('virtualId');
+}
+
+class NatsTypes {
+  static const TokenType natsToken = TokenType('natsToken');
+}
+
+class DeviceType {
+  final String key;
+  const DeviceType(String key) : key = key;
+}
+
 class JwtPayload {
+  String natsToken = '';
+
   int expirationTime = 0;
-  int? userId;
+  int userId = 0;
+  String avatar = '';
+  String name = '';
+  String lastName = '';
+  String secondName = '';
+
+  static late int myId;
+  static late String myAvatar;
+  static late String myName;
 
   JwtPayload(Map<String, dynamic> payloadMap) {
-    this.expirationTime = payloadMap['exp'] ?? 0;
+    this.natsToken = payloadMap['nats_token'] ?? null;
+    this.expirationTime = payloadMap['exp'];
     this.userId = payloadMap['userId'];
+    this.avatar = payloadMap['avatar'];
+    this.name = payloadMap['name'];
+    this.lastName = payloadMap['last_name'];
+    this.secondName = payloadMap['second_name'];
+
+    myId = payloadMap['userId'];
+    myAvatar = payloadMap['avatar'] ?? "";
+    myName = "${payloadMap['name']} ${payloadMap['last_name']}".trim();
+  }
+}
+
+@module
+abstract class TokenDataInjectorModule {
+  @Named("userId")
+  @injectable
+  String get userId => GetIt.I.get<TokenDataHolder>().userId;
+
+  @Named("natsToken")
+  @injectable
+  String get natsToken => GetIt.I.get<TokenDataHolder>().natsToken;
+
+  @Named("deviceVirtualId")
+  @injectable
+  String get deviceVirtualId => GetIt.I.get<TokenDataHolder>().deviceVirtualId;
+}
+
+@lazySingleton
+class TokenDataHolder {
+  late String _userId;
+
+  late String _deviceVirtualId;
+
+  late String _natsToken;
+
+  String get userId => _userId;
+  String get deviceVirtualId => _deviceVirtualId;
+  String get natsToken => _natsToken;
+
+  Future<void> update() async {
+    _userId = await Token.getUserId();
+    _deviceVirtualId = await Token.getDeviceVirtualId() ?? "";
+    _natsToken = await Token.getNatsToken() ?? "";
   }
 }

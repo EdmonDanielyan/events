@@ -10,8 +10,7 @@ class Award extends StatelessWidget {
     return Container(
         height: 75,
         margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-        child: getWidgetByExtension()
-    );
+        child: getWidgetByExtension());
   }
 
   Widget getWidgetByExtension() {
@@ -31,14 +30,14 @@ class Award extends StatelessWidget {
     } else {
       return Container();
     }
-
   }
-
 }
 
 class AwardsItems {
-  static const AwardsItem tanker = AwardsItem('assets/images/award_golden_tanker.svg');
-  static const AwardsItem greenLeaf = AwardsItem('assets/images/award_green_leaf.svg');
+  static const AwardsItem tanker =
+      AwardsItem('assets/images/award_golden_tanker.svg');
+  static const AwardsItem greenLeaf =
+      AwardsItem('assets/images/award_green_leaf.svg');
 }
 
 class AwardsItem {

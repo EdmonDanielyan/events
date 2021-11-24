@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/functions/new_bottom_nav_bar_mixin.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
+import 'package:ink_mobile/setup.dart';
 
 import 'cubit/new_bottom_nav_bar_cubit.dart';
 
 class NewBottomNavBar extends StatelessWidget with NewBottomNavBarMixin {
   NewBottomNavBar({Key? key}) : super(key: key);
+  static NewBottomNavBarCubit _cubit = sl<NewBottomNavBarCubit>();
 
   @override
   Widget build(BuildContext context) {
-    final _cubit = BlocProvider.of<NewBottomNavBarCubit>(context);
-
     final _items = getItems();
 
     return BlocBuilder<NewBottomNavBarCubit, int>(

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 
 class BirthdayOtherDaysElement extends StatelessWidget {
-  const BirthdayOtherDaysElement({
-    Key? key,
-    required this.birthday
-  }) : super(key: key);
+  const BirthdayOtherDaysElement({Key? key, required this.birthday})
+      : super(key: key);
 
   final BirthdayData birthday;
 
@@ -21,15 +19,18 @@ class BirthdayOtherDaysElement extends StatelessWidget {
                 margin: EdgeInsets.only(left: 15, top: 8, bottom: 8, right: 10),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/personal', arguments: {'id': birthday.id});
+                    Navigator.pushNamed(context, '/personal',
+                        arguments: {'id': birthday.id});
                   },
                   child: CircleAvatar(
                     radius: 35,
-                    backgroundImage: birthday.pathToAvatar != null ? NetworkImage(birthday.pathToAvatar!) : AssetImage('assets/images/avatars/avatar_default.png') as ImageProvider,
+                    backgroundImage: birthday.pathToAvatar != null
+                        ? NetworkImage(birthday.pathToAvatar!)
+                        : AssetImage('assets/images/avatars/avatar_default.png')
+                            as ImageProvider,
                   ),
                 ),
-              )
-          ),
+              )),
           Expanded(
               flex: 8,
               child: Column(
@@ -43,33 +44,32 @@ class BirthdayOtherDaysElement extends StatelessWidget {
                             flex: 6,
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, '/personal', arguments: {'id': birthday.id});
+                                Navigator.pushNamed(
+                                  context,
+                                  '/personal',
+                                  arguments: {'id': birthday.id},
+                                );
                               },
                               child: Text(
-                                  birthday.name ?? '',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16
-                                  )
+                                birthday.name ?? '',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
                               ),
-                            )
-                        ),
+                            )),
                         Expanded(
                           flex: 4,
                           child: Container(
-                              margin: EdgeInsets.only(
-                                  left: 20
+                            margin: EdgeInsets.only(left: 20),
+                            child: Text(
+                              birthday.birthday!,
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
-                              child: Text(
-                                  birthday.birthday!,
-                                  style: TextStyle(
-                                      color: Theme
-                                          .of(context)
-                                          .primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16
-                                  )
-                              )
+                            ),
                           ),
                         )
                       ],
@@ -82,21 +82,18 @@ class BirthdayOtherDaysElement extends StatelessWidget {
                         TextSpan(
                             text: birthday.city,
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, color: Colors.black)),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black)),
                         TextSpan(
-                            text: '. ',
-                            style: TextStyle(color: Colors.black)
-                        ),
+                            text: '. ', style: TextStyle(color: Colors.black)),
                         TextSpan(
                             text: birthday.workPosition,
-                            style: TextStyle(color: Colors.black)
-                        ),
+                            style: TextStyle(color: Colors.black)),
                       ]),
                     ),
                   )
                 ],
-              )
-          ),
+              )),
         ],
       ),
     );

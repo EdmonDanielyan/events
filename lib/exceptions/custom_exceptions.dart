@@ -30,3 +30,19 @@ class UnknownErrorException implements CustomException {
   UnknownErrorException({this.message = ErrorMessages.UNKNOWN_ERROR_MESSAGE})
       : super();
 }
+
+class WrongChannelUsedToPubMessageException implements CustomException {
+  String message;
+  int? offset;
+  dynamic source;
+
+  WrongChannelUsedToPubMessageException({this.message = ''}) : super();
+}
+
+class SubscriptionAlreadyExistException implements CustomException {
+  String message;
+  int? offset;
+  dynamic source;
+
+  SubscriptionAlreadyExistException({this.message = ''}) : super();
+}

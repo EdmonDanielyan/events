@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/search/data.dart';
 
 class SearchModel {
@@ -38,17 +37,12 @@ class SearchModel {
 class SearchModelListView {
   static List<UsersSearchData> mapUsers(List? users) {
     List<UsersSearchData> items = [];
-    ImageProvider<Object> avatar;
 
     users?.forEach((user) {
-      if (user['avatar'] != null) {
-        avatar = NetworkImage(user['avatar']);
-      } else {
-        avatar = AssetImage('assets/images/avatars/avatar_default.png');
-      }
-
       items.add(UsersSearchData(
-          id: user['id'], fullName: user['name'], avatar: avatar));
+          id: user['id'],
+          fullName: user['name'],
+          avatar: user["avatar"] ?? ""));
     });
 
     return items;

@@ -10,28 +10,23 @@ class TestScreen extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.only(top: 100, left: 30),
-        child: NumberSelectFormField(
-          controller: _controller,
-          buttonsColor: ButtonsColor(left: Colors.red, right: Colors.green),
-          changeValueBy: 2.3,
-          mode: NumberSelectFieldMode.double,
-          onlyPositive: true,
-          validator: (value) {
-          },
-          style: TextStyle(
-            fontSize: 30,
-            height: 1
-          ),
-          textAlignVertical: TextAlignVertical.center,
-          flex: NumberSelectFieldFlex(
-            buttons: 4,
-            textField: 5,
-          ),
-          height: 50,
-          width: 200,
-        )
-      ),
+          margin: EdgeInsets.only(top: 100, left: 30),
+          child: NumberSelectFormField(
+            controller: _controller,
+            buttonsColor: ButtonsColor(left: Colors.red, right: Colors.green),
+            changeValueBy: 2.3,
+            mode: NumberSelectFieldMode.double,
+            onlyPositive: true,
+            validator: (value) {},
+            style: TextStyle(fontSize: 30, height: 1),
+            textAlignVertical: TextAlignVertical.center,
+            flex: NumberSelectFieldFlex(
+              buttons: 4,
+              textField: 5,
+            ),
+            height: 50,
+            width: 200,
+          )),
     );
   }
 }

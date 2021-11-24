@@ -13,12 +13,11 @@ class Background extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Theme.of(context).primaryColor, const Color(0xFF182B23)],
-          begin: FractionalOffset.centerLeft,
-          end: FractionalOffset.centerRight,
-          stops: [0.0, 1.0],
-          tileMode: TileMode.decal
-        ),
+            colors: [Theme.of(context).primaryColor, const Color(0xFF182B23)],
+            begin: FractionalOffset.centerLeft,
+            end: FractionalOffset.centerRight,
+            stops: [0.0, 1.0],
+            tileMode: TileMode.decal),
       ),
       child: Stack(
         alignment: Alignment.center,

@@ -1,51 +1,62 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:ink_mobile/app.dart';
 import 'package:ink_mobile/assets/constants.dart';
-import 'package:ink_mobile/core/errors/errors_to_server.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/handlers/error_catcher.dart';
-import 'package:ink_mobile/localization/strings/rus.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/providers/global_providers.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:ink_mobile/routes/routes.dart';
+import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/themes/light.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:logging/logging.dart';
+import 'cubit/boot/boot_cubit.dart';
 
-import 'components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
-import 'localization/localization_cubit/localization_cubit.dart';
-
-Future<void> main() async {
+void main() async {
   runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    await setup();
 
-    FlutterError.onError = (FlutterErrorDetails details) {
-      FlutterError.dumpErrorToConsole(details);
-      ErrorsToServer(
-        error: details.exception.toString(),
-        stack: details.stack.toString(),
-      ).send();
-      // exit(1);
-    };
-    runApp(InkMobile());
+    runApp(InkMobile(onAppStart: () async {
+      await sl<TokenDataHolder>().update();
+      NatsProvider natsProvider = sl<NatsProvider>();
+      final loaded = await natsProvider.load();
+      UseMessageProvider.initMessageProvider(
+          natsProvider, sl<ChatDatabaseCubit>());
+      UseMessageProvider.messageProvider.init();
+      return loaded;
+    }));
   }, (Object error, StackTrace stack) {
     if (error is CustomException) {
       ErrorCatcher catcher = ErrorCatcher.getInstance();
-
       catcher.onError(error, stack);
     } else {
-      print(error);
-      print(stack.toString());
+      Logger('general').severe('Unexpected error', error, stack);
       showErrorDialog(ErrorMessages.UNKNOWN_ERROR_MESSAGE);
     }
   });
 }
 
 class InkMobile extends StatelessWidget {
+  final Future<bool> Function()? onAppStart;
+  late final BootCubit bootCubit;
+
+  InkMobile({Key? key, this.onAppStart}) : super(key: key) {
+    bootCubit = GetIt.I<BootCubit>()..onStart = onAppStart!;
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -56,26 +67,18 @@ class InkMobile extends StatelessWidget {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (BuildContext context) =>
-              LocalizationCubit(initialState: RussianStrings()),
-        ),
-        BlocProvider(create: (context) => NewBottomNavBarCubit()),
-      ],
+      providers: GlobalProvider.getProviders(context).cast(),
       child: MaterialApp(
         navigatorKey: App.materialKey,
         title: 'ИНК',
         initialRoute: '/init',
         localizationsDelegates: [
+          AppLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalMaterialLocalizations.delegate
         ],
-        supportedLocales: [
-          const Locale('en'),
-          const Locale('ru'),
-        ],
+        supportedLocales: I18n.all,
         routes: MainRoutes.routes,
         theme: LightTheme().getThemeData(),
         darkTheme: LightTheme().getThemeData(),

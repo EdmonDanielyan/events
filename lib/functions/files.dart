@@ -13,3 +13,15 @@ List<MultipartFile> getFilesAsMultipart(List<File> files) {
 
   return summary;
 }
+
+bool isStringUrl(String url) {
+  return Uri.tryParse(url)?.hasAbsolutePath ?? false;
+}
+
+bool isStrPicture(String picture) {
+  picture = picture.toLowerCase();
+  bool hasType = picture.contains("jpg") ||
+      picture.contains("png") ||
+      picture.contains("jpeg");
+  return isStringUrl(picture) && hasType;
+}

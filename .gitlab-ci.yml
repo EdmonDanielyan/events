@@ -71,11 +71,14 @@ ios:debug:
     IPA_SSH_PATH: "${IPA_SSH_PATH}"
     IPA_BUILD_RELATIVE_PATH: "${IPA_BUILD_RELATIVE_PATH}"
     PUB_CACHE: "${FLUTTER_IOS_PUB_CACHE}"
+#    GIT_STRATEGY: fetch
+#    GIT_CLEAN_FLAGS: none
   script:
     - du -h -d 1 ${PUB_CACHE} && ls -la ${PUB_CACHE} && echo ${CI_JOB_ID} > "${PUB_CACHE}/last_job_id"
     - ${FLUTTER_EXEC} --version
     - ${FLUTTER_EXEC} doctor
     - ${FLUTTER_EXEC} pub upgrade
+    - ${FLUTTER_EXEC} clean
     - ${FLUTTER_EXEC} build ios --no-sound-null-safety
     - cd ios
     - xcodebuild archive -workspace Runner.xcworkspace -scheme Runner -archivePath Runner.xcarchive -destination 'generic/platform=iOS'
@@ -83,7 +86,7 @@ ios:debug:
     - scp ${IPA_BUILD_RELATIVE_PATH} ${IPA_SSH_PATH}
   artifacts:
     paths:
-      - ios/Runner.ipa/jdc_mobile.ipa
+      - ios/Runner.ipa/ink_mobile.ipa
     expire_in: 1 day
   only:
     - develop

@@ -4,6 +4,8 @@ import 'package:ink_mobile/components/app_bars/back_btn.dart';
 
 class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
   final String title;
+  final Widget? titleWidget;
+  final List<Widget>? actions;
   final Widget? leading;
 
   static const String APP_BAR_LINES_SVG_LINK = 'assets/images/appbar_lines.svg';
@@ -11,6 +13,8 @@ class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
   InkAppBarWithText({
     Key? key,
     required this.title,
+    this.titleWidget,
+    this.actions,
     this.leading,
   }) : super(key: key);
 
@@ -50,13 +54,15 @@ class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
               tileMode: TileMode.decal),
         ),
       ),
-      title: Container(
-        child: Text(
-          '$title',
-          textAlign: TextAlign.center,
-        ),
-      ),
+      title: titleWidget ??
+          Container(
+            child: Text(
+              '$title',
+              textAlign: TextAlign.center,
+            ),
+          ),
       centerTitle: true,
+      actions: actions,
     );
   }
 }
