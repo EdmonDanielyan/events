@@ -9,8 +9,8 @@ void setupLogging(FileLogAppender fileLogAppender,
   fileLogAppender.printLogs = true;
   Logger.root.onRecord.listen((record) {
     var tail = "";
-    if (record.error != null) tail += ": ${record.error}";
-    if (record.stackTrace != null) tail += "\n${record.stackTrace}";
+    if (record.error != null) tail+= ": ${record.error}";
+    if (record.stackTrace != null) tail+= "\n${record.stackTrace}";
     var s =
         '${record.time} [${record.level}] [${record.loggerName}] ${record.message}$tail';
     fileLogAppender.append(s);
