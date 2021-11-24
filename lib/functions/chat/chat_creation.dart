@@ -36,6 +36,7 @@ class ChatCreation {
       if (newChat == null) {
         newChat = await createSingleChat(
           ChatUserViewModel.getNotOwnerFromList(chat, users),
+          chatId: chat.id,
           name: chat.name,
           avatar: chat.avatar,
           users: users,
@@ -47,15 +48,18 @@ class ChatCreation {
   }
 
   Future<ChatTable> createSingleChat(UserTable user,
-      {String? name, String? avatar, List<UserTable>? users}) async {
+      {String? chatId,
+      String? name,
+      String? avatar,
+      List<UserTable>? users}) async {
     users = users ?? [user, UserFunctions.getMe];
 
-    String chatId = generateSingleChatId(users);
+    String newChatId = chatId ?? generateGroupId;
 
-    ChatTable? chatExists = await isChatExists(chatId);
+    ChatTable? chatExists = await isChatExists(newChatId);
     if (chatExists == null) {
       chatExists = _makeChat(
-        chatId,
+        newChatId,
         name ?? user.name,
         avatar ?? user.avatar,
         participantId: user.id,
@@ -89,6 +93,21 @@ class ChatCreation {
   Future<ChatTable?> isChatExists(String id) async {
     final chatExists = await chatDatabaseCubit.db.selectChatById(id);
     return chatExists;
+  }
+
+  Future<ChatTable?> isSingleChatExists(UserTable user) async {
+    final chats = await chatDatabaseCubit.db.getAllChats();
+
+    if (chats.isNotEmpty) {
+      for (final chat in chats) {
+        if (!ChatListView.isGroup(chat) &&
+            (chat.ownerId == user.id || chat.participantId == user.id)) {
+          return chat;
+        }
+      }
+    }
+
+    return null;
   }
 
   ChatTable _makeChat(

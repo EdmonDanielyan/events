@@ -178,8 +178,8 @@ class MessageProvider {
   Future<ChatTable> createChat(UserTable user) async {
     ChatTable? chat;
     List<UserTable> users = [user, UserFunctions.getMe];
-    String chatId = ChatCreation.generateSingleChatId(users);
-    chat = await chatCreation.isChatExists(chatId);
+    chat = await chatCreation.isSingleChatExists(user);
+
     if (chat == null) {
       chat = await ChatCreation(chatDatabaseCubit).createSingleChat(user);
       _afterChatCreation(chat, users);
