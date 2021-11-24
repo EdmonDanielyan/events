@@ -111,7 +111,7 @@ class RussianStrings extends LanguageStrings {
   final String fillTheField = "Заполните поле";
   final String askQuestion = "Задать вопрос";
   final String allAnswers = "Все ответы";
-  final String toWhomLable = "Кому";
+  final String toWhomLable = "Тема";
   final String feedbackSuccessfullySent = "Спасибо за вопрос!";
   final String requiredParamsAreNotFilled =
       "Отсутствуют обязательные параметры";

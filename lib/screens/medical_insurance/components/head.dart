@@ -61,7 +61,7 @@ class Head extends StatelessWidget {
   Widget _sampleWidget() {
     return InkWell(
       onTap: () {
-        launchUrl("http://p3.ink.vpool/services/dms/help.jpg");
+        launchUrl("https://portal.irkutskoil.ru/services/dms/help.jpg");
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

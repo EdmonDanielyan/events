@@ -41,12 +41,17 @@ class BirthdayOtherDaysElement extends StatelessWidget {
                       children: [
                         Expanded(
                             flex: 6,
-                            child: Text(
-                                birthday.name ?? '',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16
-                                )
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, '/personal', arguments: {'id': birthday.id});
+                              },
+                              child: Text(
+                                  birthday.name ?? '',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16
+                                  )
+                              ),
                             )
                         ),
                         Expanded(

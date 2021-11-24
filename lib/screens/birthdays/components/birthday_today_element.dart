@@ -49,11 +49,22 @@ class BirthdayTodayElement extends StatelessWidget {
                   Container(
                     alignment: Alignment.topLeft,
                     margin: EdgeInsets.only(bottom: 5),
-                    child: Text(
-                      birthday.name ?? '',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context,
+                            '/personal',
+                            arguments: {
+                              'id': birthday.id
+                            }
+                        );
+                      },
+                      child: Text(
+                        birthday.name ?? '',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16
+                        ),
                       ),
                     ),
                   ),
