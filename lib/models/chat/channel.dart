@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
@@ -33,5 +34,12 @@ class ChannelListView {
     }
 
     return null;
+  }
+
+  static bool isChannelInviteUser(String channel) {
+    final msg =
+        describeEnum(MessageType.InviteUserToJoinChat.toString()).toLowerCase();
+
+    return channel.toLowerCase().contains(msg);
   }
 }

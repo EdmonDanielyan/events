@@ -210,7 +210,7 @@ class ChatDatabase extends _$ChatDatabase {
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
-  int get schemaVersion => 22;
+  int get schemaVersion => 28;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

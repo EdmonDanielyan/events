@@ -104,7 +104,7 @@ class ChatCreation {
       avatar: avatar,
       ownerId: JwtPayload.myId,
       participantId: participantId,
-      updatedAt: new DateTime.now(),
+      updatedAt: DateTime.now(),
       notificationsOn: true,
     );
   }

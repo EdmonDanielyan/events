@@ -281,6 +281,8 @@ class NatsProvider {
   };
   final Set<MessageType> _startSeqTypes = {
     MessageType.InviteUserToJoinChat,
+    MessageType.UserJoined,
+    MessageType.UserLeftChat,
     MessageType.Text,
     MessageType.Document,
     MessageType.RemoveMessage,

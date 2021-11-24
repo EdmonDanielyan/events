@@ -8,8 +8,12 @@ class ChatFunctions {
   const ChatFunctions(this.chatDatabaseCubit);
 
   void setChatToFirst(ChatTable chat) {
-    chatDatabaseCubit.db
-        .updateChatById(chat.id, chat.copyWith(updatedAt: new DateTime.now()));
+    chatDatabaseCubit.db.updateChatById(
+      chat.id,
+      chat.copyWith(
+        updatedAt: DateTime.now(),
+      ),
+    );
   }
 
   void deleteMessages(List<MessageTable> messages) {

@@ -78,7 +78,7 @@ class NatsListener {
     MessageType.ChatList
   };
 
-  String get _inviteUserChannel =>
+  String get inviteUserChannel =>
       natsProvider.getInviteUserToJoinChatChannel(JwtPayload.myId);
 
   Future<void> listenToAllMessages() async {
@@ -105,11 +105,11 @@ class NatsListener {
   }
 
   Future<void> _listenToInvitations() async {
-    final exists = await channelFunctions.channelExists(_inviteUserChannel);
+    final exists = await channelFunctions.channelExists(inviteUserChannel);
 
     if (!exists) {
       await _subscribeToChannel(
-          MessageType.InviteUserToJoinChat, _inviteUserChannel);
+          MessageType.InviteUserToJoinChat, inviteUserChannel);
     }
   }
 

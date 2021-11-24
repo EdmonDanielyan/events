@@ -59,6 +59,8 @@ class _BodyState extends State<Body> {
   }
 
   Widget _buildItems(List<ChatTable> items) {
+    items.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+
     return Column(
       children: [
         SearchBar(

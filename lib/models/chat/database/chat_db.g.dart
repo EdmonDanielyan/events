@@ -14,7 +14,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   final String avatar;
   final int ownerId;
   final int? participantId;
-  final DateTime? updatedAt;
+  final DateTime updatedAt;
   final bool? notificationsOn;
   ChatTable(
       {required this.id,
@@ -23,7 +23,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       required this.avatar,
       required this.ownerId,
       this.participantId,
-      this.updatedAt,
+      required this.updatedAt,
       this.notificationsOn});
   factory ChatTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
@@ -42,7 +42,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       participantId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}participant_id']),
       updatedAt: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
       notificationsOn: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}notifications_on']),
     );
@@ -58,9 +58,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
     if (!nullToAbsent || participantId != null) {
       map['participant_id'] = Variable<int?>(participantId);
     }
-    if (!nullToAbsent || updatedAt != null) {
-      map['updated_at'] = Variable<DateTime?>(updatedAt);
-    }
+    map['updated_at'] = Variable<DateTime>(updatedAt);
     if (!nullToAbsent || notificationsOn != null) {
       map['notifications_on'] = Variable<bool?>(notificationsOn);
     }
@@ -77,9 +75,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       participantId: participantId == null && nullToAbsent
           ? const Value.absent()
           : Value(participantId),
-      updatedAt: updatedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(updatedAt),
+      updatedAt: Value(updatedAt),
       notificationsOn: notificationsOn == null && nullToAbsent
           ? const Value.absent()
           : Value(notificationsOn),
@@ -96,7 +92,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       avatar: serializer.fromJson<String>(json['avatar']),
       ownerId: serializer.fromJson<int>(json['ownerId']),
       participantId: serializer.fromJson<int?>(json['participantId']),
-      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       notificationsOn: serializer.fromJson<bool?>(json['notificationsOn']),
     );
   }
@@ -110,7 +106,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       'avatar': serializer.toJson<String>(avatar),
       'ownerId': serializer.toJson<int>(ownerId),
       'participantId': serializer.toJson<int?>(participantId),
-      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'notificationsOn': serializer.toJson<bool?>(notificationsOn),
     };
   }
@@ -173,7 +169,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   final Value<String> avatar;
   final Value<int> ownerId;
   final Value<int?> participantId;
-  final Value<DateTime?> updatedAt;
+  final Value<DateTime> updatedAt;
   final Value<bool?> notificationsOn;
   const ChatTablesCompanion({
     this.id = const Value.absent(),
@@ -206,7 +202,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     Expression<String>? avatar,
     Expression<int>? ownerId,
     Expression<int?>? participantId,
-    Expression<DateTime?>? updatedAt,
+    Expression<DateTime>? updatedAt,
     Expression<bool?>? notificationsOn,
   }) {
     return RawValuesInsertable({
@@ -228,7 +224,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       Value<String>? avatar,
       Value<int>? ownerId,
       Value<int?>? participantId,
-      Value<DateTime?>? updatedAt,
+      Value<DateTime>? updatedAt,
       Value<bool?>? notificationsOn}) {
     return ChatTablesCompanion(
       id: id ?? this.id,
@@ -264,7 +260,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       map['participant_id'] = Variable<int?>(participantId.value);
     }
     if (updatedAt.present) {
-      map['updated_at'] = Variable<DateTime?>(updatedAt.value);
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     if (notificationsOn.present) {
       map['notifications_on'] = Variable<bool?>(notificationsOn.value);
@@ -324,10 +320,10 @@ class $ChatTablesTable extends ChatTables
       typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
-      'updated_at', aliasedName, true,
+      'updated_at', aliasedName, false,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultValue: Constant(new DateTime.now()));
+      defaultValue: Constant(new DateTime.now().toUtc()));
   final VerificationMeta _notificationsOnMeta =
       const VerificationMeta('notificationsOn');
   late final GeneratedColumn<bool?> notificationsOn = GeneratedColumn<bool?>(

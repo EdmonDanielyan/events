@@ -5,6 +5,7 @@ import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
+import 'package:ink_mobile/models/chat/channel.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/chat_list.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
@@ -71,16 +72,21 @@ class ChatListListener {
       final messages = fields.messages;
       final channels = fields.channels;
 
+      await _insertChannels(channels);
+
       if (chats.length > 0) {
-        chats = chats.reversed.toList();
         await _insertChats(chats, messages);
       }
       await _insertUsers(users);
       await _insertParticipants(participants, chats);
-      await _insertChannels(channels);
+
       await UseMessageProvider.messageProvider.saveChats(newChat: null);
     } on NoSuchMethodError {
       return;
+    } catch (_e, stack) {
+      print("ERROR");
+      print(_e.toString());
+      print(stack.toString());
     }
   }
 
@@ -91,6 +97,7 @@ class ChatListListener {
     final storedChats = await chatDatabaseCubit.db.getAllChats();
 
     for (final chat in distinctChats) {
+      print(chat.updatedAt);
       bool insert = _chatExistsInStoredChannels(chat, storedChats);
 
       if (insert) {
@@ -161,7 +168,7 @@ class ChatListListener {
 
   Future<void> _insertChannels(List<ChannelTable> channels) async {
     if (channels.isNotEmpty) {
-      final distinctChannels = channels.toSet().toList();
+      final distinctChannels = _channelFilter(channels);
       _setBusyChannels(distinctChannels);
       for (final channel in distinctChannels) {
         await channelFunctions.insertOrUpdate(channel);
@@ -169,6 +176,31 @@ class ChatListListener {
 
       await natsListener.listenToMyStoredChannels();
     }
+  }
+
+  List<ChannelTable> _channelFilter(List<ChannelTable> channels) {
+    var newChannels = channels.toSet().toList();
+    newChannels = _clearFromOtherInviteUserChannels(newChannels);
+    return newChannels;
+  }
+
+  List<ChannelTable> _clearFromOtherInviteUserChannels(
+      List<ChannelTable> channels) {
+    channels = channels
+      ..removeWhere(
+        (element) {
+          bool inviteUserChannel =
+              ChannelListView.isChannelInviteUser(element.to);
+          if (inviteUserChannel &&
+              element.to != natsListener.inviteUserChannel) {
+            return true;
+          }
+
+          return false;
+        },
+      );
+
+    return channels;
   }
 
   void _setBusyChannels(List<ChannelTable> channels) {

@@ -422,7 +422,7 @@ class Client {
       subscriptionRequest.startTimeDelta = startTimeDelta;
     }
 
-    for (int i = 1; i <= 3; i++) {
+    for (int i = 1; i <= 10; i++) {
       final subscriptionResponse = await tryToSubscribe(subscriptionRequest);
       if (!_subscriptionInboxes.contains(subscriptionResponse.ackInbox)) {
         print(
