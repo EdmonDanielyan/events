@@ -59,12 +59,8 @@
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>https</string>
-		<string>http</string>
-		<string>mailto</string>
-		<string>tel</string>
-		<string>facetime</string>
-		<string>sms</string>
+	<string>fetch</string>
+	<string>remote-notification</string>
 	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
