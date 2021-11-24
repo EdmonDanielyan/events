@@ -59,7 +59,14 @@ class _BodyState extends State<Body> {
   }
 
   Widget _buildItems(List<ChatTable> items) {
-    items.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    items.sort((a, b) {
+      if (a.millisecondsSinceEpoch != null &&
+          b.millisecondsSinceEpoch != null) {
+        return b.millisecondsSinceEpoch!.compareTo(a.millisecondsSinceEpoch!);
+      }
+
+      return b.updatedAt.compareTo(a.updatedAt);
+    });
 
     return Column(
       children: [

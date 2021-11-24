@@ -11,7 +11,9 @@ class ChatFunctions {
     chatDatabaseCubit.db.updateChatById(
       chat.id,
       chat.copyWith(
-        updatedAt: DateTime.now(),
+        updatedAt: new DateTime.now(),
+        millisecondsSinceEpoch:
+            new DateTime.now().millisecondsSinceEpoch.toString(),
       ),
     );
   }

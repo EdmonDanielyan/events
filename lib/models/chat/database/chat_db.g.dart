@@ -15,6 +15,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   final int ownerId;
   final int? participantId;
   final DateTime updatedAt;
+  final String? millisecondsSinceEpoch;
   final bool? notificationsOn;
   ChatTable(
       {required this.id,
@@ -24,6 +25,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       required this.ownerId,
       this.participantId,
       required this.updatedAt,
+      this.millisecondsSinceEpoch,
       this.notificationsOn});
   factory ChatTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
@@ -43,6 +45,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}participant_id']),
       updatedAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+      millisecondsSinceEpoch: const StringType().mapFromDatabaseResponse(
+          data['${effectivePrefix}milliseconds_since_epoch']),
       notificationsOn: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}notifications_on']),
     );
@@ -59,6 +63,10 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       map['participant_id'] = Variable<int?>(participantId);
     }
     map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || millisecondsSinceEpoch != null) {
+      map['milliseconds_since_epoch'] =
+          Variable<String?>(millisecondsSinceEpoch);
+    }
     if (!nullToAbsent || notificationsOn != null) {
       map['notifications_on'] = Variable<bool?>(notificationsOn);
     }
@@ -76,6 +84,9 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           ? const Value.absent()
           : Value(participantId),
       updatedAt: Value(updatedAt),
+      millisecondsSinceEpoch: millisecondsSinceEpoch == null && nullToAbsent
+          ? const Value.absent()
+          : Value(millisecondsSinceEpoch),
       notificationsOn: notificationsOn == null && nullToAbsent
           ? const Value.absent()
           : Value(notificationsOn),
@@ -93,6 +104,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       ownerId: serializer.fromJson<int>(json['ownerId']),
       participantId: serializer.fromJson<int?>(json['participantId']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      millisecondsSinceEpoch:
+          serializer.fromJson<String?>(json['millisecondsSinceEpoch']),
       notificationsOn: serializer.fromJson<bool?>(json['notificationsOn']),
     );
   }
@@ -107,6 +120,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       'ownerId': serializer.toJson<int>(ownerId),
       'participantId': serializer.toJson<int?>(participantId),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'millisecondsSinceEpoch':
+          serializer.toJson<String?>(millisecondsSinceEpoch),
       'notificationsOn': serializer.toJson<bool?>(notificationsOn),
     };
   }
@@ -119,6 +134,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           int? ownerId,
           int? participantId,
           DateTime? updatedAt,
+          String? millisecondsSinceEpoch,
           bool? notificationsOn}) =>
       ChatTable(
         id: id ?? this.id,
@@ -128,6 +144,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
         ownerId: ownerId ?? this.ownerId,
         participantId: participantId ?? this.participantId,
         updatedAt: updatedAt ?? this.updatedAt,
+        millisecondsSinceEpoch:
+            millisecondsSinceEpoch ?? this.millisecondsSinceEpoch,
         notificationsOn: notificationsOn ?? this.notificationsOn,
       );
   @override
@@ -140,6 +158,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           ..write('ownerId: $ownerId, ')
           ..write('participantId: $participantId, ')
           ..write('updatedAt: $updatedAt, ')
+          ..write('millisecondsSinceEpoch: $millisecondsSinceEpoch, ')
           ..write('notificationsOn: $notificationsOn')
           ..write(')'))
         .toString();
@@ -147,7 +166,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
 
   @override
   int get hashCode => Object.hash(id, name, description, avatar, ownerId,
-      participantId, updatedAt, notificationsOn);
+      participantId, updatedAt, millisecondsSinceEpoch, notificationsOn);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -159,6 +178,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           other.ownerId == this.ownerId &&
           other.participantId == this.participantId &&
           other.updatedAt == this.updatedAt &&
+          other.millisecondsSinceEpoch == this.millisecondsSinceEpoch &&
           other.notificationsOn == this.notificationsOn);
 }
 
@@ -170,6 +190,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   final Value<int> ownerId;
   final Value<int?> participantId;
   final Value<DateTime> updatedAt;
+  final Value<String?> millisecondsSinceEpoch;
   final Value<bool?> notificationsOn;
   const ChatTablesCompanion({
     this.id = const Value.absent(),
@@ -179,6 +200,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     this.ownerId = const Value.absent(),
     this.participantId = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.millisecondsSinceEpoch = const Value.absent(),
     this.notificationsOn = const Value.absent(),
   });
   ChatTablesCompanion.insert({
@@ -189,6 +211,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     required int ownerId,
     this.participantId = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.millisecondsSinceEpoch = const Value.absent(),
     this.notificationsOn = const Value.absent(),
   })  : id = Value(id),
         name = Value(name),
@@ -203,6 +226,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     Expression<int>? ownerId,
     Expression<int?>? participantId,
     Expression<DateTime>? updatedAt,
+    Expression<String?>? millisecondsSinceEpoch,
     Expression<bool?>? notificationsOn,
   }) {
     return RawValuesInsertable({
@@ -213,6 +237,8 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       if (ownerId != null) 'owner_id': ownerId,
       if (participantId != null) 'participant_id': participantId,
       if (updatedAt != null) 'updated_at': updatedAt,
+      if (millisecondsSinceEpoch != null)
+        'milliseconds_since_epoch': millisecondsSinceEpoch,
       if (notificationsOn != null) 'notifications_on': notificationsOn,
     });
   }
@@ -225,6 +251,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       Value<int>? ownerId,
       Value<int?>? participantId,
       Value<DateTime>? updatedAt,
+      Value<String?>? millisecondsSinceEpoch,
       Value<bool?>? notificationsOn}) {
     return ChatTablesCompanion(
       id: id ?? this.id,
@@ -234,6 +261,8 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       ownerId: ownerId ?? this.ownerId,
       participantId: participantId ?? this.participantId,
       updatedAt: updatedAt ?? this.updatedAt,
+      millisecondsSinceEpoch:
+          millisecondsSinceEpoch ?? this.millisecondsSinceEpoch,
       notificationsOn: notificationsOn ?? this.notificationsOn,
     );
   }
@@ -262,6 +291,10 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
+    if (millisecondsSinceEpoch.present) {
+      map['milliseconds_since_epoch'] =
+          Variable<String?>(millisecondsSinceEpoch.value);
+    }
     if (notificationsOn.present) {
       map['notifications_on'] = Variable<bool?>(notificationsOn.value);
     }
@@ -278,6 +311,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
           ..write('ownerId: $ownerId, ')
           ..write('participantId: $participantId, ')
           ..write('updatedAt: $updatedAt, ')
+          ..write('millisecondsSinceEpoch: $millisecondsSinceEpoch, ')
           ..write('notificationsOn: $notificationsOn')
           ..write(')'))
         .toString();
@@ -324,6 +358,14 @@ class $ChatTablesTable extends ChatTables
       typeName: 'INTEGER',
       requiredDuringInsert: false,
       defaultValue: Constant(new DateTime.now().toUtc()));
+  final VerificationMeta _millisecondsSinceEpochMeta =
+      const VerificationMeta('millisecondsSinceEpoch');
+  late final GeneratedColumn<String?> millisecondsSinceEpoch =
+      GeneratedColumn<String?>('milliseconds_since_epoch', aliasedName, true,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          defaultValue:
+              Constant(new DateTime.now().millisecondsSinceEpoch.toString()));
   final VerificationMeta _notificationsOnMeta =
       const VerificationMeta('notificationsOn');
   late final GeneratedColumn<bool?> notificationsOn = GeneratedColumn<bool?>(
@@ -341,6 +383,7 @@ class $ChatTablesTable extends ChatTables
         ownerId,
         participantId,
         updatedAt,
+        millisecondsSinceEpoch,
         notificationsOn
       ];
   @override
@@ -392,6 +435,12 @@ class $ChatTablesTable extends ChatTables
     if (data.containsKey('updated_at')) {
       context.handle(_updatedAtMeta,
           updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('milliseconds_since_epoch')) {
+      context.handle(
+          _millisecondsSinceEpochMeta,
+          millisecondsSinceEpoch.isAcceptableOrUnknown(
+              data['milliseconds_since_epoch']!, _millisecondsSinceEpochMeta));
     }
     if (data.containsKey('notifications_on')) {
       context.handle(

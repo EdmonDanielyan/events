@@ -34,6 +34,7 @@ class ChatListListener {
       UseMessageProvider.messageProvider.natsListener;
 
   static Set<String> busyChannels = {};
+  Set<String> _getChatIds = {};
 
   Future<void> listenTo(UserTable user) async {
     try {
@@ -72,11 +73,10 @@ class ChatListListener {
       final messages = fields.messages;
       final channels = fields.channels;
 
-      await _insertChannels(channels);
-
       if (chats.length > 0) {
         await _insertChats(chats, messages);
       }
+      await _insertChannels(channels);
       await _insertUsers(users);
       await _insertParticipants(participants, chats);
 
@@ -97,7 +97,7 @@ class ChatListListener {
     final storedChats = await chatDatabaseCubit.db.getAllChats();
 
     for (final chat in distinctChats) {
-      print(chat.updatedAt);
+      _getChatIds.add(chat.id);
       bool insert = _chatExistsInStoredChannels(chat, storedChats);
 
       if (insert) {
@@ -181,6 +181,8 @@ class ChatListListener {
   List<ChannelTable> _channelFilter(List<ChannelTable> channels) {
     var newChannels = channels.toSet().toList();
     newChannels = _clearFromOtherInviteUserChannels(newChannels);
+    newChannels = _clearFromNotExistingChats(newChannels);
+
     return newChannels;
   }
 
@@ -199,6 +201,28 @@ class ChatListListener {
           return false;
         },
       );
+
+    return channels;
+  }
+
+  List<ChannelTable> _clearFromNotExistingChats(List<ChannelTable> channels) {
+    channels = channels
+      ..removeWhere((element) {
+        bool delete = false;
+        final thisChannel = element.to.toLowerCase();
+        bool isChatChannel = thisChannel.contains(GROUP_CHANNEL);
+        if (isChatChannel) {
+          delete = true;
+          _getChatIds.forEach((element) {
+            if (thisChannel.contains(element.toLowerCase())) {
+              delete = false;
+            }
+          });
+          return delete;
+        }
+
+        return delete;
+      });
 
     return channels;
   }
