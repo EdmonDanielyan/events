@@ -75,12 +75,12 @@ class NatsProvider {
 
     _connectMessageProvider();
 
-    if (App.getContext != null) {
-      SuccessCustomSnackbar(
-        context: App.getContext!,
-        txt: localizationInstance.connectedToServer,
-      );
-    }
+    // if (App.getContext != null) {
+    //   SuccessCustomSnackbar(
+    //     context: App.getContext!,
+    //     txt: localizationInstance.connectedToServer,
+    //   );
+    // }
   }
 
   void _disconnected() {
