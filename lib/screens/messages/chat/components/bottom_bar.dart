@@ -41,7 +41,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
         chat: getChat,
       ).call(entities);
       if (UseMessageProvider.initialized) {
-        await UseMessageProvider.messageProvider.sendMessage(getChat, message);
+        await UseMessageProvider.messageProvider?.sendMessage(getChat, message);
       }
       _chatCubit.clean();
       entities.clear();

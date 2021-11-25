@@ -28,12 +28,17 @@ import '../setup.dart';
 
 class UseMessageProvider {
   static late bool initialized = false;
-  static late MessageProvider messageProvider;
+  static late MessageProvider? messageProvider;
 
   static void initMessageProvider(
       NatsProvider natsProvider, ChatDatabaseCubit chatDatabaseCubit) {
     messageProvider = MessageProvider(natsProvider, chatDatabaseCubit);
     initialized = true;
+  }
+
+  static void uninit() {
+    initialized = false;
+    messageProvider = null;
   }
 }
 
@@ -162,11 +167,12 @@ class MessageProvider {
     sendUserOnlinePing();
   }
 
-  void dispose() async {
+  Future<void> dispose() async {
     natsListener.unsubscribeFromAll();
     userOnlineTimer.cancel();
     natsProvider.dispose();
     chatDatabaseCubit.db.deleteEverything();
+    UseMessageProvider.uninit();
   }
 
   Future<void> removeChat(ChatTable chat) async {

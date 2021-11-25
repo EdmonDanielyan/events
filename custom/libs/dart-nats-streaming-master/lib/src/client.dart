@@ -470,7 +470,7 @@ class Client {
 
     if (dataMessage.isRedelivery) {
       print(
-          'NOT ACKNOWLEDGING ${subscription.ackInbox} from ${dataMessage.subject} with seq ${dataMessage.sequence}');
+          'NOT ACKNOWLEDGING - ${ack.subject} - ${subscription.ackInbox} - SEQ = ${dataMessage.sequence}');
     }
 
     natsClient.pub(subscription.ackInbox, ack.writeToBuffer());

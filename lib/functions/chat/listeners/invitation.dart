@@ -1,4 +1,5 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
 import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
@@ -22,8 +23,13 @@ class ChatInvitationListener {
     required this.chatSendMessage,
     required this.chatDatabaseCubit,
   });
-  NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+  NatsListener get natsListener {
+    if (!natsProvider.isConnected) {
+      throw NoConnectionException();
+    }
+    return UseMessageProvider.messageProvider!.natsListener;
+  }
+
   bool isListeningToChannel(String channel) =>
       natsListener.listeningToChannel(channel);
 
@@ -54,7 +60,7 @@ class ChatInvitationListener {
 
       await ChatCreation(chatDatabaseCubit)
           .createDynamically(chat, fields.users);
-      await UseMessageProvider.messageProvider.saveChats(newChat: chat);
+      await UseMessageProvider.messageProvider?.saveChats(newChat: chat);
 
       _chatLinkedListeners(chat.id);
     } on NoSuchMethodError {

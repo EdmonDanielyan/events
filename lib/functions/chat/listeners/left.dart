@@ -24,7 +24,7 @@ class ChatLeftListener {
   });
 
   NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+      UseMessageProvider.messageProvider!.natsListener;
   bool isListeningToChannel(String channel) =>
       natsListener.listeningToChannel(channel);
 
@@ -52,11 +52,13 @@ class ChatLeftListener {
       final chat = fields.chat;
 
       if (users.isNotEmpty) {
-        await userFunctions.deleteParticipants(
-            ChatUserViewModel.toParticipants(users, chat), chat);
+        final participants = ChatUserViewModel.toParticipants(users, chat);
+        print("PARTICIPANTS");
+        print(participants);
+        await userFunctions.deleteParticipants(participants, chat);
 
         setMessage(users, chat);
-        await UseMessageProvider.messageProvider.saveChats(newChat: null);
+        await UseMessageProvider.messageProvider?.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;

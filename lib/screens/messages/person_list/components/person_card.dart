@@ -36,6 +36,7 @@ class PersonListCard<T> extends StatelessWidget {
           avatarSize: 45.0,
           titleGap: 15.0,
           highlightTxt: highlightText != null ? highlightText! : "",
+          avatarName: chat.name,
         ),
       ),
     );

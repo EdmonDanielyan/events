@@ -131,6 +131,10 @@ class NatsListener {
 
   Future<void> _subscribeToChannel(MessageType type, String channel,
       {Int64 startSequence = Int64.ZERO}) async {
+    if (!natsProvider.isConnected) {
+      return;
+    }
+
     if (!listeningToChannel(channel)) {
       if (type == MessageType.InviteUserToJoinChat) {
         await chatInvitationListener.listenTo(channel,

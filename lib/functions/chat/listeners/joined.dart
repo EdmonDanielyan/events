@@ -24,7 +24,7 @@ class ChatJoinedListener {
   });
 
   NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+      UseMessageProvider.messageProvider!.natsListener;
   bool isListeningToChannel(String channel) =>
       natsListener.listeningToChannel(channel);
 
@@ -56,7 +56,7 @@ class ChatJoinedListener {
         await userFunctions.addParticipants(
             ChatUserViewModel.toParticipants(users, chat), chat);
         setMessage(users, chat);
-        await UseMessageProvider.messageProvider.saveChats(newChat: null);
+        await UseMessageProvider.messageProvider?.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;

@@ -125,7 +125,7 @@ class ChatListTile extends StatelessWidget {
             UserTable user = snapshot.data!;
             indicator = user.online;
             if (UseMessageProvider.initialized) {
-              UseMessageProvider.messageProvider.subscribeToUserOnline(user);
+              UseMessageProvider.messageProvider?.subscribeToUserOnline(user);
             }
           }
           return CustomCircleAvatar(

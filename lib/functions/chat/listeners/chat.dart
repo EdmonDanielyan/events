@@ -50,7 +50,7 @@ class ChatMessageListener {
   Debouncer get _debouncer => Debouncer(milliseconds: 400);
 
   NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+      UseMessageProvider.messageProvider!.natsListener;
 
   bool isListeningToChannel(String channel) =>
       natsListener.listeningToChannel(channel);
@@ -87,7 +87,7 @@ class ChatMessageListener {
         await userFunctions.insertUser(fields.user);
         await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
             .addMessage(fields.message);
-        await UseMessageProvider.messageProvider.saveChats(newChat: null);
+        await UseMessageProvider.messageProvider?.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;

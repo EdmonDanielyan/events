@@ -48,8 +48,10 @@ import 'package:main_api_client/model/get_comments_by_id.dart';
 import 'package:main_api_client/model/get_contacts.dart';
 import 'package:main_api_client/model/get_event_by_id.dart';
 import 'package:main_api_client/model/get_events.dart';
+import 'package:main_api_client/model/get_keys_success.dart';
 import 'package:main_api_client/model/get_news.dart';
 import 'package:main_api_client/model/get_news_by_id.dart';
+import 'package:main_api_client/model/get_pub_key_success.dart';
 import 'package:main_api_client/model/get_publications.dart';
 import 'package:main_api_client/model/get_reference_order_form.dart';
 import 'package:main_api_client/model/get_search_success.dart';
@@ -132,8 +134,10 @@ part 'serializers.g.dart';
   GetContacts,
   GetEventById,
   GetEvents,
+  GetKeysSuccess,
   GetNews,
   GetNewsById,
+  GetPubKeySuccess,
   GetPublications,
   GetReferenceOrderForm,
   GetSearchSuccess,
