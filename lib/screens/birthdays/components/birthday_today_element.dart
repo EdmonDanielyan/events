@@ -20,7 +20,7 @@ class BirthdayTodayElement extends StatelessWidget {
 
   Future<void> _congratulate(BuildContext context) async {
     if (UseMessageProvider.initialized) {
-      ChatTable newChat = await UseMessageProvider.messageProvider
+      ChatTable newChat = await UseMessageProvider.messageProvider!
           .createChat(ChatUserViewModel.birthdayDataToUserTable(birthday));
       OpenChat(chatDatabaseCubit, newChat).call(context);
     }
