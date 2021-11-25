@@ -192,7 +192,7 @@ paths:
           description: фильтр для выдачи определенной группы новостей, допустимые значения news, news-idea, volunteer_news, information_sport, information_ms, literacy
           schema:
             type: string
-            enum: [news, news-idea, volunteer_news, information_sport, information_ms, literacy, error]
+            enum: [news, news-idea, volunteer_news, information_sport, information_ms, literacy, stable_development, error]
             nullable: true
         - name: page_number
           in: query
@@ -436,6 +436,48 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/getUserSuccess"
+      security:
+        - bearerAuth: []
+  /keys:
+    get:
+      tags:
+        - User
+      summary: Получение ключей шифрования текущего пользователя
+      responses:
+        200:
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getKeysSuccess"
+      security:
+        - bearerAuth: []
+  /keys/{id}:
+    get:
+      tags:
+        - User
+      summary: Получение публичного ключа другого пользователя
+      parameters:
+        - name: id
+          in: path
+          description: ID пользователя
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Успешное выполнение
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getPubKeySuccess"
+        404:
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getUserFail"
       security:
         - bearerAuth: []
   /user/caninquire:
@@ -1015,6 +1057,37 @@ components:
         - detail
         - status
         - code
+    getKeysSuccess:
+      allOf:
+        - $ref: "#/components/schemas/RequiredSuccess"
+      type: object
+      properties:
+        status:
+          type: integer
+          default: 200
+        data:
+          type: object
+          properties:
+            private_key:
+              type: string
+              example: "-----BEGINPRIVATEKEY-----MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANt0NJYx1fwFFKYeIGkyZn7CXdZJfYd1pu96pE7xL72NxzuWSe+wRW2u+vG2qJmMsFd2bbCT1xrMitln1RNN+jLPrp3MeeX8FyEcrijSKGLLw2TF6rpkMhmMlmVWz65Re9kjXGyzbrcNDo0WEEESRnSUSwE2yIL3eBZOEITknkpzAgMBAAECgYEAnMMq2WtqHygF8xAsONk+7Cet3mgK2pvJjuI9wwJ5Bt/jRQZ7dFOnlM1dBxNi5qTgRuobOvqwur0IJnsMc0jNgvEGOwyeWwDxStWXP9BTil2yOjbneihiaphoC8UyOLIqb28+V918sO7q8rIMcHqi9MXv5/h9r2WdH1DRdy5EhRECQQD9QmHn5/K3Keqo92o+APsyCFquD0pIZAnYSbs1f+QXhSX+r+UGLbg3AWunaqlBWOcxmT/vRNKm5BMxZqWgr6PrAkEA3dQrj0zZWQQBhOlKoANG79ZTr2+CVHFZ8X9fF6Nj8dG5n/87gmEN0k5esw4Rb9ijns861S80Hy9zLMIQZPI5mQJBANgIqDuKQCC+QM2hP59kduJW/gM8R8E4lK1LN8aLMaZejeqTYGnE1j8Vlx9YfMihbZWBhGg17Psv0q9xQBexu8ECQAkissSNCqpy0skxfmRGnkZEUl/4PKrTnDuo3jawAO61j2p6bW36J0KQ/a9sFeXAS0TADhE3h3L9VkXynBA8NYkCQAFLuEMnz5YY4cs0FuCjQTQY9AGMX2i30LI23JjCiO1z/ZhIUU+3gMl8wpudlue2g6fUggsOFHifDKE2cx4PZeQ=-----ENDPRIVATEKEY-----"
+            public_key:
+              type: string
+              example: "-----BEGINPUBLICKEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbdDSWMdX8BRSmHiBpMmZ+wl3WSX2HdabveqRO8S+9jcc7lknvsEVtrvrxtqiZjLBXdm2wk9cazIrZZ9UTTfoyz66dzHnl/BchHK4o0ihiy8Nkxeq6ZDIZjJZlVs+uUXvZI1xss263DQ6NFhBBEkZ0lEsBNsiC93gWThCE5J5KcwIDAQAB-----ENDPUBLICKEY-----"
+    getPubKeySuccess:
+      allOf:
+        - $ref: "#/components/schemas/RequiredSuccess"
+      type: object
+      properties:
+        status:
+          type: integer
+          default: 200
+        data:
+          type: object
+          properties:
+            public_key:
+              type: string
+              example: "-----BEGINPUBLICKEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbdDSWMdX8BRSmHiBpMmZ+wl3WSX2HdabveqRO8S+9jcc7lknvsEVtrvrxtqiZjLBXdm2wk9cazIrZZ9UTTfoyz66dzHnl/BchHK4o0ihiy8Nkxeq6ZDIZjJZlVs+uUXvZI1xss263DQ6NFhBBEkZ0lEsBNsiC93gWThCE5J5KcwIDAQAB-----ENDPUBLICKEY-----"
     getUserSuccess:
       allOf:
         - $ref: "#/components/schemas/RequiredSuccess"
@@ -1304,6 +1377,9 @@ components:
               type: string
               format: byte
               example: MS5yOVpqNUE1S3JVbjdWYzFwRzJsUzE1UWk2cFNwM0luMVNrTjZ5QjdOMXFWMGFxUzU0Q2l4SjA4SHYzZVlDeDI4bU5tUzU2dFU2eEdnNEVkUzc0S2JpSDd0WThzWTd1MUFhVDgxeFYyalNHbTFZZTMyUnVGazFhWDFaMXpPdDJUdA==
+            uid:
+              type: string
+              example: "1e297d66-8ade-4127-a893-9d83fea5e824"
           required:
             - user_id
             - token
@@ -2519,6 +2595,10 @@ components:
         department:
           type: string
           example: "Технический департамент"
+          nullable: true
+        email:
+          type: string
+          example: 'example@example.com'
           nullable: true
     orderDMS:
       type: object

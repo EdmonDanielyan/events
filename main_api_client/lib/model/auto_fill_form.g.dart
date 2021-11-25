@@ -42,6 +42,13 @@ class _$AutoFillFormSerializer implements StructuredSerializer<AutoFillForm> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.email;
+    if (value != null) {
+      result
+        ..add('email')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -68,6 +75,10 @@ class _$AutoFillFormSerializer implements StructuredSerializer<AutoFillForm> {
           result.department = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'email':
+          result.email = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -82,11 +93,14 @@ class _$AutoFillForm extends AutoFillForm {
   final String position;
   @override
   final String department;
+  @override
+  final String email;
 
   factory _$AutoFillForm([void Function(AutoFillFormBuilder) updates]) =>
       (new AutoFillFormBuilder()..update(updates)).build();
 
-  _$AutoFillForm._({this.fio, this.position, this.department}) : super._();
+  _$AutoFillForm._({this.fio, this.position, this.department, this.email})
+      : super._();
 
   @override
   AutoFillForm rebuild(void Function(AutoFillFormBuilder) updates) =>
@@ -101,13 +115,15 @@ class _$AutoFillForm extends AutoFillForm {
     return other is AutoFillForm &&
         fio == other.fio &&
         position == other.position &&
-        department == other.department;
+        department == other.department &&
+        email == other.email;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, fio.hashCode), position.hashCode), department.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, fio.hashCode), position.hashCode), department.hashCode),
+        email.hashCode));
   }
 
   @override
@@ -115,7 +131,8 @@ class _$AutoFillForm extends AutoFillForm {
     return (newBuiltValueToStringHelper('AutoFillForm')
           ..add('fio', fio)
           ..add('position', position)
-          ..add('department', department))
+          ..add('department', department)
+          ..add('email', email))
         .toString();
   }
 }
@@ -136,6 +153,10 @@ class AutoFillFormBuilder
   String get department => _$this._department;
   set department(String department) => _$this._department = department;
 
+  String _email;
+  String get email => _$this._email;
+  set email(String email) => _$this._email = email;
+
   AutoFillFormBuilder() {
     AutoFillForm._initializeBuilder(this);
   }
@@ -146,6 +167,7 @@ class AutoFillFormBuilder
       _fio = $v.fio;
       _position = $v.position;
       _department = $v.department;
+      _email = $v.email;
       _$v = null;
     }
     return this;
@@ -166,7 +188,7 @@ class AutoFillFormBuilder
   _$AutoFillForm build() {
     final _$result = _$v ??
         new _$AutoFillForm._(
-            fio: fio, position: position, department: department);
+            fio: fio, position: position, department: department, email: email);
     replace(_$result);
     return _$result;
   }

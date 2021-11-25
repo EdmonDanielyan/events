@@ -29,7 +29,7 @@ class SendFeedbackFormNetworkRequest extends SendFeedbackFormDependency {
               ? getFilesAsMultipart(entities!.files)
               : null,
         )
-        .timeout(Duration(seconds: 10));
+        .timeout(const Duration(minutes: 5));
 
     return response.statusCode == 200;
   }

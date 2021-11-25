@@ -24,6 +24,10 @@ abstract class AutoFillForm
   @BuiltValueField(wireName: r'department')
   String get department;
 
+  @nullable
+  @BuiltValueField(wireName: r'email')
+  String get email;
+
   // Boilerplate code needed to wire-up generated code
   AutoFillForm._();
 

@@ -27,9 +27,11 @@ class _PersonListBodyState extends State<PersonListBody> {
     for (final message in _personListParams.messages!) {
       MessageTable newMessage = MessageListView.renewMessage(
         message,
+        id: SendMessage.generateMessageId,
         newChat: chat,
         sentOn: true,
       );
+
       await SendMessage(
         chatDatabaseCubit: _chatDatabaseCubit,
         chat: chat,

@@ -18,11 +18,13 @@ import 'package:main_api_client/model/movements_fail.dart';
 import 'package:main_api_client/model/reference_auto_fill.dart';
 import 'package:main_api_client/model/order_dms_success.dart';
 import 'package:main_api_client/model/can_inquire.dart';
+import 'package:main_api_client/model/get_pub_key_success.dart';
 import 'package:main_api_client/model/order_transport_fail.dart';
 import 'package:main_api_client/model/get_reference_order_form.dart';
 import 'package:main_api_client/model/movements_success.dart';
 import 'package:main_api_client/model/get_user_fail.dart';
 import 'package:main_api_client/model/get_transport_order_form.dart';
+import 'package:main_api_client/model/get_keys_success.dart';
 import 'package:main_api_client/model/feedback_tags_list.dart';
 import 'package:main_api_client/model/order_dms.dart';
 import 'package:main_api_client/model/birthdays_success.dart';
@@ -41,6 +43,149 @@ class UserApi {
   Serializers _serializers;
 
   UserApi(this._dio, this._serializers);
+
+  /// Получение ключей шифрования текущего пользователя
+  ///
+  ///
+  Future<Response<GetKeysSuccess>> keysGet({
+    CancelToken cancelToken,
+    Map<String, dynamic> headers,
+    Map<String, dynamic> extra,
+    ValidateStatus validateStatus,
+    ProgressCallback onSendProgress,
+    ProgressCallback onReceiveProgress,
+  }) async {
+    final String _path = '/keys';
+
+    final queryParams = <String, dynamic>{};
+    final headerParams = <String, dynamic>{
+      if (headers != null) ...headers,
+    };
+    dynamic bodyData;
+
+    queryParams.removeWhere((key, dynamic value) => value == null);
+    headerParams.removeWhere((key, dynamic value) => value == null);
+
+    final contentTypes = <String>[];
+
+    return _dio
+        .request<dynamic>(
+      _path,
+      queryParameters: queryParams,
+      data: bodyData,
+      options: Options(
+        method: 'get'.toUpperCase(),
+        headers: headerParams,
+        extra: <String, dynamic>{
+          'secure': <Map<String, String>>[
+            {
+              'type': 'http',
+              'name': 'bearerAuth',
+            },
+          ],
+          if (extra != null) ...extra,
+        },
+        validateStatus: validateStatus,
+        contentType:
+            contentTypes.isNotEmpty ? contentTypes[0] : 'application/json',
+      ),
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    )
+        .then((response) {
+      final serializer = _serializers.serializerForType(GetKeysSuccess)
+          as Serializer<GetKeysSuccess>;
+      final data = _serializers.deserializeWith<GetKeysSuccess>(
+        serializer,
+        response.data is String
+            ? jsonDecode(response.data as String)
+            : response.data,
+      );
+
+      return Response<GetKeysSuccess>(
+        data: data,
+        headers: response.headers,
+        requestOptions: response.requestOptions,
+        redirects: response.redirects,
+        statusCode: response.statusCode,
+        statusMessage: response.statusMessage,
+        extra: response.extra,
+      );
+    });
+  }
+
+  /// Получение публичного ключа другого пользователя
+  ///
+  ///
+  Future<Response<GetPubKeySuccess>> keysIdGet(
+    int id, {
+    CancelToken cancelToken,
+    Map<String, dynamic> headers,
+    Map<String, dynamic> extra,
+    ValidateStatus validateStatus,
+    ProgressCallback onSendProgress,
+    ProgressCallback onReceiveProgress,
+  }) async {
+    final String _path = '/keys/{id}'.replaceAll('{' r'id' '}', id.toString());
+
+    final queryParams = <String, dynamic>{};
+    final headerParams = <String, dynamic>{
+      if (headers != null) ...headers,
+    };
+    dynamic bodyData;
+
+    queryParams.removeWhere((key, dynamic value) => value == null);
+    headerParams.removeWhere((key, dynamic value) => value == null);
+
+    final contentTypes = <String>[];
+
+    return _dio
+        .request<dynamic>(
+      _path,
+      queryParameters: queryParams,
+      data: bodyData,
+      options: Options(
+        method: 'get'.toUpperCase(),
+        headers: headerParams,
+        extra: <String, dynamic>{
+          'secure': <Map<String, String>>[
+            {
+              'type': 'http',
+              'name': 'bearerAuth',
+            },
+          ],
+          if (extra != null) ...extra,
+        },
+        validateStatus: validateStatus,
+        contentType:
+            contentTypes.isNotEmpty ? contentTypes[0] : 'application/json',
+      ),
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    )
+        .then((response) {
+      final serializer = _serializers.serializerForType(GetPubKeySuccess)
+          as Serializer<GetPubKeySuccess>;
+      final data = _serializers.deserializeWith<GetPubKeySuccess>(
+        serializer,
+        response.data is String
+            ? jsonDecode(response.data as String)
+            : response.data,
+      );
+
+      return Response<GetPubKeySuccess>(
+        data: data,
+        headers: response.headers,
+        requestOptions: response.requestOptions,
+        redirects: response.redirects,
+        statusCode: response.statusCode,
+        statusMessage: response.statusMessage,
+        extra: response.extra,
+      );
+    });
+  }
 
   ///
   ///

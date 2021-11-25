@@ -77,6 +77,8 @@ Class | Method | HTTP request | Description
 *PublicationsApi* | [**publicationsGet**](doc//PublicationsApi.md#publicationsget) | **get** /publications | ИНК-Знание - Публикации
 *SearchApi* | [**searchGet**](doc//SearchApi.md#searchget) | **get** /search | Метод поиска по сотрудниками, объявлениям, событиям, новостям
 *ThankApi* | [**thankIdGet**](doc//ThankApi.md#thankidget) | **get** /thank/{id} | Поблагодарить
+*UserApi* | [**keysGet**](doc//UserApi.md#keysget) | **get** /keys | Получение ключей шифрования текущего пользователя
+*UserApi* | [**keysIdGet**](doc//UserApi.md#keysidget) | **get** /keys/{id} | Получение публичного ключа другого пользователя
 *UserApi* | [**userBirthdayGet**](doc//UserApi.md#userbirthdayget) | **get** /user/birthday | 
 *UserApi* | [**userCaninquireGet**](doc//UserApi.md#usercaninquireget) | **get** /user/caninquire | Метод для получения информации может ли пользователь оставлять заявки на справки
 *UserApi* | [**userGet**](doc//UserApi.md#userget) | **get** /user | Получение информации о текущем пользователе
@@ -130,8 +132,10 @@ Class | Method | HTTP request | Description
  - [GetContacts](doc//GetContacts.md)
  - [GetEventById](doc//GetEventById.md)
  - [GetEvents](doc//GetEvents.md)
+ - [GetKeysSuccess](doc//GetKeysSuccess.md)
  - [GetNews](doc//GetNews.md)
  - [GetNewsById](doc//GetNewsById.md)
+ - [GetPubKeySuccess](doc//GetPubKeySuccess.md)
  - [GetPublications](doc//GetPublications.md)
  - [GetReferenceOrderForm](doc//GetReferenceOrderForm.md)
  - [GetSearchSuccess](doc//GetSearchSuccess.md)

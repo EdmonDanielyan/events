@@ -259,12 +259,15 @@ class NatsProvider {
       {StartPosition? startPosition, Int64 startSequence = Int64.ZERO}) async {
     var durableName = "$userId-$deviceVirtualId-$channel";
 
+    print(
+        "FOR CHANNEL ($channel) - SEQUENCE ${_getSequence(channel, startSequence)}");
+
     var subscription = await _stan.subscribe(
       subject: channel,
       maxInFlight: 1,
       startPosition: startPosition ?? _getPosition(channel),
       durableName: durableName,
-      startSequence: startSequence,
+      startSequence: _getSequence(channel, startSequence),
     );
 
     return subscription;
@@ -281,6 +284,18 @@ class NatsProvider {
     }
 
     return StartPosition.NewOnly;
+  }
+
+  Int64? _getSequence(String channel, Int64 startSequence) {
+    final msgType = MessageListView.getTypeByChannel(channel);
+
+    if (msgType != null) {
+      if (!_startSeqTypes.contains(msgType)) {
+        return null;
+      }
+    }
+
+    return startSequence;
   }
 
   Future<void> _listenBySubscription(

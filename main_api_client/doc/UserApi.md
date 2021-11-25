@@ -9,6 +9,8 @@ All URIs are relative to *https://mobile.ink.vpool.qsoft.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**keysGet**](UserApi.md#keysGet) | **get** /keys | Получение ключей шифрования текущего пользователя
+[**keysIdGet**](UserApi.md#keysIdGet) | **get** /keys/{id} | Получение публичного ключа другого пользователя
 [**userBirthdayGet**](UserApi.md#userBirthdayGet) | **get** /user/birthday | 
 [**userCaninquireGet**](UserApi.md#userCaninquireGet) | **get** /user/caninquire | Метод для получения информации может ли пользователь оставлять заявки на справки
 [**userGet**](UserApi.md#userGet) | **get** /user | Получение информации о текущем пользователе
@@ -24,6 +26,90 @@ Method | HTTP request | Description
 [**userSendfeedbackPost**](UserApi.md#userSendfeedbackPost) | **post** /user/sendfeedback | Метод для отправки обратной связи (вопроса руководству)
 [**userTranspontorderformGet**](UserApi.md#userTranspontorderformGet) | **get** /user/transpontorderform | Возвращает вспомогательные данные для формы заказа транспорта
 
+
+# **keysGet**
+> GetKeysSuccess keysGet()
+
+Получение ключей шифрования текущего пользователя
+
+### Example 
+```dart
+import 'package:main_api_client/api.dart';
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
+
+var api_instance = new UserApi();
+
+try { 
+    var result = api_instance.keysGet();
+    print(result);
+} catch (e) {
+    print('Exception when calling UserApi->keysGet: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**GetKeysSuccess**](GetKeysSuccess.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **keysIdGet**
+> GetPubKeySuccess keysIdGet(id)
+
+Получение публичного ключа другого пользователя
+
+### Example 
+```dart
+import 'package:main_api_client/api.dart';
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
+
+var api_instance = new UserApi();
+var id = 789; // int | ID пользователя
+
+try { 
+    var result = api_instance.keysIdGet(id);
+    print(result);
+} catch (e) {
+    print('Exception when calling UserApi->keysIdGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **int**| ID пользователя | 
+
+### Return type
+
+[**GetPubKeySuccess**](GetPubKeySuccess.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **userBirthdayGet**
 > BirthdaysSuccess userBirthdayGet()

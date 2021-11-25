@@ -52,8 +52,10 @@ class ChatLeftListener {
       final chat = fields.chat;
 
       if (users.isNotEmpty) {
-        await userFunctions.deleteParticipants(
-            ChatUserViewModel.toParticipants(users, chat), chat);
+        final participants = ChatUserViewModel.toParticipants(users, chat);
+        print("PARTICIPANTS");
+        print(participants);
+        await userFunctions.deleteParticipants(participants, chat);
 
         setMessage(users, chat);
         await UseMessageProvider.messageProvider?.saveChats(newChat: null);

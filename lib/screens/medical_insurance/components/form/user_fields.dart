@@ -25,6 +25,7 @@ class _MedicalInsuranceFormUserFieldsState
   late AppLocalizations _strings;
   TextEditingController fioController = TextEditingController();
   TextEditingController positionController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   GetAutofill getAutofill = GetAutofill();
 
   Future<void> loadData() async {
@@ -33,6 +34,8 @@ class _MedicalInsuranceFormUserFieldsState
     widget.entities.fio = getAutofill.autofill.fio;
     positionController.text = getAutofill.autofill.position;
     widget.entities.position = getAutofill.autofill.position;
+    emailController.text = getAutofill.autofill.email;
+    widget.entities.email = getAutofill.autofill.email;
   }
 
   @override
@@ -112,6 +115,7 @@ class _MedicalInsuranceFormUserFieldsState
 
   Widget _emailWidget() {
     return ServiceTextField(
+      controller: emailController,
       hint: _strings.email,
       requiredIcon: true,
       validator: (val) => FieldValidator.emailValidator(val),

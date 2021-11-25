@@ -8,6 +8,7 @@ extension ReferenceAutoFillExt on Response<ReferenceAutoFill> {
       fio: this.data?.data.fio ?? '',
       position: this.data?.data.position ?? '',
       department: this.data?.data.department ?? '',
+      email: this.data?.data.email ?? '',
     );
   }
 }

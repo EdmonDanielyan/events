@@ -73,20 +73,17 @@ class ChatListListener {
       final messages = fields.messages;
       final channels = fields.channels;
 
-      print(chats.length);
-      print(users.length);
-      print(participants.length);
-      print(messages.length);
-      print(channels.length);
-
       if (chats.length > 0) {
         await _insertChats(chats, messages);
       }
-      await _insertChannels(channels);
+
       await _insertUsers(users);
       await _insertParticipants(participants, chats);
+      await _insertChannels(channels);
 
       await UseMessageProvider.messageProvider?.saveChats(newChat: null);
+    } on NoConnectionException {
+      return;
     } on NoSuchMethodError {
       return;
     } catch (_e, stack) {
@@ -180,7 +177,11 @@ class ChatListListener {
         await channelFunctions.insertOrUpdate(channel);
       }
 
-      await natsListener.listenToMyStoredChannels();
+      if (natsProvider.isConnected) {
+        await natsListener.listenToMyStoredChannels();
+      } else {
+        throw NoConnectionException(message: "Disconnected");
+      }
     }
   }
 

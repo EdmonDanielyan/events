@@ -39,7 +39,7 @@ class SendMessage {
   }
 
   static String get generateMessageId =>
-      "${JwtPayload.myId}_${new DateTime.now().millisecondsSinceEpoch}";
+      "${JwtPayload.myId}_${new DateTime.now().microsecondsSinceEpoch}";
 
   Future<MessageTable> call(ChatEntities entities) async {
     final message = await _sendMessageToDatabase(entities);
