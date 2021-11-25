@@ -213,5 +213,7 @@
     "avatarUrl": "Avatar url",
     "addLink": "Add any link",
     "sendLogs": "Send logs",
-    "diagnostics": "Diagnostics"
+    "diagnostics": "Diagnostics",
+    "connectedToServer": "Connected to the server",
+    "disconnectedFromServer": "Disconnected from the server"
 }

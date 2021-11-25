@@ -89,6 +89,7 @@
     "christmasGifts": "Новогодние подарки",
     "recreationalActivities": "Оздоровительные мероприятия",
     "noConnectionError": "Отсутствует подключение к интернету",
+    
     "errorOccurred": "Произошла ошибка",
     "unknownError": "Произошла непредвиденная ошибка",
     "reload": "Обновить",
@@ -213,5 +214,7 @@
     "avatarUrl": "Ссылка на аватар",
     "addLink": "Вставьте ссылку на файл",
     "sendLogs": "Отправка журнала",
-    "diagnostics": "Диагностика"
+    "diagnostics": "Диагностика",
+    "connectedToServer": "Подключение к серверу",
+    "disconnectedFromServer": "Отключение от сервера"
 }

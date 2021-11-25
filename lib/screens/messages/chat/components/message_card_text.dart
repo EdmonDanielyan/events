@@ -14,8 +14,6 @@ import 'package:ink_mobile/screens/messages/chat/components/respond_container_wr
 import 'package:ink_mobile/screens/messages/chat/components/sent_on_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
 
-import '../chat_screen.dart';
-
 class MessageCardText extends StatelessWidget {
   final UserTable user;
   final MessageTable? message;
@@ -51,7 +49,7 @@ class MessageCardText extends StatelessWidget {
 
   void _resend() async {
     if (UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider.deleteMessages(
+      UseMessageProvider.messageProvider?.deleteMessages(
         [message!],
         makeRequest: false,
       );
@@ -61,7 +59,7 @@ class MessageCardText extends StatelessWidget {
         chat: getChat,
       ).addMessage(renewedMessage);
       await UseMessageProvider.messageProvider
-          .sendMessage(getChat, renewedMessage);
+          ?.sendMessage(getChat, renewedMessage);
     }
   }
 

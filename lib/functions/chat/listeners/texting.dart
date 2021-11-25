@@ -25,10 +25,10 @@ class MessageTextingListener {
   Debouncer _debouncer = Debouncer(milliseconds: 3000);
 
   NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+      UseMessageProvider.messageProvider!.natsListener;
 
   ChannelFunctions get channelFunctions =>
-      UseMessageProvider.messageProvider.channelFunctions;
+      UseMessageProvider.messageProvider!.channelFunctions;
   bool isListeningToChannel(String channel) =>
       natsListener.listeningToChannel(channel);
 

@@ -34,7 +34,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
       ChatTable chat = ChatInfoEditEntitiesFunctions.copyChat(entities, _chat);
       ChatFunctions(widget.chatDatabaseCubit).updateChat(chat);
       if (UseMessageProvider.initialized) {
-        UseMessageProvider.messageProvider.sendNewChatInfo(chat);
+        UseMessageProvider.messageProvider?.sendNewChatInfo(chat);
       }
       Navigator.of(context).pop();
     }

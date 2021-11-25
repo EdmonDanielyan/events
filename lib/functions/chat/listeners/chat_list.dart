@@ -31,7 +31,7 @@ class ChatListListener {
   });
 
   NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+      UseMessageProvider.messageProvider!.natsListener;
 
   static Set<String> busyChannels = {};
   Set<String> _getChatIds = {};
@@ -73,6 +73,12 @@ class ChatListListener {
       final messages = fields.messages;
       final channels = fields.channels;
 
+      print(chats.length);
+      print(users.length);
+      print(participants.length);
+      print(messages.length);
+      print(channels.length);
+
       if (chats.length > 0) {
         await _insertChats(chats, messages);
       }
@@ -80,7 +86,7 @@ class ChatListListener {
       await _insertUsers(users);
       await _insertParticipants(participants, chats);
 
-      await UseMessageProvider.messageProvider.saveChats(newChat: null);
+      await UseMessageProvider.messageProvider?.saveChats(newChat: null);
     } on NoSuchMethodError {
       return;
     } catch (_e, stack) {

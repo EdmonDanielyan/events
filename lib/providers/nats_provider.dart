@@ -10,14 +10,21 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/protocol.dart';
 import 'package:logging/logging.dart';
+
+import '../app.dart';
+import '../setup.dart';
+import 'message_provider.dart';
 
 const PUBLIC_CHATS = 'ink.messaging.public';
 const GROUP_CHANNEL = 'ink.messaging.group';
@@ -48,25 +55,56 @@ class NatsProvider {
   Future<bool> load() async {
     this._stan = Client();
     _stan.onConnect(function: () {
-      print("CONNECTED");
-      _logger.info('Stan connected..');
+      _connected();
     });
     _stan.onDisconnect(function: () {
-      print("DISCONNECTED");
-      _logger.info('Stan disconnected..');
+      _disconnected();
     });
     var connected = await _connect();
     if (!connected) {
       throw NoConnectionException();
     }
 
+    _connectMessageProvider();
+
     return true;
   }
 
-  void dispose() {
+  void _connected() {
+    _logger.info('Stan connected..');
+
+    _connectMessageProvider();
+
+    if (App.getContext != null) {
+      SuccessCustomSnackbar(
+        context: App.getContext!,
+        txt: localizationInstance.connectedToServer,
+      );
+    }
+  }
+
+  void _disconnected() {
+    _logger.info('Stan disconnected..');
+
+    if (App.getContext != null) {
+      SimpleCustomSnackbar(
+        context: App.getContext!,
+        txt: localizationInstance.disconnectedFromServer,
+      );
+    }
+  }
+
+  void _connectMessageProvider() {
+    if (!UseMessageProvider.initialized) {
+      UseMessageProvider.initMessageProvider(this, sl<ChatDatabaseCubit>());
+      UseMessageProvider.messageProvider?.init();
+    }
+  }
+
+  Future<void> dispose() async {
     userChatIdList.clear();
     publicChatIdList.clear();
-    _stan.manualDisconnect();
+    await _stan.manualDisconnect();
   }
 
   /// Send [text] message to [channel]

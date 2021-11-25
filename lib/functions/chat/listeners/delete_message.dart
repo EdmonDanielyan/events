@@ -16,7 +16,7 @@ class MessageDeletedListener {
       {required this.natsProvider, required this.chatFunctions});
 
   NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+      UseMessageProvider.messageProvider!.natsListener;
   bool isListeningToChannel(String channel) =>
       natsListener.listeningToChannel(channel);
 
@@ -44,7 +44,7 @@ class MessageDeletedListener {
           MessageListView.getUserMessages(fields.messages, sender.id);
       if (myMessages.isNotEmpty && sender.id != JwtPayload.myId) {
         chatFunctions.deleteMessages(myMessages);
-        await UseMessageProvider.messageProvider.saveChats(newChat: null);
+        await UseMessageProvider.messageProvider?.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;

@@ -18,10 +18,10 @@ class MessageStatusListener {
       {required this.natsProvider, required this.chatFunctions});
 
   NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+      UseMessageProvider.messageProvider!.natsListener;
 
   ChannelFunctions get channelFunctions =>
-      UseMessageProvider.messageProvider.channelFunctions;
+      UseMessageProvider.messageProvider!.channelFunctions;
   bool isListeningToChannel(String channel) =>
       natsListener.listeningToChannel(channel);
 
@@ -47,7 +47,7 @@ class MessageStatusListener {
       if (fields.senderId != JwtPayload.myId) {
         List<MessageTable> messages = fields.messages;
         messagesToRead(messages, chatFunctions);
-        await UseMessageProvider.messageProvider.saveChats(newChat: null);
+        await UseMessageProvider.messageProvider?.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;

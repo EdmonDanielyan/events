@@ -23,7 +23,7 @@ class ChatInvitationListener {
     required this.chatDatabaseCubit,
   });
   NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+      UseMessageProvider.messageProvider!.natsListener;
   bool isListeningToChannel(String channel) =>
       natsListener.listeningToChannel(channel);
 
@@ -54,7 +54,7 @@ class ChatInvitationListener {
 
       await ChatCreation(chatDatabaseCubit)
           .createDynamically(chat, fields.users);
-      await UseMessageProvider.messageProvider.saveChats(newChat: chat);
+      await UseMessageProvider.messageProvider?.saveChats(newChat: chat);
 
       _chatLinkedListeners(chat.id);
     } on NoSuchMethodError {

@@ -17,7 +17,7 @@ class ChatInfoListener {
   });
 
   NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+      UseMessageProvider.messageProvider!.natsListener;
   bool isListeningToChannel(String channel) =>
       natsListener.listeningToChannel(channel);
 

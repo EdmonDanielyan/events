@@ -17,6 +17,7 @@ class ParticipantCard extends StatelessWidget {
   final String? overrideTitle;
   final String? overrideAvatar;
   final bool indicatorIsOn;
+  final String? avatarName;
   const ParticipantCard({
     Key? key,
     required this.user,
@@ -28,6 +29,7 @@ class ParticipantCard extends StatelessWidget {
     this.overrideAvatar,
     this.trailingLable = "",
     this.indicatorIsOn = true,
+    this.avatarName,
   }) : super(key: key);
 
   static late AppLocalizations _strings;
@@ -37,7 +39,7 @@ class ParticipantCard extends StatelessWidget {
     _strings = localizationInstance;
 
     if (indicatorIsOn && user != null && UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider.subscribeToUserOnline(user!);
+      UseMessageProvider.messageProvider?.subscribeToUserOnline(user!);
     }
 
     return Container(
@@ -73,7 +75,7 @@ class ParticipantCard extends StatelessWidget {
       url: overrideAvatar ?? user?.avatar,
       indicator: indicatorIsOn && user != null && user!.online ? true : false,
       indicatorSize: 8.0,
-      name: user?.name ?? "",
+      name: avatarName ?? (user?.name ?? ""),
     );
   }
 
