@@ -49,17 +49,20 @@ class MessageCardText extends StatelessWidget {
 
   void _resend() async {
     if (UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider?.deleteMessages(
+      UseMessageProvider.messageProvider?.messageDeletedListener.deleteMessages(
         [message!],
         makeRequest: false,
       );
       final renewedMessage = MessageListView.renewMessage(message!);
-      await SendMessage(
+      final sendMessage = SendMessage(
         chatDatabaseCubit: chatDatabaseCubit,
         chat: getChat,
-      ).addMessage(renewedMessage);
-      await UseMessageProvider.messageProvider
-          ?.sendMessage(getChat, renewedMessage);
+      );
+      await sendMessage.addMessage(renewedMessage);
+      if (UseMessageProvider.initialized) {
+        await UseMessageProvider.messageProvider?.chatMessageListener
+            .sendMessage(getChat, renewedMessage);
+      }
     }
   }
 

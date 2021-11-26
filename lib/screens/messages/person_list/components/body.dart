@@ -32,13 +32,13 @@ class _PersonListBodyState extends State<PersonListBody> {
         sentOn: true,
       );
 
-      await SendMessage(
-        chatDatabaseCubit: _chatDatabaseCubit,
-        chat: chat,
-      ).addMessage(newMessage);
+      final sendMessage =
+          SendMessage(chatDatabaseCubit: _chatDatabaseCubit, chat: chat);
 
+      await sendMessage.addMessage(newMessage);
       if (UseMessageProvider.initialized) {
-        await UseMessageProvider.messageProvider?.sendMessage(chat, newMessage);
+        await UseMessageProvider.messageProvider?.chatMessageListener
+            .sendMessage(chat, newMessage);
       }
     }
     Future.delayed(Duration(milliseconds: 300), () {

@@ -10,9 +10,9 @@ import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats/message.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
-import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
@@ -23,26 +23,18 @@ import 'package:ink_mobile/providers/notifications.dart';
 import 'all.dart';
 
 class ChatMessageListener {
+  final MessageProvider messageProvider;
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatSendMessage chatSendMessage;
-  final MessageStatusListener messageStatusListener;
-  final MessageTextingListener messageTextingListener;
-  final ChatJoinedListener chatJoinedListener;
-  final ChatLeftListener chatLeftListener;
-  final MessageDeletedListener messageDeletedListener;
 
   const ChatMessageListener({
+    required this.messageProvider,
     required this.natsProvider,
     required this.userFunctions,
     required this.chatDatabaseCubit,
     required this.chatSendMessage,
-    required this.messageStatusListener,
-    required this.messageTextingListener,
-    required this.chatJoinedListener,
-    required this.chatLeftListener,
-    required this.messageDeletedListener,
   });
 
   static ChatMessageFields? lastChatMessageFields;
@@ -75,6 +67,8 @@ class ChatMessageListener {
     try {
       final mapPayload = message.payload! as SystemPayload;
       ChatMessageFields fields = ChatMessageFields.fromMap(mapPayload.fields);
+
+      // TODO UPDATE MESSAGE CREATED TIME
 
       if (fields.user.id != JwtPayload.myId) {
         lastChatMessageFields = fields;
@@ -121,5 +115,26 @@ class ChatMessageListener {
         id: user.id,
       );
     }
+  }
+
+  Future<void> sendMessage(ChatTable chat, MessageTable message) async {
+    bool success = await sendTxtMessage(chat, message);
+    MessageStatus status = success ? MessageStatus.SENT : MessageStatus.ERROR;
+    messageProvider.chatFunctions.updateMessageStatus(message, status);
+
+    messageProvider.saveChats(newChat: null);
+  }
+
+  Future<bool> sendTxtMessage(
+    ChatTable chat,
+    MessageTable message, {
+    UserTable? user,
+  }) async {
+    return await chatSendMessage.sendTextMessage(
+      natsProvider.getGroupTextChannelById(chat.id),
+      chat,
+      message,
+      user ?? UserFunctions.getMe,
+    );
   }
 }

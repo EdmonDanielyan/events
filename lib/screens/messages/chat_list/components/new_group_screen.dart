@@ -31,8 +31,8 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
 
   Future<void> _onCreate(BuildContext context) async {
     if (UseMessageProvider.initialized) {
-      ChatTable newChat = await UseMessageProvider.messageProvider!
-          .createGroup(name: chatName, users: users);
+      ChatTable newChat = await UseMessageProvider.messageProvider!.chatCreation
+          .createGroupThroughNats(name: chatName, users: users);
 
       Navigator.of(context).popUntil((route) => route.isFirst);
       OpenChat(widget.chatDatabaseCubit, newChat).call(context);

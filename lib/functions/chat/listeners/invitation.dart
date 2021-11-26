@@ -6,19 +6,21 @@ import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:fixnum/fixnum.dart';
 
 import 'all.dart';
-import 'chat_list.dart';
 
 class ChatInvitationListener {
+  final MessageProvider messageProvider;
   final NatsProvider natsProvider;
   final ChatSendMessage chatSendMessage;
   final ChatDatabaseCubit chatDatabaseCubit;
 
   ChatInvitationListener({
+    required this.messageProvider,
     required this.natsProvider,
     required this.chatSendMessage,
     required this.chatDatabaseCubit,
@@ -70,5 +72,18 @@ class ChatInvitationListener {
 
   Future<void> _chatLinkedListeners(String chatId) async {
     natsListener.subscribeOnChatCreate(chatId);
+  }
+
+  Future<void> sendInvitations(ChatTable chat, List<UserTable> users) async {
+    for (final user in users) {
+      if (user.id != JwtPayload.myId) {
+        await chatSendMessage.inviteUser(
+          user: user,
+          chat: chat,
+          chatChannel: natsProvider.getGroupTextChannelById(chat.id),
+          users: users,
+        );
+      }
+    }
   }
 }

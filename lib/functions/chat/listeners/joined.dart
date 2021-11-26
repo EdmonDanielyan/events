@@ -14,10 +14,12 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 import '../user_functions.dart';
 
 class ChatJoinedListener {
+  final MessageProvider messageProvider;
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
   ChatJoinedListener({
+    required this.messageProvider,
     required this.natsProvider,
     required this.userFunctions,
     required this.chatDatabaseCubit,
@@ -76,5 +78,16 @@ class ChatJoinedListener {
             .addMessage(generateMessage);
       }
     }
+  }
+
+  Future<bool> sendUserJoinedMessage(
+      ChatTable chat, List<UserTable> users) async {
+    bool send = await messageProvider.chatSendMessage.sendUserJoinedMessage(
+      natsProvider.getGroupJoinedChannelById(chat.id),
+      chat: chat,
+      users: users,
+    );
+    messageProvider.saveChats(newChat: null);
+    return send;
   }
 }

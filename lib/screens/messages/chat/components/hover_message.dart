@@ -35,7 +35,8 @@ class HoverMessage extends StatelessWidget {
 
   void _onDelete(BuildContext context) {
     if (UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider?.deleteMessages([message]);
+      UseMessageProvider.messageProvider?.messageDeletedListener
+          .deleteMessages([message]);
     }
   }
 

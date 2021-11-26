@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/components/changable_avatar.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
@@ -32,9 +31,11 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
   void onSave() {
     if (_formKey.currentState!.validate()) {
       ChatTable chat = ChatInfoEditEntitiesFunctions.copyChat(entities, _chat);
-      ChatFunctions(widget.chatDatabaseCubit).updateChat(chat);
+
       if (UseMessageProvider.initialized) {
-        UseMessageProvider.messageProvider?.sendNewChatInfo(chat);
+        final messageProvider = UseMessageProvider.messageProvider;
+        messageProvider?.chatFunctions.updateChat(chat);
+        messageProvider?.chatInfoListener.sendNewChatInfo(chat);
       }
       Navigator.of(context).pop();
     }

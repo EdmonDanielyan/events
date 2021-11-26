@@ -43,7 +43,8 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
         MessageListView.messageWithUsersToMessage(loadedMessagesWithUser);
     final notReadMessages = MessageListView.oppositeNotReadMessage(messages);
     if (notReadMessages.length > 0 && UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider?.setMessagesToRead(notReadMessages);
+      UseMessageProvider.messageProvider?.chatFunctions
+          .setMessagesToReadNats(notReadMessages);
     }
   }
 

@@ -56,6 +56,7 @@ class MessageTextingListener {
   }
 
   void _handleState(CustomTexting texting, String chatId) {
+    print("TEXTING");
     String churrentOpenedChatId = chatDatabaseCubit.getSelectedChatId;
     if (texting.user.id != JwtPayload.myId && churrentOpenedChatId == chatId) {
       _debouncer.run(() {

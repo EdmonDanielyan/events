@@ -14,10 +14,12 @@ import '../send_message.dart';
 import '../user_functions.dart';
 
 class ChatLeftListener {
+  final MessageProvider messageProvider;
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
   ChatLeftListener({
+    required this.messageProvider,
     required this.natsProvider,
     required this.userFunctions,
     required this.chatDatabaseCubit,
@@ -78,5 +80,15 @@ class ChatLeftListener {
             .addMessage(generateMessage);
       }
     }
+  }
+
+  Future<void> sendLeftMessage(ChatTable chat) async {
+    await messageProvider.chatSendMessage.sendUserLeftMessage(
+      natsProvider.getGroupLeftChannelById(chat.id),
+      chat: chat,
+      users: [UserFunctions.getMe],
+    );
+    await natsListener.unSubscribeOnChatDelete(chat.id);
+    await messageProvider.saveChats(newChat: null);
   }
 }
