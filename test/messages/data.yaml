@@ -1,0 +1,7 @@
+users:
+  - user1:
+      login: isaev.e
+      password: 123456
+  - user2:
+      login: morozov.m
+      password: 123456
