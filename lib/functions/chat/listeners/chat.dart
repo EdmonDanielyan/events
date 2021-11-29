@@ -37,8 +37,6 @@ class ChatMessageListener {
     required this.chatSendMessage,
   });
 
-  static ChatMessageFields? lastChatMessageFields;
-
   Debouncer get _debouncer => Debouncer(milliseconds: 400);
 
   NatsListener get natsListener =>
@@ -66,21 +64,24 @@ class ChatMessageListener {
     }
     try {
       final mapPayload = message.payload! as SystemPayload;
+
       ChatMessageFields fields = ChatMessageFields.fromMap(mapPayload.fields);
+      final newMessage = fields.message
+          .copyWith(created: message.createdAt, status: MessageStatus.SENT);
 
-      // TODO UPDATE MESSAGE CREATED TIME
-
-      if (fields.user.id != JwtPayload.myId) {
-        lastChatMessageFields = fields;
+      if (fields.user.id == JwtPayload.myId) {
+        chatDatabaseCubit.db.updateMessageById(newMessage.id, newMessage);
+      } else {
         late ChatTable chat =
             ChatListView.changeChatForParticipant(fields.chat, [fields.user]);
         _debouncer.run(() {
-          _pushNotification();
+          _pushNotification(
+              chatId: chat.id, message: newMessage, user: fields.user);
         });
 
         await userFunctions.insertUser(fields.user);
         await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
-            .addMessage(fields.message);
+            .addMessage(newMessage);
         await UseMessageProvider.messageProvider?.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
@@ -88,14 +89,11 @@ class ChatMessageListener {
     }
   }
 
-  Future<void> _pushNotification() async {
-    if (lastChatMessageFields == null) {
-      return;
-    }
+  Future<void> _pushNotification(
+      {required String chatId,
+      required UserTable user,
+      required MessageTable message}) async {
     bool showNotification = true;
-    final chatId = lastChatMessageFields!.chat.id;
-    final user = lastChatMessageFields!.user;
-    final message = lastChatMessageFields!.message;
 
     ChatTable? myChat = await chatDatabaseCubit.db.selectChatById(chatId);
     final selectedChat = chatDatabaseCubit.selectedChat;
@@ -120,7 +118,7 @@ class ChatMessageListener {
   Future<void> sendMessage(ChatTable chat, MessageTable message) async {
     bool success = await sendTxtMessage(chat, message);
     MessageStatus status = success ? MessageStatus.SENT : MessageStatus.ERROR;
-    messageProvider.chatFunctions.updateMessageStatus(message, status);
+    await messageProvider.chatFunctions.updateMessageStatus(message, status);
 
     messageProvider.saveChats(newChat: null);
   }

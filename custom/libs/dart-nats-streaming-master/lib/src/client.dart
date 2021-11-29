@@ -352,7 +352,9 @@ class Client {
             pubMsg.writeToBuffer());
       } catch (e) {
         print('Publishing Fail: $e');
-        await _reconnect();
+        if (connected) {
+          await _reconnect();
+        }
         if (onDeliveryFail != null) {
           onDeliveryFail(pubMsg, e.toString());
         }
@@ -387,7 +389,9 @@ class Client {
         return natsClient.pub(to, pubMsg.writeToBuffer());
       } catch (e) {
         print('Publishing Fail: $e');
-        await _reconnect();
+        if (connected) {
+          await _reconnect();
+        }
         if (onDeliveryFail != null) {
           onDeliveryFail(pubMsg, e);
         }
