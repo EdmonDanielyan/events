@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
@@ -18,10 +19,12 @@ import 'package:ink_mobile/functions/chat/listeners/online.dart';
 import 'package:ink_mobile/functions/chat/listeners/texting.dart';
 import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
+import '../app.dart';
 import '../setup.dart';
 
 class UseMessageProvider {
@@ -162,7 +165,30 @@ class MessageProvider {
       if (connectionsCount == 1) {
         _redeliverUnsentMessages();
       }
+      _showConnectedSnackBar();
     };
+
+    natsProvider.onDisconnected = () async {
+      _showDisconnectedSnackBar();
+    };
+  }
+
+  void _showConnectedSnackBar() {
+    if (connectionsCount > 1 && App.getContext != null) {
+      SuccessCustomSnackbar(
+        context: App.getContext!,
+        txt: localizationInstance.connectedToServer,
+      );
+    }
+  }
+
+  void _showDisconnectedSnackBar() {
+    if (App.getContext != null) {
+      SimpleCustomSnackbar(
+        context: App.getContext!,
+        txt: localizationInstance.disconnectedFromServer,
+      );
+    }
   }
 
   Future<void> _onConnected() async {

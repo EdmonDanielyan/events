@@ -1,7 +1,10 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/all.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats/message_delete.dart';
@@ -55,16 +58,27 @@ class MessageDeletedListener {
     }
   }
 
-  Future<void> deleteMessages(List<MessageTable> messages,
+  Future<void> deleteMessages(List<MessageTable> messages, BuildContext context,
       {bool makeRequest = true}) async {
-    final chatId = messages.last.chatId;
-    final channel = natsProvider.getGroupDeleteMessageChannelById(chatId);
-    messageProvider.chatFunctions.deleteMessages(messages);
-
     if (makeRequest) {
-      await messageProvider.chatSendMessage
+      final chatId = messages.last.chatId;
+      final channel = natsProvider.getGroupDeleteMessageChannelById(chatId);
+      final sent = await messageProvider.chatSendMessage
           .sendDeleteMessage(channel, messages: messages);
-      messageProvider.saveChats(newChat: null);
+
+      if (sent) {
+        messageProvider.chatFunctions.deleteMessages(messages);
+      } else {
+        SimpleCustomSnackbar(
+          context: context,
+          txt: localizationInstance.noConnectionError,
+          duration: const Duration(seconds: 2),
+        );
+      }
+    } else {
+      messageProvider.chatFunctions.deleteMessages(messages);
     }
+
+    messageProvider.saveChats(newChat: null);
   }
 }

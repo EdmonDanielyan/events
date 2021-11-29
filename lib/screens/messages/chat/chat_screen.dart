@@ -151,7 +151,7 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
                 selectableCubit.getItems);
             if (UseMessageProvider.initialized) {
               UseMessageProvider.messageProvider?.messageDeletedListener
-                  .deleteMessages(messages);
+                  .deleteMessages(messages, context);
             }
             selectableCubit.clearAll();
           },

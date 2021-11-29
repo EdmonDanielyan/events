@@ -10,18 +10,14 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/protocol.dart';
 import 'package:logging/logging.dart';
-
-import '../app.dart';
 
 const PUBLIC_CHATS = 'ink.messaging.public';
 const GROUP_CHANNEL = 'ink.messaging.group';
@@ -70,24 +66,10 @@ class NatsProvider {
 
   void _connected() {
     _logger.info('Stan connected..');
-
-    if (App.getContext != null) {
-      SuccessCustomSnackbar(
-        context: App.getContext!,
-        txt: localizationInstance.connectedToServer,
-      );
-    }
   }
 
   void _disconnected() {
     _logger.info('Stan disconnected..');
-
-    if (App.getContext != null) {
-      SimpleCustomSnackbar(
-        context: App.getContext!,
-        txt: localizationInstance.disconnectedFromServer,
-      );
-    }
   }
 
   Future<void> dispose() async {
