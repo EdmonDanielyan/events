@@ -38,9 +38,10 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
       OpenChat(widget.chatDatabaseCubit, newChat).call(context);
     } else {
       SimpleCustomSnackbar(
-          context: context,
-          txt: _strings.noConnectionError,
-          duration: const Duration(seconds: 2));
+        context: context,
+        txt: _strings.noConnectionError,
+        duration: const Duration(seconds: 2),
+      );
     }
   }
 

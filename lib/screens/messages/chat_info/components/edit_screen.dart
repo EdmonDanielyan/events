@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/components/changable_avatar.dart';
+import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -28,14 +29,23 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
   final _formKey = GlobalKey<FormState>();
   late AppLocalizations _strings;
 
-  void onSave() {
+  Future<void> onSave(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       ChatTable chat = ChatInfoEditEntitiesFunctions.copyChat(entities, _chat);
 
       if (UseMessageProvider.initialized) {
         final messageProvider = UseMessageProvider.messageProvider;
-        messageProvider?.chatFunctions.updateChat(chat);
-        messageProvider?.chatInfoListener.sendNewChatInfo(chat);
+        bool sent =
+            await messageProvider!.chatInfoListener.sendNewChatInfo(chat);
+        if (sent) {
+          messageProvider.chatFunctions.updateChat(chat);
+        } else {
+          SimpleCustomSnackbar(
+            context: context,
+            txt: _strings.noConnectionError,
+            duration: const Duration(seconds: 2),
+          );
+        }
       }
       Navigator.of(context).pop();
     }
@@ -53,7 +63,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
     return SafeArea(
       child: CustomBottomSheetChild(
         title: _strings.edit,
-        onSubmit: onSave,
+        onSubmit: () => onSave(context),
         cancelBtnTxt: _strings.cancel,
         submitBtnTxt: _strings.ready,
         horizontalPadding: _horizontalPadding,

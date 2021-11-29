@@ -1,10 +1,5 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/functions/chat/listeners/delete_message.dart';
-import 'package:ink_mobile/functions/chat/listeners/joined.dart';
-import 'package:ink_mobile/functions/chat/listeners/left.dart';
-import 'package:ink_mobile/functions/chat/listeners/message_status.dart';
-import 'package:ink_mobile/functions/chat/listeners/texting.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
@@ -66,8 +61,13 @@ class ChatMessageListener {
       final mapPayload = message.payload! as SystemPayload;
 
       ChatMessageFields fields = ChatMessageFields.fromMap(mapPayload.fields);
-      final newMessage = fields.message
-          .copyWith(created: message.createdAt, status: MessageStatus.SENT);
+      final newMessage = fields.message.copyWith(
+        created: message.createdAt,
+        status: (fields.message.status == MessageStatus.SENDING ||
+                fields.message.status == MessageStatus.ERROR)
+            ? MessageStatus.SENT
+            : fields.message.status,
+      );
 
       if (fields.user.id == JwtPayload.myId) {
         chatDatabaseCubit.db.updateMessageById(newMessage.id, newMessage);
@@ -134,5 +134,31 @@ class ChatMessageListener {
       message,
       user ?? UserFunctions.getMe,
     );
+  }
+
+  Future<void> redeliverMessages({int? userId}) async {
+    final unsentMessages =
+        await chatDatabaseCubit.db.getUnsentMessages(userId ?? JwtPayload.myId);
+
+    Map<String, ChatTable> chats = {};
+
+    if (unsentMessages.isNotEmpty) {
+      for (final message in unsentMessages) {
+        if (!chats.containsKey(message.chatId)) {
+          final chat =
+              await chatDatabaseCubit.db.selectChatById(message.chatId);
+
+          if (chat != null) {
+            chats[message.chatId] = chat;
+          }
+        }
+
+        if (chats.containsKey(message.chatId)) {
+          print(
+              "SENDING MESSAGE ${chats[message.chatId]!.name} AND MESSAGE ${message.message}");
+          await sendMessage(chats[message.chatId]!, message);
+        }
+      }
+    }
   }
 }

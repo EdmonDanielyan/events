@@ -148,6 +148,7 @@ class MessageProvider {
   }
 
   bool natsLoaded = false;
+  int connectionsCount = 0;
 
   Future<void> init() async {
     _listenToConnection();
@@ -156,8 +157,11 @@ class MessageProvider {
 
   Future<void> _listenToConnection() async {
     natsProvider.onConnected = () async {
+      connectionsCount++;
       await _onConnected();
-      _redeliverUnsentMessages();
+      if (connectionsCount == 1) {
+        _redeliverUnsentMessages();
+      }
     };
   }
 
@@ -172,7 +176,7 @@ class MessageProvider {
   }
 
   void _redeliverUnsentMessages() {
-    // TODO REDELIVER MESSAGES
+    chatMessageListener.redeliverMessages();
   }
 
   Future<void> dispose() async {
