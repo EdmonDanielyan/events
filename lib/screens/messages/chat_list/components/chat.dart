@@ -16,7 +16,7 @@ import 'package:ink_mobile/screens/messages/chat_list/components/chat_message.da
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message_trailing.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_name.dart';
 
-class ChatListTile extends StatelessWidget {
+class ChatListTile extends StatefulWidget {
   final String highlightValue;
   final EdgeInsetsGeometry? contentPadding;
   final int index;
@@ -35,20 +35,48 @@ class ChatListTile extends StatelessWidget {
       this.leadingGap = 15.0})
       : super(key: key);
 
-  bool get hasMessage => messagesWithUser.isNotEmpty;
+  @override
+  State<ChatListTile> createState() => _ChatListTileState();
+}
 
-  MessageTable get lastMessage => messagesWithUser.last.message!;
-  UserTable? get lastUser => messagesWithUser.last.user;
+class _ChatListTileState extends State<ChatListTile> {
+  bool get hasMessage => widget.messagesWithUser.isNotEmpty;
 
-  int? get oppositeUserId => ChatUserViewModel.getOppositeUserIdFromChat(chat);
+  MessageTable get lastMessage => widget.messagesWithUser.last.message!;
+
+  UserTable? get lastUser => widget.messagesWithUser.last.user;
+
+  int? get oppositeUserId =>
+      ChatUserViewModel.getOppositeUserIdFromChat(widget.chat);
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      _subscribeToOnline();
+    });
+  }
+
+  Future<void> _subscribeToOnline() async {
+    if (oppositeUserId != null) {
+      final watchUser = widget.chatDatabaseCubit.db.watchUser(oppositeUserId!);
+
+      watchUser.first.then((user) async {
+        if (UseMessageProvider.initialized) {
+          await UseMessageProvider.messageProvider?.subscribeToUserOnline(user);
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        onTap: () => OpenChat(chatDatabaseCubit, chat).call(context),
+        onTap: () =>
+            OpenChat(widget.chatDatabaseCubit, widget.chat).call(context),
         child: Container(
-          padding: contentPadding,
+          padding: widget.contentPadding,
           margin: EdgeInsets.only(bottom: 7.0, top: 7.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +86,7 @@ class ChatListTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _avatarWidget(),
-                  SizedBox(width: leadingGap),
+                  SizedBox(width: widget.leadingGap),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,8 +95,8 @@ class ChatListTile extends StatelessWidget {
                           children: [
                             Expanded(
                               child: ChatName(
-                                name: chat.name,
-                                highlightValue: highlightValue,
+                                name: widget.chat.name,
+                                highlightValue: widget.highlightValue,
                               ),
                             ),
                             SizedBox(width: 2.0),
@@ -86,7 +114,7 @@ class ChatListTile extends StatelessWidget {
                                 child: _displayBody(),
                               ),
                               ChatMessageTrailing(
-                                  messagesWithUser: messagesWithUser),
+                                  messagesWithUser: widget.messagesWithUser),
                             ],
                           ],
                         ),
@@ -101,10 +129,10 @@ class ChatListTile extends StatelessWidget {
                   SizedBox(
                     height: 0.0,
                     child: Opacity(
-                        child: CustomCircleAvatar(url: chat.avatar),
+                        child: CustomCircleAvatar(url: widget.chat.avatar),
                         opacity: 0.0),
                   ),
-                  SizedBox(width: leadingGap),
+                  SizedBox(width: widget.leadingGap),
                   Expanded(child: ChatDivider())
                 ],
               ),
@@ -118,28 +146,25 @@ class ChatListTile extends StatelessWidget {
   Widget _avatarWidget() {
     if (oppositeUserId != null) {
       return StreamBuilder(
-        stream: chatDatabaseCubit.db.watchUser(oppositeUserId!),
+        stream: widget.chatDatabaseCubit.db.watchUser(oppositeUserId!),
         builder: (context, AsyncSnapshot<UserTable> snapshot) {
           bool indicator = false;
           if (snapshot.hasData && snapshot.data != null) {
             UserTable user = snapshot.data!;
             indicator = user.online;
-            if (UseMessageProvider.initialized) {
-              UseMessageProvider.messageProvider.subscribeToUserOnline(user);
-            }
           }
           return CustomCircleAvatar(
-            url: chat.avatar,
+            url: widget.chat.avatar,
             indicator: indicator,
-            name: chat.name,
+            name: widget.chat.name,
           );
         },
       );
     }
 
     return CustomCircleAvatar(
-      url: chat.avatar,
-      name: chat.name,
+      url: widget.chat.avatar,
+      name: widget.chat.name,
     );
   }
 
@@ -147,13 +172,13 @@ class ChatListTile extends StatelessWidget {
     return ChatMessage(
       displayName: _getDisplayName(),
       message: lastMessage.message,
-      highlightValue: highlightValue,
+      highlightValue: widget.highlightValue,
     );
   }
 
   String? _getDisplayName() {
     if (lastMessage.type == MessageType.Text) {
-      if (ChatListView.isGroup(chat) && lastUser != null) {
+      if (ChatListView.isGroup(widget.chat) && lastUser != null) {
         return lastUser!.id == JwtPayload.myId
             ? localizationInstance.you
             : lastUser!.name;

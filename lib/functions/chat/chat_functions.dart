@@ -1,6 +1,10 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/functions/chat/listeners/message_status.dart';
+import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
+import 'package:ink_mobile/models/chat/texting.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 
 class ChatFunctions {
   final ChatDatabaseCubit chatDatabaseCubit;
@@ -43,5 +47,36 @@ class ChatFunctions {
       MessageTable message, MessageStatus messageStatus) async {
     message = message.copyWith(status: messageStatus);
     chatDatabaseCubit.db.updateMessageById(message.id, message);
+  }
+
+  Future<bool> setMessagesToReadNats(List<MessageTable> messages) async {
+    if (UseMessageProvider.initialized) {
+      final messageProvider = UseMessageProvider.messageProvider!;
+      String chatId = messages.last.chatId;
+      final channel =
+          messageProvider.natsProvider.getGroupReactedChannelById(chatId);
+      bool send = await messageProvider.chatSendMessage
+          .sendMessageStatus(channel, messages);
+      await MessageStatusListener.messagesToRead(
+          messages, messageProvider.chatFunctions);
+      messageProvider.saveChats(newChat: null);
+      return send;
+    }
+    return false;
+  }
+
+  Future<bool> sendTextingMessage(
+      String chatId, CustomTexting customTexting) async {
+    if (UseMessageProvider.initialized) {
+      final messageProvider = UseMessageProvider.messageProvider!;
+      final channel =
+          messageProvider.natsProvider.getGroupTextingChannelById(chatId);
+      bool send = await messageProvider.chatSendMessage.sendTextingMessage(
+          channel,
+          customTexting: customTexting,
+          chatId: chatId);
+      return send;
+    }
+    return false;
   }
 }

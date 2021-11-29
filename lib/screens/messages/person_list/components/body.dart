@@ -27,16 +27,18 @@ class _PersonListBodyState extends State<PersonListBody> {
     for (final message in _personListParams.messages!) {
       MessageTable newMessage = MessageListView.renewMessage(
         message,
+        id: SendMessage.generateMessageId,
         newChat: chat,
         sentOn: true,
       );
-      await SendMessage(
-        chatDatabaseCubit: _chatDatabaseCubit,
-        chat: chat,
-      ).addMessage(newMessage);
 
+      final sendMessage =
+          SendMessage(chatDatabaseCubit: _chatDatabaseCubit, chat: chat);
+
+      await sendMessage.addMessage(newMessage);
       if (UseMessageProvider.initialized) {
-        await UseMessageProvider.messageProvider.sendMessage(chat, newMessage);
+        await UseMessageProvider.messageProvider?.chatMessageListener
+            .sendMessage(chat, newMessage);
       }
     }
     Future.delayed(Duration(milliseconds: 300), () {
@@ -87,6 +89,14 @@ class _PersonListBodyState extends State<PersonListBody> {
   }
 
   Widget _userListWidget(List<ChatTable> items) {
+    items.sort((a, b) {
+      if (a.millisecondsSinceEpoch != null &&
+          b.millisecondsSinceEpoch != null) {
+        return b.millisecondsSinceEpoch!.compareTo(a.millisecondsSinceEpoch!);
+      }
+
+      return b.updatedAt.compareTo(a.updatedAt);
+    });
     return ListView.builder(
       itemCount: items.length,
       shrinkWrap: true,

@@ -30,8 +30,8 @@ class ChatListListener {
     required this.channelFunctions,
   });
 
-  NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+  NatsListener? get natsListener =>
+      UseMessageProvider.messageProvider!.natsListener;
 
   static Set<String> busyChannels = {};
   Set<String> _getChatIds = {};
@@ -73,14 +73,17 @@ class ChatListListener {
       final messages = fields.messages;
       final channels = fields.channels;
 
+      //THIS ORDER IS ESSENTIAL (DO NOT CHANGE)
+      await _insertUsers(users);
       if (chats.length > 0) {
         await _insertChats(chats, messages);
       }
-      await _insertChannels(channels);
-      await _insertUsers(users);
       await _insertParticipants(participants, chats);
+      await _insertChannels(channels);
 
-      await UseMessageProvider.messageProvider.saveChats(newChat: null);
+      await UseMessageProvider.messageProvider?.saveChats(newChat: null);
+    } on NoConnectionException {
+      return;
     } on NoSuchMethodError {
       return;
     } catch (_e, stack) {
@@ -174,7 +177,11 @@ class ChatListListener {
         await channelFunctions.insertOrUpdate(channel);
       }
 
-      await natsListener.listenToMyStoredChannels();
+      if (natsProvider.isConnected && natsListener != null) {
+        await natsListener!.listenToMyStoredChannels();
+      } else {
+        throw NoConnectionException(message: "Disconnected");
+      }
     }
   }
 
@@ -193,8 +200,9 @@ class ChatListListener {
         (element) {
           bool inviteUserChannel =
               ChannelListView.isChannelInviteUser(element.to);
-          if (inviteUserChannel &&
-              element.to != natsListener.inviteUserChannel) {
+          if (natsListener != null &&
+              inviteUserChannel &&
+              element.to != natsListener!.inviteUserChannel) {
             return true;
           }
 

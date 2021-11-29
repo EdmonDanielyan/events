@@ -14,17 +14,19 @@ import '../send_message.dart';
 import '../user_functions.dart';
 
 class ChatLeftListener {
+  final MessageProvider messageProvider;
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
   ChatLeftListener({
+    required this.messageProvider,
     required this.natsProvider,
     required this.userFunctions,
     required this.chatDatabaseCubit,
   });
 
   NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+      UseMessageProvider.messageProvider!.natsListener;
   bool isListeningToChannel(String channel) =>
       natsListener.listeningToChannel(channel);
 
@@ -52,11 +54,13 @@ class ChatLeftListener {
       final chat = fields.chat;
 
       if (users.isNotEmpty) {
-        await userFunctions.deleteParticipants(
-            ChatUserViewModel.toParticipants(users, chat), chat);
+        final participants = ChatUserViewModel.toParticipants(users, chat);
+        print("PARTICIPANTS");
+        print(participants);
+        await userFunctions.deleteParticipants(participants, chat);
 
         setMessage(users, chat);
-        await UseMessageProvider.messageProvider.saveChats(newChat: null);
+        await UseMessageProvider.messageProvider?.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;
@@ -76,5 +80,15 @@ class ChatLeftListener {
             .addMessage(generateMessage);
       }
     }
+  }
+
+  Future<void> sendLeftMessage(ChatTable chat) async {
+    await messageProvider.chatSendMessage.sendUserLeftMessage(
+      natsProvider.getGroupLeftChannelById(chat.id),
+      chat: chat,
+      users: [UserFunctions.getMe],
+    );
+    await natsListener.unSubscribeOnChatDelete(chat.id);
+    await messageProvider.saveChats(newChat: null);
   }
 }

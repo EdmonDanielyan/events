@@ -14,7 +14,7 @@ class AnswerWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _customListTile(_strings.toWhomLable, item.responsible),
+        _customListTile(_strings.topic, item.responsible),
         _customListTile(_strings.question, item.question),
         _customListTile(_strings.answer, item.answer),
         Divider(),

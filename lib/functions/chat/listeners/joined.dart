@@ -14,17 +14,19 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 import '../user_functions.dart';
 
 class ChatJoinedListener {
+  final MessageProvider messageProvider;
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
   ChatJoinedListener({
+    required this.messageProvider,
     required this.natsProvider,
     required this.userFunctions,
     required this.chatDatabaseCubit,
   });
 
   NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+      UseMessageProvider.messageProvider!.natsListener;
   bool isListeningToChannel(String channel) =>
       natsListener.listeningToChannel(channel);
 
@@ -56,7 +58,7 @@ class ChatJoinedListener {
         await userFunctions.addParticipants(
             ChatUserViewModel.toParticipants(users, chat), chat);
         setMessage(users, chat);
-        await UseMessageProvider.messageProvider.saveChats(newChat: null);
+        await UseMessageProvider.messageProvider?.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;
@@ -76,5 +78,16 @@ class ChatJoinedListener {
             .addMessage(generateMessage);
       }
     }
+  }
+
+  Future<bool> sendUserJoinedMessage(
+      ChatTable chat, List<UserTable> users) async {
+    bool send = await messageProvider.chatSendMessage.sendUserJoinedMessage(
+      natsProvider.getGroupJoinedChannelById(chat.id),
+      chat: chat,
+      users: users,
+    );
+    messageProvider.saveChats(newChat: null);
+    return send;
   }
 }

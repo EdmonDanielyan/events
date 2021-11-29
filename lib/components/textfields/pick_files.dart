@@ -27,7 +27,18 @@ class PickFilesState extends State<PickFiles> {
   List<File> pickedFiles = [];
 
   Future<void> _pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: [
+          "jpg",
+          "jpeg",
+          "png",
+          "doc",
+          "docx",
+          "xls",
+          "xlsx",
+          "pdf"
+        ]);
 
     if (result != null) {
       File file = File(result.files.single.path!);

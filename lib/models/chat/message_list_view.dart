@@ -124,11 +124,13 @@ class MessageListView {
 
   static MessageTable renewMessage(
     MessageTable message, {
+    String? id,
     int? userId,
     ChatTable? newChat,
     bool? sentOn,
   }) {
     MessageTable newMessage = message.copyWith(
+      id: id ?? message.id,
       userId: userId ?? JwtPayload.myId,
       repliedMessageId: "",
       created: new DateTime.now(),

@@ -25,10 +25,10 @@ class MessageTextingListener {
   Debouncer _debouncer = Debouncer(milliseconds: 3000);
 
   NatsListener get natsListener =>
-      UseMessageProvider.messageProvider.natsListener;
+      UseMessageProvider.messageProvider!.natsListener;
 
   ChannelFunctions get channelFunctions =>
-      UseMessageProvider.messageProvider.channelFunctions;
+      UseMessageProvider.messageProvider!.channelFunctions;
   bool isListeningToChannel(String channel) =>
       natsListener.listeningToChannel(channel);
 
@@ -56,6 +56,7 @@ class MessageTextingListener {
   }
 
   void _handleState(CustomTexting texting, String chatId) {
+    print("TEXTING");
     String churrentOpenedChatId = chatDatabaseCubit.getSelectedChatId;
     if (texting.user.id != JwtPayload.myId && churrentOpenedChatId == chatId) {
       _debouncer.run(() {

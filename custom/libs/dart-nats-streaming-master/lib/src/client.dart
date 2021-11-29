@@ -327,17 +327,22 @@ class Client {
     _onDisconnect!();
   }
 
-  Future<bool> pubString(
-      {required String subject, required String string, String? guid}) async {
+  Future<bool> pubString({
+    required String subject,
+    required String string,
+    String? guid,
+    Function(PubMsg, dynamic)? onDeliveryFail,
+  }) async {
     final r = RetryOptions(
         maxAttempts: 8, delayFactor: Duration(seconds: retryInterval));
     return await r.retry(() async {
+      late PubMsg pubMsg;
       try {
         if (!connected) {
           throw Exception('Not connected');
         }
         final Encoding encoding = utf8;
-        PubMsg pubMsg = PubMsg()
+        pubMsg = PubMsg()
           ..clientID = this.clientID
           ..guid = guid ?? Uuid().v4()
           ..subject = subject
@@ -347,21 +352,32 @@ class Client {
             pubMsg.writeToBuffer());
       } catch (e) {
         print('Publishing Fail: $e');
+        if (connected) {
+          await _reconnect();
+        }
+        if (onDeliveryFail != null) {
+          onDeliveryFail(pubMsg, e.toString());
+        }
         return false;
       }
     });
   }
 
-  Future<bool> pubBytes(
-      {required String subject, required List<int> bytes, String? guid}) async {
+  Future<bool> pubBytes({
+    required String subject,
+    required List<int> bytes,
+    String? guid,
+    Function(PubMsg, dynamic)? onDeliveryFail,
+  }) async {
     final r = RetryOptions(
         maxAttempts: 8, delayFactor: Duration(seconds: retryInterval));
     return await r.retry(() async {
+      late PubMsg pubMsg;
       try {
         if (!connected) {
           throw Exception('Not connected');
         }
-        PubMsg pubMsg = PubMsg()
+        pubMsg = PubMsg()
           ..clientID = this.clientID
           ..guid = guid ?? Uuid().v4()
           ..subject = subject
@@ -373,6 +389,37 @@ class Client {
         return natsClient.pub(to, pubMsg.writeToBuffer());
       } catch (e) {
         print('Publishing Fail: $e');
+        if (connected) {
+          await _reconnect();
+        }
+        if (onDeliveryFail != null) {
+          onDeliveryFail(pubMsg, e);
+        }
+
+        return false;
+      }
+    });
+  }
+
+  Future<bool> pubMsg({
+    required PubMsg pubMsg,
+    Function(PubMsg, dynamic)? onDeliveryFail,
+  }) async {
+    final r = RetryOptions(
+        maxAttempts: 8, delayFactor: Duration(seconds: retryInterval));
+    return await r.retry(() async {
+      try {
+        if (!connected) {
+          throw Exception('Not connected');
+        }
+
+        String to = '${this._connectResponse!.pubPrefix}.${pubMsg.subject}';
+        return natsClient.pub(to, pubMsg.writeToBuffer());
+      } catch (e) {
+        if (onDeliveryFail != null) {
+          onDeliveryFail(pubMsg, e.toString());
+        }
+
         return false;
       }
     });
@@ -470,7 +517,7 @@ class Client {
 
     if (dataMessage.isRedelivery) {
       print(
-          'NOT ACKNOWLEDGING ${subscription.ackInbox} from ${dataMessage.subject} with seq ${dataMessage.sequence}');
+          'NOT ACKNOWLEDGING - ${ack.subject} - ${subscription.ackInbox} - SEQ = ${ack.sequence}');
     }
 
     natsClient.pub(subscription.ackInbox, ack.writeToBuffer());

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
@@ -18,22 +19,36 @@ import 'package:ink_mobile/functions/chat/listeners/online.dart';
 import 'package:ink_mobile/functions/chat/listeners/texting.dart';
 import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/message_list_view.dart';
-import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
+import '../app.dart';
 import '../setup.dart';
 
 class UseMessageProvider {
   static late bool initialized = false;
-  static late MessageProvider messageProvider;
+  static late MessageProvider? messageProvider;
 
-  static void initMessageProvider(
-      NatsProvider natsProvider, ChatDatabaseCubit chatDatabaseCubit) {
+  static Future<bool> initMessageProvider(
+      ChatDatabaseCubit chatDatabaseCubit) async {
+    final natsProvider = await _initNatsProvider();
     messageProvider = MessageProvider(natsProvider, chatDatabaseCubit);
     initialized = true;
+    messageProvider!.init();
+    return true;
+  }
+
+  static Future<NatsProvider> _initNatsProvider() async {
+    await sl<TokenDataHolder>().update();
+    NatsProvider natsProvider = sl<NatsProvider>();
+    return natsProvider;
+  }
+
+  static void uninit() {
+    initialized = false;
+    messageProvider = null;
   }
 }
 
@@ -57,7 +72,6 @@ class MessageProvider {
   late UserOnlineListener userOnlineListener;
   late ChatListListener chatListListener;
   late ChatCubit chatCubit;
-  late Timer userOnlineTimer;
 
   MessageProvider(this.natsProvider, this.chatDatabaseCubit) {
     this.chatCubit = sl<ChatCubit>();
@@ -72,23 +86,28 @@ class MessageProvider {
       channelFunctions: channelFunctions,
     );
     this.userOnlineListener = UserOnlineListener(
+      messageProvider: this,
       natsProvider: natsProvider,
       chatDatabaseCubit: chatDatabaseCubit,
     );
     this.messageDeletedListener = MessageDeletedListener(
+      messageProvider: this,
       natsProvider: natsProvider,
       chatFunctions: chatFunctions,
     );
     this.chatInfoListener = ChatInfoListener(
+      messageProvider: this,
       natsProvider: natsProvider,
       chatDatabaseCubit: chatDatabaseCubit,
     );
     this.chatJoinedListener = ChatJoinedListener(
+      messageProvider: this,
       natsProvider: natsProvider,
       userFunctions: userFunctions,
       chatDatabaseCubit: chatDatabaseCubit,
     );
     this.chatLeftListener = ChatLeftListener(
+      messageProvider: this,
       natsProvider: natsProvider,
       userFunctions: userFunctions,
       chatDatabaseCubit: chatDatabaseCubit,
@@ -107,13 +126,10 @@ class MessageProvider {
       userFunctions: userFunctions,
       chatDatabaseCubit: chatDatabaseCubit,
       chatSendMessage: chatSendMessage,
-      messageStatusListener: messageStatusListener,
-      messageTextingListener: messageTextingListener,
-      chatJoinedListener: chatJoinedListener,
-      chatLeftListener: chatLeftListener,
-      messageDeletedListener: messageDeletedListener,
+      messageProvider: this,
     );
     this.chatInvitationListener = ChatInvitationListener(
+      messageProvider: this,
       natsProvider: natsProvider,
       chatSendMessage: chatSendMessage,
       chatDatabaseCubit: chatDatabaseCubit,
@@ -134,196 +150,71 @@ class MessageProvider {
     this.chatCreation = ChatCreation(chatDatabaseCubit);
   }
 
-  bool isGroup(ChatTable chat) => chat.participantId == null;
+  bool natsLoaded = false;
+  int connectionsCount = 0;
 
-  String get getPublicChatList => natsProvider.getPublicChatIdList();
-
-  String getChatChannel(String chatId) =>
-      natsProvider.getGroupTextChannelById(chatId);
-  String getMessageStatusChannel(String chatId) =>
-      natsProvider.getGroupReactedChannelById(chatId);
-  String getTextingChannel(String chatId) =>
-      natsProvider.getGroupTextingChannelById(chatId);
-  String getUserJoinedChannel(String chatId) =>
-      natsProvider.getGroupJoinedChannelById(chatId);
-  String getUserLeftChannel(String chatId) =>
-      natsProvider.getGroupLeftChannelById(chatId);
-  String getDeletedMessageChannel(String chatId) =>
-      natsProvider.getGroupDeleteMessageChannelById(chatId);
-  String getChatInfoChannel(String chatId) =>
-      natsProvider.getGroupChatInfoById(chatId);
-  String getUserOnlineChannel(int userId) =>
-      natsProvider.getUserOnlineChannel(userId);
-
-  void init() async {
-    UserFunctions(chatDatabaseCubit).addMe();
-    natsListener.listenToAllMessages();
-    natsListener.init();
-    sendUserOnlinePing();
+  Future<void> init() async {
+    _listenToConnection();
+    natsLoaded = await natsProvider.load();
   }
 
-  void dispose() async {
+  Future<void> _listenToConnection() async {
+    natsProvider.onConnected = () async {
+      connectionsCount++;
+      await _onConnected();
+      if (connectionsCount == 1) {
+        _redeliverUnsentMessages();
+      }
+      _showConnectedSnackBar();
+    };
+
+    natsProvider.onDisconnected = () async {
+      _showDisconnectedSnackBar();
+    };
+  }
+
+  void _showConnectedSnackBar() {
+    if (connectionsCount > 1 && App.getContext != null) {
+      SuccessCustomSnackbar(
+        context: App.getContext!,
+        txt: localizationInstance.connectedToServer,
+      );
+    }
+  }
+
+  void _showDisconnectedSnackBar() {
+    if (App.getContext != null) {
+      SimpleCustomSnackbar(
+        context: App.getContext!,
+        txt: localizationInstance.disconnectedFromServer,
+      );
+    }
+  }
+
+  Future<void> _onConnected() async {
+    if (!natsLoaded) {
+      natsLoaded = true;
+      UserFunctions(chatDatabaseCubit).addMe();
+      natsListener.listenToAllMessages();
+      natsListener.init();
+      userOnlineListener.sendUserOnlinePing();
+    }
+  }
+
+  void _redeliverUnsentMessages() {
+    chatMessageListener.redeliverMessages();
+  }
+
+  Future<void> dispose() async {
     natsListener.unsubscribeFromAll();
-    userOnlineTimer.cancel();
-    natsProvider.dispose();
-    chatDatabaseCubit.db.deleteEverything();
-  }
-
-  Future<void> removeChat(ChatTable chat) async {
-    await sendUserLeftMessage(chat, [UserFunctions.getMe]);
-    await natsListener.unSubscribeOnChatDelete(chat.id);
-    saveChats(newChat: null);
-  }
-
-  Future<ChatTable> createChat(UserTable user) async {
-    ChatTable? chat;
-    List<UserTable> users = [user, UserFunctions.getMe];
-    String chatId = ChatCreation.generateSingleChatId(users);
-    chat = await chatCreation.isChatExists(chatId);
-    if (chat == null) {
-      chat = await ChatCreation(chatDatabaseCubit).createSingleChat(user);
-      _afterChatCreation(chat, users);
-    }
-
-    return chat;
-  }
-
-  Future<ChatTable> createGroup(
-      {required String name, required List<UserTable> users}) async {
-    users.insert(0, UserFunctions.getMe);
-    final chat = await ChatCreation(chatDatabaseCubit)
-        .createGroup(name: name, avatar: "", users: users);
-    _afterChatCreation(chat, users);
-    return chat;
-  }
-
-  Future<void> _afterChatCreation(ChatTable chat, List<UserTable> users) async {
-    natsListener.subscribeOnChatCreate(chat.id);
-
-    await inviteUsers(chat, users);
-    await saveChats(newChat: null);
-  }
-
-  Future<void> inviteUsers(ChatTable chat, List<UserTable> users) async {
-    for (final user in users) {
-      if (user.id != JwtPayload.myId) {
-        await chatSendMessage.inviteUser(
-          user: user,
-          chat: chat,
-          chatChannel: getChatChannel(chat.id),
-          users: users,
-        );
-      }
-    }
-    saveChats(newChat: null);
-  }
-
-  Future<void> sendMessage(ChatTable chat, MessageTable message) async {
-    bool success = await sendTxtMessage(chat, message);
-    MessageStatus status = success ? MessageStatus.SENT : MessageStatus.ERROR;
-    chatFunctions.updateMessageStatus(message, status);
-
-    saveChats(newChat: null);
-  }
-
-  Future<bool> sendTxtMessage(
-    ChatTable chat,
-    MessageTable message, {
-    UserTable? user,
-  }) async {
-    return await chatSendMessage.sendTextMessage(
-      getChatChannel(chat.id),
-      chat,
-      message,
-      user ?? UserFunctions.getMe,
-    );
-  }
-
-  Future<void> deleteMessages(List<MessageTable> messages,
-      {bool makeRequest = true}) async {
-    if (messages.isNotEmpty) {
-      final chatId = messages.last.chatId;
-      final channel = getDeletedMessageChannel(chatId);
-      chatFunctions.deleteMessages(messages);
-
-      if (makeRequest) {
-        await chatSendMessage.sendDeleteMessage(channel, messages: messages);
-        saveChats(newChat: null);
-      }
-    }
-  }
-
-  Future<bool> setMessagesToRead(List<MessageTable> messages) async {
-    String chatId = messages.last.chatId;
-    final channel = getMessageStatusChannel(chatId);
-    bool send = await chatSendMessage.sendMessageStatus(channel, messages);
-    await MessageStatusListener.messagesToRead(messages, chatFunctions);
-    saveChats(newChat: null);
-    return send;
-  }
-
-  Future<bool> sendTextingMessage(
-      String chatId, CustomTexting customTexting) async {
-    final channel = getTextingChannel(chatId);
-    bool send = await chatSendMessage.sendTextingMessage(channel,
-        customTexting: customTexting, chatId: chatId);
-    return send;
-  }
-
-  Future<bool> sendUserJoinedMessage(
-      ChatTable chat, List<UserTable> users) async {
-    bool send = await chatSendMessage.sendUserJoinedMessage(
-      getUserJoinedChannel(chat.id),
-      chat: chat,
-      users: users,
-    );
-    saveChats(newChat: null);
-    return send;
-  }
-
-  Future<bool> sendUserLeftMessage(
-      ChatTable chat, List<UserTable> users) async {
-    bool send = await chatSendMessage.sendUserLeftMessage(
-      getUserLeftChannel(chat.id),
-      chat: chat,
-      users: users,
-    );
-    saveChats(newChat: null);
-    return send;
-  }
-
-  Future<bool> sendNewChatInfo(ChatTable chat, {UserTable? user}) async {
-    bool send = await chatSendMessage.sendNewChatInfo(
-      getChatInfoChannel(chat.id),
-      chat: chat,
-      user: user ?? UserFunctions.getMe,
-    );
-    saveChats(newChat: null);
-    return send;
+    userOnlineListener.stopSending();
+    await natsProvider.dispose();
+    await chatDatabaseCubit.db.deleteEverything();
+    UseMessageProvider.uninit();
   }
 
   Future<void> subscribeToUserOnline(UserTable user) async {
     await userOnlineListener.listenTo(user);
-  }
-
-  Future<void> sendUserOnlinePing({UserTable? user}) async {
-    user = user ?? UserFunctions.getMe;
-    final channel = getUserOnlineChannel(user.id);
-
-    _sendOnline(channel, user);
-
-    userOnlineTimer = Timer.periodic(
-      Duration(seconds: 60),
-      (timer) {
-        _sendOnline(channel, user!);
-      },
-    );
-  }
-
-  void _sendOnline(String channel, UserTable user) {
-    if (natsProvider.isConnected) {
-      chatSendMessage.sendUserOnlinePing(channel, user);
-    }
   }
 
   Future<void> saveChats({

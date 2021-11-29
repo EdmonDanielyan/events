@@ -74,19 +74,23 @@ class MessageCard extends StatelessWidget {
   }
 
   Widget _getMessageWidget() {
-    final message = messageWithUser.message!;
-    final user = messageWithUser.user!;
+    if (messageWithUser.message != null && messageWithUser.user != null) {
+      final message = messageWithUser.message!;
+      final user = messageWithUser.user!;
 
-    if (message.type == MessageType.UserLeftChat ||
-        message.type == MessageType.UserJoined) {
-      return MessageCardAction(
-        text: message.message,
+      if (message.type == MessageType.UserLeftChat ||
+          message.type == MessageType.UserJoined) {
+        return MessageCardAction(
+          text: message.message,
+        );
+      }
+      return MessageCardText(
+        message: message,
+        user: user,
+        chatDatabaseCubit: chatDatabaseCubit,
       );
+    } else {
+      return SizedBox();
     }
-    return MessageCardText(
-      message: message,
-      user: user,
-      chatDatabaseCubit: chatDatabaseCubit,
-    );
   }
 }

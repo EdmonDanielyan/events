@@ -14,8 +14,6 @@ import 'package:ink_mobile/screens/messages/chat/components/respond_container_wr
 import 'package:ink_mobile/screens/messages/chat/components/sent_on_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
 
-import '../chat_screen.dart';
-
 class MessageCardText extends StatelessWidget {
   final UserTable user;
   final MessageTable? message;
@@ -49,19 +47,23 @@ class MessageCardText extends StatelessWidget {
     return byMe ? Color(0XFF46966E) : Colors.grey.shade200;
   }
 
-  void _resend() async {
+  void _resend(BuildContext context) async {
     if (UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider.deleteMessages(
+      UseMessageProvider.messageProvider?.messageDeletedListener.deleteMessages(
         [message!],
+        context,
         makeRequest: false,
       );
       final renewedMessage = MessageListView.renewMessage(message!);
-      await SendMessage(
+      final sendMessage = SendMessage(
         chatDatabaseCubit: chatDatabaseCubit,
         chat: getChat,
-      ).addMessage(renewedMessage);
-      await UseMessageProvider.messageProvider
-          .sendMessage(getChat, renewedMessage);
+      );
+      await sendMessage.addMessage(renewedMessage);
+      if (UseMessageProvider.initialized) {
+        await UseMessageProvider.messageProvider?.chatMessageListener
+            .sendMessage(getChat, renewedMessage);
+      }
     }
   }
 
@@ -72,7 +74,7 @@ class MessageCardText extends StatelessWidget {
       crossAxisAlignment:
           byMe ? CrossAxisAlignment.center : CrossAxisAlignment.end,
       children: [
-        _errorIconReload(),
+        _errorIconReload(context),
         if (!byMe) ...[
           _userAvatarWidget(),
           SizedBox(width: 10.0),
@@ -99,7 +101,7 @@ class MessageCardText extends StatelessWidget {
     );
   }
 
-  Widget _errorIconReload() {
+  Widget _errorIconReload(BuildContext context) {
     if (message != null && message!.status == MessageStatus.ERROR) {
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -107,7 +109,7 @@ class MessageCardText extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(right: 5),
             child: InkWell(
-              onTap: _resend,
+              onTap: () => _resend(context),
               child: Icon(Icons.replay, color: Colors.blue, size: 22),
             ),
           ),

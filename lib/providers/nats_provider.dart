@@ -37,23 +37,24 @@ class NatsProvider {
   final String deviceVirtualId;
   final String natsToken;
 
-  NatsProvider(
-      {@Named("natsWssUrl") required this.natsWssUrl,
-      @Named("natsCluster") required this.natsCluster,
-      @Named("natsCertPath") required this.natsCertPath,
-      @Named("userId") required this.userId,
-      @Named("deviceVirtualId") required this.deviceVirtualId,
-      @Named("natsToken") required this.natsToken});
+  NatsProvider({
+    @Named("natsWssUrl") required this.natsWssUrl,
+    @Named("natsCluster") required this.natsCluster,
+    @Named("natsCertPath") required this.natsCertPath,
+    @Named("userId") required this.userId,
+    @Named("deviceVirtualId") required this.deviceVirtualId,
+    @Named("natsToken") required this.natsToken,
+  });
 
   Future<bool> load() async {
     this._stan = Client();
     _stan.onConnect(function: () {
-      print("CONNECTED");
-      _logger.info('Stan connected..');
+      onConnected();
+      _connected();
     });
     _stan.onDisconnect(function: () {
-      print("DISCONNECTED");
-      _logger.info('Stan disconnected..');
+      onDisconnected();
+      _disconnected();
     });
     var connected = await _connect();
     if (!connected) {
@@ -63,10 +64,18 @@ class NatsProvider {
     return true;
   }
 
-  void dispose() {
+  void _connected() {
+    _logger.info('Stan connected..');
+  }
+
+  void _disconnected() {
+    _logger.info('Stan disconnected..');
+  }
+
+  Future<void> dispose() async {
     userChatIdList.clear();
     publicChatIdList.clear();
-    _stan.manualDisconnect();
+    await _stan.manualDisconnect();
   }
 
   /// Send [text] message to [channel]
@@ -100,7 +109,9 @@ class NatsProvider {
       to: channel,
     );
     message.setSystemPayload(type, fields);
-    return await _sendMessage(channel, message);
+    bool sent = await _sendMessage(channel, message);
+
+    return sent;
   }
 
   Iterable<String> get subscribedChannels => _channelSubscriptions.keys;
@@ -121,7 +132,7 @@ class NatsProvider {
       _channelCallbacks[channel] = onMessageFuture;
 
       if (subscription != null) {
-        _logger.info('_channelSubscriptions: ${_channelSubscriptions.keys}');
+        //_logger.info('_channelSubscriptions: ${_channelSubscriptions.keys}');
         return true;
       }
       return false;
@@ -142,7 +153,7 @@ class NatsProvider {
       _channelCallbacks.remove(channel);
     }
 
-    _logger.info('_channelSubscriptions: ${_channelSubscriptions.keys}');
+    //_logger.info('_channelSubscriptions: ${_channelSubscriptions.keys}');
   }
 
   //////////////////////////////// NATS Protocol ///////////////////////////////
@@ -221,12 +232,15 @@ class NatsProvider {
       {StartPosition? startPosition, Int64 startSequence = Int64.ZERO}) async {
     var durableName = "$userId-$deviceVirtualId-$channel";
 
+    // print(
+    //     "FOR CHANNEL ($channel) - SEQUENCE ${_getSequence(channel, startSequence)}");
+
     var subscription = await _stan.subscribe(
       subject: channel,
       maxInFlight: 1,
       startPosition: startPosition ?? _getPosition(channel),
       durableName: durableName,
-      startSequence: startSequence,
+      startSequence: _getSequence(channel, startSequence),
     );
 
     return subscription;
@@ -243,6 +257,19 @@ class NatsProvider {
     }
 
     return StartPosition.NewOnly;
+  }
+
+  Int64? _getSequence(String channel, Int64 startSequence) {
+    final msgType = MessageListView.getTypeByChannel(channel);
+
+    if (msgType != null) {
+      if (_startSeqTypes.contains(msgType) ||
+          _lastReceivedType.contains(msgType)) {
+        return startSequence;
+      }
+    }
+
+    return null;
   }
 
   Future<void> _listenBySubscription(
@@ -293,6 +320,9 @@ class NatsProvider {
   };
   final Map<String, Future<void> Function(String, NatsMessage)>
       _channelCallbacks = {};
+
+  Future<void> Function() onConnected = () async {};
+  Future<void> Function() onDisconnected = () async {};
 
   bool get isConnected => _stan.connected;
 }

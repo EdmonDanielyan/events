@@ -40,8 +40,10 @@ doc/GetCommentsById.md
 doc/GetContacts.md
 doc/GetEventById.md
 doc/GetEvents.md
+doc/GetKeysSuccess.md
 doc/GetNews.md
 doc/GetNewsById.md
+doc/GetPubKeySuccess.md
 doc/GetPublications.md
 doc/GetReferenceOrderForm.md
 doc/GetSearchSuccess.md
@@ -140,8 +142,10 @@ lib/model/get_comments_by_id.dart
 lib/model/get_contacts.dart
 lib/model/get_event_by_id.dart
 lib/model/get_events.dart
+lib/model/get_keys_success.dart
 lib/model/get_news.dart
 lib/model/get_news_by_id.dart
+lib/model/get_pub_key_success.dart
 lib/model/get_publications.dart
 lib/model/get_reference_order_form.dart
 lib/model/get_search_success.dart
