@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -7,7 +9,10 @@ import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/providers/lock_app.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_state.dart';
+
+import '../../../setup.dart';
 
 @injectable
 class InitialCubit extends Cubit<InitialState> {
@@ -26,6 +31,8 @@ class InitialCubit extends Cubit<InitialState> {
       SetOauthToken(token: oldJwt ?? "").setBearer();
     }
   }
+
+  Future<void> init() async {}
 
   Future<void> fetch() async {
     try {

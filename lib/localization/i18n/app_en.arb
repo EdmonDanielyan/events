@@ -7,6 +7,7 @@
     "signIn": "Sign in",
     "signInInstructions": "Sign in instruction",
     "password": "Password",
+    "passwordHint": "Enter your password",
     "authHint": "You must enter the login and password from your account in the LOGIN format (where login is your login from your account in the company's internal network).",
     "login": "Login",
     "enter": "Sign in",
@@ -215,5 +216,9 @@
     "sendLogs": "Send logs",
     "diagnostics": "Diagnostics",
     "connectedToServer": "Connected to the server",
-    "disconnectedFromServer": "Disconnected from the server"
+    "disconnectedFromServer": "Disconnected from the server",
+    "settings": "Settings",
+    "touchIdSetup": "Please set up your Touch ID",
+    "reenableTouchId": "Please reenable your Touch ID",
+    "authenticationRequired": "Authentication required"
 }

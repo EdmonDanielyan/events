@@ -7,6 +7,7 @@
     "signIn": "Авторизация",
     "signInInstructions": "Инструкция по входу",
     "password": "Пароль",
+    "passwordHint": "Введите пароль",
     "authHint": "Необходимо ввести логин и пароль от своей учетной записи в формате login (где login – Ваш логин от учётной записи во внутренней сети компании).",
     "login": "Логин",
     "enter": "Вход",
@@ -216,5 +217,9 @@
     "sendLogs": "Отправка журнала",
     "diagnostics": "Диагностика",
     "connectedToServer": "Подключение к серверу",
-    "disconnectedFromServer": "Отключение от сервера"
+    "disconnectedFromServer": "Отключение от сервера",
+    "settings": "Настройки",
+    "touchIdSetup": "Пожалуйста, настройте Touch ID",
+    "reenableTouchId": "Пожалуйста, включите Touch ID",
+    "authenticationRequired": "Аутентификация"
 }
