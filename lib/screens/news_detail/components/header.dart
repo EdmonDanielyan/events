@@ -7,6 +7,7 @@ import 'package:ink_mobile/constants/aseets.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:video_player/video_player.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class Header extends StatefulWidget {
   final List<String>? imageLinks;
@@ -89,22 +90,30 @@ class _HeaderState extends State<Header> {
 
     if (images != null && images.isNotEmpty) {
       images.forEach((image) {
-        imagesContainer.add(Container(
-            child: FadeInImage(
-          fit: BoxFit.fill,
-          imageErrorBuilder: (context, error, stackTrace) {
-            return Image.asset(
-              Header.DEFAULT_PREVIEW_PICTURE_LINK,
-              fit: BoxFit.fill,
-              colorBlendMode: BlendMode.darken,
-              color: Colors.black.withOpacity(0.15),
-            );
-          },
-          image: NetworkImage(
-            image,
-          ),
-          placeholder: AssetImage(DEFAULT_WHITE_PICTURE_LINK),
-        )));
+        imagesContainer.add(
+          Stack(
+            children: [
+              Center(
+                child: CircularProgressIndicator(color: Color(0xFF2B5E4A),),
+              ),
+              FadeInImage.memoryNetwork(
+                height: 300,
+                fit: BoxFit.fill,
+                fadeInDuration: Duration(milliseconds: 300),
+                placeholder: kTransparentImage,
+                image: image,
+                imageErrorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    Header.DEFAULT_PREVIEW_PICTURE_LINK,
+                    fit: BoxFit.fill,
+                    colorBlendMode: BlendMode.darken,
+                    color: Colors.black.withOpacity(0.15),
+                  );
+                }
+              ),
+            ],
+          )
+        );
       });
     } else {
       imagesContainer.add(Image.asset(

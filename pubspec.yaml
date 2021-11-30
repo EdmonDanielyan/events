@@ -62,6 +62,7 @@ dependencies:
     image_picker: ^0.8.3+2
     image_cropper: ^1.4.1
     moor: ^4.5.0
+    transparent_image: ^1.0.0
     encrypted_moor:
         git:
             url: https://github.com/simolus3/moor.git
