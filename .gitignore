@@ -2,7 +2,6 @@
 /.dart_tool
 /.idea
 /.vscode
-/test
 .packages
 .pubspec.lock
 .flutter-plugins
