@@ -10,21 +10,14 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
-import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/protocol.dart';
 import 'package:logging/logging.dart';
-
-import '../app.dart';
-import '../setup.dart';
-import 'message_provider.dart';
 
 const PUBLIC_CHATS = 'ink.messaging.public';
 const GROUP_CHANNEL = 'ink.messaging.group';
@@ -44,20 +37,23 @@ class NatsProvider {
   final String deviceVirtualId;
   final String natsToken;
 
-  NatsProvider(
-      {@Named("natsWssUrl") required this.natsWssUrl,
-      @Named("natsCluster") required this.natsCluster,
-      @Named("natsCertPath") required this.natsCertPath,
-      @Named("userId") required this.userId,
-      @Named("deviceVirtualId") required this.deviceVirtualId,
-      @Named("natsToken") required this.natsToken});
+  NatsProvider({
+    @Named("natsWssUrl") required this.natsWssUrl,
+    @Named("natsCluster") required this.natsCluster,
+    @Named("natsCertPath") required this.natsCertPath,
+    @Named("userId") required this.userId,
+    @Named("deviceVirtualId") required this.deviceVirtualId,
+    @Named("natsToken") required this.natsToken,
+  });
 
   Future<bool> load() async {
     this._stan = Client();
     _stan.onConnect(function: () {
+      onConnected();
       _connected();
     });
     _stan.onDisconnect(function: () {
+      onDisconnected();
       _disconnected();
     });
     var connected = await _connect();
@@ -65,40 +61,15 @@ class NatsProvider {
       throw NoConnectionException();
     }
 
-    _connectMessageProvider();
-
     return true;
   }
 
   void _connected() {
     _logger.info('Stan connected..');
-
-    _connectMessageProvider();
-
-    // if (App.getContext != null) {
-    //   SuccessCustomSnackbar(
-    //     context: App.getContext!,
-    //     txt: localizationInstance.connectedToServer,
-    //   );
-    // }
   }
 
   void _disconnected() {
     _logger.info('Stan disconnected..');
-
-    if (App.getContext != null) {
-      SimpleCustomSnackbar(
-        context: App.getContext!,
-        txt: localizationInstance.disconnectedFromServer,
-      );
-    }
-  }
-
-  void _connectMessageProvider() {
-    if (!UseMessageProvider.initialized) {
-      UseMessageProvider.initMessageProvider(this, sl<ChatDatabaseCubit>());
-      UseMessageProvider.messageProvider?.init();
-    }
   }
 
   Future<void> dispose() async {
@@ -138,7 +109,9 @@ class NatsProvider {
       to: channel,
     );
     message.setSystemPayload(type, fields);
-    return await _sendMessage(channel, message);
+    bool sent = await _sendMessage(channel, message);
+
+    return sent;
   }
 
   Iterable<String> get subscribedChannels => _channelSubscriptions.keys;
@@ -159,7 +132,7 @@ class NatsProvider {
       _channelCallbacks[channel] = onMessageFuture;
 
       if (subscription != null) {
-        _logger.info('_channelSubscriptions: ${_channelSubscriptions.keys}');
+        //_logger.info('_channelSubscriptions: ${_channelSubscriptions.keys}');
         return true;
       }
       return false;
@@ -180,7 +153,7 @@ class NatsProvider {
       _channelCallbacks.remove(channel);
     }
 
-    _logger.info('_channelSubscriptions: ${_channelSubscriptions.keys}');
+    //_logger.info('_channelSubscriptions: ${_channelSubscriptions.keys}');
   }
 
   //////////////////////////////// NATS Protocol ///////////////////////////////
@@ -259,8 +232,8 @@ class NatsProvider {
       {StartPosition? startPosition, Int64 startSequence = Int64.ZERO}) async {
     var durableName = "$userId-$deviceVirtualId-$channel";
 
-    print(
-        "FOR CHANNEL ($channel) - SEQUENCE ${_getSequence(channel, startSequence)}");
+    // print(
+    //     "FOR CHANNEL ($channel) - SEQUENCE ${_getSequence(channel, startSequence)}");
 
     var subscription = await _stan.subscribe(
       subject: channel,
@@ -290,12 +263,13 @@ class NatsProvider {
     final msgType = MessageListView.getTypeByChannel(channel);
 
     if (msgType != null) {
-      if (!_startSeqTypes.contains(msgType)) {
-        return null;
+      if (_startSeqTypes.contains(msgType) ||
+          _lastReceivedType.contains(msgType)) {
+        return startSequence;
       }
     }
 
-    return startSequence;
+    return null;
   }
 
   Future<void> _listenBySubscription(
@@ -346,6 +320,9 @@ class NatsProvider {
   };
   final Map<String, Future<void> Function(String, NatsMessage)>
       _channelCallbacks = {};
+
+  Future<void> Function() onConnected = () async {};
+  Future<void> Function() onDisconnected = () async {};
 
   bool get isConnected => _stan.connected;
 }

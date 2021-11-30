@@ -7,7 +7,7 @@ import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.d
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class ParticipantCard extends StatelessWidget {
+class ParticipantCard extends StatefulWidget {
   final String trailingLable;
   final UserTable? user;
   final double? horizontalPadding;
@@ -32,25 +32,41 @@ class ParticipantCard extends StatelessWidget {
     this.avatarName,
   }) : super(key: key);
 
-  static late AppLocalizations _strings;
+  @override
+  State<ParticipantCard> createState() => _ParticipantCardState();
+}
+
+class _ParticipantCardState extends State<ParticipantCard> {
+  @override
+  void initState() {
+    super.initState();
+    _subscribeToOnline();
+  }
+
+  Future<void> _subscribeToOnline() async {
+    if (widget.indicatorIsOn &&
+        widget.user != null &&
+        UseMessageProvider.initialized) {
+      await UseMessageProvider.messageProvider
+          ?.subscribeToUserOnline(widget.user!);
+    }
+  }
+
+  late AppLocalizations _strings;
 
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-
-    if (indicatorIsOn && user != null && UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider?.subscribeToUserOnline(user!);
-    }
-
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal:
-              horizontalPadding ?? ChatInfoDesignEntities.horizontalPadding),
+          horizontal: widget.horizontalPadding ??
+              ChatInfoDesignEntities.horizontalPadding),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _avatarWidget(),
-          SizedBox(width: titleGap ?? ChatInfoDesignEntities.titleGap - 7),
+          SizedBox(
+              width: widget.titleGap ?? ChatInfoDesignEntities.titleGap - 7),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,8 +76,8 @@ class ParticipantCard extends StatelessWidget {
               ],
             ),
           ),
-          if (trailingLable.isNotEmpty) ...[
-            _trailingLableWidget(trailingLable),
+          if (widget.trailingLable.isNotEmpty) ...[
+            _trailingLableWidget(widget.trailingLable),
           ],
         ],
       ),
@@ -70,19 +86,22 @@ class ParticipantCard extends StatelessWidget {
 
   Widget _avatarWidget() {
     return CustomCircleAvatar(
-      avatarHeight: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
-      avatarWidth: avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
-      url: overrideAvatar ?? user?.avatar,
-      indicator: indicatorIsOn && user != null && user!.online ? true : false,
+      avatarHeight: widget.avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
+      avatarWidth: widget.avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
+      url: widget.overrideAvatar ?? widget.user?.avatar,
+      indicator:
+          widget.indicatorIsOn && widget.user != null && widget.user!.online
+              ? true
+              : false,
       indicatorSize: 8.0,
-      name: avatarName ?? (user?.name ?? ""),
+      name: widget.avatarName ?? (widget.user?.name ?? ""),
     );
   }
 
   Widget nameWidget(BuildContext context) {
     return HighlightText(
-      txt: overrideTitle ?? (user?.name ?? ""),
-      highlightTxt: highlightTxt,
+      txt: widget.overrideTitle ?? (widget.user?.name ?? ""),
+      highlightTxt: widget.highlightTxt,
       textStyle: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.bold,
@@ -93,9 +112,11 @@ class ParticipantCard extends StatelessWidget {
   }
 
   Widget _onlineStatusWidget() {
-    if (indicatorIsOn) {
+    if (widget.indicatorIsOn) {
       return Text(
-        user != null && user!.online ? _strings.online : _strings.offline,
+        widget.user != null && widget.user!.online
+            ? _strings.online
+            : _strings.offline,
         style: TextStyle(
           color: Colors.grey,
           fontSize: 12.0,

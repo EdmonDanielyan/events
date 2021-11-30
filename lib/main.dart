@@ -14,24 +14,22 @@ import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/handlers/error_catcher.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/global_providers.dart';
-import 'package:ink_mobile/providers/nats_provider.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/themes/light.dart';
 import 'package:logging/logging.dart';
 import 'cubit/boot/boot_cubit.dart';
+import 'cubit/chat_db/chat_table_cubit.dart';
 
 void main() async {
   runZonedGuarded(() async {
     await setup();
 
     runApp(InkMobile(onAppStart: () async {
-      await sl<TokenDataHolder>().update();
-      NatsProvider natsProvider = sl<NatsProvider>();
-      final loaded = await natsProvider.load();
-      return loaded;
+      return await UseMessageProvider.initMessageProvider(
+          sl<ChatDatabaseCubit>());
     }));
   }, (Object error, StackTrace stack) {
     if (error is CustomException) {

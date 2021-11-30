@@ -71,6 +71,7 @@ dependencies:
     archive:
     share_plus:
     logging:
+    local_auth: ^1.1.8
 
 dev_dependencies:
     flutter_test:

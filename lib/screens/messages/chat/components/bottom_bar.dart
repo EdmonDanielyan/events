@@ -4,8 +4,11 @@ import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
+import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/texting.dart';
+import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container.dart';
 import 'package:ink_mobile/screens/messages/chat/components/send_btn.dart';
@@ -30,19 +33,23 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   late ChatCubit _chatCubit;
   final _formKey = GlobalKey<FormState>();
   final _padding = 7.0;
+  Debouncer _textingDebouncer = Debouncer(milliseconds: 100);
 
   ChatTable get getChat => _chatDatabaseCubit.selectedChat!;
 
   Future<void> onSend(ChatEntities entities) async {
     if (entities.text.isNotEmpty) {
       clearForm();
-      final message = await SendMessage(
+      final sendMessage = SendMessage(
         chatDatabaseCubit: _chatDatabaseCubit,
         chat: getChat,
-      ).call(entities);
+      );
+      final message = await sendMessage.call(entities);
       if (UseMessageProvider.initialized) {
-        await UseMessageProvider.messageProvider?.sendMessage(getChat, message);
+        UseMessageProvider.messageProvider?.chatMessageListener
+            .sendMessage(getChat, message);
       }
+
       _chatCubit.clean();
       entities.clear();
       ScrollBottom(widget.scrollController).jumpLazy();
@@ -53,19 +60,8 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
     _formKey.currentState!.reset();
   }
 
-  void _sendTexting() async {
-    // await UseMessageProvider.messageProvider.sendTextingMessage(
-    //   getChat.id,
-    //   CustomTexting(
-    //     user: UserFunctions.getMe,
-    //     customTextingEnum: CustomTextingEnum.TEXTING,
-    //   ),
-    // );
-  }
-
   void _onMessaging(String val) {
     entities.text = val;
-    _sendTexting();
   }
 
   @override

@@ -7,6 +7,7 @@ import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/person_list_params.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 
 class ChatCreation {
   final ChatDatabaseCubit chatDatabaseCubit;
@@ -18,6 +19,39 @@ class ChatCreation {
 
   static String generateSingleChatId(List<UserTable> users) =>
       ChatListView.getChatIdBetweenUsers(users);
+
+  Future<ChatTable> createChatThroughNats(UserTable user) async {
+    ChatTable? chat;
+    List<UserTable> users = [user, UserFunctions.getMe];
+    chat = await isSingleChatExists(user);
+
+    if (chat == null) {
+      chat = await createSingleChat(user);
+      _afterNatsChatCreation(chat, users);
+    }
+
+    return chat;
+  }
+
+  Future<ChatTable> createGroupThroughNats(
+      {required String name, required List<UserTable> users}) async {
+    users.insert(0, UserFunctions.getMe);
+    final chat = await ChatCreation(chatDatabaseCubit)
+        .createGroup(name: name, avatar: "", users: users);
+    _afterNatsChatCreation(chat, users);
+    return chat;
+  }
+
+  Future<void> _afterNatsChatCreation(
+      ChatTable chat, List<UserTable> users) async {
+    if (UseMessageProvider.initialized) {
+      final messageProvider = UseMessageProvider.messageProvider!;
+      messageProvider.natsListener.subscribeOnChatCreate(chat.id);
+
+      await messageProvider.chatInvitationListener.sendInvitations(chat, users);
+      await messageProvider.saveChats(newChat: null);
+    }
+  }
 
   Future<ChatTable> createDynamically(
       ChatTable chat, List<UserTable> users) async {
