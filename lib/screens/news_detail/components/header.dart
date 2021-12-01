@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
-import 'package:ink_mobile/constants/aseets.dart';
+import 'package:shimmer/shimmer.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flick_video_player/flick_video_player.dart';
@@ -93,8 +93,11 @@ class _HeaderState extends State<Header> {
         imagesContainer.add(
           Stack(
             children: [
-              Center(
-                child: CircularProgressIndicator(color: Color(0xFF2B5E4A),),
+              Shimmer.fromColors(
+                baseColor: Colors.grey,
+                highlightColor: Colors.grey.withOpacity(0.2),
+                child: Container(
+                    height: 300, width: MediaQuery.of(context).size.width, color: Colors.black),
               ),
               FadeInImage.memoryNetwork(
                 height: 300,
