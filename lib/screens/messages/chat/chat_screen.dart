@@ -58,24 +58,32 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _GetAppBar(
-        chatDatabaseCubit: chatDatabaseCubit,
-        chatCubit: chatCubit,
-        selectableCubit: selectableCubit,
-        chatScreenParams: chatScreenParams,
-      ),
-      body: ChatBody(controller: controller),
-      floatingActionButton: BlocBuilder<ChatCubit, ChatCubitState>(
-        bloc: chatCubit,
-        buildWhen: (previous, current) {
-          return previous.scrollBtn != current.scrollBtn;
-        },
-        builder: (context, state) {
-          return state.scrollBtn
-              ? ChatScrollBtn(onPressed: _onScrollBtnClick)
-              : SizedBox();
-        },
+    return WillPopScope(
+      onWillPop: () async {
+        if (chatCubit.state.appBarEnum == ChatAppBarEnums.INITIAL) {
+          chatDatabaseCubit.setSelectedChat(null);
+        }
+        return Future.value(true);
+      },
+      child: Scaffold(
+        appBar: _GetAppBar(
+          chatDatabaseCubit: chatDatabaseCubit,
+          chatCubit: chatCubit,
+          selectableCubit: selectableCubit,
+          chatScreenParams: chatScreenParams,
+        ),
+        body: ChatBody(controller: controller),
+        floatingActionButton: BlocBuilder<ChatCubit, ChatCubitState>(
+          bloc: chatCubit,
+          buildWhen: (previous, current) {
+            return previous.scrollBtn != current.scrollBtn;
+          },
+          builder: (context, state) {
+            return state.scrollBtn
+                ? ChatScrollBtn(onPressed: _onScrollBtnClick)
+                : SizedBox();
+          },
+        ),
       ),
     );
   }

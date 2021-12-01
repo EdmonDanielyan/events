@@ -19,7 +19,7 @@ class ChatDatabaseCubitState {
     return ChatDatabaseCubitState(
       db: db ?? this.db,
       searchValue: searchValue ?? this.searchValue,
-      selectedChat: selectedChat ?? this.selectedChat,
+      selectedChat: selectedChat,
     );
   }
 

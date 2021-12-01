@@ -85,4 +85,15 @@ class ChatListView {
 
     return chats;
   }
+
+  static List<ChatTable> searchChats(String value, List<ChatTable> chats) {
+    List<ChatTable> newChats = [];
+    newChats = chats.where((element) {
+      bool containsChatName = strContainsValue(element.name, value);
+
+      return containsChatName;
+    }).toList();
+
+    return newChats;
+  }
 }

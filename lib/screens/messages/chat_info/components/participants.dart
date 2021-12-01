@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
+import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -109,11 +110,18 @@ class ChatInfoParticipants extends StatelessWidget {
             if (user == null) return SizedBox();
             return Column(
               children: [
-                ParticipantCard(
-                  user: user,
-                  trailingLable: ChatListView.isOwner(chat, myId: user.id)
-                      ? _strings.owner
-                      : "",
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed("/personal",
+                      arguments: {
+                        'id': user.id,
+                        HIDE_BOTTOM_NAV_BAR_CODE: true
+                      }),
+                  child: ParticipantCard(
+                    user: user,
+                    trailingLable: ChatListView.isOwner(chat, myId: user.id)
+                        ? _strings.owner
+                        : "",
+                  ),
                 ),
                 if (index != participants.length - 1) ...[
                   divider(),

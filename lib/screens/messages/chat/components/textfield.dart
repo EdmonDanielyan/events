@@ -42,9 +42,9 @@ class MessageTextfield extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-              padding: EdgeInsets.only(right: 10.0),
-              child: AttachIcon(onSend: onSend)),
+          // Container(
+          //     padding: EdgeInsets.only(right: 10.0),
+          //     child: AttachIcon(onSend: onSend)),
         ],
       ),
     );

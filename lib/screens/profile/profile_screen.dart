@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
+import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/screens/profile/components/body.dart';
@@ -32,7 +33,19 @@ class ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Body(),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: bottomNavBar(context),
     );
+  }
+
+  Widget? bottomNavBar(BuildContext context) {
+    Map? arg = ModalRoute.of(context)!.settings.arguments as Map?;
+
+    if (arg != null && arg.isNotEmpty) {
+      if (arg.containsKey(HIDE_BOTTOM_NAV_BAR_CODE)) {
+        return null;
+      }
+    }
+
+    return NewBottomNavBar();
   }
 }
