@@ -7,10 +7,9 @@ import 'package:ink_mobile/setup.dart';
 
 @singleton
 class ChatDatabaseCubit extends Cubit<ChatDatabaseCubitState> {
-  ChatDatabaseCubit()
-      : super(ChatDatabaseCubitState(db: sl<ChatDatabase>()));
+  ChatDatabaseCubit() : super(ChatDatabaseCubitState(db: sl<ChatDatabase>()));
 
-  void setSelectedChat(ChatTable chat) {
+  void setSelectedChat(ChatTable? chat) {
     emit(state.copyWith(selectedChat: chat));
   }
 

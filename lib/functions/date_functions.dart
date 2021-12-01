@@ -26,7 +26,7 @@ class DateFunctions {
 
   String dayMonthYear() {
     DateFormat formatter = isThisYear()
-        ? new DateFormat.MMMd("ru_RU")
+        ? new DateFormat.MMMMd("ru_RU")
         : new DateFormat.yMMMMd("ru_RU");
 
     return formatter.format(passedDate);

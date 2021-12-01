@@ -494,7 +494,7 @@ class Client {
         _connectResponse!.subRequests,
         subscriptionRequest.writeToBuffer(),
         queueGroup: subscriptionRequest.qGroup,
-        timeout: Duration(seconds: 5),
+        timeout: Duration(seconds: 10),
       );
 
       SubscriptionResponse subscriptionResponse =

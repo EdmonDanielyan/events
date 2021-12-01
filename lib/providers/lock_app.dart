@@ -34,6 +34,7 @@ class LockApp {
       if (e.code == auth_error.notAvailable) {
         return true;
       }
+      print("ERROR $e");
     }
 
     return false;

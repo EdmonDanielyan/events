@@ -5,6 +5,7 @@ import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
@@ -40,8 +41,7 @@ class MainBottomNavBarItem extends NavBottomNavBarItem {
   String label = localizationInstance.home;
   Widget screen = MainScreen(
     mainAnnouncementsListCubit: sl<MainAnnouncementsListCubit>(),
-    eventsAndAnnouncementsBlockCubit:
-        sl<EventsAndAnnouncementsBlockCubit>(),
+    eventsAndAnnouncementsBlockCubit: sl<EventsAndAnnouncementsBlockCubit>(),
     mainEventsListCubit: sl<MainEventsListCubit>(),
     mainPageCubit: sl<MainPageCubit>(),
     newsBlockCubit: sl<NewsBlockCubit>(),
@@ -70,6 +70,7 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/message.svg';
   String label = localizationInstance.messages;
   Widget screen = ChatListScreen(
+    chatListCubit: sl<ChatListCubit>(),
     chatDatabaseCubit: sl<ChatDatabaseCubit>(),
     selectableCubit: SelectableCubit<UserTable>(),
     chatPersonListCubit: sl<ChatPersonListCubit>(),

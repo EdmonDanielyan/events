@@ -26,15 +26,14 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
   List<int> hideIds = [];
 
   void init() {
-    setSearchValue("");
+    setSearchValue("", checkCondition: false);
   }
 
   Future<void> loadUsers() async {
     emitLoading();
     try {
       await Token.setNewTokensIfExpired();
-      final response =
-          await sl<ContactsNetworkRequest>(param1: searchValue)();
+      final response = await sl<ContactsNetworkRequest>(param1: searchValue)();
 
       List<UserTable> users = response.mapResponse(hideIds: hideIds);
       emitUsers(items: users);
@@ -47,11 +46,14 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
     }
   }
 
-  void setSearchValue(String value) {
+  void setSearchValue(String value, {bool checkCondition = true}) {
+    value = value.trim();
     emit(state.copyWith(searchValue: value));
-    _debouncerInputChange.run(() {
-      loadUsers();
-    });
+    if (!checkCondition || value.length >= 3) {
+      _debouncerInputChange.run(() {
+        loadUsers();
+      });
+    }
   }
 
   void emitLoading() {

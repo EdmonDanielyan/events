@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
+import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
@@ -31,7 +33,7 @@ class NewChatBtn extends StatelessWidget {
           chatPersonListCubit: ChatListScreen.of(context).chatPersonListCubit,
         ),
       ),
-      icon: Icon(CupertinoIcons.chat_bubble_text, size: 30),
+      icon: SvgPicture.asset(EDIT_BTN_ICON, color: Colors.white),
     );
   }
 

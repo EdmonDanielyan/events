@@ -1,6 +1,5 @@
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/listeners/message_status.dart';
-import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
