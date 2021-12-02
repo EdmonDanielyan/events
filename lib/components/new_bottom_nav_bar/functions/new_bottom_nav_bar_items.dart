@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet.dart';
+import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/message_indicator/message_indicator_cubit.dart';
+import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_state.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
@@ -33,12 +36,14 @@ abstract class NavBottomNavBarItem {
   abstract String icon;
   abstract String label;
   abstract Widget screen;
+  abstract MessageIndicatorCubit? indicator;
   void onTap(BuildContext context, Function(int) onChanged, int index);
 }
 
 class MainBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/home.svg';
   String label = localizationInstance.home;
+  MessageIndicatorCubit? indicator;
   Widget screen = MainScreen(
     mainAnnouncementsListCubit: sl<MainAnnouncementsListCubit>(),
     eventsAndAnnouncementsBlockCubit: sl<EventsAndAnnouncementsBlockCubit>(),
@@ -54,8 +59,9 @@ class MainBottomNavBarItem extends NavBottomNavBarItem {
 }
 
 class SearchBottomNavBarItem extends NavBottomNavBarItem {
-  String icon = 'assets/images/search.svg';
+  String icon = SEARCH_ICON;
   String label = localizationInstance.search;
+  MessageIndicatorCubit? indicator;
   Widget screen = SearchScreen(
     searchCubit: sl<SearchCubit>(),
   );
@@ -69,6 +75,8 @@ class SearchBottomNavBarItem extends NavBottomNavBarItem {
 class MessagesBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/message.svg';
   String label = localizationInstance.messages;
+  MessageIndicatorCubit? indicator =
+      MessageIndicatorCubit(sl<ChatDatabaseCubit>().db.watchAllMessages());
   Widget screen = ChatListScreen(
     chatListCubit: sl<ChatListCubit>(),
     chatDatabaseCubit: sl<ChatDatabaseCubit>(),
@@ -85,6 +93,7 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
 class ServicesBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/services.svg';
   String label = localizationInstance.services;
+  MessageIndicatorCubit? indicator;
   Widget screen = ServiceListPageViewer(
       feedbackAnswerListCubit: sl<FeedbackAnswerListCubit>(),
       referencesPageCubit: sl<ReferencesPageCubit>(),
@@ -107,6 +116,7 @@ class ServicesBottomNavBarItem extends NavBottomNavBarItem {
 class MenuBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/menu.svg';
   String label = localizationInstance.menu;
+  MessageIndicatorCubit? indicator;
   Widget screen = SizedBox();
 
   void onTap(BuildContext context, Function onChanged, int index) {

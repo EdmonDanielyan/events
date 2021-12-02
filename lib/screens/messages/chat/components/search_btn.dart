@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/constants/aseets.dart';
 
 class MessageSearchBtn extends StatelessWidget {
   final void Function()? onPressed;
@@ -8,10 +10,7 @@ class MessageSearchBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: onPressed,
-      icon: Icon(
-        Icons.search,
-        size: 28,
-      ),
+      icon: SvgPicture.asset(SEARCH_ICON, color: Colors.white),
     );
   }
 }

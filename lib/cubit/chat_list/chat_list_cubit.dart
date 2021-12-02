@@ -13,6 +13,7 @@ class ChatListCubit extends Cubit<ChatListState> {
   }
 
   void setSearchValue(String value) {
+    value = value.trim();
     List<ChatTable> items = ChatListView.searchChats(value, state.chats);
     _emitSearchList(items, value);
   }

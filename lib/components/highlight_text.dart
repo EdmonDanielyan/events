@@ -15,7 +15,8 @@ class HighlightText extends StatelessWidget {
     required this.textStyle,
     this.overflow = TextOverflow.ellipsis,
     this.maxLines,
-    this.highlightTextStyle = const TextStyle(color: Colors.blue),
+    this.highlightTextStyle =
+        const TextStyle(color: Colors.blue, fontFamily: "Helvetica"),
   }) : super(key: key);
 
   @override
