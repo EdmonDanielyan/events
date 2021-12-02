@@ -170,10 +170,7 @@ class _ChatListTileState extends State<ChatListTile> {
 
   Widget _displayBody() {
     return ChatMessage(
-      displayName: _getDisplayName(),
-      message: lastMessage.message,
-      highlightValue: widget.highlightValue,
-    );
+        displayName: _getDisplayName(), message: lastMessage.message);
   }
 
   String? _getDisplayName() {

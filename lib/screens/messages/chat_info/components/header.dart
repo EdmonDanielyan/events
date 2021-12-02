@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
@@ -46,32 +47,42 @@ class ChatInfoHeader extends StatelessWidget {
             newChat = state.data!;
           }
 
-          return Row(
-            crossAxisAlignment:
-                isGroup ? CrossAxisAlignment.start : CrossAxisAlignment.center,
-            children: [
-              CustomCircleAvatar(
-                url: newChat.avatar,
-                name: newChat.name,
-              ),
-              SizedBox(width: 20.0),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    nameWidget(newChat.name),
-                    if (isGroup && chat.description.isNotEmpty) ...[
-                      SizedBox(height: 3.0),
-                      descriptionWidget(newChat.description),
-                    ],
-                    if (isGroup) ...[
-                      SizedBox(height: 3.0),
-                      countParticipantsWidget(),
-                    ]
-                  ],
+          return InkWell(
+            onTap: !isGroup
+                ? () => Navigator.of(context).pushNamed("/personal",
+                        arguments: {
+                          'id': chat.participantId,
+                          HIDE_BOTTOM_NAV_BAR_CODE: true
+                        })
+                : null,
+            child: Row(
+              crossAxisAlignment: isGroup
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.center,
+              children: [
+                CustomCircleAvatar(
+                  url: newChat.avatar,
+                  name: newChat.name,
                 ),
-              ),
-            ],
+                SizedBox(width: 20.0),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      nameWidget(newChat.name),
+                      if (isGroup && chat.description.isNotEmpty) ...[
+                        SizedBox(height: 3.0),
+                        descriptionWidget(newChat.description),
+                      ],
+                      if (isGroup) ...[
+                        SizedBox(height: 3.0),
+                        countParticipantsWidget(),
+                      ]
+                    ],
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),

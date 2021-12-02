@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/loader/error_loading_widget.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
+import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
+import 'package:ink_mobile/cubit/chat_list/chat_list_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
@@ -21,10 +23,12 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   final _contentPadding = EdgeInsets.symmetric(horizontal: 10);
   late ChatDatabaseCubit _chatDatabaseCubit;
+  late ChatListCubit _chatListCubit;
 
   @override
   Widget build(BuildContext context) {
     _chatDatabaseCubit = ChatListScreen.of(context).chatDatabaseCubit;
+    _chatListCubit = ChatListScreen.of(context).chatListCubit;
 
     return SingleChildScrollView(
       child: Column(
@@ -35,14 +39,13 @@ class _BodyState extends State<Body> {
             bloc: _chatDatabaseCubit,
             builder: (_context, state) {
               return StreamBuilder(
-                stream: state.searchValue.isNotEmpty
-                    ? state.db.searchChats(state.searchValue)
-                    : state.db.watchAllChats(),
+                stream: state.db.watchAllChats(),
                 builder: (context, AsyncSnapshot<List<ChatTable>> snapshot) {
                   if (snapshot.hasData) {
                     final items = snapshot.data ?? [];
-                    if (items.isNotEmpty || state.searchValue.isNotEmpty) {
-                      return _buildItems(items);
+                    if (items.isNotEmpty) {
+                      _chatListCubit.emitChats(items);
+                      return _buildItems();
                     } else {
                       return _noMessages();
                     }
@@ -58,45 +61,54 @@ class _BodyState extends State<Body> {
     );
   }
 
-  Widget _buildItems(List<ChatTable> items) {
-    items.sort((a, b) {
-      if (a.millisecondsSinceEpoch != null &&
-          b.millisecondsSinceEpoch != null) {
-        return b.millisecondsSinceEpoch!.compareTo(a.millisecondsSinceEpoch!);
-      }
-
-      return b.updatedAt.compareTo(a.updatedAt);
-    });
-
+  Widget _buildItems() {
     return Column(
       children: [
         SearchBar(
           contentPadding: _contentPadding,
-          onChanged: (val) => _chatDatabaseCubit.updateSearch(val),
+          onChanged: (val) => _chatListCubit.setSearchValue(val),
         ),
-        ListView.builder(
-          itemCount: items.length,
-          shrinkWrap: true,
-          controller: ScrollController(keepScrollOffset: false),
-          itemBuilder: (_, index) => StreamBuilder(
-            stream: _chatDatabaseCubit.db.watchChatMessages(items[index].id),
-            builder: (context, AsyncSnapshot<List<MessageWithUser>?> snapshot) {
-              if (snapshot.hasData) {
-                List<MessageWithUser> messagesWithUser = snapshot.data ?? [];
+        BlocBuilder<ChatListCubit, ChatListState>(
+            bloc: _chatListCubit,
+            builder: (context, state) {
+              List<ChatTable> chats = state.searchChats;
+              chats.sort((a, b) {
+                if (a.millisecondsSinceEpoch != null &&
+                    b.millisecondsSinceEpoch != null) {
+                  return b.millisecondsSinceEpoch!
+                      .compareTo(a.millisecondsSinceEpoch!);
+                }
 
-                return ChatListTile(
-                  highlightValue: _chatDatabaseCubit.searchVal,
-                  index: index,
-                  chat: items[index],
-                  contentPadding: _contentPadding,
-                  chatDatabaseCubit: _chatDatabaseCubit,
-                  messagesWithUser: messagesWithUser,
-                );
-              }
-              return SizedBox();
-            },
-          ),
-        ),
+                return b.updatedAt.compareTo(a.updatedAt);
+              });
+
+              return ListView.builder(
+                itemCount: chats.length,
+                shrinkWrap: true,
+                controller: ScrollController(keepScrollOffset: false),
+                itemBuilder: (_, index) => StreamBuilder(
+                  stream:
+                      _chatDatabaseCubit.db.watchChatMessages(chats[index].id),
+                  builder: (context,
+                      AsyncSnapshot<List<MessageWithUser>?> snapshot) {
+                    if (snapshot.hasData) {
+                      List<MessageWithUser> messagesWithUser =
+                          snapshot.data ?? [];
+
+                      return ChatListTile(
+                        highlightValue: state.searchValue,
+                        index: index,
+                        chat: chats[index],
+                        contentPadding: _contentPadding,
+                        chatDatabaseCubit: _chatDatabaseCubit,
+                        messagesWithUser: messagesWithUser,
+                      );
+                    }
+                    return SizedBox();
+                  },
+                ),
+              );
+            }),
       ],
     );
   }

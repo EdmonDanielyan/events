@@ -87,11 +87,8 @@ class _NewChatScreenState extends State<NewChatScreen> {
                       SizedBox(height: 10),
                       SearchField(
                         hint: _strings.searchHint,
-                        onChanged: (val) {
-                          if (val.length >= 3) {
-                            chatPersonListCubit.setSearchValue(val);
-                          }
-                        },
+                        onChanged: (val) =>
+                            chatPersonListCubit.setSearchValue(val),
                       ),
                       SizedBox(height: 20),
                       Expanded(child: getChildWidget(personCubitState)),
