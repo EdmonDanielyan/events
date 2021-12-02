@@ -1,7 +1,9 @@
+import 'package:fixnum/fixnum.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
-import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
+import 'package:ink_mobile/functions/chat/sender/message_sender.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -12,24 +14,24 @@ import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
-import 'package:fixnum/fixnum.dart';
 import 'package:ink_mobile/providers/notifications.dart';
 
 import 'all.dart';
 
+@injectable
 class ChatMessageListener {
   final MessageProvider messageProvider;
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
-  final ChatSendMessage chatSendMessage;
+  final MessageSender messageSender;
 
   const ChatMessageListener({
     required this.messageProvider,
     required this.natsProvider,
     required this.userFunctions,
     required this.chatDatabaseCubit,
-    required this.chatSendMessage,
+    required this.messageSender,
   });
 
   Debouncer get _debouncer => Debouncer(milliseconds: 400);
@@ -82,7 +84,7 @@ class ChatMessageListener {
         await userFunctions.insertUser(fields.user);
         await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
             .addMessage(newMessage);
-        await UseMessageProvider.messageProvider?.saveChats(newChat: null);
+        await UseMessageProvider.messageProvider?.chatSaver.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;
@@ -120,7 +122,7 @@ class ChatMessageListener {
     MessageStatus status = success ? MessageStatus.SENT : MessageStatus.ERROR;
     await messageProvider.chatFunctions.updateMessageStatus(message, status);
 
-    messageProvider.saveChats(newChat: null);
+    messageProvider.chatSaver.saveChats(newChat: null);
   }
 
   Future<bool> sendTxtMessage(
@@ -128,7 +130,7 @@ class ChatMessageListener {
     MessageTable message, {
     UserTable? user,
   }) async {
-    return await chatSendMessage.sendTextMessage(
+    return await messageSender.sendTextMessage(
       natsProvider.getGroupTextChannelById(chat.id),
       chat,
       message,

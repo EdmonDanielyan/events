@@ -1,4 +1,5 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
@@ -13,6 +14,7 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../user_functions.dart';
 
+@injectable
 class ChatJoinedListener {
   final MessageProvider messageProvider;
   final NatsProvider natsProvider;
@@ -58,7 +60,7 @@ class ChatJoinedListener {
         await userFunctions.addParticipants(
             ChatUserViewModel.toParticipants(users, chat), chat);
         setMessage(users, chat);
-        await UseMessageProvider.messageProvider?.saveChats(newChat: null);
+        await UseMessageProvider.messageProvider?.chatSaver.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;
@@ -82,12 +84,12 @@ class ChatJoinedListener {
 
   Future<bool> sendUserJoinedMessage(
       ChatTable chat, List<UserTable> users) async {
-    bool send = await messageProvider.chatSendMessage.sendUserJoinedMessage(
+    bool send = await messageProvider.messageSender.sendUserJoinedMessage(
       natsProvider.getGroupJoinedChannelById(chat.id),
       chat: chat,
       users: users,
     );
-    messageProvider.saveChats(newChat: null);
+    messageProvider.chatSaver.saveChats(newChat: null);
     return send;
   }
 }

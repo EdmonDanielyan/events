@@ -1,5 +1,8 @@
 import 'dart:async';
 
+// ignore: implementation_imports
+import 'package:dart_nats_streaming/src/data_message.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
@@ -12,12 +15,10 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
-// ignore: implementation_imports
-import 'package:dart_nats_streaming/src/data_message.dart';
-
 import '../chat_creation.dart';
 import 'all.dart';
 
+@injectable
 class ChatListListener {
   final NatsProvider natsProvider;
   final ChatDatabaseCubit chatDatabaseCubit;
@@ -81,7 +82,7 @@ class ChatListListener {
       await _insertParticipants(participants, chats);
       await _insertChannels(channels);
 
-      await UseMessageProvider.messageProvider?.saveChats(newChat: null);
+      await UseMessageProvider.messageProvider?.chatSaver.saveChats(newChat: null);
     } on NoConnectionException {
       return;
     } on NoSuchMethodError {

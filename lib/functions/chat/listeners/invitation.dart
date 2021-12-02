@@ -1,7 +1,9 @@
+import 'package:fixnum/fixnum.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
-import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
+import 'package:ink_mobile/functions/chat/sender/message_sender.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
@@ -9,22 +11,17 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
-import 'package:fixnum/fixnum.dart';
 
 import 'all.dart';
 
+@injectable
 class ChatInvitationListener {
-  final MessageProvider messageProvider;
   final NatsProvider natsProvider;
-  final ChatSendMessage chatSendMessage;
+  final MessageSender messageSender;
   final ChatDatabaseCubit chatDatabaseCubit;
 
-  ChatInvitationListener({
-    required this.messageProvider,
-    required this.natsProvider,
-    required this.chatSendMessage,
-    required this.chatDatabaseCubit,
-  });
+  ChatInvitationListener(this.natsProvider, this.messageSender, this.chatDatabaseCubit);
+
   NatsListener get natsListener {
     if (!natsProvider.isConnected) {
       throw NoConnectionException();
@@ -62,7 +59,7 @@ class ChatInvitationListener {
 
       await ChatCreation(chatDatabaseCubit)
           .createDynamically(chat, fields.users);
-      await UseMessageProvider.messageProvider?.saveChats(newChat: chat);
+      await UseMessageProvider.messageProvider?.chatSaver.saveChats(newChat: chat);
 
       _chatLinkedListeners(chat.id);
     } on NoSuchMethodError {
@@ -77,7 +74,7 @@ class ChatInvitationListener {
   Future<void> sendInvitations(ChatTable chat, List<UserTable> users) async {
     for (final user in users) {
       if (user.id != JwtPayload.myId) {
-        await chatSendMessage.inviteUser(
+        await messageSender.inviteUser(
           user: user,
           chat: chat,
           chatChannel: natsProvider.getGroupTextChannelById(chat.id),

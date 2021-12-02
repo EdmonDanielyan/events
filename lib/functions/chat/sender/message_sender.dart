@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -13,10 +14,11 @@ import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
-class ChatSendMessage {
+@injectable
+class MessageSender {
   final NatsProvider natsProvider;
 
-  const ChatSendMessage(this.natsProvider);
+  const MessageSender(this.natsProvider);
 
   Future<void> saveToPrivateUserChatIdList({
     required int userId,

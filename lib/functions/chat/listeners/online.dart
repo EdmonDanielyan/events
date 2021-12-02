@@ -1,25 +1,30 @@
 import 'dart:async';
 
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
+import 'package:ink_mobile/functions/chat/sender/message_sender.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/online.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/debouncer.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../user_functions.dart';
 
+@injectable
 class UserOnlineListener {
   late Timer userOnlineTimer;
   static Set<int> subscribedUsers = {};
 
-  final MessageProvider messageProvider;
+  //final MessageProvider messageProvider;
   final NatsProvider natsProvider;
   final ChatDatabaseCubit chatDatabaseCubit;
+
+  final MessageSender messageSender;
+
   UserOnlineListener({
-    required this.messageProvider,
+    required this.messageSender,
     required this.natsProvider,
     required this.chatDatabaseCubit,
   });
@@ -81,7 +86,7 @@ class UserOnlineListener {
 
   void _sendOnline(String channel, UserTable user) {
     if (natsProvider.isConnected) {
-      messageProvider.chatSendMessage.sendUserOnlinePing(channel, user);
+      messageSender.sendUserOnlinePing(channel, user);
     }
   }
 

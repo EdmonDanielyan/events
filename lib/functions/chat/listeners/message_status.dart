@@ -1,4 +1,5 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
@@ -11,6 +12,7 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
+@injectable
 class MessageStatusListener {
   final NatsProvider natsProvider;
   final ChatFunctions chatFunctions;
@@ -47,7 +49,7 @@ class MessageStatusListener {
       if (fields.senderId != JwtPayload.myId) {
         List<MessageTable> messages = fields.messages;
         messagesToRead(messages, chatFunctions);
-        await UseMessageProvider.messageProvider?.saveChats(newChat: null);
+        await UseMessageProvider.messageProvider?.chatSaver.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;

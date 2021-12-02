@@ -1,8 +1,10 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/listeners/all.dart';
+import 'package:ink_mobile/functions/chat/sender/message_sender.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
@@ -13,13 +15,18 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 import '../send_message.dart';
 import '../user_functions.dart';
 
+@injectable
 class ChatLeftListener {
-  final MessageProvider messageProvider;
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
+  final ChatSaver chatSaver;
+  final MessageSender messageSender;
+
   ChatLeftListener({
-    required this.messageProvider,
+    // required this.messageProvider,
+    required this.messageSender,
+    required this.chatSaver,
     required this.natsProvider,
     required this.userFunctions,
     required this.chatDatabaseCubit,
@@ -60,7 +67,7 @@ class ChatLeftListener {
         await userFunctions.deleteParticipants(participants, chat);
 
         setMessage(users, chat);
-        await UseMessageProvider.messageProvider?.saveChats(newChat: null);
+        await UseMessageProvider.messageProvider?.chatSaver.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;
@@ -83,12 +90,12 @@ class ChatLeftListener {
   }
 
   Future<void> sendLeftMessage(ChatTable chat) async {
-    await messageProvider.chatSendMessage.sendUserLeftMessage(
+    await messageSender.sendUserLeftMessage(
       natsProvider.getGroupLeftChannelById(chat.id),
       chat: chat,
       users: [UserFunctions.getMe],
     );
     await natsListener.unSubscribeOnChatDelete(chat.id);
-    await messageProvider.saveChats(newChat: null);
+    await chatSaver.saveChats(newChat: null);
   }
 }

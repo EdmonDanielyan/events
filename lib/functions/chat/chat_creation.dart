@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -8,7 +9,9 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/person_list_params.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/setup.dart';
 
+@injectable
 class ChatCreation {
   final ChatDatabaseCubit chatDatabaseCubit;
 
@@ -36,7 +39,7 @@ class ChatCreation {
   Future<ChatTable> createGroupThroughNats(
       {required String name, required List<UserTable> users}) async {
     users.insert(0, UserFunctions.getMe);
-    final chat = await ChatCreation(chatDatabaseCubit)
+    final chat = await sl<ChatCreation>()
         .createGroup(name: name, avatar: "", users: users);
     _afterNatsChatCreation(chat, users);
     return chat;
@@ -49,7 +52,7 @@ class ChatCreation {
       messageProvider.natsListener.subscribeOnChatCreate(chat.id);
 
       await messageProvider.chatInvitationListener.sendInvitations(chat, users);
-      await messageProvider.saveChats(newChat: null);
+      await messageProvider.chatSaver.saveChats(newChat: null);
     }
   }
 

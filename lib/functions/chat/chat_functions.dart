@@ -1,11 +1,12 @@
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/listeners/message_status.dart';
-import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 
+@injectable
 class ChatFunctions {
   final ChatDatabaseCubit chatDatabaseCubit;
 
@@ -55,11 +56,11 @@ class ChatFunctions {
       String chatId = messages.last.chatId;
       final channel =
           messageProvider.natsProvider.getGroupReactedChannelById(chatId);
-      bool send = await messageProvider.chatSendMessage
+      bool send = await messageProvider.messageSender
           .sendMessageStatus(channel, messages);
       await MessageStatusListener.messagesToRead(
           messages, messageProvider.chatFunctions);
-      messageProvider.saveChats(newChat: null);
+      messageProvider.chatSaver.saveChats(newChat: null);
       return send;
     }
     return false;
@@ -71,7 +72,7 @@ class ChatFunctions {
       final messageProvider = UseMessageProvider.messageProvider!;
       final channel =
           messageProvider.natsProvider.getGroupTextingChannelById(chatId);
-      bool send = await messageProvider.chatSendMessage.sendTextingMessage(
+      bool send = await messageProvider.messageSender.sendTextingMessage(
           channel,
           customTexting: customTexting,
           chatId: chatId);

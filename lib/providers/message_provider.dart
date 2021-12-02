@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/functions/chat/channel_functions.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/all.dart';
@@ -11,13 +13,12 @@ import 'package:ink_mobile/functions/chat/listeners/chat_info.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat_list.dart';
 import 'package:ink_mobile/functions/chat/listeners/delete_message.dart';
 import 'package:ink_mobile/functions/chat/listeners/invitation.dart';
-import 'package:ink_mobile/functions/chat/channel_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/joined.dart';
 import 'package:ink_mobile/functions/chat/listeners/left.dart';
 import 'package:ink_mobile/functions/chat/listeners/message_status.dart';
 import 'package:ink_mobile/functions/chat/listeners/online.dart';
 import 'package:ink_mobile/functions/chat/listeners/texting.dart';
-import 'package:ink_mobile/functions/chat/sender/send_system_message.dart';
+import 'package:ink_mobile/functions/chat/sender/message_sender.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -33,10 +34,10 @@ class UseMessageProvider {
 
   static Future<bool> initMessageProvider(
       ChatDatabaseCubit chatDatabaseCubit) async {
-    final natsProvider = await _initNatsProvider();
-    messageProvider = MessageProvider(natsProvider, chatDatabaseCubit);
+    await _initNatsProvider();
+    messageProvider = sl<MessageProvider>();
     initialized = true;
-    messageProvider!.init();
+    await messageProvider!.init();
     return true;
   }
 
@@ -52,15 +53,16 @@ class UseMessageProvider {
   }
 }
 
+@lazySingleton
 class MessageProvider {
   final ChatDatabaseCubit chatDatabaseCubit;
   final NatsProvider natsProvider;
   late ChatFunctions chatFunctions;
   late ChatInvitationListener chatInvitationListener;
   late ChatMessageListener chatMessageListener;
-  late ChatSendMessage chatSendMessage;
+  late MessageSender messageSender;
   late ChatCreation chatCreation;
-  late UserFunctions userFunctions;
+  final UserFunctions userFunctions;
   late NatsListener natsListener;
   late ChannelFunctions channelFunctions;
   late MessageStatusListener messageStatusListener;
@@ -71,69 +73,34 @@ class MessageProvider {
   late ChatInfoListener chatInfoListener;
   late UserOnlineListener userOnlineListener;
   late ChatListListener chatListListener;
-  late ChatCubit chatCubit;
+  final ChatCubit chatCubit;
+  late ChatSaver chatSaver;
 
-  MessageProvider(this.natsProvider, this.chatDatabaseCubit) {
-    this.chatCubit = sl<ChatCubit>();
-    this.userFunctions = UserFunctions(chatDatabaseCubit);
-    this.channelFunctions = ChannelFunctions(chatDatabaseCubit);
-    this.chatFunctions = ChatFunctions(chatDatabaseCubit);
-    this.chatSendMessage = ChatSendMessage(natsProvider);
-    this.chatListListener = ChatListListener(
-      natsProvider: natsProvider,
-      chatDatabaseCubit: chatDatabaseCubit,
-      userFunctions: userFunctions,
-      channelFunctions: channelFunctions,
-    );
-    this.userOnlineListener = UserOnlineListener(
-      messageProvider: this,
-      natsProvider: natsProvider,
-      chatDatabaseCubit: chatDatabaseCubit,
-    );
-    this.messageDeletedListener = MessageDeletedListener(
-      messageProvider: this,
-      natsProvider: natsProvider,
-      chatFunctions: chatFunctions,
-    );
-    this.chatInfoListener = ChatInfoListener(
-      messageProvider: this,
-      natsProvider: natsProvider,
-      chatDatabaseCubit: chatDatabaseCubit,
-    );
-    this.chatJoinedListener = ChatJoinedListener(
-      messageProvider: this,
-      natsProvider: natsProvider,
-      userFunctions: userFunctions,
-      chatDatabaseCubit: chatDatabaseCubit,
-    );
-    this.chatLeftListener = ChatLeftListener(
-      messageProvider: this,
-      natsProvider: natsProvider,
-      userFunctions: userFunctions,
-      chatDatabaseCubit: chatDatabaseCubit,
-    );
-    this.messageStatusListener = MessageStatusListener(
-      natsProvider: natsProvider,
-      chatFunctions: chatFunctions,
-    );
-    this.messageTextingListener = MessageTextingListener(
-      natsProvider: natsProvider,
-      chatDatabaseCubit: chatDatabaseCubit,
-      chatCubit: chatCubit,
-    );
-    this.chatMessageListener = ChatMessageListener(
-      natsProvider: natsProvider,
-      userFunctions: userFunctions,
-      chatDatabaseCubit: chatDatabaseCubit,
-      chatSendMessage: chatSendMessage,
-      messageProvider: this,
-    );
-    this.chatInvitationListener = ChatInvitationListener(
-      messageProvider: this,
-      natsProvider: natsProvider,
-      chatSendMessage: chatSendMessage,
-      chatDatabaseCubit: chatDatabaseCubit,
-    );
+  MessageProvider(this.natsProvider, this.chatDatabaseCubit, this.chatCubit, this.userFunctions);
+
+  bool natsLoaded = false;
+  int connectionsCount = 0;
+
+  Future<void> init() async {
+    this.chatSaver = sl();
+    this.channelFunctions = sl();
+    this.chatFunctions = sl();
+    this.messageSender = sl();
+
+    this.chatListListener = sl();
+
+    this.userOnlineListener = sl();
+    this.messageDeletedListener = sl();
+
+    this.chatInfoListener = sl();
+    this.chatJoinedListener = sl();
+
+    this.chatLeftListener = sl();
+
+    this.messageStatusListener = sl();
+    this.messageTextingListener = sl();
+    this.chatMessageListener = sl();
+    this.chatInvitationListener = sl();
     this.natsListener = NatsListener(
       natsProvider: natsProvider,
       channelFunctions: channelFunctions,
@@ -147,13 +114,7 @@ class MessageProvider {
       chatInfoListener: chatInfoListener,
       chatListListener: chatListListener,
     );
-    this.chatCreation = ChatCreation(chatDatabaseCubit);
-  }
-
-  bool natsLoaded = false;
-  int connectionsCount = 0;
-
-  Future<void> init() async {
+    this.chatCreation = sl();
     _listenToConnection();
     natsLoaded = await natsProvider.load();
   }
@@ -217,6 +178,18 @@ class MessageProvider {
     await userOnlineListener.listenTo(user);
   }
 
+
+}
+
+
+@injectable
+class ChatSaver {
+
+  final ChatDatabaseCubit chatDatabaseCubit;
+  final MessageSender messageSender;
+
+  ChatSaver(this.chatDatabaseCubit, this.messageSender);
+
   Future<void> saveChats({
     required ChatTable? newChat,
     List<ChatTable>? chats,
@@ -238,7 +211,7 @@ class MessageProvider {
       chats.add(newChat);
     }
 
-    await chatSendMessage.saveToPrivateUserChatIdList(
+    await messageSender.saveToPrivateUserChatIdList(
       userId: userId ?? JwtPayload.myId,
       users: users,
       chats: chats,
