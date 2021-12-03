@@ -21,7 +21,7 @@ class ContactsNetworkRequest extends ContactsRequestDependency {
         .getContacts(
             search: query!.length < 3 ? null : query,
             pageNumber: 1,
-            countOnPage: 10)
+            countOnPage: 70)
         .timeout(Duration(seconds: 4));
     return response;
   }

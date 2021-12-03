@@ -102,10 +102,17 @@ class MessageListView {
     return search;
   }
 
-  static int unreadMessages(List<MessageWithUser> items) =>
+  static int unreadMessagesByMessageWithUser(List<MessageWithUser> items) =>
       items.fold(0, (previousValue, element) {
         return element.message!.status != MessageStatus.READ &&
                 !isByMe(element.message!)
+            ? previousValue + 1
+            : previousValue + 0;
+      });
+
+  static int unreadMessagesByMessages(List<MessageTable> items) =>
+      items.fold(0, (previousValue, element) {
+        return element.status != MessageStatus.READ && !isByMe(element)
             ? previousValue + 1
             : previousValue + 0;
       });

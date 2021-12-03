@@ -68,6 +68,8 @@ class ChatDatabase extends _$ChatDatabase {
       (delete(chatTables)..where((tbl) => tbl.id.equals(id))).go();
 
   //MESSAGES
+  Stream<List<MessageTable>> watchAllMessages() =>
+      (select(messageTables)).watch();
   Future<List<MessageTable>> getAllMessages() => select(messageTables).get();
   Future<MessageTable?> selectMessageById(String id) =>
       (select(messageTables)..where((tbl) => tbl.id.equals(id)))

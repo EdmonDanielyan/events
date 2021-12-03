@@ -12,7 +12,8 @@ class ChatMessageTrailing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int unreadMessages = MessageListView.unreadMessages(messagesWithUser);
+    int unreadMessages =
+        MessageListView.unreadMessagesByMessageWithUser(messagesWithUser);
     return Container(
       child: unreadMessages > 0
           ? ChatCount(count: unreadMessages)

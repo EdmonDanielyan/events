@@ -53,6 +53,7 @@ class ChatCubit extends Cubit<ChatCubitState> {
   }
 
   void emitSearchValue(String value) {
+    value = value.trim();
     List<MessageTable> searchedMessages =
         MessageListView.searchMessagesByStr(value, getMessages);
 

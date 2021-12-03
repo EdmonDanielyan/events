@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/functions/new_bottom_nav_bar_items.dart';
+import 'package:ink_mobile/components/new_bottom_nav_bar/nav_bar_indicator.dart';
 
 class NewBottomNavBarMixin {
   static List<NavBottomNavBarItem> navBottomNavBarItems = [
@@ -29,15 +30,29 @@ class NewBottomNavBarMixin {
   static BottomNavigationBarItem _buildNewBottomNavItem(
       NavBottomNavBarItem item) {
     return BottomNavigationBarItem(
-      icon: Container(
-        height: 25,
-        child: SvgPicture.asset(
-          item.icon,
-        ),
+      icon: Stack(
+        children: [
+          Container(
+            height: 25,
+            child: SvgPicture.asset(
+              item.icon,
+            ),
+          ),
+          item.indicator != null
+              ? NavBarIndicator(indicatorCubit: item.indicator!)
+              : SizedBox()
+        ],
       ),
-      activeIcon: Container(
-        height: 25,
-        child: SvgPicture.asset(item.icon, color: Color(0xff12512a)),
+      activeIcon: Stack(
+        children: [
+          Container(
+            height: 25,
+            child: SvgPicture.asset(item.icon, color: Color(0xff12512a)),
+          ),
+          item.indicator != null
+              ? NavBarIndicator(indicatorCubit: item.indicator!)
+              : SizedBox()
+        ],
       ),
       label: item.label,
     );

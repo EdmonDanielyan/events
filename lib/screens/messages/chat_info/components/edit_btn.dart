@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/edit_screen.dart';
@@ -16,7 +17,7 @@ class ChatInfoEditBtn extends StatelessWidget {
           chatDatabaseCubit: ChatInfoScreen.of(context).chatDatabaseCubit,
         ),
       ),
-      icon: Icon(Icons.edit),
+      icon: Icon(CupertinoIcons.pencil),
     );
   }
 }
