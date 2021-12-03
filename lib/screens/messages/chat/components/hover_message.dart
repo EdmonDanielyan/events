@@ -88,7 +88,7 @@ class HoverMessage extends StatelessWidget {
     );
   }
 
-  PopupMenuItem<String> menuItem(SelectMessageMenu e) {
+  static PopupMenuItem<String> menuItem(SelectMessageMenu e) {
     return PopupMenuItem(
       value: e.name,
       child: Row(

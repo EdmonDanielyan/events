@@ -8,7 +8,7 @@ class ChatDate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      DateFunctions(passedDate: chatDate).displayDate(),
+      DateFunctions(passedDate: chatDate).displayTimeForTodayOrDate(),
       style: TextStyle(color: Colors.grey, fontSize: 13.0),
     );
   }

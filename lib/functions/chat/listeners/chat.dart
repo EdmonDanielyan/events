@@ -108,7 +108,7 @@ class ChatMessageListener {
     if (myChat != null && !myChat.notificationsOn!) {
       showNotification = false;
     }
-    print(selectedChat != null && selectedChat.id == chatId);
+
     if (selectedChat != null && selectedChat.id == chatId) {
       showNotification = false;
     }

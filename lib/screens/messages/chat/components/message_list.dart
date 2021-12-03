@@ -7,6 +7,7 @@ import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/date_sort.dart';
 import 'package:ink_mobile/functions/message_mixins.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/screens/messages/chat/components/date_widget.dart';
@@ -85,8 +86,11 @@ class MessageList extends StatelessWidget with MessageMixins {
                         );
                       },
                     );
+                  } else {
+                    return _noMessages();
                   }
                 }
+
                 return SizedBox();
               },
             ),
@@ -140,6 +144,20 @@ class MessageList extends StatelessWidget with MessageMixins {
 
         return SizedBox();
       },
+    );
+  }
+
+  Widget _noMessages() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+          child: Text(
+        localizationInstance.noMessages,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 17.0,
+        ),
+      )),
     );
   }
 }

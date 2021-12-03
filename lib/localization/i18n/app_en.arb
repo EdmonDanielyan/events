@@ -193,6 +193,8 @@
     "admin": "Admin",
     "edit": "Edit",
     "cancel": "Cancel",
+    "cancelHint": "Are you sure you want to delete?",
+    "yes": "Yes",
     "ready": "Ready",
     "sendOn": "Forward",
     "copy": "Copy",

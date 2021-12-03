@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/alert/loading.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
+import 'package:ink_mobile/components/popup/popup_menu_container.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
@@ -8,7 +10,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/participant_with_user.dart';
+import 'package:ink_mobile/models/chat/select_menu.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/screens/messages/chat/components/hover_message.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/btn_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/participant_card.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
@@ -28,6 +32,17 @@ class ChatInfoParticipants extends StatelessWidget {
   static late SelectableCubit<UserTable> _selectableCubit;
 
   bool get iAmOwner => ChatListView.isOwner(chat);
+
+  Future<void> _deleteParticipant(BuildContext context, UserTable user) async {
+    if (UseMessageProvider.initialized) {
+      CustomAlertLoading(context).call();
+      final messageProvider = UseMessageProvider.messageProvider;
+      await messageProvider?.chatLeftListener
+          .sendLeftMessage(chat, unsubFromChat: false, users: [user]);
+
+      Navigator.of(context).pop();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +74,11 @@ class ChatInfoParticipants extends StatelessWidget {
       hideIds: ParticipantWithUserListView.getUserIds(participants),
       onSubmit: _onSubmit,
     );
+  }
+
+  void _onParticipantTap(BuildContext context, int userId) {
+    Navigator.of(context).pushNamed("/personal",
+        arguments: {'id': userId, HIDE_BOTTOM_NAV_BAR_CODE: true});
   }
 
   void _onSubmit(BuildContext context) async {
@@ -111,16 +131,22 @@ class ChatInfoParticipants extends StatelessWidget {
             return Column(
               children: [
                 InkWell(
-                  onTap: () => Navigator.of(context).pushNamed("/personal",
-                      arguments: {
-                        'id': user.id,
-                        HIDE_BOTTOM_NAV_BAR_CODE: true
-                      }),
-                  child: ParticipantCard(
-                    user: user,
-                    trailingLable: ChatListView.isOwner(chat, myId: user.id)
-                        ? _strings.owner
-                        : "",
+                  onTap: () => _onParticipantTap(context, user.id),
+                  child: PopupMenuContainer<String>(
+                    blurBackground: false,
+                    items: SelectParticipantMenuList.getStandartList()
+                        .map((e) => HoverMessage.menuItem(e))
+                        .toList(),
+                    onItemSelected: (value) async {
+                      if (value == _strings.delete)
+                        _deleteParticipant(context, participants[index].user!);
+                    },
+                    child: ParticipantCard(
+                      user: user,
+                      trailingLable: ChatListView.isOwner(chat, myId: user.id)
+                          ? _strings.owner
+                          : "",
+                    ),
                   ),
                 ),
                 if (index != participants.length - 1) ...[

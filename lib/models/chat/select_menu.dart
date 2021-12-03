@@ -52,3 +52,19 @@ class SelectMessageMenuList {
     ];
   }
 }
+
+class SelectParticipantMenuList {
+  static List<SelectMessageMenu> getStandartList() {
+    final strings = localizationInstance;
+    double iconSize = 18.0;
+    return [
+      SelectMessageMenu(
+        name: strings.delete,
+        icon: Icon(
+          Icons.delete,
+          size: iconSize,
+        ),
+      )
+    ];
+  }
+}
