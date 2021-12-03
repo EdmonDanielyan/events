@@ -1,4 +1,5 @@
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter/material.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
@@ -7,9 +8,12 @@ import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
+import '../../../app.dart';
+import '../chat_functions.dart';
 import '../send_message.dart';
 import '../user_functions.dart';
 
@@ -17,11 +21,13 @@ class ChatLeftListener {
   final MessageProvider messageProvider;
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
+  final ChatFunctions chatFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
   ChatLeftListener({
     required this.messageProvider,
     required this.natsProvider,
     required this.userFunctions,
+    required this.chatFunctions,
     required this.chatDatabaseCubit,
   });
 
@@ -54,17 +60,36 @@ class ChatLeftListener {
       final chat = fields.chat;
 
       if (users.isNotEmpty) {
-        final participants = ChatUserViewModel.toParticipants(users, chat);
-        print("PARTICIPANTS");
-        print(participants);
-        await userFunctions.deleteParticipants(participants, chat);
-
-        setMessage(users, chat);
+        final me = await _deleteIfItsMe(users, chat);
+        if (!me) {
+          final participants = ChatUserViewModel.toParticipants(users, chat);
+          await userFunctions.deleteParticipants(participants, chat);
+          setMessage(users, chat);
+        }
         await UseMessageProvider.messageProvider?.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;
     }
+  }
+
+  Future<bool> _deleteIfItsMe(List<UserTable> users, ChatTable chat) async {
+    for (final user in users) {
+      if (user.id == JwtPayload.myId) {
+        chatFunctions.deleteAllChatMessages(chat.id);
+        chatFunctions.deleteChat(chat.id);
+        unsubscribeOnChatDelete(chat.id);
+        final selectedChat = chatDatabaseCubit.selectedChat;
+
+        if (selectedChat != null &&
+            selectedChat.id == chat.id &&
+            App.getContext != null) {
+          Navigator.of(App.getContext!).popUntil((route) => route.isFirst);
+        }
+        return true;
+      }
+    }
+    return false;
   }
 
   Future<void> setMessage(List<UserTable> users, ChatTable chat) async {
@@ -82,13 +107,22 @@ class ChatLeftListener {
     }
   }
 
-  Future<void> sendLeftMessage(ChatTable chat) async {
-    await messageProvider.chatSendMessage.sendUserLeftMessage(
+  Future<bool> sendLeftMessage(ChatTable chat,
+      {List<UserTable>? users, bool unsubFromChat = true}) async {
+    bool msg = await messageProvider.chatSendMessage.sendUserLeftMessage(
       natsProvider.getGroupLeftChannelById(chat.id),
       chat: chat,
-      users: [UserFunctions.getMe],
+      users: users ?? [UserFunctions.getMe],
     );
-    await natsListener.unSubscribeOnChatDelete(chat.id);
+    if (unsubFromChat) {
+      await unsubscribeOnChatDelete(chat.id);
+    }
     await messageProvider.saveChats(newChat: null);
+
+    return msg;
+  }
+
+  Future<void> unsubscribeOnChatDelete(String chatId) async {
+    await natsListener.unSubscribeOnChatDelete(chatId);
   }
 }

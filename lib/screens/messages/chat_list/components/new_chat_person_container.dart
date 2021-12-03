@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/participant_card.dart';
+import 'package:ink_mobile/screens/messages/chat_list/entities/new_chat_screen_params.dart';
 
 class NewChatPersonContainer extends StatelessWidget {
   final UserTable user;
@@ -9,6 +10,7 @@ class NewChatPersonContainer extends StatelessWidget {
   final String highlightTxt;
   final double avatarSize;
   final Function(bool)? onChanged;
+  final NewChatScreenParams newChatScreenParams;
   const NewChatPersonContainer({
     Key? key,
     this.enabled = false,
@@ -17,6 +19,7 @@ class NewChatPersonContainer extends StatelessWidget {
     this.titleGap = 15.0,
     this.avatarSize = 40.0,
     this.onChanged,
+    required this.newChatScreenParams,
   }) : super(key: key);
 
   @override
@@ -26,13 +29,18 @@ class NewChatPersonContainer extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: ParticipantCard(
-              highlightTxt: highlightTxt,
-              user: user,
-              horizontalPadding: 0.0,
-              avatarSize: avatarSize,
-              titleGap: titleGap,
-              indicatorIsOn: false,
+            child: InkWell(
+              onTap: newChatScreenParams.onUserTap != null
+                  ? () => newChatScreenParams.onUserTap!(context, user)
+                  : null,
+              child: ParticipantCard(
+                highlightTxt: highlightTxt,
+                user: user,
+                horizontalPadding: 0.0,
+                avatarSize: avatarSize,
+                titleGap: titleGap,
+                indicatorIsOn: false,
+              ),
             ),
           ),
           Radio<bool>(

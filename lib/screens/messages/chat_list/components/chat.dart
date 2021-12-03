@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/alert/loading.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
@@ -15,6 +16,7 @@ import 'package:ink_mobile/screens/messages/chat_list/components/chat_divider.da
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message_trailing.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_name.dart';
+import 'package:swipe_to/swipe_to.dart';
 
 class ChatListTile extends StatefulWidget {
   final String highlightValue;
@@ -69,74 +71,91 @@ class _ChatListTileState extends State<ChatListTile> {
     }
   }
 
+  Future<void> _deleteChat(BuildContext context) async {
+    CustomAlertLoading(context).call();
+    if (UseMessageProvider.initialized) {
+      final chat = widget.chat;
+      await UseMessageProvider.messageProvider?.chatLeftListener
+          .sendLeftMessage(chat);
+      UseMessageProvider.messageProvider?.chatFunctions.deleteChat(chat.id);
+    }
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: InkWell(
-        onTap: () =>
-            OpenChat(widget.chatDatabaseCubit, widget.chat).call(context),
-        child: Container(
-          padding: widget.contentPadding,
-          margin: EdgeInsets.only(bottom: 7.0, top: 7.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _avatarWidget(),
-                  SizedBox(width: widget.leadingGap),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ChatName(
-                                name: widget.chat.name,
-                                highlightValue: widget.highlightValue,
-                              ),
-                            ),
-                            SizedBox(width: 2.0),
-                            if (hasMessage) ...[
-                              ChatDate(chatDate: lastMessage.created!),
-                            ],
-                          ],
-                        ),
-                        SizedBox(height: 5.0),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            if (hasMessage) ...[
+      child: SwipeTo(
+        onLeftSwipe: () => _deleteChat(context),
+        leftSwipeWidget: Icon(Icons.delete, color: Colors.red),
+        child: InkWell(
+          onTap: () =>
+              OpenChat(widget.chatDatabaseCubit, widget.chat).call(context),
+          child: Container(
+            padding: widget.contentPadding,
+            margin: EdgeInsets.only(bottom: 7.0, top: 7.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _avatarWidget(),
+                    SizedBox(width: widget.leadingGap),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
                               Expanded(
-                                child: _displayBody(),
+                                child: ChatName(
+                                  name: widget.chat.name,
+                                  highlightValue: widget.highlightValue,
+                                ),
                               ),
-                              ChatMessageTrailing(
-                                  messagesWithUser: widget.messagesWithUser),
+                              SizedBox(width: 2.0),
+                              if (hasMessage) ...[
+                                ChatDate(chatDate: lastMessage.created!),
+                              ],
                             ],
-                          ],
-                        ),
-                        SizedBox(height: 10.0)
-                      ],
+                          ),
+                          SizedBox(height: 5.0),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              if (hasMessage) ...[
+                                Expanded(
+                                  child: _displayBody(),
+                                ),
+                                ChatMessageTrailing(
+                                    messagesWithUser: widget.messagesWithUser),
+                              ],
+                            ],
+                          ),
+                          SizedBox(height: 10.0)
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    height: 0.0,
-                    child: Opacity(
-                        child: CustomCircleAvatar(url: widget.chat.avatar),
-                        opacity: 0.0),
-                  ),
-                  SizedBox(width: widget.leadingGap),
-                  Expanded(child: ChatDivider())
-                ],
-              ),
-            ],
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 0.0,
+                      child: Opacity(
+                          child: CustomCircleAvatar(url: widget.chat.avatar),
+                          opacity: 0.0),
+                    ),
+                    SizedBox(width: widget.leadingGap),
+                    Expanded(child: ChatDivider())
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

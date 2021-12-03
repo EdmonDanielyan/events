@@ -129,6 +129,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
                       highlightTxt: state.searchValue,
                       onChanged: (bool val) =>
                           selectableCubit.addOrRemove(searchUsers[index]),
+                      newChatScreenParams: newChatScreenParams,
                     ),
                     divider(),
                   ],

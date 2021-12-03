@@ -110,6 +110,7 @@ class MessageProvider {
       messageProvider: this,
       natsProvider: natsProvider,
       userFunctions: userFunctions,
+      chatFunctions: chatFunctions,
       chatDatabaseCubit: chatDatabaseCubit,
     );
     this.messageStatusListener = MessageStatusListener(
