@@ -71,7 +71,7 @@ dependencies:
     share_plus:
     logging:
     local_auth: ^1.1.8
-    swipe_to: ^0.1.0-nullsafety.1
+    remove_emoji: ^0.0.6
 
 dev_dependencies:
     flutter_test:
@@ -120,6 +120,9 @@ flutter:
         - family: Ink_icons
           fonts:
               - asset: fonts/Ink_icons.ttf
+        - family: Noto
+          fonts:
+              - asset: fonts/noto/NotoSans-Regular.ttf
 
     # For details regarding fonts from package dependencies,
     # see https://flutter.dev/custom-fonts/#from-packages

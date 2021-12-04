@@ -16,7 +16,6 @@ import 'package:ink_mobile/screens/messages/chat_list/components/chat_divider.da
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message_trailing.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_name.dart';
-import 'package:swipe_to/swipe_to.dart';
 
 class ChatListTile extends StatefulWidget {
   final String highlightValue;
@@ -75,9 +74,9 @@ class _ChatListTileState extends State<ChatListTile> {
     CustomAlertLoading(context).call();
     if (UseMessageProvider.initialized) {
       final chat = widget.chat;
+      UseMessageProvider.messageProvider?.chatFunctions.deleteChat(chat.id);
       await UseMessageProvider.messageProvider?.chatLeftListener
           .sendLeftMessage(chat);
-      UseMessageProvider.messageProvider?.chatFunctions.deleteChat(chat.id);
     }
     if (Navigator.of(context).canPop()) {
       Navigator.of(context).pop();
@@ -87,9 +86,12 @@ class _ChatListTileState extends State<ChatListTile> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: SwipeTo(
-        onLeftSwipe: () => _deleteChat(context),
-        leftSwipeWidget: Icon(Icons.delete, color: Colors.red),
+      child: Dismissible(
+        background: SizedBox(),
+        direction: DismissDirection.endToStart,
+        secondaryBackground: Icon(Icons.delete, color: Colors.red),
+        onDismissed: (dir) => _deleteChat(context),
+        key: UniqueKey(),
         child: InkWell(
           onTap: () =>
               OpenChat(widget.chatDatabaseCubit, widget.chat).call(context),
@@ -133,6 +135,11 @@ class _ChatListTileState extends State<ChatListTile> {
                                 ),
                                 ChatMessageTrailing(
                                     messagesWithUser: widget.messagesWithUser),
+                              ],
+                              if (!hasMessage) ...[
+                                Expanded(
+                                  child: _displayEmpty(),
+                                ),
                               ],
                             ],
                           ),
@@ -190,6 +197,10 @@ class _ChatListTileState extends State<ChatListTile> {
   Widget _displayBody() {
     return ChatMessage(
         displayName: _getDisplayName(), message: lastMessage.message);
+  }
+
+  Widget _displayEmpty() {
+    return ChatMessage(message: localizationInstance.noMessages);
   }
 
   String? _getDisplayName() {
