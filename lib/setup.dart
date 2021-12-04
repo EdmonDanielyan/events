@@ -2,8 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/errors_to_server.dart';
-import 'package:ink_mobile/core/errors/file_log_appender.dart';
-import 'package:ink_mobile/core/errors/logging.dart';
+import 'package:ink_mobile/core/logging/file_log_appender.dart';
+import 'package:ink_mobile/core/logging/logging.dart';
 import 'package:ink_mobile/providers/notifications.dart';
 
 import 'setup.config.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/participant_with_user.dart';
@@ -66,10 +66,10 @@ class ChatInfoParticipants extends StatelessWidget {
     List<UserTable> userParticipants =
         ParticipantWithUserListView.getUsers(participants);
     if (UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider?.chatInvitationListener
+      UseMessageProvider.messageProvider?.inviteSender
           .sendInvitations(chat, userParticipants..addAll(selectedUsers));
-      UseMessageProvider.messageProvider?.chatJoinedListener
-          .sendUserJoinedMessage(chat, selectedUsers);
+      UseMessageProvider.messageProvider?.chatEventsSender
+          .sendUserChatJoinedMessage(chat, selectedUsers);
     }
     Navigator.of(context).pop();
   }

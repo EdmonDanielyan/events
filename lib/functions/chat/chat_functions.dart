@@ -56,10 +56,10 @@ class ChatFunctions {
       String chatId = messages.last.chatId;
       final channel =
           messageProvider.natsProvider.getGroupReactedChannelById(chatId);
-      bool send = await messageProvider.messageSender
-          .sendMessageStatus(channel, messages);
+      bool send = await messageProvider.userReactionSender
+          .sendReadMessageStatus(channel, messages);
       await MessageStatusListener.messagesToRead(
-          messages, messageProvider.chatFunctions);
+          messages, this);
       messageProvider.chatSaver.saveChats(newChat: null);
       return send;
     }
@@ -72,7 +72,7 @@ class ChatFunctions {
       final messageProvider = UseMessageProvider.messageProvider!;
       final channel =
           messageProvider.natsProvider.getGroupTextingChannelById(chatId);
-      bool send = await messageProvider.messageSender.sendTextingMessage(
+      bool send = await messageProvider.textSender.sendTextingMessage(
           channel,
           customTexting: customTexting,
           chatId: chatId);

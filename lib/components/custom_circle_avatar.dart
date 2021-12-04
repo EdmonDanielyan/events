@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
-import 'dart:math';
 
 class CustomCircleAvatar extends StatelessWidget {
   final String? url;

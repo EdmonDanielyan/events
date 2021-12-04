@@ -37,7 +37,7 @@ class _PersonListBodyState extends State<PersonListBody> {
 
       await sendMessage.addMessage(newMessage);
       if (UseMessageProvider.initialized) {
-        await UseMessageProvider.messageProvider?.chatMessageListener
+        await UseMessageProvider.messageProvider?.textSender
             .sendMessage(chat, newMessage);
       }
     }

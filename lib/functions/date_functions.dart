@@ -1,6 +1,6 @@
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 class DateFunctions {
   final DateTime passedDate;

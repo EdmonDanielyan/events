@@ -4,9 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
+import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/message_mixins.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
-import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
+import 'package:ink_mobile/models/chat/chat_app_bar_modes.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
@@ -17,13 +18,15 @@ import '../chat_screen.dart';
 
 class ChatBody extends StatefulWidget {
   final ScrollController controller;
-  const ChatBody({Key? key, required this.controller}) : super(key: key);
+  final ChatFunctions chatFunctions;
+  const ChatBody({Key? key, required this.controller, required this.chatFunctions}) : super(key: key);
 
   @override
   ChatBodyState createState() => ChatBodyState();
 }
 
 class ChatBodyState extends State<ChatBody> with MessageMixins {
+
   ScrollController get controller => widget.controller;
   late KeyboardVisibilityController keyboardVisibilityController;
   int loadedMessagesCount = 0;
@@ -44,7 +47,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
         MessageListView.messageWithUsersToMessage(loadedMessagesWithUser);
     final notReadMessages = MessageListView.oppositeNotReadMessage(messages);
     if (notReadMessages.length > 0 && UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider?.chatFunctions
+      widget.chatFunctions
           .setMessagesToReadNats(notReadMessages);
     }
   }
@@ -112,7 +115,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
           BlocBuilder<ChatCubit, ChatCubitState>(
             bloc: chatCubit,
             builder: (context, state) {
-              if (state.appBarEnum != ChatAppBarEnums.SEARCH_BAR) {
+              if (state.appBarMode != ChatAppBarMode.SEARCH_BAR) {
                 return MessageBottomBar(scrollController: controller);
               } else {
                 return SizedBox();

@@ -42,7 +42,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
       );
       final message = await sendMessage.call(entities);
       if (UseMessageProvider.initialized) {
-        UseMessageProvider.messageProvider?.chatMessageListener
+        UseMessageProvider.messageProvider?.textSender
             .sendMessage(getChat, message);
       }
 

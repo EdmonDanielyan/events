@@ -15,7 +15,6 @@ import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart';
-import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/person_list_params.dart';
@@ -119,6 +118,7 @@ class MainRoutes {
           chatDatabaseCubit: sl<ChatDatabaseCubit>(),
           chatCubit: sl<ChatCubit>(),
           selectableCubit: SelectableCubit<MessageWithUser>(),
+          chatFunctions: sl(),
         );
       }
       return _pageNotFound();

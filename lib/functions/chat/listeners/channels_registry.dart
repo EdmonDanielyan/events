@@ -1,64 +1,61 @@
+import 'package:fixnum/fixnum.dart';
+import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
-import 'package:ink_mobile/functions/chat/listeners/chat.dart';
-import 'package:ink_mobile/functions/chat/listeners/chat_info.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat_list.dart';
-import 'package:ink_mobile/functions/chat/listeners/delete_message.dart';
-import 'package:ink_mobile/functions/chat/listeners/joined.dart';
-import 'package:ink_mobile/functions/chat/listeners/left.dart';
-import 'package:ink_mobile/functions/chat/listeners/message_status.dart';
-import 'package:ink_mobile/functions/chat/listeners/texting.dart';
+import 'package:ink_mobile/functions/chat/listeners/online.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
-import 'package:fixnum/fixnum.dart';
 
-import 'invitation.dart';
+import '../../../setup.dart';
+import 'channel_listener.dart';
 
-class NatsListener {
+@lazySingleton
+class ChannelsRegistry with Loggable{
   final NatsProvider natsProvider;
   final ChannelFunctions channelFunctions;
-  final ChatMessageListener chatMessageListener;
-  final ChatInvitationListener chatInvitationListener;
-  final MessageStatusListener messageStatusListener;
-  final MessageTextingListener messageTextingListener;
-  final ChatJoinedListener chatJoinedListener;
-  final ChatLeftListener chatLeftListener;
-  final MessageDeletedListener messageDeletedListener;
-  final ChatInfoListener chatInfoListener;
-  final ChatListListener chatListListener;
+  ChatListListener get chatListListener =>
+      listeners[MessageType.ChatList]! as ChatListListener;
 
-  NatsListener({
+  UserOnlineListener get userOnlineListener =>
+      listeners[MessageType.Online]! as UserOnlineListener;
+
+  final UserFunctions userFunctions;
+
+  Map<MessageType, ChannelListener> listeners = {};
+
+  ChannelsRegistry({
     required this.natsProvider,
     required this.channelFunctions,
-    required this.chatMessageListener,
-    required this.chatInvitationListener,
-    required this.messageStatusListener,
-    required this.messageTextingListener,
-    required this.chatJoinedListener,
-    required this.chatLeftListener,
-    required this.messageDeletedListener,
-    required this.chatInfoListener,
-    required this.chatListListener,
+    required this.userFunctions
   });
 
   String lastChannelStr = "";
-  List<String> subscribedChannels = [];
+  Set<String> listeningChannels = {};
 
   String textChannel(String chatId) =>
       natsProvider.getGroupTextChannelById(chatId);
+
   String removeMessageChannel(String chatId) =>
       natsProvider.getGroupDeleteMessageChannelById(chatId);
+
   String readChannel(String chatId) =>
       natsProvider.getGroupReactedChannelById(chatId);
+
   String textingChannel(String chatId) =>
       natsProvider.getGroupTextingChannelById(chatId);
+
   String joinedChannel(String chatId) =>
       natsProvider.getGroupJoinedChannelById(chatId);
+
   String leftChannel(String chatId) =>
       natsProvider.getGroupLeftChannelById(chatId);
+
   String chatInfo(String chatId) => natsProvider.getGroupChatInfoById(chatId);
 
   List<String> getLinkedChannelsById(String chatId) {
@@ -96,12 +93,23 @@ class NatsListener {
 
   Future<void> init() async {
     await Future.delayed(Duration(seconds: 1));
-    await _listenToChatList();
-    await _listenToInvitations();
-  }
 
-  Future<void> _listenToChatList() async {
-    await chatListListener.listenTo(UserFunctions.getMe);
+    listeners.clear();
+    MessageType.values.forEach((messageType) {
+      var messageListenerToSearch = describeEnum(messageType);
+      logger.fine('Looking for listener of message type: $messageListenerToSearch');
+
+      try {
+        ChannelListener listener = sl.get(instanceName: messageListenerToSearch);
+        listeners.putIfAbsent(messageType, () => listener);
+      } catch (e) {
+        logger.warning('Not found listener for message type: $messageListenerToSearch');
+      }
+    });
+
+    await chatListListener.subscribe(userFunctions.me.id.toString());
+    await userOnlineListener.subscribe(userFunctions.me);
+    await _listenToInvitations();
   }
 
   Future<void> _listenToInvitations() async {
@@ -131,41 +139,22 @@ class NatsListener {
 
   Future<void> _subscribeToChannel(MessageType type, String channel,
       {Int64 startSequence = Int64.ZERO}) async {
+    logger.fine("_subscribeToChannel: $type, $channel, $startSequence");
     if (!natsProvider.isConnected) {
       return;
     }
 
-    if (!listeningToChannel(channel)) {
-      if (type == MessageType.InviteUserToJoinChat) {
-        await chatInvitationListener.listenTo(channel,
-            startSequence: startSequence);
-      } else if (type == MessageType.Text) {
-        await chatMessageListener.listenTo(channel,
-            startSequence: startSequence);
-      } else if (type == MessageType.RemoveMessage) {
-        await messageDeletedListener.listenTo(channel,
-            startSequence: startSequence);
-      } else if (type == MessageType.UserReacted) {
-        await messageStatusListener.listenTo(channel);
-      } else if (type == MessageType.Texting) {
-        await messageTextingListener.listenTo(channel);
-      } else if (type == MessageType.UserJoined) {
-        await chatJoinedListener.listenTo(channel,
-            startSequence: startSequence);
-      } else if (type == MessageType.UserLeftChat) {
-        await chatLeftListener.listenTo(channel, startSequence: startSequence);
-      } else if (type == MessageType.UpdateChatInfo) {
-        await chatInfoListener.listenTo(channel, startSequence: startSequence);
-      }
-
-      subscribedChannels.add(channel);
+    if (!isListening(channel)) {
+      logger.fine("listeners[$type]=${listeners[type]}");
+      listeners[type]!.onListen(channel, startSequence: startSequence);
+      listeningChannels.add(channel);
     }
   }
 
-  Future<void> _unSubscribeFromChannel(String channel) async {
+  Future<void> unSubscribeFromChannel(String channel) async {
     natsProvider.unsubscribeFromChannel(channel);
-    if (listeningToChannel(channel)) {
-      subscribedChannels.remove(channel);
+    if (isListening(channel)) {
+      listeningChannels.remove(channel);
     }
     channelFunctions.deleteChannel(channel);
   }
@@ -188,16 +177,15 @@ class NatsListener {
 
     if (getChannels.isNotEmpty) {
       for (final channel in getChannels) {
-        await _unSubscribeFromChannel(channel);
+        await unSubscribeFromChannel(channel);
       }
     }
   }
 
-  bool listeningToChannel(String channel) =>
-      subscribedChannels.contains(channel);
+  bool isListening(String channel) => listeningChannels.contains(channel);
 
   void unsubscribeFromAll() {
-    subscribedChannels.forEach((element) {
+    listeningChannels.forEach((element) {
       natsProvider.unsubscribeFromChannel(element);
     });
   }

@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
-import 'package:ink_mobile/screens/messages/chat_info/chat_info_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
+import 'package:ink_mobile/setup.dart';
 
 class ChatInfoBottomBtns extends StatelessWidget {
   final ChatTable chat;
   const ChatInfoBottomBtns({Key? key, required this.chat}) : super(key: key);
 
-  static late ChatDatabaseCubit _chatDatabaseCubit;
   static late ChatFunctions _chatFunctions;
   static late AppLocalizations _strings;
 
@@ -28,7 +26,7 @@ class ChatInfoBottomBtns extends StatelessWidget {
     _clearMessages();
     _chatFunctions.deleteChat(chat.id);
     if (UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider?.chatLeftListener
+      UseMessageProvider.messageProvider?.chatEventsSender
           .sendLeftMessage(chat);
     }
     Navigator.of(context).popUntil((route) => route.isFirst);
@@ -37,8 +35,7 @@ class ChatInfoBottomBtns extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    _chatDatabaseCubit = ChatInfoScreen.of(context).chatDatabaseCubit;
-    _chatFunctions = ChatFunctions(_chatDatabaseCubit);
+    _chatFunctions = sl<ChatFunctions>();
 
     return Container(
       color: Colors.white,

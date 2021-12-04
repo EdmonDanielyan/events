@@ -1,9 +1,9 @@
-import 'package:fixnum/fixnum.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/exceptions/custom_exceptions.dart';
+import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
-import 'package:ink_mobile/functions/chat/sender/message_sender.dart';
+import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
+import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -12,51 +12,38 @@ import 'package:ink_mobile/models/chat/nats/message.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:ink_mobile/providers/notifications.dart';
 
-import 'all.dart';
+import '../chat_functions.dart';
+import 'channels_registry.dart';
 
-@injectable
-class ChatMessageListener {
-  final MessageProvider messageProvider;
-  final NatsProvider natsProvider;
+@Named("Text")
+@Injectable(as: ChannelListener)
+class TextMessageListener extends ChannelListener {
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
-  final MessageSender messageSender;
+  final InviteSender messageSender;
 
-  const ChatMessageListener({
-    required this.messageProvider,
-    required this.natsProvider,
-    required this.userFunctions,
-    required this.chatDatabaseCubit,
-    required this.messageSender,
-  });
+  final ChatFunctions chatFunctions;
+
+  final ChatSaver chatSaver;
+
+  const TextMessageListener(
+      NatsProvider natsProvider,
+      ChannelsRegistry registry,
+      this.userFunctions,
+      this.chatDatabaseCubit,
+      this.messageSender,
+      this.chatFunctions,
+      this.chatSaver)
+      : super(natsProvider, registry);
 
   Debouncer get _debouncer => Debouncer(milliseconds: 400);
 
-  NatsListener get natsListener =>
-      UseMessageProvider.messageProvider!.natsListener;
-
-  bool isListeningToChannel(String channel) =>
-      natsListener.listeningToChannel(channel);
-
-  Future<void> listenTo(String channel,
-      {Int64 startSequence = Int64.ZERO}) async {
-    try {
-      if (!isListeningToChannel(channel)) {
-        await natsProvider.subscribeToChannel(
-          channel,
-          onMessage,
-          startSequence: startSequence,
-        );
-      }
-    } on SubscriptionAlreadyExistException {}
-  }
-
+  @override
   Future<void> onMessage(String channel, NatsMessage message) async {
-    if (!isListeningToChannel(channel)) {
+    if (!registry.isListening(channel)) {
       return;
     }
     try {
@@ -91,7 +78,7 @@ class ChatMessageListener {
         await userFunctions.insertUser(fields.user);
         await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
             .addMessage(newMessage);
-        await UseMessageProvider.messageProvider?.chatSaver.saveChats(newChat: null);
+        await chatSaver.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;
@@ -121,53 +108,6 @@ class ChatMessageListener {
         message.message,
         id: user.id,
       );
-    }
-  }
-
-  Future<void> sendMessage(ChatTable chat, MessageTable message) async {
-    bool success = await sendTxtMessage(chat, message);
-    MessageStatus status = success ? MessageStatus.SENT : MessageStatus.ERROR;
-    await messageProvider.chatFunctions.updateMessageStatus(message, status);
-
-    messageProvider.chatSaver.saveChats(newChat: null);
-  }
-
-  Future<bool> sendTxtMessage(
-    ChatTable chat,
-    MessageTable message, {
-    UserTable? user,
-  }) async {
-    return await messageSender.sendTextMessage(
-      natsProvider.getGroupTextChannelById(chat.id),
-      chat,
-      message,
-      user ?? UserFunctions.getMe,
-    );
-  }
-
-  Future<void> redeliverMessages({int? userId}) async {
-    final unsentMessages =
-        await chatDatabaseCubit.db.getUnsentMessages(userId ?? JwtPayload.myId);
-
-    Map<String, ChatTable> chats = {};
-
-    if (unsentMessages.isNotEmpty) {
-      for (final message in unsentMessages) {
-        if (!chats.containsKey(message.chatId)) {
-          final chat =
-              await chatDatabaseCubit.db.selectChatById(message.chatId);
-
-          if (chat != null) {
-            chats[message.chatId] = chat;
-          }
-        }
-
-        if (chats.containsKey(message.chatId)) {
-          print(
-              "SENDING MESSAGE ${chats[message.chatId]!.name} AND MESSAGE ${message.message}");
-          await sendMessage(chats[message.chatId]!, message);
-        }
-      }
     }
   }
 }

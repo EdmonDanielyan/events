@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
+import 'package:ink_mobile/models/chat/chat_app_bar_modes.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
@@ -48,7 +48,7 @@ class ChatCubit extends Cubit<ChatCubitState> {
     emit(state.copyWith(selectedMessageId: messageId));
   }
 
-  void emitAppBarEnum(ChatAppBarEnums appBarEnum) {
+  void emitAppBarEnum(ChatAppBarMode appBarEnum) {
     emit(state.copyWith(appBarEnum: appBarEnum));
   }
 

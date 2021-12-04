@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/components/changable_avatar.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
@@ -9,7 +10,6 @@ import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/edit_entities.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatInfoEditScreen extends StatefulWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
@@ -36,7 +36,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
       if (UseMessageProvider.initialized) {
         final messageProvider = UseMessageProvider.messageProvider;
         bool sent =
-            await messageProvider!.chatInfoListener.sendNewChatInfo(chat);
+            await messageProvider!.chatEventsSender.sendNewChatInfo(chat);
         if (sent) {
           messageProvider.chatFunctions.updateChat(chat);
         } else {

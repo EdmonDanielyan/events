@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/components/popup/popup_menu_container.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
@@ -9,7 +10,6 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/select_menu.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 
 import '../chat_screen.dart';
@@ -35,8 +35,8 @@ class HoverMessage extends StatelessWidget {
 
   void _onDelete(BuildContext context) {
     if (UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider?.messageDeletedListener
-          .deleteMessages([message], context);
+      UseMessageProvider.messageProvider?.messageEditorSender
+          .sendDeleteMessages([message], context);
     }
   }
 
