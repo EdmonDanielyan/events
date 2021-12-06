@@ -71,10 +71,11 @@ class MessageDeletedListener {
 
   Future<bool> deleteMessages(List<MessageTable> messages, BuildContext context,
       {bool makeRequest = true, bool edited = false}) async {
+    bool sent = true;
     if (makeRequest) {
       final chatId = messages.last.chatId;
       final channel = natsProvider.getGroupDeleteMessageChannelById(chatId);
-      final sent = await messageProvider.chatSendMessage
+      sent = await messageProvider.chatSendMessage
           .sendDeleteMessage(channel, messages: messages, edited: edited);
 
       if (!edited) {
@@ -88,14 +89,12 @@ class MessageDeletedListener {
           );
         }
       }
-
-      return sent;
     } else {
       messageProvider.chatFunctions.deleteMessages(messages);
     }
 
     messageProvider.saveChats(newChat: null);
 
-    return true;
+    return sent;
   }
 }

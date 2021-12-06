@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ink_mobile/components/alert/alert_cancel.dart';
 import 'package:ink_mobile/components/popup/popup_menu_container.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
@@ -73,7 +74,19 @@ class HoverMessage extends StatelessWidget {
       onItemSelected: (value) async {
         if (value == _strings.quote) _onRespond();
         if (value == _strings.copy) _onCopy(context);
-        if (value == _strings.delete) _onDelete(context);
+        if (value == _strings.delete) {
+          Future.delayed(Duration(milliseconds: 200), () {
+            CustomAlertCancel(
+              context,
+              title: _strings.delete,
+              onSubmit: () {
+                _onDelete(context);
+                Navigator.of(context).pop();
+              },
+            ).call();
+          });
+        }
+
         if (value == _strings.edit) _onEdit(context);
       },
     );
