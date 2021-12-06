@@ -149,6 +149,7 @@ class ChatSendMessage {
     String channel, {
     required List<MessageTable> messages,
     UserTable? user,
+    bool edited = false,
   }) async {
     return await natsProvider.sendSystemMessageToChannel(
       channel,
@@ -156,6 +157,7 @@ class ChatSendMessage {
       ChatMessageDeleteFields(
         messages: messages,
         user: user ?? UserFunctions.getMe,
+        edited: edited,
       ).toMap(),
     );
   }

@@ -48,6 +48,10 @@ class ChatCubit extends Cubit<ChatCubitState> {
     emit(state.copyWith(selectedMessageId: messageId));
   }
 
+  void emitEditMessage(MessageWithUser? message) {
+    emit(state.copyWith(editMessage: message));
+  }
+
   void emitAppBarEnum(ChatAppBarEnums appBarEnum) {
     emit(state.copyWith(appBarEnum: appBarEnum));
   }

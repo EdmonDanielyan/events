@@ -50,7 +50,11 @@ class MessageDeletedListener {
       final myMessages =
           MessageListView.getUserMessages(fields.messages, sender.id);
       if (myMessages.isNotEmpty && sender.id != JwtPayload.myId) {
-        chatFunctions.deleteMessages(myMessages);
+        if (fields.edited) {
+          editMessages(myMessages);
+        } else {
+          chatFunctions.deleteMessages(myMessages);
+        }
         await UseMessageProvider.messageProvider?.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
@@ -58,27 +62,40 @@ class MessageDeletedListener {
     }
   }
 
-  Future<void> deleteMessages(List<MessageTable> messages, BuildContext context,
-      {bool makeRequest = true}) async {
+  Future<void> editMessages(List<MessageTable> messages) async {
+    for (final message in messages) {
+      messageProvider.chatDatabaseCubit.db
+          .updateMessageById(message.id, message);
+    }
+  }
+
+  Future<bool> deleteMessages(List<MessageTable> messages, BuildContext context,
+      {bool makeRequest = true, bool edited = false}) async {
     if (makeRequest) {
       final chatId = messages.last.chatId;
       final channel = natsProvider.getGroupDeleteMessageChannelById(chatId);
       final sent = await messageProvider.chatSendMessage
-          .sendDeleteMessage(channel, messages: messages);
+          .sendDeleteMessage(channel, messages: messages, edited: edited);
 
-      if (sent) {
-        messageProvider.chatFunctions.deleteMessages(messages);
-      } else {
-        SimpleCustomSnackbar(
-          context: context,
-          txt: localizationInstance.noConnectionError,
-          duration: const Duration(seconds: 2),
-        );
+      if (!edited) {
+        if (sent) {
+          messageProvider.chatFunctions.deleteMessages(messages);
+        } else {
+          SimpleCustomSnackbar(
+            context: context,
+            txt: localizationInstance.noConnectionError,
+            duration: const Duration(seconds: 2),
+          );
+        }
       }
+
+      return sent;
     } else {
       messageProvider.chatFunctions.deleteMessages(messages);
     }
 
     messageProvider.saveChats(newChat: null);
+
+    return true;
   }
 }

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ink_mobile/components/popup/popup_menu_container.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
-import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
-import 'package:ink_mobile/functions/chat/chat_creation.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
@@ -28,7 +26,6 @@ class HoverMessage extends StatelessWidget {
   }) : super(key: key);
 
   static late AppLocalizations _strings;
-  static late SelectableCubit<MessageWithUser> _selectableCubit;
   static late ChatCubit _chatCubit;
 
   MessageTable get message => messageWithUser.message!;
@@ -53,18 +50,13 @@ class HoverMessage extends StatelessWidget {
     _chatCubit.emitSelectedMessageId(message.id);
   }
 
-  void _onSelect() {
-    _selectableCubit.addItem(messageWithUser);
-  }
-
-  void _onSendOn(BuildContext context) {
-    ChatCreation.sendOn([message], context);
+  void _onEdit(BuildContext context) {
+    _chatCubit.emitEditMessage(messageWithUser);
   }
 
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    _selectableCubit = ChatScreen.of(context).selectableCubit;
     _chatCubit = ChatScreen.of(context).chatCubit;
     final _chatScreenParams = ChatScreen.of(context).chatScreenParams;
 
@@ -79,11 +71,10 @@ class HoverMessage extends StatelessWidget {
           .map((e) => menuItem(e))
           .toList(),
       onItemSelected: (value) async {
-        if (value == _strings.reply) _onRespond();
-        if (value == _strings.sendOn) _onSendOn(context);
+        if (value == _strings.quote) _onRespond();
         if (value == _strings.copy) _onCopy(context);
-        if (value == _strings.select) _onSelect();
         if (value == _strings.delete) _onDelete(context);
+        if (value == _strings.edit) _onEdit(context);
       },
     );
   }
