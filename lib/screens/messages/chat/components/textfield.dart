@@ -3,21 +3,27 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
 class MessageTextfield extends StatefulWidget {
+  final TextEditingController textEditingController;
   final FocusNode? focusNode;
   final Function(String)? onChanged;
   final Function(ChatEntities)? onSend;
   const MessageTextfield({
     Key? key,
+    required this.textEditingController,
     this.onChanged,
     this.focusNode,
     this.onSend,
   }) : super(key: key);
 
   @override
-  State<MessageTextfield> createState() => _MessageTextfieldState();
+  State<MessageTextfield> createState() =>
+      _MessageTextfieldState(textEditingController);
 }
 
 class _MessageTextfieldState extends State<MessageTextfield> {
+  final TextEditingController textEditingController;
+
+  _MessageTextfieldState(this.textEditingController);
   String _originalHint = "${localizationInstance.writeHint}...";
   String? _hintText;
 
@@ -44,6 +50,7 @@ class _MessageTextfieldState extends State<MessageTextfield> {
         alignment: Alignment.centerRight,
         children: [
           TextFormField(
+            controller: textEditingController,
             onChanged: widget.onChanged,
             minLines: 1,
             maxLines: 3,

@@ -193,6 +193,8 @@
     "admin": "Admin",
     "edit": "Edit",
     "cancel": "Cancel",
+    "cancelHint": "Are you sure you want to delete?",
+    "yes": "Yes",
     "ready": "Ready",
     "sendOn": "Forward",
     "copy": "Copy",
@@ -220,5 +222,6 @@
     "settings": "Settings",
     "touchIdSetup": "Please set up your Touch ID",
     "reenableTouchId": "Please reenable your Touch ID",
-    "authenticationRequired": "Authentication required"
+    "authenticationRequired": "Authentication required",
+    "quote": "Quote"
 }

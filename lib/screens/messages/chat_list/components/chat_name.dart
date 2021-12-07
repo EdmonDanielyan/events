@@ -15,11 +15,12 @@ class ChatName extends StatelessWidget {
     return HighlightText(
       txt: name,
       highlightTxt: highlightValue,
+      showRegularIfEmpty: true,
       textStyle: TextStyle(
         fontSize: 15.0,
         fontWeight: FontWeight.bold,
         color: Colors.black,
-        fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
+        fontFamily: "Noto",
       ),
       overflow: TextOverflow.ellipsis,
       maxLines: 1,

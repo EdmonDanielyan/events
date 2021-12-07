@@ -1,4 +1,4 @@
-import 'package:ink_mobile/models/chat/chat_app_bar_modes.dart';
+import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/models/items_search.dart';
@@ -6,6 +6,7 @@ import 'package:ink_mobile/models/items_search.dart';
 class ChatCubitState {
   ChatAppBarMode appBarMode;
   String? selectedMessageId;
+  MessageWithUser? editMessage;
   ItemsSearch<MessageTable> messagesSearch;
   bool scrollBtn;
   CustomTexting? texting;
@@ -14,6 +15,7 @@ class ChatCubitState {
     this.appBarMode = ChatAppBarMode.INITIAL,
     this.selectedMessageId,
     required this.messagesSearch,
+    this.editMessage,
     this.scrollBtn = false,
     this.texting,
   });
@@ -22,6 +24,7 @@ class ChatCubitState {
     ChatAppBarMode? appBarEnum,
     String? selectedMessageId,
     ItemsSearch<MessageTable>? messagesSearch,
+    MessageWithUser? editMessage,
     bool? scrollBtn,
     CustomTexting? texting,
   }) {
@@ -29,6 +32,7 @@ class ChatCubitState {
       appBarMode: appBarEnum ?? this.appBarMode,
       selectedMessageId: selectedMessageId,
       messagesSearch: messagesSearch ?? this.messagesSearch,
+      editMessage: editMessage,
       scrollBtn: scrollBtn ?? this.scrollBtn,
       texting: texting ?? this.texting,
     );
@@ -36,6 +40,6 @@ class ChatCubitState {
 
   @override
   String toString() {
-    return 'ChatCubitState(chat: appBarEnum: $appBarMode, selectedMessageId: $selectedMessageId, messagesSearch: $messagesSearch, scrollBtn: $scrollBtn, texting: $texting)';
+    return 'ChatCubitState(chat: appBarEnum: $appBarMode, selectedMessageId: $selectedMessageId, messagesSearch: $messagesSearch, editMessage: $editMessage, scrollBtn: $scrollBtn, texting: $texting)';
   }
 }

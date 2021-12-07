@@ -15,16 +15,16 @@ class SelectMessageMenuList {
     double iconSize = 18.0;
     return [
       SelectMessageMenu(
-        name: strings.reply,
+        name: strings.edit,
         icon: Icon(
-          CupertinoIcons.arrowshape_turn_up_left_fill,
+          CupertinoIcons.pencil,
           size: iconSize,
         ),
       ),
       SelectMessageMenu(
-        name: strings.sendOn,
+        name: strings.delete,
         icon: Icon(
-          CupertinoIcons.arrowshape_turn_up_right_fill,
+          Icons.delete,
           size: iconSize,
         ),
       ),
@@ -36,12 +36,21 @@ class SelectMessageMenuList {
         ),
       ),
       SelectMessageMenu(
-        name: strings.select,
+        name: strings.quote,
         icon: Icon(
-          Icons.check_circle,
+          CupertinoIcons.arrowshape_turn_up_left_fill,
           size: iconSize,
         ),
       ),
+    ];
+  }
+}
+
+class SelectParticipantMenuList {
+  static List<SelectMessageMenu> getStandartList() {
+    final strings = localizationInstance;
+    double iconSize = 18.0;
+    return [
       SelectMessageMenu(
         name: strings.delete,
         icon: Icon(

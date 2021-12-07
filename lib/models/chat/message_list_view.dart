@@ -129,6 +129,10 @@ class MessageListView {
     return messages;
   }
 
+  static MessageTable editMessage(MessageTable message, String txt) {
+    return message.copyWith(message: txt);
+  }
+
   static MessageTable renewMessage(
     MessageTable message, {
     String? id,

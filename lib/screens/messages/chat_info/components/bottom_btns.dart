@@ -22,14 +22,14 @@ class ChatInfoBottomBtns extends StatelessWidget {
     UseMessageProvider.messageProvider?.chatSaver.saveChats(newChat: null);
   }
 
-  void _deleteChat(BuildContext context) {
-    _clearMessages();
-    _chatFunctions.deleteChat(chat.id);
+  Future<void> _deleteChat(BuildContext context) async {
     if (UseMessageProvider.initialized) {
       UseMessageProvider.messageProvider?.chatEventsSender
           .sendLeftMessage(chat);
+      _clearMessages();
+      _chatFunctions.deleteChat(chat.id);
+      Navigator.of(context).popUntil((route) => route.isFirst);
     }
-    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   @override

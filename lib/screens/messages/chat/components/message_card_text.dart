@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/components/linkify_text.dart';
+import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
@@ -76,7 +77,7 @@ class MessageCardText extends StatelessWidget {
       children: [
         _errorIconReload(context),
         if (!byMe) ...[
-          _userAvatarWidget(),
+          _userAvatarWidget(context),
           SizedBox(width: 10.0),
         ],
         Flexible(
@@ -175,14 +176,18 @@ class MessageCardText extends StatelessWidget {
     );
   }
 
-  Widget _userAvatarWidget() {
-    return SizedBox(
-      child: CustomCircleAvatar(
-        url: user.avatar,
-        name: user.name,
+  Widget _userAvatarWidget(BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.of(context).pushNamed("/personal",
+          arguments: {'id': user.id, HIDE_BOTTOM_NAV_BAR_CODE: true}),
+      child: SizedBox(
+        child: CustomCircleAvatar(
+          url: user.avatar,
+          name: user.name,
+        ),
+        width: 45,
+        height: 45,
       ),
-      width: 45,
-      height: 45,
     );
   }
 

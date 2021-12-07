@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/participant_with_user.dart';
@@ -28,6 +28,17 @@ class ChatInfoParticipants extends StatelessWidget {
   static late SelectableCubit<UserTable> _selectableCubit;
 
   bool get iAmOwner => ChatListView.isOwner(chat);
+
+  Future<void> _deleteParticipant(BuildContext context, UserTable user) async {
+    if (UseMessageProvider.initialized) {
+      CustomAlertLoading(context).call();
+      final messageProvider = UseMessageProvider.messageProvider;
+      await messageProvider?.chatLeftListener
+          .sendLeftMessage(chat, unsubFromChat: false, users: [user]);
+
+      Navigator.of(context).pop();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +70,11 @@ class ChatInfoParticipants extends StatelessWidget {
       hideIds: ParticipantWithUserListView.getUserIds(participants),
       onSubmit: _onSubmit,
     );
+  }
+
+  void _onParticipantTap(BuildContext context, int userId) {
+    Navigator.of(context).pushNamed("/personal",
+        arguments: {'id': userId, HIDE_BOTTOM_NAV_BAR_CODE: true});
   }
 
   void _onSubmit(BuildContext context) async {
@@ -110,17 +126,21 @@ class ChatInfoParticipants extends StatelessWidget {
             if (user == null) return SizedBox();
             return Column(
               children: [
-                InkWell(
-                  onTap: () => Navigator.of(context).pushNamed("/personal",
-                      arguments: {
-                        'id': user.id,
-                        HIDE_BOTTOM_NAV_BAR_CODE: true
-                      }),
-                  child: ParticipantCard(
-                    user: user,
-                    trailingLable: ChatListView.isOwner(chat, myId: user.id)
-                        ? _strings.owner
-                        : "",
+                Dismissible(
+                  background: SizedBox(),
+                  direction: DismissDirection.endToStart,
+                  secondaryBackground: Icon(Icons.delete, color: Colors.red),
+                  onDismissed: (dir) =>
+                      _deleteParticipant(context, participants[index].user!),
+                  key: UniqueKey(),
+                  child: InkWell(
+                    onTap: () => _onParticipantTap(context, user.id),
+                    child: ParticipantCard(
+                      user: user,
+                      trailingLable: ChatListView.isOwner(chat, myId: user.id)
+                          ? _strings.owner
+                          : "",
+                    ),
                   ),
                 ),
                 if (index != participants.length - 1) ...[

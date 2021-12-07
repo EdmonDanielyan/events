@@ -50,4 +50,11 @@ class DateFunctions {
     else
       return dayMonthYear() + " " + hourMinute();
   }
+
+  String displayTimeForTodayOrDate() {
+    if (isToday())
+      return hourMinute();
+    else
+      return dayMonthYear();
+  }
 }

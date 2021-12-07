@@ -45,6 +45,7 @@ class NewChatBtn extends StatelessWidget {
       chosenOneText: strings.writeHint,
       chosenMultipleText: "${strings.create} ${strings.chat.toLowerCase()}",
       onSubmit: _onCreate,
+      onUserTap: _onUserTap,
       hideIds: [JwtPayload.myId],
     );
   }
@@ -67,6 +68,17 @@ class NewChatBtn extends StatelessWidget {
           .createChatThroughNats(user);
       Navigator.of(context).pop();
       OpenChat(_chatDatabaseCubit, newChat).call(context);
+    }
+  }
+
+  Future<void> _onUserTap(BuildContext context, UserTable user) async {
+    if (UseMessageProvider.initialized) {
+      ChatTable? chat = await UseMessageProvider.messageProvider!.chatCreation
+          .isSingleChatExists(user);
+
+      if (chat != null) {
+        OpenChat(_chatDatabaseCubit, chat).call(context);
+      }
     }
   }
 }

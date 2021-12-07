@@ -7,16 +7,19 @@ import '../message_list_view.dart';
 class ChatMessageDeleteFields {
   final UserTable user;
   final List<MessageTable> messages;
+  final bool edited;
 
   ChatMessageDeleteFields({
     required this.user,
     required this.messages,
+    required this.edited,
   });
 
   Map<String, String> toMap() {
     return {
       'messages': MessageListView.listMessagesToString(messages),
       'user': user.toJsonString(),
+      'edited': edited.toString(),
     };
   }
 
@@ -24,6 +27,7 @@ class ChatMessageDeleteFields {
     return ChatMessageDeleteFields(
       messages: MessageListView.getMessagesFromString(map['messages']),
       user: UserTable.fromJson(jsonDecode(map['user'])),
+      edited: map['edited'].toString().toLowerCase() == 'true',
     );
   }
 
