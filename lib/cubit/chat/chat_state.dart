@@ -1,5 +1,6 @@
-import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
+import 'package:ink_mobile/models/chat/chat_app_bar_modes.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/models/items_search.dart';
 

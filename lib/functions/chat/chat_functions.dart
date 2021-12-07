@@ -23,6 +23,12 @@ class ChatFunctions {
     );
   }
 
+  Future<void> editMessages(List<MessageTable> messages) async {
+    for (final message in messages) {
+      chatDatabaseCubit.db.updateMessageById(message.id, message);
+    }
+  }
+
   void deleteMessages(List<MessageTable> messages) {
     if (messages.isNotEmpty) {
       for (final message in messages) {

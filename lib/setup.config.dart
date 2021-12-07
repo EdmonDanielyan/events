@@ -11,8 +11,8 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import 'components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart'
     as _i43;
-import 'constants/files.dart' as _i108;
-import 'constants/messenger.dart' as _i107;
+import 'constants/files.dart' as _i107;
+import 'constants/messenger.dart' as _i108;
 import 'core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart'
     as _i62;
 import 'core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_state.dart'
@@ -82,16 +82,16 @@ import 'functions/chat/chat_creation.dart' as _i85;
 import 'functions/chat/chat_functions.dart' as _i18;
 import 'functions/chat/listeners/channel_listener.dart' as _i95;
 import 'functions/chat/listeners/channels_registry.dart' as _i90;
-import 'functions/chat/listeners/chat_info.dart' as _i98;
-import 'functions/chat/listeners/chat_list.dart' as _i99;
-import 'functions/chat/listeners/delete_message.dart' as _i100;
-import 'functions/chat/listeners/invitation.dart' as _i101;
-import 'functions/chat/listeners/joined.dart' as _i96;
-import 'functions/chat/listeners/left.dart' as _i102;
-import 'functions/chat/listeners/message_status.dart' as _i103;
-import 'functions/chat/listeners/online.dart' as _i104;
-import 'functions/chat/listeners/text_message.dart' as _i97;
-import 'functions/chat/listeners/texting.dart' as _i105;
+import 'functions/chat/listeners/chat_info.dart' as _i105;
+import 'functions/chat/listeners/chat_list.dart' as _i104;
+import 'functions/chat/listeners/delete_message.dart' as _i103;
+import 'functions/chat/listeners/invitation.dart' as _i102;
+import 'functions/chat/listeners/joined.dart' as _i101;
+import 'functions/chat/listeners/left.dart' as _i100;
+import 'functions/chat/listeners/message_status.dart' as _i99;
+import 'functions/chat/listeners/online.dart' as _i98;
+import 'functions/chat/listeners/text_message.dart' as _i96;
+import 'functions/chat/listeners/texting.dart' as _i97;
 import 'functions/chat/sender/chat_events.dart' as _i106;
 import 'functions/chat/sender/chat_saver.dart' as _i91;
 import 'functions/chat/sender/invite_sender.dart' as _i92;
@@ -119,18 +119,18 @@ import 'screens/initial/cubit/initial_cubit.dart' as _i33;
 import 'screens/medical_insurance/components/form/entities.dart' as _i73;
 import 'screens/open_university/cubit/open_university_cubit.dart' as _i56;
 
-const String _dev = 'dev';
 const String _prod = 'prod';
+const String _dev = 'dev';
 // ignore_for_file: unnecessary_lambdas
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
 Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
     {String? environment, _i2.EnvironmentFilter? environmentFilter}) async {
   final gh = _i2.GetItHelper(get, environment, environmentFilter);
-  final tokenDataInjectorModule = _$TokenDataInjectorModule();
-  final messengerDev = _$MessengerDev();
-  final messengerProd = _$MessengerProd();
   final fileConstants = _$FileConstants();
+  final messengerProd = _$MessengerProd();
+  final messengerDev = _$MessengerDev();
+  final tokenDataInjectorModule = _$TokenDataInjectorModule();
   final messengerCertificate = _$MessengerCertificate();
   gh.factory<_i3.AnnouncementCubit>(() => _i3.AnnouncementCubit());
   gh.factoryParam<_i4.AnnouncementsDetailNetworkRequest, int?, dynamic>(
@@ -247,25 +247,25 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
           _i75.SendReferenceFormNetworkRequest(entities: entities));
   gh.singleton<_i77.StaffMovementsNetworkRequest>(
       _i77.StaffMovementsNetworkRequest());
+  gh.factory<String>(() => fileConstants.logFile, instanceName: 'logFile');
+  gh.factory<String>(() => messengerProd.natsCertPath,
+      instanceName: 'natsCertPath', registerFor: {_prod});
+  gh.factory<String>(() => messengerDev.natsWssUrl,
+      instanceName: 'natsWssUrl', registerFor: {_dev});
+  gh.factory<String>(() => messengerProd.natsCluster,
+      instanceName: 'natsCluster', registerFor: {_prod});
+  gh.factory<String>(() => tokenDataInjectorModule.userId,
+      instanceName: 'userId');
   gh.factory<String>(() => tokenDataInjectorModule.natsToken,
       instanceName: 'natsToken');
   gh.factory<String>(() => tokenDataInjectorModule.deviceVirtualId,
       instanceName: 'deviceVirtualId');
-  gh.factory<String>(() => messengerDev.natsWssUrl,
-      instanceName: 'natsWssUrl', registerFor: {_dev});
   gh.factory<String>(() => messengerDev.natsCluster,
       instanceName: 'natsCluster', registerFor: {_dev});
-  gh.factory<String>(() => messengerDev.natsCertPath,
-      instanceName: 'natsCertPath', registerFor: {_dev});
   gh.factory<String>(() => messengerProd.natsWssUrl,
       instanceName: 'natsWssUrl', registerFor: {_prod});
-  gh.factory<String>(() => messengerProd.natsCluster,
-      instanceName: 'natsCluster', registerFor: {_prod});
-  gh.factory<String>(() => messengerProd.natsCertPath,
-      instanceName: 'natsCertPath', registerFor: {_prod});
-  gh.factory<String>(() => fileConstants.logFile, instanceName: 'logFile');
-  gh.factory<String>(() => tokenDataInjectorModule.userId,
-      instanceName: 'userId');
+  gh.factory<String>(() => messengerDev.natsCertPath,
+      instanceName: 'natsCertPath', registerFor: {_dev});
   gh.singleton<_i78.TagsListCubit>(_i78.TagsListCubit());
   gh.singleton<_i79.TagsListNetworkRequest>(_i79.TagsListNetworkRequest());
   gh.lazySingleton<_i80.TokenDataHolder>(() => _i80.TokenDataHolder());
@@ -308,7 +308,8 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       get<_i87.NatsProvider>(),
       get<_i82.UserFunctions>(),
       get<_i18.ChatFunctions>(),
-      get<_i91.ChatSaver>()));
+      get<_i91.ChatSaver>(),
+      get<_i16.ChatDatabase>()));
   gh.factory<_i94.TextSender>(() => _i94.TextSender(
       get<_i87.NatsProvider>(),
       get<_i82.UserFunctions>(),
@@ -317,16 +318,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       get<_i90.ChannelsRegistry>(),
       get<_i91.ChatSaver>()));
   gh.factory<_i95.ChannelListener>(
-      () => _i96.ChatJoinedListener(
-          get<_i87.NatsProvider>(),
-          get<_i90.ChannelsRegistry>(),
-          get<_i82.UserFunctions>(),
-          get<_i17.ChatDatabaseCubit>(),
-          get<_i92.InviteSender>(),
-          get<_i91.ChatSaver>()),
-      instanceName: 'UserJoined');
-  gh.factory<_i95.ChannelListener>(
-      () => _i97.TextMessageListener(
+      () => _i96.TextMessageListener(
           get<_i87.NatsProvider>(),
           get<_i90.ChannelsRegistry>(),
           get<_i82.UserFunctions>(),
@@ -336,15 +328,61 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
           get<_i91.ChatSaver>()),
       instanceName: 'Text');
   gh.factory<_i95.ChannelListener>(
-      () => _i98.ChatInfoListener(
+      () => _i97.MessageTextingListener(
+          get<_i87.NatsProvider>(),
+          get<_i90.ChannelsRegistry>(),
+          get<_i17.ChatDatabaseCubit>(),
+          get<_i15.ChatCubit>()),
+      instanceName: 'Texting');
+  gh.factory<_i95.ChannelListener>(
+      () => _i98.UserOnlineListener(
+          get<_i87.NatsProvider>(),
+          get<_i90.ChannelsRegistry>(),
+          get<_i82.UserFunctions>(),
+          get<_i92.InviteSender>(),
+          get<_i17.ChatDatabaseCubit>()),
+      instanceName: 'Online');
+  gh.factory<_i95.ChannelListener>(
+      () => _i99.MessageStatusListener(get<_i87.NatsProvider>(),
+          get<_i90.ChannelsRegistry>(), get<_i18.ChatFunctions>()),
+      instanceName: 'UserReacted');
+  gh.factory<_i95.ChannelListener>(
+      () => _i100.ChatLeftListener(
+          get<_i87.NatsProvider>(),
+          get<_i90.ChannelsRegistry>(),
+          get<_i92.InviteSender>(),
+          get<_i91.ChatSaver>(),
+          get<_i82.UserFunctions>(),
+          get<_i17.ChatDatabaseCubit>(),
+          get<_i18.ChatFunctions>()),
+      instanceName: 'UserLeftChat');
+  gh.factory<_i95.ChannelListener>(
+      () => _i101.ChatJoinedListener(
           get<_i87.NatsProvider>(),
           get<_i90.ChannelsRegistry>(),
           get<_i82.UserFunctions>(),
           get<_i17.ChatDatabaseCubit>(),
-          get<_i92.InviteSender>()),
-      instanceName: 'UpdateChatInfo');
+          get<_i92.InviteSender>(),
+          get<_i91.ChatSaver>()),
+      instanceName: 'UserJoined');
   gh.factory<_i95.ChannelListener>(
-      () => _i99.ChatListListener(
+      () => _i102.ChatInvitationListener(
+          get<_i87.NatsProvider>(),
+          get<_i90.ChannelsRegistry>(),
+          get<_i92.InviteSender>(),
+          get<_i17.ChatDatabaseCubit>()),
+      instanceName: 'InviteUserToJoinChat');
+  gh.factory<_i95.ChannelListener>(
+      () => _i103.MessageDeletedListener(
+          get<_i87.NatsProvider>(),
+          get<_i90.ChannelsRegistry>(),
+          get<_i18.ChatFunctions>(),
+          get<_i92.InviteSender>(),
+          get<_i16.ChatDatabase>(),
+          get<_i91.ChatSaver>()),
+      instanceName: 'RemoveMessage');
+  gh.factory<_i95.ChannelListener>(
+      () => _i104.ChatListListener(
           get<_i87.NatsProvider>(),
           get<_i90.ChannelsRegistry>(),
           get<_i17.ChatDatabaseCubit>(),
@@ -353,47 +391,13 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
           get<_i91.ChatSaver>()),
       instanceName: 'ChatList');
   gh.factory<_i95.ChannelListener>(
-      () => _i100.MessageDeletedListener(
-          get<_i87.NatsProvider>(),
-          get<_i90.ChannelsRegistry>(),
-          get<_i18.ChatFunctions>(),
-          get<_i92.InviteSender>()),
-      instanceName: 'RemoveMessage');
-  gh.factory<_i95.ChannelListener>(
-      () => _i101.ChatInvitationListener(
-          get<_i87.NatsProvider>(),
-          get<_i90.ChannelsRegistry>(),
-          get<_i92.InviteSender>(),
-          get<_i17.ChatDatabaseCubit>()),
-      instanceName: 'InviteUserToJoinChat');
-  gh.factory<_i95.ChannelListener>(
-      () => _i102.ChatLeftListener(
-          get<_i87.NatsProvider>(),
-          get<_i90.ChannelsRegistry>(),
-          get<_i92.InviteSender>(),
-          get<_i91.ChatSaver>(),
-          get<_i82.UserFunctions>(),
-          get<_i17.ChatDatabaseCubit>()),
-      instanceName: 'UserLeftChat');
-  gh.factory<_i95.ChannelListener>(
-      () => _i103.MessageStatusListener(get<_i87.NatsProvider>(),
-          get<_i90.ChannelsRegistry>(), get<_i18.ChatFunctions>()),
-      instanceName: 'UserReacted');
-  gh.factory<_i95.ChannelListener>(
-      () => _i104.UserOnlineListener(
+      () => _i105.ChatInfoListener(
           get<_i87.NatsProvider>(),
           get<_i90.ChannelsRegistry>(),
           get<_i82.UserFunctions>(),
-          get<_i92.InviteSender>(),
-          get<_i17.ChatDatabaseCubit>()),
-      instanceName: 'Online');
-  gh.factory<_i95.ChannelListener>(
-      () => _i105.MessageTextingListener(
-          get<_i87.NatsProvider>(),
-          get<_i90.ChannelsRegistry>(),
           get<_i17.ChatDatabaseCubit>(),
-          get<_i15.ChatCubit>()),
-      instanceName: 'Texting');
+          get<_i92.InviteSender>()),
+      instanceName: 'UpdateChatInfo');
   gh.factory<_i106.ChatEventsSender>(() => _i106.ChatEventsSender(
       get<_i87.NatsProvider>(),
       get<_i82.UserFunctions>(),
@@ -402,12 +406,12 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   return get;
 }
 
+class _$FileConstants extends _i107.FileConstants {}
+
+class _$MessengerProd extends _i108.MessengerProd {}
+
+class _$MessengerDev extends _i108.MessengerDev {}
+
 class _$TokenDataInjectorModule extends _i80.TokenDataInjectorModule {}
 
-class _$MessengerDev extends _i107.MessengerDev {}
-
-class _$MessengerProd extends _i107.MessengerProd {}
-
-class _$FileConstants extends _i108.FileConstants {}
-
-class _$MessengerCertificate extends _i107.MessengerCertificate {}
+class _$MessengerCertificate extends _i108.MessengerCertificate {}

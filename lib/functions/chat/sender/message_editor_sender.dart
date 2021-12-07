@@ -18,36 +18,43 @@ class MessageEditorSender {
   final ChatFunctions chatFunctions;
   final ChatSaver chatSaver;
 
-  MessageEditorSender(this.natsProvider, this.userFunctions, this.chatFunctions, this.chatSaver);
+  final ChatDatabase db;
 
-  Future<void> sendDeleteMessages(List<MessageTable> messages, BuildContext context,
-      {bool makeRequest = true}) async {
+  MessageEditorSender(this.natsProvider, this.userFunctions, this.chatFunctions,
+      this.chatSaver, this.db);
+
+  Future<bool> sendDeleteMessages(
+      List<MessageTable> messages, BuildContext context,
+      {bool makeRequest = true, bool edited = true}) async {
+    bool result = false;
     if (makeRequest) {
       final chatId = messages.last.chatId;
       final channel = natsProvider.getGroupDeleteMessageChannelById(chatId);
-      final sent =
-      await natsProvider.sendSystemMessageToChannel(
+      final sent = await natsProvider.sendSystemMessageToChannel(
         channel,
         MessageType.RemoveMessage,
         ChatMessageDeleteFields(
           messages: messages,
           user: userFunctions.me,
+          edited: edited,
         ).toMap(),
       );
-
-      if (sent) {
-        chatFunctions.deleteMessages(messages);
+      if (!edited) {
+        if (sent) {
+          chatFunctions.deleteMessages(messages);
+        } else {
+          SimpleCustomSnackbar(
+            context: context,
+            txt: localizationInstance.noConnectionError,
+            duration: const Duration(seconds: 2),
+          );
+        }
       } else {
-        SimpleCustomSnackbar(
-          context: context,
-          txt: localizationInstance.noConnectionError,
-          duration: const Duration(seconds: 2),
-        );
+        chatFunctions.deleteMessages(messages);
       }
-    } else {
-      chatFunctions.deleteMessages(messages);
     }
 
     chatSaver.saveChats(newChat: null);
+    return result;
   }
 }

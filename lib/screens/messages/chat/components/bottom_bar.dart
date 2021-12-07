@@ -62,8 +62,8 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
     if (UseMessageProvider.initialized) {
       clearForm();
       final sent = await UseMessageProvider
-              .messageProvider?.messageDeletedListener
-              .deleteMessages([editedMsg], context, edited: true) ??
+              .messageProvider?.messageEditorSender
+              .sendDeleteMessages([editedMsg], context, edited: true) ??
           false;
 
       if (sent) {

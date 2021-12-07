@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/alert/loading.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
@@ -33,7 +34,7 @@ class ChatInfoParticipants extends StatelessWidget {
     if (UseMessageProvider.initialized) {
       CustomAlertLoading(context).call();
       final messageProvider = UseMessageProvider.messageProvider;
-      await messageProvider?.chatLeftListener
+      await messageProvider?.chatEventsSender
           .sendLeftMessage(chat, unsubFromChat: false, users: [user]);
 
       Navigator.of(context).pop();

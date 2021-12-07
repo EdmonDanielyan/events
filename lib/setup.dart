@@ -16,6 +16,7 @@ final sl = GetIt.instance;
   asExtension: false, // default
 )
 Future<void> setup() async {
+  print("Setup App");
   WidgetsFlutterBinding.ensureInitialized();
   NotificationsProvider.init();
   await $initGetIt(sl, environment: "dev");

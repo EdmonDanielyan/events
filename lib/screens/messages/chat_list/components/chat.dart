@@ -75,7 +75,7 @@ class _ChatListTileState extends State<ChatListTile> {
     if (UseMessageProvider.initialized) {
       final chat = widget.chat;
       UseMessageProvider.messageProvider?.chatFunctions.deleteChat(chat.id);
-      await UseMessageProvider.messageProvider?.chatLeftListener
+      await UseMessageProvider.messageProvider?.chatEventsSender
           .sendLeftMessage(chat);
     }
     if (Navigator.of(context).canPop()) {

@@ -48,17 +48,21 @@ class ChatEventsSender {
     return send;
   }
 
-  Future<void> sendLeftMessage(ChatTable chat) async {
+
+  Future<void> sendLeftMessage(ChatTable chat, { List<UserTable>? users, bool unsubFromChat = true}) async {
     await natsProvider.sendSystemMessageToChannel(
       natsProvider.getGroupLeftChannelById(chat.id),
       MessageType.UserLeftChat,
       ChatInvitationFields(
-        users: [userFunctions.me],
+        users: users ?? [userFunctions.me],
         chat: chat,
       ).toMap(),
     );
 
-    await registry.unSubscribeOnChatDelete(chat.id);
+    if (unsubFromChat) {
+      await registry.unSubscribeOnChatDelete(chat.id);
+    }
+
     await chatSaver.saveChats(newChat: null);
   }
 
