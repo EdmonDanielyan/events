@@ -40,6 +40,7 @@ class NewChatPersonContainer extends StatelessWidget {
                 avatarSize: avatarSize,
                 titleGap: titleGap,
                 indicatorIsOn: false,
+                indicatorReadOnly: true,
               ),
             ),
           ),

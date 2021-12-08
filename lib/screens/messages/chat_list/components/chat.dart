@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/alert/loading.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
-import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
@@ -25,16 +24,18 @@ class ChatListTile extends StatefulWidget {
   final double leadingGap;
   final List<MessageWithUser> messagesWithUser;
   final ChatDatabaseCubit chatDatabaseCubit;
-  const ChatListTile(
-      {Key? key,
-      this.highlightValue = "",
-      required this.index,
-      required this.chat,
-      required this.messagesWithUser,
-      required this.chatDatabaseCubit,
-      this.contentPadding,
-      this.leadingGap = 15.0})
-      : super(key: key);
+  final void Function()? onTap;
+  const ChatListTile({
+    Key? key,
+    this.highlightValue = "",
+    required this.index,
+    required this.chat,
+    required this.messagesWithUser,
+    required this.chatDatabaseCubit,
+    this.contentPadding,
+    this.leadingGap = 15.0,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   State<ChatListTile> createState() => _ChatListTileState();
@@ -54,16 +55,16 @@ class _ChatListTileState extends State<ChatListTile> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      _subscribeToOnline();
+      _listenToUserSub();
     });
   }
 
-  Future<void> _subscribeToOnline() async {
+  Future<void> _listenToUserSub() async {
     if (oppositeUserId != null) {
       final watchUser = widget.chatDatabaseCubit.db.watchUser(oppositeUserId!);
 
       watchUser.first.then((user) async {
-        if (UseMessageProvider.initialized) {
+        if (user != null && UseMessageProvider.initialized) {
           await UseMessageProvider.messageProvider?.subscribeToUserOnline(user);
         }
       });
@@ -93,8 +94,7 @@ class _ChatListTileState extends State<ChatListTile> {
         onDismissed: (dir) => _deleteChat(context),
         key: UniqueKey(),
         child: InkWell(
-          onTap: () =>
-              OpenChat(widget.chatDatabaseCubit, widget.chat).call(context),
+          onTap: widget.onTap,
           child: Container(
             padding: widget.contentPadding,
             margin: EdgeInsets.only(bottom: 7.0, top: 7.0),
@@ -173,7 +173,7 @@ class _ChatListTileState extends State<ChatListTile> {
     if (oppositeUserId != null) {
       return StreamBuilder(
         stream: widget.chatDatabaseCubit.db.watchUser(oppositeUserId!),
-        builder: (context, AsyncSnapshot<UserTable> snapshot) {
+        builder: (context, AsyncSnapshot<UserTable?> snapshot) {
           bool indicator = false;
           if (snapshot.hasData && snapshot.data != null) {
             UserTable user = snapshot.data!;

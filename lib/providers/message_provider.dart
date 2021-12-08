@@ -83,9 +83,12 @@ class MessageProvider {
     this.chatDatabaseCubit = sl();
     this.chatCubit = sl();
     this.userFunctions = sl();
+    this.messageEditorSender = sl();
+    this.userReactionSender = sl();
     this.chatSaver = sl();
     this.chatFunctions = sl();
     this.inviteSender = sl();
+    this.chatEventsSender = sl();
     this.textSender = sl();
     this.registry = sl();
     this.chatCreation = sl();
@@ -143,11 +146,18 @@ class MessageProvider {
     await natsProvider.dispose();
     await chatDatabaseCubit.db.deleteEverything();
     UseMessageProvider.uninit();
+    natsLoaded = false;
   }
 
   Future<void> subscribeToUserOnline(UserTable user) async {
-    await (registry.listeners[MessageType.Online] as UserOnlineListener).subscribe(user);
+    final listener =
+        (registry.listeners[MessageType.Online] as UserOnlineListener?);
+    if (listener != null) {
+      await listener.subscribe(user);
+    } else {
+      Future.delayed(Duration(seconds: 3), () {
+        subscribeToUserOnline(user);
+      });
+    }
   }
 }
-
-

@@ -4,9 +4,11 @@ import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class SearchBar extends StatefulWidget {
+  final TextEditingController? controller;
   final void Function(String)? onChanged;
   final EdgeInsetsGeometry? contentPadding;
-  const SearchBar({Key? key, this.contentPadding, this.onChanged})
+  const SearchBar(
+      {Key? key, this.controller, this.contentPadding, this.onChanged})
       : super(key: key);
 
   @override
@@ -46,9 +48,11 @@ class _SearchBarState extends State<SearchBar> {
         ),
       ),
       child: TextField(
+        controller: widget.controller,
         focusNode: _textFieldFocus,
         onChanged: widget.onChanged,
         decoration: InputDecoration(
+          contentPadding: widget.contentPadding,
           hintText: _hintText ?? _originalHint,
           hintStyle: TextStyle(color: Colors.grey[700]),
           suffixIconConstraints: BoxConstraints(minHeight: 24, minWidth: 24),

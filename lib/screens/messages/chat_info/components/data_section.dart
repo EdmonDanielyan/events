@@ -79,6 +79,8 @@ class ChatInfoDataSection extends StatelessWidget {
     return BlocBuilder<ChatDatabaseCubit, ChatDatabaseCubitState>(
       bloc: _chatDatabaseCubit,
       builder: (context, state) {
+        if (state.selectedChat == null) return SizedBox();
+
         final selectedChat = state.selectedChat!;
         var str = _strings.turnOff;
         var icon = Icons.volume_off_rounded;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/highlight_text.dart';
+import 'package:ink_mobile/functions/chat/listeners/online.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
@@ -17,6 +18,7 @@ class ParticipantCard extends StatefulWidget {
   final String? overrideTitle;
   final String? overrideAvatar;
   final bool indicatorIsOn;
+  final bool indicatorReadOnly;
   final String? avatarName;
   const ParticipantCard({
     Key? key,
@@ -29,6 +31,7 @@ class ParticipantCard extends StatefulWidget {
     this.overrideAvatar,
     this.trailingLable = "",
     this.indicatorIsOn = true,
+    this.indicatorReadOnly = false,
     this.avatarName,
   }) : super(key: key);
 
@@ -89,13 +92,20 @@ class _ParticipantCardState extends State<ParticipantCard> {
       avatarHeight: widget.avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
       avatarWidth: widget.avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
       url: widget.overrideAvatar ?? widget.user?.avatar,
-      indicator:
-          widget.indicatorIsOn && widget.user != null && widget.user!.online
-              ? true
-              : false,
+      indicator: getIndicator(),
       indicatorSize: 8.0,
       name: widget.avatarName ?? (widget.user?.name ?? ""),
     );
+  }
+
+  bool getIndicator() {
+    if (widget.indicatorReadOnly && widget.user != null) {
+      return UserOnlineListener.subscribedUsers.contains(widget.user?.id);
+    }
+
+    return widget.indicatorIsOn && widget.user != null && widget.user!.online
+        ? true
+        : false;
   }
 
   Widget nameWidget(BuildContext context) {

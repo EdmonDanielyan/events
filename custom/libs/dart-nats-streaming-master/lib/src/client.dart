@@ -506,7 +506,7 @@ class Client {
 
       return subscriptionResponse;
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception('${subscriptionRequest.subject} - $e');
     }
   }
 

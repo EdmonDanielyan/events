@@ -25,8 +25,8 @@ class MessageEditorSender {
 
   Future<bool> sendDeleteMessages(
       List<MessageTable> messages, BuildContext context,
-      {bool makeRequest = true, bool edited = true}) async {
-    bool result = false;
+      {bool makeRequest = true, bool edited = false}) async {
+    bool result = true;
     if (makeRequest) {
       final chatId = messages.last.chatId;
       final channel = natsProvider.getGroupDeleteMessageChannelById(chatId);
@@ -49,9 +49,9 @@ class MessageEditorSender {
             duration: const Duration(seconds: 2),
           );
         }
-      } else {
-        chatFunctions.deleteMessages(messages);
       }
+    } else {
+      chatFunctions.deleteMessages(messages);
     }
 
     chatSaver.saveChats(newChat: null);

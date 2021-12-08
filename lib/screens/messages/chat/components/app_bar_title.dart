@@ -51,7 +51,7 @@ class ChatAppBarTitle extends StatelessWidget {
     if (!isGroup) {
       return StreamBuilder(
         stream: chatDatabaseCubit.db.watchUser(oppositeUserId!),
-        builder: (context, AsyncSnapshot<UserTable> snapshot) {
+        builder: (context, AsyncSnapshot<UserTable?> snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
             UserTable user = snapshot.data!;
             return Text(

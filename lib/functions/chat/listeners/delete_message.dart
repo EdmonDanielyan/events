@@ -23,13 +23,8 @@ class MessageDeletedListener extends ChannelListener {
 
   final ChatSaver chatSaver;
 
-  MessageDeletedListener(
-      NatsProvider natsProvider,
-      ChannelsRegistry registry,
-      this.chatFunctions,
-      this.messageSender,
-      this.db,
-      this.chatSaver)
+  MessageDeletedListener(NatsProvider natsProvider, ChannelsRegistry registry,
+      this.chatFunctions, this.messageSender, this.db, this.chatSaver)
       : super(natsProvider, registry);
 
   Future<void> onMessage(String channel, NatsMessage message) async {

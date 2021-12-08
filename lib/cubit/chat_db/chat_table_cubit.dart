@@ -4,9 +4,8 @@ import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 
-@singleton
+@lazySingleton
 class ChatDatabaseCubit extends Cubit<ChatDatabaseCubitState> {
-
   ChatDatabaseCubit(ChatDatabase db) : super(ChatDatabaseCubitState(db: db));
 
   void setSelectedChat(ChatTable? chat) {

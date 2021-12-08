@@ -16,6 +16,7 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/chat_list.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
+import 'package:collection/collection.dart';
 
 import '../../../setup.dart';
 import '../chat_creation.dart';
@@ -35,7 +36,7 @@ class ChatListListener extends ChannelListener {
     this.chatDatabaseCubit,
     this.userFunctions,
     this.channelFunctions,
-      this.chatSaver,
+    this.chatSaver,
   ) : super(natsProvider, registry);
 
   static Set<String> busyChannels = {};
@@ -108,6 +109,20 @@ class ChatListListener extends ChannelListener {
 
     final storedChats = await chatDatabaseCubit.db.getAllChats();
 
+    distinctChats.sort((a, b) {
+      if (messages.isNotEmpty) {
+        final messageA =
+            messages.lastWhereOrNull((element) => element.chatId == a.id);
+        final messageB =
+            messages.lastWhereOrNull((element) => element.chatId == b.id);
+        if (messageA != null && messageB != null) {
+          return messageA.created!.compareTo(messageB.created!);
+        }
+      }
+
+      return a.updatedAt.compareTo(b.updatedAt);
+    });
+
     for (final chat in distinctChats) {
       _getChatIds.add(chat.id);
       bool insert = _chatExistsInStoredChannels(chat, storedChats);
@@ -129,7 +144,8 @@ class ChatListListener extends ChannelListener {
   }
 
   Future<void> _insertUsers(List<UserTable> users) async {
-    await userFunctions.insertUsers(users);
+    final distinctUsers = users.toSet().toList();
+    await userFunctions.insertUsers(distinctUsers);
   }
 
   Future<void> _insertParticipants(

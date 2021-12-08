@@ -51,10 +51,14 @@ class ChatLeftListener extends ChannelListener {
       final users = fields.users;
       final chat = fields.chat;
 
+      print("GOT HERE");
+      print(users);
+
       if (users.isNotEmpty) {
         final me = await _deleteIfItsMe(users, chat);
         if (!me) {
           final participants = ChatUserViewModel.toParticipants(users, chat);
+
           await userFunctions.deleteParticipants(participants, chat);
           setMessage(users, chat);
         }
@@ -73,12 +77,8 @@ class ChatLeftListener extends ChannelListener {
         registry.unSubscribeOnChatDelete(chat.id);
         final selectedChat = chatDatabaseCubit.selectedChat;
 
-
-        if (selectedChat != null &&
-            selectedChat.id == chat.id &&
-            App.getContext != null) {
-          // todo: этому здесь не место нужно перенести BlocListener изменеив состояние кубита
-          Navigator.of(App.getContext!).popUntil((route) => route.isFirst);
+        if (selectedChat != null && selectedChat.id == chat.id) {
+          chatDatabaseCubit.setSelectedChat(null);
         }
         return true;
       }
@@ -96,7 +96,7 @@ class ChatLeftListener extends ChannelListener {
 
       if (generateMessage != null) {
         await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
-            .addMessage(generateMessage);
+            .addMessage(generateMessage, setChatToFirst: false);
       }
     }
   }

@@ -127,23 +127,7 @@ class ChatInfoParticipants extends StatelessWidget {
             if (user == null) return SizedBox();
             return Column(
               children: [
-                Dismissible(
-                  background: SizedBox(),
-                  direction: DismissDirection.endToStart,
-                  secondaryBackground: Icon(Icons.delete, color: Colors.red),
-                  onDismissed: (dir) =>
-                      _deleteParticipant(context, participants[index].user!),
-                  key: UniqueKey(),
-                  child: InkWell(
-                    onTap: () => _onParticipantTap(context, user.id),
-                    child: ParticipantCard(
-                      user: user,
-                      trailingLable: ChatListView.isOwner(chat, myId: user.id)
-                          ? _strings.owner
-                          : "",
-                    ),
-                  ),
-                ),
+                dismissibleWidget(context, user, index),
                 if (index != participants.length - 1) ...[
                   divider(),
                 ],
@@ -155,6 +139,33 @@ class ChatInfoParticipants extends StatelessWidget {
     }
 
     return SizedBox();
+  }
+
+  Widget dismissibleWidget(BuildContext context, UserTable user, int index) {
+    if (iAmOwner) {
+      return Dismissible(
+        background: SizedBox(),
+        direction: DismissDirection.endToStart,
+        secondaryBackground: Icon(Icons.delete, color: Colors.red),
+        onDismissed: (dir) =>
+            _deleteParticipant(context, participants[index].user!),
+        key: UniqueKey(),
+        child: mainCardWidget(context, user),
+      );
+    }
+
+    return mainCardWidget(context, user);
+  }
+
+  Widget mainCardWidget(BuildContext context, UserTable user) {
+    return InkWell(
+      onTap: () => _onParticipantTap(context, user.id),
+      child: ParticipantCard(
+        user: user,
+        trailingLable:
+            ChatListView.isOwner(chat, myId: user.id) ? _strings.owner : "",
+      ),
+    );
   }
 
   Widget addUserIcon() {

@@ -39,7 +39,7 @@ class TextMessageListener extends ChannelListener {
       this.chatSaver)
       : super(natsProvider, registry);
 
-  Debouncer get _debouncer => Debouncer(milliseconds: 400);
+  Debouncer get _debouncer => Debouncer(milliseconds: 800);
 
   @override
   Future<void> onMessage(String channel, NatsMessage message) async {
@@ -99,6 +99,12 @@ class TextMessageListener extends ChannelListener {
     }
 
     if (selectedChat != null && selectedChat.id == chatId) {
+      showNotification = false;
+    }
+
+    final newMessageDate = message.created!.add(Duration(seconds: 30));
+
+    if (newMessageDate.toUtc().isBefore(new DateTime.now().toUtc())) {
       showNotification = false;
     }
 

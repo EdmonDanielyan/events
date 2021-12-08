@@ -16,7 +16,7 @@ import '../../../setup.dart';
 import 'channel_listener.dart';
 
 @lazySingleton
-class ChannelsRegistry with Loggable{
+class ChannelsRegistry with Loggable {
   final NatsProvider natsProvider;
   final ChannelFunctions channelFunctions;
   ChatListListener get chatListListener =>
@@ -29,11 +29,10 @@ class ChannelsRegistry with Loggable{
 
   Map<MessageType, ChannelListener> listeners = {};
 
-  ChannelsRegistry({
-    required this.natsProvider,
-    required this.channelFunctions,
-    required this.userFunctions
-  });
+  ChannelsRegistry(
+      {required this.natsProvider,
+      required this.channelFunctions,
+      required this.userFunctions});
 
   String lastChannelStr = "";
   Set<String> listeningChannels = {};
@@ -93,17 +92,19 @@ class ChannelsRegistry with Loggable{
 
   Future<void> init() async {
     await Future.delayed(Duration(seconds: 1));
-
     listeners.clear();
     MessageType.values.forEach((messageType) {
       var messageListenerToSearch = describeEnum(messageType);
-      logger.fine('Looking for listener of message type: $messageListenerToSearch');
+      logger.fine(
+          'Looking for listener of message type: $messageListenerToSearch');
 
       try {
-        ChannelListener listener = sl.get(instanceName: messageListenerToSearch);
+        ChannelListener listener =
+            sl.get(instanceName: messageListenerToSearch);
         listeners.putIfAbsent(messageType, () => listener);
       } catch (e) {
-        logger.warning('Not found listener for message type: $messageListenerToSearch');
+        logger.warning(
+            'Not found listener for message type: $messageListenerToSearch');
       }
     });
 
@@ -146,8 +147,12 @@ class ChannelsRegistry with Loggable{
 
     if (!isListening(channel)) {
       logger.fine("listeners[$type]=${listeners[type]}");
-      listeners[type]!.onListen(channel, startSequence: startSequence);
-      listeningChannels.add(channel);
+      try {
+        await listeners[type]!.onListen(channel, startSequence: startSequence);
+        listeningChannels.add(channel);
+      } catch (_e) {
+        logger.warning(_e);
+      }
     }
   }
 
@@ -188,5 +193,7 @@ class ChannelsRegistry with Loggable{
     listeningChannels.forEach((element) {
       natsProvider.unsubscribeFromChannel(element);
     });
+
+    listeningChannels.clear();
   }
 }

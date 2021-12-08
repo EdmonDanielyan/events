@@ -68,7 +68,7 @@ class ChatJoinedListener extends ChannelListener {
 
       if (generateMessage != null) {
         await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
-            .addMessage(generateMessage);
+            .addMessage(generateMessage, setChatToFirst: false);
       }
     }
   }

@@ -17,7 +17,8 @@ class ChatEventsSender {
 
   final ChannelsRegistry registry;
 
-  ChatEventsSender(this.natsProvider, this.userFunctions, this.chatSaver, this.registry);
+  ChatEventsSender(
+      this.natsProvider, this.userFunctions, this.chatSaver, this.registry);
 
   Future<bool> sendNewChatInfo(ChatTable chat, {UserTable? user}) async {
     var channel = natsProvider.getGroupChatInfoById(chat.id);
@@ -48,8 +49,8 @@ class ChatEventsSender {
     return send;
   }
 
-
-  Future<void> sendLeftMessage(ChatTable chat, { List<UserTable>? users, bool unsubFromChat = true}) async {
+  Future<void> sendLeftMessage(ChatTable chat,
+      {List<UserTable>? users, bool unsubFromChat = true}) async {
     await natsProvider.sendSystemMessageToChannel(
       natsProvider.getGroupLeftChannelById(chat.id),
       MessageType.UserLeftChat,
@@ -65,6 +66,4 @@ class ChatEventsSender {
 
     await chatSaver.saveChats(newChat: null);
   }
-
-
 }

@@ -15,7 +15,7 @@ import 'model/participant_with_user.dart';
 
 part 'chat_db.g.dart';
 
-@singleton
+@lazySingleton
 @UseMoor(tables: [
   ChatTables,
   MessageTables,
@@ -167,8 +167,9 @@ class ChatDatabase extends _$ChatDatabase {
       (update(userTables)..where((tbl) => tbl.id.equals(id))).write(user);
   Future<UserTable?> selectUserById(int id) =>
       (select(userTables)..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
-  Stream<UserTable> watchUser(int userId) =>
-      (select(userTables)..where((tbl) => tbl.id.equals(userId))).watchSingle();
+  Stream<UserTable?> watchUser(int userId) =>
+      (select(userTables)..where((tbl) => tbl.id.equals(userId)))
+          .watchSingleOrNull();
 
   //CHANNEL
   Future<List<ChannelTable>> getAllChannels() => select(channelTables).get();
