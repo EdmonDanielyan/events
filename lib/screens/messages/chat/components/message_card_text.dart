@@ -50,7 +50,7 @@ class MessageCardText extends StatelessWidget {
 
   void _resend(BuildContext context) async {
     if (UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider?.messageDeletedListener.deleteMessages(
+      UseMessageProvider.messageProvider?.messageEditorSender.sendDeleteMessages(
         [message!],
         context,
         makeRequest: false,
@@ -62,7 +62,7 @@ class MessageCardText extends StatelessWidget {
       );
       await sendMessage.addMessage(renewedMessage);
       if (UseMessageProvider.initialized) {
-        await UseMessageProvider.messageProvider?.chatMessageListener
+        await UseMessageProvider.messageProvider?.textSender
             .sendMessage(getChat, renewedMessage);
       }
     }

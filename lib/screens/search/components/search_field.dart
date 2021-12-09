@@ -14,7 +14,6 @@ class SearchField extends StatefulWidget {
 
 class _SearchFieldState extends State<SearchField> {
   FocusNode _textFieldFocus = FocusNode();
-  Color _fillColor = Colors.grey.withOpacity(0.03);
   String? _hintText;
 
   @override
@@ -22,12 +21,10 @@ class _SearchFieldState extends State<SearchField> {
     _textFieldFocus.addListener(() {
       if (_textFieldFocus.hasFocus) {
         setState(() {
-          _fillColor = Colors.white;
           _hintText = "";
         });
       } else {
         setState(() {
-          _fillColor = Colors.grey.withOpacity(0.03);
           _hintText = widget.hint;
         });
       }
@@ -43,6 +40,10 @@ class _SearchFieldState extends State<SearchField> {
         onChanged: widget.onChanged,
         decoration: InputDecoration(
           filled: true,
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey, width: 1.0),
+            borderRadius: BorderRadius.circular(50.0),
+          ),
           suffixIconConstraints: BoxConstraints(minHeight: 20, minWidth: 20),
           suffixIcon: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -53,7 +54,7 @@ class _SearchFieldState extends State<SearchField> {
               height: 20,
             ),
           ),
-          fillColor: _fillColor,
+          fillColor: Colors.white,
           hintText: _hintText ?? widget.hint,
           contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
           border: OutlineInputBorder(

@@ -9,12 +9,17 @@ class OpenChat {
 
   OpenChat(this.chatDatabaseCubit, this.chatTable);
 
-  void call(BuildContext context, {ChatScreenParams? chatScreenParams}) {
+  Future<void> call(BuildContext context,
+      {ChatScreenParams? chatScreenParams}) async {
     chatDatabaseCubit.setSelectedChat(chatTable);
     final params = chatScreenParams ?? ChatScreenParams();
-    Navigator.of(context).pushNamed(
+    await Navigator.of(context).pushNamed(
       "/message",
       arguments: params,
     );
+    if (chatDatabaseCubit.selectedChat != null &&
+        chatDatabaseCubit.selectedChat!.id == chatTable.id) {
+      chatDatabaseCubit.setSelectedChat(null);
+    }
   }
 }

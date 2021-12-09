@@ -6,10 +6,12 @@ import 'package:ink_mobile/core/cubit/selectable/selectable_state.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
+import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
-import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
+import 'package:ink_mobile/models/chat/chat_app_bar_modes.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/app_bar_title.dart';
@@ -22,6 +24,8 @@ import 'components/body.dart';
 import 'entities/chat_screen_params.dart';
 
 class ChatScreen extends StatefulWidget {
+  final ChatFunctions chatFunctions;
+
   static ChatScreenState of(BuildContext context) =>
       context.findAncestorStateOfType<ChatScreenState>()!;
 
@@ -35,6 +39,7 @@ class ChatScreen extends StatefulWidget {
     required this.chatDatabaseCubit,
     required this.chatCubit,
     required this.selectableCubit,
+    required this.chatFunctions,
   }) : super(key: key);
 
   @override
@@ -58,12 +63,10 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (chatCubit.state.appBarEnum == ChatAppBarEnums.INITIAL) {
-          chatDatabaseCubit.setSelectedChat(null);
-        }
-        return Future.value(true);
+    return BlocListener<ChatDatabaseCubit, ChatDatabaseCubitState>(
+      listenWhen: (previous, current) => current.selectedChat == null,
+      listener: (context, state) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
       },
       child: Scaffold(
         appBar: _GetAppBar(
@@ -72,7 +75,10 @@ class ChatScreenState extends State<ChatScreen> {
           selectableCubit: selectableCubit,
           chatScreenParams: chatScreenParams,
         ),
-        body: ChatBody(controller: controller),
+        body: ChatBody(
+          controller: controller,
+          chatFunctions: widget.chatFunctions,
+        ),
         floatingActionButton: BlocBuilder<ChatCubit, ChatCubitState>(
           bloc: chatCubit,
           buildWhen: (previous, current) {
@@ -107,14 +113,14 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
     return BlocBuilder<ChatCubit, ChatCubitState>(
       bloc: chatCubit,
       buildWhen: (previous, current) {
-        return previous.appBarEnum != current.appBarEnum;
+        return previous.appBarMode != current.appBarMode;
       },
       builder: (context, chatCubitState) {
         return BlocBuilder<SelectableCubit<MessageWithUser>,
             SelectableCubitState<MessageWithUser>>(
           bloc: selectableCubit,
           builder: (context, selectableCubitState) {
-            if (chatCubitState.appBarEnum == ChatAppBarEnums.SEARCH_BAR) {
+            if (chatCubitState.appBarMode == ChatAppBarMode.SEARCH_BAR) {
               return searchBar();
             } else if (selectableCubit.getItems.length > 0) {
               return selectiveBar(context);
@@ -133,7 +139,7 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
       titleWidget: WillPopScope(
         onWillPop: () async {
           chatCubit.emptySearch();
-          chatCubit.emitAppBarEnum(ChatAppBarEnums.INITIAL);
+          chatCubit.emitAppBarEnum(ChatAppBarMode.INITIAL);
           return Future.value(false);
         },
         child: ChatSearchTextfield(
@@ -158,8 +164,8 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
             final messages = MessageWithUserListView.getMessagesFromList(
                 selectableCubit.getItems);
             if (UseMessageProvider.initialized) {
-              UseMessageProvider.messageProvider?.messageDeletedListener
-                  .deleteMessages(messages, context);
+              UseMessageProvider.messageProvider?.messageEditorSender
+                  .sendDeleteMessages(messages, context);
             }
             selectableCubit.clearAll();
           },
@@ -185,7 +191,7 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
         MessageSearchBtn(
           onPressed: () {
             TextFieldUtils.loseTextFieldFocus();
-            chatCubit.emitAppBarEnum(ChatAppBarEnums.SEARCH_BAR);
+            chatCubit.emitAppBarEnum(ChatAppBarMode.SEARCH_BAR);
           },
         )
       ],

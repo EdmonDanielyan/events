@@ -1,9 +1,10 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/models/converter.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:main_api_client/api/auth_api.dart';
@@ -228,7 +229,7 @@ abstract class TokenDataInjectorModule {
 }
 
 @lazySingleton
-class TokenDataHolder {
+class TokenDataHolder with Loggable {
   late String _userId;
 
   late String _deviceVirtualId;
@@ -240,8 +241,10 @@ class TokenDataHolder {
   String get natsToken => _natsToken;
 
   Future<void> update() async {
+    logger.fine("update");
     _userId = await Token.getUserId();
     _deviceVirtualId = await Token.getDeviceVirtualId() ?? "";
     _natsToken = await Token.getNatsToken() ?? "";
+    logger.fine("_userId: $_userId, _deviceVirtualId: $_deviceVirtualId, _natsToken: $_natsToken ");
   }
 }

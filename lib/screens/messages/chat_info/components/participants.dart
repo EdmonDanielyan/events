@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/alert/loading.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
-import 'package:ink_mobile/components/popup/popup_menu_container.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
@@ -10,9 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/participant_with_user.dart';
-import 'package:ink_mobile/models/chat/select_menu.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
-import 'package:ink_mobile/screens/messages/chat/components/hover_message.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/btn_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/participant_card.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
@@ -37,7 +34,7 @@ class ChatInfoParticipants extends StatelessWidget {
     if (UseMessageProvider.initialized) {
       CustomAlertLoading(context).call();
       final messageProvider = UseMessageProvider.messageProvider;
-      await messageProvider?.chatLeftListener
+      await messageProvider?.chatEventsSender
           .sendLeftMessage(chat, unsubFromChat: false, users: [user]);
 
       Navigator.of(context).pop();
@@ -86,10 +83,10 @@ class ChatInfoParticipants extends StatelessWidget {
     List<UserTable> userParticipants =
         ParticipantWithUserListView.getUsers(participants);
     if (UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider?.chatInvitationListener
+      UseMessageProvider.messageProvider?.inviteSender
           .sendInvitations(chat, userParticipants..addAll(selectedUsers));
-      UseMessageProvider.messageProvider?.chatJoinedListener
-          .sendUserJoinedMessage(chat, selectedUsers);
+      UseMessageProvider.messageProvider?.chatEventsSender
+          .sendUserChatJoinedMessage(chat, selectedUsers);
     }
     Navigator.of(context).pop();
   }
@@ -130,25 +127,7 @@ class ChatInfoParticipants extends StatelessWidget {
             if (user == null) return SizedBox();
             return Column(
               children: [
-                InkWell(
-                  onTap: () => _onParticipantTap(context, user.id),
-                  child: PopupMenuContainer<String>(
-                    blurBackground: false,
-                    items: SelectParticipantMenuList.getStandartList()
-                        .map((e) => HoverMessage.menuItem(e))
-                        .toList(),
-                    onItemSelected: (value) async {
-                      if (value == _strings.delete)
-                        _deleteParticipant(context, participants[index].user!);
-                    },
-                    child: ParticipantCard(
-                      user: user,
-                      trailingLable: ChatListView.isOwner(chat, myId: user.id)
-                          ? _strings.owner
-                          : "",
-                    ),
-                  ),
-                ),
+                dismissibleWidget(context, user, index),
                 if (index != participants.length - 1) ...[
                   divider(),
                 ],
@@ -160,6 +139,33 @@ class ChatInfoParticipants extends StatelessWidget {
     }
 
     return SizedBox();
+  }
+
+  Widget dismissibleWidget(BuildContext context, UserTable user, int index) {
+    if (iAmOwner) {
+      return Dismissible(
+        background: SizedBox(),
+        direction: DismissDirection.endToStart,
+        secondaryBackground: Icon(Icons.delete, color: Colors.red),
+        onDismissed: (dir) =>
+            _deleteParticipant(context, participants[index].user!),
+        key: UniqueKey(),
+        child: mainCardWidget(context, user),
+      );
+    }
+
+    return mainCardWidget(context, user);
+  }
+
+  Widget mainCardWidget(BuildContext context, UserTable user) {
+    return InkWell(
+      onTap: () => _onParticipantTap(context, user.id),
+      child: ParticipantCard(
+        user: user,
+        trailingLable:
+            ChatListView.isOwner(chat, myId: user.id) ? _strings.owner : "",
+      ),
+    );
   }
 
   Widget addUserIcon() {

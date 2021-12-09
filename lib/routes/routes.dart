@@ -119,6 +119,7 @@ class MainRoutes {
           chatDatabaseCubit: sl<ChatDatabaseCubit>(),
           chatCubit: sl<ChatCubit>(),
           selectableCubit: SelectableCubit<MessageWithUser>(),
+          chatFunctions: sl(),
         );
       }
       return _pageNotFound();

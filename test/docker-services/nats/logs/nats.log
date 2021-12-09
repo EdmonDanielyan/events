@@ -1,0 +1,314 @@
+[1] 2021/11/30 14:23:46.631786 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/11/30 14:23:46.632118 [INF] STREAM: ServerID: DP71qDnLn9VSAZL9PHQj3d
+[1] 2021/11/30 14:23:46.632421 [INF] STREAM: Go version: go1.16.9
+[1] 2021/11/30 14:23:46.632711 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/11/30 14:23:46.634396 [FTL] STREAM: Failed to start: dial tcp 172.18.0.2:5432: connect: connection refused
+[1] 2021/11/30 14:23:47.555537 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/11/30 14:23:47.555901 [INF] STREAM: ServerID: HzoeG727W0UlpAjpeYd57i
+[1] 2021/11/30 14:23:47.556386 [INF] STREAM: Go version: go1.16.9
+[1] 2021/11/30 14:23:47.556623 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/11/30 14:23:47.559735 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2021/11/30 14:23:48.556454 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/11/30 14:23:48.556810 [INF] STREAM: ServerID: DKrwcggkNUTcMcZb35exza
+[1] 2021/11/30 14:23:48.557187 [INF] STREAM: Go version: go1.16.9
+[1] 2021/11/30 14:23:48.557648 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/11/30 14:23:48.561548 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2021/11/30 14:23:49.526621 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/11/30 14:23:49.526936 [INF] STREAM: ServerID: JfaSNGvjaulmUdwGWbSiu8
+[1] 2021/11/30 14:23:49.527270 [INF] STREAM: Go version: go1.16.9
+[1] 2021/11/30 14:23:49.527499 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/11/30 14:23:49.530206 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2021/11/30 14:23:51.075703 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/11/30 14:23:51.076139 [INF] STREAM: ServerID: xdCljWNOp4UBBvjWPPBpcz
+[1] 2021/11/30 14:23:51.076474 [INF] STREAM: Go version: go1.16.9
+[1] 2021/11/30 14:23:51.076717 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/11/30 14:23:51.080148 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2021/11/30 14:23:53.276029 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/11/30 14:23:53.276360 [INF] STREAM: ServerID: 1sLgE4jcjR3gnG7z49oIXO
+[1] 2021/11/30 14:23:53.276578 [INF] STREAM: Go version: go1.16.9
+[1] 2021/11/30 14:23:53.276831 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/11/30 14:23:53.490249 [INF] Starting nats-server
+[1] 2021/11/30 14:23:53.490508 [INF]   Version:  2.6.2
+[1] 2021/11/30 14:23:53.490685 [INF]   Git:      [f7c3ac5]
+[1] 2021/11/30 14:23:53.490832 [INF]   Name:     NDMIUNSFQB373L6LSESIEUBMX7MPF6HSVANEOKQY3KCTZP5F54MS2N4F
+[1] 2021/11/30 14:23:53.490991 [INF]   Node:     lTbRypTR
+[1] 2021/11/30 14:23:53.491136 [INF]   ID:       NDMIUNSFQB373L6LSESIEUBMX7MPF6HSVANEOKQY3KCTZP5F54MS2N4F
+[1] 2021/11/30 14:23:53.491332 [INF] Using configuration file: /conf/nats-server.conf
+[1] 2021/11/30 14:23:53.493502 [INF] Starting JetStream
+[1] 2021/11/30 14:23:53.505268 [INF]     _ ___ _____ ___ _____ ___ ___   _   __  __
+[1] 2021/11/30 14:23:53.505485 [INF]  _ | | __|_   _/ __|_   _| _ \ __| /_\ |  \/  |
+[1] 2021/11/30 14:23:53.505697 [INF] | || | _|  | | \__ \ | | |   / _| / _ \| |\/| |
+[1] 2021/11/30 14:23:53.505919 [INF]  \__/|___| |_| |___/ |_| |_|_\___/_/ \_\_|  |_|
+[1] 2021/11/30 14:23:53.506140 [INF] 
+[1] 2021/11/30 14:23:53.506381 [INF]          https://docs.nats.io/jetstream
+[1] 2021/11/30 14:23:53.506600 [INF] 
+[1] 2021/11/30 14:23:53.506822 [INF] ---------------- JETSTREAM ----------------
+[1] 2021/11/30 14:23:53.507048 [INF]   Max Memory:      9.32 GB
+[1] 2021/11/30 14:23:53.507278 [INF]   Max Storage:     254.50 GB
+[1] 2021/11/30 14:23:53.507497 [INF]   Store Directory: "/nats/jetstream"
+[1] 2021/11/30 14:23:53.507716 [INF] -------------------------------------------
+[1] 2021/11/30 14:23:53.528692 [INF] Listening for websocket clients on wss://0.0.0.0:443
+[1] 2021/11/30 14:23:53.529196 [INF] Listening for client connections on 0.0.0.0:4222
+[1] 2021/11/30 14:23:53.529671 [INF] Server is ready
+[1] 2021/11/30 14:23:53.544127 [INF] STREAM: Recovering the state...
+[1] 2021/11/30 14:23:53.847237 [INF] STREAM: Recovered 1 channel(s)
+[1] 2021/11/30 14:23:53.847943 [DBG] STREAM: Did not detect another server instance
+[1] 2021/11/30 14:23:53.848238 [DBG] STREAM: Discover subject:           _STAN.discover.test-cluster
+[1] 2021/11/30 14:23:53.848525 [DBG] STREAM: Publish subject:            _STAN.pub.test-cluster.>
+[1] 2021/11/30 14:23:53.848718 [DBG] STREAM: Subscribe subject:          _STAN.sub.test-cluster
+[1] 2021/11/30 14:23:53.848889 [DBG] STREAM: Subscription Close subject: _STAN.subclose.test-cluster
+[1] 2021/11/30 14:23:53.849069 [DBG] STREAM: Unsubscribe subject:        _STAN.unsub.test-cluster
+[1] 2021/11/30 14:23:53.849233 [DBG] STREAM: Close subject:              _STAN.close.test-cluster
+[1] 2021/11/30 14:23:53.849656 [INF] STREAM: Message store is SQL
+[1] 2021/11/30 14:23:53.849898 [INF] STREAM: ---------- Store Limits ----------
+[1] 2021/11/30 14:23:53.850102 [INF] STREAM: Channels:                  100 *
+[1] 2021/11/30 14:23:53.850314 [INF] STREAM: --------- Channels Limits --------
+[1] 2021/11/30 14:23:53.850547 [INF] STREAM:   Subscriptions:          1000 *
+[1] 2021/11/30 14:23:53.850724 [INF] STREAM:   Messages     :       1000000 *
+[1] 2021/11/30 14:23:53.850933 [INF] STREAM:   Bytes        :     976.56 MB *
+[1] 2021/11/30 14:23:53.851131 [INF] STREAM:   Age          :     unlimited *
+[1] 2021/11/30 14:23:53.851314 [INF] STREAM:   Inactivity   :     unlimited *
+[1] 2021/11/30 14:23:53.851502 [INF] STREAM: ----------------------------------
+[1] 2021/11/30 14:23:53.851726 [INF] STREAM: Streaming Server is ready
+[1] 2021/12/01 12:33:02.565752 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/01 12:33:02.566374 [INF] STREAM: ServerID: IrwL7s0bBP5n2jrhXN4uQt
+[1] 2021/12/01 12:33:02.566657 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/01 12:33:02.566872 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/01 12:33:02.572026 [FTL] STREAM: Failed to start: dial tcp 172.18.0.3:5432: connect: connection refused
+[1] 2021/12/01 12:33:03.557770 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/01 12:33:03.558054 [INF] STREAM: ServerID: ai8CJRXBQcaRhThqM3ifCn
+[1] 2021/12/01 12:33:03.558289 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/01 12:33:03.558515 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/01 12:33:03.560169 [FTL] STREAM: Failed to start: dial tcp 172.18.0.3:5432: connect: connection refused
+[1] 2021/12/01 12:33:04.861884 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/01 12:33:04.862136 [INF] STREAM: ServerID: Zu3R0WUjk8RkTfmLCJU628
+[1] 2021/12/01 12:33:04.862325 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/01 12:33:04.862519 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/01 12:33:04.863838 [FTL] STREAM: Failed to start: dial tcp 172.18.0.3:5432: connect: connection refused
+[1] 2021/12/01 12:33:05.911834 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/01 12:33:05.912249 [INF] STREAM: ServerID: 6dlM83rPF93iyNNEbuSoJI
+[1] 2021/12/01 12:33:05.912565 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/01 12:33:05.912763 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/01 12:33:05.916093 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2021/12/01 12:33:07.514389 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/01 12:33:07.514638 [INF] STREAM: ServerID: wZABd7opXOhLHKEs3EVZj5
+[1] 2021/12/01 12:33:07.514869 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/01 12:33:07.515085 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/01 12:33:07.517953 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2021/12/01 12:33:09.968983 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/01 12:33:09.969203 [INF] STREAM: ServerID: hnafDLenjshcmCczBsHKHg
+[1] 2021/12/01 12:33:09.969374 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/01 12:33:09.969556 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/01 12:33:09.972235 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2021/12/01 12:33:13.888345 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/01 12:33:13.888883 [INF] STREAM: ServerID: yU5sq8zet19vXaRaVEACnY
+[1] 2021/12/01 12:33:13.889179 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/01 12:33:13.889381 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/01 12:33:13.891966 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2021/12/01 12:33:21.033598 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/01 12:33:21.033940 [INF] STREAM: ServerID: k3CW3pruVz1vp8H4YvbE2W
+[1] 2021/12/01 12:33:21.034217 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/01 12:33:21.034468 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/01 12:33:22.014174 [INF] Starting nats-server
+[1] 2021/12/01 12:33:22.014622 [INF]   Version:  2.6.2
+[1] 2021/12/01 12:33:22.014969 [INF]   Git:      [f7c3ac5]
+[1] 2021/12/01 12:33:22.015322 [INF]   Name:     NBRGFN37NLUKII5O7A3CUDC6MSQJWKWLPTVOPNAPCNDPZQQJRPVYLEBQ
+[1] 2021/12/01 12:33:22.015657 [INF]   Node:     IuS6rz0D
+[1] 2021/12/01 12:33:22.015967 [INF]   ID:       NBRGFN37NLUKII5O7A3CUDC6MSQJWKWLPTVOPNAPCNDPZQQJRPVYLEBQ
+[1] 2021/12/01 12:33:22.016295 [INF] Using configuration file: /conf/nats-server.conf
+[1] 2021/12/01 12:33:22.039463 [INF] Starting JetStream
+[1] 2021/12/01 12:33:22.054234 [INF]     _ ___ _____ ___ _____ ___ ___   _   __  __
+[1] 2021/12/01 12:33:22.054485 [INF]  _ | | __|_   _/ __|_   _| _ \ __| /_\ |  \/  |
+[1] 2021/12/01 12:33:22.054718 [INF] | || | _|  | | \__ \ | | |   / _| / _ \| |\/| |
+[1] 2021/12/01 12:33:22.054958 [INF]  \__/|___| |_| |___/ |_| |_|_\___/_/ \_\_|  |_|
+[1] 2021/12/01 12:33:22.055242 [INF] 
+[1] 2021/12/01 12:33:22.055479 [INF]          https://docs.nats.io/jetstream
+[1] 2021/12/01 12:33:22.055730 [INF] 
+[1] 2021/12/01 12:33:22.055972 [INF] ---------------- JETSTREAM ----------------
+[1] 2021/12/01 12:33:22.056227 [INF]   Max Memory:      9.32 GB
+[1] 2021/12/01 12:33:22.056473 [INF]   Max Storage:     240.45 GB
+[1] 2021/12/01 12:33:22.056706 [INF]   Store Directory: "/nats/jetstream"
+[1] 2021/12/01 12:33:22.056937 [INF] -------------------------------------------
+[1] 2021/12/01 12:33:22.078032 [INF] Listening for websocket clients on wss://0.0.0.0:443
+[1] 2021/12/01 12:33:22.078649 [INF] Listening for client connections on 0.0.0.0:4222
+[1] 2021/12/01 12:33:22.079120 [INF] Server is ready
+[1] 2021/12/01 12:33:22.086141 [INF] STREAM: Recovering the state...
+[1] 2021/12/01 12:33:23.077918 [INF] STREAM: Recovered 1 channel(s)
+[1] 2021/12/01 12:33:23.078691 [DBG] STREAM: Did not detect another server instance
+[1] 2021/12/01 12:33:23.079034 [DBG] STREAM: Discover subject:           _STAN.discover.test-cluster
+[1] 2021/12/01 12:33:23.079279 [DBG] STREAM: Publish subject:            _STAN.pub.test-cluster.>
+[1] 2021/12/01 12:33:23.079554 [DBG] STREAM: Subscribe subject:          _STAN.sub.test-cluster
+[1] 2021/12/01 12:33:23.079775 [DBG] STREAM: Subscription Close subject: _STAN.subclose.test-cluster
+[1] 2021/12/01 12:33:23.079971 [DBG] STREAM: Unsubscribe subject:        _STAN.unsub.test-cluster
+[1] 2021/12/01 12:33:23.080161 [DBG] STREAM: Close subject:              _STAN.close.test-cluster
+[1] 2021/12/01 12:33:23.080590 [INF] STREAM: Message store is SQL
+[1] 2021/12/01 12:33:23.081008 [INF] STREAM: ---------- Store Limits ----------
+[1] 2021/12/01 12:33:23.081347 [INF] STREAM: Channels:                  100 *
+[1] 2021/12/01 12:33:23.081721 [INF] STREAM: --------- Channels Limits --------
+[1] 2021/12/01 12:33:23.081967 [INF] STREAM:   Subscriptions:          1000 *
+[1] 2021/12/01 12:33:23.082209 [INF] STREAM:   Messages     :       1000000 *
+[1] 2021/12/01 12:33:23.082444 [INF] STREAM:   Bytes        :     976.56 MB *
+[1] 2021/12/01 12:33:23.082779 [INF] STREAM:   Age          :     unlimited *
+[1] 2021/12/01 12:33:23.083085 [INF] STREAM:   Inactivity   :     unlimited *
+[1] 2021/12/01 12:33:23.083354 [INF] STREAM: ----------------------------------
+[1] 2021/12/01 12:33:23.083585 [INF] STREAM: Streaming Server is ready
+[1] 2021/12/01 21:13:00.813837 [INF] STREAM: Shutting down.
+[1] 2021/12/01 21:13:00.814719 [DBG] STREAM: connection "_NSS-test-cluster-send" has been closed
+[1] 2021/12/01 21:13:00.815278 [DBG] STREAM: connection "_NSS-test-cluster-general" has been closed
+[1] 2021/12/01 21:13:00.815668 [DBG] STREAM: connection "_NSS-test-cluster-acks" has been closed
+[1] 2021/12/01 21:13:00.816022 [DBG] STREAM: connection "_NSS-test-cluster-hb" has been closed
+[1] 2021/12/01 21:13:00.814867 [INF] Initiating Shutdown...
+[1] 2021/12/01 21:13:00.816617 [INF] Initiating JetStream Shutdown...
+[1] 2021/12/01 21:13:00.816874 [INF] JetStream Shutdown
+[1] 2021/12/01 21:13:00.817249 [INF] Server Exiting..
+[1] 2021/12/07 14:43:24.323120 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/07 14:43:24.323563 [INF] STREAM: ServerID: VIYSl5LYItxFTUAZr08jFH
+[1] 2021/12/07 14:43:24.323801 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/07 14:43:24.324047 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/07 14:43:24.351068 [FTL] STREAM: Failed to start: dial tcp 172.18.0.2:5432: connect: connection refused
+[1] 2021/12/07 14:43:25.530831 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/07 14:43:25.531135 [INF] STREAM: ServerID: 6B2MW00l8t6Fy1o4GH6YUx
+[1] 2021/12/07 14:43:25.531346 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/07 14:43:25.531576 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/07 14:43:25.875240 [INF] Starting nats-server
+[1] 2021/12/07 14:43:25.875690 [INF]   Version:  2.6.2
+[1] 2021/12/07 14:43:25.876054 [INF]   Git:      [f7c3ac5]
+[1] 2021/12/07 14:43:25.876427 [INF]   Name:     NDK7SWWBLKTD2CNKKPVNNA5UGCU7EQPK2RIEAQV4UC43RA6BPEJZSRB4
+[1] 2021/12/07 14:43:25.877439 [INF]   Node:     x6KFgVVQ
+[1] 2021/12/07 14:43:25.877759 [INF]   ID:       NDK7SWWBLKTD2CNKKPVNNA5UGCU7EQPK2RIEAQV4UC43RA6BPEJZSRB4
+[1] 2021/12/07 14:43:25.878051 [INF] Using configuration file: /conf/nats-server.conf
+[1] 2021/12/07 14:43:25.892114 [INF] Starting JetStream
+[1] 2021/12/07 14:43:25.905196 [INF]     _ ___ _____ ___ _____ ___ ___   _   __  __
+[1] 2021/12/07 14:43:25.905388 [INF]  _ | | __|_   _/ __|_   _| _ \ __| /_\ |  \/  |
+[1] 2021/12/07 14:43:25.905569 [INF] | || | _|  | | \__ \ | | |   / _| / _ \| |\/| |
+[1] 2021/12/07 14:43:25.905738 [INF]  \__/|___| |_| |___/ |_| |_|_\___/_/ \_\_|  |_|
+[1] 2021/12/07 14:43:25.905905 [INF] 
+[1] 2021/12/07 14:43:25.906081 [INF]          https://docs.nats.io/jetstream
+[1] 2021/12/07 14:43:25.906262 [INF] 
+[1] 2021/12/07 14:43:25.906458 [INF] ---------------- JETSTREAM ----------------
+[1] 2021/12/07 14:43:25.906650 [INF]   Max Memory:      9.32 GB
+[1] 2021/12/07 14:43:25.906905 [INF]   Max Storage:     222.82 GB
+[1] 2021/12/07 14:43:25.907158 [INF]   Store Directory: "/nats/jetstream"
+[1] 2021/12/07 14:43:25.907412 [INF] -------------------------------------------
+[1] 2021/12/07 14:43:25.936345 [INF] Listening for websocket clients on wss://0.0.0.0:443
+[1] 2021/12/07 14:43:25.937191 [INF] Listening for client connections on 0.0.0.0:4222
+[1] 2021/12/07 14:43:25.937658 [INF] Server is ready
+[1] 2021/12/07 14:43:25.968577 [INF] STREAM: Recovering the state...
+[1] 2021/12/07 14:43:26.306914 [INF] STREAM: Recovered 1 channel(s)
+[1] 2021/12/07 14:43:26.311512 [DBG] STREAM: Did not detect another server instance
+[1] 2021/12/07 14:43:26.311895 [DBG] STREAM: Discover subject:           _STAN.discover.test-cluster
+[1] 2021/12/07 14:43:26.312100 [DBG] STREAM: Publish subject:            _STAN.pub.test-cluster.>
+[1] 2021/12/07 14:43:26.312281 [DBG] STREAM: Subscribe subject:          _STAN.sub.test-cluster
+[1] 2021/12/07 14:43:26.312471 [DBG] STREAM: Subscription Close subject: _STAN.subclose.test-cluster
+[1] 2021/12/07 14:43:26.312683 [DBG] STREAM: Unsubscribe subject:        _STAN.unsub.test-cluster
+[1] 2021/12/07 14:43:26.312905 [DBG] STREAM: Close subject:              _STAN.close.test-cluster
+[1] 2021/12/07 14:43:26.313412 [INF] STREAM: Message store is SQL
+[1] 2021/12/07 14:43:26.313685 [INF] STREAM: ---------- Store Limits ----------
+[1] 2021/12/07 14:43:26.313921 [INF] STREAM: Channels:                  100 *
+[1] 2021/12/07 14:43:26.314150 [INF] STREAM: --------- Channels Limits --------
+[1] 2021/12/07 14:43:26.314357 [INF] STREAM:   Subscriptions:          1000 *
+[1] 2021/12/07 14:43:26.314576 [INF] STREAM:   Messages     :       1000000 *
+[1] 2021/12/07 14:43:26.314821 [INF] STREAM:   Bytes        :     976.56 MB *
+[1] 2021/12/07 14:43:26.315055 [INF] STREAM:   Age          :     unlimited *
+[1] 2021/12/07 14:43:26.315281 [INF] STREAM:   Inactivity   :     unlimited *
+[1] 2021/12/07 14:43:26.315540 [INF] STREAM: ----------------------------------
+[1] 2021/12/07 14:43:26.315766 [INF] STREAM: Streaming Server is ready
+[1] 2021/12/07 14:56:13.518436 [ERR] TLS handshake error from 172.18.0.1:49928: EOF
+[1] 2021/12/07 14:56:13.582736 [ERR] TLS handshake error from 172.18.0.1:49932: EOF
+[1] 2021/12/07 14:56:28.458247 [ERR] TLS handshake error from 172.18.0.1:49938: EOF
+[1] 2021/12/07 14:56:28.464242 [ERR] TLS handshake error from 172.18.0.1:49936: EOF
+[1] 2021/12/07 14:56:43.471284 [ERR] TLS handshake error from 172.18.0.1:49942: EOF
+[1] 2021/12/07 14:56:43.478567 [ERR] TLS handshake error from 172.18.0.1:49944: EOF
+[1] 2021/12/07 14:56:58.491541 [ERR] TLS handshake error from 172.18.0.1:49948: EOF
+[1] 2021/12/07 14:56:58.498716 [ERR] TLS handshake error from 172.18.0.1:49950: EOF
+[1] 2021/12/07 14:57:13.505759 [ERR] TLS handshake error from 172.18.0.1:49952: EOF
+[1] 2021/12/07 14:57:13.515107 [ERR] TLS handshake error from 172.18.0.1:49956: EOF
+[1] 2021/12/07 14:57:28.512985 [ERR] TLS handshake error from 172.18.0.1:49960: EOF
+[1] 2021/12/07 14:57:28.520397 [ERR] TLS handshake error from 172.18.0.1:49962: EOF
+[1] 2021/12/07 22:52:42.368417 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/07 22:52:42.368787 [INF] STREAM: ServerID: 5iS06JAPvYmnc9eArf5oym
+[1] 2021/12/07 22:52:42.369059 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/07 22:52:42.369314 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/07 22:52:42.376477 [FTL] STREAM: Failed to start: dial tcp 172.18.0.3:5432: connect: connection refused
+[1] 2021/12/07 22:52:44.476153 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/07 22:52:44.476888 [INF] STREAM: ServerID: stLt70YLIaO151kZJCNoLp
+[1] 2021/12/07 22:52:44.480051 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/07 22:52:44.480802 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/07 22:52:44.482939 [FTL] STREAM: Failed to start: dial tcp 172.18.0.3:5432: connect: connection refused
+[1] 2021/12/07 22:52:46.814037 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/07 22:52:46.814336 [INF] STREAM: ServerID: ZQKTaKGCr3fl1oS37uQuqL
+[1] 2021/12/07 22:52:46.814581 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/07 22:52:46.814792 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/07 22:52:46.816585 [FTL] STREAM: Failed to start: dial tcp 172.18.0.3:5432: connect: connection refused
+[1] 2021/12/07 22:52:49.053109 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/07 22:52:49.053522 [INF] STREAM: ServerID: ezPouul3cFLN181smDi32y
+[1] 2021/12/07 22:52:49.054318 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/07 22:52:49.054804 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/07 22:52:49.060447 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2021/12/07 22:52:51.491282 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/07 22:52:51.494788 [INF] STREAM: ServerID: AFCDrb2WMc1h9sizb24ia3
+[1] 2021/12/07 22:52:51.495757 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/07 22:52:51.513257 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/07 22:52:51.517122 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2021/12/07 22:52:55.344619 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/07 22:52:55.345001 [INF] STREAM: ServerID: 91jivusc8qbGcCbVZ3dpaW
+[1] 2021/12/07 22:52:55.345321 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/07 22:52:55.345764 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/07 22:52:55.364886 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2021/12/07 22:52:59.956803 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/07 22:52:59.957179 [INF] STREAM: ServerID: OJfmzsYssoK0zOmkPRhtMm
+[1] 2021/12/07 22:52:59.957438 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/07 22:52:59.957664 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/07 22:52:59.960773 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2021/12/07 22:53:08.565043 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/07 22:53:08.565425 [INF] STREAM: ServerID: 9d3l7XGaAUADtqMPImHggl
+[1] 2021/12/07 22:53:08.565696 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/07 22:53:08.565956 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/07 22:53:08.569389 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2021/12/07 22:53:24.314139 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2021/12/07 22:53:24.314535 [INF] STREAM: ServerID: Vy2MJUEiPuJriChSNQg3KV
+[1] 2021/12/07 22:53:24.314843 [INF] STREAM: Go version: go1.16.9
+[1] 2021/12/07 22:53:24.315113 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2021/12/07 22:53:33.414938 [INF] Starting nats-server
+[1] 2021/12/07 22:53:33.415410 [INF]   Version:  2.6.2
+[1] 2021/12/07 22:53:33.415729 [INF]   Git:      [f7c3ac5]
+[1] 2021/12/07 22:53:33.415992 [INF]   Name:     NAXXFMHXHQQL4QUJ2SCMZCFFHH4Q4KZNXXBI7BWW2TGTJK3WSGEUCDF4
+[1] 2021/12/07 22:53:33.416251 [INF]   Node:     Wa31Gcow
+[1] 2021/12/07 22:53:33.416527 [INF]   ID:       NAXXFMHXHQQL4QUJ2SCMZCFFHH4Q4KZNXXBI7BWW2TGTJK3WSGEUCDF4
+[1] 2021/12/07 22:53:33.416790 [INF] Using configuration file: /conf/nats-server.conf
+[1] 2021/12/07 22:53:33.439988 [INF] Starting JetStream
+[1] 2021/12/07 22:53:33.458152 [INF]     _ ___ _____ ___ _____ ___ ___   _   __  __
+[1] 2021/12/07 22:53:33.458418 [INF]  _ | | __|_   _/ __|_   _| _ \ __| /_\ |  \/  |
+[1] 2021/12/07 22:53:33.459019 [INF] | || | _|  | | \__ \ | | |   / _| / _ \| |\/| |
+[1] 2021/12/07 22:53:33.459737 [INF]  \__/|___| |_| |___/ |_| |_|_\___/_/ \_\_|  |_|
+[1] 2021/12/07 22:53:33.460846 [INF] 
+[1] 2021/12/07 22:53:33.462248 [INF]          https://docs.nats.io/jetstream
+[1] 2021/12/07 22:53:33.463265 [INF] 
+[1] 2021/12/07 22:53:33.464218 [INF] ---------------- JETSTREAM ----------------
+[1] 2021/12/07 22:53:33.464577 [INF]   Max Memory:      9.32 GB
+[1] 2021/12/07 22:53:33.464899 [INF]   Max Storage:     216.68 GB
+[1] 2021/12/07 22:53:33.465172 [INF]   Store Directory: "/nats/jetstream"
+[1] 2021/12/07 22:53:33.465431 [INF] -------------------------------------------
+[1] 2021/12/07 22:53:33.512476 [INF] Listening for websocket clients on wss://0.0.0.0:443
+[1] 2021/12/07 22:53:33.513349 [INF] Listening for client connections on 0.0.0.0:4222
+[1] 2021/12/07 22:53:33.514293 [INF] Server is ready
+[1] 2021/12/07 22:53:33.525215 [INF] STREAM: Recovering the state...
+[1] 2021/12/07 22:53:34.551200 [INF] STREAM: Recovered 1 channel(s)
+[1] 2021/12/07 22:53:34.555035 [DBG] STREAM: Did not detect another server instance
+[1] 2021/12/07 22:53:34.559233 [DBG] STREAM: Discover subject:           _STAN.discover.test-cluster
+[1] 2021/12/07 22:53:34.560932 [DBG] STREAM: Publish subject:            _STAN.pub.test-cluster.>
+[1] 2021/12/07 22:53:34.561248 [DBG] STREAM: Subscribe subject:          _STAN.sub.test-cluster
+[1] 2021/12/07 22:53:34.561563 [DBG] STREAM: Subscription Close subject: _STAN.subclose.test-cluster
+[1] 2021/12/07 22:53:34.561834 [DBG] STREAM: Unsubscribe subject:        _STAN.unsub.test-cluster
+[1] 2021/12/07 22:53:34.562182 [DBG] STREAM: Close subject:              _STAN.close.test-cluster
+[1] 2021/12/07 22:53:34.563309 [INF] STREAM: Message store is SQL
+[1] 2021/12/07 22:53:34.563840 [INF] STREAM: ---------- Store Limits ----------
+[1] 2021/12/07 22:53:34.564770 [INF] STREAM: Channels:                  100 *
+[1] 2021/12/07 22:53:34.565066 [INF] STREAM: --------- Channels Limits --------
+[1] 2021/12/07 22:53:34.565568 [INF] STREAM:   Subscriptions:          1000 *
+[1] 2021/12/07 22:53:34.566035 [INF] STREAM:   Messages     :       1000000 *
+[1] 2021/12/07 22:53:34.566466 [INF] STREAM:   Bytes        :     976.56 MB *
+[1] 2021/12/07 22:53:34.566818 [INF] STREAM:   Age          :     unlimited *
+[1] 2021/12/07 22:53:34.568247 [INF] STREAM:   Inactivity   :     unlimited *
+[1] 2021/12/07 22:53:34.569299 [INF] STREAM: ----------------------------------
+[1] 2021/12/07 22:53:34.569698 [INF] STREAM: Streaming Server is ready

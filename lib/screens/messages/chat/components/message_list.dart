@@ -86,8 +86,6 @@ class MessageList extends StatelessWidget with MessageMixins {
                         );
                       },
                     );
-                  } else {
-                    return _noMessages();
                   }
                 }
 
@@ -144,20 +142,6 @@ class MessageList extends StatelessWidget with MessageMixins {
 
         return SizedBox();
       },
-    );
-  }
-
-  Widget _noMessages() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-          child: Text(
-        localizationInstance.noMessages,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 17.0,
-        ),
-      )),
     );
   }
 }

@@ -224,5 +224,6 @@
     "settings": "Настройки",
     "touchIdSetup": "Пожалуйста, настройте Touch ID",
     "reenableTouchId": "Пожалуйста, включите Touch ID",
-    "authenticationRequired": "Аутентификация"
+    "authenticationRequired": "Аутентификация",
+    "quote": "Цитировать"
 }

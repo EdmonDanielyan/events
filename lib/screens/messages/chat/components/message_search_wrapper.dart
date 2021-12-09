@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
-import 'package:ink_mobile/models/chat/chat_app_bar_enums.dart';
+import 'package:ink_mobile/models/chat/chat_app_bar_modes.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/items_search.dart';
 
@@ -20,7 +20,7 @@ class MessageSearchWrapper extends StatelessWidget {
   }) : super(key: key);
 
   bool canDarken(ChatCubitState state) {
-    bool isSearching = state.appBarEnum == ChatAppBarEnums.SEARCH_BAR;
+    bool isSearching = state.appBarMode == ChatAppBarMode.SEARCH_BAR;
     ItemsSearch<MessageTable> messagesSearch = state.messagesSearch;
     List<MessageTable> items = messagesSearch.items;
 

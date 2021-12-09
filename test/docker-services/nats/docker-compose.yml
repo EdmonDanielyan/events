@@ -1,0 +1,37 @@
+version: '3'
+services:
+  nats-postgres:
+    container_name: nats-postgres
+    image: postgres
+    hostname: postgres
+    restart: on-failure
+    env_file:
+      - .env
+    command: postgres -c 'max_connections=${MAX_CONNECTIONS}'
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./schema:/docker-entrypoint-initdb.d
+      - ./data/postgres:/var/lib/postgresql/data
+  nats-server:
+    container_name: nats-server
+    image: "nats-streaming"
+    restart: on-failure
+    # https://docs.nats.io/nats-streaming-server/configuring/cmdline
+    command: -c /conf/nats-server.conf -l /logs/nats.log --sql_source="${SQL_SOURCE}"
+    ports:
+      - "4222:4222"
+      - "443:443"
+    env_file:
+      - .env
+    volumes:
+      - ./certs:/certs
+      - ./conf:/conf
+      - ./logs:/logs
+      - ./data/nats:/nats
+    depends_on:
+      - nats-postgres
+networks:
+  default:
+    external:
+      name: nginx-proxy

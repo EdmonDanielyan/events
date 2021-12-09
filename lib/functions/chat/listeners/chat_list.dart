@@ -1,44 +1,53 @@
 import 'dart:async';
 
+// ignore: implementation_imports
+import 'package:dart_nats_streaming/src/data_message.dart';
+import 'package:fixnum/fixnum.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
+import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
+import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/channel.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/chat_list.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
+import 'package:collection/collection.dart';
 
-// ignore: implementation_imports
-import 'package:dart_nats_streaming/src/data_message.dart';
-
+import '../../../setup.dart';
 import '../chat_creation.dart';
-import 'all.dart';
+import 'channels_registry.dart';
 
-class ChatListListener {
-  final NatsProvider natsProvider;
+@Named("ChatList")
+@Injectable(as: ChannelListener)
+class ChatListListener extends ChannelListener {
   final ChatDatabaseCubit chatDatabaseCubit;
   final UserFunctions userFunctions;
   final ChannelFunctions channelFunctions;
-  ChatListListener({
-    required this.natsProvider,
-    required this.chatDatabaseCubit,
-    required this.userFunctions,
-    required this.channelFunctions,
-  });
+  final ChatSaver chatSaver;
 
-  NatsListener? get natsListener =>
-      UseMessageProvider.messageProvider!.natsListener;
+  ChatListListener(
+    NatsProvider natsProvider,
+    ChannelsRegistry registry,
+    this.chatDatabaseCubit,
+    this.userFunctions,
+    this.channelFunctions,
+    this.chatSaver,
+  ) : super(natsProvider, registry);
 
   static Set<String> busyChannels = {};
   Set<String> _getChatIds = {};
 
-  Future<void> listenTo(UserTable user) async {
+  Future<void> onListen(String channel,
+      {Int64 startSequence = Int64.ZERO}) async {}
+
+  Future<void> subscribe(String userId) async {
     try {
-      final channel = natsProvider.getPrivateUserChatIdList(user.id.toString());
+      final channel = natsProvider.getPrivateUserChatIdList(userId);
       final sub = await natsProvider.listenChatList(channel);
       if (sub != null) {
         DataMessage? dataMessage;
@@ -51,7 +60,7 @@ class ChatListListener {
         if (dataMessage != null) {
           natsProvider.acknowledge(sub, dataMessage!);
           NatsMessage message = natsProvider.parseMessage(dataMessage);
-          await onMessage(message);
+          await onMessage(channel, message);
 
           sub.subscription.close();
         }
@@ -62,7 +71,8 @@ class ChatListListener {
     }
   }
 
-  Future<void> onMessage(NatsMessage message) async {
+  @override
+  Future<void> onMessage(String channel, NatsMessage message) async {
     final mapPayload = message.payload! as SystemPayload;
     try {
       ChatListFields fields = ChatListFields.fromMap(mapPayload.fields);
@@ -81,7 +91,7 @@ class ChatListListener {
       await _insertParticipants(participants, chats);
       await _insertChannels(channels);
 
-      await UseMessageProvider.messageProvider?.saveChats(newChat: null);
+      await chatSaver.saveChats(newChat: null);
     } on NoConnectionException {
       return;
     } on NoSuchMethodError {
@@ -99,12 +109,26 @@ class ChatListListener {
 
     final storedChats = await chatDatabaseCubit.db.getAllChats();
 
+    distinctChats.sort((a, b) {
+      if (messages.isNotEmpty) {
+        final messageA =
+            messages.lastWhereOrNull((element) => element.chatId == a.id);
+        final messageB =
+            messages.lastWhereOrNull((element) => element.chatId == b.id);
+        if (messageA != null && messageB != null) {
+          return messageA.created!.compareTo(messageB.created!);
+        }
+      }
+
+      return a.updatedAt.compareTo(b.updatedAt);
+    });
+
     for (final chat in distinctChats) {
       _getChatIds.add(chat.id);
       bool insert = _chatExistsInStoredChannels(chat, storedChats);
 
       if (insert) {
-        await ChatCreation(chatDatabaseCubit).insertChat(chat);
+        await sl<ChatCreation>().insertChat(chat);
       }
       await _insertMessages(chat, messages);
     }
@@ -120,7 +144,8 @@ class ChatListListener {
   }
 
   Future<void> _insertUsers(List<UserTable> users) async {
-    await userFunctions.insertUsers(users);
+    final distinctUsers = users.toSet().toList();
+    await userFunctions.insertUsers(distinctUsers);
   }
 
   Future<void> _insertParticipants(
@@ -177,8 +202,8 @@ class ChatListListener {
         await channelFunctions.insertOrUpdate(channel);
       }
 
-      if (natsProvider.isConnected && natsListener != null) {
-        await natsListener!.listenToMyStoredChannels();
+      if (natsProvider.isConnected) {
+        await registry.listenToMyStoredChannels();
       } else {
         throw NoConnectionException(message: "Disconnected");
       }
@@ -200,9 +225,7 @@ class ChatListListener {
         (element) {
           bool inviteUserChannel =
               ChannelListView.isChannelInviteUser(element.to);
-          if (natsListener != null &&
-              inviteUserChannel &&
-              element.to != natsListener!.inviteUserChannel) {
+          if (inviteUserChannel && element.to != registry.inviteUserChannel) {
             return true;
           }
 

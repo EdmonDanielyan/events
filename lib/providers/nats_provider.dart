@@ -1,22 +1,20 @@
+import 'dart:typed_data';
+
 import 'package:dart_nats/dart_nats.dart' as nats;
 import 'package:dart_nats_streaming/dart_nats_streaming.dart';
-
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/data_message.dart';
-
+// ignore: implementation_imports
+import 'package:dart_nats_streaming/src/protocol.dart';
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/subscription.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
-
-// ignore: implementation_imports
-import 'package:dart_nats_streaming/src/protocol.dart';
 import 'package:logging/logging.dart';
 
 const PUBLIC_CHATS = 'ink.messaging.public';
@@ -31,7 +29,7 @@ class NatsProvider {
   late Client _stan;
   final String natsWssUrl;
   final String natsCluster;
-  final String natsCertPath;
+  final Uint8List certificate;
 
   final String userId;
   final String deviceVirtualId;
@@ -40,10 +38,10 @@ class NatsProvider {
   NatsProvider({
     @Named("natsWssUrl") required this.natsWssUrl,
     @Named("natsCluster") required this.natsCluster,
-    @Named("natsCertPath") required this.natsCertPath,
     @Named("userId") required this.userId,
     @Named("deviceVirtualId") required this.deviceVirtualId,
     @Named("natsToken") required this.natsToken,
+    @Named("natsCert") required this.certificate,
   });
 
   Future<bool> load() async {
@@ -159,10 +157,8 @@ class NatsProvider {
   //////////////////////////////// NATS Protocol ///////////////////////////////
 
   Future<bool> _connect() async {
-    var natsCert = await rootBundle.load(natsCertPath);
-    var _certificate = natsCert.buffer.asUint8List();
     var connectResult = await _stan.connectUri(Uri.parse(natsWssUrl),
-        certificate: _certificate,
+        certificate: certificate,
         clusterID: natsCluster,
         pingMaxAttempts: 10,
         clientID: userId,

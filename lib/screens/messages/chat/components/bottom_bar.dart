@@ -6,6 +6,8 @@ import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container.dart';
 import 'package:ink_mobile/screens/messages/chat/components/send_btn.dart';
@@ -27,6 +29,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   late ChatDatabaseCubit _chatDatabaseCubit;
   ChatEntities entities = ChatEntities();
   FocusNode textfieldFocus = FocusNode();
+  TextEditingController _messageTextEditingController = TextEditingController();
   late ChatCubit _chatCubit;
   final _formKey = GlobalKey<FormState>();
   final _padding = 7.0;
@@ -42,7 +45,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
       );
       final message = await sendMessage.call(entities);
       if (UseMessageProvider.initialized) {
-        UseMessageProvider.messageProvider?.chatMessageListener
+        UseMessageProvider.messageProvider?.textSender
             .sendMessage(getChat, message);
       }
 
@@ -52,8 +55,27 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
     }
   }
 
+  Future<void> onEdit(MessageWithUser messageWithUser) async {
+    final editedMsg =
+        MessageListView.editMessage(messageWithUser.message!, entities.text);
+
+    if (UseMessageProvider.initialized) {
+      clearForm();
+      final sent = await UseMessageProvider
+              .messageProvider?.messageEditorSender
+              .sendDeleteMessages([editedMsg], context, edited: true) ??
+          false;
+
+      if (sent) {
+        _chatDatabaseCubit.db.updateMessageById(editedMsg.id, editedMsg);
+        _chatCubit.emitEditMessage(null);
+      }
+    }
+  }
+
   void clearForm() {
     _formKey.currentState!.reset();
+    _messageTextEditingController.text = "";
   }
 
   void _onMessaging(String val) {
@@ -87,18 +109,20 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _respondContainerWidget(),
+              _editContainerWidget(),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
                     child: MessageTextfield(
+                      textEditingController: _messageTextEditingController,
                       onChanged: _onMessaging,
                       focusNode: textfieldFocus,
                       onSend: onSend,
                     ),
                   ),
                   SizedBox(width: 8.0),
-                  MessageSendBtn(onPressed: () => onSend(entities)),
+                  _btnWidget(),
                 ],
               ),
             ],
@@ -141,6 +165,63 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
           }
         }
         return SizedBox();
+      },
+    );
+  }
+
+  Widget _editContainerWidget() {
+    return BlocConsumer<ChatCubit, ChatCubitState>(
+      bloc: _chatCubit,
+      listenWhen: (previous, current) {
+        bool previousNotEdited = previous.editMessage == null;
+        bool isMessageEditing = current.editMessage != null;
+        return (previousNotEdited && isMessageEditing) ||
+            previous.editMessage != current.editMessage;
+      },
+      listener: (context, state) {
+        if (state.editMessage != null) {
+          _messageTextEditingController.text =
+              state.editMessage!.message?.message ?? "";
+          _messageTextEditingController.selection = TextSelection.fromPosition(
+              TextPosition(offset: _messageTextEditingController.text.length));
+          textfieldFocus.requestFocus();
+        } else {
+          textfieldFocus.unfocus();
+        }
+      },
+      builder: (context, state) {
+        if (state.editMessage != null) {
+          return RespondMessageContainer(
+            horizontalPadding: _padding,
+            selectedMessage: state.editMessage!,
+            onCancel: () {
+              _chatCubit.emitEditMessage(null);
+              _messageTextEditingController.text = "";
+            },
+          );
+        }
+        return SizedBox();
+      },
+    );
+  }
+
+  Widget _btnWidget() {
+    return BlocBuilder<ChatCubit, ChatCubitState>(
+      bloc: _chatCubit,
+      buildWhen: (previous, current) {
+        return previous.editMessage != current.editMessage;
+      },
+      builder: (context, state) {
+        if (state.editMessage != null) {
+          return MessageSendBtn(
+            icon: Icon(Icons.check),
+            onPressed: () {
+              onEdit(state.editMessage!);
+            },
+          );
+        }
+
+        return MessageSendBtn(onPressed: () => onSend(entities));
       },
     );
   }

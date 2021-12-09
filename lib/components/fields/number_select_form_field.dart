@@ -61,20 +61,17 @@ class NumberSelectFormField extends FormField<String> {
     TextSelectionControls? selectionControls,
     InputCounterWidgetBuilder? buildCounter,
     AutovalidateMode? autovalidateMode,
-  })  : assert(autovalidate != null),
+  })  :
         assert(
           autovalidate == false ||
               autovalidate == true && autovalidateMode == null,
           'autovalidate and autovalidateMode should not be used together.',
         ),
-        assert(maxLengthEnforced != null),
         assert(
           maxLengthEnforced || maxLengthEnforcement == null,
           'maxLengthEnforced is deprecated, use only maxLengthEnforcement',
         ),
-        assert(expands != null),
         assert(maxLength == null || maxLength > 0),
-        assert(enableInteractiveSelection != null),
         assert(
             mode == NumberSelectFieldMode.int && changeValueBy is int ||
                 mode == NumberSelectFieldMode.double,

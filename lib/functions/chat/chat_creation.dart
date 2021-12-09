@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -8,11 +9,14 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/person_list_params.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/setup.dart';
 
+@injectable
 class ChatCreation {
   final ChatDatabaseCubit chatDatabaseCubit;
+  final UserFunctions userFunctions;
 
-  const ChatCreation(this.chatDatabaseCubit);
+  const ChatCreation(this.chatDatabaseCubit, this.userFunctions);
 
   static String get generateGroupId =>
       "${JwtPayload.myId}_${new DateTime.now().millisecondsSinceEpoch}";
@@ -22,7 +26,7 @@ class ChatCreation {
 
   Future<ChatTable> createChatThroughNats(UserTable user) async {
     ChatTable? chat;
-    List<UserTable> users = [user, UserFunctions.getMe];
+    List<UserTable> users = [user, userFunctions.me];
     chat = await isSingleChatExists(user);
 
     if (chat == null) {
@@ -35,8 +39,8 @@ class ChatCreation {
 
   Future<ChatTable> createGroupThroughNats(
       {required String name, required List<UserTable> users}) async {
-    users.insert(0, UserFunctions.getMe);
-    final chat = await ChatCreation(chatDatabaseCubit)
+    users.insert(0, userFunctions.me);
+    final chat = await sl<ChatCreation>()
         .createGroup(name: name, avatar: "", users: users);
     _afterNatsChatCreation(chat, users);
     return chat;
@@ -46,10 +50,10 @@ class ChatCreation {
       ChatTable chat, List<UserTable> users) async {
     if (UseMessageProvider.initialized) {
       final messageProvider = UseMessageProvider.messageProvider!;
-      messageProvider.natsListener.subscribeOnChatCreate(chat.id);
+      messageProvider.registry.subscribeOnChatCreate(chat.id);
 
-      await messageProvider.chatInvitationListener.sendInvitations(chat, users);
-      await messageProvider.saveChats(newChat: null);
+      await messageProvider.inviteSender.sendInvitations(chat, users);
+      await messageProvider.chatSaver.saveChats(newChat: null);
     }
   }
 
@@ -86,7 +90,7 @@ class ChatCreation {
       String? name,
       String? avatar,
       List<UserTable>? users}) async {
-    users = users ?? [user, UserFunctions.getMe];
+    users = users ?? [user, userFunctions.me];
 
     String newChatId = chatId ?? generateGroupId;
 

@@ -5,6 +5,8 @@ import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
 import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
 import 'package:ink_mobile/cubit/chat_list/chat_list_state.dart';
+import 'package:ink_mobile/functions/chat/open_chat.dart';
+import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
@@ -24,6 +26,7 @@ class _BodyState extends State<Body> {
   final _contentPadding = EdgeInsets.symmetric(horizontal: 10);
   late ChatDatabaseCubit _chatDatabaseCubit;
   late ChatListCubit _chatListCubit;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +68,7 @@ class _BodyState extends State<Body> {
     return Column(
       children: [
         SearchBar(
+          controller: _searchController,
           contentPadding: _contentPadding,
           onChanged: (val) => _chatListCubit.setSearchValue(val),
         ),
@@ -96,6 +100,13 @@ class _BodyState extends State<Body> {
                           snapshot.data ?? [];
 
                       return ChatListTile(
+                        onTap: () {
+                          OpenChat(_chatDatabaseCubit, chats[index])
+                              .call(context);
+                          _chatListCubit.setSearchValue("");
+                          _searchController.text = "";
+                          TextFieldUtils.loseTextFieldFocus();
+                        },
                         highlightValue: state.searchValue,
                         index: index,
                         chat: chats[index],

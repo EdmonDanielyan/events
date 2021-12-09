@@ -1,32 +1,45 @@
 import 'dart:async';
 
+import 'package:fixnum/fixnum.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
+import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
+import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/online.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/debouncer.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../user_functions.dart';
+import 'channels_registry.dart';
 
-class UserOnlineListener {
+@Named("Online")
+@Injectable(as: ChannelListener)
+class UserOnlineListener extends ChannelListener {
   late Timer userOnlineTimer;
   static Set<int> subscribedUsers = {};
 
-  final MessageProvider messageProvider;
-  final NatsProvider natsProvider;
   final ChatDatabaseCubit chatDatabaseCubit;
-  UserOnlineListener({
-    required this.messageProvider,
-    required this.natsProvider,
-    required this.chatDatabaseCubit,
-  });
+  final UserFunctions userFunctions;
+
+  final InviteSender messageSender;
+
+  UserOnlineListener(
+    NatsProvider natsProvider,
+    ChannelsRegistry registry,
+    this.userFunctions,
+    this.messageSender,
+    this.chatDatabaseCubit,
+  ) : super(natsProvider, registry);
 
   Debouncer _debouncer = Debouncer(milliseconds: 90000);
 
-  Future<void> listenTo(UserTable user) async {
+  Future<void> onListen(String channel,
+      {Int64 startSequence = Int64.ZERO}) async {}
+
+  Future<void> subscribe(UserTable user) async {
     try {
       if (!subscribedUsers.contains(user.id)) {
         final channel = natsProvider.getUserOnlineChannel(user.id);
@@ -65,27 +78,5 @@ class UserOnlineListener {
     chatDatabaseCubit.db.updateUser(user.id, user.copyWith(online: online));
   }
 
-  Future<void> sendUserOnlinePing({UserTable? user}) async {
-    user = user ?? UserFunctions.getMe;
-    final channel = natsProvider.getUserOnlineChannel(user.id);
 
-    _sendOnline(channel, user);
-
-    userOnlineTimer = Timer.periodic(
-      Duration(seconds: 60),
-      (timer) {
-        _sendOnline(channel, user!);
-      },
-    );
-  }
-
-  void _sendOnline(String channel, UserTable user) {
-    if (natsProvider.isConnected) {
-      messageProvider.chatSendMessage.sendUserOnlinePing(channel, user);
-    }
-  }
-
-  void stopSending() {
-    userOnlineTimer.cancel();
-  }
 }

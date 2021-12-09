@@ -1,53 +1,45 @@
-import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/app.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
-import 'package:ink_mobile/functions/chat/listeners/all.dart';
+import 'package:ink_mobile/functions/chat/chat_functions.dart';
+import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
+import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
-import '../../../app.dart';
-import '../chat_functions.dart';
 import '../send_message.dart';
 import '../user_functions.dart';
+import 'channel_listener.dart';
+import 'channels_registry.dart';
 
-class ChatLeftListener {
-  final MessageProvider messageProvider;
-  final NatsProvider natsProvider;
+@Named("UserLeftChat")
+@Injectable(as: ChannelListener)
+class ChatLeftListener extends ChannelListener {
   final UserFunctions userFunctions;
-  final ChatFunctions chatFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
-  ChatLeftListener({
-    required this.messageProvider,
-    required this.natsProvider,
-    required this.userFunctions,
-    required this.chatFunctions,
-    required this.chatDatabaseCubit,
-  });
+  final ChatSaver chatSaver;
+  final InviteSender messageSender;
 
-  NatsListener get natsListener =>
-      UseMessageProvider.messageProvider!.natsListener;
-  bool isListeningToChannel(String channel) =>
-      natsListener.listeningToChannel(channel);
+  final ChatFunctions chatFunctions;
 
-  Future<void> listenTo(String channel,
-      {Int64 startSequence = Int64.ZERO}) async {
-    try {
-      if (!isListeningToChannel(channel)) {
-        await natsProvider.subscribeToChannel(channel, onMessage,
-            startSequence: startSequence);
-      }
-    } on SubscriptionAlreadyExistException {}
-  }
+  ChatLeftListener(
+    NatsProvider natsProvider,
+    ChannelsRegistry registry,
+    this.messageSender,
+    this.chatSaver,
+    this.userFunctions,
+    this.chatDatabaseCubit,
+    this.chatFunctions,
+  ) : super(natsProvider, registry);
 
   Future<void> onMessage(String channel, NatsMessage message) async {
-    if (!isListeningToChannel(channel)) {
+    if (!registry.isListening(channel)) {
       return;
     }
 
@@ -59,14 +51,18 @@ class ChatLeftListener {
       final users = fields.users;
       final chat = fields.chat;
 
+      print("GOT HERE");
+      print(users);
+
       if (users.isNotEmpty) {
         final me = await _deleteIfItsMe(users, chat);
         if (!me) {
           final participants = ChatUserViewModel.toParticipants(users, chat);
+
           await userFunctions.deleteParticipants(participants, chat);
           setMessage(users, chat);
         }
-        await UseMessageProvider.messageProvider?.saveChats(newChat: null);
+        await chatSaver.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;
@@ -78,13 +74,11 @@ class ChatLeftListener {
       if (user.id == JwtPayload.myId) {
         chatFunctions.deleteAllChatMessages(chat.id);
         chatFunctions.deleteChat(chat.id);
-        unsubscribeOnChatDelete(chat.id);
+        registry.unSubscribeOnChatDelete(chat.id);
         final selectedChat = chatDatabaseCubit.selectedChat;
 
-        if (selectedChat != null &&
-            selectedChat.id == chat.id &&
-            App.getContext != null) {
-          Navigator.of(App.getContext!).popUntil((route) => route.isFirst);
+        if (selectedChat != null && selectedChat.id == chat.id) {
+          chatDatabaseCubit.setSelectedChat(null);
         }
         return true;
       }
@@ -102,27 +96,8 @@ class ChatLeftListener {
 
       if (generateMessage != null) {
         await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
-            .addMessage(generateMessage);
+            .addMessage(generateMessage, setChatToFirst: false);
       }
     }
-  }
-
-  Future<bool> sendLeftMessage(ChatTable chat,
-      {List<UserTable>? users, bool unsubFromChat = true}) async {
-    bool msg = await messageProvider.chatSendMessage.sendUserLeftMessage(
-      natsProvider.getGroupLeftChannelById(chat.id),
-      chat: chat,
-      users: users ?? [UserFunctions.getMe],
-    );
-    if (unsubFromChat) {
-      await unsubscribeOnChatDelete(chat.id);
-    }
-    await messageProvider.saveChats(newChat: null);
-
-    return msg;
-  }
-
-  Future<void> unsubscribeOnChatDelete(String chatId) async {
-    await natsListener.unSubscribeOnChatDelete(chatId);
   }
 }

@@ -1,9 +1,9 @@
-import 'package:fixnum/fixnum.dart';
+import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
-import 'package:ink_mobile/functions/chat/listeners/all.dart';
+import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
+import 'package:ink_mobile/functions/chat/listeners/channels_registry.dart';
 import 'package:ink_mobile/models/chat/nats/texting.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
@@ -12,35 +12,29 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
-class MessageTextingListener {
-  final NatsProvider natsProvider;
+@Named("Texting")
+@Injectable(as: ChannelListener)
+class MessageTextingListener extends ChannelListener {
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatCubit chatCubit;
-  MessageTextingListener({
-    required this.natsProvider,
-    required this.chatDatabaseCubit,
-    required this.chatCubit,
-  });
+
+  MessageTextingListener(
+    NatsProvider natsProvider,
+    ChannelsRegistry registry,
+    this.chatDatabaseCubit,
+    this.chatCubit,
+  ) : super(natsProvider, registry);
 
   Debouncer _debouncer = Debouncer(milliseconds: 3000);
 
-  NatsListener get natsListener =>
-      UseMessageProvider.messageProvider!.natsListener;
+  ChannelsRegistry get natsListener =>
+      UseMessageProvider.messageProvider!.registry;
 
   ChannelFunctions get channelFunctions =>
       UseMessageProvider.messageProvider!.channelFunctions;
-  bool isListeningToChannel(String channel) =>
-      natsListener.listeningToChannel(channel);
 
-  Future<void> listenTo(String channel,
-      {Int64 startSequence = Int64.ZERO}) async {
-    try {
-      if (!isListeningToChannel(channel)) {
-        await natsProvider.subscribeToChannel(channel, onMessage,
-            startSequence: startSequence);
-      }
-    } on SubscriptionAlreadyExistException {}
-  }
+  bool isListeningToChannel(String channel) =>
+      natsListener.isListening(channel);
 
   Future<void> onMessage(String channel, NatsMessage message) async {
     if (!isListeningToChannel(channel)) {

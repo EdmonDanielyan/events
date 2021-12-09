@@ -58,17 +58,18 @@ class SendMessage {
     return message;
   }
 
-  Future<String> addMessage(
-    MessageTable message,
-  ) async {
+  Future<String> addMessage(MessageTable message,
+      {bool setChatToFirst = true}) async {
     final msg = await chatDatabaseCubit.db.selectMessageById(message.id);
     if (msg == null) {
       await chatDatabaseCubit.db.insertMessage(message);
-      try {
-        ChatFunctions(chatDatabaseCubit).setChatToFirst(chat);
-      } catch (_e) {
-        print("ERROR");
-        print(_e.toString());
+      if (setChatToFirst) {
+        try {
+          ChatFunctions(chatDatabaseCubit).setChatToFirst(chat);
+        } catch (_e) {
+          print("ERROR");
+          print(_e.toString());
+        }
       }
     }
 
