@@ -12,7 +12,7 @@ class BootCubit extends Cubit<BootState> {
     _onStart = value;
   }
 
-  void load() async {
+  Future<void> load() async {
     emitState(type: BootStateStateType.LOADING);
     await _onStart();
     emitState(type: BootStateStateType.LOADED);
