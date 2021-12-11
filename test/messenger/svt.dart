@@ -248,7 +248,8 @@ void main() async {
       print("Chat participates: $participates");
 
       print("Creating chat...");
-      var createChatFuture = messageProvider.chatCreation.createGroupThroughNats(name: "SVT2: тестовый чат создал $myName" , users: participates);
+      DateTime dateTime = DateTime.now();
+      var createChatFuture = messageProvider.chatCreation.createGroupThroughNats(name: "SVT: ${dateTime.millisecondsSinceEpoch} тестовый чат создал $myName" , users: participates);
       await expectLater(createChatFuture, completes);
       print("Chat is created");
       print("Test database:\n $databaseData");
