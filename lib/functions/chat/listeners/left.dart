@@ -51,9 +51,6 @@ class ChatLeftListener extends ChannelListener {
       final users = fields.users;
       final chat = fields.chat;
 
-      print("GOT HERE");
-      print(users);
-
       if (users.isNotEmpty) {
         final me = await _deleteIfItsMe(users, chat);
         if (!me) {

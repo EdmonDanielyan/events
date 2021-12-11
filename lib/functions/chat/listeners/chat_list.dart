@@ -83,6 +83,9 @@ class ChatListListener extends ChannelListener {
       final messages = fields.messages;
       final channels = fields.channels;
 
+      //SETING LOADER
+      chatDatabaseCubit.setLoadingChats(true);
+
       //THIS ORDER IS ESSENTIAL (DO NOT CHANGE)
       await _insertUsers(users);
       if (chats.length > 0) {
@@ -90,6 +93,8 @@ class ChatListListener extends ChannelListener {
       }
       await _insertParticipants(participants, chats);
       await _insertChannels(channels);
+
+      chatDatabaseCubit.setLoadingChats(false);
 
       await chatSaver.saveChats(newChat: null);
     } on NoConnectionException {

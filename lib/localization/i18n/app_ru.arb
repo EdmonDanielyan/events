@@ -224,5 +224,7 @@
     "touchIdSetup": "Пожалуйста, настройте Touch ID",
     "reenableTouchId": "Пожалуйста, включите Touch ID",
     "authenticationRequired": "Аутентификация",
-    "quote": "Цитировать"
+    "quote": "Цитировать",
+    "loadingChats": "Загрузка чатов",
+    "loadingMessages": "Загрузка сообщений"
 }
