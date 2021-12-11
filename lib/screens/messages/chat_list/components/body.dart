@@ -36,8 +36,7 @@ class _BodyState extends State<Body> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 2.0),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 12.0),
           BlocBuilder<ChatDatabaseCubit, ChatDatabaseCubitState>(
             bloc: _chatDatabaseCubit,
             builder: (_context, state) {

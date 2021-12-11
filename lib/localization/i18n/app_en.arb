@@ -223,5 +223,7 @@
     "touchIdSetup": "Please set up your Touch ID",
     "reenableTouchId": "Please reenable your Touch ID",
     "authenticationRequired": "Authentication required",
-    "quote": "Quote"
+    "quote": "Quote",
+    "loadingChats": "Loading chats",
+    "loadingMessages": "Loading messages"
 }

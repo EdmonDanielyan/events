@@ -8,6 +8,10 @@ import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 class ChatDatabaseCubit extends Cubit<ChatDatabaseCubitState> {
   ChatDatabaseCubit(ChatDatabase db) : super(ChatDatabaseCubitState(db: db));
 
+  void setLoadingChats(bool loading) {
+    emit(state.copyWith(loadingChats: loading));
+  }
+
   void setSelectedChat(ChatTable? chat) {
     emit(state.copyWith(selectedChat: chat));
   }
