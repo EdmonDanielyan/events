@@ -124,7 +124,7 @@ class ChannelsRegistry with Loggable {
 
   Future<void> listenToMyStoredChannels() async {
     logger.finest('listenToMyStoredChannels');
-    List<ChannelTable> channels = await channelFunctions.getAllChannels();
+    List<ChannelTable> channels = List<ChannelTable>.unmodifiable(await channelFunctions.getAllChannels());
 
     if (channels.isNotEmpty) {
       for (final channel in channels) {
