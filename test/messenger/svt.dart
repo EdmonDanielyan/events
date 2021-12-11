@@ -55,18 +55,18 @@ class FakeMessageTable extends Fake implements MessageTable {}
 class FakeChatTable extends Fake implements ChatTable {}
 
 class FakeDatabaseData {
-  final Map<int, UserTable> dbUserTable = {};
-  final Map<String, ChatTable> dbChatTable = {};
-  final List<ParticipantTable> dbParticipateTable = [];
-  final List<ChannelTable> dbChannelTable = [];
+  final Map<int, UserTable> users = {};
+  final Map<String, ChatTable> chats = {};
+  final List<ParticipantTable> participates = [];
+  final List<ChannelTable> channels = [];
   final List<MessageTable> dbMessages = [];
   @override
   String toString() {
     return '''
-    Users: $dbUserTable
-    Participates: $dbParticipateTable
-    Chats: $dbChatTable
-    Channels: $dbChannelTable
+    Users: $users
+    Participates: $participates
+    Chats: $chats
+    Channels: $channels
     Messages: $dbMessages
     ''';
   }
@@ -93,18 +93,18 @@ void main() async {
     void mockChatDatabase(MockChatDatabase db, FakeDatabaseData databaseData){
       when(() => chatDataBase.selectChatById(any())).thenAnswer((realInvocation) async {
         var chatId = realInvocation.positionalArguments[0] as String;
-        return databaseData.dbChatTable[chatId];
+        return databaseData.chats[chatId];
       });
 
       when(() => chatDataBase.insertParticipant(any())).thenAnswer((realInvocation) async {
-        databaseData.dbParticipateTable.add(realInvocation.positionalArguments[0] as ParticipantTable);
+        databaseData.participates.add(realInvocation.positionalArguments[0] as ParticipantTable);
         return 1;
       });
 
       when(() => chatDataBase.selectParticipantById(any(), any())).thenAnswer((realInvocation) async {
         var userId = realInvocation.positionalArguments[0] as int?;
         var chatId = realInvocation.positionalArguments[1] as String?;
-        var result = databaseData.dbParticipateTable.where((element) => element.chatId == chatId && element.userId == userId).toList();
+        var result = databaseData.participates.where((element) => element.chatId == chatId && element.userId == userId).toList();
         return result.isNotEmpty ? result.first : null;
       });
 
@@ -112,26 +112,26 @@ void main() async {
 
       when(() => chatDataBase.insertChat(any())).thenAnswer((realInvocation) async {
         var chat = realInvocation.positionalArguments[0] as ChatTable;
-        databaseData.dbChatTable[chat.id] = chat;
+        databaseData.chats[chat.id] = chat;
         return 1;
       });
 
       when(() => chatDataBase.insertUser(any())).thenAnswer((realInvocation) async {
         var userTable = realInvocation.positionalArguments[0] as UserTable;
-        databaseData.dbUserTable[userTable.id] = userTable;
+        databaseData.users[userTable.id] = userTable;
         return 1;
       });
 
       when(() => chatDataBase.insertChannel(any())).thenAnswer((realInvocation) async {
         var channel = realInvocation.positionalArguments[0] as ChannelTable;
-        databaseData.dbChannelTable.add(channel);
+        databaseData.channels.add(channel);
         return 1;
       });
 
-      when(() => chatDataBase.getAllChannels()).thenAnswer((realInvocation) async => databaseData.dbChannelTable);
-      when(() => chatDataBase.getAllChats()).thenAnswer((realInvocation) async => databaseData.dbChatTable.values.toList());
-      when(() => chatDataBase.getAllUsers()).thenAnswer((realInvocation) async => databaseData.dbUserTable.values.toList());
-      when(() => chatDataBase.getAllParticipants()).thenAnswer((realInvocation) async => databaseData.dbParticipateTable);
+      when(() => chatDataBase.getAllChannels()).thenAnswer((realInvocation) async => databaseData.channels);
+      when(() => chatDataBase.getAllChats()).thenAnswer((realInvocation) async => databaseData.chats.values.toList());
+      when(() => chatDataBase.getAllUsers()).thenAnswer((realInvocation) async => databaseData.users.values.toList());
+      when(() => chatDataBase.getAllParticipants()).thenAnswer((realInvocation) async => databaseData.participates);
       when(() => chatDataBase.getAllMessages()).thenAnswer((realInvocation) async => databaseData.dbMessages);
       when(() => chatDataBase.insertMessage(any())).thenAnswer((realInvocation) async {
         databaseData.dbMessages.add(realInvocation.positionalArguments[0] as MessageTable);
@@ -139,7 +139,7 @@ void main() async {
       });
 
       when(() => chatDataBase.getChannelByChannelName(any())).thenAnswer((realInvocation) async {
-        var result = databaseData.dbChannelTable.where((element) {
+        var result = databaseData.channels.where((element) {
           return element.id == realInvocation.positionalArguments[0];
         }).toList();
         return result.isNotEmpty ? result.first : null;
@@ -238,6 +238,10 @@ void main() async {
       await expectLater(createChatFuture, completes);
       print("Chat is created");
       print("Test database:\n $databaseData");
+      expect(databaseData.channels, isNotEmpty);
+      expect(databaseData.chats, isNotEmpty);
+      expect(databaseData.users, isNotEmpty);
+      expect(databaseData.participates, isNotEmpty);
     });
   });
 }
