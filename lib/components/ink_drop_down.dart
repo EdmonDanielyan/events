@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class InkDropDown extends StatefulWidget {
   final List<String> items;
@@ -26,7 +26,7 @@ class _InkDropDownState extends State<InkDropDown> {
       onTap: () {
         showSelectorDialog();
       },
-      child: DropdownButtonFormField(
+      child: DropdownButtonFormField<int>(
         icon: const Icon(
           Icons.arrow_drop_down,
           color: Colors.black,
@@ -48,6 +48,7 @@ class _InkDropDownState extends State<InkDropDown> {
         decoration: InputDecoration(border: OutlineInputBorder()),
         style: const TextStyle(color: Colors.deepPurple),
         items: [],
+        onChanged: (value) => widget.onChanged(value!),
       ),
     );
   }

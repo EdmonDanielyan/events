@@ -8,5 +8,6 @@
 .flutter-plugins-dependencies
 /lib/generated_plugin_registrant.dart
 *.iml
-test/messager/nats_service/logs
-test/messager/nats_service/data
+test/docker-services/nats/data
+test/docker-services/nats/logs
+coverage

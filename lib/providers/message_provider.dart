@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
+import 'package:ink_mobile/constants/messenger.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
@@ -31,20 +33,13 @@ class UseMessageProvider {
   static late bool initialized = false;
   static late MessageProvider? messageProvider;
 
-  static Future<bool> initMessageProvider(
-      ChatDatabaseCubit chatDatabaseCubit) async {
-    await _initNatsProvider();
+  static Future<bool> initMessageProvider() async {
     messageProvider = sl<MessageProvider>();
     initialized = true;
     await messageProvider!.init();
     return true;
   }
 
-  static Future<NatsProvider> _initNatsProvider() async {
-    await sl<TokenDataHolder>().update();
-    NatsProvider natsProvider = sl<NatsProvider>();
-    return natsProvider;
-  }
 
   static void uninit() {
     initialized = false;
@@ -53,7 +48,7 @@ class UseMessageProvider {
 }
 
 @lazySingleton
-class MessageProvider {
+class MessageProvider with Loggable{
   late ChatDatabaseCubit chatDatabaseCubit;
   late NatsProvider natsProvider;
   late ChatFunctions chatFunctions;
@@ -79,6 +74,9 @@ class MessageProvider {
   int connectionsCount = 0;
 
   Future<void> init() async {
+    logger.finest("init");
+    await sl<TokenDataHolder>().update();
+    await sl<CertificateReader>().read();
     this.natsProvider = sl();
     this.chatDatabaseCubit = sl();
     this.chatCubit = sl();
@@ -93,11 +91,12 @@ class MessageProvider {
     this.registry = sl();
     this.chatCreation = sl();
     this.pingSender = sl();
-    _listenToConnection();
+    _configureNatsProvider();
     natsLoaded = await natsProvider.load();
   }
 
-  Future<void> _listenToConnection() async {
+   void _configureNatsProvider() {
+    logger.finest("_configureNatsProvider");
     natsProvider.onConnected = () async {
       connectionsCount++;
       await _onConnected();
@@ -131,13 +130,11 @@ class MessageProvider {
   }
 
   Future<void> _onConnected() async {
-    if (!natsLoaded) {
       natsLoaded = true;
       userFunctions.addMe();
       registry.listenToAllMessages();
       await registry.init();
       pingSender.sendUserOnlinePing(user: userFunctions.me);
-    }
   }
 
   Future<void> dispose() async {

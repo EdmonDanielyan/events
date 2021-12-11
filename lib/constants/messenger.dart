@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
+import '../setup.dart';
+
 const dev =  Environment("dev");
 const prod =  Environment("prod");
 
@@ -41,8 +43,36 @@ abstract class MessengerProd {
 }
 
 @module
+abstract class MessengerTest {
+
+  @test
+  @Named("natsWssUrl")
+  String get natsWssUrl => kReleaseMode ? "tcp://cloud.jetrabbits.com:7070": "tcp://cloud.jetrabbits.com:7070";
+
+  @test
+  @Named("natsCluster")
+  String get natsCluster => kReleaseMode ? "test-cluster": "test-cluster";
+
+  @test
+  @Named("natsCertPath")
+  String get natsCertPath => kReleaseMode ? "./assets/certs/cloud.jetrabbits.com.pem": "./assets/certs/cloud.jetrabbits.com.pem";
+}
+
+@lazySingleton
+class CertificateReader {
+  final String path;
+  late Uint8List _data;
+
+  Uint8List get data => _data;
+
+  CertificateReader(@Named('natsCertPath') this.path);
+  Future<void> read() async {
+    _data = (await rootBundle.load(GetIt.I(instanceName: 'natsCertPath'))).buffer.asUint8List();
+  }
+}
+
+@module
 abstract class MessengerCertificate {
-  @preResolve
   @Named("natsCert")
-  Future<Uint8List> get natsCert async => (await rootBundle.load(GetIt.I(instanceName: 'natsCertPath'))).buffer.asUint8List();
+  Uint8List get natsCert => sl<CertificateReader>().data;
 }

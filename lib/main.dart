@@ -20,16 +20,15 @@ import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/themes/light.dart';
 import 'package:logging/logging.dart';
+
 import 'cubit/boot/boot_cubit.dart';
-import 'cubit/chat_db/chat_table_cubit.dart';
 
 void main() async {
   runZonedGuarded(() async {
-    await setup();
+    await setup(scope: kReleaseMode ? "prod" : "dev" );
 
     runApp(InkMobile(onAppStart: () async {
-      return await UseMessageProvider.initMessageProvider(
-          sl<ChatDatabaseCubit>());
+      return await UseMessageProvider.initMessageProvider();
     }));
   }, (Object error, StackTrace stack) {
     if (error is CustomException) {
