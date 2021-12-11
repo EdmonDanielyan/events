@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/app.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
