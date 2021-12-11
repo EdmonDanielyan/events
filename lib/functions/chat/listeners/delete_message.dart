@@ -27,6 +27,7 @@ class MessageDeletedListener extends ChannelListener {
       this.chatFunctions, this.messageSender, this.db, this.chatSaver)
       : super(natsProvider, registry);
 
+  @override
   Future<void> onMessage(String channel, NatsMessage message) async {
     if (!registry.isListening(channel)) {
       return;

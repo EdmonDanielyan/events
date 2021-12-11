@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/listeners/channels_registry.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -14,7 +15,7 @@ import '../user_functions.dart';
 import 'chat_saver.dart';
 
 @injectable
-class TextSender {
+class TextSender with Loggable {
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
   final ChatFunctions chatFunctions;
@@ -63,6 +64,8 @@ class TextSender {
   }
 
   Future<void> redeliverMessages({int? userId}) async {
+    logger.finest('redeliverMessages: $userId');
+
     final unsentMessages = await db.getUnsentMessages(userId ?? JwtPayload.myId);
 
     Map<String, ChatTable> chats = {};
@@ -78,8 +81,7 @@ class TextSender {
         }
 
         if (chats.containsKey(message.chatId)) {
-          print(
-              "SENDING MESSAGE ${chats[message.chatId]!.name} AND MESSAGE ${message.message}");
+          logger.fine('SENDING MESSAGE ${chats[message.chatId]!.name} AND MESSAGE ${message.message}');
           await sendMessage(chats[message.chatId]!, message);
         }
       }
@@ -91,6 +93,7 @@ class TextSender {
         required CustomTexting customTexting,
         required String chatId,
       }) async {
+    logger.finest('sendTextingMessage: $channel');
     return await natsProvider.sendSystemMessageToChannel(
       channel,
       MessageType.Texting,

@@ -14,6 +14,7 @@ import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/cubit/boot/boot_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/lock_app.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
@@ -60,6 +61,7 @@ class FakeDatabaseData {
   final List<ParticipantTable> participates = [];
   final List<ChannelTable> channels = [];
   final List<MessageTable> dbMessages = [];
+
   @override
   String toString() {
     return '''
@@ -133,6 +135,18 @@ void main() async {
       when(() => chatDataBase.getAllUsers()).thenAnswer((realInvocation) async => databaseData.users.values.toList());
       when(() => chatDataBase.getAllParticipants()).thenAnswer((realInvocation) async => databaseData.participates);
       when(() => chatDataBase.getAllMessages()).thenAnswer((realInvocation) async => databaseData.dbMessages);
+
+      when(() => chatDataBase.getChatMessages(any())).thenAnswer((realInvocation) async {
+        var chatId = realInvocation.positionalArguments[0] as String;
+        return databaseData.dbMessages.where((element) => element.chatId == chatId).map((message) {
+          var user = databaseData.users[message.userId] ?? FakeUserTable();
+          return MessageWithUser(message: message, user: user);
+        }).toList();
+      });
+
+      //No unsent messages
+      when(() => chatDataBase.getUnsentMessages(any())).thenAnswer((_) async => []);
+
       when(() => chatDataBase.insertMessage(any())).thenAnswer((realInvocation) async {
         databaseData.dbMessages.add(realInvocation.positionalArguments[0] as MessageTable);
         return 1;
@@ -234,7 +248,7 @@ void main() async {
       print("Chat participates: $participates");
 
       print("Creating chat...");
-      var createChatFuture = messageProvider.chatCreation.createGroupThroughNats(name: "SVT: тестовый чат создал $myName" , users: participates);
+      var createChatFuture = messageProvider.chatCreation.createGroupThroughNats(name: "SVT2: тестовый чат создал $myName" , users: participates);
       await expectLater(createChatFuture, completes);
       print("Chat is created");
       print("Test database:\n $databaseData");

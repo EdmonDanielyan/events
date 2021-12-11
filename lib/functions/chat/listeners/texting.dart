@@ -33,13 +33,12 @@ class MessageTextingListener extends ChannelListener {
   ChannelFunctions get channelFunctions =>
       UseMessageProvider.messageProvider!.channelFunctions;
 
-  bool isListeningToChannel(String channel) =>
-      natsListener.isListening(channel);
-
   Future<void> onMessage(String channel, NatsMessage message) async {
+    super.onMessage(channel, message);
     if (!isListeningToChannel(channel)) {
       return;
     }
+
     try {
       final mapPayload = message.payload! as SystemPayload;
       ChatTextingFields fields = ChatTextingFields.fromMap(mapPayload.fields);

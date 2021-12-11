@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/data_message.dart';
-import 'package:fixnum/fixnum.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
@@ -16,7 +16,6 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/chat_list.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
-import 'package:collection/collection.dart';
 
 import '../../../setup.dart';
 import '../chat_creation.dart';
@@ -42,10 +41,8 @@ class ChatListListener extends ChannelListener {
   static Set<String> busyChannels = {};
   Set<String> _getChatIds = {};
 
-  Future<void> onListen(String channel,
-      {Int64 startSequence = Int64.ZERO}) async {}
-
   Future<void> subscribe(String userId) async {
+    logger.finest("subscribe: $userId");
     try {
       final channel = natsProvider.getPrivateUserChatIdList(userId);
       final sub = await natsProvider.listenChatList(channel);
@@ -73,7 +70,12 @@ class ChatListListener extends ChannelListener {
 
   @override
   Future<void> onMessage(String channel, NatsMessage message) async {
+    super.onMessage(channel, message);
+    if (!isListeningToChannel(channel)) {
+      return;
+    }
     final mapPayload = message.payload! as SystemPayload;
+
     try {
       ChatListFields fields = ChatListFields.fromMap(mapPayload.fields);
 

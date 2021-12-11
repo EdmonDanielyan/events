@@ -91,7 +91,7 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> init() async {
-    await Future.delayed(Duration(seconds: 1));
+    logger.finest('init');
     listeners.clear();
     MessageType.values.forEach((messageType) {
       var messageListenerToSearch = describeEnum(messageType);
@@ -123,7 +123,9 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> listenToMyStoredChannels() async {
+    logger.finest('listenToMyStoredChannels');
     List<ChannelTable> channels = await channelFunctions.getAllChannels();
+
     if (channels.isNotEmpty) {
       for (final channel in channels) {
         Int64 currentSeq = Int64.parseInt(channel.sequence).toInt64();
@@ -142,6 +144,7 @@ class ChannelsRegistry with Loggable {
       {Int64 startSequence = Int64.ZERO}) async {
     logger.fine("_subscribeToChannel: $type, $channel, $startSequence");
     if (!natsProvider.isConnected) {
+      logger.warning("nats is not connected");
       return;
     }
 
@@ -150,13 +153,14 @@ class ChannelsRegistry with Loggable {
       try {
         await listeners[type]!.onListen(channel, startSequence: startSequence);
         listeningChannels.add(channel);
-      } catch (_e) {
-        logger.warning(_e);
+      } catch (_e, stacktrace) {
+        logger.severe("Unexpected error", _e, stacktrace);
       }
     }
   }
 
   Future<void> unSubscribeFromChannel(String channel) async {
+    logger.finest("unSubscribeFromChannel: $channel");
     natsProvider.unsubscribeFromChannel(channel);
     if (isListening(channel)) {
       listeningChannels.remove(channel);
@@ -165,6 +169,7 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> subscribeOnChatChannels(String chatId) async {
+    logger.finest("subscribeOnChatChannels: $chatId");
     final getChannels = getLinkedChannelsById(chatId);
 
     if (getChannels.isNotEmpty) {
@@ -178,6 +183,7 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> unSubscribeOnChatDelete(String chatId) async {
+    logger.finest("unSubscribeOnChatDelete: $chatId");
     final getChannels = getLinkedChannelsById(chatId);
 
     if (getChannels.isNotEmpty) {
@@ -190,6 +196,7 @@ class ChannelsRegistry with Loggable {
   bool isListening(String channel) => listeningChannels.contains(channel);
 
   void unsubscribeFromAll() {
+    logger.finest("unsubscribeFromAll");
     listeningChannels.forEach((element) {
       natsProvider.unsubscribeFromChannel(element);
     });

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:fixnum/fixnum.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
@@ -36,8 +35,6 @@ class UserOnlineListener extends ChannelListener {
 
   Debouncer _debouncer = Debouncer(milliseconds: 90000);
 
-  Future<void> onListen(String channel,
-      {Int64 startSequence = Int64.ZERO}) async {}
 
   Future<void> subscribe(UserTable user) async {
     try {
@@ -59,6 +56,10 @@ class UserOnlineListener extends ChannelListener {
   }
 
   Future<void> onMessage(String channel, NatsMessage message) async {
+    super.onMessage(channel, message);
+    if (!isListeningToChannel(channel)) {
+      return;
+    }
     try {
       final mapPayload = message.payload! as SystemPayload;
       UserOnlineFields fields = UserOnlineFields.fromMap(mapPayload.fields);

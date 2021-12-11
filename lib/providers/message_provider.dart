@@ -130,6 +130,7 @@ class MessageProvider with Loggable{
   }
 
   Future<void> _onConnected() async {
+      logger.finest('_onConnected');
       natsLoaded = true;
       userFunctions.addMe();
       registry.listenToAllMessages();
@@ -138,6 +139,7 @@ class MessageProvider with Loggable{
   }
 
   Future<void> dispose() async {
+    logger.finest('dispose');
     registry.unsubscribeFromAll();
     pingSender.stopSending();
     await natsProvider.dispose();
@@ -147,6 +149,7 @@ class MessageProvider with Loggable{
   }
 
   Future<void> subscribeToUserOnline(UserTable user) async {
+    logger.finest('subscribeToUserOnline: id=${user.id} name=${user.name}');
     final listener =
         (registry.listeners[MessageType.Online] as UserOnlineListener?);
     if (listener != null) {

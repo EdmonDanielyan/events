@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/channel.dart';
@@ -9,17 +10,20 @@ import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 
 @injectable
-class ChannelFunctions {
+class ChannelFunctions with Loggable {
   final ChatDatabaseCubit chatDatabaseCubit;
 
-  const ChannelFunctions(this.chatDatabaseCubit);
+  ChannelFunctions(this.chatDatabaseCubit);
 
   Future<void> saveNatsMessage(NatsMessage message) async {
+    logger.finest("saveNatsMessage: $message");
     ChannelTable channel = ChannelListView.messageNatsToChannel(message);
     await insertOrUpdate(channel);
   }
 
   Future<ChannelTable?> saveByChannelName(String channelName) async {
+    logger.finest("saveByChannelName: $channelName");
+
     final channel = ChannelListView.channelNameToChannel(channelName);
     if (channel != null) {
       await insertOrUpdate(channel);
@@ -30,6 +34,7 @@ class ChannelFunctions {
   }
 
   Future<void> insertOrUpdate(ChannelTable channel) async {
+    logger.finest("insertOrUpdate: $channel");
     final storedChannel = await getChannel(channel.to);
 
     if (storedChannel != null) {
@@ -45,10 +50,12 @@ class ChannelFunctions {
   }
 
   Future<ChannelTable?> getChannel(String channelName) async {
+    logger.finest("getChannel: $channelName");
     return await chatDatabaseCubit.db.getChannelByChannelName(channelName);
   }
 
   Future<bool> channelExists(String channelName) async {
+    logger.finest("channelExists: $channelName");
     try {
       return await getChannel(channelName) != null;
     } on StateError {
@@ -57,10 +64,12 @@ class ChannelFunctions {
   }
 
   Future<int?> insertChannel(ChannelTable channel) async {
+    logger.finest("insertChannel: $channel");
     return await chatDatabaseCubit.db.insertChannel(channel);
   }
 
   Future<int?> insertIfNotExists(ChannelTable channel) async {
+    logger.finest("insertIfNotExists: $channel");
     bool isChannelExists = await channelExists(channel.to);
 
     if (!isChannelExists) {
@@ -69,15 +78,18 @@ class ChannelFunctions {
   }
 
   Future<int?> updateChannel(ChannelTable channel) async {
+    logger.finest("updateChannel: $channel");
     return await chatDatabaseCubit.db
         .updateChannelByChannelName(channel.to, channel);
   }
 
   Future<List<ChannelTable>> getAllChannels() async {
+    logger.finest("getAllChannels");
     return await chatDatabaseCubit.db.getAllChannels();
   }
 
   Future deleteChannel(String channelName) async {
+    logger.finest("deleteChannel: $channelName");
     return await chatDatabaseCubit.db.deleteChannelByChannelName(channelName);
   }
 

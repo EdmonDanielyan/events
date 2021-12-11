@@ -29,7 +29,7 @@ class TextMessageListener extends ChannelListener {
 
   final ChatSaver chatSaver;
 
-  const TextMessageListener(
+  TextMessageListener(
       NatsProvider natsProvider,
       ChannelsRegistry registry,
       this.userFunctions,
@@ -43,7 +43,8 @@ class TextMessageListener extends ChannelListener {
 
   @override
   Future<void> onMessage(String channel, NatsMessage message) async {
-    if (!registry.isListening(channel)) {
+    super.onMessage(channel, message);
+    if (!isListeningToChannel(channel)) {
       return;
     }
     try {

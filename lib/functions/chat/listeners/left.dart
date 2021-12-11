@@ -37,7 +37,8 @@ class ChatLeftListener extends ChannelListener {
   ) : super(natsProvider, registry);
 
   Future<void> onMessage(String channel, NatsMessage message) async {
-    if (!registry.isListening(channel)) {
+    super.onMessage(channel, message);
+    if (!isListeningToChannel(channel)) {
       return;
     }
 
