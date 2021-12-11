@@ -164,7 +164,7 @@ class ChannelsRegistry with Loggable {
     channelFunctions.deleteChannel(channel);
   }
 
-  Future<void> subscribeOnChatCreate(String chatId) async {
+  Future<void> subscribeOnChatChannels(String chatId) async {
     final getChannels = getLinkedChannelsById(chatId);
 
     if (getChannels.isNotEmpty) {

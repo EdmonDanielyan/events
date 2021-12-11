@@ -77,7 +77,8 @@ dev_dependencies:
     flutter_test:
         sdk: flutter
 
-    mockito: ^5.0.12
+#    mockito: ^5.0.12
+    mocktail:
     build_runner:
     injectable_generator:
     moor_generator: ^4.4.1

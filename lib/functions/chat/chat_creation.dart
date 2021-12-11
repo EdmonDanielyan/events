@@ -42,7 +42,7 @@ class ChatCreation {
     users.insert(0, userFunctions.me);
     final chat = await sl<ChatCreation>()
         .createGroup(name: name, avatar: "", users: users);
-    _afterNatsChatCreation(chat, users);
+    await _afterNatsChatCreation(chat, users);
     return chat;
   }
 
@@ -50,7 +50,7 @@ class ChatCreation {
       ChatTable chat, List<UserTable> users) async {
     if (UseMessageProvider.initialized) {
       final messageProvider = UseMessageProvider.messageProvider!;
-      messageProvider.registry.subscribeOnChatCreate(chat.id);
+      await messageProvider.registry.subscribeOnChatChannels(chat.id);
 
       await messageProvider.inviteSender.sendInvitations(chat, users);
       await messageProvider.chatSaver.saveChats(newChat: null);

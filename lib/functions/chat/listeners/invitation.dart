@@ -48,7 +48,7 @@ class ChatInvitationListener extends ChannelListener {
     }
   }
 
-  Future<void> _chatLinkedListeners(String chatId) async {
-    registry.subscribeOnChatCreate(chatId);
+  Future<void> _chatLinkedListeners(String chatId)  {
+    return registry.subscribeOnChatChannels(chatId);
   }
 }
