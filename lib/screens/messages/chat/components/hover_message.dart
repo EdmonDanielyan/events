@@ -68,7 +68,8 @@ class HoverMessage extends StatelessWidget {
     return PopupMenuContainer<String>(
       blurBackground: true,
       child: child,
-      items: SelectMessageMenuList.getStandartList()
+      items: SelectMessageMenuList(message)
+          .getStandartList()
           .map((e) => menuItem(e))
           .toList(),
       onItemSelected: (value) async {

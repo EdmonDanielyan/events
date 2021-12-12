@@ -12,8 +12,8 @@ class AuthHandler {
 
   AuthHandler(this.bootCubit);
 
-  Future<void> onSuccessAuth() async {
-    final didAuthenticate = await authenticate();
+  Future<void> onSuccessAuth({bool checkLock = true}) async {
+    final didAuthenticate = checkLock ? await authenticate() : true;
     if (didAuthenticate) {
       bootCubit.load();
     } else {

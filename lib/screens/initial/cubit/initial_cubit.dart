@@ -38,7 +38,7 @@ class InitialCubit extends Cubit<InitialState> {
     try {
       await refreshToken();
       await wasTokenExpired();
-      GetIt.I<AuthHandler>().onSuccessAuth();
+      GetIt.I<AuthHandler>().onSuccessAuth(checkLock: true);
       emitState(type: InitialStateType.LOAD_MAIN);
     } on DioError catch (e) {
       if (e.type == DioErrorType.other) {

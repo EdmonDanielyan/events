@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/data_message.dart';
+
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
@@ -20,6 +21,10 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 import '../../../setup.dart';
 import '../chat_creation.dart';
 import 'channels_registry.dart';
+import '../../../extensions/participant_list.dart';
+import '../../../extensions/user_list.dart';
+import '../../../extensions/chat_list.dart';
+import '../../../extensions/channel_list.dart';
 
 @Named("ChatList")
 @Injectable(as: ChannelListener)
@@ -52,8 +57,7 @@ class ChatListListener extends ChannelListener {
           //todo: возможно то что лежит в стриме первым это плохая запись или совсем старая, нельзя на это полагаться
           // Если произошел косяк в локальной базе то последнее сообщение в чат листе битое
           // нужно перечитать весь стрим этого канала и только тогда пристпать к парсингу
-          dataMessage = await sub.stream.first
-                      .timeout(Duration(seconds: 3));
+          dataMessage = await sub.stream.first.timeout(Duration(seconds: 3));
         } on TimeoutException {
           logger.warning('timeout during read ChatList channel');
         }
@@ -67,8 +71,7 @@ class ChatListListener extends ChannelListener {
         }
       }
     } on SubscriptionAlreadyExistException {
-    } catch (_e) {
-    }
+    } catch (_e) {}
   }
 
   @override
@@ -90,14 +93,34 @@ class ChatListListener extends ChannelListener {
       chatDatabaseCubit.setLoadingChats(true);
 
       //THIS ORDER IS ESSENTIAL (DO NOT CHANGE)
-      await _insertUsers(users);
-      if (chats.length > 0) {
+      logger.finest('CHAT LIST STARTING...');
+      if (!await _usersStored(users)) {
+        logger.finest('INSERTING USERS... ${new DateTime.now()}');
+        await _insertUsers(users);
+      }
+
+      if (!await _chatsStored(chats)) {
+        logger.finest("STEP 2. INSERTING CHATS... ${new DateTime.now()}");
         await _insertChats(chats, messages);
       }
-      await _insertParticipants(participants, chats);
-      await _insertChannels(channels);
+      if (!await _participantsStored(participants)) {
+        logger
+            .finest("STEP 3. INSERTING PARTICIPANTS... ${new DateTime.now()}");
+        await _insertParticipants(participants, chats);
+      }
+      if (!await _channelsStored(channels)) {
+        logger.finest("STEP 4. INSERTING CHANNELS... ${new DateTime.now()}");
+        await _insertChannels(channels);
+      }
 
       chatDatabaseCubit.setLoadingChats(false);
+      if (natsProvider.isConnected) {
+        await registry.listenToMyStoredChannels();
+      } else {
+        throw NoConnectionException(message: "Disconnected");
+      }
+
+      logger.finest("DONE... ${new DateTime.now()}");
 
       await chatSaver.saveChats(newChat: null);
     } on NoConnectionException {
@@ -109,9 +132,29 @@ class ChatListListener extends ChannelListener {
     }
   }
 
+  Future<bool> _usersStored(List<UserTable> users) async {
+    final storedItems = await chatDatabaseCubit.db.getAllUsers();
+    return users.compareLight(storedItems);
+  }
+
+  Future<bool> _chatsStored(List<ChatTable> chats) async {
+    final storedItems = await chatDatabaseCubit.db.getAllChats();
+    return chats.compareLight(storedItems);
+  }
+
+  Future<bool> _participantsStored(List<ParticipantTable> participants) async {
+    final storedItems = await chatDatabaseCubit.db.getAllParticipants();
+    return participants.compareLight(storedItems);
+  }
+
+  Future<bool> _channelsStored(List<ChannelTable> channels) async {
+    final storedItems = await chatDatabaseCubit.db.getAllChannels();
+    return channels.compareLight(storedItems);
+  }
+
   Future<void> _insertChats(
       List<ChatTable> chats, List<MessageTable> messages) async {
-    logger.finest('_insertChats');
+    if (chats.isEmpty) return;
 
     final distinctChats = chats.toSet().toList();
 
@@ -153,16 +196,12 @@ class ChatListListener extends ChannelListener {
   }
 
   Future<void> _insertUsers(List<UserTable> users) async {
-    logger.finest('_insertUsers');
-
     final distinctUsers = users.toSet().toList();
     await userFunctions.insertUsers(distinctUsers);
   }
 
   Future<void> _insertParticipants(
       List<ParticipantTable> participants, List<ChatTable> chats) async {
-    logger.finest('_insertParticipants');
-
     var distinctParticipants = _getParticipantThatAreInChats(
       participants,
       chats,
@@ -212,18 +251,11 @@ class ChatListListener extends ChannelListener {
   }
 
   Future<void> _insertChannels(List<ChannelTable> channels) async {
-    logger.finest('_insertChannels');
     if (channels.isNotEmpty) {
       final distinctChannels = _channelFilter(channels);
       _setBusyChannels(distinctChannels);
       for (final channel in distinctChannels) {
         await channelFunctions.insertOrUpdate(channel);
-      }
-
-      if (natsProvider.isConnected) {
-        await registry.listenToMyStoredChannels();
-      } else {
-        throw NoConnectionException(message: "Disconnected");
       }
     }
   }
