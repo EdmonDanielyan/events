@@ -48,23 +48,25 @@ class ChatListListener extends ChannelListener {
       final sub = await natsProvider.listenChatList(channel);
       if (sub != null) {
         DataMessage? dataMessage;
-        dataMessage = await sub.stream.first
-            .timeout(Duration(seconds: 3))
-            .catchError((_err) {
-          dataMessage = null;
-        });
+        try {
+          //todo: возможно то что лежит в стриме первым это старые чаты, нельзя на это полагаться
+          // нужно прочитать весь стрим этого канала и только тогда пристпать к парсингу
+          dataMessage = await sub.stream.first
+                      .timeout(Duration(seconds: 3));
+        } on TimeoutException {
+          logger.warning('timeout during read ChatList channel');
+        }
 
         if (dataMessage != null) {
-          natsProvider.acknowledge(sub, dataMessage!);
+          natsProvider.acknowledge(sub, dataMessage);
           NatsMessage message = natsProvider.parseMessage(dataMessage);
           await onMessage(channel, message);
-
+          //todo: рано отписываемся
           sub.subscription.close();
         }
       }
     } on SubscriptionAlreadyExistException {
     } catch (_e) {
-      return;
     }
   }
 

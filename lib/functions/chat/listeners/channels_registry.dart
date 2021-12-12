@@ -77,7 +77,7 @@ class ChannelsRegistry with Loggable {
   String get inviteUserChannel =>
       natsProvider.getInviteUserToJoinChatChannel(JwtPayload.myId);
 
-  Future<void> listenToAllMessages() async {
+  void listenToAllMessages() {
     natsProvider.onMessage = (String channelStr, NatsMessage message) async {
       saveChannel(message);
     };
@@ -92,22 +92,22 @@ class ChannelsRegistry with Loggable {
 
   Future<void> init() async {
     logger.finest('init');
-    listeners.clear();
-    MessageType.values.forEach((messageType) {
-      var messageListenerToSearch = describeEnum(messageType);
-      logger.fine(
-          'Looking for listener of message type: $messageListenerToSearch');
+    if (listeners.isEmpty) {
+      MessageType.values.forEach((messageType) {
+        var messageListenerToSearch = describeEnum(messageType);
+        logger.fine(
+            'Looking for listener of message type: $messageListenerToSearch');
 
-      try {
-        ChannelListener listener =
-            sl.get(instanceName: messageListenerToSearch);
-        listeners.putIfAbsent(messageType, () => listener);
-      } catch (e) {
-        logger.warning(
-            'Not found listener for message type: $messageListenerToSearch');
-      }
-    });
-
+        try {
+          ChannelListener listener =
+          sl.get(instanceName: messageListenerToSearch);
+          listeners.putIfAbsent(messageType, () => listener);
+        } catch (e) {
+          logger.warning(
+              'Not found listener for message type: $messageListenerToSearch');
+        }
+      });
+    }
     await chatListListener.subscribe(userFunctions.me.id.toString());
     await userOnlineListener.subscribe(userFunctions.me);
     await _listenToInvitations();

@@ -98,6 +98,8 @@ class MessageProvider with Loggable{
    void _configureNatsProvider() {
     logger.finest("_configureNatsProvider");
     natsProvider.onConnected = () async {
+      logger.info("onConnected");
+
       connectionsCount++;
       await _onConnected();
       if (connectionsCount == 1) {
@@ -107,6 +109,7 @@ class MessageProvider with Loggable{
     };
 
     natsProvider.onDisconnected = () async {
+      logger.info("onDisconnected");
       _showDisconnectedSnackBar();
     };
   }
@@ -130,10 +133,11 @@ class MessageProvider with Loggable{
   }
 
   Future<void> _onConnected() async {
+      await Future.delayed(Duration(seconds: 1));
       logger.finest('_onConnected');
       natsLoaded = true;
-      userFunctions.addMe();
       registry.listenToAllMessages();
+      await userFunctions.addMe();
       await registry.init();
       pingSender.sendUserOnlinePing(user: userFunctions.me);
   }

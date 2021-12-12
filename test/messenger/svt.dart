@@ -240,7 +240,7 @@ void main() async {
       var end = start + maxParticipatesCount;
       if (end > length) {
         end = length - 1;
-        start = end - 10;
+        start = end - maxParticipatesCount;
       }
       if (start < 0) start = 0;
       if (end > length) end = length - 1;
