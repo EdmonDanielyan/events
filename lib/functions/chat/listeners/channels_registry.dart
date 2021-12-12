@@ -19,6 +19,7 @@ import 'channel_listener.dart';
 class ChannelsRegistry with Loggable {
   final NatsProvider natsProvider;
   final ChannelFunctions channelFunctions;
+
   ChatListListener get chatListListener =>
       listeners[MessageType.ChatList]! as ChatListListener;
 
@@ -91,23 +92,23 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> init() async {
+    await Future.delayed(Duration(seconds: 1));
     logger.finest('init');
-    if (listeners.isEmpty) {
-      MessageType.values.forEach((messageType) {
-        var messageListenerToSearch = describeEnum(messageType);
-        logger.fine(
-            'Looking for listener of message type: $messageListenerToSearch');
+    listeners.clear();
+    MessageType.values.forEach((messageType) {
+      var messageListenerToSearch = describeEnum(messageType);
+      logger.fine(
+          'Looking for listener of message type: $messageListenerToSearch');
 
-        try {
-          ChannelListener listener =
-          sl.get(instanceName: messageListenerToSearch);
-          listeners.putIfAbsent(messageType, () => listener);
-        } catch (e) {
-          logger.warning(
-              'Not found listener for message type: $messageListenerToSearch');
-        }
-      });
-    }
+      try {
+        ChannelListener listener =
+            sl.get(instanceName: messageListenerToSearch);
+        listeners.putIfAbsent(messageType, () => listener);
+      } catch (e) {
+        logger.warning(
+            'Not found listener for message type: $messageListenerToSearch');
+      }
+    });
     await chatListListener.subscribe(userFunctions.me.id.toString());
     await userOnlineListener.subscribe(userFunctions.me);
     await _listenToInvitations();
@@ -124,7 +125,8 @@ class ChannelsRegistry with Loggable {
 
   Future<void> listenToMyStoredChannels() async {
     logger.finest('listenToMyStoredChannels');
-    List<ChannelTable> channels = List<ChannelTable>.unmodifiable(await channelFunctions.getAllChannels());
+    // List<ChannelTable> channels = List<ChannelTable>.unmodifiable(await channelFunctions.getAllChannels());
+    List<ChannelTable> channels = await channelFunctions.getAllChannels();
 
     if (channels.isNotEmpty) {
       for (final channel in channels) {

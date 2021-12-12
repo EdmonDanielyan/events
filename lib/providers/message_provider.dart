@@ -133,7 +133,7 @@ class MessageProvider with Loggable{
   }
 
   Future<void> _onConnected() async {
-      await Future.delayed(Duration(seconds: 1));
+      //await Future.delayed(Duration(seconds: 1));
       logger.finest('_onConnected');
       natsLoaded = true;
       registry.listenToAllMessages();

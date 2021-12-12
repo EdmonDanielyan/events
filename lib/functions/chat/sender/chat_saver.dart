@@ -17,6 +17,7 @@ class ChatSaver {
     required ChatTable? newChat,
     List<ChatTable>? chats,
     int? userId,
+    bool sendToServer: true
   }) async {
     chats = chats ?? await db.getAllChats();
     final users = await db.getAllUsers();
@@ -34,14 +35,16 @@ class ChatSaver {
       chats.add(newChat);
     }
 
-    await saveToPrivateUserChatIdList(
-      userId: userId ?? JwtPayload.myId,
-      users: users,
-      chats: chats,
-      participants: participants,
-      messages: messages,
-      channels: channels,
-    );
+    if (sendToServer) {
+      await saveToPrivateUserChatIdList(
+        userId: userId ?? JwtPayload.myId,
+        users: users,
+        chats: chats,
+        participants: participants,
+        messages: messages,
+        channels: channels,
+      );
+    }
   }
 
   Future<void> saveToPrivateUserChatIdList({

@@ -49,8 +49,9 @@ class ChatListListener extends ChannelListener {
       if (sub != null) {
         DataMessage? dataMessage;
         try {
-          //todo: возможно то что лежит в стриме первым это старые чаты, нельзя на это полагаться
-          // нужно прочитать весь стрим этого канала и только тогда пристпать к парсингу
+          //todo: возможно то что лежит в стриме первым это плохая запись или совсем старая, нельзя на это полагаться
+          // Если произошел косяк в локальной базе то последнее сообщение в чат листе битое
+          // нужно перечитать весь стрим этого канала и только тогда пристпать к парсингу
           dataMessage = await sub.stream.first
                       .timeout(Duration(seconds: 3));
         } on TimeoutException {
@@ -61,7 +62,7 @@ class ChatListListener extends ChannelListener {
           natsProvider.acknowledge(sub, dataMessage);
           NatsMessage message = natsProvider.parseMessage(dataMessage);
           await onMessage(channel, message);
-          //todo: рано отписываемся
+          //todo: рано отписываемся по идеи надо прочитать самую валидную для этого клиента запись и потом отписаться
           sub.subscription.close();
         }
       }
@@ -73,9 +74,7 @@ class ChatListListener extends ChannelListener {
   @override
   Future<void> onMessage(String channel, NatsMessage message) async {
     super.onMessage(channel, message);
-    if (!isListeningToChannel(channel)) {
-      return;
-    }
+
     final mapPayload = message.payload! as SystemPayload;
 
     try {
@@ -106,14 +105,14 @@ class ChatListListener extends ChannelListener {
     } on NoSuchMethodError {
       return;
     } catch (_e, stack) {
-      print("ERROR");
-      print(_e.toString());
-      print(stack.toString());
+      logger.severe("Unexpected error", _e, stack);
     }
   }
 
   Future<void> _insertChats(
       List<ChatTable> chats, List<MessageTable> messages) async {
+    logger.finest('_insertChats');
+
     final distinctChats = chats.toSet().toList();
 
     final storedChats = await chatDatabaseCubit.db.getAllChats();
@@ -145,6 +144,7 @@ class ChatListListener extends ChannelListener {
 
   bool _chatExistsInStoredChannels(
       ChatTable chat, List<ChatTable> storedChats) {
+    logger.finest('_chatExistsInStoredChannels');
     for (final storedChat in storedChats) {
       if (storedChat.id == chat.id) return false;
     }
@@ -153,12 +153,16 @@ class ChatListListener extends ChannelListener {
   }
 
   Future<void> _insertUsers(List<UserTable> users) async {
+    logger.finest('_insertUsers');
+
     final distinctUsers = users.toSet().toList();
     await userFunctions.insertUsers(distinctUsers);
   }
 
   Future<void> _insertParticipants(
       List<ParticipantTable> participants, List<ChatTable> chats) async {
+    logger.finest('_insertParticipants');
+
     var distinctParticipants = _getParticipantThatAreInChats(
       participants,
       chats,
@@ -168,6 +172,8 @@ class ChatListListener extends ChannelListener {
 
   List<ParticipantTable> _getParticipantThatAreInChats(
       List<ParticipantTable> participants, List<ChatTable> chats) {
+    logger.finest('_getParticipantThatAreInChats');
+
     var distinctParticipants = participants.toSet().toList();
 
     distinctParticipants.removeWhere((element) {
@@ -186,6 +192,8 @@ class ChatListListener extends ChannelListener {
 
   Future<void> _insertMessages(
       ChatTable chat, List<MessageTable> messages) async {
+    logger.finest('_insertMessages');
+
     if (messages.isNotEmpty) {
       final distinctMessages = messages.toSet().toList();
       List<MessageTable> insertMessages = distinctMessages
@@ -196,14 +204,15 @@ class ChatListListener extends ChannelListener {
         try {
           await SendMessage(chat: chat, chatDatabaseCubit: chatDatabaseCubit)
               .addMessagesIfNotExists(insertMessages);
-        } catch (e) {
-          print("ERROR ${e.toString()}");
+        } catch (e, stack) {
+          logger.severe("Unexpected error", e, stack);
         }
       }
     }
   }
 
   Future<void> _insertChannels(List<ChannelTable> channels) async {
+    logger.finest('_insertChannels');
     if (channels.isNotEmpty) {
       final distinctChannels = _channelFilter(channels);
       _setBusyChannels(distinctChannels);
@@ -220,6 +229,8 @@ class ChatListListener extends ChannelListener {
   }
 
   List<ChannelTable> _channelFilter(List<ChannelTable> channels) {
+    logger.finest('_channelFilter');
+
     var newChannels = channels.toSet().toList();
     newChannels = _clearFromOtherInviteUserChannels(newChannels);
     newChannels = _clearFromNotExistingChats(newChannels);
@@ -229,6 +240,7 @@ class ChatListListener extends ChannelListener {
 
   List<ChannelTable> _clearFromOtherInviteUserChannels(
       List<ChannelTable> channels) {
+    logger.finest('_clearFromOtherInviteUserChannels');
     channels = channels
       ..removeWhere(
         (element) {
@@ -246,6 +258,8 @@ class ChatListListener extends ChannelListener {
   }
 
   List<ChannelTable> _clearFromNotExistingChats(List<ChannelTable> channels) {
+    logger.finest('_clearFromNotExistingChats');
+
     channels = channels
       ..removeWhere((element) {
         bool delete = false;
@@ -268,6 +282,7 @@ class ChatListListener extends ChannelListener {
   }
 
   void _setBusyChannels(List<ChannelTable> channels) {
+    logger.finest('_setBusyChannels');
     for (final channel in channels) {
       busyChannels.add(channel.to);
     }
