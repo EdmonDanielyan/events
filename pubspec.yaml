@@ -82,6 +82,7 @@ dev_dependencies:
     build_runner:
     injectable_generator:
     moor_generator: ^4.4.1
+    yaml:
 
 flutter_icons:
     android: true
