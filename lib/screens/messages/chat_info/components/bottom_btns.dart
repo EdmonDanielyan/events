@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -10,24 +9,24 @@ import 'package:ink_mobile/setup.dart';
 
 class ChatInfoBottomBtns extends StatelessWidget {
   final ChatTable chat;
-  const ChatInfoBottomBtns({Key? key, required this.chat}) : super(key: key);
+  final Messenger messenger = sl<Messenger>();
+  ChatInfoBottomBtns({Key? key, required this.chat}) : super(key: key);
 
-  static late ChatFunctions _chatFunctions;
   static late AppLocalizations _strings;
 
   bool get isGroup => ChatListView.isGroup(chat);
 
   void _clearMessages() {
-    _chatFunctions.deleteAllChatMessages(chat.id);
-    UseMessageProvider.messageProvider?.chatSaver.saveChats(newChat: null);
+    messenger.chatFunctions.deleteAllChatMessages(chat.id);
+    messenger.chatSaver.saveChats(newChat: null);
   }
 
   Future<void> _deleteChat(BuildContext context) async {
-    if (UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider?.chatEventsSender
+    if (messenger.isConnected) {
+      messenger.chatEventsSender
           .sendLeftMessage(chat);
       _clearMessages();
-      _chatFunctions.deleteChat(chat.id);
+      messenger.chatFunctions.deleteChat(chat.id);
       Navigator.of(context).popUntil((route) => route.isFirst);
     }
   }
@@ -35,8 +34,6 @@ class ChatInfoBottomBtns extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    _chatFunctions = sl<ChatFunctions>();
-
     return Container(
       color: Colors.white,
       width: double.infinity,

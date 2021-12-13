@@ -59,7 +59,7 @@ void main() async {
       Future? initMessageProviderFuture;
       sl<BootCubit>()
         ..onStart = () async {
-          initMessageProviderFuture = UseMessageProvider.initMessageProvider();
+          initMessageProviderFuture = sl<Messenger>().init();
           return await initMessageProviderFuture;
         };
       print("user: $credentials");
@@ -82,7 +82,7 @@ void main() async {
       print("Loading users is finished");
 
       print("Choosing chat participates...");
-      var messageProvider = sl<MessageProvider>();
+      var messageProvider = sl<Messenger>();
       var myName = messageProvider.userFunctions.me.name;
       var length = chatPersonListCubit.items.length;
       var start = Random().nextInt(length);
@@ -115,8 +115,8 @@ void main() async {
       Future? initMessageProviderFuture;
       sl<BootCubit>()
         ..onStart = () async {
-          initMessageProviderFuture = UseMessageProvider.initMessageProvider();
-          return await initMessageProviderFuture;
+          initMessageProviderFuture = sl<Messenger>().init();
+          return true;
         };
       print("user: $credentials");
       var authCubit = sl<AuthCubit>();
@@ -138,7 +138,7 @@ void main() async {
       print("Loading users is finished");
 
       print("Choosing chat participates...");
-      var messageProvider = sl<MessageProvider>();
+      var messageProvider = sl<Messenger>();
       var myName = messageProvider.userFunctions.me.name;
       var length = chatPersonListCubit.items.length;
       var start = Random().nextInt(length);

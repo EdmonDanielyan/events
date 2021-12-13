@@ -30,7 +30,8 @@ void main() async {
     await setup(scope: "dev");
 
     runApp(InkMobile(onAppStart: () async {
-      return await UseMessageProvider.initMessageProvider();
+      await sl<Messenger>().init();
+      return true;
     }));
   }, (Object error, StackTrace stack) {
     if (error is CustomException) {

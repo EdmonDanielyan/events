@@ -28,26 +28,8 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 import '../app.dart';
 import '../setup.dart';
 
-class UseMessageProvider {
-  static late bool initialized = false;
-  static late MessageProvider? messageProvider;
-
-  static Future<bool> initMessageProvider() async {
-    messageProvider = sl<MessageProvider>();
-    initialized = true;
-    await messageProvider!.init();
-    return true;
-  }
-
-
-  static void uninit() {
-    initialized = false;
-    messageProvider = null;
-  }
-}
-
 @lazySingleton
-class MessageProvider with Loggable{
+class Messenger with Loggable{
   late ChatDatabaseCubit chatDatabaseCubit;
   late NatsProvider natsProvider;
   late ChatFunctions chatFunctions;
@@ -67,9 +49,9 @@ class MessageProvider with Loggable{
   late ChatListListener chatListListener;
   late ChatCubit chatCubit;
 
-  MessageProvider();
+  Messenger();
 
-  bool natsLoaded = false;
+  bool isConnected = false;
   int connectionsCount = 0;
 
   Future<void> init() async {
@@ -90,7 +72,7 @@ class MessageProvider with Loggable{
     this.chatCreation = sl();
     this.pingSender = sl();
     _configureNatsProvider();
-    natsLoaded = await natsProvider.load();
+    isConnected = await natsProvider.load();
   }
 
    void _configureNatsProvider() {
@@ -133,7 +115,7 @@ class MessageProvider with Loggable{
   Future<void> _onConnected() async {
       //await Future.delayed(Duration(seconds: 1));
       logger.finest('_onConnected');
-      natsLoaded = true;
+      isConnected = true;
       registry.listenToAllMessages();
       await userFunctions.addMe();
       await registry.init();
@@ -146,8 +128,7 @@ class MessageProvider with Loggable{
     pingSender.stopSending();
     await natsProvider.dispose();
     await chatDatabaseCubit.db.deleteEverything();
-    UseMessageProvider.uninit();
-    natsLoaded = false;
+    isConnected = false;
   }
 
   Future<void> subscribeToUserOnline(UserTable user) async {

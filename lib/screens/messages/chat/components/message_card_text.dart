@@ -14,6 +14,7 @@ import 'package:ink_mobile/screens/messages/chat/components/message_card_picture
 import 'package:ink_mobile/screens/messages/chat/components/respond_container_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat/components/sent_on_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
+import 'package:ink_mobile/setup.dart';
 
 class MessageCardText extends StatelessWidget {
   final UserTable user;
@@ -49,20 +50,17 @@ class MessageCardText extends StatelessWidget {
   }
 
   void _resend(BuildContext context) async {
-    if (UseMessageProvider.initialized) {
-      UseMessageProvider.messageProvider?.messageEditorSender.sendDeleteMessages(
+    if (sl<Messenger>().isConnected) {
+      sl<Messenger>().messageEditorSender
+          .sendDeleteMessages(
         [message!],
         context,
         makeRequest: false,
       );
       final renewedMessage = MessageListView.renewMessage(message!);
-      final sendMessage = SendMessage(
-        chatDatabaseCubit: chatDatabaseCubit,
-        chat: getChat,
-      );
-      await sendMessage.addMessage(renewedMessage);
-      if (UseMessageProvider.initialized) {
-        await UseMessageProvider.messageProvider?.textSender
+      await sl<SendMessage>().addMessage(getChat, renewedMessage);
+      if (sl<Messenger>().isConnected) {
+        await sl<Messenger>().textSender
             .sendMessage(getChat, renewedMessage);
       }
     }

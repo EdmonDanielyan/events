@@ -51,6 +51,7 @@ class UserOnlineListener extends ChannelListener {
     } on SubscriptionAlreadyExistException {
     } catch (e) {
       //CLIENT IS OFFLINE
+      logger.warning("Error during subscribe", e);
       updateUserStatus(user, false);
     }
   }

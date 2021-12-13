@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
@@ -84,15 +85,14 @@ class ChatLeftListener extends ChannelListener {
 
   Future<void> setMessage(List<UserTable> users, ChatTable chat) async {
     for (final user in users) {
-      final generateMessage = SendMessage.joinedLeftMessage(
+      final generateMessage = GetIt.I<SendMessage>().joinedLeftMessage(
         chatId: chat.id,
         userName: user.name,
         type: MessageType.UserLeftChat,
       );
 
       if (generateMessage != null) {
-        await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
-            .addMessage(generateMessage, setChatToFirst: false);
+        await GetIt.I<SendMessage>().addMessage(chat, generateMessage, setChatToFirst: false);
       }
     }
   }
