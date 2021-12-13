@@ -226,5 +226,6 @@
     "authenticationRequired": "Аутентификация",
     "quote": "Цитировать",
     "loadingChats": "Загрузка чатов",
-    "loadingMessages": "Загрузка сообщений"
+    "loadingMessages": "Загрузка сообщений",
+    "applicationSecurityFailed": "Приложение не прошло проверку по безопасности"
 }

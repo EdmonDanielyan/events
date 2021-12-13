@@ -3,10 +3,10 @@ import 'dart:ui';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
-import 'package:ink_mobile/constants/messenger.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/providers/certificate_reader.dart';
 import 'package:ink_mobile/providers/lock_app.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -155,8 +155,15 @@ MockChatDatabase mockChatDatabase(GetIt sl, FakeDatabaseData databaseData) {
 
 MockCertificateReader mockCertificateReader(GetIt sl, String certPath) {
   var certificateReader = MockCertificateReader();
-  var certificate = File(certPath).readAsBytesSync();
-  when(() => certificateReader.data).thenReturn(certificate);
+
+  when(() => certificateReader.natsCertificateData).thenAnswer((invocation) {
+    return (File(sl<String>(instanceName: "natsCertificatePath")).readAsBytesSync());
+  });
+
+  when(() => certificateReader.apiCertificateData).thenAnswer((invocation) {
+    return (File(sl<String>(instanceName: "apiCertificatePath")).readAsBytesSync());
+  });
+
   sl
     ..unregister<CertificateReader>()
     ..registerLazySingleton<CertificateReader>(() => certificateReader);

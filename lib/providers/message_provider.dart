@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
-import 'package:ink_mobile/constants/messenger.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
@@ -76,7 +75,6 @@ class MessageProvider with Loggable{
   Future<void> init() async {
     logger.finest("init");
     await sl<TokenDataHolder>().update();
-    await sl<CertificateReader>().read();
     this.natsProvider = sl();
     this.chatDatabaseCubit = sl();
     this.chatCubit = sl();

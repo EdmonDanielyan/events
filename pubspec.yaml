@@ -72,7 +72,7 @@ dependencies:
     logging:
     local_auth: ^1.1.8
     remove_emoji: ^0.0.6
-
+    safe_device:
 dev_dependencies:
     flutter_test:
         sdk: flutter

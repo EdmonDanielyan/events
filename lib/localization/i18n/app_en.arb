@@ -225,5 +225,6 @@
     "authenticationRequired": "Authentication required",
     "quote": "Quote",
     "loadingChats": "Loading chats",
-    "loadingMessages": "Loading messages"
+    "loadingMessages": "Loading messages",
+    "applicationSecurityFailed": "Application failed security checking"
 }

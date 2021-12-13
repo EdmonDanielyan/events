@@ -92,7 +92,7 @@ class Body extends StatelessWidget {
   }
 
   Widget getOtherUserLoadedWidget(context, state) {
-    UserProfileData user = state.data;
+    UserProfileData user = state.natsCertificateData;
 
     return Container(
         child: Background(

@@ -41,7 +41,7 @@ class NatsProvider {
     @Named("userId") required this.userId,
     @Named("deviceVirtualId") required this.deviceVirtualId,
     @Named("natsToken") required this.natsToken,
-    @Named("natsCert") required this.certificate,
+    @Named("natsCertificate") required this.certificate,
   });
 
   Future<bool> load() async {
