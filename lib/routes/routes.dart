@@ -63,9 +63,9 @@ class MainRoutes {
           newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
         ),
     '/personal': (BuildContext context) => ProfileScreen(
-          profileCubit: sl(),
-          logFile: sl(instanceName: "logFile")
-        ),
+        profileCubit: sl(),
+        chatDatabaseCubit: sl<ChatDatabaseCubit>(),
+        logFile: sl(instanceName: "logFile")),
     '/news_detail': (BuildContext context) => NewsDetailScreen(
           newsDetailCubit: sl<NewsDetailCubit>(),
         ),
@@ -103,6 +103,7 @@ class MainRoutes {
         RecreationalActivities(),
     '/birthdays': (BuildContext context) => BirthdaysScreen(
           birthdaysCubit: sl<BirthdaysCubit>(),
+          chatDatabaseCubit: sl<ChatDatabaseCubit>(),
         ),
     '/open_university': (BuildContext context) => OpenUniversityScreen(
           eventsListCubit: sl<EventsListCubit>(),

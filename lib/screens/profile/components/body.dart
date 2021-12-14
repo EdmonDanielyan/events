@@ -101,7 +101,6 @@ class Body extends StatelessWidget {
       child: Column(children: [
         OtherUserPageHeader(user: user),
         Awards(awards: user.awards),
-        Text("123123"),
         Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

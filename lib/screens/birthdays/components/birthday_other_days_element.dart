@@ -42,19 +42,35 @@ class BirthdayOtherDaysElement extends StatelessWidget {
                       children: [
                         Expanded(
                             flex: 6,
-                            child: Text(birthday.name ?? '',
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/personal',
+                                  arguments: {'id': birthday.id},
+                                );
+                              },
+                              child: Text(
+                                birthday.name ?? '',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16))),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            )),
                         Expanded(
                           flex: 4,
                           child: Container(
-                              margin: EdgeInsets.only(left: 20),
-                              child: Text(birthday.birthday!,
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16))),
+                            margin: EdgeInsets.only(left: 20),
+                            child: Text(
+                              birthday.birthday!,
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
                         )
                       ],
                     ),

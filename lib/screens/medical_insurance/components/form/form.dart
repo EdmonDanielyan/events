@@ -142,14 +142,18 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
       bloc: widget.sendMedicalInsFormCubit,
       listener: (BuildContext context, state) {
         if (state.state == BtnCubitStateEnums.ERROR) {
-          SimpleCustomSnackbar(context: context, txt: state.message);
+          SimpleCustomSnackbar(
+            context: context,
+            txt: state.message,
+            duration: const Duration(seconds: 10),
+          );
         }
         if (state.state == BtnCubitStateEnums.SUCCESS) {
           clearForm();
           SuccessCustomSnackbar(
             context: context,
             txt: state.message,
-            duration: Duration(seconds: 3),
+            duration: const Duration(seconds: 10),
           );
         }
       },

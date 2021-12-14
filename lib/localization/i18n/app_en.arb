@@ -217,6 +217,7 @@
     "addLink": "Add any link",
     "sendLogs": "Send logs",
     "diagnostics": "Diagnostics",
+    "congratulate": "Congratulate",
     "connectedToServer": "Connected to the server",
     "disconnectedFromServer": "Disconnected from the server",
     "settings": "Settings",
