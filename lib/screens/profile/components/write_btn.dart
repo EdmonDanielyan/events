@@ -5,18 +5,19 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 
+import '../../../setup.dart';
 import '../profile_screen.dart';
 
 class WriteBtn extends StatelessWidget {
   final UserTable user;
   const WriteBtn({Key? key, required this.user}) : super(key: key);
   static late ChatDatabaseCubit _chatDatabaseCubit;
+  static final Messenger _messenger = sl<Messenger>();
 
   Future<void> _write(BuildContext context) async {
-    if (UseMessageProvider.initialized) {
+    if (_messenger.isConnected) {
       ChatTable newChat =
-          await await UseMessageProvider.messageProvider!.chatCreation
-              .createChatThroughNats(user);
+          await _messenger.chatCreation.createChatThroughNats(user);
       OpenChat(_chatDatabaseCubit, newChat).call(context);
     }
   }

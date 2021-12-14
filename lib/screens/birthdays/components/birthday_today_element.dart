@@ -9,6 +9,7 @@ import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/setup.dart';
 
 class BirthdayTodayElement extends StatelessWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
@@ -17,11 +18,12 @@ class BirthdayTodayElement extends StatelessWidget {
       : super(key: key);
 
   final BirthdayData birthday;
+  static final Messenger _messenger = sl<Messenger>();
 
   Future<void> _congratulate(BuildContext context) async {
-    if (UseMessageProvider.initialized) {
-      ChatTable newChat = await UseMessageProvider.messageProvider!.chatCreation
-          .createChatThroughNats(ChatUserViewModel.birthdayDataToUserTable(birthday));
+    if (_messenger.isConnected) {
+      ChatTable newChat = await _messenger.chatCreation.createChatThroughNats(
+          ChatUserViewModel.birthdayDataToUserTable(birthday));
       OpenChat(chatDatabaseCubit, newChat).call(context);
     }
   }
