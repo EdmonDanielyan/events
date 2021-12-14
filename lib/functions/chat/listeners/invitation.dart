@@ -30,6 +30,7 @@ class ChatInvitationListener extends ChannelListener {
       : super(natsProvider, registry);
 
   Future<void> onMessage(String channel, NatsMessage message) async {
+    super.onMessage(channel, message);
     if (!registry.isListening(channel)) {
       return;
     }

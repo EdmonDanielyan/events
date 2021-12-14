@@ -28,6 +28,7 @@ class MessageDeletedListener extends ChannelListener {
 
   @override
   Future<void> onMessage(String channel, NatsMessage message) async {
+    super.onMessage(channel, message);
     if (!registry.isListening(channel)) {
       return;
     }
