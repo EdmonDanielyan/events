@@ -26,7 +26,8 @@ void main() async {
           deviceVirtualId: '',
           natsToken: "",
           userId: '');
-      await natsProvider.load();
+      await (natsProvider.load().timeout(Duration(seconds: 10)));
+      expect(natsProvider.isConnected, true);
     });
   });
 }

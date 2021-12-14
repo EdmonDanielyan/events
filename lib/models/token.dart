@@ -40,9 +40,7 @@ abstract class Token {
   }
 
   static Future<void> deleteTokens() async {
-    FlutterSecureStorage storage = Storage.getInstance();
-
-    await storage.deleteAll();
+    await sl<SecureStorage>().deleteAll();
   }
 
   static Future<bool> isJwtExpired() async {
@@ -110,8 +108,7 @@ abstract class Token {
   }
 
   static Future<String?> _getTokenByType(TokenType type) async {
-    FlutterSecureStorage storage = Storage.getInstance();
-    return await storage.read(key: type.key);
+    return await sl<SecureStorage>().read(type.key);
   }
 
   static Future<void> setJwt(String value) async {
@@ -123,41 +120,47 @@ abstract class Token {
   }
 
   static Future<void> _setTokenByType(TokenType type, String value) async {
-    FlutterSecureStorage storage = Storage.getInstance();
-
-    await storage.write(key: type.key, value: value);
+    await sl<SecureStorage>().write(key: type.key, value: value);
   }
 
   static Future<void> setDeviceVirtualIdIfEmpty() async {
-    FlutterSecureStorage storage = Storage.getInstance();
-    if (!await storage.containsKey(key: DeviceTypes.virtualId.key)) {
-      await storage.write(key: DeviceTypes.virtualId.key, value: Uuid().v4());
+    if (!await sl<SecureStorage>().containsKey(DeviceTypes.virtualId.key)) {
+      await sl<SecureStorage>().write(key: DeviceTypes.virtualId.key, value: Uuid().v4());
     }
   }
 
   static Future<String?> getDeviceVirtualId() async {
-    FlutterSecureStorage storage = Storage.getInstance();
-    return await storage.read(key: DeviceTypes.virtualId.key);
+    return await sl<SecureStorage>().read(DeviceTypes.virtualId.key);
   }
 
   static Future<void> setNatsToken() async {
     JwtPayload? payload = await Token.getJwtPayloadObject();
-    FlutterSecureStorage storage = Storage.getInstance();
-    await storage.write(
+    await sl<SecureStorage>().write(
         key: NatsTypes.natsToken.key, value: payload!.natsToken);
   }
 
   static Future<String?> getNatsToken() async {
-    FlutterSecureStorage storage = Storage.getInstance();
-    return await storage.read(key: NatsTypes.natsToken.key);
+    return await sl<SecureStorage>().read(NatsTypes.natsToken.key);
   }
 }
 
-class Storage {
-  static final FlutterSecureStorage prefs = new FlutterSecureStorage();
+@lazySingleton
+class SecureStorage {
+  final FlutterSecureStorage _prefs = FlutterSecureStorage();
+  Future<String?> read(String key) async {
+    return _prefs.read(key: key);
+  }
 
-  static FlutterSecureStorage getInstance() {
-    return prefs;
+  Future<void> deleteAll() {
+    return _prefs.deleteAll();
+  }
+
+  Future<void> write({required String key, required String value}) {
+    return _prefs.write(key: key, value: value);
+  }
+
+  Future<bool> containsKey(String key) {
+    return _prefs.containsKey(key: key);
   }
 }
 

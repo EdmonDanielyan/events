@@ -41,7 +41,7 @@ class NatsProvider {
     @Named("userId") required this.userId,
     @Named("deviceVirtualId") required this.deviceVirtualId,
     @Named("natsToken") required this.natsToken,
-    @Named("natsCert") required this.certificate,
+    @Named("natsCertificate") required this.certificate,
   });
 
   Future<bool> load() async {
@@ -54,12 +54,7 @@ class NatsProvider {
       onDisconnected();
       _disconnected();
     });
-    var connected = await _connect();
-    if (!connected) {
-      throw NoConnectionException();
-    }
-
-    return true;
+    return await _connect();
   }
 
   void _connected() {
@@ -156,7 +151,12 @@ class NatsProvider {
 
   //////////////////////////////// NATS Protocol ///////////////////////////////
 
+
   Future<bool> _connect() async {
+    _logger.finest("_connect");
+    _logger.finest("url: $natsWssUrl, cluster: $natsCluster, userId: $userId, natsToken: $natsToken");
+    _logger.finest("certificate data length: ${certificate.length}");
+
     var connectResult = await _stan.connectUri(Uri.parse(natsWssUrl),
         certificate: certificate,
         clusterID: natsCluster,

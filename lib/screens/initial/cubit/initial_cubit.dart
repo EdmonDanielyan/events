@@ -1,22 +1,23 @@
-import 'dart:io';
-
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/handlers/AuthHandler.dart';
 import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:dio/dio.dart';
-import 'package:ink_mobile/providers/lock_app.dart';
+import 'package:ink_mobile/providers/certificate_reader.dart';
+import 'package:ink_mobile/providers/security_checker.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_state.dart';
-
-import '../../../setup.dart';
 
 @injectable
 class InitialCubit extends Cubit<InitialState> {
-  InitialCubit() : super(InitialState(type: InitialStateType.LOADING));
+  final SecurityChecker securityChecker;
+  final CertificateReader certificateReader;
+  final AuthHandler authHandler;
+
+  InitialCubit(this.securityChecker, this.certificateReader, this.authHandler)
+      : super(InitialState(type: InitialStateType.LOADING));
 
   Future<void> refreshToken() async {
     String? refreshToken = await Token.getRefresh();
@@ -25,7 +26,6 @@ class InitialCubit extends Cubit<InitialState> {
 
   Future<void> wasTokenExpired() async {
     bool wasExpired = await Token.setNewTokensIfExpired();
-
     if (!wasExpired) {
       String? oldJwt = await Token.getJwt();
       SetOauthToken(token: oldJwt ?? "").setBearer();
@@ -36,10 +36,15 @@ class InitialCubit extends Cubit<InitialState> {
 
   Future<void> fetch() async {
     try {
-      await refreshToken();
-      await wasTokenExpired();
-      GetIt.I<AuthHandler>().onSuccessAuth();
-      emitState(type: InitialStateType.LOAD_MAIN);
+      if (await securityChecker.checkApplication()) {
+        await certificateReader.read();
+        await refreshToken();
+        await wasTokenExpired();
+        authHandler.onSuccessAuth(checkLock: true);
+        emitState(type: InitialStateType.LOAD_MAIN);
+      } else {
+        emitError(localizationInstance.applicationSecurityFailed);
+      }
     } on DioError catch (e) {
       if (e.type == DioErrorType.other) {
         emitError(localizationInstance.noConnectionError);

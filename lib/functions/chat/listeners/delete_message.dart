@@ -7,7 +7,6 @@ import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats/message_delete.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 import 'channel_listener.dart';
@@ -27,7 +26,9 @@ class MessageDeletedListener extends ChannelListener {
       this.chatFunctions, this.messageSender, this.db, this.chatSaver)
       : super(natsProvider, registry);
 
+  @override
   Future<void> onMessage(String channel, NatsMessage message) async {
+    super.onMessage(channel, message);
     if (!registry.isListening(channel)) {
       return;
     }
@@ -45,7 +46,7 @@ class MessageDeletedListener extends ChannelListener {
         } else {
           chatFunctions.deleteMessages(myMessages);
         }
-        await UseMessageProvider.messageProvider?.chatSaver
+        await chatSaver
             .saveChats(newChat: null);
       }
     } on NoSuchMethodError {

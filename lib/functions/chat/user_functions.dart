@@ -16,8 +16,8 @@ class UserFunctions {
         online: false,
       );
 
-  void addMe() {
-    insertUser(me);
+  Future<void> addMe() async {
+    await insertUser(me);
   }
 
   Future<int> insertUser(UserTable user) async {

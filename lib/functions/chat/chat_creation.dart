@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -12,11 +13,12 @@ import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/setup.dart';
 
 @injectable
-class ChatCreation {
+class ChatCreation with Loggable {
   final ChatDatabaseCubit chatDatabaseCubit;
   final UserFunctions userFunctions;
+  final Messenger messenger;
 
-  const ChatCreation(this.chatDatabaseCubit, this.userFunctions);
+  ChatCreation(this.chatDatabaseCubit, this.userFunctions, this.messenger);
 
   static String get generateGroupId =>
       "${JwtPayload.myId}_${new DateTime.now().millisecondsSinceEpoch}";
@@ -25,6 +27,7 @@ class ChatCreation {
       ChatListView.getChatIdBetweenUsers(users);
 
   Future<ChatTable> createChatThroughNats(UserTable user) async {
+    logger.finest('createChatThroughNats');
     ChatTable? chat;
     List<UserTable> users = [user, userFunctions.me];
     chat = await isSingleChatExists(user);
@@ -39,21 +42,25 @@ class ChatCreation {
 
   Future<ChatTable> createGroupThroughNats(
       {required String name, required List<UserTable> users}) async {
+    logger.finest('createGroupThroughNats');
     users.insert(0, userFunctions.me);
     final chat = await sl<ChatCreation>()
         .createGroup(name: name, avatar: "", users: users);
-    _afterNatsChatCreation(chat, users);
+    await _afterNatsChatCreation(chat, users);
     return chat;
   }
 
   Future<void> _afterNatsChatCreation(
       ChatTable chat, List<UserTable> users) async {
-    if (UseMessageProvider.initialized) {
-      final messageProvider = UseMessageProvider.messageProvider!;
-      messageProvider.registry.subscribeOnChatCreate(chat.id);
+    logger.finest('_afterNatsChatCreation');
+    if (messenger.isConnected) {
+      logger.finest('Messenger is ok. Preparing channels');
+      await messenger.registry.subscribeOnChatChannels(chat.id);
 
-      await messageProvider.inviteSender.sendInvitations(chat, users);
-      await messageProvider.chatSaver.saveChats(newChat: null);
+      await messenger.inviteSender.sendInvitations(chat, users);
+      await messenger.chatSaver.saveChats(newChat: null);
+    } else {
+      logger.warning('Messenger is not ok. Check network');
     }
   }
 

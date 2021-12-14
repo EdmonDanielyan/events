@@ -10,6 +10,7 @@ import 'package:ink_mobile/models/chat/person_list_params.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/person_list/components/person_card.dart';
 import 'package:ink_mobile/screens/messages/person_list/person_list_screen.dart';
+import 'package:ink_mobile/setup.dart';
 
 class PersonListBody extends StatefulWidget {
   const PersonListBody({Key? key}) : super(key: key);
@@ -22,22 +23,19 @@ class _PersonListBodyState extends State<PersonListBody> {
   late ChatDatabaseCubit _chatDatabaseCubit;
   late PersonListParams _personListParams;
   final double _horizontalPadding = 10.0;
+  final Messenger messenger = sl<Messenger>();
 
   void _respondToChat(ChatTable chat) async {
     for (final message in _personListParams.messages!) {
       MessageTable newMessage = MessageListView.renewMessage(
         message,
-        id: SendMessage.generateMessageId,
+        id: sl<SendMessage>().generateMessageId,
         newChat: chat,
         sentOn: true,
       );
-
-      final sendMessage =
-          SendMessage(chatDatabaseCubit: _chatDatabaseCubit, chat: chat);
-
-      await sendMessage.addMessage(newMessage);
-      if (UseMessageProvider.initialized) {
-        await UseMessageProvider.messageProvider?.textSender
+      await sl<SendMessage>().addMessage(chat, newMessage);
+      if (messenger.isConnected) {
+        await messenger.textSender
             .sendMessage(chat, newMessage);
       }
     }

@@ -19,7 +19,7 @@ extension AuthSuccessExt on Response<AuthSuccess> {
       await Token.setJwt(token);
       await Token.setNatsToken();
       await Token.setDeviceVirtualIdIfEmpty();
-      sl<AuthHandler>().onSuccessAuth();
+      sl<AuthHandler>().onSuccessAuth(checkLock: false);
       return true;
     } else {
       return false;

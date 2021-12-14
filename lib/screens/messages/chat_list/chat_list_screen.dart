@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
 import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -9,6 +11,7 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/new_chat_btn.dart';
 
 import 'components/body.dart';
+import 'components/loading.dart';
 
 class ChatListScreen extends StatefulWidget {
   static ChatListScreenState of(BuildContext context) =>
@@ -46,7 +49,18 @@ class ChatListScreenState extends State<ChatListScreen>
         title: localizationInstance.messages,
         actions: [NewChatBtn()],
       ),
-      body: Body(),
+      body: BlocBuilder<ChatDatabaseCubit, ChatDatabaseCubitState>(
+        bloc: chatDatabaseCubit,
+        buildWhen: (previous, current) =>
+            previous.loadingChats != current.loadingChats,
+        builder: (context, state) {
+          if (state.loadingChats) {
+            return ChatListLoadingComponent(
+                chatDatabaseCubit: chatDatabaseCubit);
+          }
+          return Body();
+        },
+      ),
     );
   }
 

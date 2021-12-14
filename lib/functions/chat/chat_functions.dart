@@ -1,16 +1,15 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/functions/chat/listeners/message_status.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
-import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 
 @injectable
 class ChatFunctions {
   final ChatDatabaseCubit chatDatabaseCubit;
+  final Messenger messenger;
 
-  const ChatFunctions(this.chatDatabaseCubit);
+  const ChatFunctions(this.chatDatabaseCubit, this.messenger);
 
   void setChatToFirst(ChatTable chat) {
     chatDatabaseCubit.db.updateChatById(
@@ -56,34 +55,12 @@ class ChatFunctions {
     chatDatabaseCubit.db.updateMessageById(message.id, message);
   }
 
-  Future<bool> setMessagesToReadNats(List<MessageTable> messages) async {
-    if (UseMessageProvider.initialized) {
-      final messageProvider = UseMessageProvider.messageProvider!;
-      String chatId = messages.last.chatId;
-      final channel =
-          messageProvider.natsProvider.getGroupReactedChannelById(chatId);
-      bool send = await messageProvider.userReactionSender
-          .sendReadMessageStatus(channel, messages);
-      await MessageStatusListener.messagesToRead(
-          messages, this);
-      messageProvider.chatSaver.saveChats(newChat: null);
-      return send;
+  Future<void> messagesToRead(
+      List<MessageTable> messages) async {
+    for (final message in messages) {
+      await updateMessageStatus(message, MessageStatus.READ);
     }
-    return false;
   }
 
-  Future<bool> sendTextingMessage(
-      String chatId, CustomTexting customTexting) async {
-    if (UseMessageProvider.initialized) {
-      final messageProvider = UseMessageProvider.messageProvider!;
-      final channel =
-          messageProvider.natsProvider.getGroupTextingChannelById(chatId);
-      bool send = await messageProvider.textSender.sendTextingMessage(
-          channel,
-          customTexting: customTexting,
-          chatId: chatId);
-      return send;
-    }
-    return false;
-  }
+
 }

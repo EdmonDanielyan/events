@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
@@ -27,33 +28,8 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 import '../app.dart';
 import '../setup.dart';
 
-class UseMessageProvider {
-  static late bool initialized = false;
-  static late MessageProvider? messageProvider;
-
-  static Future<bool> initMessageProvider(
-      ChatDatabaseCubit chatDatabaseCubit) async {
-    await _initNatsProvider();
-    messageProvider = sl<MessageProvider>();
-    initialized = true;
-    await messageProvider!.init();
-    return true;
-  }
-
-  static Future<NatsProvider> _initNatsProvider() async {
-    await sl<TokenDataHolder>().update();
-    NatsProvider natsProvider = sl<NatsProvider>();
-    return natsProvider;
-  }
-
-  static void uninit() {
-    initialized = false;
-    messageProvider = null;
-  }
-}
-
 @lazySingleton
-class MessageProvider {
+class Messenger with Loggable{
   late ChatDatabaseCubit chatDatabaseCubit;
   late NatsProvider natsProvider;
   late ChatFunctions chatFunctions;
@@ -73,12 +49,14 @@ class MessageProvider {
   late ChatListListener chatListListener;
   late ChatCubit chatCubit;
 
-  MessageProvider();
+  Messenger();
 
-  bool natsLoaded = false;
+  bool isConnected = false;
   int connectionsCount = 0;
 
   Future<void> init() async {
+    logger.finest("init");
+    await sl<TokenDataHolder>().update();
     this.natsProvider = sl();
     this.chatDatabaseCubit = sl();
     this.chatCubit = sl();
@@ -93,12 +71,15 @@ class MessageProvider {
     this.registry = sl();
     this.chatCreation = sl();
     this.pingSender = sl();
-    _listenToConnection();
-    natsLoaded = await natsProvider.load();
+    _configureNatsProvider();
+    isConnected = await natsProvider.load();
   }
 
-  Future<void> _listenToConnection() async {
+   void _configureNatsProvider() {
+    logger.finest("_configureNatsProvider");
     natsProvider.onConnected = () async {
+      logger.info("onConnected");
+
       connectionsCount++;
       await _onConnected();
       if (connectionsCount == 1) {
@@ -108,6 +89,7 @@ class MessageProvider {
     };
 
     natsProvider.onDisconnected = () async {
+      logger.info("onDisconnected");
       _showDisconnectedSnackBar();
     };
   }
@@ -131,25 +113,26 @@ class MessageProvider {
   }
 
   Future<void> _onConnected() async {
-    if (!natsLoaded) {
-      natsLoaded = true;
-      userFunctions.addMe();
+      //await Future.delayed(Duration(seconds: 1));
+      logger.finest('_onConnected');
+      isConnected = true;
       registry.listenToAllMessages();
+      await userFunctions.addMe();
       await registry.init();
       pingSender.sendUserOnlinePing(user: userFunctions.me);
-    }
   }
 
   Future<void> dispose() async {
+    logger.finest('dispose');
     registry.unsubscribeFromAll();
     pingSender.stopSending();
     await natsProvider.dispose();
     await chatDatabaseCubit.db.deleteEverything();
-    UseMessageProvider.uninit();
-    natsLoaded = false;
+    isConnected = false;
   }
 
   Future<void> subscribeToUserOnline(UserTable user) async {
+    logger.finest('subscribeToUserOnline: id=${user.id} name=${user.name}');
     final listener =
         (registry.listeners[MessageType.Online] as UserOnlineListener?);
     if (listener != null) {

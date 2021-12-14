@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/app.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
@@ -39,7 +38,8 @@ class ChatLeftListener extends ChannelListener {
   ) : super(natsProvider, registry);
 
   Future<void> onMessage(String channel, NatsMessage message) async {
-    if (!registry.isListening(channel)) {
+    super.onMessage(channel, message);
+    if (!isListeningToChannel(channel)) {
       return;
     }
 
@@ -50,9 +50,6 @@ class ChatLeftListener extends ChannelListener {
 
       final users = fields.users;
       final chat = fields.chat;
-
-      print("GOT HERE");
-      print(users);
 
       if (users.isNotEmpty) {
         final me = await _deleteIfItsMe(users, chat);
@@ -88,15 +85,14 @@ class ChatLeftListener extends ChannelListener {
 
   Future<void> setMessage(List<UserTable> users, ChatTable chat) async {
     for (final user in users) {
-      final generateMessage = SendMessage.joinedLeftMessage(
+      final generateMessage = GetIt.I<SendMessage>().joinedLeftMessage(
         chatId: chat.id,
         userName: user.name,
         type: MessageType.UserLeftChat,
       );
 
       if (generateMessage != null) {
-        await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
-            .addMessage(generateMessage, setChatToFirst: false);
+        await GetIt.I<SendMessage>().addMessage(chat, generateMessage, setChatToFirst: false);
       }
     }
   }

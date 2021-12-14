@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
@@ -29,7 +30,7 @@ class TextMessageListener extends ChannelListener {
 
   final ChatSaver chatSaver;
 
-  const TextMessageListener(
+  TextMessageListener(
       NatsProvider natsProvider,
       ChannelsRegistry registry,
       this.userFunctions,
@@ -43,7 +44,8 @@ class TextMessageListener extends ChannelListener {
 
   @override
   Future<void> onMessage(String channel, NatsMessage message) async {
-    if (!registry.isListening(channel)) {
+    super.onMessage(channel, message);
+    if (!isListeningToChannel(channel)) {
       return;
     }
     try {
@@ -76,8 +78,8 @@ class TextMessageListener extends ChannelListener {
         });
 
         await userFunctions.insertUser(fields.user);
-        await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
-            .addMessage(newMessage);
+        await GetIt.I<SendMessage>()
+            .addMessage(chat, newMessage);
         await chatSaver.saveChats(newChat: null);
       }
     } on NoSuchMethodError {

@@ -10,6 +10,7 @@ import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/edit_entities.dart';
+import 'package:ink_mobile/setup.dart';
 
 class ChatInfoEditScreen extends StatefulWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
@@ -29,16 +30,17 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
   final _formKey = GlobalKey<FormState>();
   late AppLocalizations _strings;
 
+  final messenger = sl<Messenger>();
+
   Future<void> onSave(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       ChatTable chat = ChatInfoEditEntitiesFunctions.copyChat(entities, _chat);
 
-      if (UseMessageProvider.initialized) {
-        final messageProvider = UseMessageProvider.messageProvider;
+      if (messenger.isConnected) {
         bool sent =
-            await messageProvider!.chatEventsSender.sendNewChatInfo(chat);
+            await messenger.chatEventsSender.sendNewChatInfo(chat);
         if (sent) {
-          messageProvider.chatFunctions.updateChat(chat);
+          messenger.chatFunctions.updateChat(chat);
         } else {
           SimpleCustomSnackbar(
             context: context,
