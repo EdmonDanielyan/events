@@ -16,6 +16,7 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:ink_mobile/providers/notifications.dart';
 
 import '../chat_functions.dart';
+import '../push_notification.dart';
 import 'channels_registry.dart';
 
 @Named("Text")
@@ -69,11 +70,13 @@ class TextMessageListener extends ChannelListener {
             ChatListView.changeChatForParticipant(fields.chat, [fields.user]);
 
         _debouncer.run(() {
-          _pushNotification(
-              chatId: chat.id,
-              myChat: myChat,
-              message: newMessage,
-              user: fields.user);
+          PushChatNotification(
+            chatDatabaseCubit: chatDatabaseCubit,
+            chatId: chat.id,
+            myChat: myChat,
+            message: newMessage,
+            user: fields.user,
+          ).call();
         });
 
         await userFunctions.insertUser(fields.user);
@@ -83,38 +86,6 @@ class TextMessageListener extends ChannelListener {
       }
     } on NoSuchMethodError {
       return;
-    }
-  }
-
-  Future<void> _pushNotification(
-      {required String chatId,
-      required ChatTable? myChat,
-      required UserTable user,
-      required MessageTable message}) async {
-    bool showNotification = true;
-
-    final selectedChat = chatDatabaseCubit.selectedChat;
-
-    if (myChat != null && !myChat.notificationsOn!) {
-      showNotification = false;
-    }
-
-    if (selectedChat != null && selectedChat.id == chatId) {
-      showNotification = false;
-    }
-
-    final newMessageDate = message.created!.add(Duration(seconds: 30));
-
-    if (newMessageDate.toUtc().isBefore(new DateTime.now().toUtc())) {
-      showNotification = false;
-    }
-
-    if (showNotification) {
-      NotificationsProvider.showNotification(
-        user.name,
-        message.message,
-        id: user.id,
-      );
     }
   }
 }

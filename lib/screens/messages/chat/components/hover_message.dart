@@ -80,6 +80,7 @@ class HoverMessage extends StatelessWidget {
             CustomAlertCancel(
               context,
               title: _strings.delete,
+              body: _strings.messageDeleteHint,
               onSubmit: () {
                 _onDelete(context);
                 Navigator.of(context).pop();

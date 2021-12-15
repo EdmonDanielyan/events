@@ -198,7 +198,7 @@
     "yes": "Да",
     "ready": "Готово",
     "sendOn": "Переслать",
-    "copy": "Скопировать",
+    "copy": "Копировать",
     "attach": "Прикрепить",
     "takePicture": "Сделать фото",
     "picVidFromGallery": "Фото и видео из галереи",
@@ -226,5 +226,6 @@
     "authenticationRequired": "Аутентификация",
     "quote": "Цитировать",
     "loadingChats": "Загрузка чатов",
-    "loadingMessages": "Загрузка сообщений"
+    "loadingMessages": "Загрузка сообщений",
+    "messageDeleteHint": "Вы уверены? Вы не сможете восстановить это сообщение!"
 }

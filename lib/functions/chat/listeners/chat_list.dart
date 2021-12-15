@@ -49,6 +49,9 @@ class ChatListListener extends ChannelListener {
   Future<void> subscribe(String userId) async {
     logger.finest("subscribe: $userId");
     try {
+      //SETING LOADER
+      chatDatabaseCubit.setLoadingChats(true);
+
       final channel = natsProvider.getPrivateUserChatIdList(userId);
       final sub = await natsProvider.listenChatList(channel);
       if (sub != null) {
@@ -70,6 +73,9 @@ class ChatListListener extends ChannelListener {
           sub.subscription.close();
         }
       }
+
+      //CLOSING LOADER
+      chatDatabaseCubit.setLoadingChats(false);
     } on SubscriptionAlreadyExistException {
     } catch (_e) {}
   }
@@ -88,9 +94,6 @@ class ChatListListener extends ChannelListener {
       final participants = fields.participants;
       final messages = fields.messages;
       final channels = fields.channels;
-
-      //SETING LOADER
-      chatDatabaseCubit.setLoadingChats(true);
 
       //THIS ORDER IS ESSENTIAL (DO NOT CHANGE)
       logger.finest('CHAT LIST STARTING...');
@@ -113,7 +116,6 @@ class ChatListListener extends ChannelListener {
         await _insertChannels(channels);
       }
 
-      chatDatabaseCubit.setLoadingChats(false);
       if (natsProvider.isConnected) {
         await registry.listenToMyStoredChannels();
       } else {

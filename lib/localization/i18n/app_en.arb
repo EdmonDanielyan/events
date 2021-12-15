@@ -225,5 +225,6 @@
     "authenticationRequired": "Authentication required",
     "quote": "Quote",
     "loadingChats": "Loading chats",
-    "loadingMessages": "Loading messages"
+    "loadingMessages": "Loading messages",
+    "messageDeleteHint": "Are you sure? You will not be able to restore this message"
 }
