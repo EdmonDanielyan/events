@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/alert/loading.dart';
+import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
@@ -15,6 +15,7 @@ import 'package:ink_mobile/screens/messages/chat_list/components/chat_divider.da
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message_trailing.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_name.dart';
+import 'package:ink_mobile/setup.dart';
 
 class ChatListTile extends StatefulWidget {
   final String highlightValue;
@@ -48,6 +49,9 @@ class _ChatListTileState extends State<ChatListTile> {
 
   UserTable? get lastUser => widget.messagesWithUser.last.user;
 
+  final Messenger messenger = sl<Messenger>();
+
+
   int? get oppositeUserId =>
       ChatUserViewModel.getOppositeUserIdFromChat(widget.chat);
 
@@ -64,8 +68,8 @@ class _ChatListTileState extends State<ChatListTile> {
       final watchUser = widget.chatDatabaseCubit.db.watchUser(oppositeUserId!);
 
       watchUser.first.then((user) async {
-        if (user != null && UseMessageProvider.initialized) {
-          await UseMessageProvider.messageProvider?.subscribeToUserOnline(user);
+        if (user != null && messenger.isConnected) {
+          await messenger.subscribeToUserOnline(user);
         }
       });
     }
@@ -73,10 +77,10 @@ class _ChatListTileState extends State<ChatListTile> {
 
   Future<void> _deleteChat(BuildContext context) async {
     CustomAlertLoading(context).call();
-    if (UseMessageProvider.initialized) {
+    if (messenger.isConnected) {
       final chat = widget.chat;
-      UseMessageProvider.messageProvider?.chatFunctions.deleteChat(chat.id);
-      await UseMessageProvider.messageProvider?.chatEventsSender
+      messenger.chatFunctions.deleteChat(chat.id);
+      await messenger.chatEventsSender
           .sendLeftMessage(chat);
     }
     if (Navigator.of(context).canPop()) {

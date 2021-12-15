@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/data_message.dart';
-
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
@@ -18,13 +18,12 @@ import 'package:ink_mobile/models/chat/nats/chat_list.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
-import '../../../setup.dart';
-import '../chat_creation.dart';
-import 'channels_registry.dart';
+import '../../../extensions/channel_list.dart';
+import '../../../extensions/chat_list.dart';
 import '../../../extensions/participant_list.dart';
 import '../../../extensions/user_list.dart';
-import '../../../extensions/chat_list.dart';
-import '../../../extensions/channel_list.dart';
+import '../chat_creation.dart';
+import 'channels_registry.dart';
 
 @Named("ChatList")
 @Injectable(as: ChannelListener)
@@ -33,6 +32,7 @@ class ChatListListener extends ChannelListener {
   final UserFunctions userFunctions;
   final ChannelFunctions channelFunctions;
   final ChatSaver chatSaver;
+  final ChatCreation chatCreation;
 
   ChatListListener(
     NatsProvider natsProvider,
@@ -41,6 +41,7 @@ class ChatListListener extends ChannelListener {
     this.userFunctions,
     this.channelFunctions,
     this.chatSaver,
+    this.chatCreation,
   ) : super(natsProvider, registry);
 
   static Set<String> busyChannels = {};
@@ -181,7 +182,7 @@ class ChatListListener extends ChannelListener {
       bool insert = _chatExistsInStoredChannels(chat, storedChats);
 
       if (insert) {
-        await sl<ChatCreation>().insertChat(chat);
+        await chatCreation.insertChat(chat);
       }
       await _insertMessages(chat, messages);
     }
@@ -243,8 +244,8 @@ class ChatListListener extends ChannelListener {
 
       if (insertMessages.isNotEmpty) {
         try {
-          await SendMessage(chat: chat, chatDatabaseCubit: chatDatabaseCubit)
-              .addMessagesIfNotExists(insertMessages);
+          await GetIt.I<SendMessage>()
+              .addMessagesIfNotExists(chat, insertMessages);
         } catch (e, stack) {
           logger.severe("Unexpected error", e, stack);
         }

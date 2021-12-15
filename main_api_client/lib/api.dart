@@ -32,7 +32,7 @@ final _defaultInterceptors = [
 class MainApiClient {
   Dio dio;
   Serializers serializers;
-  String basePath = 'https://mobile.ink.vpool.qsoft.ru/api/v1';
+  String basePath = 'https://test.ink.vpool.qsoft.ru/api/v1';
 
   MainApiClient(
       {this.dio,

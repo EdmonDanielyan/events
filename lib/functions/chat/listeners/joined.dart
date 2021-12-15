@@ -1,6 +1,8 @@
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
+import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
@@ -9,7 +11,6 @@ import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../user_functions.dart';
@@ -18,6 +19,7 @@ import 'channels_registry.dart';
 @Named("UserJoined")
 @Injectable(as: ChannelListener)
 class ChatJoinedListener extends ChannelListener {
+  final ChatFunctions chatFunctions;
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatSaver chatSaver;
@@ -29,10 +31,12 @@ class ChatJoinedListener extends ChannelListener {
       this.userFunctions,
       this.chatDatabaseCubit,
       this.messageSender,
-      this.chatSaver)
+      this.chatSaver,
+      this.chatFunctions)
       : super(natsProvider, registry);
 
   Future<void> onMessage(String channel, NatsMessage message) async {
+    super.onMessage(channel, message);
     if (!registry.isListening(channel)) {
       return;
     }
@@ -50,7 +54,7 @@ class ChatJoinedListener extends ChannelListener {
         await userFunctions.addParticipants(
             ChatUserViewModel.toParticipants(users, chat), chat);
         setMessage(users, chat);
-        await UseMessageProvider.messageProvider?.chatSaver
+        await chatSaver
             .saveChats(newChat: null);
       }
     } on NoSuchMethodError {
@@ -60,15 +64,15 @@ class ChatJoinedListener extends ChannelListener {
 
   Future<void> setMessage(List<UserTable> users, ChatTable chat) async {
     for (final user in users) {
-      final generateMessage = SendMessage.joinedLeftMessage(
+      final generateMessage = GetIt.I<SendMessage>().joinedLeftMessage(
         chatId: chat.id,
         userName: user.name,
         type: MessageType.UserJoined,
       );
 
       if (generateMessage != null) {
-        await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
-            .addMessage(generateMessage, setChatToFirst: false);
+        await GetIt.I<SendMessage>()
+            .addMessage(chat, generateMessage, setChatToFirst: false);
       }
     }
   }

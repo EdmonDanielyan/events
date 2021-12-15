@@ -19,6 +19,7 @@ import 'package:ink_mobile/screens/messages/chat/components/scroll_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/components/selective_app_bar.dart';
+import 'package:ink_mobile/setup.dart';
 
 import 'components/body.dart';
 import 'entities/chat_screen_params.dart';
@@ -77,7 +78,6 @@ class ChatScreenState extends State<ChatScreen> {
         ),
         body: ChatBody(
           controller: controller,
-          chatFunctions: widget.chatFunctions,
         ),
         floatingActionButton: BlocBuilder<ChatCubit, ChatCubitState>(
           bloc: chatCubit,
@@ -163,8 +163,8 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
           onDelete: () {
             final messages = MessageWithUserListView.getMessagesFromList(
                 selectableCubit.getItems);
-            if (UseMessageProvider.initialized) {
-              UseMessageProvider.messageProvider?.messageEditorSender
+            if (sl<Messenger>().isConnected) {
+              sl<Messenger>().messageEditorSender
                   .sendDeleteMessages(messages, context);
             }
             selectableCubit.clearAll();

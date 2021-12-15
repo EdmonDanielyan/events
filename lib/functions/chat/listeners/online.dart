@@ -51,15 +51,13 @@ class UserOnlineListener extends ChannelListener {
     } on SubscriptionAlreadyExistException {
     } catch (e) {
       //CLIENT IS OFFLINE
+      logger.warning("Error during subscribe", e);
       updateUserStatus(user, false);
     }
   }
 
   Future<void> onMessage(String channel, NatsMessage message) async {
     super.onMessage(channel, message);
-    if (!isListeningToChannel(channel)) {
-      return;
-    }
     try {
       final mapPayload = message.payload! as SystemPayload;
       UserOnlineFields fields = UserOnlineFields.fromMap(mapPayload.fields);
@@ -76,6 +74,7 @@ class UserOnlineListener extends ChannelListener {
   }
 
   void updateUserStatus(UserTable user, bool online) {
+    logger.finest("updateUserStatus: user=${user.name}, was_online: ${user.online}, will_be_online=$online");
     chatDatabaseCubit.db.updateUser(user.id, user.copyWith(online: online));
   }
 

@@ -25,10 +25,13 @@ import 'cubit/boot/boot_cubit.dart';
 
 void main() async {
   runZonedGuarded(() async {
-    await setup(scope: kReleaseMode ? "prod" : "dev" );
+    //todo: Раскомментировать на релизе
+    // await setup(scope: kReleaseMode ? "prod" : "dev" );
+    await setup(scope: "dev");
 
     runApp(InkMobile(onAppStart: () async {
-      return await UseMessageProvider.initMessageProvider();
+      await sl<Messenger>().init();
+      return true;
     }));
   }, (Object error, StackTrace stack) {
     if (error is CustomException) {

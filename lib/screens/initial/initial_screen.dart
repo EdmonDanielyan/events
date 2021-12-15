@@ -12,50 +12,48 @@ class InitPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<InitialCubit>(
-        create: (context) => sl<InitialCubit>(),
-        child: Scaffold(
-          body: BlocBuilder<InitialCubit, InitialState>(
-            builder: (context, state) {
-              final cubit = BlocProvider.of<InitialCubit>(context);
-
-              switch (state.type) {
-                case InitialStateType.ERROR:
-                  {
-                    return ErrorRefreshButton(
-                      onTap: cubit.refresh,
-                      text: state.errorMessage!,
-                    );
-                  }
-
-                case InitialStateType.LOAD_MAIN:
-                  {
-                    SchedulerBinding.instance?.addPostFrameCallback((_) {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, '/app_layer', (route) => false);
-                    });
-
-                    return Container();
-                  }
-
-                case InitialStateType.LOAD_WELCOME:
-                  {
-                    SchedulerBinding.instance?.addPostFrameCallback((_) {
-                      Navigator.popAndPushNamed(context, '/welcome');
-                    });
-
-                    return Container();
-                  }
-
-                case InitialStateType.LOADING:
-                  {
-                    cubit.fetch();
-
-                    return Container(child: InkPageLoader());
-                  }
+    var cubit = sl<InitialCubit>();
+    return Scaffold(
+      body: BlocBuilder<InitialCubit, InitialState>(
+        bloc: cubit,
+        builder: (context, state) {
+          switch (state.type) {
+            case InitialStateType.ERROR:
+              {
+                return ErrorRefreshButton(
+                  onTap: cubit.refresh,
+                  text: state.errorMessage!,
+                );
               }
-            },
-          ),
-        ));
+
+            case InitialStateType.LOAD_MAIN:
+              {
+                SchedulerBinding.instance?.addPostFrameCallback((_) {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/app_layer', (route) => false);
+                });
+
+                return Container();
+              }
+
+            case InitialStateType.LOAD_WELCOME:
+              {
+                SchedulerBinding.instance?.addPostFrameCallback((_) {
+                  Navigator.popAndPushNamed(context, '/welcome');
+                });
+
+                return Container();
+              }
+
+            case InitialStateType.LOADING:
+              {
+                cubit.fetch();
+
+                return Container(child: InkPageLoader());
+              }
+          }
+        },
+      ),
+    );
   }
 }

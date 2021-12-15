@@ -13,11 +13,13 @@ import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/new_chat_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/entities/new_chat_screen_params.dart';
+import 'package:ink_mobile/setup.dart';
 
 class NewChatBtn extends StatelessWidget {
-  const NewChatBtn({Key? key}) : super(key: key);
+  NewChatBtn({Key? key}) : super(key: key);
   static late SelectableCubit<UserTable> _selectableCubit;
   static late ChatDatabaseCubit _chatDatabaseCubit;
+  final Messenger messenger = sl<Messenger>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +65,8 @@ class NewChatBtn extends StatelessWidget {
   }
 
   Future<void> _createChat(UserTable user, BuildContext context) async {
-    if (UseMessageProvider.initialized) {
-      ChatTable newChat = await UseMessageProvider.messageProvider!.chatCreation
+    if (messenger.isConnected) {
+      ChatTable newChat = await messenger.chatCreation
           .createChatThroughNats(user);
       Navigator.of(context).pop();
       OpenChat(_chatDatabaseCubit, newChat).call(context);
@@ -72,8 +74,8 @@ class NewChatBtn extends StatelessWidget {
   }
 
   Future<void> _onUserTap(BuildContext context, UserTable user) async {
-    if (UseMessageProvider.initialized) {
-      ChatTable? chat = await UseMessageProvider.messageProvider!.chatCreation
+    if (messenger.isConnected) {
+      ChatTable? chat = await messenger.chatCreation
           .isSingleChatExists(user);
 
       if (chat != null) {

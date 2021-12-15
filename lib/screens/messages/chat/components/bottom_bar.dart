@@ -13,6 +13,7 @@ import 'package:ink_mobile/screens/messages/chat/components/respond_container.da
 import 'package:ink_mobile/screens/messages/chat/components/send_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
+import 'package:ink_mobile/setup.dart';
 
 import '../chat_screen.dart';
 
@@ -39,13 +40,10 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   Future<void> onSend(ChatEntities entities) async {
     if (entities.text.isNotEmpty) {
       clearForm();
-      final sendMessage = SendMessage(
-        chatDatabaseCubit: _chatDatabaseCubit,
-        chat: getChat,
-      );
-      final message = await sendMessage.call(entities);
-      if (UseMessageProvider.initialized) {
-        UseMessageProvider.messageProvider?.textSender
+      final sendMessage = sl<SendMessage>();
+      final message = await sendMessage.call(getChat, entities);
+      if (sl<Messenger>().isConnected) {
+        sl<Messenger>().textSender
             .sendMessage(getChat, message);
       }
 
@@ -59,12 +57,10 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
     final editedMsg =
         MessageListView.editMessage(messageWithUser.message!, entities.text);
 
-    if (UseMessageProvider.initialized) {
+    if (sl<Messenger>().isConnected) {
       clearForm();
-      final sent = await UseMessageProvider
-              .messageProvider?.messageEditorSender
-              .sendDeleteMessages([editedMsg], context, edited: true) ??
-          false;
+      final sent = await sl<Messenger>().messageEditorSender
+              .sendDeleteMessages([editedMsg], context, edited: true);
 
       if (sent) {
         _chatDatabaseCubit.db.updateMessageById(editedMsg.id, editedMsg);

@@ -92,7 +92,7 @@ class Body extends StatelessWidget {
   }
 
   Widget getOtherUserLoadedWidget(context, state) {
-    UserProfileData user = state.data;
+    UserProfileData user = state.natsCertificateData;
 
     return Container(
         child: Background(
@@ -101,7 +101,6 @@ class Body extends StatelessWidget {
       child: Column(children: [
         OtherUserPageHeader(user: user),
         Awards(awards: user.awards),
-        Text("123123"),
         Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

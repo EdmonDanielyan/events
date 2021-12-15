@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
@@ -80,8 +81,8 @@ class TextMessageListener extends ChannelListener {
         });
 
         await userFunctions.insertUser(fields.user);
-        await SendMessage(chatDatabaseCubit: chatDatabaseCubit, chat: chat)
-            .addMessage(newMessage);
+        await GetIt.I<SendMessage>()
+            .addMessage(chat, newMessage);
         await chatSaver.saveChats(newChat: null);
       }
     } on NoSuchMethodError {

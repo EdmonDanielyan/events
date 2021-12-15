@@ -217,6 +217,7 @@
     "addLink": "Add any link",
     "sendLogs": "Send logs",
     "diagnostics": "Diagnostics",
+    "congratulate": "Congratulate",
     "connectedToServer": "Connected to the server",
     "disconnectedFromServer": "Disconnected from the server",
     "settings": "Settings",
@@ -226,5 +227,6 @@
     "quote": "Quote",
     "loadingChats": "Loading chats",
     "loadingMessages": "Loading messages",
-    "messageDeleteHint": "Are you sure? You will not be able to restore this message"
+    "messageDeleteHint": "Are you sure? You will not be able to restore this message",
+    "applicationSecurityFailed": "Application failed security checking"
 }

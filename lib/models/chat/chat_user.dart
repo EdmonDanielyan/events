@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/user_data.dart';
 
 import 'chat_list_view.dart';
 import 'database/model/message_with_user.dart';
@@ -136,5 +137,28 @@ class ChatUserViewModel {
     }
 
     return newName;
+  }
+
+  static UserTable userDataToUserTable(UserProfileData user) {
+    String name = user.name ?? "";
+    if (user.lastName != null) {
+      name = "$name ${user.lastName}".trim();
+    }
+    return UserTable(
+      id: user.id,
+      name: name,
+      avatar: user.pathToAvatar ?? "",
+      online: false,
+    );
+  }
+
+  static UserTable birthdayDataToUserTable(BirthdayData user) {
+    String name = (user.name ?? "").trim();
+    return UserTable(
+      id: user.id,
+      name: name,
+      avatar: user.pathToAvatar ?? "",
+      online: false,
+    );
   }
 }

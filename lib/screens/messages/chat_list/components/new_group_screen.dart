@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
+import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/setup.dart';
 
 class NewGroupScreen extends StatefulWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
@@ -28,10 +29,12 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
   final double horizontalPadding = 20;
   List<UserTable> users = [];
   String chatName = "";
+  final Messenger messenger = sl<Messenger>();
+
 
   Future<void> _onCreate(BuildContext context) async {
-    if (UseMessageProvider.initialized) {
-      ChatTable newChat = await UseMessageProvider.messageProvider!.chatCreation
+    if (messenger.isConnected) {
+      ChatTable newChat = await messenger.chatCreation
           .createGroupThroughNats(name: chatName, users: users);
 
       Navigator.of(context).popUntil((route) => route.isFirst);

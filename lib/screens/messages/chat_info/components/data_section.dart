@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
-import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/chat_screen_params.dart';
-import 'package:ink_mobile/screens/messages/chat_info/chat_info_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/btn_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/setup.dart';
 
 class ChatInfoDataSection extends StatelessWidget {
   final ChatTable chat;
-  const ChatInfoDataSection({Key? key, required this.chat}) : super(key: key);
+  ChatInfoDataSection({Key? key, required this.chat}) : super(key: key);
 
   static late AppLocalizations _strings;
-  static late ChatDatabaseCubit _chatDatabaseCubit;
+  final Messenger messenger = sl<Messenger>();
+
 
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    _chatDatabaseCubit = ChatInfoScreen.of(context).chatDatabaseCubit;
 
     return Container(
       color: Colors.white,
@@ -45,7 +45,7 @@ class ChatInfoDataSection extends StatelessWidget {
         "${_strings.files} ${_strings.and.toLowerCase()} ${_strings.links.toLowerCase()}";
     return ChatInfoBtnWrapper(
       onTap: () {
-        OpenChat(_chatDatabaseCubit, chat).call(
+        OpenChat(messenger.chatDatabaseCubit, chat).call(
           context,
           chatScreenParams: ChatScreenParamsListView.onlyFiles(title),
         );
@@ -77,7 +77,7 @@ class ChatInfoDataSection extends StatelessWidget {
 
   Widget notificationBtnWidget() {
     return BlocBuilder<ChatDatabaseCubit, ChatDatabaseCubitState>(
-      bloc: _chatDatabaseCubit,
+      bloc: messenger.chatDatabaseCubit,
       builder: (context, state) {
         if (state.selectedChat == null) return SizedBox();
 
@@ -94,7 +94,7 @@ class ChatInfoDataSection extends StatelessWidget {
           onTap: () {
             final chat = selectedChat.copyWith(
                 notificationsOn: !selectedChat.notificationsOn!);
-            ChatFunctions(_chatDatabaseCubit).updateChat(chat);
+            messenger.chatFunctions.updateChat(chat);
           },
           icon: Container(
             padding: const EdgeInsets.all(2.0),

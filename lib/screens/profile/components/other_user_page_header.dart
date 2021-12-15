@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/other_user_votes_bar.dart';
 import 'package:ink_mobile/screens/profile/components/thanks_button.dart';
 import 'package:ink_mobile/screens/profile/components/user_main_info.dart';
+
+import 'write_btn.dart';
 
 class OtherUserPageHeader extends StatelessWidget {
   final UserProfileData user;
@@ -36,7 +39,10 @@ class OtherUserPageHeader extends StatelessWidget {
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
-            )
+            ),
+            WriteBtn(
+              user: ChatUserViewModel.userDataToUserTable(user),
+            ),
           ]),
           Container(
             margin: EdgeInsets.only(top: 30, bottom: 20, left: 20, right: 20),

@@ -16,8 +16,9 @@ import 'package:ink_mobile/setup.dart';
 class ChatCreation with Loggable {
   final ChatDatabaseCubit chatDatabaseCubit;
   final UserFunctions userFunctions;
+  final Messenger messenger;
 
-  ChatCreation(this.chatDatabaseCubit, this.userFunctions);
+  ChatCreation(this.chatDatabaseCubit, this.userFunctions, this.messenger);
 
   static String get generateGroupId =>
       "${JwtPayload.myId}_${new DateTime.now().millisecondsSinceEpoch}";
@@ -52,13 +53,12 @@ class ChatCreation with Loggable {
   Future<void> _afterNatsChatCreation(
       ChatTable chat, List<UserTable> users) async {
     logger.finest('_afterNatsChatCreation');
-    if (UseMessageProvider.initialized) {
+    if (messenger.isConnected) {
       logger.finest('Messenger is ok. Preparing channels');
-      final messageProvider = UseMessageProvider.messageProvider!;
-      await messageProvider.registry.subscribeOnChatChannels(chat.id);
+      await messenger.registry.subscribeOnChatChannels(chat.id);
 
-      await messageProvider.inviteSender.sendInvitations(chat, users);
-      await messageProvider.chatSaver.saveChats(newChat: null);
+      await messenger.inviteSender.sendInvitations(chat, users);
+      await messenger.chatSaver.saveChats(newChat: null);
     } else {
       logger.warning('Messenger is not ok. Check network');
     }

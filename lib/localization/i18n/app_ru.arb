@@ -218,6 +218,7 @@
     "addLink": "Вставьте ссылку на файл",
     "sendLogs": "Отправка журнала",
     "diagnostics": "Диагностика",
+    "congratulate": "Поздравить",
     "connectedToServer": "Подключение к серверу",
     "disconnectedFromServer": "Отключение от сервера",
     "settings": "Настройки",
@@ -227,5 +228,6 @@
     "quote": "Цитировать",
     "loadingChats": "Загрузка чатов",
     "loadingMessages": "Загрузка сообщений",
-    "messageDeleteHint": "Вы уверены? Вы не сможете восстановить это сообщение!"
+    "messageDeleteHint": "Вы уверены? Вы не сможете восстановить это сообщение!",
+    "applicationSecurityFailed": "Приложение не прошло проверку по безопасности"
 }

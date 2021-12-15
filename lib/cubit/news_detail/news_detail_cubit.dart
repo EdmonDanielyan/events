@@ -38,12 +38,11 @@ class NewsDetailCubit extends Cubit<NewsDetailState> {
 
   Future<void> like(int newsId) async {
     try {
-      emitSuccess(
-        state.data!.copyWith(
-          isLiked: !isLiked,
-          likeCount: isLiked ? countLikes - 1 : countLikes + 1,
-        ),
-      );
+      int likeCount = state.data!.isLiked!
+          ? state.data!.likeCount! - 1
+          : state.data!.likeCount! + 1;
+      emitSuccess(state.data!
+          .copyWith(isLiked: !state.data!.isLiked!, likeCount: likeCount));
       await Token.setNewTokensIfExpired();
       await sl<NewsLikeNetworkRequest>(param1: newsId)();
     } on DioError catch (e) {
