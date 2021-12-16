@@ -23,7 +23,7 @@ class FakeDatabaseData {
   final Map<String, ChatTable> chats = {};
   final List<ParticipantTable> participates = [];
   final List<ChannelTable> channels = [];
-  final List<MessageTable> dbMessages = [];
+  final List<MessageTable> messages = [];
 
   @override
   String toString() {
@@ -32,7 +32,7 @@ class FakeDatabaseData {
     Participates: $participates
     Chats: $chats
     Channels: $channels
-    Messages: $dbMessages
+    Messages: $messages
     ''';
   }
 }
@@ -71,6 +71,15 @@ MockChatDatabase mockChatDatabase(GetIt sl, FakeDatabaseData databaseData) {
       .thenAnswer((realInvocation) async {
     databaseData.participates
         .add(realInvocation.positionalArguments[0] as ParticipantTable);
+    return 1;
+  });
+
+  when(() => chatDataBase.updateMessageById(any(), any()))
+      .thenAnswer((realInvocation) async {
+    var messageId = realInvocation.positionalArguments[0];
+    var message = realInvocation.positionalArguments[1] as MessageTable;
+    databaseData.messages.removeWhere((element) => element.id == messageId);
+    databaseData.messages.add(message);
     return 1;
   });
 
@@ -116,13 +125,13 @@ MockChatDatabase mockChatDatabase(GetIt sl, FakeDatabaseData databaseData) {
   when(() => chatDataBase.getAllParticipants())
       .thenAnswer((realInvocation) async => databaseData.participates);
   when(() => chatDataBase.getAllMessages())
-      .thenAnswer((realInvocation) async => databaseData.dbMessages);
+      .thenAnswer((realInvocation) async => databaseData.messages);
 
   when(() => chatDataBase.getChatMessages(any()))
       .thenAnswer((realInvocation) async {
     var chatId = realInvocation.positionalArguments[0] as String;
     var where =
-        databaseData.dbMessages.where((element) => element.chatId == chatId);
+        databaseData.messages.where((element) => element.chatId == chatId);
     return where.map<MessageWithUser>((message) {
       var user = databaseData.users[message.userId] ?? FakeUserTable();
       return MessageWithUser(message: message, user: user);
@@ -134,7 +143,7 @@ MockChatDatabase mockChatDatabase(GetIt sl, FakeDatabaseData databaseData) {
 
   when(() => chatDataBase.insertMessage(any()))
       .thenAnswer((realInvocation) async {
-    databaseData.dbMessages
+    databaseData.messages
         .add(realInvocation.positionalArguments[0] as MessageTable);
     return 1;
   });

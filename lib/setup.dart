@@ -19,7 +19,7 @@ final sl = GetIt.instance;
 Future<void> setup({scope = "dev"}) async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationsProvider.init();
-  $initGetIt(sl, environment: scope);
+  await $initGetIt(sl, environment: scope);
   setupI18n(sl);
 
   setupLogging(sl<FileLogAppender>());

@@ -5,6 +5,7 @@ import 'file_log_appender.dart';
 
 void setupLogging(FileLogAppender fileLogAppender,
     {bool printToConsole: true, Level? forceLevel}) {
+  Logger.root.clearListeners();
   Logger.root.level = forceLevel ?? (kDebugMode ? Level.ALL : Level.WARNING);
   fileLogAppender.printLogs = false;
   Logger.root.onRecord.listen((record) {
