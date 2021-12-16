@@ -50,6 +50,9 @@ class ChatListListener extends ChannelListener {
   Future<void> subscribe(String userId) async {
     logger.finest("subscribe: $userId");
     try {
+      //SETING LOADER
+      chatDatabaseCubit.setLoadingChats(true);
+
       final channel = natsProvider.getPrivateUserChatIdList(userId);
       final sub = await natsProvider.listenChatList(channel);
       if (sub != null) {
@@ -58,9 +61,9 @@ class ChatListListener extends ChannelListener {
           //todo: возможно то что лежит в стриме первым это плохая запись или совсем старая, нельзя на это полагаться
           // Если произошел косяк в локальной базе то последнее сообщение в чат листе битое
           // нужно перечитать весь стрим этого канала и только тогда пристпать к парсингу
-          dataMessage = await sub.stream.first.timeout(Duration(seconds: 3));
+          dataMessage = await sub.stream.first.timeout(Duration(seconds: 10));
         } on TimeoutException {
-          logger.warning('timeout during read ChatList channel');
+          logger.severe('timeout during read ChatList channel');
         }
 
         if (dataMessage != null) {
@@ -71,6 +74,9 @@ class ChatListListener extends ChannelListener {
           sub.subscription.close();
         }
       }
+
+      //CLOSING LOADER
+      chatDatabaseCubit.setLoadingChats(false);
     } on SubscriptionAlreadyExistException {
     } catch (_e) {}
   }
@@ -89,9 +95,6 @@ class ChatListListener extends ChannelListener {
       final participants = fields.participants;
       final messages = fields.messages;
       final channels = fields.channels;
-
-      //SETING LOADER
-      chatDatabaseCubit.setLoadingChats(true);
 
       //THIS ORDER IS ESSENTIAL (DO NOT CHANGE)
       logger.finest('CHAT LIST STARTING...');
@@ -114,7 +117,6 @@ class ChatListListener extends ChannelListener {
         await _insertChannels(channels);
       }
 
-      chatDatabaseCubit.setLoadingChats(false);
       if (natsProvider.isConnected) {
         await registry.listenToMyStoredChannels();
       } else {
