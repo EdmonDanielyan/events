@@ -6,6 +6,7 @@ class SecurityChecker {
   const SecurityChecker();
 
   Future<bool> checkApplication() async {
-    return !await SafeDevice.isSafeDevice && !await SafeDevice.isJailBroken;
+    return !await SafeDevice.isJailBroken;
+    //return !await SafeDevice.isSafeDevice && !await SafeDevice.isJailBroken;
   }
 }

@@ -227,5 +227,6 @@
     "quote": "Quote",
     "loadingChats": "Loading chats",
     "loadingMessages": "Loading messages",
-    "applicationSecurityFailed": "Application failed security checking"
+    "applicationSecurityFailed": "Application failed security checking",
+    "messageDeleteHint": "Are you sure? You will not be able to restore this message"
 }
