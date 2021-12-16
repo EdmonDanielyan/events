@@ -12,12 +12,12 @@ class WriteBtn extends StatelessWidget {
   final UserTable user;
   const WriteBtn({Key? key, required this.user}) : super(key: key);
   static late ChatDatabaseCubit _chatDatabaseCubit;
-  static final Messenger messenger = sl<Messenger>();
+  static final Messenger _messenger = sl<Messenger>();
 
   Future<void> _write(BuildContext context) async {
-    if (messenger.isConnected) {
+    if (_messenger.isConnected) {
       ChatTable newChat =
-          await messenger.chatCreation.createChatThroughNats(user);
+          await _messenger.chatCreation.createChatThroughNats(user);
       OpenChat(_chatDatabaseCubit, newChat).call(context);
     }
   }

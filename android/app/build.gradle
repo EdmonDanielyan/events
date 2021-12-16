@@ -51,7 +51,8 @@ android {
         release {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
+            //TODO REMOVE COMMENT FROM THE LINE BENEATH FOR PRODUCTION
+            //storeFile file(keystoreProperties['storeFile']) 
             storePassword keystoreProperties['storePassword']
         }
     }
