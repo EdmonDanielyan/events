@@ -28,11 +28,12 @@ class FakeDatabaseData {
   @override
   String toString() {
     return '''
-    Users: $users
-    Participates: $participates
-    Chats: $chats
-    Channels: $channels
-    Messages: $messages
+    Summary records count: 
+    Users(${users.length}) 
+    Participates(${participates.length})
+    Chats(${chats.length})
+    Channels(${channels.length})
+    Messages(${messages.length})
     ''';
   }
 }

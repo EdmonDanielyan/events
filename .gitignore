@@ -1,6 +1,6 @@
 # Project related
-test/docker-services/nats/data
-test/docker-services/nats/logs
+test/docker-services/nats/data/
+test/docker-services/nats/logs/
 
 # Miscellaneous
 *.class
