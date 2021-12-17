@@ -1,33 +1,40 @@
+// ignore_for_file: annotate_overrides
+
 import 'package:fixnum/fixnum.dart' as fixnum;
 import 'package:protobuf/protobuf.dart' as protobuf;
 
 // File heavily copied from repository https://bitbucket.org/cstep/stan.dart
 
 class ConnectRequest extends protobuf.GeneratedMessage {
-  static final protobuf.BuilderInfo _i =
-      protobuf.BuilderInfo('ConnectRequest', package: const protobuf.PackageName('pb'), createEmptyInstance: create)
-        ..aOS(1, 'clientID', protoName: 'clientID')
-        ..aOS(2, 'heartbeatInbox', protoName: 'heartbeatInbox')
-        ..a<int>(3, 'protocol', protobuf.PbFieldType.O3)
-        ..a<List<int>>(4, 'connID', protobuf.PbFieldType.OY, protoName: 'connID')
-        ..a<int>(5, 'pingInterval', protobuf.PbFieldType.O3, protoName: 'pingInterval')
-        ..a<int>(6, 'pingMaxOut', protobuf.PbFieldType.O3, protoName: 'pingMaxOut')
-        ..hasRequiredFields = false;
+  static final protobuf.BuilderInfo _i = protobuf.BuilderInfo('ConnectRequest',
+      package: const protobuf.PackageName('pb'), createEmptyInstance: create)
+    ..aOS(1, 'clientID', protoName: 'clientID')
+    ..aOS(2, 'heartbeatInbox', protoName: 'heartbeatInbox')
+    ..a<int>(3, 'protocol', protobuf.PbFieldType.O3)
+    ..a<List<int>>(4, 'connID', protobuf.PbFieldType.OY, protoName: 'connID')
+    ..a<int>(5, 'pingInterval', protobuf.PbFieldType.O3,
+        protoName: 'pingInterval')
+    ..a<int>(6, 'pingMaxOut', protobuf.PbFieldType.O3, protoName: 'pingMaxOut')
+    ..hasRequiredFields = false;
 
   ConnectRequest._() : super();
   factory ConnectRequest() => create();
-  factory ConnectRequest.fromBuffer(List<int> i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory ConnectRequest.fromBuffer(List<int> i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory ConnectRequest.fromJson(String i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory ConnectRequest.fromJson(String i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   ConnectRequest clone() => ConnectRequest()..mergeFromMessage(this);
   protobuf.BuilderInfo get info_ => _i;
   @pragma('dart2js:noInline')
   static ConnectRequest create() => ConnectRequest._();
   ConnectRequest createEmptyInstance() => create();
-  static protobuf.PbList<ConnectRequest> createRepeated() => protobuf.PbList<ConnectRequest>();
+  static protobuf.PbList<ConnectRequest> createRepeated() =>
+      protobuf.PbList<ConnectRequest>();
   @pragma('dart2js:noInline')
-  static ConnectRequest getDefault() => _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<ConnectRequest>(create);
+  static ConnectRequest getDefault() => _defaultInstance ??=
+      protobuf.GeneratedMessage.$_defaultFor<ConnectRequest>(create);
   static ConnectRequest? _defaultInstance;
 
   @protobuf.TagNumber(1)
@@ -104,16 +111,19 @@ class ConnectRequest extends protobuf.GeneratedMessage {
 }
 
 class Ping extends protobuf.GeneratedMessage {
-  static final protobuf.BuilderInfo _i =
-      protobuf.BuilderInfo('Ping', package: const protobuf.PackageName('pb'), createEmptyInstance: create)
-        ..a<List<int>>(1, 'connID', protobuf.PbFieldType.OY, protoName: 'connID')
-        ..hasRequiredFields = false;
+  static final protobuf.BuilderInfo _i = protobuf.BuilderInfo('Ping',
+      package: const protobuf.PackageName('pb'), createEmptyInstance: create)
+    ..a<List<int>>(1, 'connID', protobuf.PbFieldType.OY, protoName: 'connID')
+    ..hasRequiredFields = false;
 
   Ping._() : super();
   factory Ping() => create();
-  factory Ping.fromBuffer(List<int> i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory Ping.fromBuffer(List<int> i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory Ping.fromJson(String i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory Ping.fromJson(String i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
   Ping clone() => Ping()..mergeFromMessage(this);
   protobuf.BuilderInfo get info_ => _i;
   @pragma('dart2js:noInline')
@@ -121,7 +131,8 @@ class Ping extends protobuf.GeneratedMessage {
   Ping createEmptyInstance() => create();
   static protobuf.PbList<Ping> createRepeated() => protobuf.PbList<Ping>();
   @pragma('dart2js:noInline')
-  static Ping getDefault() => _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<Ping>(create);
+  static Ping getDefault() =>
+      _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<Ping>(create);
   static Ping? _defaultInstance;
 
   @protobuf.TagNumber(1)
@@ -138,25 +149,29 @@ class Ping extends protobuf.GeneratedMessage {
 }
 
 class PingResponse extends protobuf.GeneratedMessage {
-  static final protobuf.BuilderInfo _i =
-      protobuf.BuilderInfo('PingResponse', package: const protobuf.PackageName('pb'), createEmptyInstance: create)
-        ..aOS(1, 'error')
-        ..hasRequiredFields = false;
+  static final protobuf.BuilderInfo _i = protobuf.BuilderInfo('PingResponse',
+      package: const protobuf.PackageName('pb'), createEmptyInstance: create)
+    ..aOS(1, 'error')
+    ..hasRequiredFields = false;
 
   PingResponse._() : super();
   factory PingResponse() => create();
-  factory PingResponse.fromBuffer(List<int> i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory PingResponse.fromBuffer(List<int> i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory PingResponse.fromJson(String i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory PingResponse.fromJson(String i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   PingResponse clone() => PingResponse()..mergeFromMessage(this);
   protobuf.BuilderInfo get info_ => _i;
   @pragma('dart2js:noInline')
   static PingResponse create() => PingResponse._();
   PingResponse createEmptyInstance() => create();
-  static protobuf.PbList<PingResponse> createRepeated() => protobuf.PbList<PingResponse>();
+  static protobuf.PbList<PingResponse> createRepeated() =>
+      protobuf.PbList<PingResponse>();
   @pragma('dart2js:noInline')
-  static PingResponse getDefault() => _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<PingResponse>(create);
+  static PingResponse getDefault() => _defaultInstance ??=
+      protobuf.GeneratedMessage.$_defaultFor<PingResponse>(create);
   static PingResponse? _defaultInstance;
 
   @protobuf.TagNumber(1)
@@ -173,35 +188,40 @@ class PingResponse extends protobuf.GeneratedMessage {
 }
 
 class ConnectResponse extends protobuf.GeneratedMessage {
-  static final protobuf.BuilderInfo _i =
-      protobuf.BuilderInfo('ConnectResponse', package: const protobuf.PackageName('pb'), createEmptyInstance: create)
-        ..aOS(1, 'pubPrefix', protoName: 'pubPrefix')
-        ..aOS(2, 'subRequests', protoName: 'subRequests')
-        ..aOS(3, 'unsubRequests', protoName: 'unsubRequests')
-        ..aOS(4, 'closeRequests', protoName: 'closeRequests')
-        ..aOS(5, 'error')
-        ..aOS(6, 'subCloseRequests', protoName: 'subCloseRequests')
-        ..aOS(7, 'pingRequests', protoName: 'pingRequests')
-        ..a<int>(8, 'pingInterval', protobuf.PbFieldType.O3, protoName: 'pingInterval')
-        ..a<int>(9, 'pingMaxOut', protobuf.PbFieldType.O3, protoName: 'pingMaxOut')
-        ..a<int>(10, 'protocol', protobuf.PbFieldType.O3)
-        ..aOS(100, 'publicKey', protoName: 'publicKey')
-        ..hasRequiredFields = false;
+  static final protobuf.BuilderInfo _i = protobuf.BuilderInfo('ConnectResponse',
+      package: const protobuf.PackageName('pb'), createEmptyInstance: create)
+    ..aOS(1, 'pubPrefix', protoName: 'pubPrefix')
+    ..aOS(2, 'subRequests', protoName: 'subRequests')
+    ..aOS(3, 'unsubRequests', protoName: 'unsubRequests')
+    ..aOS(4, 'closeRequests', protoName: 'closeRequests')
+    ..aOS(5, 'error')
+    ..aOS(6, 'subCloseRequests', protoName: 'subCloseRequests')
+    ..aOS(7, 'pingRequests', protoName: 'pingRequests')
+    ..a<int>(8, 'pingInterval', protobuf.PbFieldType.O3,
+        protoName: 'pingInterval')
+    ..a<int>(9, 'pingMaxOut', protobuf.PbFieldType.O3, protoName: 'pingMaxOut')
+    ..a<int>(10, 'protocol', protobuf.PbFieldType.O3)
+    ..aOS(100, 'publicKey', protoName: 'publicKey')
+    ..hasRequiredFields = false;
 
   ConnectResponse._() : super();
   factory ConnectResponse() => create();
-  factory ConnectResponse.fromBuffer(List<int> i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory ConnectResponse.fromBuffer(List<int> i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory ConnectResponse.fromJson(String i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory ConnectResponse.fromJson(String i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   ConnectResponse clone() => ConnectResponse()..mergeFromMessage(this);
   protobuf.BuilderInfo get info_ => _i;
   @pragma('dart2js:noInline')
   static ConnectResponse create() => ConnectResponse._();
   ConnectResponse createEmptyInstance() => create();
-  static protobuf.PbList<ConnectResponse> createRepeated() => protobuf.PbList<ConnectResponse>();
+  static protobuf.PbList<ConnectResponse> createRepeated() =>
+      protobuf.PbList<ConnectResponse>();
   @pragma('dart2js:noInline')
-  static ConnectResponse getDefault() => _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<ConnectResponse>(create);
+  static ConnectResponse getDefault() => _defaultInstance ??=
+      protobuf.GeneratedMessage.$_defaultFor<ConnectResponse>(create);
   static ConnectResponse? _defaultInstance;
 
   @protobuf.TagNumber(1)
@@ -338,22 +358,25 @@ class ConnectResponse extends protobuf.GeneratedMessage {
 }
 
 class PubMsg extends protobuf.GeneratedMessage {
-  static final protobuf.BuilderInfo _i =
-      protobuf.BuilderInfo('PubMsg', package: const protobuf.PackageName('pb'), createEmptyInstance: create)
-        ..aOS(1, 'clientID', protoName: 'clientID')
-        ..aOS(2, 'guid')
-        ..aOS(3, 'subject')
-        ..aOS(4, 'reply')
-        ..a<List<int>>(5, 'data', protobuf.PbFieldType.OY)
-        ..a<List<int>>(6, 'connID', protobuf.PbFieldType.OY, protoName: 'connID')
-        ..a<List<int>>(10, 'sha256', protobuf.PbFieldType.OY)
-        ..hasRequiredFields = false;
+  static final protobuf.BuilderInfo _i = protobuf.BuilderInfo('PubMsg',
+      package: const protobuf.PackageName('pb'), createEmptyInstance: create)
+    ..aOS(1, 'clientID', protoName: 'clientID')
+    ..aOS(2, 'guid')
+    ..aOS(3, 'subject')
+    ..aOS(4, 'reply')
+    ..a<List<int>>(5, 'data', protobuf.PbFieldType.OY)
+    ..a<List<int>>(6, 'connID', protobuf.PbFieldType.OY, protoName: 'connID')
+    ..a<List<int>>(10, 'sha256', protobuf.PbFieldType.OY)
+    ..hasRequiredFields = false;
 
   PubMsg._() : super();
   factory PubMsg() => create();
-  factory PubMsg.fromBuffer(List<int> i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory PubMsg.fromBuffer(List<int> i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory PubMsg.fromJson(String i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory PubMsg.fromJson(String i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
   PubMsg clone() => PubMsg()..mergeFromMessage(this);
   protobuf.BuilderInfo get info_ => _i;
   @pragma('dart2js:noInline')
@@ -361,7 +384,8 @@ class PubMsg extends protobuf.GeneratedMessage {
   PubMsg createEmptyInstance() => create();
   static protobuf.PbList<PubMsg> createRepeated() => protobuf.PbList<PubMsg>();
   @pragma('dart2js:noInline')
-  static PubMsg getDefault() => _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<PubMsg>(create);
+  static PubMsg getDefault() => _defaultInstance ??=
+      protobuf.GeneratedMessage.$_defaultFor<PubMsg>(create);
   static PubMsg? _defaultInstance;
 
   @protobuf.TagNumber(1)
@@ -450,38 +474,47 @@ class PubMsg extends protobuf.GeneratedMessage {
 }
 
 class SubscriptionRequest extends protobuf.GeneratedMessage {
-  static final protobuf.BuilderInfo _i =
-      protobuf.BuilderInfo('SubscriptionRequest', package: const protobuf.PackageName('pb'), createEmptyInstance: create)
-        ..aOS(1, 'clientID', protoName: 'clientID')
-        ..aOS(2, 'subject')
-        ..aOS(3, 'qGroup', protoName: 'qGroup')
-        ..aOS(4, 'inbox')
-        ..a<int>(5, 'maxInFlight', protobuf.PbFieldType.O3, protoName: 'maxInFlight')
-        ..a<int>(6, 'ackWaitInSecs', protobuf.PbFieldType.O3, protoName: 'ackWaitInSecs')
-        ..aOS(7, 'durableName', protoName: 'durableName')
-        ..e<StartPosition>(10, 'startPosition', protobuf.PbFieldType.OE,
-            protoName: 'startPosition',
-            defaultOrMaker: StartPosition.NewOnly,
-            valueOf: StartPosition.valueOf,
-            enumValues: StartPosition.values)
-        ..a<fixnum.Int64>(11, 'startSequence', protobuf.PbFieldType.OU6, protoName: 'startSequence', defaultOrMaker: fixnum.Int64.ZERO)
-        ..aInt64(12, 'startTimeDelta', protoName: 'startTimeDelta')
-        ..hasRequiredFields = false;
+  static final protobuf.BuilderInfo _i = protobuf.BuilderInfo(
+      'SubscriptionRequest',
+      package: const protobuf.PackageName('pb'),
+      createEmptyInstance: create)
+    ..aOS(1, 'clientID', protoName: 'clientID')
+    ..aOS(2, 'subject')
+    ..aOS(3, 'qGroup', protoName: 'qGroup')
+    ..aOS(4, 'inbox')
+    ..a<int>(5, 'maxInFlight', protobuf.PbFieldType.O3,
+        protoName: 'maxInFlight')
+    ..a<int>(6, 'ackWaitInSecs', protobuf.PbFieldType.O3,
+        protoName: 'ackWaitInSecs')
+    ..aOS(7, 'durableName', protoName: 'durableName')
+    ..e<StartPosition>(10, 'startPosition', protobuf.PbFieldType.OE,
+        protoName: 'startPosition',
+        defaultOrMaker: StartPosition.NewOnly,
+        valueOf: StartPosition.valueOf,
+        enumValues: StartPosition.values)
+    ..a<fixnum.Int64>(11, 'startSequence', protobuf.PbFieldType.OU6,
+        protoName: 'startSequence', defaultOrMaker: fixnum.Int64.ZERO)
+    ..aInt64(12, 'startTimeDelta', protoName: 'startTimeDelta')
+    ..hasRequiredFields = false;
 
   SubscriptionRequest._() : super();
   factory SubscriptionRequest() => create();
-  factory SubscriptionRequest.fromBuffer(List<int> i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory SubscriptionRequest.fromBuffer(List<int> i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory SubscriptionRequest.fromJson(String i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory SubscriptionRequest.fromJson(String i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   SubscriptionRequest clone() => SubscriptionRequest()..mergeFromMessage(this);
   protobuf.BuilderInfo get info_ => _i;
   @pragma('dart2js:noInline')
   static SubscriptionRequest create() => SubscriptionRequest._();
   SubscriptionRequest createEmptyInstance() => create();
-  static protobuf.PbList<SubscriptionRequest> createRepeated() => protobuf.PbList<SubscriptionRequest>();
+  static protobuf.PbList<SubscriptionRequest> createRepeated() =>
+      protobuf.PbList<SubscriptionRequest>();
   @pragma('dart2js:noInline')
-  static SubscriptionRequest getDefault() => _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<SubscriptionRequest>(create);
+  static SubscriptionRequest getDefault() => _defaultInstance ??=
+      protobuf.GeneratedMessage.$_defaultFor<SubscriptionRequest>(create);
   static SubscriptionRequest? _defaultInstance;
 
   @protobuf.TagNumber(1)
@@ -606,26 +639,33 @@ class SubscriptionRequest extends protobuf.GeneratedMessage {
 }
 
 class SubscriptionResponse extends protobuf.GeneratedMessage {
-  static final protobuf.BuilderInfo _i =
-      protobuf.BuilderInfo('SubscriptionResponse', package: const protobuf.PackageName('pb'), createEmptyInstance: create)
-        ..aOS(2, 'ackInbox', protoName: 'ackInbox')
-        ..aOS(3, 'error')
-        ..hasRequiredFields = false;
+  static final protobuf.BuilderInfo _i = protobuf.BuilderInfo(
+      'SubscriptionResponse',
+      package: const protobuf.PackageName('pb'),
+      createEmptyInstance: create)
+    ..aOS(2, 'ackInbox', protoName: 'ackInbox')
+    ..aOS(3, 'error')
+    ..hasRequiredFields = false;
 
   SubscriptionResponse._() : super();
   factory SubscriptionResponse() => create();
-  factory SubscriptionResponse.fromBuffer(List<int> i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory SubscriptionResponse.fromBuffer(List<int> i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory SubscriptionResponse.fromJson(String i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory SubscriptionResponse.fromJson(String i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  SubscriptionResponse clone() => SubscriptionResponse()..mergeFromMessage(this);
+  SubscriptionResponse clone() =>
+      SubscriptionResponse()..mergeFromMessage(this);
   protobuf.BuilderInfo get info_ => _i;
   @pragma('dart2js:noInline')
   static SubscriptionResponse create() => SubscriptionResponse._();
   SubscriptionResponse createEmptyInstance() => create();
-  static protobuf.PbList<SubscriptionResponse> createRepeated() => protobuf.PbList<SubscriptionResponse>();
+  static protobuf.PbList<SubscriptionResponse> createRepeated() =>
+      protobuf.PbList<SubscriptionResponse>();
   @pragma('dart2js:noInline')
-  static SubscriptionResponse getDefault() => _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<SubscriptionResponse>(create);
+  static SubscriptionResponse getDefault() => _defaultInstance ??=
+      protobuf.GeneratedMessage.$_defaultFor<SubscriptionResponse>(create);
   static SubscriptionResponse? _defaultInstance;
 
   @protobuf.TagNumber(2)
@@ -654,28 +694,34 @@ class SubscriptionResponse extends protobuf.GeneratedMessage {
 }
 
 class UnsubscribeRequest extends protobuf.GeneratedMessage {
-  static final protobuf.BuilderInfo _i =
-      protobuf.BuilderInfo('UnsubscribeRequest', package: const protobuf.PackageName('pb'), createEmptyInstance: create)
-        ..aOS(1, 'clientID', protoName: 'clientID')
-        ..aOS(2, 'subject')
-        ..aOS(3, 'inbox')
-        ..aOS(4, 'durableName', protoName: 'durableName')
-        ..hasRequiredFields = false;
+  static final protobuf.BuilderInfo _i = protobuf.BuilderInfo(
+      'UnsubscribeRequest',
+      package: const protobuf.PackageName('pb'),
+      createEmptyInstance: create)
+    ..aOS(1, 'clientID', protoName: 'clientID')
+    ..aOS(2, 'subject')
+    ..aOS(3, 'inbox')
+    ..aOS(4, 'durableName', protoName: 'durableName')
+    ..hasRequiredFields = false;
 
   UnsubscribeRequest._() : super();
   factory UnsubscribeRequest() => create();
-  factory UnsubscribeRequest.fromBuffer(List<int> i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory UnsubscribeRequest.fromBuffer(List<int> i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory UnsubscribeRequest.fromJson(String i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory UnsubscribeRequest.fromJson(String i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   UnsubscribeRequest clone() => UnsubscribeRequest()..mergeFromMessage(this);
   protobuf.BuilderInfo get info_ => _i;
   @pragma('dart2js:noInline')
   static UnsubscribeRequest create() => UnsubscribeRequest._();
   UnsubscribeRequest createEmptyInstance() => create();
-  static protobuf.PbList<UnsubscribeRequest> createRepeated() => protobuf.PbList<UnsubscribeRequest>();
+  static protobuf.PbList<UnsubscribeRequest> createRepeated() =>
+      protobuf.PbList<UnsubscribeRequest>();
   @pragma('dart2js:noInline')
-  static UnsubscribeRequest getDefault() => _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<UnsubscribeRequest>(create);
+  static UnsubscribeRequest getDefault() => _defaultInstance ??=
+      protobuf.GeneratedMessage.$_defaultFor<UnsubscribeRequest>(create);
   static UnsubscribeRequest? _defaultInstance;
 
   @protobuf.TagNumber(1)
@@ -728,25 +774,29 @@ class UnsubscribeRequest extends protobuf.GeneratedMessage {
 }
 
 class CloseRequest extends protobuf.GeneratedMessage {
-  static final protobuf.BuilderInfo _i =
-      protobuf.BuilderInfo('CloseRequest', package: const protobuf.PackageName('pb'), createEmptyInstance: create)
-        ..aOS(1, 'clientID', protoName: 'clientID')
-        ..hasRequiredFields = false;
+  static final protobuf.BuilderInfo _i = protobuf.BuilderInfo('CloseRequest',
+      package: const protobuf.PackageName('pb'), createEmptyInstance: create)
+    ..aOS(1, 'clientID', protoName: 'clientID')
+    ..hasRequiredFields = false;
 
   CloseRequest._() : super();
   factory CloseRequest() => create();
-  factory CloseRequest.fromBuffer(List<int> i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory CloseRequest.fromBuffer(List<int> i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory CloseRequest.fromJson(String i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory CloseRequest.fromJson(String i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   CloseRequest clone() => CloseRequest()..mergeFromMessage(this);
   protobuf.BuilderInfo get info_ => _i;
   @pragma('dart2js:noInline')
   static CloseRequest create() => CloseRequest._();
   CloseRequest createEmptyInstance() => create();
-  static protobuf.PbList<CloseRequest> createRepeated() => protobuf.PbList<CloseRequest>();
+  static protobuf.PbList<CloseRequest> createRepeated() =>
+      protobuf.PbList<CloseRequest>();
   @pragma('dart2js:noInline')
-  static CloseRequest getDefault() => _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<CloseRequest>(create);
+  static CloseRequest getDefault() => _defaultInstance ??=
+      protobuf.GeneratedMessage.$_defaultFor<CloseRequest>(create);
   static CloseRequest? _defaultInstance;
 
   @protobuf.TagNumber(1)
@@ -763,25 +813,29 @@ class CloseRequest extends protobuf.GeneratedMessage {
 }
 
 class CloseResponse extends protobuf.GeneratedMessage {
-  static final protobuf.BuilderInfo _i =
-      protobuf.BuilderInfo('CloseResponse', package: const protobuf.PackageName('pb'), createEmptyInstance: create)
-        ..aOS(1, 'error')
-        ..hasRequiredFields = false;
+  static final protobuf.BuilderInfo _i = protobuf.BuilderInfo('CloseResponse',
+      package: const protobuf.PackageName('pb'), createEmptyInstance: create)
+    ..aOS(1, 'error')
+    ..hasRequiredFields = false;
 
   CloseResponse._() : super();
   factory CloseResponse() => create();
-  factory CloseResponse.fromBuffer(List<int> i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory CloseResponse.fromBuffer(List<int> i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory CloseResponse.fromJson(String i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory CloseResponse.fromJson(String i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   CloseResponse clone() => CloseResponse()..mergeFromMessage(this);
   protobuf.BuilderInfo get info_ => _i;
   @pragma('dart2js:noInline')
   static CloseResponse create() => CloseResponse._();
   CloseResponse createEmptyInstance() => create();
-  static protobuf.PbList<CloseResponse> createRepeated() => protobuf.PbList<CloseResponse>();
+  static protobuf.PbList<CloseResponse> createRepeated() =>
+      protobuf.PbList<CloseResponse>();
   @pragma('dart2js:noInline')
-  static CloseResponse getDefault() => _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<CloseResponse>(create);
+  static CloseResponse getDefault() => _defaultInstance ??=
+      protobuf.GeneratedMessage.$_defaultFor<CloseResponse>(create);
   static CloseResponse? _defaultInstance;
 
   @protobuf.TagNumber(1)
@@ -800,8 +854,10 @@ class CloseResponse extends protobuf.GeneratedMessage {
 class StartPosition extends protobuf.ProtobufEnum {
   static const StartPosition NewOnly = StartPosition._(0, 'NewOnly');
   static const StartPosition LastReceived = StartPosition._(1, 'LastReceived');
-  static const StartPosition TimeDeltaStart = StartPosition._(2, 'TimeDeltaStart');
-  static const StartPosition SequenceStart = StartPosition._(3, 'SequenceStart');
+  static const StartPosition TimeDeltaStart =
+      StartPosition._(2, 'TimeDeltaStart');
+  static const StartPosition SequenceStart =
+      StartPosition._(3, 'SequenceStart');
   static const StartPosition First = StartPosition._(4, 'First');
 
   static const List<StartPosition> values = <StartPosition>[
@@ -812,38 +868,46 @@ class StartPosition extends protobuf.ProtobufEnum {
     First,
   ];
 
-  static final Map<int, StartPosition> _byValue = protobuf.ProtobufEnum.initByValue(values);
+  static final Map<int, StartPosition> _byValue =
+      protobuf.ProtobufEnum.initByValue(values);
   static StartPosition? valueOf(int value) => _byValue[value];
 
   const StartPosition._(int v, String n) : super(v, n);
 }
 
 class MsgProto extends protobuf.GeneratedMessage {
-  static final protobuf.BuilderInfo _i =
-      protobuf.BuilderInfo('MsgProto', package: const protobuf.PackageName('pb'), createEmptyInstance: create)
-        ..a<fixnum.Int64>(1, 'sequence', protobuf.PbFieldType.OU6, defaultOrMaker: fixnum.Int64.ZERO)
-        ..aOS(2, 'subject')
-        ..aOS(3, 'reply')
-        ..a<List<int>>(4, 'data', protobuf.PbFieldType.OY)
-        ..aInt64(5, 'timestamp')
-        ..aOB(6, 'redelivered')
-        ..a<int>(7, 'redeliveryCount', protobuf.PbFieldType.OU3, protoName: 'redeliveryCount')
-        ..a<int>(10, 'CRC32', protobuf.PbFieldType.OU3, protoName: 'CRC32')
-        ..hasRequiredFields = false;
+  static final protobuf.BuilderInfo _i = protobuf.BuilderInfo('MsgProto',
+      package: const protobuf.PackageName('pb'), createEmptyInstance: create)
+    ..a<fixnum.Int64>(1, 'sequence', protobuf.PbFieldType.OU6,
+        defaultOrMaker: fixnum.Int64.ZERO)
+    ..aOS(2, 'subject')
+    ..aOS(3, 'reply')
+    ..a<List<int>>(4, 'data', protobuf.PbFieldType.OY)
+    ..aInt64(5, 'timestamp')
+    ..aOB(6, 'redelivered')
+    ..a<int>(7, 'redeliveryCount', protobuf.PbFieldType.OU3,
+        protoName: 'redeliveryCount')
+    ..a<int>(10, 'CRC32', protobuf.PbFieldType.OU3, protoName: 'CRC32')
+    ..hasRequiredFields = false;
 
   MsgProto._() : super();
   factory MsgProto() => create();
-  factory MsgProto.fromBuffer(List<int> i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+  factory MsgProto.fromBuffer(List<int> i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory MsgProto.fromJson(String i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory MsgProto.fromJson(String i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
   MsgProto clone() => MsgProto()..mergeFromMessage(this);
   protobuf.BuilderInfo get info_ => _i;
   @pragma('dart2js:noInline')
   static MsgProto create() => MsgProto._();
   MsgProto createEmptyInstance() => create();
-  static protobuf.PbList<MsgProto> createRepeated() => protobuf.PbList<MsgProto>();
+  static protobuf.PbList<MsgProto> createRepeated() =>
+      protobuf.PbList<MsgProto>();
   @pragma('dart2js:noInline')
-  static MsgProto getDefault() => _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<MsgProto>(create);
+  static MsgProto getDefault() => _defaultInstance ??=
+      protobuf.GeneratedMessage.$_defaultFor<MsgProto>(create);
   static MsgProto? _defaultInstance;
 
   @protobuf.TagNumber(1)
@@ -944,15 +1008,21 @@ class MsgProto extends protobuf.GeneratedMessage {
 }
 
 class Ack extends protobuf.GeneratedMessage {
-  static final protobuf.BuilderInfo _i = protobuf.BuilderInfo('Ack', package: const protobuf.PackageName('pb'), createEmptyInstance: create)
+  static final protobuf.BuilderInfo _i = protobuf.BuilderInfo('Ack',
+      package: const protobuf.PackageName('pb'), createEmptyInstance: create)
     ..aOS(1, 'subject')
-    ..a<fixnum.Int64>(2, 'sequence', protobuf.PbFieldType.OU6, defaultOrMaker: fixnum.Int64.ZERO)
+    ..a<fixnum.Int64>(2, 'sequence', protobuf.PbFieldType.OU6,
+        defaultOrMaker: fixnum.Int64.ZERO)
     ..hasRequiredFields = false;
 
   Ack._() : super();
   factory Ack() => create();
-  factory Ack.fromBuffer(List<int> i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Ack.fromJson(String i, [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory Ack.fromBuffer(List<int> i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory Ack.fromJson(String i,
+          [protobuf.ExtensionRegistry r = protobuf.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
   Ack clone() => Ack()..mergeFromMessage(this);
   protobuf.BuilderInfo get info_ => _i;
   @pragma('dart2js:noInline')
@@ -960,7 +1030,8 @@ class Ack extends protobuf.GeneratedMessage {
   Ack createEmptyInstance() => create();
   static protobuf.PbList<Ack> createRepeated() => protobuf.PbList<Ack>();
   @pragma('dart2js:noInline')
-  static Ack getDefault() => _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<Ack>(create);
+  static Ack getDefault() =>
+      _defaultInstance ??= protobuf.GeneratedMessage.$_defaultFor<Ack>(create);
   static Ack? _defaultInstance;
 
   @protobuf.TagNumber(1)
