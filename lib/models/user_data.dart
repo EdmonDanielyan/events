@@ -141,15 +141,17 @@ class UserContacts {
 
 class UserBasicInfo {
   String? organization;
+  String? department;
   String? address;
   String? office;
   String? birthday;
 
-  UserBasicInfo({this.organization, this.address, this.office, this.birthday});
+  UserBasicInfo({this.organization, this.department, this.address, this.office, this.birthday});
 
   static UserBasicInfo getUserBasicInfoFromMap(Map userBasicInfoMap) {
     return new UserBasicInfo(
         organization: userBasicInfoMap['organization'],
+        department: userBasicInfoMap['department'],
         address: userBasicInfoMap['address'],
         office: userBasicInfoMap['office'],
         birthday: userBasicInfoMap['birthday']);
