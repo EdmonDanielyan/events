@@ -16,12 +16,11 @@ import '../profile_screen.dart';
 import 'diagnostics.dart';
 
 class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
+  final ProfileCubit userCubit;
+  const Body({Key? key, required this.userCubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ProfileCubit userCubit = ProfileScreen.of(context).profileCubit;
-
     return RefreshIndicator(
       onRefresh: () async {
         userCubit.refresh();
@@ -91,8 +90,9 @@ class Body extends StatelessWidget {
     )));
   }
 
-  Widget getOtherUserLoadedWidget(context, state) {
-    UserProfileData user = state.natsCertificateData;
+  Widget getOtherUserLoadedWidget(context, ProfileState state) {
+    final user = state.data;
+    if (user == null) return SizedBox();
 
     return Container(
         child: Background(

@@ -32,7 +32,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Body(),
+      body: Body(userCubit: profileCubit),
       bottomNavigationBar: bottomNavBar(context),
     );
   }

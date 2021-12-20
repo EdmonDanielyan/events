@@ -7,7 +7,6 @@ import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/date_sort.dart';
 import 'package:ink_mobile/functions/message_mixins.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/screens/messages/chat/components/date_widget.dart';
@@ -32,7 +31,8 @@ class MessageList extends StatelessWidget with MessageMixins {
   static late ChatCubit _chatCubit;
 
   Stream<List<MessageWithUser>> getStream() {
-    final String chatId = _chatDatabaseCubit.selectedChat!.id;
+    final selectedChat = _chatDatabaseCubit.selectedChat;
+    final String chatId = selectedChat?.id ?? "";
     if (_chatScreenParams.showOnlyFilesAndLinks) {
       return _chatDatabaseCubit.db.watchChatFilesMessages(chatId);
     }
