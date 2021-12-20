@@ -54,8 +54,7 @@ class ChatJoinedListener extends ChannelListener {
         await userFunctions.addParticipants(
             ChatUserViewModel.toParticipants(users, chat), chat);
         setMessage(users, chat);
-        await chatSaver
-            .saveChats(newChat: null);
+        await chatSaver.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
+import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
@@ -30,15 +31,23 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
   List<UserTable> users = [];
   String chatName = "";
   final Messenger messenger = sl<Messenger>();
-
+  bool _submitLoading = false;
+  void _setSubmitLoading(bool loading) {
+    if (this.mounted) {
+      setState(() {
+        _submitLoading = loading;
+      });
+    }
+  }
 
   Future<void> _onCreate(BuildContext context) async {
+    _setSubmitLoading(true);
     if (messenger.isConnected) {
       ChatTable newChat = await messenger.chatCreation
           .createGroupThroughNats(name: chatName, users: users);
 
       Navigator.of(context).popUntil((route) => route.isFirst);
-      OpenChat(widget.chatDatabaseCubit, newChat).call(context);
+      await OpenChat(widget.chatDatabaseCubit, newChat).call(context);
     } else {
       SimpleCustomSnackbar(
         context: context,
@@ -46,6 +55,8 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
         duration: const Duration(seconds: 2),
       );
     }
+
+    _setSubmitLoading(false);
   }
 
   @override
@@ -57,10 +68,16 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
       appBar: InkAppBarWithText(
         title: _strings.newGroup,
         actions: [
-          if (chatName.trim().length > 0) ...[
+          if (chatName.trim().length > 0 && !_submitLoading) ...[
             IconButton(
               onPressed: () => _onCreate(context),
               icon: Icon(Icons.check),
+            ),
+          ],
+          if (_submitLoading) ...[
+            Transform.scale(
+              scale: 0.6,
+              child: CustomCircularProgressIndicator(color: Colors.white),
             ),
           ],
         ],

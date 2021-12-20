@@ -7,12 +7,14 @@ class ChatSearchTextfield extends StatelessWidget {
   final void Function(String)? onFieldSubmitted;
   final void Function()? onUp;
   final void Function()? onDown;
+  final Color? textColor;
   const ChatSearchTextfield({
     Key? key,
     this.onChanged,
     this.onFieldSubmitted,
     this.onUp,
     this.onDown,
+    this.textColor,
   }) : super(key: key);
 
   @override
@@ -31,7 +33,7 @@ class ChatSearchTextfield extends StatelessWidget {
             border: InputBorder.none,
             contentPadding: EdgeInsets.only(right: _buttonWidth),
           ),
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: textColor ?? Colors.white),
           textInputAction: TextInputAction.search,
         ),
         Positioned(

@@ -76,14 +76,14 @@ class ChatInfoParticipants extends StatelessWidget {
         arguments: {'id': userId, HIDE_BOTTOM_NAV_BAR_CODE: true});
   }
 
-  void _onSubmit(BuildContext context) async {
+  Future<void> _onSubmit(BuildContext context) async {
     List<UserTable> selectedUsers = _selectableCubit.getItems;
     List<UserTable> userParticipants =
         ParticipantWithUserListView.getUsers(participants);
     if (messenger.isConnected) {
-      messenger.inviteSender
+      await messenger.inviteSender
           .sendInvitations(chat, userParticipants..addAll(selectedUsers));
-      messenger.chatEventsSender
+      await messenger.chatEventsSender
           .sendUserChatJoinedMessage(chat, selectedUsers);
     }
     Navigator.of(context).pop();
