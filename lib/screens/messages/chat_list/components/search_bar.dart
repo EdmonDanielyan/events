@@ -56,7 +56,9 @@ class _SearchBarState extends State<SearchBar> {
           hintText: _hintText ?? _originalHint,
           hintStyle: TextStyle(color: Colors.grey[700]),
           suffixIconConstraints: BoxConstraints(minHeight: 24, minWidth: 24),
-          suffixIcon: SvgPicture.asset(SEARCH_ICON, color: Colors.grey[700]),
+          suffixIcon: Container(
+              padding: EdgeInsets.only(right: 10.0),
+              child: SvgPicture.asset(SEARCH_ICON, color: Colors.grey[700])),
           border: InputBorder.none,
         ),
         maxLines: 1,

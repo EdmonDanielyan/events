@@ -109,6 +109,9 @@ class ChatListView {
 
       return containsChatName;
     }).toList();
+    newChats.sort((a, b) {
+      return a.description.compareTo(b.description);
+    });
 
     return newChats;
   }

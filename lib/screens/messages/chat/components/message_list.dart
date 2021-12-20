@@ -79,6 +79,7 @@ class MessageList extends StatelessWidget with MessageMixins {
                       itemCount: messagesWithUser!.length,
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
+                        print("BUILDING");
                         return eachItem(
                           messagesWithUser![index],
                           dateSort,

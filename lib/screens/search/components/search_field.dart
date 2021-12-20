@@ -15,33 +15,40 @@ class SearchField extends StatefulWidget {
 class _SearchFieldState extends State<SearchField> {
   FocusNode _textFieldFocus = FocusNode();
   String? _hintText;
+  Color? _fillColor;
 
   @override
   void initState() {
+    super.initState();
+
     _textFieldFocus.addListener(() {
       if (_textFieldFocus.hasFocus) {
         setState(() {
           _hintText = "";
+          _fillColor = Colors.white;
         });
       } else {
         setState(() {
           _hintText = widget.hint;
+          _fillColor = Colors.grey[100];
         });
       }
     });
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Material(
+      elevation: 2.0,
+      borderRadius: BorderRadius.circular(50.0),
+      shadowColor: Colors.grey,
       child: TextFormField(
         focusNode: _textFieldFocus,
         onChanged: widget.onChanged,
         decoration: InputDecoration(
           filled: true,
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey, width: 1.0),
+            borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(50.0),
           ),
           suffixIconConstraints: BoxConstraints(minHeight: 20, minWidth: 20),
@@ -54,14 +61,12 @@ class _SearchFieldState extends State<SearchField> {
               height: 20,
             ),
           ),
-          fillColor: Colors.white,
+          fillColor: _fillColor,
           hintText: _hintText ?? widget.hint,
           contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(50),
-            ),
-            borderSide: BorderSide(color: Colors.red, width: 15.0),
+            borderRadius: BorderRadius.all(Radius.circular(50)),
+            borderSide: BorderSide(color: Colors.grey, width: 15.0),
           ),
         ),
       ),

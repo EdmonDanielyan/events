@@ -34,7 +34,8 @@ class HoverMessage extends StatelessWidget {
 
   void _onDelete(BuildContext context) {
     if (sl<Messenger>().isConnected) {
-      sl<Messenger>().messageEditorSender
+      sl<Messenger>()
+          .messageEditorSender
           .sendDeleteMessages([message], context);
     }
   }
@@ -82,6 +83,7 @@ class HoverMessage extends StatelessWidget {
               context,
               title: _strings.delete,
               body: _strings.messageDeleteHint,
+              submitTxt: _strings.delete,
               onSubmit: () {
                 _onDelete(context);
                 Navigator.of(context).pop();

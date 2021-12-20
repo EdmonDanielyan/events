@@ -5,9 +5,11 @@ class CustomAlertCancel {
   final BuildContext context;
   final String? title;
   final String? body;
+  final String? submitTxt;
   final void Function()? onSubmit;
 
-  const CustomAlertCancel(this.context, {this.title, this.body, this.onSubmit});
+  const CustomAlertCancel(this.context,
+      {this.title, this.body, this.onSubmit, this.submitTxt});
 
   void call() {
     showDialog(
@@ -24,7 +26,7 @@ class CustomAlertCancel {
             ),
           ),
           TextButton(
-            child: Text(localizationInstance.yes),
+            child: Text(submitTxt ?? localizationInstance.yes),
             onPressed: onSubmit,
             style: TextButton.styleFrom(
               primary: Colors.blue,

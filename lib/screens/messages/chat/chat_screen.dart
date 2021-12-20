@@ -17,7 +17,6 @@ import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/app_bar_title.dart';
 import 'package:ink_mobile/screens/messages/chat/components/scroll_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_btn.dart';
-import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/components/selective_app_bar.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';

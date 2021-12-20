@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/components/alert/loading.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
@@ -26,6 +25,7 @@ class ChatListTile extends StatefulWidget {
   final List<MessageWithUser> messagesWithUser;
   final ChatDatabaseCubit chatDatabaseCubit;
   final void Function()? onTap;
+  final void Function(DismissDirection)? onDismissed;
   const ChatListTile({
     Key? key,
     this.highlightValue = "",
@@ -36,6 +36,7 @@ class ChatListTile extends StatefulWidget {
     this.contentPadding,
     this.leadingGap = 15.0,
     this.onTap,
+    this.onDismissed,
   }) : super(key: key);
 
   @override
@@ -50,7 +51,6 @@ class _ChatListTileState extends State<ChatListTile> {
   UserTable? get lastUser => widget.messagesWithUser.last.user;
 
   final Messenger messenger = sl<Messenger>();
-
 
   int? get oppositeUserId =>
       ChatUserViewModel.getOppositeUserIdFromChat(widget.chat);
@@ -75,19 +75,6 @@ class _ChatListTileState extends State<ChatListTile> {
     }
   }
 
-  Future<void> _deleteChat(BuildContext context) async {
-    CustomAlertLoading(context).call();
-    if (messenger.isConnected) {
-      final chat = widget.chat;
-      messenger.chatFunctions.deleteChat(chat.id);
-      await messenger.chatEventsSender
-          .sendLeftMessage(chat);
-    }
-    if (Navigator.of(context).canPop()) {
-      Navigator.of(context).pop();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -95,7 +82,8 @@ class _ChatListTileState extends State<ChatListTile> {
         background: SizedBox(),
         direction: DismissDirection.endToStart,
         secondaryBackground: Icon(Icons.delete, color: Colors.red),
-        onDismissed: (dir) => _deleteChat(context),
+        resizeDuration: null,
+        onDismissed: widget.onDismissed,
         key: UniqueKey(),
         child: InkWell(
           onTap: widget.onTap,
