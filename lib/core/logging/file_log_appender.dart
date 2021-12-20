@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:injectable/injectable.dart';
-import 'package:path_provider/path_provider.dart';
 
 @singleton
 class FileLogAppender {
@@ -56,8 +55,7 @@ class FileLogAppender {
   Future<bool> _ensureLogFile() async {
     try {
       if (_file == null) {
-        var directory = await getApplicationDocumentsDirectory();
-        _file = File("${directory.path}/$logFile");
+        _file = File("$logFile");
       }
       bool exists = _file!.existsSync();
       if (!exists) {

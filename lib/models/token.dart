@@ -219,15 +219,12 @@ class JwtPayload {
 @module
 abstract class TokenDataInjectorModule {
   @Named("userId")
-  @injectable
   String get userId => GetIt.I.get<TokenDataHolder>().userId;
 
   @Named("natsToken")
-  @injectable
   String get natsToken => GetIt.I.get<TokenDataHolder>().natsToken;
 
   @Named("deviceVirtualId")
-  @injectable
   String get deviceVirtualId => GetIt.I.get<TokenDataHolder>().deviceVirtualId;
 }
 

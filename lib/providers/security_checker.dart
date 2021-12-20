@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:safe_device/safe_device.dart';
 
@@ -6,8 +7,10 @@ class SecurityChecker {
   const SecurityChecker();
 
   Future<bool> checkApplication() async {
-    //TODO DELETE THIS
-    return !await SafeDevice.isJailBroken;
-    //return !await SafeDevice.isSafeDevice && !await SafeDevice.isJailBroken;
+    if (kDebugMode) {
+      return true;
+    } else {
+      return !await SafeDevice.isSafeDevice;
+    }
   }
 }

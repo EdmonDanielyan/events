@@ -32,6 +32,10 @@ void main() async {
     late FakeDatabaseData databaseData;
     late Credentials credentials;
 
+    tearDown((){
+      sl.reset();
+    });
+
     setUp(() async {
       $initGetIt(sl, environment: "test");
 
@@ -41,7 +45,7 @@ void main() async {
       await mockLocalization(sl);
       mockSecureStorage(sl);
       mockLockApp(sl);
-      var credentialsProvider = CredentialsProvider()..load("./test/messenger/test_data/users.yaml");
+      var credentialsProvider = CredentialsProvider()..load("./test/messenger/test_data/all_users.yaml");
       credentials = RandomCredentials(credentialsProvider.users);
 
       setupLogging(sl<FileLogAppender>());
@@ -121,8 +125,8 @@ void main() async {
       print("user: $credentials");
       var authCubit = sl<AuthCubit>();
       authCubit
-        ..login = credentials.login
-        ..password = credentials.password;
+        ..login = "morozov.m"
+        ..password = "123456";
 
       print("authenticating...");
       await expectLater(authCubit.auth(), completes);
@@ -132,40 +136,16 @@ void main() async {
       await expectLater(initMessageProviderFuture!, completes);
       print("Messenger initializing is finished");
 
-      print("Loading users...");
-      var chatPersonListCubit = sl<ChatPersonListCubit>();
-      await expectLater(chatPersonListCubit.loadUsers(), completes);
-      print("Loading users is finished");
+      print("waiting 10 sec to load data from NATS ...");
+      await Future.delayed(Duration(seconds: 10));
 
-      print("Choosing chat participates...");
-      var messageProvider = sl<Messenger>();
-      var myName = messageProvider.userFunctions.me.name;
-      var length = chatPersonListCubit.items.length;
-      var start = Random().nextInt(length);
-      var end = start + maxParticipatesCount;
-      if (end > length) {
-        end = length - 1;
-        start = end - maxParticipatesCount;
-      }
-      if (start < 0) start = 0;
-      if (end > length) end = length - 1;
-      List<UserTable> participates =
-          chatPersonListCubit.items.getRange(start, end).toList();
-      print("Chat participates: $participates");
-
-      print("Creating chat...");
-      DateTime dateTime = DateTime.now();
-      var createChatFuture = messageProvider.chatCreation.createGroupThroughNats(
-          name:
-              "SVT: ${dateTime.millisecondsSinceEpoch} тестовый чат создал $myName",
-          users: participates);
-      await expectLater(createChatFuture, completes);
-      print("Chat is created");
       print("Test database:\n $databaseData");
       expect(databaseData.channels, isNotEmpty);
       expect(databaseData.chats, isNotEmpty);
       expect(databaseData.users, isNotEmpty);
       expect(databaseData.participates, isNotEmpty);
     });
+
+
   });
 }

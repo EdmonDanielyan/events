@@ -40,6 +40,10 @@ class LockApp {
     return false;
   }
 
+  Future<bool> stopAuthentification() async {
+    return await _localAuth.stopAuthentication();
+  }
+
   IOSAuthMessages _iosStrings() {
     return IOSAuthMessages(
       cancelButton: localizationInstance.cancel,
