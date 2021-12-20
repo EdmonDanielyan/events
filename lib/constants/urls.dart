@@ -19,11 +19,11 @@ abstract class UrlsConfigDev {
 
   @dev
   @Named("apiUrl")
-  String get apiUrl => "https://mobile.ink.vpool.qsoft.ru/api/v1";
+  String get apiUrl => "https://test.ink.vpool.qsoft.ru/api/v1";
 
   @dev
   @Named("apiCertificatePath")
-  String get apiCertificatePath => "assets/certs/mobile.ink.vpool.qsoft.ru.pem";
+  String get apiCertificatePath => "assets/certs/test.ink.vpool.qsoft.ru.pem";
 }
 
 @module
