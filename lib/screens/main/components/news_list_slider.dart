@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/components/static_slider/static_slider_effect.dart';
+import 'package:ink_mobile/components/page_indicator/custom_page_indicator.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/main/components/news_list_slider_element.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class NewsListSlider extends StatelessWidget {
-  final PageController _controllerOne = PageController();
+  final _controllerOne = PageController(viewportFraction: 0.8, keepPage: true);
   final List<NewsItemData> newsList;
 
   static const double elementWidth = 276.0;
@@ -18,22 +16,29 @@ class NewsListSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-        height: 390,
-        child: Column(children: [
+      height: 390,
+      child: Column(
+        children: [
           Container(
-              width: size.width,
-              height: 334,
-              alignment: AlignmentDirectional.topStart,
-              margin: EdgeInsets.only(top: 20.0),
+            width: size.width,
+            height: 334,
+            alignment: AlignmentDirectional.topStart,
+            margin: EdgeInsets.only(top: 20.0),
+            clipBehavior: Clip.none,
+            child: SingleChildScrollView(
+              controller: _controllerOne,
               clipBehavior: Clip.none,
-              child: SingleChildScrollView(
-                  controller: _controllerOne,
-                  clipBehavior: Clip.none,
-                  scrollDirection: Axis.horizontal,
-                  physics: AlwaysScrollableScrollPhysics(),
-                  child: Row(children: getNewsList()))),
+              scrollDirection: Axis.horizontal,
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Row(
+                children: getNewsList(),
+              ),
+            ),
+          ),
           Expanded(child: getSlider(size))
-        ]));
+        ],
+      ),
+    );
   }
 
   Widget getSlider(Size size) {
@@ -42,21 +47,12 @@ class NewsListSlider extends StatelessWidget {
     }
 
     return Container(
-        margin: EdgeInsets.only(top: 30),
-        child: SmoothPageIndicator(
-          controller: _controllerOne,
-          count: newsList.length,
-          axisDirection: Axis.horizontal,
-          effect: StaticSliderEffect(
-              activeDotColor: Color(0xff2c4155),
-              rowWidth: getRowWidth(),
-              dotWidth: size.width * 0.6),
-        ));
-  }
-
-  double getRowWidth() {
-    return ((elementWidth + marginBetweenElements) * newsList.length) -
-        marginBetweenElements;
+      margin: EdgeInsets.only(top: 30),
+      child: CustomPageIndicator(
+        controller: _controllerOne,
+        count: newsList.length,
+      ),
+    );
   }
 
   List<Widget> getNewsList() {

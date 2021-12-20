@@ -52,12 +52,12 @@ class NewChatBtn extends StatelessWidget {
     );
   }
 
-  void _onCreate(BuildContext context) {
+  Future<void> _onCreate(BuildContext context) async {
     List<UserTable> items = _selectableCubit.getItems;
     if (items.length == 1) {
-      _createChat(items.first, context);
+      await _createChat(items.first, context);
     } else if (items.length > 1) {
-      Navigator.of(context).pushNamed(
+      await Navigator.of(context).pushNamed(
         "/new_group",
         arguments: _selectableCubit,
       );
@@ -66,8 +66,8 @@ class NewChatBtn extends StatelessWidget {
 
   Future<void> _createChat(UserTable user, BuildContext context) async {
     if (messenger.isConnected) {
-      ChatTable newChat = await messenger.chatCreation
-          .createChatThroughNats(user);
+      ChatTable newChat =
+          await messenger.chatCreation.createChatThroughNats(user);
       Navigator.of(context).pop();
       OpenChat(_chatDatabaseCubit, newChat).call(context);
     }
@@ -75,8 +75,7 @@ class NewChatBtn extends StatelessWidget {
 
   Future<void> _onUserTap(BuildContext context, UserTable user) async {
     if (messenger.isConnected) {
-      ChatTable? chat = await messenger.chatCreation
-          .isSingleChatExists(user);
+      ChatTable? chat = await messenger.chatCreation.isSingleChatExists(user);
 
       if (chat != null) {
         OpenChat(_chatDatabaseCubit, chat).call(context);

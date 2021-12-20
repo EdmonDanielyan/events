@@ -1,5 +1,6 @@
-import 'package:awesome_loader/awesome_loader.dart';
 import 'package:flutter/material.dart';
+
+import 'loader/awesome_loader.dart';
 
 class InkPageLoader extends StatelessWidget {
   const InkPageLoader({Key? key}) : super(key: key);
@@ -7,9 +8,13 @@ class InkPageLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
+      child: Container(
+        width: 50.0,
+        height: 50.0,
         child: AwesomeLoader(
-      loaderType: AwesomeLoader.AwesomeLoader2,
-      color: Theme.of(context).primaryColor,
-    ));
+          color: Theme.of(context).primaryColor,
+        ),
+      ),
+    );
   }
 }

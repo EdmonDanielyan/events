@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -61,8 +63,7 @@ class NumberSelectFormField extends FormField<String> {
     TextSelectionControls? selectionControls,
     InputCounterWidgetBuilder? buildCounter,
     AutovalidateMode? autovalidateMode,
-  })  :
-        assert(
+  })  : assert(
           autovalidate == false ||
               autovalidate == true && autovalidateMode == null,
           'autovalidate and autovalidateMode should not be used together.',

@@ -50,9 +50,7 @@ class _ParticipantCardState extends State<ParticipantCard> {
   }
 
   Future<void> _subscribeToOnline() async {
-    if (widget.indicatorIsOn &&
-        widget.user != null &&
-        messenger.isConnected) {
+    if (widget.indicatorIsOn && widget.user != null && messenger.isConnected) {
       await messenger.subscribeToUserOnline(widget.user!);
     }
   }
@@ -124,11 +122,9 @@ class _ParticipantCardState extends State<ParticipantCard> {
   }
 
   Widget _onlineStatusWidget() {
-    if (widget.indicatorIsOn) {
+    if (widget.indicatorIsOn || widget.indicatorReadOnly) {
       return Text(
-        widget.user != null && widget.user!.online
-            ? _strings.online
-            : _strings.offline,
+        getIndicator() ? _strings.online : _strings.offline,
         style: TextStyle(
           color: Colors.grey,
           fontSize: 12.0,

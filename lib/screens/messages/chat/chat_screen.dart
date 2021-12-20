@@ -20,6 +20,7 @@ import 'package:ink_mobile/screens/messages/chat/components/search_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/components/selective_app_bar.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 import 'components/body.dart';
 import 'entities/chat_screen_params.dart';
@@ -64,31 +65,33 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ChatDatabaseCubit, ChatDatabaseCubitState>(
-      listenWhen: (previous, current) => current.selectedChat == null,
-      listener: (context, state) {
-        Navigator.of(context).popUntil((route) => route.isFirst);
-      },
-      child: Scaffold(
-        appBar: _GetAppBar(
-          chatDatabaseCubit: chatDatabaseCubit,
-          chatCubit: chatCubit,
-          selectableCubit: selectableCubit,
-          chatScreenParams: chatScreenParams,
-        ),
-        body: ChatBody(
-          controller: controller,
-        ),
-        floatingActionButton: BlocBuilder<ChatCubit, ChatCubitState>(
-          bloc: chatCubit,
-          buildWhen: (previous, current) {
-            return previous.scrollBtn != current.scrollBtn;
-          },
-          builder: (context, state) {
-            return state.scrollBtn
-                ? ChatScrollBtn(onPressed: _onScrollBtnClick)
-                : SizedBox();
-          },
+    return KeyboardDismisser(
+      child: BlocListener<ChatDatabaseCubit, ChatDatabaseCubitState>(
+        listenWhen: (previous, current) => current.selectedChat == null,
+        listener: (context, state) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        },
+        child: Scaffold(
+          appBar: _GetAppBar(
+            chatDatabaseCubit: chatDatabaseCubit,
+            chatCubit: chatCubit,
+            selectableCubit: selectableCubit,
+            chatScreenParams: chatScreenParams,
+          ),
+          body: ChatBody(
+            controller: controller,
+          ),
+          floatingActionButton: BlocBuilder<ChatCubit, ChatCubitState>(
+            bloc: chatCubit,
+            buildWhen: (previous, current) {
+              return previous.scrollBtn != current.scrollBtn;
+            },
+            builder: (context, state) {
+              return state.scrollBtn
+                  ? ChatScrollBtn(onPressed: _onScrollBtnClick)
+                  : SizedBox();
+            },
+          ),
         ),
       ),
     );
@@ -120,9 +123,7 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
             SelectableCubitState<MessageWithUser>>(
           bloc: selectableCubit,
           builder: (context, selectableCubitState) {
-            if (chatCubitState.appBarMode == ChatAppBarMode.SEARCH_BAR) {
-              return searchBar();
-            } else if (selectableCubit.getItems.length > 0) {
+            if (selectableCubit.getItems.length > 0) {
               return selectiveBar(context);
             } else {
               return initialBar();
@@ -130,24 +131,6 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
         );
       },
-    );
-  }
-
-  PreferredSizeWidget searchBar() {
-    return InkAppBarWithText(
-      title: "",
-      titleWidget: WillPopScope(
-        onWillPop: () async {
-          chatCubit.emptySearch();
-          chatCubit.emitAppBarEnum(ChatAppBarMode.INITIAL);
-          return Future.value(false);
-        },
-        child: ChatSearchTextfield(
-          onFieldSubmitted: (val) => chatCubit.emitSearchValue(val),
-          onUp: () => chatCubit.upSearch(),
-          onDown: () => chatCubit.downSearch(),
-        ),
-      ),
     );
   }
 
@@ -164,7 +147,8 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
             final messages = MessageWithUserListView.getMessagesFromList(
                 selectableCubit.getItems);
             if (sl<Messenger>().isConnected) {
-              sl<Messenger>().messageEditorSender
+              sl<Messenger>()
+                  .messageEditorSender
                   .sendDeleteMessages(messages, context);
             }
             selectableCubit.clearAll();

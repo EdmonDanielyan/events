@@ -61,6 +61,7 @@ class MainRoutes {
     '/auth': (BuildContext context) => AuthScreen(
           authCubit: sl<AuthCubit>(),
           newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
+          chatDatabaseCubit: sl<ChatDatabaseCubit>(),
         ),
     '/personal': (BuildContext context) => ProfileScreen(
         profileCubit: sl(),

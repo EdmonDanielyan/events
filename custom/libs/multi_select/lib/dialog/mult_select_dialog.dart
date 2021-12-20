@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import '../util/multi_select_actions.dart';
 import '../util/multi_select_item.dart';

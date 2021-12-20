@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/functions/message_mixins.dart';
@@ -12,6 +13,7 @@ import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat/components/bottom_bar.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_list.dart';
+import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dart';
 import 'package:ink_mobile/setup.dart';
 
 import '../chat_screen.dart';
@@ -26,7 +28,6 @@ class ChatBody extends StatefulWidget {
 }
 
 class ChatBodyState extends State<ChatBody> with MessageMixins {
-
   ScrollController get controller => widget.controller;
   late KeyboardVisibilityController keyboardVisibilityController;
   int loadedMessagesCount = 0;
@@ -47,8 +48,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
         MessageListView.messageWithUsersToMessage(loadedMessagesWithUser);
     final notReadMessages = MessageListView.oppositeNotReadMessage(messages);
     if (notReadMessages.length > 0 && sl<Messenger>().isConnected) {
-      sl<Messenger>().userReactionSender
-          .setMessagesToReadNats(notReadMessages);
+      sl<Messenger>().userReactionSender.setMessagesToReadNats(notReadMessages);
     }
   }
 
@@ -102,6 +102,15 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        BlocBuilder<ChatCubit, ChatCubitState>(
+          bloc: chatCubit,
+          builder: (context, state) {
+            if (state.appBarMode == ChatAppBarMode.SEARCH_BAR) {
+              return searchBar(context);
+            }
+            return SizedBox();
+          },
+        ),
         Expanded(
           child: SingleChildScrollView(
             controller: controller,
@@ -124,6 +133,27 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
           ),
         ],
       ],
+    );
+  }
+
+  Widget searchBar(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        chatCubit.emptySearch();
+        chatCubit.emitAppBarEnum(ChatAppBarMode.INITIAL);
+        return Future.value(false);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+        ),
+        child: ChatSearchTextfield(
+          onFieldSubmitted: (val) => chatCubit.emitSearchValue(val),
+          onUp: () => chatCubit.upSearch(),
+          onDown: () => chatCubit.downSearch(),
+        ),
+      ),
     );
   }
 }

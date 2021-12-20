@@ -40,6 +40,14 @@ class _NewChatScreenState extends State<NewChatScreen> {
   SelectableCubit<UserTable> get selectableCubit => widget.selectableCubit;
   NewChatScreenParams get newChatScreenParams => widget.newChatScreenParams;
 
+  bool _submitLoading = false;
+
+  void _setSubmitLoading(bool loading) {
+    setState(() {
+      _submitLoading = loading;
+    });
+  }
+
   @override
   void dispose() {
     chatPersonListCubit.hideIds = [];
@@ -72,10 +80,16 @@ class _NewChatScreenState extends State<NewChatScreen> {
               ),
               title: newChatScreenParams.title,
               cancelBtnTxt: _strings.cancel,
-              submitBtnTxt: submitBtnText(personCubitState.searchUsers),
-              onSubmit: () {
-                if (newChatScreenParams.onSubmit != null) {
-                  newChatScreenParams.onSubmit!(context);
+              submitBtnTxt: _submitLoading
+                  ? "${_strings.loading}..."
+                  : submitBtnText(personCubitState.searchUsers),
+              onSubmit: () async {
+                if (!_submitLoading && newChatScreenParams.onSubmit != null) {
+                  _setSubmitLoading(true);
+                  await newChatScreenParams.onSubmit!(context)
+                      .timeout(Duration(minutes: 1));
+
+                  _setSubmitLoading(false);
                 }
               },
               horizontalPadding: _horizontalPadding,

@@ -22,12 +22,10 @@ class PushChatNotification {
     final selectedChat = chatDatabaseCubit.selectedChat;
 
     if (myChat != null && !myChat!.notificationsOn!) {
-      print("GOT THIS");
       showNotification = false;
     }
 
     if (selectedChat != null && selectedChat.id == chatId) {
-      print("GOT THIS 2");
       showNotification = false;
     }
 
@@ -35,7 +33,6 @@ class PushChatNotification {
 
     if (checkTime &&
         newMessageDate.toUtc().isBefore(new DateTime.now().toUtc())) {
-      print("GOT THIS 3");
       showNotification = false;
     }
 

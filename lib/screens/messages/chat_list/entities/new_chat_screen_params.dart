@@ -6,7 +6,7 @@ class NewChatScreenParams {
   final String description;
   final String chosenOneText;
   final String chosenMultipleText;
-  final void Function(BuildContext)? onSubmit;
+  final Future<void> Function(BuildContext)? onSubmit;
   final void Function(BuildContext, UserTable)? onUserTap;
   final List<int> hideIds;
 

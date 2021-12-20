@@ -47,25 +47,33 @@ android {
         versionName flutterVersionName
         multiDexEnabled true
     }
-    signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            //TODO REMOVE COMMENT FROM THE LINE BENEATH FOR PRODUCTION
-            //storeFile file(keystoreProperties['storeFile']) 
-            storePassword keystoreProperties['storePassword']
-        }
-    }
+
+    //UNCOMMENT THIS FOR RELEASE
+    // signingConfigs {
+    //     release {
+    //         keyAlias keystoreProperties['keyAlias']
+    //         keyPassword keystoreProperties['keyPassword']
+    //         storeFile file(keystoreProperties['storeFile']) 
+    //         storePassword keystoreProperties['storePassword']
+    //     }
+    // }
 
     buildTypes {
+
+        //DEBUG
         release {
-            signingConfig signingConfigs.release
-
-            minifyEnabled true
-            useProguard true
-
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
+        
+        //UNCOMMENT THIS FOR RELEASE
+        // release {
+        //     signingConfig signingConfigs.release
+
+        //     minifyEnabled true
+        //     useProguard true
+
+        //     proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        // }
     }
 }
 

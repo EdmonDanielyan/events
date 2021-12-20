@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/components/static_slider/static_slider_effect.dart';
+import 'package:ink_mobile/components/page_indicator/custom_page_indicator.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -108,14 +108,9 @@ class NewsBlock extends StatelessWidget {
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(top: 30),
-                  child: SmoothPageIndicator(
+                  child: CustomPageIndicator(
                     controller: _controllerOne,
                     count: 5,
-                    axisDirection: Axis.horizontal,
-                    effect: StaticSliderEffect(
-                        activeDotColor: Color(0xff2c4155),
-                        rowWidth: 700,
-                        dotWidth: size.width * 0.6),
                   ),
                 ),
               )
