@@ -51,6 +51,9 @@ class Messenger with Loggable{
 
   Messenger();
 
+  //todo: нужно убрать из месенджера все вызовы UI
+  bool silentMode = false;
+
   bool isConnected = false;
   int connectionsCount = 0;
 
@@ -94,8 +97,9 @@ class Messenger with Loggable{
     };
   }
 
+  //todo: нужно убрать из месенджера все вызовы UI
   void _showConnectedSnackBar() {
-    if (connectionsCount > 1 && App.getContext != null) {
+    if (!silentMode && connectionsCount > 1 && App.getContext != null) {
       SuccessCustomSnackbar(
         context: App.getContext!,
         txt: localizationInstance.connectedToServer,
@@ -103,8 +107,9 @@ class Messenger with Loggable{
     }
   }
 
+  //todo: нужно убрать из месенджера все вызовы UI
   void _showDisconnectedSnackBar() {
-    if (App.getContext != null) {
+    if (!silentMode && App.getContext != null) {
       SimpleCustomSnackbar(
         context: App.getContext!,
         txt: localizationInstance.disconnectedFromServer,

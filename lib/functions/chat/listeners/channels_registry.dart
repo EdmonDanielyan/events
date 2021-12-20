@@ -102,7 +102,7 @@ class ChannelsRegistry with Loggable {
 
       try {
         ChannelListener listener =
-            sl.get(instanceName: messageListenerToSearch);
+            sl.get<ChannelListener>(instanceName: messageListenerToSearch);
         listeners.putIfAbsent(messageType, () => listener);
       } catch (e) {
         logger.warning(
@@ -125,8 +125,8 @@ class ChannelsRegistry with Loggable {
 
   Future<void> listenToMyStoredChannels() async {
     logger.finest('listenToMyStoredChannels');
-    // List<ChannelTable> channels = List<ChannelTable>.unmodifiable(await channelFunctions.getAllChannels());
-    List<ChannelTable> channels = await channelFunctions.getAllChannels();
+    List<ChannelTable> channels = List<ChannelTable>.unmodifiable(await channelFunctions.getAllChannels());
+    // List<ChannelTable> channels = await channelFunctions.getAllChannels();
 
     if (channels.isNotEmpty) {
       for (final channel in channels) {

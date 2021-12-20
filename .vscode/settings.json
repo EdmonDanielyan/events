@@ -1,4 +1,7 @@
 {
     "editor.minimap.maxColumn": 200,
-    "editor.wordWrapColumn": 120
+    "editor.wordWrapColumn": 120,
+    "dart.flutterTestAdditionalArgs": ["--no-sound-null-safety"],
+    "dart.flutterAdditionalArgs": ["--no-sound-null-safety"],
+    "dart.vmAdditionalArgs": ["--no-sound-null-safety"]
 }

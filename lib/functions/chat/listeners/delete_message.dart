@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
@@ -9,6 +10,7 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
+import '../push_notification.dart';
 import 'channel_listener.dart';
 import 'channels_registry.dart';
 
@@ -17,13 +19,20 @@ import 'channels_registry.dart';
 class MessageDeletedListener extends ChannelListener {
   final ChatFunctions chatFunctions;
   final InviteSender messageSender;
+  final ChatDatabaseCubit chatDatabaseCubit;
 
   final ChatDatabase db;
 
   final ChatSaver chatSaver;
 
-  MessageDeletedListener(NatsProvider natsProvider, ChannelsRegistry registry,
-      this.chatFunctions, this.messageSender, this.db, this.chatSaver)
+  MessageDeletedListener(
+      NatsProvider natsProvider,
+      this.chatDatabaseCubit,
+      ChannelsRegistry registry,
+      this.chatFunctions,
+      this.messageSender,
+      this.db,
+      this.chatSaver)
       : super(natsProvider, registry);
 
   @override
@@ -42,6 +51,7 @@ class MessageDeletedListener extends ChannelListener {
           MessageListView.getUserMessages(fields.messages, sender.id);
       if (myMessages.isNotEmpty && sender.id != JwtPayload.myId) {
         if (fields.edited) {
+          _pushNotification(myMessages.last, sender);
           chatFunctions.editMessages(myMessages);
         } else {
           chatFunctions.deleteMessages(myMessages);
@@ -52,5 +62,16 @@ class MessageDeletedListener extends ChannelListener {
     } on NoSuchMethodError {
       return;
     }
+  }
+
+  Future<void> _pushNotification(MessageTable message, UserTable sender) async {
+    final myChat = await chatDatabaseCubit.db.selectChatById(message.chatId);
+    PushChatNotification(
+      chatDatabaseCubit: chatDatabaseCubit,
+      chatId: message.chatId,
+      myChat: myChat,
+      message: message,
+      user: sender,
+    ).call(checkTime: false);
   }
 }

@@ -23,6 +23,10 @@ class AuthHandler {
 
   Future<bool> authenticate() async {
     final lockApp = sl.get<LockApp>();
-    return await lockApp.authentificate();
+    final auth = await lockApp.authentificate();
+    if (auth) {
+      lockApp.stopAuthentification();
+    }
+    return auth;
   }
 }

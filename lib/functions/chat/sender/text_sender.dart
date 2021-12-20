@@ -28,38 +28,29 @@ class TextSender with Loggable {
   TextSender(this.natsProvider, this.userFunctions, this.chatFunctions, this.db,
       this.registry, this.chatSaver);
 
-  Future<bool> sendTextMessage(String channel, ChatTable chat,
-      MessageTable message, UserTable user) async {
-    return await natsProvider.sendSystemMessageToChannel(
-      channel,
-      MessageType.Text,
-      ChatMessageFields(
-        channel: channel,
-        chat: chat,
-        message: message,
-        user: user,
-      ).toMap(),
-    );
-  }
-
+  /// Publicise message to chat
   Future<void> sendMessage(ChatTable chat, MessageTable message) async {
-    bool success = await sendTxtMessage(chat, message);
+    bool success = await _sendTxtMessage(chat, message);
     MessageStatus status = success ? MessageStatus.SENT : MessageStatus.ERROR;
     await chatFunctions.updateMessageStatus(message, status);
-
     chatSaver.saveChats(newChat: null);
   }
 
-  Future<bool> sendTxtMessage(
+  Future<bool> _sendTxtMessage(
       ChatTable chat,
       MessageTable message, {
         UserTable? user,
       }) async {
-    return await sendTextMessage(
-      natsProvider.getGroupTextChannelById(chat.id),
-      chat,
-      message,
-      user ?? userFunctions.me,
+    var channelById = natsProvider.getGroupTextChannelById(chat.id);
+    return await natsProvider.sendSystemMessageToChannel(
+      channelById,
+      MessageType.Text,
+      ChatMessageFields(
+        channel: channelById,
+        chat: chat,
+        message: message,
+        user: user ?? userFunctions.me,
+      ).toMap(),
     );
   }
 

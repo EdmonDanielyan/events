@@ -354,9 +354,7 @@ class Client {
             pubMsg.writeToBuffer());
       } catch (e) {
         print('Publishing Fail: $e');
-        if (connected) {
-          await _reconnect();
-        }
+        await _reconnect();
         if (onDeliveryFail != null) {
           onDeliveryFail(pubMsg, e.toString());
         }
