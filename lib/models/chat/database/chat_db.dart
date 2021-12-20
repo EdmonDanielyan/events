@@ -38,7 +38,6 @@ class ChatDatabase extends _$ChatDatabase {
       (select(chatTables)..where((tbl) => tbl.id.equals(chatId)))
           .getSingleOrNull();
   Future<List<ChatTable>> getAllChats() => select(chatTables).get();
-
   Stream<List<ChatTable>> searchChats(String query) {
     return (select(chatTables)
           ..where((tbl) => tbl.name.like('%$query%'))
@@ -57,6 +56,16 @@ class ChatDatabase extends _$ChatDatabase {
   Stream<ChatTable> watchChatById(String id) =>
       (select(chatTables)..where((tbl) => tbl.id.equals(id))).watchSingle();
   Future<int> insertChat(ChatTable chat) => into(chatTables).insert(chat);
+  Future<void> insertMultipleChats(List<ChatTable> chats) async {
+    await batch((batch) {
+      batch.insertAll(
+        chatTables,
+        chats.map((e) => e.toCompanion(true)).toList(),
+        mode: InsertMode.insertOrReplace,
+      );
+    });
+  }
+
   Future updateChatById(String id, ChatTable chat) =>
       (update(chatTables)..where((tbl) => tbl.id.equals(id)))
           .write(chat)
@@ -78,6 +87,16 @@ class ChatDatabase extends _$ChatDatabase {
       (update(messageTables)..where((tbl) => tbl.id.equals(id))).write(message);
   Future<int> insertMessage(MessageTable messageTable) =>
       into(messageTables).insert(messageTable);
+  Future<void> insertMultipleMessages(List<MessageTable> messages) async {
+    await batch((batch) {
+      batch.insertAll(
+        messageTables,
+        messages.map((e) => e.toCompanion(true)).toList(),
+        mode: InsertMode.insertOrReplace,
+      );
+    });
+  }
+
   Future<MessageTable?> searchMessageByText(String query) =>
       (select(messageTables)..where((tbl) => tbl.message.contains(query)))
           .getSingleOrNull();
@@ -163,6 +182,16 @@ class ChatDatabase extends _$ChatDatabase {
   //USER
   Future<List<UserTable>> getAllUsers() => select(userTables).get();
   Future<int> insertUser(UserTable user) => into(userTables).insert(user);
+  Future<void> insertMultipleUsers(List<UserTable> users) async {
+    await batch((batch) {
+      batch.insertAll(
+        userTables,
+        users.map((e) => e.toCompanion(true)).toList(),
+        mode: InsertMode.insertOrReplace,
+      );
+    });
+  }
+
   Future<int> updateUser(int id, UserTable user) =>
       (update(userTables)..where((tbl) => tbl.id.equals(id))).write(user);
   Future<UserTable?> selectUserById(int id) =>
@@ -190,6 +219,17 @@ class ChatDatabase extends _$ChatDatabase {
       select(participantTables).get();
   Future<int> insertParticipant(ParticipantTable participant) =>
       into(participantTables).insert(participant);
+  Future<void> insertMultipleParticipants(
+      List<ParticipantTable> participants) async {
+    await batch((batch) {
+      batch.insertAll(
+        participantTables,
+        participants.map((e) => e.toCompanion(true)).toList(),
+        mode: InsertMode.insertOrReplace,
+      );
+    });
+  }
+
   Future deleteParticipant(int userId, String chatId) => (delete(
           participantTables)
         ..where((tbl) => tbl.userId.equals(userId) & tbl.chatId.equals(chatId)))
@@ -227,7 +267,7 @@ class ChatDatabase extends _$ChatDatabase {
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
-  int get schemaVersion => 31;
+  int get schemaVersion => 34;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

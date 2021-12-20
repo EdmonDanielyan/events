@@ -50,9 +50,9 @@ class ChatJoinedListener extends ChannelListener {
       final chat = fields.chat;
 
       if (users.isNotEmpty) {
-        await userFunctions.insertUsers(users);
-        await userFunctions.addParticipants(
-            ChatUserViewModel.toParticipants(users, chat), chat);
+        await userFunctions.insertMultipleUsers(users);
+        await userFunctions.insertMultipleParticipants(
+            ChatUserViewModel.toParticipants(users, chat));
         setMessage(users, chat);
         await chatSaver.saveChats(newChat: null);
       }

@@ -16,9 +16,7 @@ class SendMessage with Loggable {
 
   final ChatFunctions chatFunctions;
 
-  SendMessage({
-    required this.chatFunctions,
-    required this.chatDatabaseCubit});
+  SendMessage({required this.chatFunctions, required this.chatDatabaseCubit});
 
   MessageTable _generateMessage(
     String chatId,
@@ -49,7 +47,8 @@ class SendMessage with Loggable {
     return message;
   }
 
-  Future<MessageTable> _sendMessageToDatabase(ChatTable chat, ChatEntities chatEntities) async {
+  Future<MessageTable> _sendMessageToDatabase(
+      ChatTable chat, ChatEntities chatEntities) async {
     MessageTable message = _generateMessage(
       chat.id,
       chatEntities.text,
@@ -78,12 +77,17 @@ class SendMessage with Loggable {
     return message.id;
   }
 
-  Future<void> addMessagesIfNotExists(ChatTable chat, List<MessageTable> messages) async {
+  Future<void> addMessagesIfNotExists(
+      ChatTable chat, List<MessageTable> messages) async {
     if (messages.isNotEmpty) {
       for (final message in messages) {
         await addMessage(chat, message);
       }
     }
+  }
+
+  Future<void> insertMultipleMessages(List<MessageTable> messages) async {
+    await chatDatabaseCubit.db.insertMultipleMessages(messages);
   }
 
   MessageTable? joinedLeftMessage(

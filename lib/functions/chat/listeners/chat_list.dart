@@ -13,6 +13,7 @@ import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/channel.dart';
+import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/chat_list.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
@@ -160,32 +161,23 @@ class ChatListListener extends ChannelListener {
     if (chats.isEmpty) return;
 
     final distinctChats = chats.toSet().toList();
-
     final storedChats = await chatDatabaseCubit.db.getAllChats();
+    distinctChats
+        .sort((a, b) => ChatListView.sortChats(a, b, messages: messages));
 
-    distinctChats.sort((a, b) {
-      if (messages.isNotEmpty) {
-        final messageA =
-            messages.lastWhereOrNull((element) => element.chatId == a.id);
-        final messageB =
-            messages.lastWhereOrNull((element) => element.chatId == b.id);
-        if (messageA != null && messageB != null) {
-          return messageA.created!.compareTo(messageB.created!);
-        }
-      }
-
-      return a.updatedAt.compareTo(b.updatedAt);
-    });
+    final List<ChatTable> chatsToInsert = [];
 
     for (final chat in distinctChats) {
       _getChatIds.add(chat.id);
       bool insert = _chatExistsInStoredChannels(chat, storedChats);
 
       if (insert) {
-        await chatCreation.insertChat(chat);
+        chatsToInsert.add(chat);
       }
       await _insertMessages(chat, messages);
     }
+
+    await chatCreation.insertMultipleChats(chatsToInsert);
   }
 
   bool _chatExistsInStoredChannels(
@@ -200,7 +192,7 @@ class ChatListListener extends ChannelListener {
 
   Future<void> _insertUsers(List<UserTable> users) async {
     final distinctUsers = users.toSet().toList();
-    await userFunctions.insertUsers(distinctUsers);
+    await userFunctions.insertMultipleUsers(distinctUsers);
   }
 
   Future<void> _insertParticipants(
@@ -209,7 +201,7 @@ class ChatListListener extends ChannelListener {
       participants,
       chats,
     );
-    await userFunctions.insertParticipants(distinctParticipants);
+    await userFunctions.insertMultipleParticipants(distinctParticipants);
   }
 
   List<ParticipantTable> _getParticipantThatAreInChats(
@@ -244,8 +236,7 @@ class ChatListListener extends ChannelListener {
 
       if (insertMessages.isNotEmpty) {
         try {
-          await GetIt.I<SendMessage>()
-              .addMessagesIfNotExists(chat, insertMessages);
+          await GetIt.I<SendMessage>().insertMultipleMessages(insertMessages);
         } catch (e, stack) {
           logger.severe("Unexpected error", e, stack);
         }

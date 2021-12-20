@@ -112,7 +112,7 @@ class ChatCreation with Loggable {
 
       await insertChat(chatExists, shouldCheck: false);
     }
-    await UserFunctions(chatDatabaseCubit).insertUsers(users);
+    await UserFunctions(chatDatabaseCubit).insertMultipleUsers(users);
 
     return chatExists;
   }
@@ -128,9 +128,9 @@ class ChatCreation with Loggable {
     await insertChat(newChat);
 
     final userFunctions = UserFunctions(chatDatabaseCubit);
-    await userFunctions.insertUsers(users);
-    await userFunctions.addParticipants(
-        ChatUserViewModel.toParticipants(users, newChat), newChat);
+    await userFunctions.insertMultipleUsers(users);
+    await userFunctions.insertMultipleParticipants(
+        ChatUserViewModel.toParticipants(users, newChat));
 
     return newChat;
   }
@@ -180,6 +180,10 @@ class ChatCreation with Loggable {
       await chatDatabaseCubit.db.insertChat(chat);
     }
     return chat.id;
+  }
+
+  Future<void> insertMultipleChats(List<ChatTable> chats) async {
+    await chatDatabaseCubit.db.insertMultipleChats(chats);
   }
 
   static void sendOn(List<MessageTable> messages, BuildContext context) {

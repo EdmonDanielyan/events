@@ -14,4 +14,7 @@ class ChatTables extends Table {
       Constant(new DateTime.now().millisecondsSinceEpoch.toString()))();
   BoolColumn get notificationsOn =>
       boolean().nullable().withDefault(Constant(true))();
+
+  @override
+  Set<Column> get primaryKey => {id};
 }

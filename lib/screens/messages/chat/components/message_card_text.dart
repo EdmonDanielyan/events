@@ -51,8 +51,7 @@ class MessageCardText extends StatelessWidget {
 
   void _resend(BuildContext context) async {
     if (sl<Messenger>().isConnected) {
-      sl<Messenger>().messageEditorSender
-          .sendDeleteMessages(
+      sl<Messenger>().messageEditorSender.sendDeleteMessages(
         [message!],
         context,
         makeRequest: false,
@@ -60,8 +59,7 @@ class MessageCardText extends StatelessWidget {
       final renewedMessage = MessageListView.renewMessage(message!);
       await sl<SendMessage>().addMessage(getChat, renewedMessage);
       if (sl<Messenger>().isConnected) {
-        await sl<Messenger>().textSender
-            .sendMessage(getChat, renewedMessage);
+        await sl<Messenger>().textSender.sendMessage(getChat, renewedMessage);
       }
     }
   }
@@ -168,7 +166,7 @@ class MessageCardText extends StatelessWidget {
     return Flexible(
       child: LinkifyText(
         text: messageStr != null ? messageStr! : msg,
-        style: TextStyle(color: textColor()),
+        style: TextStyle(color: textColor(), fontSize: 15.0),
         linkStyle: TextStyle(color: textColor()),
       ),
     );

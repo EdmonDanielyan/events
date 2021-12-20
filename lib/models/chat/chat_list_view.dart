@@ -5,12 +5,28 @@ import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/token.dart';
 
 import 'chat_user.dart';
+import 'package:collection/collection.dart';
 
 class ChatListView {
   static bool isGroup(ChatTable chat) => chat.participantId == null;
   static bool isOwner(ChatTable chat, {int? myId}) {
     myId = myId ?? JwtPayload.myId;
     return chat.ownerId == myId;
+  }
+
+  static int sortChats(ChatTable a, ChatTable b,
+      {required List<MessageTable> messages}) {
+    if (messages.isNotEmpty) {
+      final messageA =
+          messages.lastWhereOrNull((element) => element.chatId == a.id);
+      final messageB =
+          messages.lastWhereOrNull((element) => element.chatId == b.id);
+      if (messageA != null && messageB != null) {
+        return messageA.created!.compareTo(messageB.created!);
+      }
+    }
+
+    return a.updatedAt.compareTo(b.updatedAt);
   }
 
   static String getChatIdBetweenUsers(List<UserTable> users) {

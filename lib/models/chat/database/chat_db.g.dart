@@ -452,7 +452,7 @@ class $ChatTablesTable extends ChatTables
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   ChatTable map(Map<String, dynamic> data, {String? tablePrefix}) {
     return ChatTable.fromData(data, _db,
@@ -922,7 +922,7 @@ class $MessageTablesTable extends MessageTables
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {id, chatId};
   @override
   MessageTable map(Map<String, dynamic> data, {String? tablePrefix}) {
     return MessageTable.fromData(data, _db,
@@ -1379,7 +1379,7 @@ class $ParticipantTablesTable extends ParticipantTables
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {chatId, userId};
   @override
   ParticipantTable map(Map<String, dynamic> data, {String? tablePrefix}) {
     return ParticipantTable.fromData(data, _db,

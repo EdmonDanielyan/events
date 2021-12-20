@@ -15,4 +15,7 @@ class MessageTables extends Table {
   IntColumn get type => intEnum<MessageType>()();
   DateTimeColumn get created =>
       dateTime().withDefault(Constant(new DateTime.now())).nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id, chatId};
 }
