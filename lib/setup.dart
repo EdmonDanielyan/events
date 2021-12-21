@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/core/errors/errors_to_server.dart';
 import 'package:ink_mobile/core/logging/file_log_appender.dart';
 import 'package:ink_mobile/core/logging/logging.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -25,10 +24,7 @@ Future<void> setup({scope = "dev"}) async {
   setupLogging(sl<FileLogAppender>());
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
-    ErrorsToServer(
-      error: details.exception.toString(),
-      stack: details.stack.toString(),
-    ).send();
+
     // exit(1);
   };
 }

@@ -18,6 +18,7 @@ class MessageIndicatorCubit extends Cubit<int> {
       _debouncer.run(() {
         if (event.isNotEmpty) {
           int unreadMessages = MessageListView.unreadMessagesByMessages(event);
+
           emitCounter(unreadMessages);
         } else {
           emitCounter(0);

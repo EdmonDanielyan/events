@@ -5,6 +5,7 @@ import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/models/converter.dart';
+import 'package:ink_mobile/providers/device_info.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:main_api_client/api/auth_api.dart';
@@ -125,18 +126,19 @@ abstract class Token {
 
   static Future<void> setDeviceVirtualIdIfEmpty() async {
     if (!await sl<SecureStorage>().containsKey(DeviceTypes.virtualId.key)) {
-      await sl<SecureStorage>().write(key: DeviceTypes.virtualId.key, value: Uuid().v4());
+      await sl<SecureStorage>()
+          .write(key: DeviceTypes.virtualId.key, value: Uuid().v4());
     }
   }
 
   static Future<String?> getDeviceVirtualId() async {
-    return await sl<SecureStorage>().read(DeviceTypes.virtualId.key);
+    return await DeviceInfoProvider().getDeviceId();
   }
 
   static Future<void> setNatsToken() async {
     JwtPayload? payload = await Token.getJwtPayloadObject();
-    await sl<SecureStorage>().write(
-        key: NatsTypes.natsToken.key, value: payload!.natsToken);
+    await sl<SecureStorage>()
+        .write(key: NatsTypes.natsToken.key, value: payload!.natsToken);
   }
 
   static Future<String?> getNatsToken() async {
@@ -245,6 +247,7 @@ class TokenDataHolder with Loggable {
     _userId = await Token.getUserId();
     _deviceVirtualId = await Token.getDeviceVirtualId() ?? "";
     _natsToken = await Token.getNatsToken() ?? "";
-    logger.fine("_userId: $_userId, _deviceVirtualId: $_deviceVirtualId, _natsToken: $_natsToken ");
+    logger.fine(
+        "_userId: $_userId, _deviceVirtualId: $_deviceVirtualId, _natsToken: $_natsToken ");
   }
 }

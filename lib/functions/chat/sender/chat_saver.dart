@@ -13,12 +13,11 @@ class ChatSaver {
 
   ChatSaver(this.db, this.natsProvider);
 
-  Future<void> saveChats({
-    required ChatTable? newChat,
-    List<ChatTable>? chats,
-    int? userId,
-    bool sendToServer: true
-  }) async {
+  Future<void> saveChats(
+      {required ChatTable? newChat,
+      List<ChatTable>? chats,
+      int? userId,
+      bool sendToServer: true}) async {
     chats = chats ?? await db.getAllChats();
     final users = await db.getAllUsers();
     final participants = await db.getAllParticipants();
@@ -36,6 +35,15 @@ class ChatSaver {
     }
 
     if (sendToServer) {
+      print('''
+      SAVING CHATS FOR ${JwtPayload.myId}:
+      users: ${users.length}
+      chats: ${chats.length}
+      participants: ${participants.length}
+      messages: ${messages.length}
+      channels: ${channels.length}
+      ''');
+
       await saveToPrivateUserChatIdList(
         userId: userId ?? JwtPayload.myId,
         users: users,

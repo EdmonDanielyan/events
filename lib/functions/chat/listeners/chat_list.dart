@@ -125,8 +125,6 @@ class ChatListListener extends ChannelListener {
       }
 
       logger.finest("DONE... ${new DateTime.now()}");
-
-      await chatSaver.saveChats(newChat: null);
     } on NoConnectionException {
       return;
     } on NoSuchMethodError {

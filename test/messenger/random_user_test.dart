@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ink_mobile/core/errors/errors_to_server.dart';
 import 'package:ink_mobile/core/logging/file_log_appender.dart';
 import 'package:ink_mobile/core/logging/logging.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
@@ -32,7 +31,7 @@ void main() async {
     late FakeDatabaseData databaseData;
     late Credentials credentials;
 
-    tearDown((){
+    tearDown(() {
       sl.reset();
     });
 
@@ -45,19 +44,15 @@ void main() async {
       await mockLocalization(sl);
       mockSecureStorage(sl);
       mockLockApp(sl);
-      var credentialsProvider = CredentialsProvider()..load("./test/messenger/test_data/all_users.yaml");
+      var credentialsProvider = CredentialsProvider()
+        ..load("./test/messenger/test_data/all_users.yaml");
       credentials = RandomCredentials(credentialsProvider.users);
 
       setupLogging(sl<FileLogAppender>());
       FlutterError.onError = (FlutterErrorDetails details) {
         FlutterError.dumpErrorToConsole(details);
-        ErrorsToServer(
-          error: details.exception.toString(),
-          stack: details.stack.toString(),
-        ).send();
       };
     });
-
 
     test('Create chat with random participates', () async {
       Future? initMessageProviderFuture;
@@ -145,7 +140,5 @@ void main() async {
       expect(databaseData.users, isNotEmpty);
       expect(databaseData.participates, isNotEmpty);
     });
-
-
   });
 }

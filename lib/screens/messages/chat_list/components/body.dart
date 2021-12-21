@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/components/alert/loading.dart';
 import 'package:ink_mobile/components/loader/error_loading_widget.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
@@ -14,6 +13,7 @@ import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/search_bar.dart';
+import 'package:moor/moor.dart' show OrderingMode;
 
 import '../../../../setup.dart';
 import 'chat.dart';
@@ -111,7 +111,8 @@ class _BodyState extends State<Body> {
           shrinkWrap: true,
           controller: ScrollController(keepScrollOffset: false),
           itemBuilder: (_, index) => StreamBuilder(
-            stream: _chatDatabaseCubit.db.watchChatMessages(chats[index].id),
+            stream: _chatDatabaseCubit.db.watchChatMessages(chats[index].id,
+                orderMode: OrderingMode.asc),
             builder: (context, AsyncSnapshot<List<MessageWithUser>?> snapshot) {
               if (snapshot.hasData) {
                 List<MessageWithUser> messagesWithUser = snapshot.data ?? [];

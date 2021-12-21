@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ink_mobile/core/errors/errors_to_server.dart';
 import 'package:ink_mobile/core/logging/file_log_appender.dart';
 import 'package:ink_mobile/core/logging/logging.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
@@ -54,23 +53,23 @@ void main() async {
       mockSecureStorage(sl);
       mockLockApp(sl);
       sl<Messenger>().silentMode = true;
-      var credentialsProvider = CredentialsProvider()..load("./test/messenger/test_data/test_users.yaml");
+      var credentialsProvider = CredentialsProvider()
+        ..load("./test/messenger/test_data/test_users.yaml");
       credentials = credentialsProvider.users[0];
 
       FlutterError.onError = (FlutterErrorDetails details) {
         FlutterError.dumpErrorToConsole(details);
-        ErrorsToServer(
-          error: details.exception.toString(),
-          stack: details.stack.toString(),
-        ).send();
       };
     });
 
-
-    test('Test 1: Login with given user and create chat with random participates', () async {
+    test(
+        'Test 1: Login with given user and create chat with random participates',
+        () async {
       final logger = Logger('Test 1');
       logger.info("Start");
-      (sl<SecureStorage>() as MockSecureStorage).secureStorageData[DeviceTypes.virtualId.key] = "test1-" + Random().nextInt(10000000).toString();
+      (sl<SecureStorage>() as MockSecureStorage)
+              .secureStorageData[DeviceTypes.virtualId.key] =
+          "test1-" + Random().nextInt(10000000).toString();
       Future? initMessageProviderFuture;
       sl<BootCubit>()
         ..onStart = () async {
@@ -126,15 +125,21 @@ void main() async {
       await expectLater(createChatFuture, completes);
       logger.info("Chat is created");
       logger.info("Test database:\n $databaseData");
-      expect(databaseData.users, isNotEmpty, reason: "Users should be none-empty");
-      expect(databaseData.channels, isNotEmpty, reason: "Channels should be none-empty");
-      expect(databaseData.chats, isNotEmpty, reason: "Chats should be none-empty");
-      expect(databaseData.participates, isNotEmpty, reason: "Participates should be none-empty");
+      expect(databaseData.users, isNotEmpty,
+          reason: "Users should be none-empty");
+      expect(databaseData.channels, isNotEmpty,
+          reason: "Channels should be none-empty");
+      expect(databaseData.chats, isNotEmpty,
+          reason: "Chats should be none-empty");
+      expect(databaseData.participates, isNotEmpty,
+          reason: "Participates should be none-empty");
     });
-    
+
     test('Test 2: Get all chats then send random message to them', () async {
       final logger = Logger('Test 2');
-      (sl<SecureStorage>() as MockSecureStorage).secureStorageData[DeviceTypes.virtualId.key] = "test2-" + Random().nextInt(10000000).toString();
+      (sl<SecureStorage>() as MockSecureStorage)
+              .secureStorageData[DeviceTypes.virtualId.key] =
+          "test2-" + Random().nextInt(10000000).toString();
 
       Future? initMessageProviderFuture;
       sl<BootCubit>()
@@ -161,26 +166,34 @@ void main() async {
       expect(sl<Messenger>().isConnected, isTrue);
 
       logger.info("Test database before sending message:\n $databaseData");
-      expect(databaseData.users, isNotEmpty, reason: "Users should be none-empty");
-      expect(databaseData.channels, isNotEmpty, reason: "Channels should be none-empty");
-      expect(databaseData.chats, isNotEmpty, reason: "Chats should be none-empty");
-      expect(databaseData.participates, isNotEmpty, reason: "Participates should be none-empty");
-      
+      expect(databaseData.users, isNotEmpty,
+          reason: "Users should be none-empty");
+      expect(databaseData.channels, isNotEmpty,
+          reason: "Channels should be none-empty");
+      expect(databaseData.chats, isNotEmpty,
+          reason: "Chats should be none-empty");
+      expect(databaseData.participates, isNotEmpty,
+          reason: "Participates should be none-empty");
+
       logger.info("picking some chat..");
       var chat = databaseData.chats.values.first;
       logger.info("sending messages to chat: ${chat.id}...");
 
       final sendMessage = sl<SendMessage>();
-      final message = await sendMessage.call(chat, ChatEntities(text: "Use the Force, Luke"));
+      final message = await sendMessage.call(
+          chat, ChatEntities(text: "Use the Force, Luke"));
       await sl<Messenger>().textSender.sendMessage(chat, message);
       logger.info("Test database after sending message:\n $databaseData");
-      expect(databaseData.users, isNotEmpty, reason: "Users should be none-empty");
-      expect(databaseData.channels, isNotEmpty, reason: "Channels should be none-empty");
-      expect(databaseData.chats, isNotEmpty, reason: "Chats should be none-empty");
-      expect(databaseData.participates, isNotEmpty, reason: "Participates should be none-empty");
-      expect(databaseData.messages, isNotEmpty, reason: "messages should be none-empty");
+      expect(databaseData.users, isNotEmpty,
+          reason: "Users should be none-empty");
+      expect(databaseData.channels, isNotEmpty,
+          reason: "Channels should be none-empty");
+      expect(databaseData.chats, isNotEmpty,
+          reason: "Chats should be none-empty");
+      expect(databaseData.participates, isNotEmpty,
+          reason: "Participates should be none-empty");
+      expect(databaseData.messages, isNotEmpty,
+          reason: "messages should be none-empty");
     });
-
-
   });
 }

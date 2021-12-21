@@ -151,17 +151,17 @@ class NatsProvider {
 
   //////////////////////////////// NATS Protocol ///////////////////////////////
 
-
   Future<bool> _connect() async {
     _logger.finest("_connect");
-    _logger.finest("url: $natsWssUrl, cluster: $natsCluster, userId: $userId, natsToken: $natsToken");
+    _logger.finest(
+        "url: $natsWssUrl, cluster: $natsCluster, userId: $userId, natsToken: $natsToken");
     _logger.finest("certificate data length: ${certificate.length}");
 
     var connectResult = await _stan.connectUri(Uri.parse(natsWssUrl),
         certificate: certificate,
         clusterID: natsCluster,
         pingMaxAttempts: 10,
-        clientID: userId,
+        clientID: "$userId-$deviceVirtualId",
         connectOption:
             nats.ConnectOption(tlsRequired: true, auth_token: natsToken));
     return connectResult;
@@ -227,9 +227,6 @@ class NatsProvider {
   Future<Subscription?> _subscribeToChannel(channel,
       {StartPosition? startPosition, Int64 startSequence = Int64.ZERO}) async {
     var durableName = "$userId-$deviceVirtualId-$channel";
-
-    // print(
-    //     "FOR CHANNEL ($channel) - SEQUENCE ${_getSequence(channel, startSequence)}");
 
     var subscription = await _stan.subscribe(
       subject: channel,

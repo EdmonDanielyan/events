@@ -58,7 +58,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
   }
 
   void _scrollBottom() {
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
+    Future.delayed(Duration(milliseconds: 100), () {
       ScrollBottom(controller).jump();
     });
   }
@@ -116,6 +116,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
             child: MessageList(
               messagesLoaded: _onMessagesLoaded,
               scrollSafe: _scrollSafe,
+              scrollController: controller,
             ),
           ),
         ),

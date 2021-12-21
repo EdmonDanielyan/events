@@ -85,6 +85,16 @@ class ChatDatabase extends _$ChatDatabase {
           .getSingleOrNull();
   Future<int> updateMessageById(String id, MessageTable message) =>
       (update(messageTables)..where((tbl) => tbl.id.equals(id))).write(message);
+  Future<int> countUnreadMessages(String id) async {
+    var count = countAll(
+        filter: messageTables.id.equals(id) &
+            messageTables.status.equals(MessageStatus.READ.index).not());
+    var res = await (selectOnly(messageTables)..addColumns([count]))
+        .map((row) => row.read(count))
+        .getSingle();
+    return res;
+  }
+
   Future<int> insertMessage(MessageTable messageTable) =>
       into(messageTables).insert(messageTable);
   Future<void> insertMultipleMessages(List<MessageTable> messages) async {
@@ -110,12 +120,18 @@ class ChatDatabase extends _$ChatDatabase {
               (t) => OrderingTerm(expression: t.created, mode: OrderingMode.asc)
             ]))
           .get();
-  Stream<List<MessageWithUser>> watchChatMessages(String chatId) {
-    return (select(messageTables)
-          ..where((tbl) => tbl.chatId.equals(chatId))
-          ..orderBy([
-            (t) => OrderingTerm(expression: t.created, mode: OrderingMode.asc)
-          ]))
+  Stream<List<MessageWithUser>> watchChatMessages(String chatId,
+      {OrderingMode orderMode = OrderingMode.asc, int? limit}) {
+    final sel = (select(messageTables)
+      ..where((tbl) => tbl.chatId.equals(chatId))
+      ..orderBy(
+        [(t) => OrderingTerm(expression: t.created, mode: orderMode)],
+      ));
+
+    if (limit != null) {
+      sel..limit(limit);
+    }
+    return sel
         .join([
           leftOuterJoin(
               userTables, userTables.id.equalsExp(messageTables.userId))

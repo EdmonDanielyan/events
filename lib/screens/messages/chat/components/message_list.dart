@@ -13,23 +13,33 @@ import 'package:ink_mobile/screens/messages/chat/components/date_widget.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/chat_screen_params.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/paddings.dart';
+import 'package:moor/moor.dart' show OrderingMode;
 
 import '../chat_screen.dart';
 import 'message_card_text.dart';
 
-class MessageList extends StatelessWidget with MessageMixins {
+class MessageList extends StatefulWidget {
   final void Function()? messagesLoaded;
   final void Function()? scrollSafe;
+  final ScrollController scrollController;
   const MessageList({
     Key? key,
     this.messagesLoaded,
     this.scrollSafe,
+    required this.scrollController,
   }) : super(key: key);
-  static List<MessageWithUser>? messagesWithUser;
-  static late ChatDatabaseCubit _chatDatabaseCubit;
-  static late ChatScreenParams _chatScreenParams;
-  static late ChatCubit _chatCubit;
 
+  static List<MessageWithUser>? messagesWithUser;
+
+  @override
+  State<MessageList> createState() => _MessageListState();
+}
+
+class _MessageListState extends State<MessageList> with MessageMixins {
+  ScrollController get scrollController => widget.scrollController;
+  late ChatDatabaseCubit _chatDatabaseCubit;
+  late ChatScreenParams _chatScreenParams;
+  late ChatCubit _chatCubit;
   Stream<List<MessageWithUser>> getStream() {
     final selectedChat = _chatDatabaseCubit.selectedChat;
     final String chatId = selectedChat?.id ?? "";
@@ -37,14 +47,27 @@ class MessageList extends StatelessWidget with MessageMixins {
       return _chatDatabaseCubit.db.watchChatFilesMessages(chatId);
     }
 
-    return _chatDatabaseCubit.db.watchChatMessages(chatId);
+    return _chatDatabaseCubit.db
+        .watchChatMessages(chatId, orderMode: OrderingMode.desc);
   }
 
   void _messagesLoaded() {
-    if (messagesLoaded != null) {
-      messagesLoaded!();
+    if (widget.messagesLoaded != null) {
+      widget.messagesLoaded!();
     }
     _chatCubit.updateMessages(_chatDatabaseCubit);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      _listenToScroll();
+    });
+  }
+
+  void _listenToScroll() {
+    print(scrollController.offset);
   }
 
   @override
@@ -67,21 +90,20 @@ class MessageList extends StatelessWidget with MessageMixins {
               builder:
                   (context, AsyncSnapshot<List<MessageWithUser>> snapshot) {
                 if (snapshot.hasData) {
-                  messagesWithUser = snapshot.data ?? [];
+                  MessageList.messagesWithUser = snapshot.data ?? [];
                   DateTimeSort dateSort = DateTimeSort();
 
-                  if (messagesWithUser!.length > 0) {
+                  if (MessageList.messagesWithUser!.length > 0) {
                     _messagesLoaded();
-                    messagesWithUser!.sort((a, b) =>
+                    MessageList.messagesWithUser!.sort((a, b) =>
                         a.message!.created!.compareTo(b.message!.created!));
                     return ListView.builder(
                       controller: ScrollController(keepScrollOffset: false),
-                      itemCount: messagesWithUser!.length,
+                      itemCount: MessageList.messagesWithUser!.length,
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
-                        print("BUILDING");
                         return eachItem(
-                          messagesWithUser![index],
+                          MessageList.messagesWithUser![index],
                           dateSort,
                           index,
                         );
@@ -127,8 +149,8 @@ class MessageList extends StatelessWidget with MessageMixins {
       builder: (context, state) {
         if (state.texting != null &&
             state.texting!.customTextingEnum != CustomTextingEnum.EMPTY) {
-          if (scrollSafe != null) {
-            scrollSafe!();
+          if (widget.scrollSafe != null) {
+            widget.scrollSafe!();
           }
           return Container(
             padding: ChatScreenPaddings.messageContainerPadding,
