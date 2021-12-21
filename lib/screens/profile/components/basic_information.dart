@@ -24,7 +24,8 @@ class BasicInformation extends StatelessWidget {
     if (info!.organization != null ||
         info!.address != null ||
         info!.birthday != null ||
-        info!.office != null) {
+        info!.office != null ||
+        info!.department != null) {
       Size size = MediaQuery.of(context).size;
       return Container(
         width: size.width,
@@ -60,6 +61,7 @@ class BasicInformation extends StatelessWidget {
   List getRowsInfo() {
     return [
       {'title': _strings.company, 'value': info!.organization},
+      {'title': 'Подразделение', 'value': info!.department},
       {'title': _strings.address, 'value': info!.address},
       {'title': _strings.office, 'value': info!.office},
       {'title': _strings.birthday, 'value': info!.birthday},
