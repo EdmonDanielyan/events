@@ -189,7 +189,7 @@ class Client {
 
     if (natsClient.status == nats.Status.connected) {
       // Generante new clientID for reconnection
-
+      _clientID = Uuid().v4();
       ConnectRequest connectRequest = ConnectRequest()
         ..clientID = this.clientID
         ..heartbeatInbox = this.connectionID

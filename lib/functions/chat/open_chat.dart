@@ -13,13 +13,15 @@ class OpenChat {
       {ChatScreenParams? chatScreenParams}) async {
     chatDatabaseCubit.setSelectedChat(chatTable);
     final params = chatScreenParams ?? ChatScreenParams();
+    final currentSelectedChat = chatDatabaseCubit.selectedChat;
+
     await Navigator.of(context).pushNamed(
       "/message",
       arguments: params,
     );
     if (chatDatabaseCubit.selectedChat != null &&
         chatDatabaseCubit.selectedChat!.id == chatTable.id) {
-      chatDatabaseCubit.setSelectedChat(null);
+      chatDatabaseCubit.setSelectedChat(currentSelectedChat);
     }
   }
 }

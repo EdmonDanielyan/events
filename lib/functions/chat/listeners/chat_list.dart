@@ -124,6 +124,8 @@ class ChatListListener extends ChannelListener {
         throw NoConnectionException(message: "Disconnected");
       }
 
+      await chatSaver.saveChats(newChat: null);
+
       logger.finest("DONE... ${new DateTime.now()}");
     } on NoConnectionException {
       return;
