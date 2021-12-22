@@ -100,7 +100,7 @@ class _ParticipantCardState extends State<ParticipantCard> {
 
   bool getIndicator() {
     if (widget.indicatorReadOnly && widget.user != null) {
-      return UserOnlineListener.subscribedUsers.contains(widget.user?.id);
+      return UserOnlineListener.onlineUsers.contains(widget.user?.id);
     }
 
     return widget.indicatorIsOn && widget.user != null && widget.user!.online

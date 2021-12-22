@@ -15,12 +15,12 @@ class ContactsNetworkRequest extends ContactsRequestDependency {
       : assert(query != null);
 
   @override
-  Future<Response<GetContacts>> call() async {
+  Future<Response<GetContacts>> call({int pageNumber = 1}) async {
     ContactsApi contactsApi = sl<MainApiProvider>().getContactsApi();
     final response = await contactsApi
         .getContacts(
             search: query!.length < 3 ? null : query,
-            pageNumber: 1,
+            pageNumber: pageNumber,
             countOnPage: 70)
         .timeout(Duration(seconds: 4));
     return response;

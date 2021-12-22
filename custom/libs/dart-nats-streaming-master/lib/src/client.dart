@@ -251,7 +251,6 @@ class Client {
     retryReconnect = false;
     failPings = 0;
     await _disconnect();
-    natsClient = nats.Client();
   }
 
   Future<void> _disconnect() async {
@@ -260,6 +259,7 @@ class Client {
       _onDisconnect!();
     }
     _connected = false;
+    natsClient = nats.Client();
   }
 
   Future<void> _heartbeat() async {

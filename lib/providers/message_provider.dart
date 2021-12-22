@@ -29,7 +29,7 @@ import '../app.dart';
 import '../setup.dart';
 
 @lazySingleton
-class Messenger with Loggable{
+class Messenger with Loggable {
   late ChatDatabaseCubit chatDatabaseCubit;
   late NatsProvider natsProvider;
   late ChatFunctions chatFunctions;
@@ -78,7 +78,7 @@ class Messenger with Loggable{
     isConnected = await natsProvider.load();
   }
 
-   void _configureNatsProvider() {
+  void _configureNatsProvider() {
     logger.finest("_configureNatsProvider");
     natsProvider.onConnected = () async {
       logger.info("onConnected");
@@ -93,6 +93,7 @@ class Messenger with Loggable{
 
     natsProvider.onDisconnected = () async {
       logger.info("onDisconnected");
+      _softDispose();
       _showDisconnectedSnackBar();
     };
   }
@@ -118,13 +119,18 @@ class Messenger with Loggable{
   }
 
   Future<void> _onConnected() async {
-      //await Future.delayed(Duration(seconds: 1));
-      logger.finest('_onConnected');
-      isConnected = true;
-      registry.listenToAllMessages();
-      await userFunctions.addMe();
-      await registry.init();
-      pingSender.sendUserOnlinePing(user: userFunctions.me);
+    //await Future.delayed(Duration(seconds: 1));
+    logger.finest('_onConnected');
+    isConnected = true;
+    registry.listenToAllMessages();
+    await userFunctions.addMe();
+    await registry.init();
+    pingSender.sendUserOnlinePing(user: userFunctions.me);
+  }
+
+  Future<void> _softDispose() async {
+    registry.unsubscribeFromAll();
+    pingSender.stopSending();
   }
 
   Future<void> dispose() async {

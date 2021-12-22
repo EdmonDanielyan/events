@@ -19,6 +19,7 @@ import 'channels_registry.dart';
 class UserOnlineListener extends ChannelListener {
   late Timer userOnlineTimer;
   static Set<int> subscribedUsers = {};
+  static Set<int> onlineUsers = {};
 
   final ChatDatabaseCubit chatDatabaseCubit;
   final UserFunctions userFunctions;
@@ -75,6 +76,17 @@ class UserOnlineListener extends ChannelListener {
   void updateUserStatus(UserTable user, bool online) {
     logger.finest(
         "updateUserStatus: user=${user.name}, was_online: ${user.online}, will_be_online=$online");
+    _handleList(user, online);
     chatDatabaseCubit.db.updateUser(user.id, user.copyWith(online: online));
+  }
+
+  void _handleList(UserTable user, bool online) {
+    if (online && !onlineUsers.contains(user.id)) {
+      onlineUsers.add(user.id);
+    }
+
+    if (!online && onlineUsers.contains(user.id)) {
+      onlineUsers.remove(user.id);
+    }
   }
 }
