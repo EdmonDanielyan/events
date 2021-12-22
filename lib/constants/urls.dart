@@ -1,13 +1,11 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 @module
 abstract class UrlsConfigDev {
-
   @dev
   @Named("natsWssUrl")
-  String get natsWssUrl => "wss://cloud.jetrabbits.com:9090";
+  String get natsWssUrl => "wss://cloud.jetrabbits.com:9191";
 
   @dev
   @Named("natsCluster")
@@ -28,7 +26,6 @@ abstract class UrlsConfigDev {
 
 @module
 abstract class UrlsConfigProd {
-
   @prod
   @Named("natsWssUrl")
   String get natsWssUrl => "wss://messenger.irkutskoil.ru";
@@ -48,19 +45,17 @@ abstract class UrlsConfigProd {
   @prod
   @Named("apiCertificatePath")
   String get apiCertificatePath => "assets/certs/_.irkutskoil.ru.pem";
-
 }
 
 @module
 abstract class UrlsConfigTest {
-
   @test
   @Named("natsWssUrl")
   String get natsWssUrl => "tcp://cloud.jetrabbits.com:7070";
 
   @test
   @Named("natsCluster")
-  String get natsCluster => kReleaseMode ? "test-cluster": "test-cluster";
+  String get natsCluster => kReleaseMode ? "test-cluster" : "test-cluster";
 
   @test
   @Named("natsCertificatePath")

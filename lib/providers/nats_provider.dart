@@ -226,13 +226,12 @@ class NatsProvider {
 
   Future<Subscription?> _subscribeToChannel(channel,
       {StartPosition? startPosition, Int64 startSequence = Int64.ZERO}) async {
-    var durableName = "$userId-$deviceVirtualId-$channel";
+    //var durableName = "$userId-$deviceVirtualId-$channel";
 
     var subscription = await _stan.subscribe(
       subject: channel,
       maxInFlight: 1,
       startPosition: startPosition ?? _getPosition(channel),
-      durableName: durableName,
       startSequence: _getSequence(channel, startSequence),
     );
 

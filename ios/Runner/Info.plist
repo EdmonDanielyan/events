@@ -13,8 +13,6 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>ИНК-Портал</string>
-	<key>CFBundleName</key>
 	<string>ink_mobile</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
@@ -39,6 +37,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Used to set user picture, send pictures/videos between the app users</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Why is my app authenticating using face id?</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Used to send videos between the app users</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -64,29 +64,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used to pick images for a form section</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Used to set user picture, send pictures/videos between the app users</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Used to send videos between the app users</string>
-	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<true/>
-	<key>UIBackgroundModes</key>
-	<array>
-	<string>fetch</string>
-	<string>remote-notification</string>
-	</array>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>https</string>
-		<string>http</string>
-		<string>mailto</string>
-		<string>tel</string>
-		<string>facetime</string>
-		<string>sms</string>
-	</array>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Why is my app authenticating using face id?</string>
 </dict>
 </plist>

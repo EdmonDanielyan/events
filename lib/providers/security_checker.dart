@@ -7,10 +7,11 @@ class SecurityChecker {
   const SecurityChecker();
 
   Future<bool> checkApplication() async {
-    if (kDebugMode) {
-      return true;
-    } else {
-      return !await SafeDevice.isSafeDevice;
-    }
+    return true;
+    // if (kDebugMode) {
+    //   return true;
+    // } else {
+    //   return !await SafeDevice.isSafeDevice;
+    // }
   }
 }
