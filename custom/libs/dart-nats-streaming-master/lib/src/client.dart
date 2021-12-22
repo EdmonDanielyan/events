@@ -187,12 +187,6 @@ class Client {
 
     Future.delayed(Duration(seconds: pingInterval), () => _heartbeat());
 
-    print('''
-
-    NATS CLIENT STATUS ${natsClient.status}
-    
-    ''');
-
     if (natsClient.status == nats.Status.connected) {
       // Generante new clientID for reconnection
       //_clientID = Uuid().v4();
@@ -210,7 +204,6 @@ class Client {
           '_STAN.discover.$clusterID', connectRequest.writeToBuffer());
 
       _connectResponse = ConnectResponse.fromBuffer((_req).data);
-      print(_connectResponse);
       unawaited(pingResponseWatchdog());
 
       if (_onConnect != null) {

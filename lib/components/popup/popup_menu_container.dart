@@ -107,6 +107,9 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
         _tapDownPosition = details.globalPosition;
       },
       onLongPress: onTap,
+      onTap: () {
+        TextFieldUtils.loseTextFieldFocus();
+      },
       child: widget.child,
     );
   }
