@@ -28,10 +28,12 @@ class ChatFunctions {
     }
   }
 
-  void deleteMessages(List<MessageTable> messages) {
+  Future<void> deleteMessages(List<MessageTable> messages) async {
     if (messages.isNotEmpty) {
       for (final message in messages) {
-        chatDatabaseCubit.db.deleteMessageById(message.id);
+        if (await chatDatabaseCubit.db.selectMessageById(message.id) != null) {
+          chatDatabaseCubit.db.deleteMessageById(message.id);
+        }
       }
     }
   }
@@ -55,12 +57,9 @@ class ChatFunctions {
     chatDatabaseCubit.db.updateMessageById(message.id, message);
   }
 
-  Future<void> messagesToRead(
-      List<MessageTable> messages) async {
+  Future<void> messagesToRead(List<MessageTable> messages) async {
     for (final message in messages) {
       await updateMessageStatus(message, MessageStatus.READ);
     }
   }
-
-
 }

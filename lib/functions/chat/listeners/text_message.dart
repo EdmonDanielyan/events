@@ -3,7 +3,6 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
-import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
@@ -14,7 +13,6 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
-import 'package:ink_mobile/providers/notifications.dart';
 
 import '../chat_functions.dart';
 import '../push_notification.dart';
@@ -29,17 +27,14 @@ class TextMessageListener extends ChannelListener {
 
   final ChatFunctions chatFunctions;
 
-  final ChatSaver chatSaver;
-
   TextMessageListener(
-      NatsProvider natsProvider,
-      ChannelsRegistry registry,
-      this.userFunctions,
-      this.chatDatabaseCubit,
-      this.messageSender,
-      this.chatFunctions,
-      this.chatSaver)
-      : super(natsProvider, registry);
+    NatsProvider natsProvider,
+    ChannelsRegistry registry,
+    this.userFunctions,
+    this.chatDatabaseCubit,
+    this.messageSender,
+    this.chatFunctions,
+  ) : super(natsProvider, registry);
 
   Debouncer get _debouncer => Debouncer(milliseconds: 800);
 
@@ -61,14 +56,21 @@ class TextMessageListener extends ChannelListener {
             : fields.message.status,
       );
 
-      if (fields.user.id == JwtPayload.myId) {
+      final messageExists =
+          await chatDatabaseCubit.db.selectMessageById(newMessage.id);
+
+      if (messageExists != null) {
         chatDatabaseCubit.db.updateMessageById(newMessage.id, newMessage);
       } else {
         ChatTable? myChat =
             await chatDatabaseCubit.db.selectChatById(fields.chat.id);
 
-        final chat = myChat ??
-            ChatListView.changeChatForParticipant(fields.chat, [fields.user]);
+        var chat = fields.chat;
+
+        if (fields.user.id != JwtPayload.myId) {
+          chat = myChat ??
+              ChatListView.changeChatForParticipant(fields.chat, [fields.user]);
+        }
 
         _debouncer.run(() {
           PushChatNotification(
@@ -81,9 +83,7 @@ class TextMessageListener extends ChannelListener {
         });
 
         await userFunctions.insertUser(fields.user);
-        await GetIt.I<SendMessage>()
-            .addMessage(chat, newMessage);
-        await chatSaver.saveChats(newChat: null);
+        await GetIt.I<SendMessage>().addMessage(chat, newMessage);
       }
     } on NoSuchMethodError {
       return;

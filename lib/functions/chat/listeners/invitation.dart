@@ -21,12 +21,8 @@ class ChatInvitationListener extends ChannelListener {
 
   final ChatSaver chatSaver;
 
-  ChatInvitationListener(
-      NatsProvider natsProvider,
-      ChannelsRegistry registry,
-      this.chatSaver,
-      this.messageSender,
-      this.chatDatabaseCubit)
+  ChatInvitationListener(NatsProvider natsProvider, ChannelsRegistry registry,
+      this.chatSaver, this.messageSender, this.chatDatabaseCubit)
       : super(natsProvider, registry);
 
   Future<void> onMessage(String channel, NatsMessage message) async {
@@ -43,8 +39,7 @@ class ChatInvitationListener extends ChannelListener {
           ChatListView.changeChatForParticipant(fields.chat, fields.users);
 
       await sl<ChatCreation>().createDynamically(chat, fields.users);
-      await chatSaver
-          .saveChats(newChat: chat);
+      await chatSaver.saveChats(newChat: chat);
 
       _chatLinkedListeners(chat.id);
     } on NoSuchMethodError {
@@ -52,7 +47,7 @@ class ChatInvitationListener extends ChannelListener {
     }
   }
 
-  Future<void> _chatLinkedListeners(String chatId)  {
+  Future<void> _chatLinkedListeners(String chatId) {
     return registry.subscribeOnChatChannels(chatId);
   }
 }

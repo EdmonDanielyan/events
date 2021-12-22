@@ -13,6 +13,9 @@ class ChatSaver {
 
   ChatSaver(this.db, this.natsProvider);
 
+  String get getInviteUserChannel =>
+      natsProvider.getInviteUserToJoinChatChannel(JwtPayload.myId);
+
   Future<void> saveChats(
       {required ChatTable? newChat,
       List<ChatTable>? chats,
@@ -21,8 +24,13 @@ class ChatSaver {
     chats = chats ?? await db.getAllChats();
     final users = await db.getAllUsers();
     final participants = await db.getAllParticipants();
-    final messages = await db.getAllMessages();
-    final channels = await db.getAllChannels();
+    List<ChannelTable> channels = [];
+
+    final inviteUserChannel =
+        await db.getChannelByChannelName(getInviteUserChannel);
+    if (inviteUserChannel != null) {
+      channels.add(inviteUserChannel);
+    }
 
     if (newChat != null) {
       for (int i = 0; i < chats.length; i++) {
@@ -35,21 +43,11 @@ class ChatSaver {
     }
 
     if (sendToServer) {
-      print('''
-      SAVING CHATS FOR ${JwtPayload.myId}:
-      users: ${users.length}
-      chats: ${chats.length}
-      participants: ${participants.length}
-      messages: ${messages.length}
-      channels: ${channels.length}
-      ''');
-
       await saveToPrivateUserChatIdList(
         userId: userId ?? JwtPayload.myId,
         users: users,
         chats: chats,
         participants: participants,
-        messages: messages,
         channels: channels,
       );
     }
@@ -60,16 +58,22 @@ class ChatSaver {
     required List<ChatTable> chats,
     required List<UserTable> users,
     required List<ParticipantTable> participants,
-    required List<MessageTable> messages,
     required List<ChannelTable> channels,
   }) async {
     final chatListFields = ChatListFields(
       chats: chats.toSet().toList(),
       users: users.toSet().toList(),
       participants: participants.toSet().toList(),
-      messages: messages.toSet().toList(),
       channels: channels.toSet().toList(),
     );
+
+    print('''
+      SAVING CHATS FOR ${JwtPayload.myId}:
+      users: ${users.length}
+      chats: ${chats.length}
+      participants: ${participants.length}
+      channels: ${channels.length}
+      ''');
 
     await natsProvider.sendSystemMessageToChannel(
       natsProvider.getPrivateUserChatIdList(userId.toString()),

@@ -43,7 +43,7 @@ class Client {
   //                      Attributes
   // ####################################################
 
-  final nats.Client natsClient = nats.Client();
+  nats.Client natsClient = nats.Client();
   final String connectionID = Uuid().v4();
   String _clientID = Uuid().v4();
   bool _connected = false;
@@ -187,6 +187,12 @@ class Client {
 
     Future.delayed(Duration(seconds: pingInterval), () => _heartbeat());
 
+    print('''
+
+    NATS CLIENT STATUS ${natsClient.status}
+    
+    ''');
+
     if (natsClient.status == nats.Status.connected) {
       // Generante new clientID for reconnection
       //_clientID = Uuid().v4();
@@ -204,6 +210,7 @@ class Client {
           '_STAN.discover.$clusterID', connectRequest.writeToBuffer());
 
       _connectResponse = ConnectResponse.fromBuffer((_req).data);
+      print(_connectResponse);
       unawaited(pingResponseWatchdog());
 
       if (_onConnect != null) {
@@ -251,6 +258,7 @@ class Client {
     retryReconnect = false;
     failPings = 0;
     await _disconnect();
+    natsClient = nats.Client();
   }
 
   Future<void> _disconnect() async {
@@ -519,8 +527,13 @@ class Client {
     if (dataMessage.isRedelivery) {
       print(
           'NOT ACKNOWLEDGING - ${ack.subject} - ${subscription.ackInbox} - SEQ = ${ack.sequence}');
+      subscription.subscription.close();
     }
 
-    natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
+    try {
+      natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
+    } catch (_e) {
+      print('EXITED DURING ACK');
+    }
   }
 }

@@ -18,13 +18,11 @@ class ChatInfoBottomBtns extends StatelessWidget {
 
   void _clearMessages() {
     messenger.chatFunctions.deleteAllChatMessages(chat.id);
-    messenger.chatSaver.saveChats(newChat: null);
   }
 
   Future<void> _deleteChat(BuildContext context) async {
     if (messenger.isConnected) {
-      messenger.chatEventsSender
-          .sendLeftMessage(chat);
+      messenger.chatEventsSender.sendLeftMessage(chat);
       _clearMessages();
       messenger.chatFunctions.deleteChat(chat.id);
       Navigator.of(context).popUntil((route) => route.isFirst);

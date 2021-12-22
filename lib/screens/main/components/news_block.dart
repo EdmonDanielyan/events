@@ -9,8 +9,6 @@ import 'package:ink_mobile/screens/main/components/news_filter_slider.dart';
 import 'package:ink_mobile/screens/main/components/news_list_slider.dart';
 import 'package:ink_mobile/screens/main/components/news_list_slider_element_placeholder.dart';
 import 'package:ink_mobile/screens/main/main_screen.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class NewsBlock extends StatelessWidget {
   NewsBlock({Key? key}) : super(key: key);

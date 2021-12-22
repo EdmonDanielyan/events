@@ -125,13 +125,13 @@ class ChannelsRegistry with Loggable {
 
   Future<void> listenToMyStoredChannels() async {
     logger.finest('listenToMyStoredChannels');
-    List<ChannelTable> channels = List<ChannelTable>.unmodifiable(await channelFunctions.getAllChannels());
+    List<ChannelTable> channels = List<ChannelTable>.unmodifiable(
+        await channelFunctions.getAllChannels());
     // List<ChannelTable> channels = await channelFunctions.getAllChannels();
 
     if (channels.isNotEmpty) {
       for (final channel in channels) {
-        Int64 currentSeq = Int64.parseInt(channel.sequence).toInt64();
-        Int64 sequence = currentSeq == 0 ? currentSeq : currentSeq + 1;
+        Int64 sequence = strToSequence(channel.sequence);
 
         await _subscribeToChannel(
           channel.messageType,
@@ -140,6 +140,11 @@ class ChannelsRegistry with Loggable {
         );
       }
     }
+  }
+
+  Int64 strToSequence(String sequence) {
+    Int64 currentSeq = Int64.parseInt(sequence).toInt64();
+    return currentSeq == 0 ? currentSeq : currentSeq + 1;
   }
 
   Future<void> _subscribeToChannel(MessageType type, String channel,
@@ -181,6 +186,28 @@ class ChannelsRegistry with Loggable {
         }
       }
       await listenToMyStoredChannels();
+    }
+  }
+
+  Future<void> subscribeOnChatChannelsIfNotExists(String chatId) async {
+    logger.finest("subscribeOnChatChannelsIfNotExists: $chatId");
+    final getChannels = getLinkedChannelsById(chatId);
+
+    if (getChannels.isNotEmpty) {
+      for (final channel in getChannels) {
+        final channelExists = await channelFunctions.getChannel(channel);
+        if (channelExists == null) {
+          final channelTable =
+              await channelFunctions.saveByChannelName(channel);
+          if (channelTable != null) {
+            await _subscribeToChannel(
+                channelTable.messageType, channelTable.to);
+          }
+        } else {
+          await _subscribeToChannel(channelExists.messageType, channelExists.to,
+              startSequence: strToSequence(channelExists.sequence));
+        }
+      }
     }
   }
 

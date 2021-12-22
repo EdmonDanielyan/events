@@ -161,6 +161,12 @@ class MessageListView {
         .toList();
   }
 
+  static List<MessageTable> notReadMessages(List<MessageTable> items) {
+    return items
+        .where((element) => element.status != MessageStatus.READ)
+        .toList();
+  }
+
   static String listMessagesToString(List<MessageTable> messages) {
     List<String> object = [];
 

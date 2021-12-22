@@ -81,7 +81,7 @@ import 'functions/chat/channel_functions.dart' as _i84;
 import 'functions/chat/chat_creation.dart' as _i85;
 import 'functions/chat/chat_functions.dart' as _i86;
 import 'functions/chat/listeners/channel_listener.dart' as _i98;
-import 'functions/chat/listeners/channels_registry.dart' as _i92;
+import 'functions/chat/listeners/channels_registry.dart' as _i93;
 import 'functions/chat/listeners/chat_info.dart' as _i104;
 import 'functions/chat/listeners/chat_list.dart' as _i103;
 import 'functions/chat/listeners/delete_message.dart' as _i101;
@@ -94,12 +94,12 @@ import 'functions/chat/listeners/text_message.dart' as _i105;
 import 'functions/chat/listeners/texting.dart' as _i107;
 import 'functions/chat/send_message.dart' as _i91;
 import 'functions/chat/sender/chat_events.dart' as _i109;
-import 'functions/chat/sender/chat_saver.dart' as _i93;
-import 'functions/chat/sender/invite_sender.dart' as _i94;
-import 'functions/chat/sender/message_editor_sender.dart' as _i95;
+import 'functions/chat/sender/chat_saver.dart' as _i94;
+import 'functions/chat/sender/invite_sender.dart' as _i95;
+import 'functions/chat/sender/message_editor_sender.dart' as _i96;
 import 'functions/chat/sender/ping_sender.dart' as _i90;
-import 'functions/chat/sender/text_sender.dart' as _i96;
-import 'functions/chat/sender/user_reaction_sender.dart' as _i97;
+import 'functions/chat/sender/text_sender.dart' as _i97;
+import 'functions/chat/sender/user_reaction_sender.dart' as _i92;
 import 'functions/chat/user_functions.dart' as _i82;
 import 'models/announcement_data.dart' as _i8;
 import 'models/chat/database/chat_db.dart' as _i17;
@@ -333,49 +333,42 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.factory<_i91.SendMessage>(() => _i91.SendMessage(
       chatFunctions: get<_i86.ChatFunctions>(),
       chatDatabaseCubit: get<_i18.ChatDatabaseCubit>()));
-  gh.lazySingleton<_i92.ChannelsRegistry>(() => _i92.ChannelsRegistry(
+  gh.factory<_i92.UserReactionSender>(() => _i92.UserReactionSender(
+      get<_i89.NatsProvider>(), get<_i86.ChatFunctions>()));
+  gh.lazySingleton<_i93.ChannelsRegistry>(() => _i93.ChannelsRegistry(
       natsProvider: get<_i89.NatsProvider>(),
       channelFunctions: get<_i84.ChannelFunctions>(),
       userFunctions: get<_i82.UserFunctions>()));
-  gh.factory<_i93.ChatSaver>(
-      () => _i93.ChatSaver(get<_i17.ChatDatabase>(), get<_i89.NatsProvider>()));
-  gh.factory<_i94.InviteSender>(() => _i94.InviteSender(
+  gh.factory<_i94.ChatSaver>(
+      () => _i94.ChatSaver(get<_i17.ChatDatabase>(), get<_i89.NatsProvider>()));
+  gh.factory<_i95.InviteSender>(() => _i95.InviteSender(
       get<_i89.NatsProvider>(),
       get<_i82.UserFunctions>(),
       get<_i86.ChatFunctions>(),
-      get<_i93.ChatSaver>(),
+      get<_i94.ChatSaver>(),
       get<_i17.ChatDatabase>(),
-      get<_i92.ChannelsRegistry>()));
-  gh.factory<_i95.MessageEditorSender>(() => _i95.MessageEditorSender(
+      get<_i93.ChannelsRegistry>()));
+  gh.factory<_i96.MessageEditorSender>(() => _i96.MessageEditorSender(
       get<_i89.NatsProvider>(),
       get<_i82.UserFunctions>(),
       get<_i86.ChatFunctions>(),
-      get<_i93.ChatSaver>(),
       get<_i17.ChatDatabase>()));
-  gh.factory<_i96.TextSender>(() => _i96.TextSender(
+  gh.factory<_i97.TextSender>(() => _i97.TextSender(
       get<_i89.NatsProvider>(),
       get<_i82.UserFunctions>(),
       get<_i86.ChatFunctions>(),
       get<_i17.ChatDatabase>(),
-      get<_i92.ChannelsRegistry>(),
-      get<_i93.ChatSaver>()));
-  gh.factory<_i97.UserReactionSender>(() => _i97.UserReactionSender(
-      get<_i89.NatsProvider>(),
-      get<_i86.ChatFunctions>(),
-      get<_i93.ChatSaver>()));
+      get<_i93.ChannelsRegistry>()));
   gh.factory<_i98.ChannelListener>(
-      () => _i99.MessageStatusListener(
-          get<_i89.NatsProvider>(),
-          get<_i92.ChannelsRegistry>(),
-          get<_i86.ChatFunctions>(),
-          get<_i93.ChatSaver>()),
+      () => _i99.MessageStatusListener(get<_i89.NatsProvider>(),
+          get<_i93.ChannelsRegistry>(), get<_i86.ChatFunctions>()),
       instanceName: 'UserReacted');
   gh.factory<_i98.ChannelListener>(
       () => _i100.ChatLeftListener(
           get<_i89.NatsProvider>(),
-          get<_i92.ChannelsRegistry>(),
-          get<_i94.InviteSender>(),
-          get<_i93.ChatSaver>(),
+          get<_i93.ChannelsRegistry>(),
+          get<_i95.InviteSender>(),
+          get<_i94.ChatSaver>(),
           get<_i82.UserFunctions>(),
           get<_i18.ChatDatabaseCubit>(),
           get<_i86.ChatFunctions>()),
@@ -384,78 +377,77 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => _i101.MessageDeletedListener(
           get<_i89.NatsProvider>(),
           get<_i18.ChatDatabaseCubit>(),
-          get<_i92.ChannelsRegistry>(),
+          get<_i93.ChannelsRegistry>(),
           get<_i86.ChatFunctions>(),
-          get<_i94.InviteSender>(),
+          get<_i95.InviteSender>(),
           get<_i17.ChatDatabase>(),
-          get<_i93.ChatSaver>()),
+          get<_i94.ChatSaver>()),
       instanceName: 'RemoveMessage');
   gh.factory<_i98.ChannelListener>(
       () => _i102.ChatInvitationListener(
           get<_i89.NatsProvider>(),
-          get<_i92.ChannelsRegistry>(),
-          get<_i93.ChatSaver>(),
-          get<_i94.InviteSender>(),
+          get<_i93.ChannelsRegistry>(),
+          get<_i94.ChatSaver>(),
+          get<_i95.InviteSender>(),
           get<_i18.ChatDatabaseCubit>()),
       instanceName: 'InviteUserToJoinChat');
   gh.factory<_i98.ChannelListener>(
       () => _i103.ChatListListener(
           get<_i89.NatsProvider>(),
-          get<_i92.ChannelsRegistry>(),
+          get<_i93.ChannelsRegistry>(),
           get<_i18.ChatDatabaseCubit>(),
           get<_i82.UserFunctions>(),
           get<_i84.ChannelFunctions>(),
-          get<_i93.ChatSaver>(),
+          get<_i94.ChatSaver>(),
           get<_i85.ChatCreation>()),
       instanceName: 'ChatList');
   gh.factory<_i98.ChannelListener>(
       () => _i104.ChatInfoListener(
           get<_i89.NatsProvider>(),
-          get<_i92.ChannelsRegistry>(),
+          get<_i93.ChannelsRegistry>(),
           get<_i82.UserFunctions>(),
           get<_i18.ChatDatabaseCubit>(),
-          get<_i94.InviteSender>()),
+          get<_i95.InviteSender>()),
       instanceName: 'UpdateChatInfo');
   gh.factory<_i98.ChannelListener>(
       () => _i105.TextMessageListener(
           get<_i89.NatsProvider>(),
-          get<_i92.ChannelsRegistry>(),
+          get<_i93.ChannelsRegistry>(),
           get<_i82.UserFunctions>(),
           get<_i18.ChatDatabaseCubit>(),
-          get<_i94.InviteSender>(),
-          get<_i86.ChatFunctions>(),
-          get<_i93.ChatSaver>()),
+          get<_i95.InviteSender>(),
+          get<_i86.ChatFunctions>()),
       instanceName: 'Text');
   gh.factory<_i98.ChannelListener>(
       () => _i106.ChatJoinedListener(
           get<_i89.NatsProvider>(),
-          get<_i92.ChannelsRegistry>(),
+          get<_i93.ChannelsRegistry>(),
           get<_i82.UserFunctions>(),
           get<_i18.ChatDatabaseCubit>(),
-          get<_i94.InviteSender>(),
-          get<_i93.ChatSaver>(),
+          get<_i95.InviteSender>(),
+          get<_i94.ChatSaver>(),
           get<_i86.ChatFunctions>()),
       instanceName: 'UserJoined');
   gh.factory<_i98.ChannelListener>(
       () => _i107.MessageTextingListener(
           get<_i89.NatsProvider>(),
-          get<_i92.ChannelsRegistry>(),
+          get<_i93.ChannelsRegistry>(),
           get<_i18.ChatDatabaseCubit>(),
           get<_i16.ChatCubit>()),
       instanceName: 'Texting');
   gh.factory<_i98.ChannelListener>(
       () => _i108.UserOnlineListener(
           get<_i89.NatsProvider>(),
-          get<_i92.ChannelsRegistry>(),
+          get<_i93.ChannelsRegistry>(),
           get<_i82.UserFunctions>(),
-          get<_i94.InviteSender>(),
+          get<_i95.InviteSender>(),
           get<_i18.ChatDatabaseCubit>()),
       instanceName: 'Online');
   gh.factory<_i109.ChatEventsSender>(() => _i109.ChatEventsSender(
       get<_i89.NatsProvider>(),
       get<_i82.UserFunctions>(),
-      get<_i93.ChatSaver>(),
-      get<_i92.ChannelsRegistry>()));
+      get<_i94.ChatSaver>(),
+      get<_i93.ChannelsRegistry>()));
   return get;
 }
 

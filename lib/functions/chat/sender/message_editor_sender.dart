@@ -9,19 +9,17 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../chat_functions.dart';
 import '../user_functions.dart';
-import 'chat_saver.dart';
 
 @injectable
 class MessageEditorSender {
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
   final ChatFunctions chatFunctions;
-  final ChatSaver chatSaver;
 
   final ChatDatabase db;
 
-  MessageEditorSender(this.natsProvider, this.userFunctions, this.chatFunctions,
-      this.chatSaver, this.db);
+  MessageEditorSender(
+      this.natsProvider, this.userFunctions, this.chatFunctions, this.db);
 
   Future<bool> sendDeleteMessages(
       List<MessageTable> messages, BuildContext context,
@@ -54,7 +52,6 @@ class MessageEditorSender {
       chatFunctions.deleteMessages(messages);
     }
 
-    chatSaver.saveChats(newChat: null);
     return result;
   }
 }

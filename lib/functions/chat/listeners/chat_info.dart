@@ -4,7 +4,6 @@ import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
 import 'package:ink_mobile/models/chat/nats/chat_info.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
-import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../user_functions.dart';
@@ -33,13 +32,8 @@ class ChatInfoListener extends ChannelListener {
     try {
       final mapPayload = message.payload! as SystemPayload;
       ChatInfoFields fields = ChatInfoFields.fromMap(mapPayload.fields);
-
       final chat = fields.chat;
-      final user = fields.user;
-
-      if (user.id != JwtPayload.myId) {
-        chatDatabaseCubit.db.updateChatById(chat.id, chat);
-      }
+      chatDatabaseCubit.db.updateChatById(chat.id, chat);
     } on NoSuchMethodError {
       return;
     }

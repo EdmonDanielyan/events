@@ -49,15 +49,15 @@ class MessageDeletedListener extends ChannelListener {
       final sender = fields.user;
       final myMessages =
           MessageListView.getUserMessages(fields.messages, sender.id);
-      if (myMessages.isNotEmpty && sender.id != JwtPayload.myId) {
+      if (myMessages.isNotEmpty) {
         if (fields.edited) {
-          _pushNotification(myMessages.last, sender);
+          if (sender.id != JwtPayload.myId) {
+            _pushNotification(myMessages.last, sender);
+          }
           chatFunctions.editMessages(myMessages);
         } else {
           chatFunctions.deleteMessages(myMessages);
         }
-        await chatSaver
-            .saveChats(newChat: null);
       }
     } on NoSuchMethodError {
       return;

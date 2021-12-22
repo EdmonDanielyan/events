@@ -35,16 +35,14 @@ class UserOnlineListener extends ChannelListener {
 
   Debouncer _debouncer = Debouncer(milliseconds: 90000);
 
-
   Future<void> subscribe(UserTable user) async {
     try {
       if (!subscribedUsers.contains(user.id)) {
+        subscribedUsers.add(user.id);
         final channel = natsProvider.getUserOnlineChannel(user.id);
         bool sub = await natsProvider.subscribeToChannel(channel, onMessage);
 
-        if (sub) {
-          subscribedUsers.add(user.id);
-        } else {
+        if (!sub) {
           throw "offline";
         }
       }
@@ -58,6 +56,7 @@ class UserOnlineListener extends ChannelListener {
 
   Future<void> onMessage(String channel, NatsMessage message) async {
     super.onMessage(channel, message);
+
     try {
       final mapPayload = message.payload! as SystemPayload;
       UserOnlineFields fields = UserOnlineFields.fromMap(mapPayload.fields);
@@ -74,9 +73,8 @@ class UserOnlineListener extends ChannelListener {
   }
 
   void updateUserStatus(UserTable user, bool online) {
-    logger.finest("updateUserStatus: user=${user.name}, was_online: ${user.online}, will_be_online=$online");
+    logger.finest(
+        "updateUserStatus: user=${user.name}, was_online: ${user.online}, will_be_online=$online");
     chatDatabaseCubit.db.updateUser(user.id, user.copyWith(online: online));
   }
-
-
 }

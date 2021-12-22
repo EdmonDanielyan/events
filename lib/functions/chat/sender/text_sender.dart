@@ -12,7 +12,6 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../chat_functions.dart';
 import '../user_functions.dart';
-import 'chat_saver.dart';
 
 @injectable
 class TextSender with Loggable {
@@ -22,25 +21,21 @@ class TextSender with Loggable {
   final ChatDatabase db;
   final ChannelsRegistry registry;
 
-  final ChatSaver chatSaver;
-
-
   TextSender(this.natsProvider, this.userFunctions, this.chatFunctions, this.db,
-      this.registry, this.chatSaver);
+      this.registry);
 
   /// Publicise message to chat
   Future<void> sendMessage(ChatTable chat, MessageTable message) async {
     bool success = await _sendTxtMessage(chat, message);
     MessageStatus status = success ? MessageStatus.SENT : MessageStatus.ERROR;
     await chatFunctions.updateMessageStatus(message, status);
-    chatSaver.saveChats(newChat: null);
   }
 
   Future<bool> _sendTxtMessage(
-      ChatTable chat,
-      MessageTable message, {
-        UserTable? user,
-      }) async {
+    ChatTable chat,
+    MessageTable message, {
+    UserTable? user,
+  }) async {
     var channelById = natsProvider.getGroupTextChannelById(chat.id);
     return await natsProvider.sendSystemMessageToChannel(
       channelById,
@@ -57,7 +52,8 @@ class TextSender with Loggable {
   Future<void> redeliverMessages({int? userId}) async {
     logger.finest('redeliverMessages: $userId');
 
-    final unsentMessages = await db.getUnsentMessages(userId ?? JwtPayload.myId);
+    final unsentMessages =
+        await db.getUnsentMessages(userId ?? JwtPayload.myId);
 
     Map<String, ChatTable> chats = {};
 
@@ -72,7 +68,8 @@ class TextSender with Loggable {
         }
 
         if (chats.containsKey(message.chatId)) {
-          logger.fine('SENDING MESSAGE ${chats[message.chatId]!.name} AND MESSAGE ${message.message}');
+          logger.fine(
+              'SENDING MESSAGE ${chats[message.chatId]!.name} AND MESSAGE ${message.message}');
           await sendMessage(chats[message.chatId]!, message);
         }
       }
@@ -80,10 +77,10 @@ class TextSender with Loggable {
   }
 
   Future<bool> sendTextingMessage(
-      String channel, {
-        required CustomTexting customTexting,
-        required String chatId,
-      }) async {
+    String channel, {
+    required CustomTexting customTexting,
+    required String chatId,
+  }) async {
     logger.finest('sendTextingMessage: $channel');
     return await natsProvider.sendSystemMessageToChannel(
       channel,

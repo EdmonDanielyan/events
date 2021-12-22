@@ -162,6 +162,7 @@ class NatsProvider {
         clusterID: natsCluster,
         pingMaxAttempts: 10,
         clientID: "$userId-$deviceVirtualId",
+        retryReconnect: true,
         connectOption:
             nats.ConnectOption(tlsRequired: true, auth_token: natsToken));
     return connectResult;
@@ -302,6 +303,7 @@ class NatsProvider {
     MessageType.InviteUserToJoinChat,
     MessageType.UserJoined,
     MessageType.UserLeftChat,
+    MessageType.UserReacted,
     MessageType.Text,
     MessageType.Document,
     MessageType.RemoveMessage,
