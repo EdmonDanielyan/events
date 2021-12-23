@@ -512,7 +512,10 @@ class Client {
     }
   }
 
-  void acknowledge(Subscription subscription, DataMessage dataMessage) {
+  Map<String, int> unAcknowledgedCounter = {};
+
+  void acknowledge(Subscription subscription, DataMessage dataMessage,
+      {Function(Subscription, DataMessage)? unacknowledgedMessageHandler}) {
     Ack ack = Ack()
       ..subject = dataMessage.subject
       ..sequence = dataMessage.sequence;
@@ -520,13 +523,38 @@ class Client {
     if (dataMessage.isRedelivery) {
       print(
           'NOT ACKNOWLEDGING - ${ack.subject} - ${subscription.ackInbox} - SEQ = ${ack.sequence}');
-      subscription.subscription.close();
+      _handleUnAck(subscription,
+          unacknowledgedMessageHandler: unacknowledgedMessageHandler);
     }
 
     try {
       natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
     } catch (_e) {
       print('EXITED DURING ACK');
+    }
+  }
+
+  void _handleUnAck(Subscription subscription,
+      {Function(Subscription, DataMessage)? unacknowledgedMessageHandler}) {
+    final channel = subscription.subject;
+    if (unAcknowledgedCounter.containsKey(channel)) {
+      int limit = 3;
+      int counter = unAcknowledgedCounter[channel]!;
+
+      print('COUNTER $counter');
+
+      if (counter >= limit) {
+        subscription.subscription.close();
+        print('CLOSED $channel after $limit unacknowledged messages');
+      }
+
+      unAcknowledgedCounter[channel] = counter + 1;
+    } else {
+      unAcknowledgedCounter[channel] = 0;
+    }
+
+    if (unacknowledgedMessageHandler != null) {
+      //unacknowledgedMessageHandler(subscription, dataMessage);
     }
   }
 }

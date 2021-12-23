@@ -61,6 +61,10 @@ class _SearchFieldState extends State<SearchField> {
               height: 20,
             ),
           ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(50.0),
+          ),
           fillColor: _fillColor,
           hintText: _hintText ?? widget.hint,
           contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),

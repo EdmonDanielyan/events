@@ -35,11 +35,10 @@ class ChatInvitationListener extends ChannelListener {
       final mapPayload = message.payload! as SystemPayload;
       ChatInvitationFields fields =
           ChatInvitationFields.fromMap(mapPayload.fields);
-      late ChatTable chat =
-          ChatListView.changeChatForParticipant(fields.chat, fields.users);
+      final chat = fields.chat;
 
       await sl<ChatCreation>().createDynamically(chat, fields.users);
-      await chatSaver.saveChats(newChat: chat);
+      await chatSaver.saveChats(newChat: null);
 
       _chatLinkedListeners(chat.id);
     } on NoSuchMethodError {

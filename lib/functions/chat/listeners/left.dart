@@ -5,6 +5,7 @@ import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
+import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
@@ -57,8 +58,9 @@ class ChatLeftListener extends ChannelListener {
           final participants = ChatUserViewModel.toParticipants(users, chat);
 
           await userFunctions.deleteParticipants(participants, chat);
-          setMessage(users, chat);
+          setMessage(users, chat, message);
         }
+
         await chatSaver.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
@@ -83,16 +85,19 @@ class ChatLeftListener extends ChannelListener {
     return false;
   }
 
-  Future<void> setMessage(List<UserTable> users, ChatTable chat) async {
+  Future<void> setMessage(
+      List<UserTable> users, ChatTable chat, NatsMessage message) async {
     for (final user in users) {
       final generateMessage = GetIt.I<SendMessage>().joinedLeftMessage(
         chatId: chat.id,
         userName: user.name,
         type: MessageType.UserLeftChat,
+        created: message.createdAt,
       );
 
       if (generateMessage != null) {
-        await GetIt.I<SendMessage>().addMessage(chat, generateMessage, setChatToFirst: false);
+        await GetIt.I<SendMessage>()
+            .addMessage(chat, generateMessage, setChatToFirst: false);
       }
     }
   }

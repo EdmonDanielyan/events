@@ -114,8 +114,9 @@ class _ChatListTileState extends State<ChatListTile> {
                               SizedBox(width: 2.0),
                               if (hasMessage) ...[
                                 ChatDate(
-                                    chatDate: lastMessage?.created ??
-                                        new DateTime.now()),
+                                  chatDate: lastMessage?.created ??
+                                      new DateTime.now(),
+                                ),
                               ],
                             ],
                           ),
@@ -195,7 +196,9 @@ class _ChatListTileState extends State<ChatListTile> {
     if (lastMessage == null) return const SizedBox();
 
     return ChatMessage(
-        displayName: _getDisplayName(), message: lastMessage!.message);
+      displayName: _getDisplayName(),
+      message: lastMessage!.message,
+    );
   }
 
   Widget _displayEmpty() {

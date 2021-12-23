@@ -32,6 +32,9 @@ class _BodyState extends State<Body> {
         .watchParticipants(widget.chat.id)
         .listen((event) {
       if (this.mounted) {
+        event.sort((a, b) => ParticipantWithUserListView.sortByAdmin(a, b,
+            ownerId: widget.chat.ownerId));
+
         setState(() {
           participants = event;
         });

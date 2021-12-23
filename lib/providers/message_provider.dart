@@ -96,6 +96,8 @@ class Messenger with Loggable {
       _softDispose();
       _showDisconnectedSnackBar();
     };
+
+    natsProvider.onUnacknowledged = (subscription, message, onMessage) async {};
   }
 
   //todo: нужно убрать из месенджера все вызовы UI

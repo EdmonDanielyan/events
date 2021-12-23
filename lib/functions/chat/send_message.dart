@@ -24,6 +24,7 @@ class SendMessage with Loggable {
     String? repliedMessageId,
     MessageStatus status = MessageStatus.SENDING,
     MessageType type = MessageType.Text,
+    DateTime? created,
   }) {
     return MessageTable(
       id: generateMessageId,
@@ -33,7 +34,7 @@ class SendMessage with Loggable {
       read: false,
       sentOn: false,
       status: status,
-      created: new DateTime.now(),
+      created: created ?? new DateTime.now(),
       type: type,
       repliedMessageId: repliedMessageId,
     );
@@ -90,10 +91,12 @@ class SendMessage with Loggable {
     await chatDatabaseCubit.db.insertMultipleMessages(messages);
   }
 
-  MessageTable? joinedLeftMessage(
-      {required String chatId,
-      required String userName,
-      required MessageType type}) {
+  MessageTable? joinedLeftMessage({
+    required String chatId,
+    required String userName,
+    required MessageType type,
+    required DateTime created,
+  }) {
     bool isJoined = type == MessageType.UserJoined;
     bool isLeft = type == MessageType.UserLeftChat;
     if (isJoined || isLeft) {
@@ -103,8 +106,13 @@ class SendMessage with Loggable {
 
       final text = "$userName $action";
 
-      return _generateMessage(chatId, text,
-          status: MessageStatus.EMPTY, type: type);
+      return _generateMessage(
+        chatId,
+        text,
+        status: MessageStatus.EMPTY,
+        type: type,
+        created: created,
+      );
     }
     return null;
   }

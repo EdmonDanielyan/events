@@ -66,5 +66,4 @@ class ChatEventsSender {
 
     await chatSaver.saveChats(newChat: null);
   }
-
 }

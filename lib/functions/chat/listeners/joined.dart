@@ -53,7 +53,7 @@ class ChatJoinedListener extends ChannelListener {
         await userFunctions.insertMultipleUsers(users);
         await userFunctions.insertMultipleParticipants(
             ChatUserViewModel.toParticipants(users, chat));
-        setMessage(users, chat);
+        setMessage(users, chat, message);
         await chatSaver.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
@@ -61,12 +61,14 @@ class ChatJoinedListener extends ChannelListener {
     }
   }
 
-  Future<void> setMessage(List<UserTable> users, ChatTable chat) async {
+  Future<void> setMessage(
+      List<UserTable> users, ChatTable chat, NatsMessage message) async {
     for (final user in users) {
       final generateMessage = GetIt.I<SendMessage>().joinedLeftMessage(
         chatId: chat.id,
         userName: user.name,
         type: MessageType.UserJoined,
+        created: message.createdAt,
       );
 
       if (generateMessage != null) {

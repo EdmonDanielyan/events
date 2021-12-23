@@ -289,7 +289,20 @@ class NatsProvider {
   }
 
   void acknowledge(Subscription subscription, DataMessage message) {
-    _stan.acknowledge(subscription, message);
+    _stan.acknowledge(subscription, message,
+        unacknowledgedMessageHandler: _unAcknowledgedMessageHandler);
+  }
+
+  Future<void> _unAcknowledgedMessageHandler(
+      Subscription subscription, DataMessage message) async {
+    final String channel = subscription.subject;
+
+    if (_channelCallbacks.containsKey(channel)) {
+      Future<void> Function(String, NatsMessage) channelCallback =
+          _channelCallbacks[channel]!;
+
+      onUnacknowledged(subscription, message, channelCallback);
+    }
   }
 
   final Set<String> userChatIdList = {};
@@ -317,6 +330,9 @@ class NatsProvider {
 
   Future<void> Function() onConnected = () async {};
   Future<void> Function() onDisconnected = () async {};
+  Future<void> Function(
+          Subscription, DataMessage, Future<void> Function(String, NatsMessage))
+      onUnacknowledged = (subscription, message, onMessage) async {};
 
   bool get isConnected => _stan.connected;
 }

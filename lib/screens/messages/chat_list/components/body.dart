@@ -8,6 +8,7 @@ import 'package:ink_mobile/cubit/chat_list/chat_list_state.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
@@ -37,6 +38,7 @@ class _BodyState extends State<Body> {
     if (messenger.isConnected) {
       messenger.chatFunctions.deleteChat(chat.id);
       messenger.chatEventsSender.sendLeftMessage(chat);
+
       removed = true;
     }
 

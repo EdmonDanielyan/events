@@ -37,8 +37,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
       ChatTable chat = ChatInfoEditEntitiesFunctions.copyChat(entities, _chat);
 
       if (messenger.isConnected) {
-        bool sent =
-            await messenger.chatEventsSender.sendNewChatInfo(chat);
+        bool sent = await messenger.chatEventsSender.sendNewChatInfo(chat);
         if (sent) {
           messenger.chatFunctions.updateChat(chat);
         } else {
@@ -78,8 +77,14 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
                 initalValue: _chat.avatar,
                 hint: _strings.avatarUrl,
                 onChanged: (val) => entities.avatarUrl = val,
-                validator: (val) =>
-                    !isStringUrl(val!) ? _strings.fillTheFieldCorrectly : null,
+                validator: (val) {
+                  if (val!.isEmpty) {
+                    return null;
+                  }
+                  return !isStringUrl(val)
+                      ? _strings.fillTheFieldCorrectly
+                      : null;
+                },
               ),
               //avatarWidget(),
               const SizedBox(height: 5.0),

@@ -23,6 +23,15 @@ class ParticipantWithUser {
 }
 
 class ParticipantWithUserListView {
+  static int sortByAdmin(ParticipantWithUser a, ParticipantWithUser b,
+      {int? ownerId}) {
+    if (ownerId != null) {
+      return a.participant!.userId == ownerId ? -1 : 1;
+    }
+
+    return a.participant!.admin ? -1 : 1;
+  }
+
   static List<int> getUserIds(List<ParticipantWithUser> items) {
     List<int> ids = [];
     if (items.isNotEmpty) {

@@ -34,6 +34,7 @@ class ChatListView {
       ChatTable chat, List<UserTable> users) {
     if (!ChatListView.isGroup(chat)) {
       UserTable oppositeUser = ChatUserViewModel.getOppositeUser(users);
+
       chat = chat.copyWith(
         name: oppositeUser.name,
         avatar: oppositeUser.avatar,
