@@ -110,7 +110,6 @@ class ChannelsRegistry with Loggable {
       }
     });
     await chatListListener.subscribe(userFunctions.me.id.toString());
-    await userOnlineListener.subscribe(userFunctions.me);
     await _listenToInvitations();
   }
 

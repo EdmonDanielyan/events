@@ -233,7 +233,7 @@ class NatsProvider {
       subject: channel,
       maxInFlight: 1,
       startPosition: startPosition ?? _getPosition(channel),
-      startSequence: _getSequence(channel, startSequence),
+      startSequence: getSequence(channel, startSequence),
     );
 
     return subscription;
@@ -252,7 +252,7 @@ class NatsProvider {
     return StartPosition.NewOnly;
   }
 
-  Int64? _getSequence(String channel, Int64 startSequence) {
+  Int64? getSequence(String channel, Int64 startSequence) {
     final msgType = MessageListView.getTypeByChannel(channel);
 
     if (msgType != null) {
@@ -260,6 +260,8 @@ class NatsProvider {
           _lastReceivedType.contains(msgType)) {
         return startSequence;
       }
+
+      return Int64.ZERO;
     }
 
     return null;
@@ -289,8 +291,11 @@ class NatsProvider {
   }
 
   void acknowledge(Subscription subscription, DataMessage message) {
-    _stan.acknowledge(subscription, message,
-        unacknowledgedMessageHandler: _unAcknowledgedMessageHandler);
+    _stan.acknowledge(
+      subscription,
+      message,
+      unacknowledgedMessageHandler: _unAcknowledgedMessageHandler,
+    );
   }
 
   Future<void> _unAcknowledgedMessageHandler(
@@ -321,6 +326,7 @@ class NatsProvider {
     MessageType.Document,
     MessageType.RemoveMessage,
   };
+
   Future<void> Function(String, NatsMessage) onMessage =
       (channel, message) async {
     _logger.info(message);

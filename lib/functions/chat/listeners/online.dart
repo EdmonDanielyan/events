@@ -10,6 +10,7 @@ import 'package:ink_mobile/models/chat/nats/online.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
+import 'package:fixnum/fixnum.dart';
 
 import '../user_functions.dart';
 import 'channels_registry.dart';
@@ -34,14 +35,33 @@ class UserOnlineListener extends ChannelListener {
     this.chatDatabaseCubit,
   ) : super(natsProvider, registry);
 
-  Debouncer _debouncer = Debouncer(milliseconds: 90000);
+  Debouncer _debouncer = Debouncer(milliseconds: 80000);
+  Debouncer _subscribeDebouncer = Debouncer(milliseconds: 3000);
+
+  Set<UserTable> _usersToSubscribe = {};
 
   Future<void> subscribe(UserTable user) async {
+    if (!_usersToSubscribe.contains(user)) {
+      _usersToSubscribe.add(user);
+
+      _subscribeDebouncer.run(() {
+        _usersToSubscribe.forEach((newUser) async {
+          logger.fine("SUBSCRIBINT TO USER ${newUser.id}");
+          await subscribeIndividually(newUser);
+        });
+      });
+    }
+  }
+
+  Future<void> subscribeIndividually(UserTable user) async {
     try {
       if (!subscribedUsers.contains(user.id)) {
         subscribedUsers.add(user.id);
         final channel = natsProvider.getUserOnlineChannel(user.id);
-        bool sub = await natsProvider.subscribeToChannel(channel, onMessage);
+        bool sub = await natsProvider.subscribeToChannel(channel, onMessage,
+            startSequence: Int64.ZERO);
+
+        print("CHANNEL SUBBED $sub");
 
         if (!sub) {
           throw "offline";
@@ -50,6 +70,7 @@ class UserOnlineListener extends ChannelListener {
     } on SubscriptionAlreadyExistException {
     } catch (e) {
       //CLIENT IS OFFLINE
+
       logger.warning("Error during subscribe", e);
       updateUserStatus(user, false);
     }
