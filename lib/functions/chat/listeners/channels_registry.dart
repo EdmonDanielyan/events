@@ -2,6 +2,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
+import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat_list.dart';
@@ -19,6 +20,7 @@ import 'channel_listener.dart';
 class ChannelsRegistry with Loggable {
   final NatsProvider natsProvider;
   final ChannelFunctions channelFunctions;
+  final ChatDatabaseCubit chatDatabaseCubit;
 
   ChatListListener get chatListListener =>
       listeners[MessageType.ChatList]! as ChatListListener;
@@ -30,10 +32,12 @@ class ChannelsRegistry with Loggable {
 
   Map<MessageType, ChannelListener> listeners = {};
 
-  ChannelsRegistry(
-      {required this.natsProvider,
-      required this.channelFunctions,
-      required this.userFunctions});
+  ChannelsRegistry({
+    required this.natsProvider,
+    required this.channelFunctions,
+    required this.userFunctions,
+    required this.chatDatabaseCubit,
+  });
 
   String lastChannelStr = "";
   Set<String> listeningChannels = {};
@@ -109,8 +113,13 @@ class ChannelsRegistry with Loggable {
             'Not found listener for message type: $messageListenerToSearch');
       }
     });
+    chatDatabaseCubit.setLoadingChats(true);
     await chatListListener.subscribe(userFunctions.me.id.toString());
+    await userOnlineListener.subscribeIndividually(userFunctions.me);
     await _listenToInvitations();
+    await userOnlineListener.subscribeToAllAvailableUsers();
+
+    chatDatabaseCubit.setLoadingChats(false);
   }
 
   Future<void> _listenToInvitations() async {
@@ -223,12 +232,18 @@ class ChannelsRegistry with Loggable {
 
   bool isListening(String channel) => listeningChannels.contains(channel);
 
+  void addToListeningChannels(String channel) {
+    if (!listeningChannels.contains(channel)) {
+      listeningChannels.add(channel);
+    }
+  }
+
   void unsubscribeFromAll() {
     logger.finest("unsubscribeFromAll");
     listeningChannels.forEach((element) {
       natsProvider.unsubscribeFromChannel(element);
     });
-
+    userOnlineListener.clear();
     listeningChannels.clear();
   }
 }

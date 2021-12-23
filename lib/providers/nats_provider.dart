@@ -125,7 +125,6 @@ class NatsProvider {
       _channelCallbacks[channel] = onMessageFuture;
 
       if (subscription != null) {
-        //_logger.info('_channelSubscriptions: ${_channelSubscriptions.keys}');
         return true;
       }
       return false;

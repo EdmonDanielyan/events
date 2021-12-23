@@ -338,7 +338,8 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i93.ChannelsRegistry>(() => _i93.ChannelsRegistry(
       natsProvider: get<_i89.NatsProvider>(),
       channelFunctions: get<_i84.ChannelFunctions>(),
-      userFunctions: get<_i82.UserFunctions>()));
+      userFunctions: get<_i82.UserFunctions>(),
+      chatDatabaseCubit: get<_i18.ChatDatabaseCubit>()));
   gh.factory<_i94.ChatSaver>(
       () => _i94.ChatSaver(get<_i17.ChatDatabase>(), get<_i89.NatsProvider>()));
   gh.factory<_i95.InviteSender>(() => _i95.InviteSender(

@@ -149,10 +149,10 @@ class Messenger with Loggable {
     final listener =
         (registry.listeners[MessageType.Online] as UserOnlineListener?);
     if (listener != null) {
-      await listener.subscribe(user);
+      await listener.subscribeIndividually(user);
     } else {
-      Future.delayed(Duration(seconds: 3), () {
-        subscribeToUserOnline(user);
+      await Future.delayed(Duration(seconds: 3), () async {
+        await subscribeToUserOnline(user);
       });
     }
   }

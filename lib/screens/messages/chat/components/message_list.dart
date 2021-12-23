@@ -66,9 +66,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
     });
   }
 
-  void _listenToScroll() {
-    print(scrollController.offset);
-  }
+  void _listenToScroll() {}
 
   @override
   Widget build(BuildContext context) {

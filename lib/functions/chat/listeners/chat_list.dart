@@ -46,9 +46,6 @@ class ChatListListener extends ChannelListener {
   Future<void> subscribe(String userId) async {
     logger.finest("subscribe: $userId");
     try {
-      //SETING LOADER
-      chatDatabaseCubit.setLoadingChats(true);
-
       final channel = natsProvider.getPrivateUserChatIdList(userId);
       final sub = await natsProvider.listenChatList(channel);
       if (sub != null) {
@@ -70,9 +67,6 @@ class ChatListListener extends ChannelListener {
           sub.subscription.close();
         }
       }
-
-      //CLOSING LOADER
-      chatDatabaseCubit.setLoadingChats(false);
     } on SubscriptionAlreadyExistException {
     } catch (_e) {}
   }
