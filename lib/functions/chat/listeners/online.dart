@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
@@ -8,8 +9,8 @@ import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/online.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
-import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
+import 'package:fixnum/fixnum.dart';
 
 import '../user_functions.dart';
 import 'channels_registry.dart';
@@ -19,6 +20,7 @@ import 'channels_registry.dart';
 class UserOnlineListener extends ChannelListener {
   late Timer userOnlineTimer;
   static Set<int> subscribedUsers = {};
+  static Set<int> onlineUsers = {};
 
   final ChatDatabaseCubit chatDatabaseCubit;
   final UserFunctions userFunctions;
@@ -33,14 +35,32 @@ class UserOnlineListener extends ChannelListener {
     this.chatDatabaseCubit,
   ) : super(natsProvider, registry);
 
-  Debouncer _debouncer = Debouncer(milliseconds: 90000);
+  void clear() {
+    subscribedUsers = {};
+    onlineUsers = {};
+  }
 
-  Future<void> subscribe(UserTable user) async {
+  Future<void> subscribeToAllAvailableUsers() async {
+    final users = await chatDatabaseCubit.db.getAllUsers();
+
+    if (users.isNotEmpty) {
+      for (final user in users) {
+        await subscribeIndividually(user);
+      }
+    }
+  }
+
+  Future<void> subscribeIndividually(UserTable user) async {
     try {
+      print("TRYING TO SUBSCRIBE TO ${user.name}");
+      print(subscribedUsers.contains(user.id));
       if (!subscribedUsers.contains(user.id)) {
+        updateUserStatus(user, false);
         subscribedUsers.add(user.id);
         final channel = natsProvider.getUserOnlineChannel(user.id);
-        bool sub = await natsProvider.subscribeToChannel(channel, onMessage);
+        registry.addToListeningChannels(channel);
+        bool sub = await natsProvider.subscribeToChannel(channel, onMessage,
+            startSequence: Int64.ZERO);
 
         if (!sub) {
           throw "offline";
@@ -49,6 +69,7 @@ class UserOnlineListener extends ChannelListener {
     } on SubscriptionAlreadyExistException {
     } catch (e) {
       //CLIENT IS OFFLINE
+
       logger.warning("Error during subscribe", e);
       updateUserStatus(user, false);
     }
@@ -64,17 +85,37 @@ class UserOnlineListener extends ChannelListener {
 
       updateUserStatus(user, true);
 
-      _debouncer.run(() {
-        updateUserStatus(user, false);
-      });
+      EasyDebounce.debounce(
+        user.id.toString(),
+        Duration(seconds: 50),
+        () => updateUserStatus(user, false),
+      );
     } on NoSuchMethodError {
       return;
     }
   }
 
-  void updateUserStatus(UserTable user, bool online) {
-    logger.finest(
-        "updateUserStatus: user=${user.name}, was_online: ${user.online}, will_be_online=$online");
-    chatDatabaseCubit.db.updateUser(user.id, user.copyWith(online: online));
+  void listenForOffline(UserTable user) {}
+
+  Future<void> updateUserStatus(UserTable user, bool online) async {
+    final storedUser = await chatDatabaseCubit.db.selectUserById(user.id);
+
+    if (storedUser != null && storedUser.online != online) {
+      logger.finest(
+          "updateUserStatus: user=${user.name}, was_online: ${user.online}, will_be_online=$online");
+
+      chatDatabaseCubit.db.updateUser(user.id, user.copyWith(online: online));
+    }
+    _handleList(user, online);
+  }
+
+  void _handleList(UserTable user, bool online) {
+    if (online && !onlineUsers.contains(user.id)) {
+      onlineUsers.add(user.id);
+    }
+
+    if (!online && onlineUsers.contains(user.id)) {
+      onlineUsers.remove(user.id);
+    }
   }
 }

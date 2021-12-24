@@ -29,7 +29,7 @@ import '../app.dart';
 import '../setup.dart';
 
 @lazySingleton
-class Messenger with Loggable{
+class Messenger with Loggable {
   late ChatDatabaseCubit chatDatabaseCubit;
   late NatsProvider natsProvider;
   late ChatFunctions chatFunctions;
@@ -78,7 +78,7 @@ class Messenger with Loggable{
     isConnected = await natsProvider.load();
   }
 
-   void _configureNatsProvider() {
+  void _configureNatsProvider() {
     logger.finest("_configureNatsProvider");
     natsProvider.onConnected = () async {
       logger.info("onConnected");
@@ -93,8 +93,11 @@ class Messenger with Loggable{
 
     natsProvider.onDisconnected = () async {
       logger.info("onDisconnected");
+      _softDispose();
       _showDisconnectedSnackBar();
     };
+
+    natsProvider.onUnacknowledged = (subscription, message, onMessage) async {};
   }
 
   //todo: нужно убрать из месенджера все вызовы UI
@@ -118,13 +121,18 @@ class Messenger with Loggable{
   }
 
   Future<void> _onConnected() async {
-      //await Future.delayed(Duration(seconds: 1));
-      logger.finest('_onConnected');
-      isConnected = true;
-      registry.listenToAllMessages();
-      await userFunctions.addMe();
-      await registry.init();
-      pingSender.sendUserOnlinePing(user: userFunctions.me);
+    //await Future.delayed(Duration(seconds: 1));
+    logger.finest('_onConnected');
+    isConnected = true;
+    registry.listenToAllMessages();
+    await userFunctions.addMe();
+    await registry.init();
+    pingSender.sendUserOnlinePing(user: userFunctions.me);
+  }
+
+  Future<void> _softDispose() async {
+    registry.unsubscribeFromAll();
+    pingSender.stopSending();
   }
 
   Future<void> dispose() async {
@@ -141,10 +149,10 @@ class Messenger with Loggable{
     final listener =
         (registry.listeners[MessageType.Online] as UserOnlineListener?);
     if (listener != null) {
-      await listener.subscribe(user);
+      await listener.subscribeIndividually(user);
     } else {
-      Future.delayed(Duration(seconds: 3), () {
-        subscribeToUserOnline(user);
+      await Future.delayed(Duration(seconds: 3), () async {
+        await subscribeToUserOnline(user);
       });
     }
   }

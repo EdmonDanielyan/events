@@ -32,8 +32,8 @@ class PingSender {
     _sendOnline(channel, user);
 
     _userOnlineTimer = Timer.periodic(
-      Duration(seconds: 60),
-          (timer) {
+      Duration(seconds: 35),
+      (timer) {
         _sendOnline(channel, user!);
       },
     );
@@ -48,5 +48,4 @@ class PingSender {
   void stopSending() {
     _userOnlineTimer?.cancel();
   }
-
 }

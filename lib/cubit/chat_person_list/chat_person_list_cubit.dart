@@ -25,6 +25,8 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
 
   List<int> hideIds = [];
 
+  int pageNumber = 1;
+
   void init() {
     setSearchValue("", checkCondition: false);
   }
@@ -33,9 +35,15 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
     emitLoading();
     try {
       await Token.setNewTokensIfExpired();
-      final response = await sl<ContactsNetworkRequest>(param1: searchValue)();
+      final response = await sl<ContactsNetworkRequest>(param1: searchValue)(
+          pageNumber: pageNumber);
 
       List<UserTable> users = response.mapResponse(hideIds: hideIds);
+
+      if (searchValue.isEmpty && users.isEmpty) {
+        pageNumber++;
+        loadUsers();
+      }
       emitUsers(items: users);
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();

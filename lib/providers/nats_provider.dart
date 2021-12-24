@@ -125,7 +125,6 @@ class NatsProvider {
       _channelCallbacks[channel] = onMessageFuture;
 
       if (subscription != null) {
-        //_logger.info('_channelSubscriptions: ${_channelSubscriptions.keys}');
         return true;
       }
       return false;
@@ -233,7 +232,7 @@ class NatsProvider {
       subject: channel,
       maxInFlight: 1,
       startPosition: startPosition ?? _getPosition(channel),
-      startSequence: _getSequence(channel, startSequence),
+      startSequence: getSequence(channel, startSequence),
     );
 
     return subscription;
@@ -252,7 +251,7 @@ class NatsProvider {
     return StartPosition.NewOnly;
   }
 
-  Int64? _getSequence(String channel, Int64 startSequence) {
+  Int64? getSequence(String channel, Int64 startSequence) {
     final msgType = MessageListView.getTypeByChannel(channel);
 
     if (msgType != null) {
@@ -260,6 +259,8 @@ class NatsProvider {
           _lastReceivedType.contains(msgType)) {
         return startSequence;
       }
+
+      return Int64.ZERO;
     }
 
     return null;
@@ -289,7 +290,23 @@ class NatsProvider {
   }
 
   void acknowledge(Subscription subscription, DataMessage message) {
-    _stan.acknowledge(subscription, message);
+    _stan.acknowledge(
+      subscription,
+      message,
+      unacknowledgedMessageHandler: _unAcknowledgedMessageHandler,
+    );
+  }
+
+  Future<void> _unAcknowledgedMessageHandler(
+      Subscription subscription, DataMessage message) async {
+    final String channel = subscription.subject;
+
+    if (_channelCallbacks.containsKey(channel)) {
+      Future<void> Function(String, NatsMessage) channelCallback =
+          _channelCallbacks[channel]!;
+
+      onUnacknowledged(subscription, message, channelCallback);
+    }
   }
 
   final Set<String> userChatIdList = {};
@@ -308,6 +325,7 @@ class NatsProvider {
     MessageType.Document,
     MessageType.RemoveMessage,
   };
+
   Future<void> Function(String, NatsMessage) onMessage =
       (channel, message) async {
     _logger.info(message);
@@ -317,6 +335,9 @@ class NatsProvider {
 
   Future<void> Function() onConnected = () async {};
   Future<void> Function() onDisconnected = () async {};
+  Future<void> Function(
+          Subscription, DataMessage, Future<void> Function(String, NatsMessage))
+      onUnacknowledged = (subscription, message, onMessage) async {};
 
   bool get isConnected => _stan.connected;
 }

@@ -94,9 +94,9 @@ class ChatInfoHeader extends StatelessWidget {
       name,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        fontSize: 21.0,
+        fontSize: 19.0,
       ),
-      maxLines: 1,
+      maxLines: 2,
     );
   }
 

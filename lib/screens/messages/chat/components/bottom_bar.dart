@@ -43,8 +43,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
       final sendMessage = sl<SendMessage>();
       final message = await sendMessage.call(getChat, entities);
       if (sl<Messenger>().isConnected) {
-        sl<Messenger>().textSender
-            .sendMessage(getChat, message);
+        sl<Messenger>().textSender.sendMessage(getChat, message);
       }
 
       _chatCubit.clean();
@@ -59,8 +58,9 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
     if (sl<Messenger>().isConnected) {
       clearForm();
-      final sent = await sl<Messenger>().messageEditorSender
-              .sendDeleteMessages([editedMsg], context, edited: true);
+      final sent = await sl<Messenger>()
+          .messageEditorSender
+          .sendDeleteMessages([editedMsg], context, edited: true);
 
       if (sent) {
         _chatDatabaseCubit.db.updateMessageById(editedMsg.id, editedMsg);
@@ -142,6 +142,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
         if (state.selectedMessageId != null) {
           textfieldFocus.requestFocus();
         } else {
+          print("RESPOND UNFOCUS");
           textfieldFocus.unfocus();
         }
       },
@@ -182,6 +183,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
               TextPosition(offset: _messageTextEditingController.text.length));
           textfieldFocus.requestFocus();
         } else {
+          print("EDIT UNFOCUS");
           textfieldFocus.unfocus();
         }
       },

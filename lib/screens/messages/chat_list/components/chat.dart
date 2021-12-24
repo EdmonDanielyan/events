@@ -56,26 +56,6 @@ class _ChatListTileState extends State<ChatListTile> {
       ChatUserViewModel.getOppositeUserIdFromChat(widget.chat);
 
   @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () {
-      _listenToUserSub();
-    });
-  }
-
-  Future<void> _listenToUserSub() async {
-    if (oppositeUserId != null) {
-      final watchUser = widget.chatDatabaseCubit.db.watchUser(oppositeUserId!);
-
-      watchUser.first.then((user) async {
-        if (user != null && messenger.isConnected) {
-          await messenger.subscribeToUserOnline(user);
-        }
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Material(
       child: Dismissible(
@@ -114,8 +94,9 @@ class _ChatListTileState extends State<ChatListTile> {
                               SizedBox(width: 2.0),
                               if (hasMessage) ...[
                                 ChatDate(
-                                    chatDate: lastMessage?.created ??
-                                        new DateTime.now()),
+                                  chatDate: lastMessage?.created ??
+                                      new DateTime.now(),
+                                ),
                               ],
                             ],
                           ),
@@ -195,7 +176,9 @@ class _ChatListTileState extends State<ChatListTile> {
     if (lastMessage == null) return const SizedBox();
 
     return ChatMessage(
-        displayName: _getDisplayName(), message: lastMessage!.message);
+      displayName: _getDisplayName(),
+      message: lastMessage!.message,
+    );
   }
 
   Widget _displayEmpty() {

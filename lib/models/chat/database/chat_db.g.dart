@@ -17,6 +17,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   final DateTime updatedAt;
   final String? millisecondsSinceEpoch;
   final bool? notificationsOn;
+  final bool? deleted;
   ChatTable(
       {required this.id,
       required this.name,
@@ -26,7 +27,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       this.participantId,
       required this.updatedAt,
       this.millisecondsSinceEpoch,
-      this.notificationsOn});
+      this.notificationsOn,
+      this.deleted});
   factory ChatTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -49,6 +51,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           data['${effectivePrefix}milliseconds_since_epoch']),
       notificationsOn: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}notifications_on']),
+      deleted: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
     );
   }
   @override
@@ -70,6 +74,9 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
     if (!nullToAbsent || notificationsOn != null) {
       map['notifications_on'] = Variable<bool?>(notificationsOn);
     }
+    if (!nullToAbsent || deleted != null) {
+      map['deleted'] = Variable<bool?>(deleted);
+    }
     return map;
   }
 
@@ -90,6 +97,9 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       notificationsOn: notificationsOn == null && nullToAbsent
           ? const Value.absent()
           : Value(notificationsOn),
+      deleted: deleted == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deleted),
     );
   }
 
@@ -107,6 +117,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       millisecondsSinceEpoch:
           serializer.fromJson<String?>(json['millisecondsSinceEpoch']),
       notificationsOn: serializer.fromJson<bool?>(json['notificationsOn']),
+      deleted: serializer.fromJson<bool?>(json['deleted']),
     );
   }
   @override
@@ -123,6 +134,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       'millisecondsSinceEpoch':
           serializer.toJson<String?>(millisecondsSinceEpoch),
       'notificationsOn': serializer.toJson<bool?>(notificationsOn),
+      'deleted': serializer.toJson<bool?>(deleted),
     };
   }
 
@@ -135,7 +147,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           int? participantId,
           DateTime? updatedAt,
           String? millisecondsSinceEpoch,
-          bool? notificationsOn}) =>
+          bool? notificationsOn,
+          bool? deleted}) =>
       ChatTable(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -147,6 +160,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
         millisecondsSinceEpoch:
             millisecondsSinceEpoch ?? this.millisecondsSinceEpoch,
         notificationsOn: notificationsOn ?? this.notificationsOn,
+        deleted: deleted ?? this.deleted,
       );
   @override
   String toString() {
@@ -159,14 +173,24 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           ..write('participantId: $participantId, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('millisecondsSinceEpoch: $millisecondsSinceEpoch, ')
-          ..write('notificationsOn: $notificationsOn')
+          ..write('notificationsOn: $notificationsOn, ')
+          ..write('deleted: $deleted')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, description, avatar, ownerId,
-      participantId, updatedAt, millisecondsSinceEpoch, notificationsOn);
+  int get hashCode => Object.hash(
+      id,
+      name,
+      description,
+      avatar,
+      ownerId,
+      participantId,
+      updatedAt,
+      millisecondsSinceEpoch,
+      notificationsOn,
+      deleted);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -179,7 +203,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           other.participantId == this.participantId &&
           other.updatedAt == this.updatedAt &&
           other.millisecondsSinceEpoch == this.millisecondsSinceEpoch &&
-          other.notificationsOn == this.notificationsOn);
+          other.notificationsOn == this.notificationsOn &&
+          other.deleted == this.deleted);
 }
 
 class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
@@ -192,6 +217,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   final Value<DateTime> updatedAt;
   final Value<String?> millisecondsSinceEpoch;
   final Value<bool?> notificationsOn;
+  final Value<bool?> deleted;
   const ChatTablesCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -202,6 +228,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     this.updatedAt = const Value.absent(),
     this.millisecondsSinceEpoch = const Value.absent(),
     this.notificationsOn = const Value.absent(),
+    this.deleted = const Value.absent(),
   });
   ChatTablesCompanion.insert({
     required String id,
@@ -213,6 +240,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     this.updatedAt = const Value.absent(),
     this.millisecondsSinceEpoch = const Value.absent(),
     this.notificationsOn = const Value.absent(),
+    this.deleted = const Value.absent(),
   })  : id = Value(id),
         name = Value(name),
         description = Value(description),
@@ -228,6 +256,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     Expression<DateTime>? updatedAt,
     Expression<String?>? millisecondsSinceEpoch,
     Expression<bool?>? notificationsOn,
+    Expression<bool?>? deleted,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -240,6 +269,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       if (millisecondsSinceEpoch != null)
         'milliseconds_since_epoch': millisecondsSinceEpoch,
       if (notificationsOn != null) 'notifications_on': notificationsOn,
+      if (deleted != null) 'deleted': deleted,
     });
   }
 
@@ -252,7 +282,8 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       Value<int?>? participantId,
       Value<DateTime>? updatedAt,
       Value<String?>? millisecondsSinceEpoch,
-      Value<bool?>? notificationsOn}) {
+      Value<bool?>? notificationsOn,
+      Value<bool?>? deleted}) {
     return ChatTablesCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -264,6 +295,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       millisecondsSinceEpoch:
           millisecondsSinceEpoch ?? this.millisecondsSinceEpoch,
       notificationsOn: notificationsOn ?? this.notificationsOn,
+      deleted: deleted ?? this.deleted,
     );
   }
 
@@ -298,6 +330,9 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     if (notificationsOn.present) {
       map['notifications_on'] = Variable<bool?>(notificationsOn.value);
     }
+    if (deleted.present) {
+      map['deleted'] = Variable<bool?>(deleted.value);
+    }
     return map;
   }
 
@@ -312,7 +347,8 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
           ..write('participantId: $participantId, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('millisecondsSinceEpoch: $millisecondsSinceEpoch, ')
-          ..write('notificationsOn: $notificationsOn')
+          ..write('notificationsOn: $notificationsOn, ')
+          ..write('deleted: $deleted')
           ..write(')'))
         .toString();
   }
@@ -374,6 +410,13 @@ class $ChatTablesTable extends ChatTables
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (notifications_on IN (0, 1))',
       defaultValue: Constant(true));
+  final VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  late final GeneratedColumn<bool?> deleted = GeneratedColumn<bool?>(
+      'deleted', aliasedName, true,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (deleted IN (0, 1))',
+      defaultValue: Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -384,7 +427,8 @@ class $ChatTablesTable extends ChatTables
         participantId,
         updatedAt,
         millisecondsSinceEpoch,
-        notificationsOn
+        notificationsOn,
+        deleted
       ];
   @override
   String get aliasedName => _alias ?? 'chat_tables';
@@ -447,6 +491,10 @@ class $ChatTablesTable extends ChatTables
           _notificationsOnMeta,
           notificationsOn.isAcceptableOrUnknown(
               data['notifications_on']!, _notificationsOnMeta));
+    }
+    if (data.containsKey('deleted')) {
+      context.handle(_deletedMeta,
+          deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
     }
     return context;
   }

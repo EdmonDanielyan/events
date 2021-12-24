@@ -8,6 +8,7 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/participant_with_user.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/btn_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/participant_card.dart';
@@ -140,13 +141,12 @@ class ChatInfoParticipants extends StatelessWidget {
   }
 
   Widget dismissibleWidget(BuildContext context, UserTable user, int index) {
-    if (iAmOwner) {
+    if (iAmOwner && user.id != JwtPayload.myId) {
       return Dismissible(
         background: SizedBox(),
         direction: DismissDirection.endToStart,
         secondaryBackground: Icon(Icons.delete, color: Colors.red),
-        onDismissed: (dir) =>
-            _deleteParticipant(context, participants[index].user!),
+        onDismissed: (dir) => _deleteParticipant(context, user),
         key: UniqueKey(),
         child: mainCardWidget(context, user),
       );

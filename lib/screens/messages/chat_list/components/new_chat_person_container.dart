@@ -44,16 +44,37 @@ class NewChatPersonContainer extends StatelessWidget {
               ),
             ),
           ),
-          Radio<bool>(
-            value: enabled,
-            groupValue: true,
-            toggleable: true,
-            activeColor: Colors.blue,
-            onChanged: (_) {
-              if (onChanged != null) {
-                onChanged!(!enabled);
-              }
-            },
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Opacity(
+                opacity: !enabled ? 1 : 0,
+                child: Radio<bool>(
+                  value: enabled,
+                  groupValue: true,
+                  toggleable: true,
+                  activeColor: Colors.blue,
+                  onChanged: (_) {
+                    if (onChanged != null) {
+                      onChanged!(!enabled);
+                    }
+                  },
+                ),
+              ),
+              if (enabled) ...[
+                InkWell(
+                  child: Icon(
+                    Icons.check_circle,
+                    color: Colors.lightBlue[300],
+                  ),
+                  onTap: () {
+                    if (onChanged != null) {
+                      onChanged!(!enabled);
+                    }
+                  },
+                )
+              ],
+            ],
           ),
         ],
       ),

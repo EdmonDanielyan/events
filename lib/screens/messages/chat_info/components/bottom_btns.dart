@@ -23,6 +23,7 @@ class ChatInfoBottomBtns extends StatelessWidget {
   Future<void> _deleteChat(BuildContext context) async {
     if (messenger.isConnected) {
       messenger.chatEventsSender.sendLeftMessage(chat);
+
       _clearMessages();
       messenger.chatFunctions.deleteChat(chat.id);
       Navigator.of(context).popUntil((route) => route.isFirst);

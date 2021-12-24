@@ -43,18 +43,6 @@ class ParticipantCard extends StatefulWidget {
 class _ParticipantCardState extends State<ParticipantCard> {
   final messenger = sl<Messenger>();
 
-  @override
-  void initState() {
-    super.initState();
-    _subscribeToOnline();
-  }
-
-  Future<void> _subscribeToOnline() async {
-    if (widget.indicatorIsOn && widget.user != null && messenger.isConnected) {
-      await messenger.subscribeToUserOnline(widget.user!);
-    }
-  }
-
   late AppLocalizations _strings;
 
   @override
@@ -100,7 +88,7 @@ class _ParticipantCardState extends State<ParticipantCard> {
 
   bool getIndicator() {
     if (widget.indicatorReadOnly && widget.user != null) {
-      return UserOnlineListener.subscribedUsers.contains(widget.user?.id);
+      return UserOnlineListener.onlineUsers.contains(widget.user?.id);
     }
 
     return widget.indicatorIsOn && widget.user != null && widget.user!.online

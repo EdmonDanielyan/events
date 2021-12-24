@@ -3,8 +3,6 @@ import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
 import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
-import 'package:ink_mobile/models/chat/chat_list_view.dart';
-import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
@@ -35,13 +33,12 @@ class ChatInvitationListener extends ChannelListener {
       final mapPayload = message.payload! as SystemPayload;
       ChatInvitationFields fields =
           ChatInvitationFields.fromMap(mapPayload.fields);
-      late ChatTable chat =
-          ChatListView.changeChatForParticipant(fields.chat, fields.users);
+      final chat = fields.chat;
 
       await sl<ChatCreation>().createDynamically(chat, fields.users);
-      await chatSaver.saveChats(newChat: chat);
-
-      _chatLinkedListeners(chat.id);
+      await _chatLinkedListeners(chat.id);
+      await registry.userOnlineListener.subscribeToAllAvailableUsers();
+      await chatSaver.saveChats(newChat: null);
     } on NoSuchMethodError {
       return;
     }

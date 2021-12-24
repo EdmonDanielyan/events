@@ -187,12 +187,6 @@ class Client {
 
     Future.delayed(Duration(seconds: pingInterval), () => _heartbeat());
 
-    print('''
-
-    NATS CLIENT STATUS ${natsClient.status}
-    
-    ''');
-
     if (natsClient.status == nats.Status.connected) {
       // Generante new clientID for reconnection
       //_clientID = Uuid().v4();
@@ -210,7 +204,6 @@ class Client {
           '_STAN.discover.$clusterID', connectRequest.writeToBuffer());
 
       _connectResponse = ConnectResponse.fromBuffer((_req).data);
-      print(_connectResponse);
       unawaited(pingResponseWatchdog());
 
       if (_onConnect != null) {
@@ -258,7 +251,6 @@ class Client {
     retryReconnect = false;
     failPings = 0;
     await _disconnect();
-    natsClient = nats.Client();
   }
 
   Future<void> _disconnect() async {
@@ -267,6 +259,7 @@ class Client {
       _onDisconnect!();
     }
     _connected = false;
+    natsClient = nats.Client();
   }
 
   Future<void> _heartbeat() async {
@@ -519,7 +512,10 @@ class Client {
     }
   }
 
-  void acknowledge(Subscription subscription, DataMessage dataMessage) {
+  Map<String, int> unAcknowledgedCounter = {};
+
+  void acknowledge(Subscription subscription, DataMessage dataMessage,
+      {Function(Subscription, DataMessage)? unacknowledgedMessageHandler}) {
     Ack ack = Ack()
       ..subject = dataMessage.subject
       ..sequence = dataMessage.sequence;
@@ -527,13 +523,38 @@ class Client {
     if (dataMessage.isRedelivery) {
       print(
           'NOT ACKNOWLEDGING - ${ack.subject} - ${subscription.ackInbox} - SEQ = ${ack.sequence}');
-      subscription.subscription.close();
+      _handleUnAck(subscription,
+          unacknowledgedMessageHandler: unacknowledgedMessageHandler);
     }
 
     try {
       natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
     } catch (_e) {
       print('EXITED DURING ACK');
+    }
+  }
+
+  void _handleUnAck(Subscription subscription,
+      {Function(Subscription, DataMessage)? unacknowledgedMessageHandler}) {
+    final channel = subscription.subject;
+    if (unAcknowledgedCounter.containsKey(channel)) {
+      int limit = 3;
+      int counter = unAcknowledgedCounter[channel]!;
+
+      print('COUNTER $counter');
+
+      if (counter >= limit) {
+        subscription.subscription.close();
+        print('CLOSED $channel after $limit unacknowledged messages');
+      }
+
+      unAcknowledgedCounter[channel] = counter + 1;
+    } else {
+      unAcknowledgedCounter[channel] = 0;
+    }
+
+    if (unacknowledgedMessageHandler != null) {
+      //unacknowledgedMessageHandler(subscription, dataMessage);
     }
   }
 }

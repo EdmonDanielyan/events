@@ -28,16 +28,24 @@ class ChatCreation with Loggable {
 
   Future<ChatTable> createChatThroughNats(UserTable user) async {
     logger.finest('createChatThroughNats');
-    ChatTable? chat;
     List<UserTable> users = [user, userFunctions.me];
-    chat = await isSingleChatExists(user);
 
-    if (chat == null) {
-      chat = await createSingleChat(user);
-      _afterNatsChatCreation(chat, users);
+    final chat = await createSingleChat(
+      user,
+      name: await singleChatName(user),
+    );
+    _afterNatsChatCreation(chat, users);
+    return chat;
+  }
+
+  Future<String> singleChatName(UserTable user) async {
+    final chats = await getSingleChatsWithUser(user);
+
+    if (chats.length == 0) {
+      return user.name;
     }
 
-    return chat;
+    return "#${chats.length + 1} ${user.name}";
   }
 
   Future<ChatTable> createGroupThroughNats(
@@ -55,8 +63,9 @@ class ChatCreation with Loggable {
     logger.finest('_afterNatsChatCreation');
     if (messenger.isConnected) {
       logger.finest('Messenger is ok. Preparing channels');
+      await messenger.registry.userOnlineListener
+          .subscribeToAllAvailableUsers();
       await messenger.registry.subscribeOnChatChannels(chat.id);
-
       await messenger.inviteSender.sendInvitations(chat, users);
       await messenger.chatSaver.saveChats(newChat: null);
     } else {
@@ -76,27 +85,26 @@ class ChatCreation with Loggable {
         chat: chat,
       );
     } else {
-      newChat = await isChatExists(chat.id);
+      UserTable oppositeUser = ChatUserViewModel.getOppositeUser(users);
 
-      if (newChat == null) {
-        newChat = await createSingleChat(
-          ChatUserViewModel.getNotOwnerFromList(chat, users),
-          chatId: chat.id,
-          name: chat.name,
-          avatar: chat.avatar,
-          users: users,
-        );
-      }
+      newChat = chat.copyWith(
+        name: await singleChatName(oppositeUser),
+        avatar: oppositeUser.avatar,
+      );
+
+      await insertChat(newChat, shouldCheck: true);
     }
 
     return newChat;
   }
 
-  Future<ChatTable> createSingleChat(UserTable user,
-      {String? chatId,
-      String? name,
-      String? avatar,
-      List<UserTable>? users}) async {
+  Future<ChatTable> createSingleChat(
+    UserTable user, {
+    String? chatId,
+    String? name,
+    String? avatar,
+    List<UserTable>? users,
+  }) async {
     users = users ?? [user, userFunctions.me];
 
     String newChatId = chatId ?? generateGroupId;
@@ -140,6 +148,22 @@ class ChatCreation with Loggable {
     return chatExists;
   }
 
+  Future<List<ChatTable>> getSingleChatsWithUser(UserTable user) async {
+    final chats = await chatDatabaseCubit.db.getAllChats();
+    List<ChatTable> chatsWithUser = [];
+
+    if (chats.isNotEmpty) {
+      for (final chat in chats) {
+        if (!ChatListView.isGroup(chat) &&
+            (chat.ownerId == user.id || chat.participantId == user.id)) {
+          chatsWithUser.add(chat);
+        }
+      }
+    }
+
+    return chatsWithUser;
+  }
+
   Future<ChatTable?> isSingleChatExists(UserTable user) async {
     final chats = await chatDatabaseCubit.db.getAllChats();
 
@@ -159,6 +183,7 @@ class ChatCreation with Loggable {
     String id,
     String name,
     String avatar, {
+    int? ownerId,
     int? participantId,
   }) {
     return ChatTable(
@@ -166,7 +191,7 @@ class ChatCreation with Loggable {
       name: name,
       description: "",
       avatar: avatar,
-      ownerId: JwtPayload.myId,
+      ownerId: ownerId ?? JwtPayload.myId,
       participantId: participantId,
       updatedAt: DateTime.now(),
       millisecondsSinceEpoch: DateTime.now().millisecondsSinceEpoch.toString(),
