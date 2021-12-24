@@ -81,8 +81,8 @@ ios:debug:
     - ${FLUTTER_EXEC} clean
     - ${FLUTTER_EXEC} build ios --no-sound-null-safety
     - cd ios
-    - xcodebuild archive -workspace Runner.xcworkspace -scheme Runner -archivePath Runner.xcarchive -destination 'generic/platform=iOS'
-    - xcodebuild -exportArchive -archivePath Runner.xcarchive -exportPath Runner.ipa -exportOptionsPlist DevelopmentExportOptions.plist
+    - xcodebuild -allowProvisioningUpdates archive -workspace Runner.xcworkspace -scheme Runner -archivePath Runner.xcarchive -destination 'generic/platform=iOS'
+    - xcodebuild -allowProvisioningUpdates -exportArchive -archivePath Runner.xcarchive -exportPath Runner.ipa -exportOptionsPlist DevelopmentExportOptions.plist
     - scp ${IPA_BUILD_RELATIVE_PATH} ${IPA_SSH_PATH}
   artifacts:
     paths:
