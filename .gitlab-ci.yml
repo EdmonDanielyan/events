@@ -51,7 +51,7 @@ android:release:
       - build/app/outputs/apk/release/app-release.apk
     expire_in: 1 day
   only:
-    - develop
+    - block/messenger
 
 ios:debug:
   stage: build
@@ -81,15 +81,15 @@ ios:debug:
     - ${FLUTTER_EXEC} clean
     - ${FLUTTER_EXEC} build ios --no-sound-null-safety
     - cd ios
-    - xcodebuild archive -workspace Runner.xcworkspace -scheme Runner -archivePath Runner.xcarchive -destination 'generic/platform=iOS'
-    - xcodebuild -exportArchive -archivePath Runner.xcarchive -exportPath Runner.ipa -exportOptionsPlist DevelopmentExportOptions.plist
+    - xcodebuild archive -workspace Runner.xcworkspace -scheme Runner -archivePath Runner.xcarchive -destination 'generic/platform=iOS' -allowProvisioningUpdates
+    - xcodebuild -exportArchive -archivePath Runner.xcarchive -exportPath Runner.ipa -exportOptionsPlist DevelopmentExportOptions.plist -allowProvisioningUpdates
     - scp ${IPA_BUILD_RELATIVE_PATH} ${IPA_SSH_PATH}
   artifacts:
     paths:
       - ios/Runner.ipa/ink_mobile.ipa
     expire_in: 1 day
   only:
-    - develop
+    - block/messenger
 
 notify:android:success:
   stage: notify-success
@@ -111,7 +111,7 @@ notify:android:success:
     - curl -v -F "chat_id=${TELEGRAM_SUCCESS_CHAT_ID}" -F "caption=#${TELEGRAM_PROJECT_HASH_TAG} New Release for test. Build ${CI_JOB_ID} from ${CI_PROJECT_NAME}/${CI_BUILD_REF_NAME}" -F document=@${APK_BUILD_RELATIVE_PATH} https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument
     - curl -v -F "chat_id=${TELEGRAM_SUCCESS_CHAT_ID}" -F "caption=#${TELEGRAM_PROJECT_HASH_TAG} Bundle to deploy to Google Play. Build ${CI_JOB_ID} from ${CI_PROJECT_NAME}/${CI_BUILD_REF_NAME}. Do not install" -F document=@${AAB_BUILD_RELATIVE_PATH} https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument
   only:
-    - develop
+    - block/messenger
 
 notify:ios:success:
   stage: notify-success
@@ -131,7 +131,7 @@ notify:ios:success:
     - ls -la ios/${IPA_BUILD_RELATIVE_PATH}
     - curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_FAILURE_CHAT_ID} -d text="#${TELEGRAM_PROJECT_HASH_TAG} Build ${CI_JOB_ID} from ${CI_PROJECT_NAME}/${CI_BUILD_REF_NAME}. ${IPA_HTTP_URL} Bundle to manual deploy on iPhone."
   only:
-    - develop
+    - block/messenger
 
 notify:failure:
   stage: notify-failure
@@ -145,4 +145,4 @@ notify:failure:
     - echo "stub mode"
     - curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_FAILURE_CHAT_ID} -d text="#${TELEGRAM_PROJECT_HASH_TAG} Build ${CI_JOB_ID} from ${CI_PROJECT_NAME}/${CI_BUILD_REF_NAME} failed. Please see details in ${CI_JOB_URL}"
   only:
-    - develop
+    - block/messenger
