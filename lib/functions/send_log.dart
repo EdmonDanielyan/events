@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-Future<void> sendErrorLog(String fileName) async {
-  var directory = await getApplicationDocumentsDirectory();
-  var _file = File("${directory.path}/$fileName");
+Future<void> sendErrorLog(String filePath) async {
+  var _file = File(filePath);
+  var fileName = filePath.split("/").last;
+  var directory = _file.parent;
   // Zip a directory to out.zip using the zipDirectory convenience method
   var encoder = ZipFileEncoder();
   var zipFileName = "$fileName.zip";
