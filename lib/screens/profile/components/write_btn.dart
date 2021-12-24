@@ -16,9 +16,15 @@ class WriteBtn extends StatelessWidget {
 
   Future<void> _write(BuildContext context) async {
     if (_messenger.isConnected) {
-      ChatTable newChat =
-          await _messenger.chatCreation.createChatThroughNats(user);
-      OpenChat(_chatDatabaseCubit, newChat).call(context);
+      ChatTable? chat = await _messenger.chatCreation.isSingleChatExists(user);
+
+      if (chat != null) {
+        OpenChat(_chatDatabaseCubit, chat).call(context);
+      } else {
+        ChatTable newChat =
+            await _messenger.chatCreation.createChatThroughNats(user);
+        OpenChat(_chatDatabaseCubit, newChat).call(context);
+      }
     }
   }
 

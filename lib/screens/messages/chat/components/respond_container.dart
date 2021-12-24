@@ -67,7 +67,7 @@ class RespondMessageContainer extends StatelessWidget {
       onTap: onCancel,
       child: Icon(
         Icons.cancel,
-        size: 14,
+        size: 19,
       ),
     );
   }

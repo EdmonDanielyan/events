@@ -73,7 +73,7 @@ class ChatJoinedListener extends ChannelListener {
 
       if (generateMessage != null) {
         await GetIt.I<SendMessage>()
-            .addMessage(chat, generateMessage, setChatToFirst: false);
+            .addMessage(chat, generateMessage, setChatToFirst: true);
       }
     }
   }

@@ -79,6 +79,8 @@ class NewChatBtn extends StatelessWidget {
 
       if (chat != null) {
         OpenChat(_chatDatabaseCubit, chat).call(context);
+      } else {
+        await _createChat(user, context);
       }
     }
   }
