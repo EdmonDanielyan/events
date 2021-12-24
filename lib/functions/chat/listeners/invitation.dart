@@ -3,6 +3,7 @@ import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
 import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
+import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
@@ -23,6 +24,8 @@ class ChatInvitationListener extends ChannelListener {
       this.chatSaver, this.messageSender, this.chatDatabaseCubit)
       : super(natsProvider, registry);
 
+  static List<ChatTable> invitations = [];
+
   Future<void> onMessage(String channel, NatsMessage message) async {
     super.onMessage(channel, message);
     if (!registry.isListening(channel)) {
@@ -34,6 +37,8 @@ class ChatInvitationListener extends ChannelListener {
       ChatInvitationFields fields =
           ChatInvitationFields.fromMap(mapPayload.fields);
       final chat = fields.chat;
+
+      invitations.add(chat);
 
       await sl<ChatCreation>().createDynamically(chat, fields.users);
       await _chatLinkedListeners(chat.id);

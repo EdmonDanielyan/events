@@ -69,6 +69,7 @@ class ChatJoinedListener extends ChannelListener {
         userName: user.name,
         type: MessageType.UserJoined,
         created: message.createdAt,
+        userId: user.id,
       );
 
       if (generateMessage != null) {

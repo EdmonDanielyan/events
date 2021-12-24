@@ -11,9 +11,9 @@ class OpenChat {
 
   Future<void> call(BuildContext context,
       {ChatScreenParams? chatScreenParams}) async {
+    final currentSelectedChat = chatDatabaseCubit.selectedChat;
     chatDatabaseCubit.setSelectedChat(chatTable);
     final params = chatScreenParams ?? ChatScreenParams();
-    final currentSelectedChat = chatDatabaseCubit.selectedChat;
 
     await Navigator.of(context).pushNamed(
       "/message",

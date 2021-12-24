@@ -20,7 +20,8 @@ class InviteSender {
 
   final ChatSaver chatSaver;
 
-  const InviteSender(this.natsProvider, this.userFunctions, this.chatFunctions, this.chatSaver, this.db, this.registry);
+  const InviteSender(this.natsProvider, this.userFunctions, this.chatFunctions,
+      this.chatSaver, this.db, this.registry);
 
   Future<void> removeFromPrivateUserChatIdList({
     required int userId,

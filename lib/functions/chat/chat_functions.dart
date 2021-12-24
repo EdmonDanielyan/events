@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
@@ -61,5 +62,17 @@ class ChatFunctions {
     for (final message in messages) {
       await updateMessageStatus(message, MessageStatus.READ);
     }
+  }
+
+  Future<List<MessageTable>> getMyMessagesByType(
+      String chatId, MessageType type,
+      {required int userId}) async {
+    var myMessages = await chatDatabaseCubit.db
+        .selectMessagesByUserAndChatId(chatId, userId);
+    if (myMessages.isNotEmpty) {
+      myMessages.removeWhere((element) => element.type != type);
+    }
+
+    return myMessages;
   }
 }

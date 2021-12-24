@@ -34,8 +34,12 @@ class ChatInfoParticipants extends StatelessWidget {
   Future<void> _deleteParticipant(BuildContext context, UserTable user) async {
     if (messenger.isConnected) {
       CustomAlertLoading(context).call();
-      await messenger.chatEventsSender
-          .sendLeftMessage(chat, unsubFromChat: false, users: [user]);
+
+      await messenger.chatEventsSender.sendLeftMessage(
+        chat,
+        unsubFromChat: false,
+        users: [user],
+      );
 
       Navigator.of(context).pop();
     }
@@ -84,8 +88,10 @@ class ChatInfoParticipants extends StatelessWidget {
     if (messenger.isConnected) {
       await messenger.inviteSender
           .sendInvitations(chat, userParticipants..addAll(selectedUsers));
-      await messenger.chatEventsSender
-          .sendUserChatJoinedMessage(chat, selectedUsers);
+      await messenger.chatEventsSender.sendUserChatJoinedMessage(
+        chat,
+        selectedUsers,
+      );
     }
     Navigator.of(context).pop();
   }

@@ -83,6 +83,12 @@ class ChatDatabase extends _$ChatDatabase {
   Future<MessageTable?> selectMessageById(String id) =>
       (select(messageTables)..where((tbl) => tbl.id.equals(id)))
           .getSingleOrNull();
+  Future<List<MessageTable>> selectMessagesByUserAndChatId(
+          String chatId, int userId) =>
+      (select(messageTables)
+            ..where(
+                (tbl) => tbl.chatId.equals(chatId) & tbl.userId.equals(userId)))
+          .get();
   Future<int> updateMessageById(String id, MessageTable message) =>
       (update(messageTables)..where((tbl) => tbl.id.equals(id))).write(message);
   Future<int> countUnreadMessages(String id) async {

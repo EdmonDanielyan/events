@@ -5,7 +5,6 @@ import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
-import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
@@ -17,6 +16,7 @@ import '../send_message.dart';
 import '../user_functions.dart';
 import 'channel_listener.dart';
 import 'channels_registry.dart';
+import 'invitation.dart';
 
 @Named("UserLeftChat")
 @Injectable(as: ChannelListener)
@@ -37,6 +37,8 @@ class ChatLeftListener extends ChannelListener {
     this.chatDatabaseCubit,
     this.chatFunctions,
   ) : super(natsProvider, registry);
+
+  static List<ChatTable> leftChats = [];
 
   Future<void> onMessage(String channel, NatsMessage message) async {
     super.onMessage(channel, message);
@@ -71,6 +73,18 @@ class ChatLeftListener extends ChannelListener {
   Future<bool> _deleteIfItsMe(List<UserTable> users, ChatTable chat) async {
     for (final user in users) {
       if (user.id == JwtPayload.myId) {
+        leftChats.add(chat);
+        final iInvited = ChatInvitationListener.invitations
+            .where((element) => element.id == chat.id)
+            .toList();
+        final iLeft =
+            leftChats.where((element) => element.id == chat.id).toList();
+        print("iInvited length: ${iInvited.length}");
+        print("iLeft length: ${iLeft.length}");
+        if (iInvited.length > iLeft.length) {
+          return true;
+        }
+
         chatFunctions.deleteAllChatMessages(chat.id);
         chatFunctions.deleteChat(chat.id);
         registry.unSubscribeOnChatDelete(chat.id);
@@ -93,6 +107,7 @@ class ChatLeftListener extends ChannelListener {
         userName: user.name,
         type: MessageType.UserLeftChat,
         created: message.createdAt,
+        userId: user.id,
       );
 
       if (generateMessage != null) {

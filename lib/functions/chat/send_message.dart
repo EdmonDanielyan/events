@@ -25,12 +25,13 @@ class SendMessage with Loggable {
     MessageStatus status = MessageStatus.SENDING,
     MessageType type = MessageType.Text,
     DateTime? created,
+    int? userId,
   }) {
     return MessageTable(
       id: generateMessageId,
       chatId: chatId,
       message: message,
-      userId: JwtPayload.myId,
+      userId: userId ?? JwtPayload.myId,
       read: false,
       sentOn: false,
       status: status,
@@ -96,6 +97,7 @@ class SendMessage with Loggable {
     required String userName,
     required MessageType type,
     required DateTime created,
+    required int userId,
   }) {
     bool isJoined = type == MessageType.UserJoined;
     bool isLeft = type == MessageType.UserLeftChat;
@@ -112,6 +114,7 @@ class SendMessage with Loggable {
         status: MessageStatus.EMPTY,
         type: type,
         created: created,
+        userId: userId,
       );
     }
     return null;
