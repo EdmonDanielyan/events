@@ -139,6 +139,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
             previous.selectedMessageId != current.selectedMessageId;
       },
       listener: (context, state) {
+        print(state.selectedMessageId);
         if (state.selectedMessageId != null) {
           textfieldFocus.requestFocus();
         } else {

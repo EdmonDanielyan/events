@@ -31,6 +31,24 @@ class ChatCubitState {
   }) {
     return ChatCubitState(
       appBarMode: appBarEnum ?? this.appBarMode,
+      selectedMessageId: this.selectedMessageId,
+      messagesSearch: messagesSearch ?? this.messagesSearch,
+      editMessage: this.editMessage,
+      scrollBtn: scrollBtn ?? this.scrollBtn,
+      texting: texting ?? this.texting,
+    );
+  }
+
+  ChatCubitState copyNull({
+    ChatAppBarMode? appBarEnum,
+    String? selectedMessageId,
+    ItemsSearch<MessageTable>? messagesSearch,
+    MessageWithUser? editMessage,
+    bool? scrollBtn,
+    CustomTexting? texting,
+  }) {
+    return ChatCubitState(
+      appBarMode: appBarEnum ?? this.appBarMode,
       selectedMessageId: selectedMessageId,
       messagesSearch: messagesSearch ?? this.messagesSearch,
       editMessage: editMessage,

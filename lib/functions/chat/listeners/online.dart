@@ -52,8 +52,6 @@ class UserOnlineListener extends ChannelListener {
 
   Future<void> subscribeIndividually(UserTable user) async {
     try {
-      print("TRYING TO SUBSCRIBE TO ${user.name}");
-      print(subscribedUsers.contains(user.id));
       if (!subscribedUsers.contains(user.id)) {
         updateUserStatus(user, false);
         subscribedUsers.add(user.id);
