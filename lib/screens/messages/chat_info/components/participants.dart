@@ -4,6 +4,7 @@ import 'package:ink_mobile/components/alert/loading.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
+import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -35,10 +36,14 @@ class ChatInfoParticipants extends StatelessWidget {
     if (messenger.isConnected) {
       CustomAlertLoading(context).call();
 
+      final countLefts = await messenger.chatFunctions.getMyMessagesByType(
+          chat.id, MessageType.UserLeftChat,
+          userId: user.id);
       await messenger.chatEventsSender.sendLeftMessage(
         chat,
         unsubFromChat: false,
         users: [user],
+        countLefts: countLefts.length,
       );
 
       Navigator.of(context).pop();

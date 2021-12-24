@@ -31,7 +31,7 @@ class UserReactionSender {
     String chatId = messages.last.chatId;
     final channel = natsProvider.getGroupReactedChannelById(chatId);
     bool send = await sendReadMessageStatus(channel, messages);
-    await chatFunctions.messagesToRead(messages);
+    await chatFunctions.messagesToRead(messages, onlyIfMyMessages: false);
     return send;
   }
 }

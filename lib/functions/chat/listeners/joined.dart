@@ -35,6 +35,12 @@ class ChatJoinedListener extends ChannelListener {
       this.chatFunctions)
       : super(natsProvider, registry);
 
+  static List<ChatTable> joinedChats = [];
+
+  static void cleanJoinedChats(String chatId) {
+    joinedChats = joinedChats..removeWhere((element) => element.id == chatId);
+  }
+
   Future<void> onMessage(String channel, NatsMessage message) async {
     super.onMessage(channel, message);
     if (!registry.isListening(channel)) {
@@ -50,6 +56,7 @@ class ChatJoinedListener extends ChannelListener {
       final chat = fields.chat;
 
       if (users.isNotEmpty) {
+        joinedChats.add(chat);
         await userFunctions.insertMultipleUsers(users);
         await userFunctions.insertMultipleParticipants(
             ChatUserViewModel.toParticipants(users, chat));

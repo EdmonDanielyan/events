@@ -6,6 +6,7 @@ import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat_list.dart';
+import 'package:ink_mobile/functions/chat/listeners/joined.dart';
 import 'package:ink_mobile/functions/chat/listeners/online.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -64,12 +65,12 @@ class ChannelsRegistry with Loggable {
 
   List<String> getLinkedChannelsById(String chatId) {
     List<String> channels = [];
+    channels.add(joinedChannel(chatId));
+    channels.add(leftChannel(chatId));
     channels.add(textChannel(chatId));
     channels.add(removeMessageChannel(chatId));
     channels.add(readChannel(chatId));
     //channels.add(textingChannel(chatId));
-    channels.add(joinedChannel(chatId));
-    channels.add(leftChannel(chatId));
     channels.add(chatInfo(chatId));
     return channels;
   }
@@ -185,6 +186,8 @@ class ChannelsRegistry with Loggable {
 
   Future<void> subscribeOnChatChannels(String chatId) async {
     logger.finest("subscribeOnChatChannels: $chatId");
+    chatCleaner(chatId);
+
     final getChannels = getLinkedChannelsById(chatId);
 
     if (getChannels.isNotEmpty) {
@@ -199,6 +202,7 @@ class ChannelsRegistry with Loggable {
 
   Future<void> subscribeOnChatChannelsIfNotExists(String chatId) async {
     logger.finest("subscribeOnChatChannelsIfNotExists: $chatId");
+    chatCleaner(chatId);
     final getChannels = getLinkedChannelsById(chatId);
 
     if (getChannels.isNotEmpty) {
@@ -245,5 +249,9 @@ class ChannelsRegistry with Loggable {
     });
     userOnlineListener.clear();
     listeningChannels.clear();
+  }
+
+  void chatCleaner(String chatId) {
+    ChatJoinedListener.cleanJoinedChats(chatId);
   }
 }

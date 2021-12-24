@@ -38,6 +38,7 @@ class _BodyState extends State<Body> {
   Future<bool> _deleteChat(ChatTable chat, BuildContext context) async {
     bool removed = false;
     if (messenger.isConnected) {
+      messenger.chatFunctions.deleteAllChatMessages(chat.id);
       messenger.chatFunctions.deleteChat(chat.id);
       messenger.chatEventsSender.sendLeftMessage(chat);
 

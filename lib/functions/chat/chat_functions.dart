@@ -3,6 +3,7 @@ import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 
 @injectable
@@ -58,9 +59,16 @@ class ChatFunctions {
     chatDatabaseCubit.db.updateMessageById(message.id, message);
   }
 
-  Future<void> messagesToRead(List<MessageTable> messages) async {
+  Future<void> messagesToRead(List<MessageTable> messages,
+      {required bool onlyIfMyMessages}) async {
     for (final message in messages) {
-      await updateMessageStatus(message, MessageStatus.READ);
+      bool setRead = true;
+      if (onlyIfMyMessages && message.userId != JwtPayload.myId) {
+        setRead = false;
+      }
+      if (setRead) {
+        await updateMessageStatus(message, MessageStatus.READ);
+      }
     }
   }
 

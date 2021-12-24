@@ -2,10 +2,12 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
 import 'package:ink_mobile/functions/chat/listeners/channels_registry.dart';
+import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats/message_status.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 @Named("UserReacted")
@@ -32,7 +34,12 @@ class MessageStatusListener extends ChannelListener {
       final notReadMessages = MessageListView.notReadMessages(messages);
 
       if (notReadMessages.isNotEmpty) {
-        chatFunctions.messagesToRead(notReadMessages);
+        final chat = await registry.chatDatabaseCubit.db
+            .selectChatById(notReadMessages.last.chatId);
+
+        if (chat != null) {
+          chatFunctions.messagesToRead(notReadMessages, onlyIfMyMessages: true);
+        }
       }
     } on NoSuchMethodError {
       return;

@@ -24,8 +24,6 @@ class ChatInvitationListener extends ChannelListener {
       this.chatSaver, this.messageSender, this.chatDatabaseCubit)
       : super(natsProvider, registry);
 
-  static List<ChatTable> invitations = [];
-
   Future<void> onMessage(String channel, NatsMessage message) async {
     super.onMessage(channel, message);
     if (!registry.isListening(channel)) {
@@ -37,8 +35,6 @@ class ChatInvitationListener extends ChannelListener {
       ChatInvitationFields fields =
           ChatInvitationFields.fromMap(mapPayload.fields);
       final chat = fields.chat;
-
-      invitations.add(chat);
 
       await sl<ChatCreation>().createDynamically(chat, fields.users);
       await _chatLinkedListeners(chat.id);

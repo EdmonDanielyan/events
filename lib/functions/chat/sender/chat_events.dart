@@ -4,6 +4,8 @@ import 'package:ink_mobile/functions/chat/listeners/channels_registry.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/chat_info.dart';
 import 'package:ink_mobile/models/chat/nats/invitation.dart';
+import 'package:ink_mobile/models/chat/nats/leftJoined.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../user_functions.dart';
@@ -49,14 +51,21 @@ class ChatEventsSender {
     return send;
   }
 
-  Future<void> sendLeftMessage(ChatTable chat,
-      {List<UserTable>? users, bool unsubFromChat = true}) async {
+  Future<void> sendLeftMessage(
+    ChatTable chat, {
+    List<UserTable>? users,
+    bool unsubFromChat = true,
+    int? senderId,
+    int? countLefts,
+  }) async {
     await natsProvider.sendSystemMessageToChannel(
       natsProvider.getGroupLeftChannelById(chat.id),
       MessageType.UserLeftChat,
-      ChatInvitationFields(
+      ChatLeftJoinedFields(
         users: users ?? [userFunctions.me],
         chat: chat,
+        senderId: senderId ?? JwtPayload.myId,
+        countLefts: countLefts,
       ).toMap(),
     );
 

@@ -74,8 +74,8 @@ class SearchBottomNavBarItem extends NavBottomNavBarItem {
 class MessagesBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/images/message.svg';
   String label = localizationInstance.messages;
-  MessageIndicatorCubit? indicator =
-      MessageIndicatorCubit(sl<ChatDatabaseCubit>().db.watchAllMessages());
+  MessageIndicatorCubit? indicator = MessageIndicatorCubit(
+      sl<ChatDatabaseCubit>().db.watchAllMessages(), sl<ChatDatabaseCubit>());
   Widget screen = ChatListScreen(
     chatListCubit: sl<ChatListCubit>(),
     chatDatabaseCubit: sl<ChatDatabaseCubit>(),

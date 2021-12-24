@@ -70,7 +70,7 @@ class ChatDatabase extends _$ChatDatabase {
       (update(chatTables)..where((tbl) => tbl.id.equals(id)))
           .write(chat)
           .catchError((_e) {
-        throw "Sql migration error. Reinstall the app, please";
+        print("Sql migration error. Reinstall the app, please");
       });
   Future deleteChat(ChatTable chat) => delete(chatTables).delete(chat);
   Future deleteChatById(String id) =>
