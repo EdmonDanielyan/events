@@ -3,6 +3,7 @@ import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
+import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/participant_with_user.dart';
 import 'package:ink_mobile/screens/messages/chat_info/chat_info_screen.dart';
@@ -30,6 +31,8 @@ class ChatInfoHeader extends StatelessWidget {
       return _strings.participantsAccusative;
   }
 
+  int? get oppositeUserId => ChatUserViewModel.getOppositeUserIdFromChat(chat);
+
   @override
   Widget build(BuildContext context) {
     _chatDatabaseCubit = ChatInfoScreen.of(context).chatDatabaseCubit;
@@ -48,10 +51,10 @@ class ChatInfoHeader extends StatelessWidget {
           }
 
           return InkWell(
-            onTap: !isGroup
+            onTap: !isGroup && oppositeUserId != null
                 ? () => Navigator.of(context).pushNamed("/personal",
                         arguments: {
-                          'id': chat.participantId,
+                          'id': oppositeUserId,
                           HIDE_BOTTOM_NAV_BAR_CODE: true
                         })
                 : null,
