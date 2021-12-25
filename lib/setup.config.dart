@@ -441,7 +441,6 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
           get<_i89.NatsProvider>(),
           get<_i93.ChannelsRegistry>(),
           get<_i82.UserFunctions>(),
-          get<_i95.InviteSender>(),
           get<_i18.ChatDatabaseCubit>()),
       instanceName: 'Online');
   gh.factory<_i109.ChatEventsSender>(() => _i109.ChatEventsSender(

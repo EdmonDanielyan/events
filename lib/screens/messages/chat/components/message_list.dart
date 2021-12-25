@@ -9,6 +9,7 @@ import 'package:ink_mobile/functions/date_sort.dart';
 import 'package:ink_mobile/functions/message_mixins.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
+import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/screens/messages/chat/components/date_widget.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/chat_screen_params.dart';
@@ -40,6 +41,8 @@ class _MessageListState extends State<MessageList> with MessageMixins {
   late ChatDatabaseCubit _chatDatabaseCubit;
   late ChatScreenParams _chatScreenParams;
   late ChatCubit _chatCubit;
+  final Debouncer _debouncer = Debouncer(milliseconds: 500);
+
   Stream<List<MessageWithUser>> getStream() {
     final selectedChat = _chatDatabaseCubit.selectedChat;
     final String chatId = selectedChat?.id ?? "";
@@ -52,10 +55,12 @@ class _MessageListState extends State<MessageList> with MessageMixins {
   }
 
   void _messagesLoaded() {
-    if (widget.messagesLoaded != null) {
-      widget.messagesLoaded!();
-    }
-    _chatCubit.updateMessages(_chatDatabaseCubit);
+    _debouncer.run(() {
+      if (widget.messagesLoaded != null) {
+        widget.messagesLoaded!();
+      }
+      _chatCubit.updateMessages(_chatDatabaseCubit);
+    });
   }
 
   @override

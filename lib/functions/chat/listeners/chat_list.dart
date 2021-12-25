@@ -86,22 +86,21 @@ class ChatListListener extends ChannelListener {
       final channels = fields.channels;
 
       //THIS ORDER IS ESSENTIAL (DO NOT CHANGE)
+      if (!await _participantsStored(participants)) {
+        logger.finest("INSERTING PARTICIPANTS... ${new DateTime.now()}");
+        await _insertParticipants(participants, chats);
+      }
+
       logger.finest('CHAT LIST STARTING...');
       if (!await _usersStored(users)) {
         logger.finest('INSERTING USERS... ${new DateTime.now()}');
         await _insertUsers(users);
       }
 
-      logger.finest("STEP 2. INSERTING CHATS... ${new DateTime.now()}");
+      logger.finest("INSERTING CHATS... ${new DateTime.now()}");
       await _insertChats(chats);
 
-      if (!await _participantsStored(participants)) {
-        logger
-            .finest("STEP 3. INSERTING PARTICIPANTS... ${new DateTime.now()}");
-        await _insertParticipants(participants, chats);
-      }
-
-      logger.finest("STEP 4. INSERTING CHANNELS... ${new DateTime.now()}");
+      logger.finest("INSERTING CHANNELS... ${new DateTime.now()}");
       await _insertChannels(channels);
 
       if (natsProvider.isConnected) {

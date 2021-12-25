@@ -29,7 +29,7 @@ class MessageIndicatorCubit extends Cubit<int> {
   void _streamListener() {
     newStream!.listen((event) {
       _debouncer.run(() async {
-        if (event.isNotEmpty) {
+        if (event.isNotEmpty && !chatDatabaseCubit.state.loadingChats) {
           final newMessages = await _filter(event);
           int unreadMessages =
               MessageListView.unreadMessagesByMessages(newMessages);

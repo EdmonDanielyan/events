@@ -31,23 +31,23 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _answers_cubit = FeedBackScreen.of(context).feedbackAnswerListCubit;
+    final _answersCubit = FeedBackScreen.of(context).feedbackAnswerListCubit;
     scrollBottomLoadMoreCubit =
         FeedBackScreen.of(context).scrollBottomLoadMoreCubit;
 
-    linkScreenToCubit(() => loadMore(_answers_cubit));
+    linkScreenToCubit(() => loadMore(_answersCubit));
 
     return BlocBuilder<FeedbackAnswerListCubit, FeedbackAnswerListCubitState>(
-      bloc: _answers_cubit,
+      bloc: _answersCubit,
       builder: (BuildContext context, state) {
         if (state.state == FeedbackAnswerListCubitStateEnums.LOADING) {
-          _answers_cubit.fetch();
+          _answersCubit.fetch();
           return _loadingWidget(context);
         } else if (state.state == FeedbackAnswerListCubitStateEnums.SUCCESS) {
           return _listWidget(
             state.data,
-            _answers_cubit,
-            () => loadMore(_answers_cubit),
+            _answersCubit,
+            () => loadMore(_answersCubit),
           );
         } else if (state.state == FeedbackAnswerListCubitStateEnums.ERROR) {
           return ErrorLoadingWidget(

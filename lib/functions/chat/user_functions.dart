@@ -20,11 +20,11 @@ class UserFunctions {
     await insertUser(me);
   }
 
-  Future<int> insertUser(UserTable user) async {
+  Future<int> insertUser(UserTable user, {bool update = true}) async {
     UserTable? userExists = await chatDatabaseCubit.db.selectUserById(user.id);
     if (userExists == null) {
       return await chatDatabaseCubit.db.insertUser(user);
-    } else {
+    } else if (update) {
       await chatDatabaseCubit.db.updateUser(userExists.id, user);
     }
     return user.id;
@@ -79,9 +79,8 @@ class UserFunctions {
 
   Future<bool> deleteParticipants(
       List<ParticipantTable> participants, ChatTable chat) async {
-    for (final participant in participants) {
-      await deleteParticipant(participant.userId, chat.id);
-    }
+    await chatDatabaseCubit.db.deleteParticipants(
+        participants.map((e) => e.userId).toList(), chat.id);
     return true;
   }
 }

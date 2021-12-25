@@ -134,7 +134,7 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
       required void Function()? onPressed,
       bool checked = false}) {
     FontWeight fontWeight = FontWeight.w400;
-    Color color = Theme.of(context).accentColor;
+    Color color = Theme.of(context).colorScheme.secondary;
 
     if (checked) {
       fontWeight = FontWeight.bold;

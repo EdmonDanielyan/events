@@ -48,7 +48,8 @@ class ContactsRow extends StatelessWidget {
                       Text(
                         title,
                         style: TextStyle(
-                            color: Theme.of(context).accentColor, fontSize: 14),
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontSize: 14),
                       ),
                       GestureDetector(
                         onTap: () {

@@ -26,8 +26,14 @@ class ChannelsRegistry with Loggable {
   ChatListListener get chatListListener =>
       listeners[MessageType.ChatList]! as ChatListListener;
 
-  UserOnlineListener get userOnlineListener =>
-      listeners[MessageType.Online]! as UserOnlineListener;
+  UserOnlineListener get userOnlineListener {
+    final listener = listeners[MessageType.Online] as UserOnlineListener?;
+
+    if (listener != null) return listener;
+
+    return UserOnlineListener(
+        natsProvider, this, userFunctions, chatDatabaseCubit);
+  }
 
   final UserFunctions userFunctions;
 

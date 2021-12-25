@@ -4,6 +4,7 @@ import 'package:ink_mobile/components/alert/loading.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
+import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
@@ -109,7 +110,7 @@ class ChatInfoParticipants extends StatelessWidget {
           newChatScreenParams: _getNewChatScreenParams(),
           chatDatabaseCubit: messenger.chatDatabaseCubit,
           selectableCubit: _selectableCubit,
-          chatPersonListCubit: ChatInfoScreen.of(context).chatPersonListCubit,
+          chatPersonListCubit: ChatPersonListCubit(),
         ),
       ),
       icon: addUserIcon(),

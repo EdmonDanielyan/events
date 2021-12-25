@@ -5,7 +5,6 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
-import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/online.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
@@ -19,19 +18,16 @@ import 'channels_registry.dart';
 @Injectable(as: ChannelListener)
 class UserOnlineListener extends ChannelListener {
   late Timer userOnlineTimer;
-  static Set<int> subscribedUsers = {};
-  static Set<int> onlineUsers = {};
+  Set<int> subscribedUsers = {};
+  Set<int> onlineUsers = {};
 
   final ChatDatabaseCubit chatDatabaseCubit;
   final UserFunctions userFunctions;
-
-  final InviteSender messageSender;
 
   UserOnlineListener(
     NatsProvider natsProvider,
     ChannelsRegistry registry,
     this.userFunctions,
-    this.messageSender,
     this.chatDatabaseCubit,
   ) : super(natsProvider, registry);
 

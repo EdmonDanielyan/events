@@ -48,7 +48,7 @@ class _CommentState extends State<Comment> {
 
   @override
   Widget build(BuildContext context) {
-    _textColor = Theme.of(context).accentColor;
+    _textColor = Theme.of(context).colorScheme.secondary;
     _strings = localizationInstance;
 
     return Container(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
-import 'package:ink_mobile/components/loader/awesome_loader.dart';
+import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_state.dart';
 import 'package:ink_mobile/models/news_data.dart';
@@ -29,9 +29,7 @@ class Body extends StatelessWidget {
                 }
                 newsDetailCubit.load(newsId);
                 return Center(
-                  child: AwesomeLoader(
-                    color: Colors.green,
-                  ),
+                  child: InkPageLoader(),
                 );
               }
 

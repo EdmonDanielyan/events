@@ -51,6 +51,8 @@ class ChatScreenState extends State<ChatScreen> {
   final ChatScreenParams chatScreenParams;
   ChatScreenState(this.chatScreenParams);
 
+  final GlobalKey<ChatBodyState> _chatBodyState = GlobalKey<ChatBodyState>();
+
   ScrollController controller = ScrollController();
 
   ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
@@ -58,8 +60,21 @@ class ChatScreenState extends State<ChatScreen> {
   SelectableCubit<MessageWithUser> get selectableCubit =>
       widget.selectableCubit;
 
+  void _setMessagesToRead() {
+    if (_chatBodyState.currentState != null) {
+      _chatBodyState.currentState!.setMessagesToRead();
+    }
+  }
+
   void _onScrollBtnClick() {
     ScrollBottom(controller).animateTo(duration: Duration(seconds: 1));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    chatCubit.emitEditMessage(null);
+    chatCubit.emitSelectedMessageId(null);
   }
 
   @override
@@ -78,10 +93,16 @@ class ChatScreenState extends State<ChatScreen> {
             chatScreenParams: chatScreenParams,
           ),
           body: ChatBody(
+            key: _chatBodyState,
             controller: controller,
           ),
-          floatingActionButton: BlocBuilder<ChatCubit, ChatCubitState>(
+          floatingActionButton: BlocConsumer<ChatCubit, ChatCubitState>(
             bloc: chatCubit,
+            listenWhen: (previous, current) =>
+                previous.scrollBtn && !current.scrollBtn,
+            listener: (context, statue) {
+              _setMessagesToRead();
+            },
             buildWhen: (previous, current) {
               return previous.scrollBtn != current.scrollBtn;
             },

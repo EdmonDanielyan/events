@@ -166,7 +166,7 @@ class MessageCardText extends StatelessWidget {
     return Flexible(
       child: LinkifyText(
         text: messageStr != null ? messageStr! : msg,
-        style: TextStyle(color: textColor(), fontSize: 17.0),
+        style: TextStyle(color: textColor(), fontSize: 16.0),
         linkStyle: TextStyle(color: textColor()),
       ),
     );

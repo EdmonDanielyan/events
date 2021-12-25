@@ -152,14 +152,10 @@ class _ChatListTileState extends State<ChatListTile> {
       return StreamBuilder(
         stream: widget.chatDatabaseCubit.db.watchUser(oppositeUserId!),
         builder: (context, AsyncSnapshot<UserTable?> snapshot) {
-          bool indicator = false;
-          if (snapshot.hasData && snapshot.data != null) {
-            UserTable user = snapshot.data!;
-            indicator = user.online;
-          }
           return CustomCircleAvatar(
             url: widget.chat.avatar,
-            indicator: indicator,
+            indicator: messenger.registry.userOnlineListener.onlineUsers
+                .contains(oppositeUserId),
             name: widget.chat.name,
           );
         },

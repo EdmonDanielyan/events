@@ -65,23 +65,6 @@ class _ChatAttachScreenState extends State<ChatAttachScreen> {
                   !isStringUrl(val!) ? _strings.fillTheFieldCorrectly : null,
               onChanged: _onLinkChanged,
             ),
-            // iconTextWidget(
-            //   icon: cameraIcon(),
-            //   text: _strings.takePicture,
-            //   onTap: () => print("TAKE A PICTURE"),
-            // ),
-            // divider(),
-            // iconTextWidget(
-            //   icon: picsIcon(),
-            //   text: _strings.picVidFromGallery,
-            //   onTap: () => print("IMAGE OR VIDEO FROM GALLERY"),
-            // ),
-            // divider(),
-            // iconTextWidget(
-            //   icon: docsIcon(),
-            //   text: _strings.document,
-            //   onTap: () => print("Document"),
-            // ),
             SizedBox(height: 50),
           ],
         ),

@@ -40,8 +40,8 @@ class PersonnelMovement extends StatelessWidget {
                       children: [
                         Text(
                           _strings.dateOfTakingPosition,
-                          style:
-                              TextStyle(color: Theme.of(context).accentColor),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
                     ),
@@ -72,8 +72,8 @@ class PersonnelMovement extends StatelessWidget {
                       children: [
                         Text(
                           _strings.position,
-                          style:
-                              TextStyle(color: Theme.of(context).accentColor),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                         getLabel()
                       ],
@@ -105,8 +105,8 @@ class PersonnelMovement extends StatelessWidget {
                       children: [
                         Text(
                           _strings.department,
-                          style:
-                              TextStyle(color: Theme.of(context).accentColor),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
                     ),
@@ -137,8 +137,8 @@ class PersonnelMovement extends StatelessWidget {
                       children: [
                         Text(
                           _strings.company,
-                          style:
-                              TextStyle(color: Theme.of(context).accentColor),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
                     ),
@@ -169,8 +169,8 @@ class PersonnelMovement extends StatelessWidget {
                       children: [
                         Text(
                           _strings.status,
-                          style:
-                              TextStyle(color: Theme.of(context).accentColor),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
                     ),
@@ -201,8 +201,8 @@ class PersonnelMovement extends StatelessWidget {
                       children: [
                         Text(
                           _strings.staffNumber,
-                          style:
-                              TextStyle(color: Theme.of(context).accentColor),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
                     ),
