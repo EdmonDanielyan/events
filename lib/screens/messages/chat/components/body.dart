@@ -40,13 +40,17 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
     });
   }
 
-  void _setMessagesToRead() {
+  void setMessagesToRead() {
     loadedMessagesWithUser = MessageList.messagesWithUser ?? [];
+
     final messages =
         MessageListView.messageWithUsersToMessage(loadedMessagesWithUser);
-    final notReadMessages = MessageListView.oppositeNotReadMessage(messages);
-    if (notReadMessages.length > 0 && sl<Messenger>().isConnected) {
-      sl<Messenger>().userReactionSender.setMessagesToReadNats(notReadMessages);
+
+    final lastNotReadMessage = MessageListView.oppositeNotReadMessage(messages);
+    if (lastNotReadMessage != null && sl<Messenger>().isConnected) {
+      sl<Messenger>().userReactionSender.setMessagesToReadNats(
+        [lastNotReadMessage],
+      );
     }
   }
 
@@ -66,9 +70,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
     loadedMessagesCount++;
     if (loadedMessagesCount == 1 || isInBottom(controller, gap: 100)) {
       _scrollBottom();
-      _setMessagesToRead();
-    } else {
-      chatCubit.setScrollBtn(true);
+      setMessagesToRead();
     }
   }
 
@@ -76,8 +78,9 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
     if (isInBottom(controller, gap: 100)) {
       if (chatCubit.scrollBtn) {
         chatCubit.setScrollBtn(false);
-        _setMessagesToRead();
       }
+    } else {
+      chatCubit.setScrollBtn(true);
     }
   }
 

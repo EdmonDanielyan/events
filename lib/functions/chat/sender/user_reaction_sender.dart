@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats/message_status.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
@@ -27,11 +28,23 @@ class UserReactionSender {
     );
   }
 
-  Future<bool> setMessagesToReadNats(List<MessageTable> messages) async {
+  Future<bool> setMessagesToReadNats(List<MessageTable> messages,
+      {bool sendRequest = true}) async {
     String chatId = messages.last.chatId;
     final channel = natsProvider.getGroupReactedChannelById(chatId);
-    bool send = await sendReadMessageStatus(channel, messages);
-    await chatFunctions.messagesToRead(messages, onlyIfMyMessages: false);
-    return send;
+    await chatFunctions.messagesToRead(messages.last, onlyIfMyMessages: false);
+    if (sendRequest) {
+      bool send = await sendReadMessageStatus(channel, messages);
+      if (!send) {
+        await chatFunctions.messagesToRead(
+          messages.last,
+          onlyIfMyMessages: false,
+          messageStatus: MessageStatus.SENT,
+        );
+      }
+      return send;
+    } else {
+      return true;
+    }
   }
 }

@@ -7,6 +7,7 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
 import 'database/chat_db.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 
 enum MessageStatus { EMPTY, SENDING, SENT, READ, ERROR }
 
@@ -154,7 +155,12 @@ class MessageListView {
     return newMessage;
   }
 
-  static List<MessageTable> oppositeNotReadMessage(List<MessageTable> items) {
+  static MessageTable? oppositeNotReadMessage(List<MessageTable> items) {
+    return items.lastWhereOrNull(
+        (element) => !isByMe(element) && element.status != MessageStatus.READ);
+  }
+
+  static List<MessageTable> oppositeNotReadMessages(List<MessageTable> items) {
     return items
         .where((element) =>
             !isByMe(element) && element.status != MessageStatus.READ)

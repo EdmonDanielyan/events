@@ -91,6 +91,20 @@ class ChatDatabase extends _$ChatDatabase {
           .get();
   Future<int> updateMessageById(String id, MessageTable message) =>
       (update(messageTables)..where((tbl) => tbl.id.equals(id))).write(message);
+
+  Future<void> updateMessagesStatus(MessageTable message,
+      {required int exceptUserId,
+      MessageStatus messageStatus = MessageStatus.READ}) async {
+    (update(messageTables)
+          ..where((tbl) =>
+              tbl.chatId.equals(message.chatId) &
+              tbl.userId.equals(exceptUserId).not() &
+              tbl.status.equals(messageStatus.index).not()))
+        .write(
+      MessageTablesCompanion(status: Value(messageStatus)),
+    );
+  }
+
   Future<int> countUnreadMessages(String id) async {
     var count = countAll(
         filter: messageTables.id.equals(id) &
@@ -256,6 +270,13 @@ class ChatDatabase extends _$ChatDatabase {
           participantTables)
         ..where((tbl) => tbl.userId.equals(userId) & tbl.chatId.equals(chatId)))
       .go();
+  Future<void> deleteParticipants(List<int> userIds, String chatId) async {
+    (delete(participantTables)
+          ..where(
+              (tbl) => tbl.userId.isIn(userIds) & tbl.chatId.equals(chatId)))
+        .go();
+  }
+
   Future<ParticipantTable?> selectParticipantById(int id, String chatId) =>
       (select(participantTables)
             ..where((tbl) => tbl.userId.equals(id) & tbl.chatId.equals(chatId)))

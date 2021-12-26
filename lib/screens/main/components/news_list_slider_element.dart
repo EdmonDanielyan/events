@@ -124,7 +124,8 @@ class NewsListSliderElement extends StatelessWidget {
                                                                   .primaryColor
                                                               : Theme.of(
                                                                       context)
-                                                                  .accentColor,
+                                                                  .colorScheme
+                                                                  .secondary,
                                                     )))
                                           ])),
                                           Container(
@@ -147,7 +148,8 @@ class NewsListSliderElement extends StatelessWidget {
                                                         style: TextStyle(
                                                           color:
                                                               Theme.of(context)
-                                                                  .accentColor,
+                                                                  .colorScheme
+                                                                  .secondary,
                                                         )))
                                               ])),
                                           Expanded(

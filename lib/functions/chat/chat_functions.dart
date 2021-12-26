@@ -59,16 +59,18 @@ class ChatFunctions {
     chatDatabaseCubit.db.updateMessageById(message.id, message);
   }
 
-  Future<void> messagesToRead(List<MessageTable> messages,
-      {required bool onlyIfMyMessages}) async {
-    for (final message in messages) {
-      bool setRead = true;
-      if (onlyIfMyMessages && message.userId != JwtPayload.myId) {
-        setRead = false;
-      }
-      if (setRead) {
-        await updateMessageStatus(message, MessageStatus.READ);
-      }
+  Future<void> messagesToRead(MessageTable message,
+      {required bool onlyIfMyMessages,
+      MessageStatus messageStatus = MessageStatus.READ}) async {
+    bool setRead = true;
+    if (onlyIfMyMessages && message.userId != JwtPayload.myId) {
+      setRead = false;
+    }
+
+    if (setRead) {
+      await chatDatabaseCubit.db.updateMessagesStatus(message,
+          exceptUserId: onlyIfMyMessages ? 0 : JwtPayload.myId,
+          messageStatus: messageStatus);
     }
   }
 

@@ -1,3 +1,5 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';

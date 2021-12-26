@@ -56,6 +56,7 @@ class ChatLeftListener extends ChannelListener {
       if (users.isNotEmpty) {
         final me = await _deleteIfItsMe(users, chat,
             countLefts: fields.countLefts, senderId: senderId);
+
         if (!me) {
           final participants = ChatUserViewModel.toParticipants(users, chat);
 

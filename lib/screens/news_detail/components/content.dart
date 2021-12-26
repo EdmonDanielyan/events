@@ -73,7 +73,7 @@ class _ContentState extends State<Content> {
                         width: 14,
                         color: widget.isLiked
                             ? Theme.of(context).primaryColor
-                            : Theme.of(context).accentColor,
+                            : Theme.of(context).colorScheme.secondary,
                       ),
                       Container(
                         margin: EdgeInsets.only(left: 4),
@@ -83,7 +83,7 @@ class _ContentState extends State<Content> {
                             fontSize: 18,
                             color: widget.isLiked
                                 ? Theme.of(context).primaryColor
-                                : Theme.of(context).accentColor,
+                                : Theme.of(context).colorScheme.secondary,
                           ),
                         ),
                       )
@@ -112,7 +112,7 @@ class _ContentState extends State<Content> {
                               widget.commentsCount.toString(),
                               style: TextStyle(
                                 fontSize: 18,
-                                color: Theme.of(context).accentColor,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
                           )
