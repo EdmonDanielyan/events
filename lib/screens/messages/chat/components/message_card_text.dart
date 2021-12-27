@@ -57,9 +57,13 @@ class MessageCardText extends StatelessWidget {
         makeRequest: false,
       );
       final renewedMessage = MessageListView.renewMessage(message!);
-      await sl<SendMessage>().addMessage(getChat, renewedMessage);
       if (sl<Messenger>().isConnected) {
-        await sl<Messenger>().textSender.sendMessage(getChat, renewedMessage);
+        final sent = await sl<Messenger>()
+            .textSender
+            .sendMessage(getChat, renewedMessage);
+        if (sent) {
+          await sl<SendMessage>().addMessage(getChat, renewedMessage);
+        }
       }
     }
   }

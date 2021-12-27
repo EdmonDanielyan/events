@@ -25,10 +25,11 @@ class TextSender with Loggable {
       this.registry);
 
   /// Publicise message to chat
-  Future<void> sendMessage(ChatTable chat, MessageTable message) async {
+  Future<bool> sendMessage(ChatTable chat, MessageTable message) async {
     bool success = await _sendTxtMessage(chat, message);
     MessageStatus status = success ? MessageStatus.SENT : MessageStatus.ERROR;
     await chatFunctions.updateMessageStatus(message, status);
+    return success;
   }
 
   Future<bool> _sendTxtMessage(
