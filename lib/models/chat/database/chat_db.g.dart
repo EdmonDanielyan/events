@@ -360,60 +360,70 @@ class $ChatTablesTable extends ChatTables
   final String? _alias;
   $ChatTablesTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
       'id', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
       additionalChecks:
           GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 150),
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true);
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
+  @override
   late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
       'description', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _avatarMeta = const VerificationMeta('avatar');
+  @override
   late final GeneratedColumn<String?> avatar = GeneratedColumn<String?>(
       'avatar', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _ownerIdMeta = const VerificationMeta('ownerId');
+  @override
   late final GeneratedColumn<int?> ownerId = GeneratedColumn<int?>(
       'owner_id', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _participantIdMeta =
       const VerificationMeta('participantId');
+  @override
   late final GeneratedColumn<int?> participantId = GeneratedColumn<int?>(
       'participant_id', aliasedName, true,
-      typeName: 'INTEGER', requiredDuringInsert: false);
+      type: const IntType(), requiredDuringInsert: false);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
   late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
       'updated_at', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: Constant(new DateTime.now().toUtc()));
   final VerificationMeta _millisecondsSinceEpochMeta =
       const VerificationMeta('millisecondsSinceEpoch');
+  @override
   late final GeneratedColumn<String?> millisecondsSinceEpoch =
       GeneratedColumn<String?>('milliseconds_since_epoch', aliasedName, true,
-          typeName: 'TEXT',
+          type: const StringType(),
           requiredDuringInsert: false,
           defaultValue:
               Constant(new DateTime.now().millisecondsSinceEpoch.toString()));
   final VerificationMeta _notificationsOnMeta =
       const VerificationMeta('notificationsOn');
+  @override
   late final GeneratedColumn<bool?> notificationsOn = GeneratedColumn<bool?>(
       'notifications_on', aliasedName, true,
-      typeName: 'INTEGER',
+      type: const BoolType(),
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (notifications_on IN (0, 1))',
       defaultValue: Constant(true));
   final VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  @override
   late final GeneratedColumn<bool?> deleted = GeneratedColumn<bool?>(
       'deleted', aliasedName, true,
-      typeName: 'INTEGER',
+      type: const BoolType(),
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (deleted IN (0, 1))',
       defaultValue: Constant(false));
@@ -851,54 +861,64 @@ class $MessageTablesTable extends MessageTables
   final String? _alias;
   $MessageTablesTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
       'id', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _chatIdMeta = const VerificationMeta('chatId');
+  @override
   late final GeneratedColumn<String?> chatId = GeneratedColumn<String?>(
       'chat_id', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _messageMeta = const VerificationMeta('message');
+  @override
   late final GeneratedColumn<String?> message = GeneratedColumn<String?>(
       'message', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
   late final GeneratedColumn<int?> userId = GeneratedColumn<int?>(
       'user_id', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _repliedMessageIdMeta =
       const VerificationMeta('repliedMessageId');
+  @override
   late final GeneratedColumn<String?> repliedMessageId =
       GeneratedColumn<String?>('replied_message_id', aliasedName, true,
-          typeName: 'TEXT', requiredDuringInsert: false);
+          type: const StringType(), requiredDuringInsert: false);
   final VerificationMeta _readMeta = const VerificationMeta('read');
+  @override
   late final GeneratedColumn<bool?> read = GeneratedColumn<bool?>(
       'read', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const BoolType(),
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (read IN (0, 1))',
       defaultValue: Constant(false));
   final VerificationMeta _sentOnMeta = const VerificationMeta('sentOn');
+  @override
   late final GeneratedColumn<bool?> sentOn = GeneratedColumn<bool?>(
       'sent_on', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const BoolType(),
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (sent_on IN (0, 1))',
       defaultValue: Constant(false));
   final VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
   late final GeneratedColumnWithTypeConverter<MessageStatus, int?> status =
       GeneratedColumn<int?>('status', aliasedName, false,
-              typeName: 'INTEGER', requiredDuringInsert: true)
+              type: const IntType(), requiredDuringInsert: true)
           .withConverter<MessageStatus>($MessageTablesTable.$converter0);
   final VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
   late final GeneratedColumnWithTypeConverter<MessageType, int?> type =
       GeneratedColumn<int?>('type', aliasedName, false,
-              typeName: 'INTEGER', requiredDuringInsert: true)
+              type: const IntType(), requiredDuringInsert: true)
           .withConverter<MessageType>($MessageTablesTable.$converter1);
   final VerificationMeta _createdMeta = const VerificationMeta('created');
+  @override
   late final GeneratedColumn<DateTime?> created = GeneratedColumn<DateTime?>(
       'created', aliasedName, true,
-      typeName: 'INTEGER',
+      type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: Constant(new DateTime.now()));
   @override
@@ -1163,24 +1183,28 @@ class $UserTablesTable extends UserTables
   final String? _alias;
   $UserTablesTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
       'id', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: false);
+      type: const IntType(), requiredDuringInsert: false);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
       additionalChecks:
           GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 150),
-      typeName: 'TEXT',
+      type: const StringType(),
       requiredDuringInsert: true);
   final VerificationMeta _avatarMeta = const VerificationMeta('avatar');
+  @override
   late final GeneratedColumn<String?> avatar = GeneratedColumn<String?>(
       'avatar', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _onlineMeta = const VerificationMeta('online');
+  @override
   late final GeneratedColumn<bool?> online = GeneratedColumn<bool?>(
       'online', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const BoolType(),
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (online IN (0, 1))',
       defaultValue: Constant(false));
@@ -1382,17 +1406,20 @@ class $ParticipantTablesTable extends ParticipantTables
   final String? _alias;
   $ParticipantTablesTable(this._db, [this._alias]);
   final VerificationMeta _chatIdMeta = const VerificationMeta('chatId');
+  @override
   late final GeneratedColumn<String?> chatId = GeneratedColumn<String?>(
       'chat_id', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
   late final GeneratedColumn<int?> userId = GeneratedColumn<int?>(
       'user_id', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _adminMeta = const VerificationMeta('admin');
+  @override
   late final GeneratedColumn<bool?> admin = GeneratedColumn<bool?>(
       'admin', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const BoolType(),
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (admin IN (0, 1))',
       defaultValue: Constant(false));
@@ -1731,44 +1758,52 @@ class $ChannelTablesTable extends ChannelTables
   final String? _alias;
   $ChannelTablesTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
       'id', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _payloadTypeMeta =
       const VerificationMeta('payloadType');
+  @override
   late final GeneratedColumnWithTypeConverter<PayloadType, int?> payloadType =
       GeneratedColumn<int?>('payload_type', aliasedName, false,
-              typeName: 'INTEGER', requiredDuringInsert: true)
+              type: const IntType(), requiredDuringInsert: true)
           .withConverter<PayloadType>($ChannelTablesTable.$converter0);
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
   late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
       'created_at', aliasedName, true,
-      typeName: 'INTEGER',
+      type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: Constant(new DateTime.now()));
   final VerificationMeta _needAckMeta = const VerificationMeta('needAck');
+  @override
   late final GeneratedColumn<bool?> needAck = GeneratedColumn<bool?>(
       'need_ack', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const BoolType(),
       requiredDuringInsert: true,
       defaultConstraints: 'CHECK (need_ack IN (0, 1))');
   final VerificationMeta _fromMeta = const VerificationMeta('from');
+  @override
   late final GeneratedColumn<String?> from = GeneratedColumn<String?>(
       'from', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _toMeta = const VerificationMeta('to');
+  @override
   late final GeneratedColumn<String?> to = GeneratedColumn<String?>(
       'to', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _sequenceMeta = const VerificationMeta('sequence');
+  @override
   late final GeneratedColumn<String?> sequence = GeneratedColumn<String?>(
       'sequence', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _messageTypeMeta =
       const VerificationMeta('messageType');
+  @override
   late final GeneratedColumnWithTypeConverter<MessageType, int?> messageType =
       GeneratedColumn<int?>('message_type', aliasedName, false,
-              typeName: 'INTEGER', requiredDuringInsert: true)
+              type: const IntType(), requiredDuringInsert: true)
           .withConverter<MessageType>($ChannelTablesTable.$converter1);
   @override
   List<GeneratedColumn> get $columns =>
