@@ -51,19 +51,15 @@ class MessageCardText extends StatelessWidget {
 
   void _resend(BuildContext context) async {
     if (sl<Messenger>().isConnected) {
-      await sl<Messenger>().messageEditorSender.sendDeleteMessages(
-        [message!],
-        context,
-        makeRequest: false,
-      );
       final renewedMessage = MessageListView.renewMessage(message!);
-      if (sl<Messenger>().isConnected) {
-        final sent = await sl<Messenger>()
-            .textSender
-            .sendMessage(getChat, renewedMessage);
-        if (sent) {
-          await sl<SendMessage>().addMessage(getChat, renewedMessage);
-        }
+
+      final sent =
+          await sl<Messenger>().textSender.sendMessage(getChat, renewedMessage);
+      if (sent) {
+        await sl<Messenger>()
+            .messageEditorSender
+            .sendDeleteMessages([message!], context, makeRequest: false);
+        await sl<SendMessage>().addMessage(getChat, renewedMessage);
       }
     }
   }
