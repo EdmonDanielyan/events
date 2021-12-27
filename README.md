@@ -1,16 +1,27 @@
 # ink_mobile
 
-A new Flutter project.
+Проект для компании ИНК
 
-## Getting Started
+## Настройка IDE
 
-This project is a starting point for a Flutter application.
+Для настройки проекта и поддержки генерации кода выполните из директории проекта:
 
-A few resources to get you started if this is your first Flutter project:
+- Для Windows: setup.cmd
+- Для Linux/MacOS: setup.sh
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### В случае, если IDE показывает ошибки 
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Например:
+`error: Target of URI doesn't exist: 'package:flutter_gen/gen_l10n/app_localizations.dart'. (uri_does_not_exist at [ink_mobile] lib\components\ink_drop_down.dart:2)`
+
+1. Выполните сборку проекта:
+
+    Для Android: 
+    
+    `flutter pub build apk --no-sound-null-safety`
+    
+    Для IOS:
+    
+    `flutter pub build ios --no-sound-null-safety`
+
+2. Добавьте директорию .dart_tool/flutter_gen/ в исходники проекта

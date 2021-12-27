@@ -5,6 +5,7 @@ import 'package:ink_mobile/core/logging/file_log_appender.dart';
 import 'package:ink_mobile/core/logging/logging.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/providers/notifications.dart';
+import 'package:ink_mobile/providers/package_info.dart';
 import 'package:logging/logging.dart';
 
 import 'setup.config.dart';
@@ -30,7 +31,7 @@ Future<void> setup({scope = "dev"}) async {
 
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
-
-    // exit(1);
   };
+
+  await sl<PackageInfoProvider>().load();
 }

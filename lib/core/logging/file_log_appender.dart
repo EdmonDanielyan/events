@@ -3,9 +3,11 @@ import 'dart:io';
 
 import 'package:injectable/injectable.dart';
 
-@singleton
-class FileLogAppender {
-  final String logFile;
+import 'device_info_printer.dart';
+
+@lazySingleton
+class FileLogAppender with DeviceInfoPrinter {
+  String logFile;
   List<String> _recordsCache = [];
   Timer? _timer;
   File? _file;
@@ -60,9 +62,11 @@ class FileLogAppender {
       bool exists = _file!.existsSync();
       if (!exists) {
         _file!.createSync();
+        await addDeviceInfo(_file!);
       } else if (_file!.lengthSync() > logFileSizeBytes) {
         _file!.deleteSync();
         _file!.createSync();
+        await addDeviceInfo(_file!);
       }
       return true;
     } catch (exc, stackTrace) {
@@ -86,5 +90,4 @@ class FileLogAppender {
       print(log);
     }
   }
-
 }

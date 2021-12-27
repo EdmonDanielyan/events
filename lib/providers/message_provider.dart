@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
@@ -20,12 +19,10 @@ import 'package:ink_mobile/functions/chat/sender/ping_sender.dart';
 import 'package:ink_mobile/functions/chat/sender/text_sender.dart';
 import 'package:ink_mobile/functions/chat/sender/user_reaction_sender.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
-import '../app.dart';
 import '../setup.dart';
 
 @lazySingleton
@@ -105,6 +102,7 @@ class Messenger with Loggable {
   }
 
   Future<void> _softDispose() async {
+    logger.finest('_softDispose');
     registry.unsubscribeFromAll();
     pingSender.stopSending();
   }
