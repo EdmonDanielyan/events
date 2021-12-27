@@ -41,8 +41,10 @@ class ChatInfoBottomBtns extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           clearChat(),
-          Divider(color: Colors.grey, height: 1.0),
-          leaveChat(context),
+          if (isGroup) ...[
+            Divider(color: Colors.grey, height: 1.0),
+            leaveChat(context),
+          ],
         ],
       ),
     );
