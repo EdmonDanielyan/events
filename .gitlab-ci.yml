@@ -38,6 +38,7 @@ android:release:
   script:
     - du -h -d 1 ${PUB_CACHE} && ls -la ${PUB_CACHE} && echo ${CI_JOB_ID} > "${PUB_CACHE}/last_job_id"
     - base64 --decode $KEY_STORE > key.jks && export KEY_STORE=`pwd`/key.jks
+#    - flutter upgrade
     - flutter doctor
     - flutter pub upgrade
     - du -h -d 1 /cache/pub-cache && ls -la /cache/pub-cache
@@ -75,6 +76,7 @@ ios:debug:
 #    GIT_CLEAN_FLAGS: none
   script:
     - du -h -d 1 ${PUB_CACHE} && ls -la ${PUB_CACHE} && echo ${CI_JOB_ID} > "${PUB_CACHE}/last_job_id"
+#    - ${FLUTTER_EXEC} upgrade
     - ${FLUTTER_EXEC} --version
     - ${FLUTTER_EXEC} doctor
     - ${FLUTTER_EXEC} pub upgrade
