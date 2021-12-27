@@ -159,7 +159,7 @@ class NatsProvider {
     var connectResult = await _stan.connectUri(Uri.parse(natsWssUrl),
         certificate: certificate,
         clusterID: natsCluster,
-        pingMaxAttempts: 10,
+        pingMaxAttempts: 3,
         clientID: "$userId-$deviceVirtualId",
         retryReconnect: true,
         connectOption:

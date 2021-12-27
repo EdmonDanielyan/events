@@ -88,36 +88,14 @@ class Messenger with Loggable {
       if (connectionsCount == 1) {
         textSender.redeliverMessages();
       }
-      _showConnectedSnackBar();
     };
 
     natsProvider.onDisconnected = () async {
       logger.info("onDisconnected");
       _softDispose();
-      _showDisconnectedSnackBar();
     };
 
     natsProvider.onUnacknowledged = (subscription, message, onMessage) async {};
-  }
-
-  //todo: нужно убрать из месенджера все вызовы UI
-  void _showConnectedSnackBar() {
-    if (!silentMode && connectionsCount > 1 && App.getContext != null) {
-      SuccessCustomSnackbar(
-        context: App.getContext!,
-        txt: localizationInstance.connectedToServer,
-      );
-    }
-  }
-
-  //todo: нужно убрать из месенджера все вызовы UI
-  void _showDisconnectedSnackBar() {
-    if (!silentMode && App.getContext != null) {
-      SimpleCustomSnackbar(
-        context: App.getContext!,
-        txt: localizationInstance.disconnectedFromServer,
-      );
-    }
   }
 
   Future<void> _onConnected() async {

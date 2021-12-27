@@ -81,7 +81,8 @@ class ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return KeyboardDismisser(
       child: BlocListener<ChatDatabaseCubit, ChatDatabaseCubitState>(
-        listenWhen: (previous, current) => current.selectedChat == null,
+        listenWhen: (previous, current) =>
+            current.selectedChat == null && !current.loadingChats,
         listener: (context, state) {
           Navigator.of(context).popUntil((route) => route.isFirst);
         },
