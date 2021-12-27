@@ -58,90 +58,93 @@ class _ChatListTileState extends State<ChatListTile> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Dismissible(
-        background: SizedBox(),
+      child: ChatListView.isGroup(widget.chat) ? Dismissible(
+        background: const SizedBox(),
         direction: DismissDirection.endToStart,
         secondaryBackground: Icon(Icons.delete, color: Colors.red),
         resizeDuration: null,
         onDismissed: widget.onDismissed,
         key: UniqueKey(),
-        child: InkWell(
-          onTap: widget.onTap,
-          child: Container(
-            padding: widget.contentPadding,
-            margin: EdgeInsets.only(bottom: 7.0, top: 7.0),
-            child: Column(
+        child: _chatContainer(),
+      ) : _chatContainer(),
+    );
+  }
+
+  Widget _chatContainer() {
+    return InkWell(
+      onTap: widget.onTap,
+      child: Container(
+        padding: widget.contentPadding,
+        margin: EdgeInsets.only(bottom: 7.0, top: 7.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _avatarWidget(),
-                    SizedBox(width: widget.leadingGap),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                _avatarWidget(),
+                SizedBox(width: widget.leadingGap),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ChatName(
-                                  name: widget.chat.name,
-                                  highlightValue: widget.highlightValue,
-                                ),
-                              ),
-                              SizedBox(width: 2.0),
-                              if (hasMessage) ...[
-                                ChatDate(
-                                  chatDate: lastMessage?.created ??
-                                      new DateTime.now(),
-                                ),
-                              ],
-                            ],
+                          Expanded(
+                            child: ChatName(
+                              name: widget.chat.name,
+                              highlightValue: widget.highlightValue,
+                            ),
                           ),
-                          SizedBox(height: 5.0),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              if (hasMessage) ...[
-                                Expanded(
-                                  child: _displayBody(),
-                                ),
-                                if (widget.messagesWithUser.length > 0) ...[
-                                  ChatMessageTrailing(
-                                      messagesWithUser:
-                                          widget.messagesWithUser),
-                                ],
-                              ],
-                              if (!hasMessage) ...[
-                                Expanded(
-                                  child: _displayEmpty(),
-                                ),
-                              ],
-                            ],
-                          ),
-                          SizedBox(height: 10.0)
+                          SizedBox(width: 2.0),
+                          if (hasMessage) ...[
+                            ChatDate(
+                              chatDate:
+                                  lastMessage?.created ?? new DateTime.now(),
+                            ),
+                          ],
                         ],
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      height: 0.0,
-                      child: Opacity(
-                          child: CustomCircleAvatar(url: widget.chat.avatar),
-                          opacity: 0.0),
-                    ),
-                    SizedBox(width: widget.leadingGap),
-                    Expanded(child: ChatDivider())
-                  ],
+                      SizedBox(height: 5.0),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          if (hasMessage) ...[
+                            Expanded(
+                              child: _displayBody(),
+                            ),
+                            if (widget.messagesWithUser.length > 0) ...[
+                              ChatMessageTrailing(
+                                  messagesWithUser: widget.messagesWithUser),
+                            ],
+                          ],
+                          if (!hasMessage) ...[
+                            Expanded(
+                              child: _displayEmpty(),
+                            ),
+                          ],
+                        ],
+                      ),
+                      SizedBox(height: 10.0)
+                    ],
+                  ),
                 ),
               ],
             ),
-          ),
+            Row(
+              children: [
+                SizedBox(
+                  height: 0.0,
+                  child: Opacity(
+                      child: CustomCircleAvatar(url: widget.chat.avatar),
+                      opacity: 0.0),
+                ),
+                SizedBox(width: widget.leadingGap),
+                Expanded(child: ChatDivider())
+              ],
+            ),
+          ],
         ),
       ),
     );
