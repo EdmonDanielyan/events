@@ -55,7 +55,6 @@ class Messenger with Loggable {
   bool silentMode = false;
 
   bool isConnected = false;
-  int connectionsCount = 0;
 
   Future<void> init() async {
     logger.finest("init");
@@ -83,11 +82,8 @@ class Messenger with Loggable {
     natsProvider.onConnected = () async {
       logger.info("onConnected");
 
-      connectionsCount++;
       await _onConnected();
-      if (connectionsCount == 1) {
-        textSender.redeliverMessages();
-      }
+      textSender.redeliverMessages();
     };
 
     natsProvider.onDisconnected = () async {

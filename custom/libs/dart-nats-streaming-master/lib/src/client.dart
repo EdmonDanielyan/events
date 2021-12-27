@@ -78,6 +78,8 @@ class Client {
 
   List<int> get connectionIDAscii => ascii.encode(this.connectionID);
 
+  int LIMIT_UNACKNOWLEDGED = 3;
+
   // ####################################################
   //                      Methods
   /// Support ws/wss schemas using [uri] to connect to NATS.
@@ -536,14 +538,14 @@ class Client {
       {Function(Subscription, DataMessage)? unacknowledgedMessageHandler}) {
     final channel = subscription.subject;
     if (unAcknowledgedCounter.containsKey(channel)) {
-      int limit = 3;
       int counter = unAcknowledgedCounter[channel]!;
 
       print('COUNTER $counter');
 
-      if (counter >= limit) {
+      if (counter >= LIMIT_UNACKNOWLEDGED) {
         subscription.subscription.close();
-        print('CLOSED $channel after $limit unacknowledged messages');
+        print(
+            'CLOSED $channel after $LIMIT_UNACKNOWLEDGED unacknowledged messages');
       }
 
       unAcknowledgedCounter[channel] = counter + 1;

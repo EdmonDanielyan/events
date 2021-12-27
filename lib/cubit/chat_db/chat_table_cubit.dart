@@ -16,6 +16,10 @@ class ChatDatabaseCubit extends Cubit<ChatDatabaseCubitState> {
     emit(state.copyWith(selectedChat: chat));
   }
 
+  void setDeletedChat(bool deletedChat) {
+    emit(state.copyWith(deletedChat: deletedChat));
+  }
+
   void updateSearch(String value) {
     emit(state.copyWith(searchValue: value));
   }

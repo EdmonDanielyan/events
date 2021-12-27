@@ -5,12 +5,14 @@ class ChatDatabaseCubitState {
   final String searchValue;
   final ChatTable? selectedChat;
   final bool loadingChats;
+  final bool deletedChat;
 
   const ChatDatabaseCubitState({
     required this.db,
     this.searchValue = "",
     this.selectedChat,
     this.loadingChats = true,
+    this.deletedChat = false,
   });
 
   ChatDatabaseCubitState copyWith({
@@ -18,12 +20,14 @@ class ChatDatabaseCubitState {
     String? searchValue,
     ChatTable? selectedChat,
     bool? loadingChats,
+    bool? deletedChat,
   }) {
     return ChatDatabaseCubitState(
       db: db ?? this.db,
       searchValue: searchValue ?? this.searchValue,
       selectedChat: selectedChat,
       loadingChats: loadingChats ?? this.loadingChats,
+      deletedChat: deletedChat ?? this.deletedChat,
     );
   }
 
@@ -35,7 +39,8 @@ class ChatDatabaseCubitState {
         other.db == db &&
         other.searchValue == searchValue &&
         other.selectedChat == selectedChat &&
-        other.loadingChats == loadingChats;
+        other.loadingChats == loadingChats &&
+        other.deletedChat == deletedChat;
   }
 
   @override
@@ -43,9 +48,10 @@ class ChatDatabaseCubitState {
       db.hashCode ^
       searchValue.hashCode ^
       selectedChat.hashCode ^
-      loadingChats.hashCode;
+      loadingChats.hashCode ^
+      deletedChat.hashCode;
 
   @override
   String toString() =>
-      'ChatDatabaseCubitState(db: $db, searchValue: $searchValue, selectedChat: $selectedChat, loadingChats: $loadingChats)';
+      'ChatDatabaseCubitState(db: $db, searchValue: $searchValue, selectedChat: $selectedChat, loadingChats: $loadingChats,  deletedChat: $deletedChat)';
 }

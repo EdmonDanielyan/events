@@ -102,7 +102,7 @@ class ChatLeftListener extends ChannelListener {
           final selectedChat = chatDatabaseCubit.selectedChat;
 
           if (selectedChat != null && selectedChat.id == chat.id) {
-            chatDatabaseCubit.setSelectedChat(null);
+            chatDatabaseCubit.setDeletedChat(true);
           }
         }
 
