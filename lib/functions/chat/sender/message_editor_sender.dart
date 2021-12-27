@@ -49,7 +49,7 @@ class MessageEditorSender {
         }
       }
     } else {
-      chatFunctions.deleteMessages(messages);
+      await chatFunctions.deleteMessages(messages);
     }
 
     return result;

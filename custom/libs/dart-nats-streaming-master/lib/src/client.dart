@@ -286,10 +286,14 @@ class Client {
     }
   }
 
+  bool _isInStateOfReconnect = false;
+
   Future<void> _reconnect() async {
+    _isInStateOfReconnect = true;
     await _disconnect();
     await Future.delayed(Duration(seconds: retryInterval), () => {});
     await _connect();
+    _isInStateOfReconnect = false;
   }
 
   Future<void> pingResponseWatchdog() async {
@@ -356,7 +360,9 @@ class Client {
             pubMsg.writeToBuffer());
       } catch (e) {
         print('Publishing Fail: $e');
-        await _reconnect();
+        if (connected && !_isInStateOfReconnect) {
+          await _reconnect();
+        }
         if (onDeliveryFail != null) {
           onDeliveryFail(pubMsg, e.toString());
         }
@@ -391,7 +397,7 @@ class Client {
         return natsClient.pub(to, pubMsg.writeToBuffer());
       } catch (e) {
         print('Publishing Fail: $e');
-        if (connected) {
+        if (connected && !_isInStateOfReconnect) {
           await _reconnect();
         }
         if (onDeliveryFail != null) {

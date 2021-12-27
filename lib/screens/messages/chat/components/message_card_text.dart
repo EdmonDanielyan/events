@@ -51,7 +51,7 @@ class MessageCardText extends StatelessWidget {
 
   void _resend(BuildContext context) async {
     if (sl<Messenger>().isConnected) {
-      sl<Messenger>().messageEditorSender.sendDeleteMessages(
+      await sl<Messenger>().messageEditorSender.sendDeleteMessages(
         [message!],
         context,
         makeRequest: false,
