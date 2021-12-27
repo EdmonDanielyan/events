@@ -5,6 +5,7 @@ import 'package:ink_mobile/core/logging/file_log_appender.dart';
 import 'package:ink_mobile/core/logging/logging.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/providers/notifications.dart';
+import 'package:logging/logging.dart';
 
 import 'setup.config.dart';
 
@@ -21,7 +22,12 @@ Future<void> setup({scope = "dev"}) async {
   await $initGetIt(sl, environment: scope);
   setupI18n(sl);
 
-  setupLogging(sl<FileLogAppender>());
+
+  setupLogging(
+      sl<FileLogAppender>(),
+      //todo: Убрать подробробное логирование перед публикаций в сторы
+      forceLevel: Level.ALL);
+
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
 
