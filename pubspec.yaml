@@ -84,7 +84,7 @@ dev_dependencies:
     mocktail:
     build_runner:
     injectable_generator:
-    moor_generator: ^4.4.1
+    moor_generator: ^4.6.0+1
     yaml:
 
 flutter_icons:

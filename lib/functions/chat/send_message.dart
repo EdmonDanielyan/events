@@ -69,7 +69,10 @@ class SendMessage with Loggable {
       await chatDatabaseCubit.db.insertMessage(message);
       if (setChatToFirst) {
         try {
-          chatFunctions.setChatToFirst(chat);
+          final newChat = await chatDatabaseCubit.db.selectChatById(chat.id);
+          if (newChat != null) {
+            chatFunctions.setChatToFirst(newChat);
+          }
         } catch (e, stack) {
           logger.severe("addMessage error", e, stack);
         }

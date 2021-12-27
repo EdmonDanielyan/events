@@ -12,6 +12,13 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/setup.dart';
 
+// TODO
+// 1 case. Когда в чате 2 человека. 
+// Переименовать чат в диалог
+// Функция выйти из диалога: нажимаешь - пишется сообщение "собеседник вышел из диалога". 
+// ограничение: не давать писать в диалог
+// Новый диалог.
+
 @injectable
 class ChatCreation with Loggable {
   final ChatDatabaseCubit chatDatabaseCubit;
