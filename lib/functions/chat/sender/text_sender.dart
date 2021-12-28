@@ -9,6 +9,7 @@ import 'package:ink_mobile/models/chat/nats/texting.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
+import 'package:moor/moor.dart';
 
 import '../chat_functions.dart';
 import '../user_functions.dart';
@@ -66,7 +67,8 @@ class TextSender with Loggable {
     userId = userId ?? JwtPayload.myId;
     logger.finest('redeliverMessages: $userId');
 
-    final unsentMessages = await db.getUnsentMessages(userId);
+    final unsentMessages =
+        await db.getUnsentMessages(userId, orderingMode: OrderingMode.desc);
 
     Map<String, ChatTable> chats = {};
 

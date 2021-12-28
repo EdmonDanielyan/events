@@ -130,14 +130,15 @@ class ChatDatabase extends _$ChatDatabase {
   Future<MessageTable?> searchMessageByText(String query) =>
       (select(messageTables)..where((tbl) => tbl.message.contains(query)))
           .getSingleOrNull();
-  Future<List<MessageTable>> getUnsentMessages(int userId) =>
+  Future<List<MessageTable>> getUnsentMessages(int userId,
+          {OrderingMode orderingMode = OrderingMode.asc}) =>
       (select(messageTables)
             ..where((tbl) =>
                 tbl.userId.equals(userId) &
                 (tbl.status.equals(MessageStatus.ERROR.index) |
                     tbl.status.equals(MessageStatus.SENDING.index)))
             ..orderBy([
-              (t) => OrderingTerm(expression: t.created, mode: OrderingMode.asc)
+              (t) => OrderingTerm(expression: t.created, mode: orderingMode)
             ]))
           .get();
   Stream<List<MessageWithUser>> watchChatMessages(String chatId,
