@@ -13,7 +13,7 @@ class ChatDatabaseCubit extends Cubit<ChatDatabaseCubitState> {
   }
 
   void setSelectedChat(ChatTable? chat) {
-    emit(state.copyWith(selectedChat: chat));
+    emit(state.copyWithSelectedChat(selectedChat: chat));
   }
 
   void setDeletedChat(bool deletedChat) {

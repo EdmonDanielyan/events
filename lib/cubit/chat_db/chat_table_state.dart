@@ -25,6 +25,22 @@ class ChatDatabaseCubitState {
     return ChatDatabaseCubitState(
       db: db ?? this.db,
       searchValue: searchValue ?? this.searchValue,
+      selectedChat: this.selectedChat,
+      loadingChats: loadingChats ?? this.loadingChats,
+      deletedChat: deletedChat ?? this.deletedChat,
+    );
+  }
+
+  ChatDatabaseCubitState copyWithSelectedChat({
+    ChatDatabase? db,
+    String? searchValue,
+    ChatTable? selectedChat,
+    bool? loadingChats,
+    bool? deletedChat,
+  }) {
+    return ChatDatabaseCubitState(
+      db: db ?? this.db,
+      searchValue: searchValue ?? this.searchValue,
       selectedChat: selectedChat,
       loadingChats: loadingChats ?? this.loadingChats,
       deletedChat: deletedChat ?? this.deletedChat,
