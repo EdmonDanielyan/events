@@ -66,12 +66,15 @@ class MessageDeletedListener extends ChannelListener {
 
   Future<void> _pushNotification(MessageTable message, UserTable sender) async {
     final myChat = await chatDatabaseCubit.db.selectChatById(message.chatId);
-    PushChatNotification(
-      chatDatabaseCubit: chatDatabaseCubit,
-      chatId: message.chatId,
-      myChat: myChat,
-      message: message,
-      user: sender,
-    ).call(checkTime: false);
+
+    if (myChat != null) {
+      PushChatNotification(
+        chatDatabaseCubit: chatDatabaseCubit,
+        chat: myChat,
+        myChat: myChat,
+        message: message,
+        user: sender,
+      ).call(checkTime: false);
+    }
   }
 }

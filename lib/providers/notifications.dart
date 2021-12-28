@@ -16,7 +16,6 @@ class NotificationsProvider {
   static late InitializationSettings _initializationSettings;
   static late NotificationAppLaunchDetails? _notificationAppLaunchDetails;
 
-
   NotificationsProvider.init() {
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     _initializationSettingsIOS =
@@ -27,10 +26,14 @@ class NotificationsProvider {
 
   Future<void> initSettings() async {
     _initializationSettings = InitializationSettings(
-        android: _initializationSettingsAndroid,
-        iOS: _initializationSettingsIOS,
-        macOS: _initializationSettingsMacOS);
-    await _flutterLocalNotificationsPlugin.initialize(_initializationSettings);
+      android: _initializationSettingsAndroid,
+      iOS: _initializationSettingsIOS,
+      macOS: _initializationSettingsMacOS,
+    );
+    await _flutterLocalNotificationsPlugin.initialize(
+      _initializationSettings,
+      onSelectNotification: _handleSelections,
+    );
     _notificationAppLaunchDetails = await _flutterLocalNotificationsPlugin
         .getNotificationAppLaunchDetails();
     if (_notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
@@ -38,6 +41,12 @@ class NotificationsProvider {
           _notificationAppLaunchDetails!.payload;
       selectNotification(selectedNotificationPayload);
     }
+  }
+
+  static Map<String, VoidCallback> listeners = {};
+
+  void _handleSelections(String? payload) {
+    listeners[payload]?.call();
   }
 
   Future<void> selectNotification(String? payload) async {
@@ -51,11 +60,16 @@ class NotificationsProvider {
   }
 
   static Future<void> showNotification(String title, String body,
-      {int id = 0, String? payload}) async {
+      {int id = 0, String? payload, required VoidCallback onSelect}) async {
     final androidPlatformChannelSpecifics =
         getAndroidPlatformChannelSpecifics();
     NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    if (payload != null) {
+      listeners[payload] = onSelect;
+    }
+
     await _flutterLocalNotificationsPlugin.show(
       id,
       title,

@@ -89,7 +89,7 @@ class TextMessageListener extends ChannelListener {
         _debouncer.run(() {
           PushChatNotification(
             chatDatabaseCubit: chatDatabaseCubit,
-            chatId: chat.id,
+            chat: chat,
             myChat: myChat,
             message: newMessage,
             user: fields.user,

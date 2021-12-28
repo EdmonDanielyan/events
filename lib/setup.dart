@@ -17,7 +17,7 @@ final sl = GetIt.instance;
   preferRelativeImports: true, // default
   asExtension: false, // default
 )
-Future<void> setup({scope = "dev"}) async {
+Future<void> setup({scope = "dev", }) async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationsProvider.init();
   await $initGetIt(sl, environment: scope);
