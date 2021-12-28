@@ -55,7 +55,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
   }
 
   void _scrollSafe() {
-    if (this.mounted && isInBottom(controller)) {
+    if (this.mounted && isInBottom(controller, gap: 20)) {
       _scrollBottom();
     }
   }

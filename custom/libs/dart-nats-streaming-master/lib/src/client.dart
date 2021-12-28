@@ -277,11 +277,6 @@ class Client {
       print('PING Fail. Attempt: [$failPings/$pingMaxAttempts] '
           'NATS: [${natsClient.status == nats.Status.connected ? 'connected' : 'disconnected'}]');
     }
-    print("failPings: $failPings");
-    print("pingMaxAttempts: $pingMaxAttempts");
-    print("natsClient.status: ${natsClient.status}");
-    print("retryReconnect: $retryReconnect");
-    print("_connected: $_connected");
 
     if (failPings >= pingMaxAttempts ||
         natsClient.status != nats.Status.connected) {

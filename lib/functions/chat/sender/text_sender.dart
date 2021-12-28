@@ -68,12 +68,18 @@ class TextSender with Loggable {
     logger.finest('redeliverMessages: $userId');
 
     final unsentMessages =
-        await db.getUnsentMessages(userId, orderingMode: OrderingMode.desc);
+        await db.getUnsentMessages(userId, orderingMode: OrderingMode.asc);
 
     Map<String, ChatTable> chats = {};
 
     if (unsentMessages.isNotEmpty) {
       for (final message in unsentMessages) {
+        logger.finest('''
+        
+        REDELEVIRING MESSAGE: $message
+        
+        ''');
+
         if (!chats.containsKey(message.chatId)) {
           final chat = await db.selectChatById(message.chatId);
 

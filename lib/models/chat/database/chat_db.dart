@@ -138,7 +138,8 @@ class ChatDatabase extends _$ChatDatabase {
                 (tbl.status.equals(MessageStatus.ERROR.index) |
                     tbl.status.equals(MessageStatus.SENDING.index)))
             ..orderBy([
-              (t) => OrderingTerm(expression: t.sequence, mode: orderingMode)
+              (t) => OrderingTerm(expression: t.sequence, mode: orderingMode),
+              (t) => OrderingTerm(expression: t.created, mode: orderingMode),
             ]))
           .get();
   Stream<List<MessageWithUser>> watchChatMessages(String chatId,
