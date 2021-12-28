@@ -67,7 +67,7 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void _onScrollBtnClick() {
-    ScrollBottom(controller).animateTo(duration: Duration(seconds: 1));
+    ScrollBottom(controller).animateTo(duration: const Duration(seconds: 1));
   }
 
   @override

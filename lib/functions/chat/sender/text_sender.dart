@@ -27,7 +27,17 @@ class TextSender with Loggable {
   /// Publicise message to chat
   Future<bool> sendMessage(ChatTable chat, MessageTable message) async {
     bool success = await _sendTxtMessage(chat, message);
+
+    logger.finest('''
+    
+      SUCCESSFULLY SENT MESSAGE: $success
+      MESSAGE: $message
+      CHAT: $chat
+
+    ''');
+
     MessageStatus status = success ? MessageStatus.SENT : MessageStatus.ERROR;
+
     await chatFunctions.updateMessageStatus(message, status);
     return success;
   }
@@ -37,24 +47,26 @@ class TextSender with Loggable {
     MessageTable message, {
     UserTable? user,
   }) async {
+    final ping = await natsProvider.ping();
     var channelById = natsProvider.getGroupTextChannelById(chat.id);
-    return await natsProvider.sendSystemMessageToChannel(
-      channelById,
-      MessageType.Text,
-      ChatMessageFields(
-        channel: channelById,
-        chat: chat,
-        message: message,
-        user: user ?? userFunctions.me,
-      ).toMap(),
-    );
+    return ping &&
+        await natsProvider.sendSystemMessageToChannel(
+          channelById,
+          MessageType.Text,
+          ChatMessageFields(
+            channel: channelById,
+            chat: chat,
+            message: message,
+            user: user ?? userFunctions.me,
+          ).toMap(),
+        );
   }
 
   Future<void> redeliverMessages({int? userId}) async {
+    userId = userId ?? JwtPayload.myId;
     logger.finest('redeliverMessages: $userId');
 
-    final unsentMessages =
-        await db.getUnsentMessages(userId ?? JwtPayload.myId);
+    final unsentMessages = await db.getUnsentMessages(userId);
 
     Map<String, ChatTable> chats = {};
 

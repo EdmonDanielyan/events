@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -265,7 +266,9 @@ class Client {
   }
 
   Future<void> _heartbeat() async {
-    bool p = await ping();
+    print('HEART BEAT TRIGGERED');
+    bool p = await pingWithTimeout();
+    print('HEART BEAT PING $p');
     if (p) {
       failPings = 0;
       _connected = true;
@@ -321,7 +324,20 @@ class Client {
     try {
       nats.Message message = await natsClient.request(
           _connectResponse!.pingRequests, ping.writeToBuffer());
+
       return message.string.isEmpty;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> pingWithTimeout() async {
+    try {
+      final hasPing = await ping().timeout(Duration(seconds: timeout));
+      if (!hasPing) {
+        _connected = false;
+      }
+      return hasPing;
     } catch (e) {
       return false;
     }

@@ -48,7 +48,7 @@ class TextMessageListener extends ChannelListener {
       final mapPayload = message.payload! as SystemPayload;
 
       ChatMessageFields fields = ChatMessageFields.fromMap(mapPayload.fields);
-      print(message.createdAt);
+
       final newMessage = fields.message.copyWith(
         created: message.createdAt,
         status: (fields.message.status == MessageStatus.SENDING ||

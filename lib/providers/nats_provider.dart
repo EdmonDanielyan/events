@@ -167,6 +167,10 @@ class NatsProvider {
     return connectResult;
   }
 
+  Future<bool> ping() async {
+    return _stan.pingWithTimeout();
+  }
+
   Future<bool> _sendMessage(String channel, NatsMessage message) async {
     return await _stan.pubBytes(
         subject: channel, bytes: message.toBytes(), guid: message.id);
