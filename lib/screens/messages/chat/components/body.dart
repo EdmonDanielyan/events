@@ -72,6 +72,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
       _scrollBottom();
       setMessagesToRead();
     }
+    _scrollListener();
   }
 
   void _scrollListener() {
