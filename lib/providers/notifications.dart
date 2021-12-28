@@ -53,6 +53,9 @@ class NotificationsProvider {
     if (payload != null) {
       _logger.info('notification payload: $payload');
     }
+
+    if (App.getContext == null) return;
+
     await Navigator.push(
       App.materialKey!.currentContext!,
       MaterialPageRoute<void>(builder: (context) => InitPage()),
