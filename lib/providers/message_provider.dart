@@ -79,8 +79,8 @@ class Messenger with Loggable {
     natsProvider.onConnected = () async {
       logger.info("onConnected");
 
-      await _onConnected();
       textSender.redeliverMessages();
+      await _onConnected();
     };
 
     natsProvider.onDisconnected = () async {

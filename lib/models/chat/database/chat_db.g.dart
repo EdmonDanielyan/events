@@ -534,6 +534,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
   final MessageStatus status;
   final MessageType type;
   final DateTime? created;
+  final int? sequence;
   MessageTable(
       {required this.id,
       required this.chatId,
@@ -544,7 +545,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       required this.sentOn,
       required this.status,
       required this.type,
-      this.created});
+      this.created,
+      this.sequence});
   factory MessageTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -569,6 +571,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}type']))!,
       created: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}created']),
+      sequence: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}sequence']),
     );
   }
   @override
@@ -594,6 +598,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
     if (!nullToAbsent || created != null) {
       map['created'] = Variable<DateTime?>(created);
     }
+    if (!nullToAbsent || sequence != null) {
+      map['sequence'] = Variable<int?>(sequence);
+    }
     return map;
   }
 
@@ -613,6 +620,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       created: created == null && nullToAbsent
           ? const Value.absent()
           : Value(created),
+      sequence: sequence == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sequence),
     );
   }
 
@@ -630,6 +640,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       status: serializer.fromJson<MessageStatus>(json['status']),
       type: serializer.fromJson<MessageType>(json['type']),
       created: serializer.fromJson<DateTime?>(json['created']),
+      sequence: serializer.fromJson<int?>(json['sequence']),
     );
   }
   @override
@@ -646,6 +657,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       'status': serializer.toJson<MessageStatus>(status),
       'type': serializer.toJson<MessageType>(type),
       'created': serializer.toJson<DateTime?>(created),
+      'sequence': serializer.toJson<int?>(sequence),
     };
   }
 
@@ -659,7 +671,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           bool? sentOn,
           MessageStatus? status,
           MessageType? type,
-          DateTime? created}) =>
+          DateTime? created,
+          int? sequence}) =>
       MessageTable(
         id: id ?? this.id,
         chatId: chatId ?? this.chatId,
@@ -671,6 +684,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
         status: status ?? this.status,
         type: type ?? this.type,
         created: created ?? this.created,
+        sequence: sequence ?? this.sequence,
       );
   @override
   String toString() {
@@ -684,14 +698,15 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           ..write('sentOn: $sentOn, ')
           ..write('status: $status, ')
           ..write('type: $type, ')
-          ..write('created: $created')
+          ..write('created: $created, ')
+          ..write('sequence: $sequence')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, chatId, message, userId, repliedMessageId,
-      read, sentOn, status, type, created);
+      read, sentOn, status, type, created, sequence);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -705,7 +720,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           other.sentOn == this.sentOn &&
           other.status == this.status &&
           other.type == this.type &&
-          other.created == this.created);
+          other.created == this.created &&
+          other.sequence == this.sequence);
 }
 
 class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
@@ -719,6 +735,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
   final Value<MessageStatus> status;
   final Value<MessageType> type;
   final Value<DateTime?> created;
+  final Value<int?> sequence;
   const MessageTablesCompanion({
     this.id = const Value.absent(),
     this.chatId = const Value.absent(),
@@ -730,6 +747,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     this.status = const Value.absent(),
     this.type = const Value.absent(),
     this.created = const Value.absent(),
+    this.sequence = const Value.absent(),
   });
   MessageTablesCompanion.insert({
     required String id,
@@ -742,6 +760,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     required MessageStatus status,
     required MessageType type,
     this.created = const Value.absent(),
+    this.sequence = const Value.absent(),
   })  : id = Value(id),
         chatId = Value(chatId),
         message = Value(message),
@@ -759,6 +778,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     Expression<MessageStatus>? status,
     Expression<MessageType>? type,
     Expression<DateTime?>? created,
+    Expression<int?>? sequence,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -771,6 +791,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       if (status != null) 'status': status,
       if (type != null) 'type': type,
       if (created != null) 'created': created,
+      if (sequence != null) 'sequence': sequence,
     });
   }
 
@@ -784,7 +805,8 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       Value<bool>? sentOn,
       Value<MessageStatus>? status,
       Value<MessageType>? type,
-      Value<DateTime?>? created}) {
+      Value<DateTime?>? created,
+      Value<int?>? sequence}) {
     return MessageTablesCompanion(
       id: id ?? this.id,
       chatId: chatId ?? this.chatId,
@@ -796,6 +818,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       status: status ?? this.status,
       type: type ?? this.type,
       created: created ?? this.created,
+      sequence: sequence ?? this.sequence,
     );
   }
 
@@ -834,6 +857,9 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     if (created.present) {
       map['created'] = Variable<DateTime?>(created.value);
     }
+    if (sequence.present) {
+      map['sequence'] = Variable<int?>(sequence.value);
+    }
     return map;
   }
 
@@ -849,7 +875,8 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
           ..write('sentOn: $sentOn, ')
           ..write('status: $status, ')
           ..write('type: $type, ')
-          ..write('created: $created')
+          ..write('created: $created, ')
+          ..write('sequence: $sequence')
           ..write(')'))
         .toString();
   }
@@ -921,6 +948,13 @@ class $MessageTablesTable extends MessageTables
       type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: Constant(new DateTime.now()));
+  final VerificationMeta _sequenceMeta = const VerificationMeta('sequence');
+  @override
+  late final GeneratedColumn<int?> sequence = GeneratedColumn<int?>(
+      'sequence', aliasedName, true,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -932,7 +966,8 @@ class $MessageTablesTable extends MessageTables
         sentOn,
         status,
         type,
-        created
+        created,
+        sequence
       ];
   @override
   String get aliasedName => _alias ?? 'message_tables';
@@ -985,6 +1020,10 @@ class $MessageTablesTable extends MessageTables
     if (data.containsKey('created')) {
       context.handle(_createdMeta,
           created.isAcceptableOrUnknown(data['created']!, _createdMeta));
+    }
+    if (data.containsKey('sequence')) {
+      context.handle(_sequenceMeta,
+          sequence.isAcceptableOrUnknown(data['sequence']!, _sequenceMeta));
     }
     return context;
   }

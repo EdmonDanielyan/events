@@ -35,15 +35,15 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   final _formKey = GlobalKey<FormState>();
   final _padding = 7.0;
 
-  ChatTable get getChat => _chatDatabaseCubit.selectedChat!;
+  ChatTable? get getChat => _chatDatabaseCubit.selectedChat;
 
   Future<void> onSend(ChatEntities entities) async {
-    if (entities.text.isNotEmpty) {
+    if (entities.text.isNotEmpty && getChat != null) {
       clearForm();
       final sendMessage = sl<SendMessage>();
-      final message = await sendMessage.call(getChat, entities);
+      final message = await sendMessage.call(getChat!, entities);
       if (sl<Messenger>().isConnected) {
-        sl<Messenger>().textSender.sendMessage(getChat, message);
+        sl<Messenger>().textSender.sendMessage(getChat!, message);
       }
 
       _chatCubit.clean();

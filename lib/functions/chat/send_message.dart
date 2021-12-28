@@ -38,6 +38,7 @@ class SendMessage with Loggable {
       created: created ?? new DateTime.now(),
       type: type,
       repliedMessageId: repliedMessageId,
+      sequence: 0,
     );
   }
 

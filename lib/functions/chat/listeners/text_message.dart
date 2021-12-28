@@ -50,6 +50,7 @@ class TextMessageListener extends ChannelListener {
       ChatMessageFields fields = ChatMessageFields.fromMap(mapPayload.fields);
 
       final newMessage = fields.message.copyWith(
+        sequence: message.sequence.toInt(),
         created: message.createdAt,
         status: (fields.message.status == MessageStatus.SENDING ||
                 fields.message.status == MessageStatus.ERROR)

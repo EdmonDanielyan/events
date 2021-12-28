@@ -146,7 +146,7 @@ class ChatDatabase extends _$ChatDatabase {
     final sel = (select(messageTables)
       ..where((tbl) => tbl.chatId.equals(chatId))
       ..orderBy(
-        [(t) => OrderingTerm(expression: t.created, mode: orderMode)],
+        [(t) => OrderingTerm(expression: t.sequence, mode: orderMode)],
       ));
 
     if (limit != null) {
@@ -311,7 +311,7 @@ class ChatDatabase extends _$ChatDatabase {
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
-  int get schemaVersion => 34;
+  int get schemaVersion => 36;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
