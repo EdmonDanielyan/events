@@ -79,7 +79,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
       if (chatCubit.scrollBtn) {
         chatCubit.setScrollBtn(false);
       }
-    } else {
+    } else if ((MessageList.messagesWithUser?.length ?? 0) > 15) {
       chatCubit.setScrollBtn(true);
     }
   }
@@ -100,6 +100,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
   Widget build(BuildContext context) {
     chatCubit = ChatScreen.of(context).chatCubit;
     final chatScreenParams = ChatScreen.of(context).chatScreenParams;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

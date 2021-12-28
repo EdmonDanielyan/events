@@ -109,7 +109,7 @@ class ChatScreenState extends State<ChatScreen> {
             builder: (context, state) {
               return state.scrollBtn
                   ? ChatScrollBtn(onPressed: _onScrollBtnClick)
-                  : SizedBox();
+                  : const SizedBox();
             },
           ),
         ),

@@ -36,6 +36,12 @@ class BaseMessage extends Message {
     this.from = from ?? "";
     this.to = to ?? "";
     this.sequence = Int64.ZERO;
+
+    print('''
+
+      CREATED AT ${this.createdAt};
+    
+    ''');
   }
 
   Packer packer() {

@@ -48,6 +48,7 @@ class TextMessageListener extends ChannelListener {
       final mapPayload = message.payload! as SystemPayload;
 
       ChatMessageFields fields = ChatMessageFields.fromMap(mapPayload.fields);
+      print(message.createdAt);
       final newMessage = fields.message.copyWith(
         created: message.createdAt,
         status: (fields.message.status == MessageStatus.SENDING ||
@@ -60,8 +61,20 @@ class TextMessageListener extends ChannelListener {
           await chatDatabaseCubit.db.selectMessageById(newMessage.id);
 
       if (messageExists != null) {
+        print('''
+        MESSAGE EXISTS
+        message: $newMessage
+        created: ${message.createdAt}
+        
+        ''');
         chatDatabaseCubit.db.updateMessageById(newMessage.id, newMessage);
       } else {
+        print('''
+        MESSAGE INSERTING
+        message: $newMessage
+        created: ${message.createdAt}
+        
+        ''');
         ChatTable? myChat =
             await chatDatabaseCubit.db.selectChatById(fields.chat.id);
 

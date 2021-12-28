@@ -35,23 +35,26 @@ class Diagnostics extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border(
-                        top: BorderSide(color: Colors.grey.shade400, width: 0.5),
-                        bottom: BorderSide(color: Colors.grey.shade400, width: 0.5),
+                        top:
+                            BorderSide(color: Colors.grey.shade400, width: 0.5),
+                        bottom:
+                            BorderSide(color: Colors.grey.shade400, width: 0.5),
                       )),
                   width: size.width,
                   child: ListTile(
                     title: Text("Обратиться в техподдержку"),
                     trailing: Icon(Icons.arrow_forward_ios),
-                    onTap: () =>  launchUrl('https://portal.irkutskoil.ru/login/report/'),
-                  )
-
-              ),
+                    onTap: () =>
+                        launchUrl('https://portal.irkutskoil.ru/login/report/'),
+                  )),
               Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border(
-                        top: BorderSide(color: Colors.grey.shade400, width: 0.5),
-                        bottom: BorderSide(color: Colors.grey.shade400, width: 0.5),
+                        top:
+                            BorderSide(color: Colors.grey.shade400, width: 0.5),
+                        bottom:
+                            BorderSide(color: Colors.grey.shade400, width: 0.5),
                       )),
                   width: size.width,
                   child: ListTile(
@@ -59,9 +62,7 @@ class Diagnostics extends StatelessWidget {
                     subtitle: Text("Отправить разработчикам"),
                     trailing: Icon(Icons.arrow_forward_ios),
                     onTap: () => sendErrorLog(logFile),
-                  )
-
-              )
+                  )),
             ],
           )
         ],
