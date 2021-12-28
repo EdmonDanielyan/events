@@ -32,7 +32,7 @@ class BaseMessage extends Message {
     this.type = type ?? PayloadType.empty;
     this.id = id ?? Uuid().v4();
     this.needAck = needAck ?? true;
-    this.createdAt = createdAt ?? DateTime.now().toUtc();
+    this.createdAt = (createdAt ?? DateTime.now()).toUtc();
     this.from = from ?? "";
     this.to = to ?? "";
     this.sequence = Int64.ZERO;
