@@ -62,7 +62,7 @@ class TextMessageListener extends ChannelListener {
           await chatDatabaseCubit.db.selectMessageById(newMessage.id);
 
       if (messageExists != null) {
-        print('''
+        logger.finest('''
         MESSAGE EXISTS
         message: $newMessage
         created: ${message.createdAt}
@@ -70,7 +70,7 @@ class TextMessageListener extends ChannelListener {
         ''');
         chatDatabaseCubit.db.updateMessageById(newMessage.id, newMessage);
       } else {
-        print('''
+        logger.finest('''
         MESSAGE INSERTING
         message: $newMessage
         created: ${message.createdAt}

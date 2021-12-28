@@ -277,6 +277,12 @@ class Client {
       print('PING Fail. Attempt: [$failPings/$pingMaxAttempts] '
           'NATS: [${natsClient.status == nats.Status.connected ? 'connected' : 'disconnected'}]');
     }
+    print("failPings: $failPings");
+    print("pingMaxAttempts: $pingMaxAttempts");
+    print("natsClient.status: ${natsClient.status}");
+    print("retryReconnect: $retryReconnect");
+    print("_connected: $_connected");
+
     if (failPings >= pingMaxAttempts ||
         natsClient.status != nats.Status.connected) {
       if (retryReconnect) {
@@ -334,11 +340,10 @@ class Client {
   Future<bool> pingWithTimeout() async {
     try {
       final hasPing = await ping().timeout(Duration(seconds: timeout));
-      if (!hasPing) {
-        _connected = false;
-      }
+
       return hasPing;
     } catch (e) {
+      close();
       return false;
     }
   }
