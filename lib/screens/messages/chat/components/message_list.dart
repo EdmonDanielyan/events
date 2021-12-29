@@ -51,7 +51,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
     }
 
     return _chatDatabaseCubit.db
-        .watchChatMessages(chatId, orderMode: OrderingMode.desc);
+        .watchChatMessages(chatId, orderMode: OrderingMode.asc);
   }
 
   void _messagesLoaded() {
@@ -98,8 +98,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
 
                   if (MessageList.messagesWithUser!.length > 0) {
                     _messagesLoaded();
-                    MessageList.messagesWithUser!.sort((a, b) =>
-                        a.message!.created!.compareTo(b.message!.created!));
+
                     return ListView.builder(
                       controller: ScrollController(keepScrollOffset: false),
                       itemCount: MessageList.messagesWithUser!.length,

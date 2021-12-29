@@ -14,8 +14,4 @@ class RequiredTextfieldIcon extends StatelessWidget {
       ),
     );
   }
-
-  static BoxConstraints boxConstraints() {
-    return BoxConstraints(maxHeight: double.infinity);
-  }
 }

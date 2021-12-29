@@ -4,7 +4,7 @@ import 'package:ink_mobile/components/new_bottom_nav_bar/functions/new_bottom_na
 import 'package:ink_mobile/components/new_bottom_nav_bar/nav_bar_indicator.dart';
 
 class NewBottomNavBarMixin {
-  static List<NavBottomNavBarItem> navBottomNavBarItems = [
+  List<NavBottomNavBarItem> navBottomNavBarItems = [
     MainBottomNavBarItem(),
     SearchBottomNavBarItem(),
     MessagesBottomNavBarItem(),
@@ -27,8 +27,7 @@ class NewBottomNavBarMixin {
     return items;
   }
 
-  static BottomNavigationBarItem _buildNewBottomNavItem(
-      NavBottomNavBarItem item) {
+  BottomNavigationBarItem _buildNewBottomNavItem(NavBottomNavBarItem item) {
     return BottomNavigationBarItem(
       icon: Stack(
         children: [

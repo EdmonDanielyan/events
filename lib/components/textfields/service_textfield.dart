@@ -46,9 +46,9 @@ class ServiceTextField extends StatelessWidget {
       initialValue: initialValue,
       decoration: InputDecoration(
         hintText: hint,
-        suffixIcon: requiredIcon ? RequiredTextfieldIcon() : null,
-        suffixIconConstraints: RequiredTextfieldIcon.boxConstraints(),
-        border: OutlineInputBorder(),
+        suffixIcon: requiredIcon ? const RequiredTextfieldIcon() : null,
+        suffixIconConstraints: const BoxConstraints(maxHeight: double.infinity),
+        border: const OutlineInputBorder(),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Theme.of(context).primaryColor),
         ),

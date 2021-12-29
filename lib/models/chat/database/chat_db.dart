@@ -83,6 +83,16 @@ class ChatDatabase extends _$ChatDatabase {
   Future<MessageTable?> selectMessageById(String id) =>
       (select(messageTables)..where((tbl) => tbl.id.equals(id)))
           .getSingleOrNull();
+  Future<MessageTable?> selectMessageByChatIdInOrder(
+          String id, OrderingMode orderingMode) =>
+      (select(messageTables)
+            ..where(
+              (tbl) => tbl.id.equals(id),
+            )
+            ..orderBy([
+              (t) => OrderingTerm(expression: t.sequence, mode: orderingMode),
+            ]))
+          .getSingleOrNull();
   Future<List<MessageTable>> selectMessagesByUserAndChatId(
           String chatId, int userId) =>
       (select(messageTables)
@@ -145,28 +155,27 @@ class ChatDatabase extends _$ChatDatabase {
   Stream<List<MessageWithUser>> watchChatMessages(String chatId,
       {OrderingMode orderMode = OrderingMode.asc, int? limit}) {
     final sel = (select(messageTables)
-      ..where((tbl) => tbl.chatId.equals(chatId))
-      ..orderBy(
-        [(t) => OrderingTerm(expression: t.sequence, mode: orderMode)],
-      ));
+          ..where((tbl) => tbl.chatId.equals(chatId)))
+        .join([
+      leftOuterJoin(userTables, userTables.id.equalsExp(messageTables.userId))
+    ]);
+    sel.orderBy([
+      orderMode == OrderingMode.asc
+          ? OrderingTerm.asc(messageTables.created)
+          : OrderingTerm.desc(messageTables.created)
+    ]);
 
     if (limit != null) {
       sel..limit(limit);
     }
-    return sel
-        .join([
-          leftOuterJoin(
-              userTables, userTables.id.equalsExp(messageTables.userId))
-        ])
-        .watch()
-        .map((rows) {
-          return rows.map((row) {
-            return MessageWithUser(
-              message: row.readTableOrNull(messageTables),
-              user: row.readTableOrNull(userTables),
-            );
-          }).toList();
-        });
+    return sel.watch().map((rows) {
+      return rows.map((row) {
+        return MessageWithUser(
+          message: row.readTableOrNull(messageTables),
+          user: row.readTableOrNull(userTables),
+        );
+      }).toList();
+    });
   }
 
   Stream<List<MessageWithUser>> watchChatFilesMessages(String chatId) {
