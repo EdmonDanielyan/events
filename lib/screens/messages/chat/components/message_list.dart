@@ -114,7 +114,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
                   }
                 }
 
-                return SizedBox();
+                return const SizedBox();
               },
             ),
             _textingWidget(),
