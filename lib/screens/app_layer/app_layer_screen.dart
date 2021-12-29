@@ -19,7 +19,7 @@ class AppLayerScreen extends StatelessWidget with NewBottomNavBarMixin {
         onPageChanged: newBottomNavBarCubit.onPageChanged,
         physics: NeverScrollableScrollPhysics(),
       ),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 }

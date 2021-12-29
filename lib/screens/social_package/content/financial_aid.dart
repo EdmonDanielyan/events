@@ -89,7 +89,7 @@ class FinancialAid extends StatelessWidget {
                 '''),
         ),
       ),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 }

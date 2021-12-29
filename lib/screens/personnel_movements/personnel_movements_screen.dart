@@ -17,7 +17,7 @@ class PersonnelMovementsScreen extends StatelessWidget {
     return Scaffold(
       appBar: InkAppBarWithText(title: _strings.staffMovements),
       body: Body(personnelMovementsCubit: personnelMovementsCubit),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 }

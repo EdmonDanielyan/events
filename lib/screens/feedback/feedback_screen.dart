@@ -54,7 +54,8 @@ class FeedBackScreenState extends State<FeedBackScreen>
     return Scaffold(
       appBar: widget.appBar ?? InkAppBarWithText(title: _strings.feedback),
       body: Body(),
-      bottomNavigationBar: widget.bottomNavigationBar ?? NewBottomNavBar(),
+      bottomNavigationBar:
+          widget.bottomNavigationBar ?? const NewBottomNavBar(),
     );
   }
 

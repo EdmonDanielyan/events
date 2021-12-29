@@ -7,7 +7,7 @@ import 'package:ink_mobile/setup.dart';
 import 'cubit/new_bottom_nav_bar_cubit.dart';
 
 class NewBottomNavBar extends StatelessWidget with NewBottomNavBarMixin {
-  NewBottomNavBar({Key? key}) : super(key: key);
+  const NewBottomNavBar({Key? key}) : super(key: key);
   static NewBottomNavBarCubit _cubit = sl<NewBottomNavBarCubit>();
 
   @override
@@ -18,7 +18,7 @@ class NewBottomNavBar extends StatelessWidget with NewBottomNavBarMixin {
       builder: (BuildContext context, int currentIndex) {
         return BottomNavigationBar(
           currentIndex: currentIndex,
-          selectedItemColor: Color(0xff12512a),
+          selectedItemColor: const Color(0xff12512a),
           unselectedItemColor: Colors.grey,
           selectedFontSize: 12.0,
           iconSize: 30,

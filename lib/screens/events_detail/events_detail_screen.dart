@@ -56,7 +56,7 @@ class EventDetailScreen extends StatelessWidget {
           }
         },
       ),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 

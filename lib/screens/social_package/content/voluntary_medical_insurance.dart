@@ -253,7 +253,7 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
           )
         ],
       )),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 }

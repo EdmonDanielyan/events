@@ -4,19 +4,14 @@ import 'package:ink_mobile/components/loader/error_loading_widget.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
 import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_state.dart';
-import 'package:ink_mobile/functions/chat/open_chat.dart';
-import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/screens/messages/chat_list/chat_list_screen.dart';
+import 'package:ink_mobile/screens/messages/chat_list/components/build_items.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/search_bar.dart';
-import 'package:moor/moor.dart' show OrderingMode;
 
 import '../../../../setup.dart';
-import 'chat.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -74,13 +69,22 @@ class _BodyState extends State<Body> {
                           final items = snapshot.data ?? [];
                           if (items.isNotEmpty) {
                             _chatListCubit.emitChats(items);
-                            return _buildItems();
+                            return BuildChatItems(
+                              chatDatabaseCubit: _chatDatabaseCubit,
+                              chatListCubit: _chatListCubit,
+                              contentPadding: _contentPadding,
+                              deleteChat: _deleteChat,
+                              searchController: _searchController,
+                            );
                           } else {
-                            return _noMessages();
+                            return Center(
+                              child: ErrorLoadingWidget(
+                                  errorMsg: localizationInstance.noMessages),
+                            );
                           }
                         }
 
-                        return SizedBox();
+                        return const SizedBox();
                       },
                     );
                   },
@@ -90,63 +94,6 @@ class _BodyState extends State<Body> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildItems() {
-    return BlocBuilder<ChatListCubit, ChatListState>(
-      bloc: _chatListCubit,
-      builder: (context, state) {
-        List<ChatTable> chats = state.searchChats;
-        chats.sort((a, b) {
-          if (a.millisecondsSinceEpoch != null &&
-              b.millisecondsSinceEpoch != null) {
-            return b.millisecondsSinceEpoch!
-                .compareTo(a.millisecondsSinceEpoch!);
-          }
-
-          return b.updatedAt.compareTo(a.updatedAt);
-        });
-
-        return ListView.builder(
-          itemCount: chats.length,
-          shrinkWrap: true,
-          controller: ScrollController(keepScrollOffset: false),
-          itemBuilder: (_, index) => StreamBuilder(
-            stream: _chatDatabaseCubit.db.watchChatMessages(chats[index].id,
-                orderMode: OrderingMode.asc),
-            builder: (context, AsyncSnapshot<List<MessageWithUser>?> snapshot) {
-              if (snapshot.hasData) {
-                List<MessageWithUser> messagesWithUser = snapshot.data ?? [];
-
-                return ChatListTile(
-                  onTap: () {
-                    OpenChat(_chatDatabaseCubit, chats[index]).call(context);
-                    _chatListCubit.setSearchValue("");
-                    _searchController.text = "";
-                    TextFieldUtils.loseTextFieldFocus();
-                  },
-                  onDismissed: (dismissed) =>
-                      _deleteChat(chats[index], context),
-                  highlightValue: state.searchValue,
-                  index: index,
-                  chat: chats[index],
-                  contentPadding: _contentPadding,
-                  chatDatabaseCubit: _chatDatabaseCubit,
-                  messagesWithUser: messagesWithUser,
-                );
-              }
-              return SizedBox();
-            },
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _noMessages() {
-    return Center(
-      child: ErrorLoadingWidget(errorMsg: localizationInstance.noMessages),
     );
   }
 }

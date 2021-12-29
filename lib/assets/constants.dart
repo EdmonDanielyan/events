@@ -13,4 +13,5 @@ class IconLinks {
   static const String VIEW_COUNT_SVG_LINK = 'assets/images/view_count.svg';
   static const String BARREL_SVG_LINK = 'assets/images/barrel_icon.svg';
   static const String COMMENT_SVG_LINK = 'assets/images/comment_icon.svg';
+  static const String APP_BAR_LINES_SVG_LINK = 'assets/images/appbar_lines.svg';
 }

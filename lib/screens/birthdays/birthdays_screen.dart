@@ -182,7 +182,7 @@ class BirthdaysScreen extends StatelessWidget {
           return Container();
         },
       ),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 

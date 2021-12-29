@@ -126,7 +126,7 @@ class MenuBottomNavBarItem extends NavBottomNavBarItem {
       ),
       context: context,
       builder: (context) {
-        return MenuSheet();
+        return const MenuSheet();
       },
     );
   }

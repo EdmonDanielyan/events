@@ -17,15 +17,15 @@ final sl = GetIt.instance;
   preferRelativeImports: true, // default
   asExtension: false, // default
 )
-Future<void> setup({scope = "dev", }) async {
+Future<void> setup({
+  scope = "dev",
+}) async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationsProvider.init();
   await $initGetIt(sl, environment: scope);
   setupI18n(sl);
 
-
-  setupLogging(
-      sl<FileLogAppender>(),
+  setupLogging(sl<FileLogAppender>(),
       //todo: Убрать подробробное логирование перед публикаций в сторы
       forceLevel: Level.ALL);
 

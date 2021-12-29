@@ -46,6 +46,6 @@ class ProfileScreenState extends State<ProfileScreen> {
       }
     }
 
-    return NewBottomNavBar();
+    return const NewBottomNavBar();
   }
 }

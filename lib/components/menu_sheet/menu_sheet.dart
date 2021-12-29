@@ -8,22 +8,18 @@ import 'package:ink_mobile/providers/message_provider.dart';
 import 'package:ink_mobile/setup.dart';
 
 class MenuSheet extends StatelessWidget {
-  MenuSheet({Key? key}) : super(key: key);
-  static late BuildContext _context;
-  static late AppLocalizations _strings;
+  const MenuSheet({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    _context = context;
-    _strings = localizationInstance;
 
     return Container(
       height: 325,
       width: size.width,
       child: Column(children: [
         Container(
-            margin: EdgeInsets.only(top: 7),
+            margin: const EdgeInsets.only(top: 7),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -39,21 +35,23 @@ class MenuSheet extends StatelessWidget {
               ],
             )),
         Container(
-            margin: EdgeInsets.only(top: 24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: _getItemsList(),
-            )),
+          margin: const EdgeInsets.only(top: 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: _getItemsList(context, localizationInstance),
+          ),
+        ),
       ]),
     );
   }
 
-  List<MenuSheetItem> _getItemsList() {
+  List<MenuSheetItem> _getItemsList(
+      BuildContext context, AppLocalizations strings) {
     return [
       MenuSheetItem(
-        title: _strings.news,
+        title: strings.news,
         onTap: () {
-          Navigator.pushNamed(_context, '/news_list');
+          Navigator.pushNamed(context, '/news_list');
         },
         icon: SvgPicture.asset(
           'assets/images/menu_news_icon.svg',
@@ -61,9 +59,9 @@ class MenuSheet extends StatelessWidget {
         ),
       ),
       MenuSheetItem(
-        title: _strings.events,
+        title: strings.events,
         onTap: () {
-          Navigator.pushNamed(_context, '/events_list');
+          Navigator.pushNamed(context, '/events_list');
         },
         icon: SvgPicture.asset(
           'assets/images/menu_events_icon.svg',
@@ -71,9 +69,9 @@ class MenuSheet extends StatelessWidget {
         ),
       ),
       MenuSheetItem(
-        title: _strings.announcements,
+        title: strings.announcements,
         onTap: () {
-          Navigator.pushNamed(_context, '/announcements_list');
+          Navigator.pushNamed(context, '/announcements_list');
         },
         icon: SvgPicture.asset(
           'assets/images/menu_announcements_icon.svg',
@@ -81,9 +79,9 @@ class MenuSheet extends StatelessWidget {
         ),
       ),
       MenuSheetItem(
-        title: _strings.myData,
+        title: strings.myData,
         onTap: () {
-          Navigator.pushNamed(_context, '/personal');
+          Navigator.pushNamed(context, '/personal');
         },
         icon: SvgPicture.asset(
           'assets/images/menu_personal_icon.svg',
@@ -91,12 +89,11 @@ class MenuSheet extends StatelessWidget {
         ),
       ),
       MenuSheetItem(
-        title: _strings.signOff,
+        title: strings.signOff,
         onTap: () async {
           await sl<Messenger>().dispose();
           await Token.deleteTokens();
-          Navigator.pushNamedAndRemoveUntil(
-              _context, '/auth', (route) => false);
+          Navigator.pushNamedAndRemoveUntil(context, '/auth', (route) => false);
         },
         icon: SvgPicture.asset(
           'assets/images/exit_icon.svg',

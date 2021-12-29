@@ -266,9 +266,7 @@ class Client {
   }
 
   Future<void> _heartbeat() async {
-    print('HEART BEAT TRIGGERED');
     bool p = await pingWithTimeout();
-    print('HEART BEAT PING $p');
     if (p) {
       failPings = 0;
       _connected = true;
