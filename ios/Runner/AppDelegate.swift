@@ -19,10 +19,9 @@ import Flutter
     }
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
-
-  // FlutterForegroundTaskPlugin Support 30/12/2021
-  func registerPlugins(registry: FlutterPluginRegistry) {
-    GeneratedPluginRegistrant.register(with: registry)
-  }
 }
 
+// FlutterForegroundTaskPlugin Support 30/12/2021
+func registerPlugins(registry: FlutterPluginRegistry) {
+  GeneratedPluginRegistrant.register(with: registry)
+}
