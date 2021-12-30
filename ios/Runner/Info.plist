@@ -39,6 +39,12 @@
 	<string>Used to set user picture, send pictures/videos between the app users</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Why is my app authenticating using face id?</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your location is required to work with tasks and reports</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location is required to work with tasks and reports</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is required to work with tasks and reports</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Used to send videos between the app users</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -46,6 +52,8 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
+		<string>location</string>
+		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

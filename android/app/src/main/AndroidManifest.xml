@@ -3,6 +3,7 @@
           package="ru.irkutskoil.portal">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
     <uses-sdk tools:overrideLibrary="com.xamdesign.safe_device,com.wongpiwat.trust_location"/>
     <queries>
         <intent>
