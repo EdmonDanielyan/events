@@ -76,7 +76,7 @@ dependencies:
     safe_device:
     keyboard_dismisser: ^2.0.0
     easy_debounce: ^2.0.2+1
-
+    flutter_foreground_task: ^3.5.3
 dev_dependencies:
     flutter_test:
         sdk: flutter

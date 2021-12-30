@@ -3,7 +3,9 @@
           package="ru.irkutskoil.portal">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
-    <uses-sdk tools:overrideLibrary="com.xamdesign.safe_device,com.wongpiwat.trust_location"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW"/>
@@ -23,6 +25,7 @@
             android:label="ИНК-Портал"
             tools:overrideLibrary="com.xamdesign.safe_device"
             android:icon="@mipmap/ic_launcher">
+        <service android:name="com.pravera.flutter_foreground_task.service.ForegroundService" />
         <activity
                 android:name="com.yalantis.ucrop.UCropActivity"
                 android:screenOrientation="portrait"
