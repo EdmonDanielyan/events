@@ -14,14 +14,17 @@ extension AuthSuccessExt on Response<AuthSuccess> {
     if (responseData != null) {
       String token = responseData['token'];
       String refreshToken = responseData['refresh_token'];
+      String dbLocalToken = responseData['dbLocalToken'];
 
       SetOauthToken(token: token).setBearer();
 
       await Token.setRefresh(refreshToken);
+      await Token.setLocalDbToken(dbLocalToken);
       await Token.setJwt(token);
       await Token.setNatsToken();
       await Token.setDeviceVirtualIdIfEmpty();
-      sl<AuthHandler>().onSuccessAuth(checkLock: false);
+
+      await sl<AuthHandler>().authChallenge();
       return true;
     } else {
       return false;

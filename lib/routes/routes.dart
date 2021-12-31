@@ -54,7 +54,7 @@ import 'package:ink_mobile/setup.dart';
 
 class MainRoutes {
   static Map<String, Widget Function(BuildContext)> routes = {
-    '/init': (BuildContext context) => InitPage(),
+    '/init': (BuildContext context) => InitPage(cubit: sl()..load(),),
     '/app_layer': (BuildContext context) => AppLayerScreen(
           newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
         ),
@@ -64,7 +64,7 @@ class MainRoutes {
     '/auth': (BuildContext context) => AuthScreen(
           authCubit: sl<AuthCubit>(),
           newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
-          chatDatabaseCubit: sl<ChatDatabaseCubit>(),
+          // chatDatabaseCubit: sl<ChatDatabaseCubit>(),
         ),
     '/personal': (BuildContext context) => ProfileScreen(
         profileCubit: sl(),

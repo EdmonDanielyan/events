@@ -1,24 +1,32 @@
 import 'dart:io';
 
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/boot/boot_cubit.dart';
 import 'package:ink_mobile/providers/lock_app.dart';
 
 import '../../setup.dart';
 
 @singleton
-class AuthHandler {
+class AuthHandler with Loggable {
   BootCubit bootCubit;
 
   AuthHandler(this.bootCubit);
 
-  Future<void> onSuccessAuth({bool checkLock = true}) async {
-    final didAuthenticate = checkLock ? await authenticate() : true;
-    if (didAuthenticate) {
-      bootCubit.load();
-    } else {
-      exit(0);
+  Future<void> authChallenge() async {
+    for (var i = 0; i < 2; i++) {
+      logger.severe("Attempting authenticate");
+      if (await authenticate()) {
+        await bootCubit.load();
+        return;
+      }
     }
+    logger.severe("3 attempts of auth failed. Exit application");
+    exit(0);
+  }
+
+  Future<void> byPassChallenge() async {
+    await bootCubit.load();
   }
 
   Future<bool> authenticate() async {

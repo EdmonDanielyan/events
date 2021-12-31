@@ -1,6 +1,7 @@
+import 'package:encrypted_moor/encrypted_moor.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
-
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/database/tables/channel.dart';
 import 'package:ink_mobile/models/chat/database/tables/chat_table.dart';
@@ -9,7 +10,6 @@ import 'package:ink_mobile/models/chat/database/tables/participant_table.dart';
 import 'package:ink_mobile/models/chat/database/tables/user_table.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:moor/moor.dart';
-import 'package:encrypted_moor/encrypted_moor.dart';
 
 import 'model/participant_with_user.dart';
 
@@ -23,13 +23,13 @@ part 'chat_db.g.dart';
   ParticipantTables,
   ChannelTables
 ])
-class ChatDatabase extends _$ChatDatabase {
-  ChatDatabase()
+class ChatDatabase extends _$ChatDatabase with Loggable{
+  ChatDatabase(@Named("localDatabasePassword") String localDatabasePassword)
       : super(
           EncryptedExecutor.inDatabaseFolder(
             path: "chat_db.sqlite",
-            password: "1234",
-            logStatements: false,
+            password: localDatabasePassword,
+            logStatements: false //kDebugMode,
           ),
         );
 
@@ -70,7 +70,7 @@ class ChatDatabase extends _$ChatDatabase {
       (update(chatTables)..where((tbl) => tbl.id.equals(id)))
           .write(chat)
           .catchError((_e) {
-        print("Sql migration error. Reinstall the app, please");
+        logger.severe("Sql migration error. Please, reinstall the app.", _e);
       });
   Future deleteChat(ChatTable chat) => delete(chatTables).delete(chat);
   Future deleteChatById(String id) =>
@@ -154,6 +154,7 @@ class ChatDatabase extends _$ChatDatabase {
           .get();
   Stream<List<MessageWithUser>> watchChatMessages(String chatId,
       {OrderingMode orderMode = OrderingMode.asc, int? limit}) {
+
     final sel = (select(messageTables)
           ..where((tbl) => tbl.chatId.equals(chatId)))
         .join([

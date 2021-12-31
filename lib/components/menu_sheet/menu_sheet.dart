@@ -91,9 +91,11 @@ class MenuSheet extends StatelessWidget {
       MenuSheetItem(
         title: strings.signOff,
         onTap: () async {
-          await sl<Messenger>().dispose();
+          var messenger = sl<Messenger>();
+          await messenger.dispose();
+          sl.unregister(instance: messenger);
           await Token.deleteTokens();
-          Navigator.pushNamedAndRemoveUntil(context, '/auth', (route) => false);
+          Navigator.pushNamedAndRemoveUntil(context, '/init', (route) => true);
         },
         icon: SvgPicture.asset(
           'assets/images/exit_icon.svg',

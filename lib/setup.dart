@@ -29,7 +29,7 @@ Future<void> setup({
 
   setupLogging(sl<FileLogAppender>(),
       //todo: Убрать подробробное логирование перед публикаций в сторы
-      forceLevel: Level.ALL);
+      forceLevel: Level.WARNING);
 
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);

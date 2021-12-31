@@ -110,6 +110,10 @@ abstract class Token {
     return await Token._getTokenByType(TokenTypes.refresh);
   }
 
+  static Future<String?> getLocalDbToken() async {
+    return await Token._getTokenByType(TokenTypes.localDbToken);
+  }
+
   static Future<String?> _getTokenByType(TokenType type) async {
     return await sl<SecureStorage>().read(type.key);
   }
@@ -146,6 +150,10 @@ abstract class Token {
   static Future<String?> getNatsToken() async {
     return await sl<SecureStorage>().read(NatsTypes.natsToken.key);
   }
+
+  static setLocalDbToken(String dbLocalToken) async {
+    await Token._setTokenByType(TokenTypes.localDbToken, dbLocalToken);
+  }
 }
 
 @lazySingleton
@@ -171,6 +179,8 @@ class SecureStorage {
 class TokenTypes {
   static const TokenType jwt = TokenType('token');
   static const TokenType refresh = TokenType('refreshToken');
+
+  static TokenType localDbToken = TokenType('localDbToken');
 }
 
 class TokenType {
@@ -230,6 +240,9 @@ abstract class TokenDataInjectorModule {
 
   @Named("deviceVirtualId")
   String get deviceVirtualId => GetIt.I.get<TokenDataHolder>().deviceVirtualId;
+
+  @Named("localDatabasePassword")
+  String get localDatabasePassword => GetIt.I.get<TokenDataHolder>().localDatabasePassword;
 }
 
 @lazySingleton
@@ -240,16 +253,20 @@ class TokenDataHolder with Loggable {
 
   late String _natsToken;
 
+  late String _localDatabasePassword;
+
   String get userId => _userId;
   String get deviceVirtualId => _deviceVirtualId;
   String get natsToken => _natsToken;
+  String get localDatabasePassword => _localDatabasePassword;
 
   Future<void> update() async {
     logger.fine("update");
     _userId = await Token.getUserId();
     _deviceVirtualId = await Token.getDeviceVirtualId() ?? "";
     _natsToken = await Token.getNatsToken() ?? "";
+    _localDatabasePassword = await Token.getLocalDbToken() ?? "";
     logger.fine(
-        "_userId: $_userId, _deviceVirtualId: $_deviceVirtualId, _natsToken: $_natsToken ");
+        "_userId: $_userId, _deviceVirtualId: $_deviceVirtualId, _natsToken: $_natsToken, _localDatabasePassword: $_localDatabasePassword ");
   }
 }
