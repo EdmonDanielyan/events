@@ -302,8 +302,9 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.factory<_i80.Uint8List>(() => certificateInjector.apiCertificate,
       instanceName: 'apiCertificate');
   gh.singleton<_i81.AuthHandler>(_i81.AuthHandler(get<_i13.BootCubit>()));
-  gh.lazySingleton<_i82.ChatDatabase>(() =>
-      _i82.ChatDatabase(get<String>(instanceName: 'localDatabasePassword')));
+  gh.lazySingleton<_i82.ChatDatabase>(() => _i82.ChatDatabase(
+      get<String>(instanceName: 'localDatabasePassword'),
+      get<String>(instanceName: 'userId')));
   gh.lazySingleton<_i83.ChatDatabaseCubit>(
       () => _i83.ChatDatabaseCubit(get<_i82.ChatDatabase>()));
   gh.factory<_i84.ChatFunctions>(() =>

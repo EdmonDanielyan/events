@@ -24,10 +24,11 @@ part 'chat_db.g.dart';
   ChannelTables
 ])
 class ChatDatabase extends _$ChatDatabase with Loggable{
-  ChatDatabase(@Named("localDatabasePassword") String localDatabasePassword)
+  ChatDatabase(@Named("localDatabasePassword") String localDatabasePassword,
+      @Named("userId") String userId)
       : super(
           EncryptedExecutor.inDatabaseFolder(
-            path: "chat_db.sqlite",
+            path: "chat_db_$userId.sqlite",
             password: localDatabasePassword,
             logStatements: false //kDebugMode,
           ),
