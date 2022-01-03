@@ -292,7 +292,7 @@ class NatsStreamingClient {
         await _disconnect();
       }
     }
-    if (_connected) {
+    if (retryReconnect || _connected) {
       Future.delayed(Duration(seconds: pingInterval), () => _heartbeat());
     }
   }
@@ -343,7 +343,6 @@ class NatsStreamingClient {
 
       return hasPing;
     } catch (e) {
-      close();
       return false;
     }
   }
