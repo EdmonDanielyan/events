@@ -9,6 +9,7 @@ import 'package:dart_nats_streaming/src/data_message.dart';
 import 'package:dart_nats_streaming/src/protocol.dart';
 import 'package:dart_nats_streaming/src/subscription.dart';
 import 'package:fixnum/fixnum.dart';
+import 'package:logging/logging.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:retry/retry.dart';
 import 'package:uuid/uuid.dart';
@@ -27,18 +28,20 @@ class WssHttpOverrides extends HttpOverrides {
   WssHttpOverrides(this.certificate);
 }
 
-class Client {
+class NatsStreamingClient {
   // ####################################################
   //                      Factories
   // ####################################################
 
-  static final Client _client = Client._constructor();
+  static final NatsStreamingClient _client = NatsStreamingClient._constructor();
 
-  factory Client() {
+  static final Logger _logger = Logger('NatsStreamingClient');
+
+  factory NatsStreamingClient() {
     return _client;
   }
 
-  Client._constructor();
+  NatsStreamingClient._constructor();
 
   // ####################################################
   //                      Attributes
@@ -230,8 +233,8 @@ class Client {
         retry: retryReconnect,
         retryInterval: retryInterval,
       );
-    } catch (e) {
-      print('Connecting Error: [$e]');
+    } catch (e, s) {
+      _logger.severe('Connecting Error', e, s);
       unawaited(_reconnect());
     }
   }
@@ -245,8 +248,8 @@ class Client {
         retry: retryReconnect,
         retryInterval: retryInterval,
       );
-    } catch (e) {
-      print('Connecting Error: [$e]');
+    } catch (e, s) {
+      _logger.severe('Connecting Error', e, s);
       unawaited(_reconnect());
     }
   }
@@ -262,8 +265,8 @@ class Client {
       if (_onDisconnect != null) {
             _onDisconnect!();
           }
-    } catch (e) {
-      print('Failed during call onDisconnect');
+    } catch (e, s) {
+      _logger.severe('Failed during call onDisconnect', e, s);
     }
     await natsClient.close();
     _connected = false;
@@ -276,7 +279,7 @@ class Client {
       _connected = true;
     } else {
       failPings++;
-      print('PING Fail. Attempt: [$failPings/$pingMaxAttempts], '
+      _logger.finest('PING Fail. Attempt: [$failPings/$pingMaxAttempts], '
           'CLIENT: $_clientID, NATS: [${natsClient.status == nats.Status.connected ? 'connected' : 'disconnected'}]');
     }
 
@@ -374,9 +377,8 @@ class Client {
           ..connID = this.connectionIDAscii;
         return natsClient.pub('${this._connectResponse!.pubPrefix}.$subject',
             pubMsg.writeToBuffer());
-      } catch (e) {
-        print('Publishing Fail: $e');
-
+      } catch (e, s) {
+        _logger.severe('Publishing Fail', e, s);
         if (onDeliveryFail != null) {
           onDeliveryFail(pubMsg, e.toString());
         }
@@ -409,8 +411,8 @@ class Client {
         String to = '${this._connectResponse!.pubPrefix}.$subject';
 
         return natsClient.pub(to, pubMsg.writeToBuffer());
-      } catch (e) {
-        print('Publishing Fail: $e');
+      } catch (e, s) {
+        _logger.severe('Publishing Fail', e, s);
 
         if (onDeliveryFail != null) {
           onDeliveryFail(pubMsg, e);
@@ -492,7 +494,7 @@ class Client {
     for (int i = 1; i <= 10; i++) {
       final subscriptionResponse = await tryToSubscribe(subscriptionRequest);
       if (!_subscriptionInboxes.contains(subscriptionResponse.ackInbox)) {
-        print(
+        _logger.finest(
             'ACK INBOX - $subject - ${subscriptionResponse.ackInbox} WITH POSITION - $startPosition AND SEQUENCE - $startSequence');
         _subscriptionInboxes.add(subscriptionResponse.ackInbox);
         return Subscription(
@@ -539,7 +541,7 @@ class Client {
       ..sequence = dataMessage.sequence;
 
     if (dataMessage.isRedelivery) {
-      print(
+      _logger.finest(
           'NOT ACKNOWLEDGING - ${ack.subject} - ${subscription.ackInbox} - SEQ = ${ack.sequence}');
       _handleUnAck(subscription,
           unacknowledgedMessageHandler: unacknowledgedMessageHandler);
@@ -547,8 +549,8 @@ class Client {
 
     try {
       natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
-    } catch (_e) {
-      print('EXITED DURING ACK');
+    } catch (e, s) {
+      _logger.severe('Error during send ACK', e, s);
     }
   }
 
@@ -558,11 +560,11 @@ class Client {
     if (unAcknowledgedCounter.containsKey(channel)) {
       int counter = unAcknowledgedCounter[channel]!;
 
-      print('COUNTER $counter');
+      _logger.finest('_handleUnAck COUNTER = $counter');
 
       if (counter >= LIMIT_UNACKNOWLEDGED) {
         subscription.subscription.close();
-        print(
+        _logger.warning(
             'CLOSED $channel after $LIMIT_UNACKNOWLEDGED unacknowledged messages');
       }
 

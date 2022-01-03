@@ -26,7 +26,7 @@ const DELETE_ACTION = 'delete';
 class NatsProvider {
   static final _logger = Logger('NatsProvider');
 
-  late Client _stan;
+  late NatsStreamingClient _stan;
   final String natsWssUrl;
   final String natsCluster;
   final Uint8List certificate;
@@ -45,7 +45,7 @@ class NatsProvider {
   });
 
   Future<bool> load() async {
-    this._stan = Client();
+    this._stan = NatsStreamingClient();
     _stan.onConnect(function: () {
       onConnected();
       _connected();
