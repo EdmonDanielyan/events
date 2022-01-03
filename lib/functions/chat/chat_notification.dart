@@ -5,14 +5,14 @@ import 'package:ink_mobile/providers/notifications.dart';
 
 import '../../app.dart';
 
-class PushChatNotification {
+class ChatNotification {
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatTable chat;
   final UserTable user;
   final ChatTable? myChat;
   final MessageTable message;
 
-  const PushChatNotification(
+  const ChatNotification(
       {required this.chatDatabaseCubit,
       required this.chat,
       required this.user,

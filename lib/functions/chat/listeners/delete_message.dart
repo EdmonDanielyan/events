@@ -10,7 +10,7 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
-import '../push_notification.dart';
+import '../chat_notification.dart';
 import 'channel_listener.dart';
 import 'channels_registry.dart';
 
@@ -68,7 +68,7 @@ class MessageDeletedListener extends ChannelListener {
     final myChat = await chatDatabaseCubit.db.selectChatById(message.chatId);
 
     if (myChat != null) {
-      PushChatNotification(
+      ChatNotification(
         chatDatabaseCubit: chatDatabaseCubit,
         chat: myChat,
         myChat: myChat,

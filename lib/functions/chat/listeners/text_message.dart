@@ -15,7 +15,7 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../chat_functions.dart';
-import '../push_notification.dart';
+import '../chat_notification.dart';
 import 'channels_registry.dart';
 
 @Named("Text")
@@ -36,7 +36,7 @@ class TextMessageListener extends ChannelListener {
     this.chatFunctions,
   ) : super(natsProvider, registry);
 
-  Debouncer get _debouncer => Debouncer(milliseconds: 800);
+  Debouncer get _debouncer => Debouncer(milliseconds: 100);
 
   @override
   Future<void> onMessage(String channel, NatsMessage message) async {
@@ -87,7 +87,7 @@ class TextMessageListener extends ChannelListener {
         }
 
         _debouncer.run(() {
-          PushChatNotification(
+          ChatNotification(
             chatDatabaseCubit: chatDatabaseCubit,
             chat: chat,
             myChat: myChat,
