@@ -32,7 +32,7 @@ class PingSender {
     _sendOnline(channel, user);
 
     _userOnlineTimer = Timer.periodic(
-      Duration(seconds: 35),
+      Duration(seconds: 10),
       (timer) {
         _sendOnline(channel, user!);
       },

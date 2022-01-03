@@ -34,6 +34,8 @@ class TextSender with Loggable {
       SUCCESSFULLY SENT MESSAGE: $success
       MESSAGE: $message
       CHAT: $chat
+      
+
 
     ''');
 
@@ -90,7 +92,8 @@ class TextSender with Loggable {
 
         if (chats.containsKey(message.chatId)) {
           logger.fine(
-              'SENDING MESSAGE ${chats[message.chatId]!.name} AND MESSAGE ${message.message}');
+              'SENDING TO CHAT ${chats[message.chatId]!.name} - ${message.message}');
+
           await sendMessage(chats[message.chatId]!, message);
         }
       }

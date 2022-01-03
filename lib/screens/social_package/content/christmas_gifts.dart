@@ -31,7 +31,7 @@ class ChristmasGifts extends StatelessWidget {
                 '''),
         ),
       ),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 }

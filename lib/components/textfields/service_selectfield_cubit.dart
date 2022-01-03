@@ -28,13 +28,11 @@ class ServiceSelectFieldCubit extends StatelessWidget {
     required this.onChanged,
   }) : super(key: key);
 
-  static late AppLocalizations _strings;
-
   Future<void> showModalOptions(BuildContext context) async {
     await showDialog(
       context: context,
       builder: (ctx) {
-        return _listSelectors();
+        return _listSelectors(localizationInstance);
       },
     );
   }
@@ -48,7 +46,6 @@ class ServiceSelectFieldCubit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
-    _strings = localizationInstance;
     return InkWell(
       onTap: () => showModalOptions(context),
       child: IgnorePointer(
@@ -67,7 +64,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
     return items.map((e) => MultiSelectItem(e, e.title)).toList();
   }
 
-  Widget _listSelectors() {
+  Widget _listSelectors(AppLocalizations strings) {
     return BlocBuilder<SelectfieldCubit, SelectfieldCubitState>(
       bloc: cubit,
       builder: (BuildContext context, state) {
@@ -80,11 +77,11 @@ class ServiceSelectFieldCubit extends StatelessWidget {
           controlAffinity: ListTileControlAffinity.trailing,
           subWidget: subWidget,
           cancelText: Text(
-            _strings.back,
+            strings.back,
             style: TextStyle(color: Colors.grey[600]),
           ),
           confirmText: Text(
-            _strings.select,
+            strings.select,
             style: TextStyle(
               color: Colors.green,
             ),

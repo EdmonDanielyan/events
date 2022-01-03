@@ -39,7 +39,7 @@ class ChildrenRest extends StatelessWidget {
                 '''),
         ),
       ),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 }

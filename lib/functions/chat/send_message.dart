@@ -7,6 +7,7 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
+import 'package:moor/moor.dart';
 
 import 'chat_functions.dart';
 
@@ -26,6 +27,7 @@ class SendMessage with Loggable {
     MessageType type = MessageType.Text,
     DateTime? created,
     int? userId,
+    int? sequence,
   }) {
     return MessageTable(
       id: generateMessageId,
@@ -38,25 +40,28 @@ class SendMessage with Loggable {
       created: created ?? new DateTime.now(),
       type: type,
       repliedMessageId: repliedMessageId,
-      sequence: 0,
+      sequence: sequence ?? 0,
     );
   }
 
   String get generateMessageId =>
       "${JwtPayload.myId}_${new DateTime.now().microsecondsSinceEpoch}";
 
-  Future<MessageTable> call(ChatTable chat, ChatEntities entities) async {
+  Future<MessageTable> save(ChatTable chat, ChatEntities entities) async {
     final message = await _sendMessageToDatabase(chat, entities);
     return message;
   }
 
   Future<MessageTable> _sendMessageToDatabase(
       ChatTable chat, ChatEntities chatEntities) async {
+    final lastMessageInChat = await chatDatabaseCubit.db
+        .selectMessageByChatIdInOrder(chat.id, OrderingMode.desc);
     MessageTable message = _generateMessage(
       chat.id,
       chatEntities.text,
       repliedMessageId: chatEntities.repliedMessageId,
       type: chatEntities.type,
+      sequence: (lastMessageInChat?.sequence ?? 0) + 1,
     );
 
     await addMessage(chat, message);

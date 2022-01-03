@@ -32,7 +32,7 @@ class OpenUniversityScreen extends StatelessWidget {
         newsListCubit: newsListCubit,
         openUniversityCubit: openUniversityCubit,
       ),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 }

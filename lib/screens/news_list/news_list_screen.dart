@@ -16,7 +16,7 @@ class NewsListScreen extends StatelessWidget {
     return Scaffold(
       appBar: InkAppBarWithText(title: _strings.news),
       body: Body(cubit: newsListCubit),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 }

@@ -13,7 +13,7 @@ class SocialPackageScreen extends StatelessWidget {
     return Scaffold(
       appBar: InkAppBarWithText(title: _strings.socialPackage),
       body: Body(),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 }

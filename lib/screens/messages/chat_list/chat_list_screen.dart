@@ -47,7 +47,7 @@ class ChatListScreenState extends State<ChatListScreen>
     return Scaffold(
       appBar: InkAppBarWithText(
         title: localizationInstance.messages,
-        actions: [NewChatBtn()],
+        actions: [const NewChatBtn()],
       ),
       body: BlocBuilder<ChatDatabaseCubit, ChatDatabaseCubitState>(
         bloc: chatDatabaseCubit,
@@ -58,7 +58,7 @@ class ChatListScreenState extends State<ChatListScreen>
             return ChatListLoadingComponent(
                 chatDatabaseCubit: chatDatabaseCubit);
           }
-          return Body();
+          return const Body();
         },
       ),
     );

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
@@ -16,10 +15,16 @@ import 'package:ink_mobile/screens/messages/chat_list/components/new_chat_screen
 import 'package:ink_mobile/screens/messages/chat_list/entities/new_chat_screen_params.dart';
 import 'package:ink_mobile/setup.dart';
 
-class NewChatBtn extends StatelessWidget {
-  NewChatBtn({Key? key}) : super(key: key);
-  static late SelectableCubit<UserTable> _selectableCubit;
-  static late ChatDatabaseCubit _chatDatabaseCubit;
+class NewChatBtn extends StatefulWidget {
+  const NewChatBtn({Key? key}) : super(key: key);
+
+  @override
+  State<NewChatBtn> createState() => _NewChatBtnState();
+}
+
+class _NewChatBtnState extends State<NewChatBtn> {
+  late SelectableCubit<UserTable> _selectableCubit;
+  late ChatDatabaseCubit _chatDatabaseCubit;
   final Messenger messenger = sl<Messenger>();
 
   @override

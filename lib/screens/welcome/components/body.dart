@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/screens/auth/components/sign_in_instructions.dart';
 import 'package:ink_mobile/screens/welcome/components/background.dart';
 
-class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
+class Body extends StatefulWidget {
+  final PackageInfoProvider packageInfo;
+  const Body({Key? key, required this.packageInfo}) : super(key: key);
 
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
@@ -104,7 +111,11 @@ class Body extends StatelessWidget {
                 ),
                 Container(
                   child: SignInInstructions(),
-                )
+                ),
+                Text(
+                  widget.packageInfo.version,
+                  style: TextStyle(color: Colors.grey[400], fontSize: 13.0),
+                ),
               ],
             ),
           )),

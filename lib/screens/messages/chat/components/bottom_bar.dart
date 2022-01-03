@@ -41,9 +41,9 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
     if (entities.text.isNotEmpty && getChat != null) {
       clearForm();
       final sendMessage = sl<SendMessage>();
-      final message = await sendMessage.call(getChat!, entities);
+      final message = await sendMessage.save(getChat!, entities);
       if (sl<Messenger>().isConnected) {
-        sl<Messenger>().textSender.sendMessage(getChat!, message);
+        await sl<Messenger>().textSender.sendMessage(getChat!, message);
       }
 
       _chatCubit.clean();

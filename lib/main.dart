@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:isolate';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
@@ -61,23 +63,87 @@ class InkMobile extends StatelessWidget {
 
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    return MultiBlocProvider(
-      providers: GlobalProvider.getProviders(context).cast(),
-      child: MaterialApp(
-        navigatorKey: App.materialKey,
-        title: 'ИНК',
-        initialRoute: '/init',
-        localizationsDelegates: [
-          AppLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate
-        ],
-        supportedLocales: I18n.all,
-        routes: MainRoutes.routes,
-        theme: LightTheme().getThemeData(),
-        darkTheme: LightTheme().getThemeData(),
+    return WillStartForegroundTask(
+      onWillStart: () async {
+        // Return whether to start the foreground service.
+        return true;
+      },
+      androidNotificationOptions: AndroidNotificationOptions(
+        channelId: 'messenger_channel',
+        channelName: 'INK Messenger',
+        channelDescription: 'This notification appears when the foreground service is running.',
+        channelImportance: NotificationChannelImportance.HIGH,
+        priority: NotificationPriority.HIGH,
+        iconData: NotificationIconData(
+          resType: ResourceType.mipmap,
+          resPrefix: ResourcePrefix.ic,
+          name: 'launcher',
+        ),
+      ),
+      iosNotificationOptions: const IOSNotificationOptions(
+        showNotification: false,
+        playSound: false,
+      ),
+      foregroundTaskOptions: const ForegroundTaskOptions(
+        interval: 5000,
+        autoRunOnBoot: true,
+        allowWifiLock: true,
+      ),
+      printDevLog: false,
+      notificationTitle: "ИНК-портал",
+      notificationText: "Нажмите для возврата в приложение",
+      callback: startCallback,
+      child: MultiBlocProvider(
+        providers: GlobalProvider.getProviders(context).cast(),
+        child: MaterialApp(
+          navigatorKey: App.materialKey,
+          title: 'ИНК',
+          initialRoute: '/init',
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate
+          ],
+          supportedLocales: I18n.all,
+          routes: MainRoutes.routes,
+          theme: LightTheme().getThemeData(),
+          darkTheme: LightTheme().getThemeData(),
+        ),
       ),
     );
+  }
+}
+
+// The callback function should always be a top-level function.
+void startCallback() {
+  // The setTaskHandler function must be called to handle the task in the background.
+  FlutterForegroundTask.setTaskHandler(FirstTaskHandler());
+}
+
+class FirstTaskHandler extends TaskHandler {
+  @override
+  Future<void> onStart(DateTime timestamp, SendPort? sendPort) async {
+    // You can use the getData function to get the data you saved.
+    final customData = await FlutterForegroundTask.getData<String>(key: 'customData');
+    print('customData: $customData');
+  }
+
+  @override
+  Future<void> onEvent(DateTime timestamp, SendPort? sendPort) async {
+    // Send data to the main isolate.
+    sendPort?.send(timestamp);
+  }
+
+  @override
+  Future<void> onDestroy(DateTime timestamp) async {
+    // You can use the clearAllData function to clear all the stored data.
+    await FlutterForegroundTask.clearAllData();
+  }
+
+  @override
+  void onButtonPressed(String id) {
+    // Called when the notification button on the Android platform is pressed.
+    print('onButtonPressed >> $id');
   }
 }

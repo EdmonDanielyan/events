@@ -151,7 +151,7 @@ class AccidentInsurance extends StatelessWidget {
                 '''),
         ),
       ),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 }

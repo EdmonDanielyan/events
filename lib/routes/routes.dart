@@ -18,6 +18,7 @@ import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.d
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/person_list_params.dart';
+import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/screens/announcements_detail/announcements_detail_screen.dart';
 import 'package:ink_mobile/screens/announcements_list/announcements_list_screen.dart';
 import 'package:ink_mobile/screens/app_layer/app_layer_screen.dart';
@@ -53,15 +54,17 @@ import 'package:ink_mobile/setup.dart';
 
 class MainRoutes {
   static Map<String, Widget Function(BuildContext)> routes = {
-    '/init': (BuildContext context) => InitPage(),
+    '/init': (BuildContext context) => InitPage(cubit: sl()..load(),),
     '/app_layer': (BuildContext context) => AppLayerScreen(
           newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
         ),
-    '/welcome': (BuildContext context) => WelcomeScreen(),
+    '/welcome': (BuildContext context) => WelcomeScreen(
+          packageInfoProvider: sl<PackageInfoProvider>(),
+        ),
     '/auth': (BuildContext context) => AuthScreen(
           authCubit: sl<AuthCubit>(),
           newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
-          chatDatabaseCubit: sl<ChatDatabaseCubit>(),
+          // chatDatabaseCubit: sl<ChatDatabaseCubit>(),
         ),
     '/personal': (BuildContext context) => ProfileScreen(
         profileCubit: sl(),

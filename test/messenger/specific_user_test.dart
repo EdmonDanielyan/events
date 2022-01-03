@@ -180,7 +180,7 @@ void main() async {
       logger.info("sending messages to chat: ${chat.id}...");
 
       final sendMessage = sl<SendMessage>();
-      final message = await sendMessage.call(
+      final message = await sendMessage.save(
           chat, ChatEntities(text: "Use the Force, Luke"));
       await sl<Messenger>().textSender.sendMessage(chat, message);
       logger.info("Test database after sending message:\n $databaseData");

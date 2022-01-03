@@ -96,8 +96,8 @@ class TextMessageListener extends ChannelListener {
           ).call();
         });
 
-        await userFunctions.insertUser(fields.user);
         await GetIt.I<SendMessage>().addMessage(chat, newMessage);
+        await userFunctions.insertUser(fields.user);
       }
     } on NoSuchMethodError {
       return;

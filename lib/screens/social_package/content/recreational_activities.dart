@@ -69,7 +69,7 @@ class RecreationalActivities extends StatelessWidget {
                 '''),
         ),
       ),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 }

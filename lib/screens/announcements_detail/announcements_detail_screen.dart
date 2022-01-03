@@ -63,7 +63,7 @@ class AnnouncementsDetailScreen extends StatelessWidget {
           }
         },
       ),
-      bottomNavigationBar: NewBottomNavBar(),
+      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 }

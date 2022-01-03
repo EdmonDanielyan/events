@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:ink_mobile/screens/initial/initial_screen.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:logging/logging.dart';
 
 import '../app.dart';
-import 'package:logging/logging.dart';
 
 class NotificationsProvider {
   static final _logger = Logger('NotificationsProvider');
@@ -58,7 +59,7 @@ class NotificationsProvider {
 
     await Navigator.push(
       App.materialKey!.currentContext!,
-      MaterialPageRoute<void>(builder: (context) => InitPage()),
+      MaterialPageRoute<void>(builder: (context) => InitPage(cubit: sl()..load(),)),
     );
   }
 

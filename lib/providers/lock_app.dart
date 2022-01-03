@@ -2,8 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:local_auth/auth_strings.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
+import 'package:local_auth/local_auth.dart';
 
 @singleton
 class LockApp {
@@ -23,7 +23,7 @@ class LockApp {
     try {
       if (await canCheckBiometrics()) {
         bool didAuthenticate = await _localAuth.authenticate(
-          localizedReason: localizationInstance.passwordHint,
+          localizedReason: localizationInstance.biometricReason,
           iOSAuthStrings: _iosStrings(),
           androidAuthStrings: _androidStrings(),
         );
@@ -56,7 +56,7 @@ class LockApp {
   AndroidAuthMessages _androidStrings() {
     return AndroidAuthMessages(
       signInTitle: localizationInstance.authenticationRequired,
-      biometricHint: localizationInstance.passwordHint,
+      biometricHint: localizationInstance.biometricHint,
       cancelButton: localizationInstance.cancel,
       goToSettingsButton: localizationInstance.settings,
       goToSettingsDescription: localizationInstance.touchIdSetup,
