@@ -63,7 +63,7 @@ class _MessageTextfieldState extends State<MessageTextfield> {
                 ),
               ),
               isDense: true,
-              contentPadding: EdgeInsets.only(
+              contentPadding: const EdgeInsets.only(
                 top: 10.0,
                 bottom: 10,
                 left: 11.0,

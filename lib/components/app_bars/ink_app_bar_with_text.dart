@@ -29,7 +29,7 @@ class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
           Builder(
             builder: (context) {
               if (Navigator.of(appBarContext).canPop()) {
-                return AppBarBackBtn();
+                return const AppBarBackBtn();
               } else {
                 return Container();
               }

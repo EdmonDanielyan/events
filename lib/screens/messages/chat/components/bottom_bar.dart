@@ -15,11 +15,16 @@ import 'package:ink_mobile/screens/messages/chat/components/textfield.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 import 'package:ink_mobile/setup.dart';
 
-import '../chat_screen.dart';
-
 class MessageBottomBar extends StatefulWidget {
   final ScrollController scrollController;
-  const MessageBottomBar({Key? key, required this.scrollController})
+
+  final ChatDatabaseCubit chatDatabaseCubit;
+
+  final ChatCubit chatCubit;
+
+  const MessageBottomBar(
+      this.chatDatabaseCubit, this.chatCubit, this.scrollController,
+      {Key? key})
       : super(key: key);
 
   @override
@@ -27,15 +32,16 @@ class MessageBottomBar extends StatefulWidget {
 }
 
 class _MessageBottomBarState extends State<MessageBottomBar> {
-  late ChatDatabaseCubit _chatDatabaseCubit;
-  ChatEntities entities = ChatEntities();
-  FocusNode textfieldFocus = FocusNode();
-  TextEditingController _messageTextEditingController = TextEditingController();
-  late ChatCubit _chatCubit;
+  final ChatEntities entities = ChatEntities();
+  final FocusNode textfieldFocus = FocusNode();
+  final TextEditingController _messageTextEditingController =
+      TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _padding = 7.0;
 
-  ChatTable? get getChat => _chatDatabaseCubit.selectedChat;
+  _MessageBottomBarState();
+
+  ChatTable? get getChat => widget.chatDatabaseCubit.selectedChat;
 
   Future<void> onSend(ChatEntities entities) async {
     if (entities.text.isNotEmpty && getChat != null) {
@@ -46,7 +52,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
         await sl<Messenger>().textSender.sendMessage(getChat!, message);
       }
 
-      _chatCubit.clean();
+      widget.chatCubit.clean();
       entities.clear();
       ScrollBottom(widget.scrollController).jumpLazy();
     }
@@ -64,11 +70,12 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
             .sendDeleteMessages([editedMsg], context, edited: true);
 
         if (sent) {
-          _chatDatabaseCubit.db.updateMessageById(editedMsg.id, editedMsg);
-          _chatCubit.emitEditMessage(null);
+          widget.chatDatabaseCubit.db
+              .updateMessageById(editedMsg.id, editedMsg);
+          widget.chatCubit.emitEditMessage(null);
         }
       } else {
-        _chatCubit.emitEditMessage(null);
+        widget.chatCubit.emitEditMessage(null);
       }
     }
   }
@@ -84,8 +91,6 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    _chatCubit = ChatScreen.of(context).chatCubit;
-    _chatDatabaseCubit = ChatScreen.of(context).chatDatabaseCubit;
     return SafeArea(
       child: Container(
         margin: EdgeInsets.only(bottom: _padding),
@@ -134,7 +139,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
   Widget _respondContainerWidget() {
     return BlocConsumer<ChatCubit, ChatCubitState>(
-      bloc: _chatCubit,
+      bloc: widget.chatCubit,
       listenWhen: (previous, current) {
         bool previousNotSelected = previous.selectedMessageId == null;
         bool isMessageSlected = current.selectedMessageId != null;
@@ -154,13 +159,13 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
         if (state.selectedMessageId != null) {
           final selectedMsg =
-              _chatCubit.getMessageById(state.selectedMessageId!);
+              widget.chatCubit.getMessageById(state.selectedMessageId!);
 
           if (selectedMsg != null) {
             return RespondMessageContainer(
               horizontalPadding: _padding,
               selectedMessage: selectedMsg,
-              onCancel: () => _chatCubit.emitSelectedMessageId(null),
+              onCancel: () => widget.chatCubit.emitSelectedMessageId(null),
             );
           }
         }
@@ -171,7 +176,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
   Widget _editContainerWidget() {
     return BlocConsumer<ChatCubit, ChatCubitState>(
-      bloc: _chatCubit,
+      bloc: widget.chatCubit,
       listenWhen: (previous, current) {
         bool previousNotEdited = previous.editMessage == null;
         bool isMessageEditing = current.editMessage != null;
@@ -195,7 +200,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
             horizontalPadding: _padding,
             selectedMessage: state.editMessage!,
             onCancel: () {
-              _chatCubit.emitEditMessage(null);
+              widget.chatCubit.emitEditMessage(null);
               _messageTextEditingController.text = "";
             },
           );
@@ -207,14 +212,14 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
   Widget _btnWidget() {
     return BlocBuilder<ChatCubit, ChatCubitState>(
-      bloc: _chatCubit,
+      bloc: widget.chatCubit,
       buildWhen: (previous, current) {
         return previous.editMessage != current.editMessage;
       },
       builder: (context, state) {
         if (state.editMessage != null) {
           return MessageSendBtn(
-            icon: Icon(Icons.check),
+            icon: const Icon(Icons.check),
             onPressed: () {
               onEdit(state.editMessage!);
             },

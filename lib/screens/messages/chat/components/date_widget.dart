@@ -7,7 +7,7 @@ class DateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (dateTime == null) return SizedBox();
+    if (dateTime == null) return const SizedBox();
 
     String humanDate = DateFunctions(passedDate: dateTime!).dayMonthYearHuman();
 

@@ -7,7 +7,7 @@ class CustomCircleAvatar extends StatelessWidget {
   final String? url;
   final File? file;
   final ImageProvider? imageProvider;
-  final bool? indicator;
+  final bool indicator;
   final double indicatorSize;
   final double? avatarWidth;
   final double? avatarHeight;
@@ -17,7 +17,7 @@ class CustomCircleAvatar extends StatelessWidget {
     this.url,
     this.file,
     this.imageProvider,
-    this.indicator,
+    this.indicator = false,
     this.avatarWidth,
     this.avatarHeight,
     this.name = "",
@@ -34,7 +34,7 @@ class CustomCircleAvatar extends StatelessWidget {
           height: avatarHeight,
           child: getAvatar(),
         ),
-        if (indicator != null && indicator!) ...[
+        if (indicator) ...[
           Positioned(
             right: 0,
             bottom: 0,
@@ -62,7 +62,7 @@ class CustomCircleAvatar extends StatelessWidget {
     if (imageProvider != null)
       return getAvatarByUrl(imgProvider: imageProvider);
 
-    return SizedBox();
+    return const SizedBox();
   }
 
   Widget getAvatarByUrl({ImageProvider? imgProvider}) {

@@ -22,18 +22,22 @@ class MessageCardText extends StatelessWidget {
   final String? messageStr;
   final ChatDatabaseCubit chatDatabaseCubit;
 
-  const MessageCardText({
+  late bool byMe;
+
+  Widget? userAvatar;
+
+  MessageCardText({
     Key? key,
     required this.user,
     required this.message,
     this.messageStr,
     required this.chatDatabaseCubit,
-  })  : assert(message != null || messageStr != null),
-        super(key: key);
+  }): super(key: key) {
+    assert(message != null || messageStr != null);
+    byMe = message != null ? MessageListView.isByMe(message!) : false;
+  }
 
   ChatTable get getChat => chatDatabaseCubit.selectedChat!;
-
-  bool get byMe => message != null ? MessageListView.isByMe(message!) : false;
 
   Color textColor() {
     if (message?.type == MessageType.Document) {
@@ -46,7 +50,7 @@ class MessageCardText extends StatelessWidget {
     if (message?.type == MessageType.Document) {
       return Colors.transparent;
     }
-    return byMe ? Color(0XFF46966E) : Colors.grey.shade200;
+    return byMe ? const Color(0XFF46966E) : Colors.grey.shade200;
   }
 
   void _resend(BuildContext context) async {
@@ -71,8 +75,8 @@ class MessageCardText extends StatelessWidget {
       children: [
         _errorIconReload(context),
         if (!byMe) ...[
-          _userAvatarWidget(context),
-          SizedBox(width: 10.0),
+          _makeUserAvatarWidget(context),
+          const SizedBox(width: 10.0),
         ],
         Flexible(
           child: Container(
@@ -144,10 +148,10 @@ class MessageCardText extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           _showMessage(),
-          SizedBox(width: 5.0),
+          const SizedBox(width: 5.0),
           _dateWidget(),
           if (byMe) ...[
-            SizedBox(width: 4.0),
+            const SizedBox(width: 4.0),
             _statusWidget(),
           ],
         ],
@@ -173,8 +177,8 @@ class MessageCardText extends StatelessWidget {
     );
   }
 
-  Widget _userAvatarWidget(BuildContext context) {
-    return InkWell(
+  Widget _makeUserAvatarWidget(BuildContext context) {
+    return userAvatar ?? (userAvatar = InkWell(
       onTap: () => Navigator.of(context).pushNamed("/personal",
           arguments: {'id': user.id, HIDE_BOTTOM_NAV_BAR_CODE: true}),
       child: SizedBox(
@@ -185,7 +189,7 @@ class MessageCardText extends StatelessWidget {
         width: 45,
         height: 45,
       ),
-    );
+    ));
   }
 
   Widget _dateWidget() {

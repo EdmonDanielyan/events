@@ -10,25 +10,27 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/select_menu.dart';
 import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/screens/messages/chat/entities/chat_screen_params.dart';
 import 'package:ink_mobile/setup.dart';
-
-import '../chat_screen.dart';
 
 class HoverMessage extends StatelessWidget {
   final int index;
   final MessageWithUser messageWithUser;
   final Widget child;
   final bool ignore;
+  final ChatScreenParams chatScreenParams;
   const HoverMessage({
     Key? key,
     required this.index,
     required this.child,
     required this.messageWithUser,
     this.ignore = false,
+    required this.chatScreenParams,
+    required this.chatCubit,
   }) : super(key: key);
 
   static late AppLocalizations _strings;
-  static late ChatCubit _chatCubit;
+  final ChatCubit chatCubit;
 
   MessageTable get message => messageWithUser.message!;
 
@@ -50,20 +52,18 @@ class HoverMessage extends StatelessWidget {
   }
 
   void _onRespond() {
-    _chatCubit.emitSelectedMessageId(message.id);
+    chatCubit.emitSelectedMessageId(message.id);
   }
 
   void _onEdit(BuildContext context) {
-    _chatCubit.emitEditMessage(messageWithUser);
+    chatCubit.emitEditMessage(messageWithUser);
   }
 
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    _chatCubit = ChatScreen.of(context).chatCubit;
-    final _chatScreenParams = ChatScreen.of(context).chatScreenParams;
 
-    if (_chatScreenParams.ignoreHoverMessage || ignore) {
+    if (chatScreenParams.ignoreHoverMessage || ignore) {
       return child;
     }
 

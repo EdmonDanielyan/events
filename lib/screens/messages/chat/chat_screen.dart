@@ -26,14 +26,11 @@ import 'entities/chat_screen_params.dart';
 
 class ChatScreen extends StatefulWidget {
   final ChatFunctions chatFunctions;
-
-  static ChatScreenState of(BuildContext context) =>
-      context.findAncestorStateOfType<ChatScreenState>()!;
-
   final ChatScreenParams chatScreenParams;
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatCubit chatCubit;
   final SelectableCubit<MessageWithUser> selectableCubit;
+
   const ChatScreen({
     Key? key,
     required this.chatScreenParams,
@@ -44,25 +41,24 @@ class ChatScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  ChatScreenState createState() => ChatScreenState(chatScreenParams);
+  ChatScreenState createState() => ChatScreenState();
 }
 
 class ChatScreenState extends State<ChatScreen> {
-  final ChatScreenParams chatScreenParams;
-  ChatScreenState(this.chatScreenParams);
+  ChatScreenState();
 
-  final GlobalKey<ChatBodyState> _chatBodyState = GlobalKey<ChatBodyState>();
+  final GlobalKey<ChatBodyState> _chatBodyStateKey = GlobalKey<ChatBodyState>();
 
   ScrollController controller = ScrollController();
 
-  ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
-  ChatCubit get chatCubit => widget.chatCubit;
-  SelectableCubit<MessageWithUser> get selectableCubit =>
-      widget.selectableCubit;
+  // ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
+  // ChatCubit get chatCubit => widget.chatCubit;
+  // SelectableCubit<MessageWithUser> get selectableCubit =>
+  //     widget.selectableCubit;
 
   void _setMessagesToRead() {
-    if (_chatBodyState.currentState != null) {
-      _chatBodyState.currentState!.setMessagesToRead();
+    if (_chatBodyStateKey.currentState != null) {
+      _chatBodyStateKey.currentState!.setMessagesToRead();
     }
   }
 
@@ -73,8 +69,8 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     super.dispose();
-    chatCubit.emitEditMessage(null);
-    chatCubit.emitSelectedMessageId(null);
+    widget.chatCubit.emitEditMessage(null);
+    widget.chatCubit.emitSelectedMessageId(null);
   }
 
   @override
@@ -87,17 +83,21 @@ class ChatScreenState extends State<ChatScreen> {
         },
         child: Scaffold(
           appBar: _GetAppBar(
-            chatDatabaseCubit: chatDatabaseCubit,
-            chatCubit: chatCubit,
-            selectableCubit: selectableCubit,
-            chatScreenParams: chatScreenParams,
+            chatDatabaseCubit: widget.chatDatabaseCubit,
+            chatCubit: widget.chatCubit,
+            selectableCubit: widget.selectableCubit,
+            chatScreenParams: widget.chatScreenParams,
           ),
           body: ChatBody(
-            key: _chatBodyState,
-            controller: controller,
+            controller,
+            widget.chatCubit,
+            widget.chatDatabaseCubit,
+            widget.chatScreenParams,
+            widget.selectableCubit,
+            key: _chatBodyStateKey,
           ),
           floatingActionButton: BlocConsumer<ChatCubit, ChatCubitState>(
-            bloc: chatCubit,
+            bloc: widget.chatCubit,
             listenWhen: (previous, current) =>
                 previous.scrollBtn && !current.scrollBtn,
             listener: (context, statue) {
@@ -123,6 +123,7 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatCubit chatCubit;
   final SelectableCubit<MessageWithUser> selectableCubit;
+
   const _GetAppBar({
     Key? key,
     required this.chatScreenParams,
@@ -190,6 +191,7 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? setIgnoring(ChatAppBarTitle(
               chat: chatDatabaseCubit.selectedChat!,
               chatDatabaseCubit: chatDatabaseCubit,
+              chatScreenParams: chatScreenParams,
             ))
           : null,
       title: "",

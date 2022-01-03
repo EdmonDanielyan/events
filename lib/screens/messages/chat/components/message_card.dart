@@ -9,9 +9,9 @@ import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
-import 'package:ink_mobile/screens/messages/chat/chat_screen.dart';
-import 'package:ink_mobile/screens/messages/chat/components/message_card_text.dart';
 import 'package:ink_mobile/screens/messages/chat/components/hover_message.dart';
+import 'package:ink_mobile/screens/messages/chat/components/message_card_text.dart';
+import 'package:ink_mobile/screens/messages/chat/entities/chat_screen_params.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/paddings.dart';
 
 import 'message_card_action.dart';
@@ -21,56 +21,64 @@ class MessageCard extends StatelessWidget {
   final int index;
   final MessageWithUser messageWithUser;
   final ChatDatabaseCubit chatDatabaseCubit;
-  const MessageCard({
+  final ChatCubit chatCubit;
+  final SelectableCubit<MessageWithUser> selectableCubit;
+
+  final ChatScreenParams chatScreenParams;
+
+  MessageCard({
     Key? key,
     required this.messageWithUser,
     required this.index,
     required this.chatDatabaseCubit,
+    required this.chatCubit,
+    required this.selectableCubit,
+    required this.chatScreenParams,
   }) : super(key: key);
-  static late ChatCubit _chatCubit;
-  static late SelectableCubit<MessageWithUser> _selectableCubit;
 
   MessageTable get message => messageWithUser.message!;
 
   void _onSwitchSelected(bool enabled) {
-    _selectableCubit.addOrRemove(messageWithUser);
+    selectableCubit.addOrRemove(messageWithUser);
   }
+
+  Widget? _cache;
 
   @override
   Widget build(BuildContext context) {
-    _chatCubit = ChatScreen.of(context).chatCubit;
-    _selectableCubit = ChatScreen.of(context).selectableCubit;
-
-    return BlocBuilder<SelectableCubit<MessageWithUser>,
-        SelectableCubitState<MessageWithUser>>(
-      bloc: _selectableCubit,
-      builder: (context, state) {
-        return SelectableWidget(
-          isOn: state.items.length > 0,
-          selected: _selectableCubit.isItemExists(messageWithUser),
-          onSwitch: _onSwitchSelected,
-          child: HoverMessage(
-            index: index,
-            messageWithUser: messageWithUser,
-            ignore:
-                !MessageListView.notIgnoringHoverTypes.contains(message.type),
-            child: MessageSearchWrapper(
-              chatCubit: _chatCubit,
-              message: message,
-              child: Container(
-                padding: ChatScreenPaddings.messageContainerPadding,
-                child: Align(
-                  alignment: MessageListView.isByMe(message)
-                      ? Alignment.topRight
-                      : Alignment.topLeft,
-                  child: _getMessageWidget(),
+    return _cache ??
+        (_cache = BlocBuilder<SelectableCubit<MessageWithUser>,
+            SelectableCubitState<MessageWithUser>>(
+          bloc: selectableCubit,
+          builder: (context, state) {
+            return SelectableWidget(
+              isOn: state.items.length > 0,
+              selected: selectableCubit.isItemExists(messageWithUser),
+              onSwitch: _onSwitchSelected,
+              child: HoverMessage(
+                index: index,
+                messageWithUser: messageWithUser,
+                ignore: !MessageListView.notIgnoringHoverTypes
+                    .contains(message.type),
+                chatScreenParams: chatScreenParams,
+                chatCubit: chatCubit,
+                child: MessageSearchWrapper(
+                  chatCubit: chatCubit,
+                  message: message,
+                  child: Container(
+                    padding: ChatScreenPaddings.messageContainerPadding,
+                    child: Align(
+                      alignment: MessageListView.isByMe(message)
+                          ? Alignment.topRight
+                          : Alignment.topLeft,
+                      child: _getMessageWidget(),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        );
-      },
-    );
+            );
+          },
+        ));
   }
 
   Widget _getMessageWidget() {
@@ -90,7 +98,7 @@ class MessageCard extends StatelessWidget {
         chatDatabaseCubit: chatDatabaseCubit,
       );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 }

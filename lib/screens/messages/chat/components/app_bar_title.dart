@@ -4,13 +4,18 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/screens/messages/chat/chat_screen.dart';
+import 'package:ink_mobile/screens/messages/chat/entities/chat_screen_params.dart';
 
 class ChatAppBarTitle extends StatelessWidget {
   final ChatTable chat;
   final ChatDatabaseCubit chatDatabaseCubit;
+
+  final ChatScreenParams chatScreenParams;
   const ChatAppBarTitle(
-      {Key? key, required this.chat, required this.chatDatabaseCubit})
+      {Key? key,
+        required this.chat,
+        required this.chatScreenParams,
+        required this.chatDatabaseCubit})
       : super(key: key);
 
   bool get isGroup => ChatListView.isGroup(chat);
@@ -19,7 +24,6 @@ class ChatAppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _chatScrenParams = ChatScreen.of(context).chatScreenParams;
 
     return GestureDetector(
       onTap: () => Navigator.of(context).pushNamed("/chat_info"),
@@ -34,7 +38,7 @@ class ChatAppBarTitle extends StatelessWidget {
               }
 
               return Text(
-                _chatScrenParams.appBarText ?? (newChat.name),
+                chatScreenParams.appBarText ?? (newChat.name),
                 style: TextStyle(fontSize: 17.0),
                 textAlign: TextAlign.center,
               );
@@ -47,23 +51,25 @@ class ChatAppBarTitle extends StatelessWidget {
   }
 
   Widget _onlineWidget() {
-    final strings = localizationInstance;
     if (!isGroup) {
+      final Map<bool, Widget> cacheUserStatusWidgetOfSingleChat = {};
+
       return StreamBuilder(
         stream: chatDatabaseCubit.db.watchUser(oppositeUserId!),
         builder: (context, AsyncSnapshot<UserTable?> snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
             UserTable user = snapshot.data!;
-            return Text(
-              user.online ? strings.online : strings.offline,
-              style: TextStyle(fontSize: 13.0, color: Colors.blueGrey[300]),
-              textAlign: TextAlign.center,
-            );
+            return cacheUserStatusWidgetOfSingleChat.putIfAbsent(user.online, () =>
+                Text(
+                  user.online ? localizationInstance.online : localizationInstance.offline,
+                  style: TextStyle(fontSize: 13.0, color: Colors.blueGrey[300]),
+                  textAlign: TextAlign.center,
+                ));
           }
-          return SizedBox();
+          return const SizedBox();
         },
       );
     }
-    return SizedBox();
+    return const SizedBox();
   }
 }

@@ -18,14 +18,17 @@ class _AppLayerScreenState extends State<AppLayerScreen>
   Widget build(BuildContext context) {
     List<Widget> _screens = getScreens();
 
-    return Scaffold(
-      body: PageView(
-        controller: widget.newBottomNavBarCubit.pageController,
-        children: _screens,
-        onPageChanged: widget.newBottomNavBarCubit.onPageChanged,
-        physics: NeverScrollableScrollPhysics(),
+    return Offstage(
+      offstage: ModalRoute.of(context)?.settings.name != "/app_layer",
+      child: Scaffold(
+        body: PageView(
+          controller: widget.newBottomNavBarCubit.pageController,
+          children: _screens,
+          onPageChanged: widget.newBottomNavBarCubit.onPageChanged,
+          physics: NeverScrollableScrollPhysics(),
+        ),
+        bottomNavigationBar: const NewBottomNavBar(),
       ),
-      bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 }

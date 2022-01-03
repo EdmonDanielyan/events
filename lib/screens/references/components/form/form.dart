@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/components/date_input_field.dart';
 import 'package:ink_mobile/components/fields/number_select_form_field.dart';
 import 'package:ink_mobile/components/ink_drop_down.dart';
@@ -19,7 +20,6 @@ import 'package:ink_mobile/cubit/references/references_cubit.dart';
 import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart';
 import 'package:ink_mobile/functions/parser.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/references/delivery_list.dart';
 import 'package:ink_mobile/models/references/reference_list.dart';
 import 'package:ink_mobile/screens/references/components/form/entities.dart';
@@ -223,8 +223,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
     );
   }
 
-  Widget deliveryMethodWidget() {
-    return InkDropDown(
+  Widget deliveryMethodWidget() => InkDropDown(
       hint: _strings.deliveryMethod,
       items: deliveryList.getDeliveryItemsList(currentReferenceItem),
       selectedIndex: entities.deliveryType,
@@ -234,7 +233,6 @@ class _ReferencesFormState extends State<ReferencesForm> {
         });
       },
     );
-  }
 
   Widget deliveryAddressWidget() {
     return ServiceTextField(

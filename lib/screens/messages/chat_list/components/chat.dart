@@ -26,6 +26,7 @@ class ChatListTile extends StatefulWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
   final void Function()? onTap;
   final void Function(DismissDirection)? onDismissed;
+
   const ChatListTile({
     Key? key,
     this.highlightValue = "",
@@ -58,15 +59,17 @@ class _ChatListTileState extends State<ChatListTile> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: ChatListView.isGroup(widget.chat) ? Dismissible(
-        background: const SizedBox(),
-        direction: DismissDirection.endToStart,
-        secondaryBackground: Icon(Icons.delete, color: Colors.red),
-        resizeDuration: null,
-        onDismissed: widget.onDismissed,
-        key: UniqueKey(),
-        child: _chatContainer(),
-      ) : _chatContainer(),
+      child: ChatListView.isGroup(widget.chat)
+          ? Dismissible(
+              background: const SizedBox(),
+              direction: DismissDirection.endToStart,
+              secondaryBackground: Icon(Icons.delete, color: Colors.red),
+              resizeDuration: null,
+              onDismissed: widget.onDismissed,
+              key: UniqueKey(),
+              child: _chatContainer(),
+            )
+          : _chatContainer(),
     );
   }
 
@@ -106,7 +109,7 @@ class _ChatListTileState extends State<ChatListTile> {
                           ],
                         ],
                       ),
-                      SizedBox(height: 5.0),
+                      const SizedBox(height: 5.0),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -126,7 +129,7 @@ class _ChatListTileState extends State<ChatListTile> {
                           ],
                         ],
                       ),
-                      SizedBox(height: 10.0)
+                      const SizedBox(height: 10.0)
                     ],
                   ),
                 ),
@@ -137,11 +140,13 @@ class _ChatListTileState extends State<ChatListTile> {
                 SizedBox(
                   height: 0.0,
                   child: Opacity(
-                      child: CustomCircleAvatar(url: widget.chat.avatar),
+                      child: CustomCircleAvatar(
+                        url: widget.chat.avatar
+                      ),
                       opacity: 0.0),
                 ),
                 SizedBox(width: widget.leadingGap),
-                Expanded(child: ChatDivider())
+                const Expanded(child: ChatDivider())
               ],
             ),
           ],
