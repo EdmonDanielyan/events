@@ -68,12 +68,14 @@ class InkMobile extends StatelessWidget {
         // Return whether to start the foreground service.
         return true;
       },
+
       androidNotificationOptions: AndroidNotificationOptions(
         channelId: 'messenger_channel',
         channelName: 'INK Messenger',
         channelDescription: 'This notification appears when the foreground service is running.',
-        channelImportance: NotificationChannelImportance.HIGH,
-        priority: NotificationPriority.HIGH,
+        channelImportance: NotificationChannelImportance.LOW,
+        priority: NotificationPriority.LOW,
+        isSticky: false,
         iconData: NotificationIconData(
           resType: ResourceType.mipmap,
           resPrefix: ResourcePrefix.ic,
