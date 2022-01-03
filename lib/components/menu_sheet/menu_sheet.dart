@@ -93,7 +93,6 @@ class MenuSheet extends StatelessWidget {
         onTap: () async {
           var messenger = sl<Messenger>();
           await messenger.dispose();
-          sl.unregister(instance: messenger);
           await Token.deleteTokens();
           Navigator.pushNamedAndRemoveUntil(context, '/init', (route) => true);
         },
