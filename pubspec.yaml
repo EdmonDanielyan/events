@@ -59,7 +59,7 @@ dependencies:
     injectable:
     flutter_linkify: ^5.0.2
     flutter_keyboard_visibility: ^5.1.0
-    image_picker: ^0.8.3+2
+    image_picker: ^0.8.4+4
     image_cropper: ^1.4.1
     moor: ^4.5.0
     transparent_image: ^2.0.0
@@ -67,7 +67,7 @@ dependencies:
         git:
             url: https://github.com/simolus3/moor.git
             path: extras/encryption
-    flutter_local_notifications: ^9.1.2
+    flutter_local_notifications: ^9.2.0
     archive:
     share_plus:
     logging:
@@ -76,7 +76,7 @@ dependencies:
     safe_device:
     keyboard_dismisser: ^2.0.0
     easy_debounce: ^2.0.2+1
-    flutter_foreground_task: ^3.5.3
+    flutter_foreground_task: ^3.5.4
 dev_dependencies:
     flutter_test:
         sdk: flutter

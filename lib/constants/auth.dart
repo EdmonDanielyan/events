@@ -1,0 +1,1 @@
+const LOCAL_AUTH_MAX_ATTEMPTS = 5;

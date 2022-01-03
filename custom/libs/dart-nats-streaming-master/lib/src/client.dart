@@ -44,7 +44,7 @@ class Client {
   //                      Attributes
   // ####################################################
 
-  nats.Client natsClient = nats.Client();
+  late nats.Client natsClient;
   final String connectionID = Uuid().v4();
   String _clientID = Uuid().v4();
   bool _connected = false;
@@ -182,6 +182,7 @@ class Client {
   }
 
   Future<bool> _connect() async {
+    natsClient = nats.Client();
     if (uri != null && uri!.scheme == 'wss') {
       await _wssConnect();
     } else {
@@ -257,12 +258,15 @@ class Client {
   }
 
   Future<void> _disconnect() async {
-    unawaited(natsClient.close());
-    if (_onDisconnect != null && _connected) {
-      _onDisconnect!();
+    try {
+      if (_onDisconnect != null) {
+            _onDisconnect!();
+          }
+    } catch (e) {
+      print('Failed during call onDisconnect');
     }
+    await natsClient.close();
     _connected = false;
-    natsClient = nats.Client();
   }
 
   Future<void> _heartbeat() async {
@@ -272,8 +276,8 @@ class Client {
       _connected = true;
     } else {
       failPings++;
-      print('PING Fail. Attempt: [$failPings/$pingMaxAttempts] '
-          'NATS: [${natsClient.status == nats.Status.connected ? 'connected' : 'disconnected'}]');
+      print('PING Fail. Attempt: [$failPings/$pingMaxAttempts], '
+          'CLIENT: $_clientID, NATS: [${natsClient.status == nats.Status.connected ? 'connected' : 'disconnected'}]');
     }
 
     if (failPings >= pingMaxAttempts ||

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/constants/auth.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/boot/boot_cubit.dart';
 import 'package:ink_mobile/providers/lock_app.dart';
@@ -14,7 +15,7 @@ class AuthHandler with Loggable {
   AuthHandler(this.bootCubit);
 
   Future<void> authChallenge() async {
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < LOCAL_AUTH_MAX_ATTEMPTS - 1; i++) {
       logger.severe("Attempting authenticate");
       if (await authenticate()) {
         await bootCubit.load();
