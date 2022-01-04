@@ -63,39 +63,9 @@ class InkMobile extends StatelessWidget {
 
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    return WillStartForegroundTask(
-      onWillStart: () async {
-        // Return whether to start the foreground service.
-        return true;
-      },
-
-      androidNotificationOptions: AndroidNotificationOptions(
-        channelId: 'messenger_channel',
-        channelName: 'INK Messenger',
-        channelDescription: 'This notification appears when the foreground service is running.',
-        channelImportance: NotificationChannelImportance.LOW,
-        priority: NotificationPriority.LOW,
-        isSticky: false,
-        iconData: NotificationIconData(
-          resType: ResourceType.mipmap,
-          resPrefix: ResourcePrefix.ic,
-          name: 'launcher',
-        ),
-      ),
-      iosNotificationOptions: const IOSNotificationOptions(
-        showNotification: false,
-        playSound: false,
-      ),
-      foregroundTaskOptions: const ForegroundTaskOptions(
-        interval: 5000,
-        autoRunOnBoot: true,
-        allowWifiLock: true,
-      ),
-      printDevLog: false,
-      notificationTitle: "ИНК-портал",
-      notificationText: "Нажмите для возврата в приложение",
-      callback: startCallback,
-      child: MultiBlocProvider(
+    return
+      // callback: startCallback,
+      MultiBlocProvider(
         providers: GlobalProvider.getProviders(context).cast(),
         child: MaterialApp(
           navigatorKey: App.materialKey,
@@ -112,7 +82,6 @@ class InkMobile extends StatelessWidget {
           theme: LightTheme().getThemeData(),
           darkTheme: LightTheme().getThemeData(),
         ),
-      ),
     );
   }
 }
