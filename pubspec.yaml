@@ -25,8 +25,6 @@ dependencies:
         sdk: flutter
     flutter_localizations:
         sdk: flutter
-#    location:
-#        path: "./custom/libs/flutter-location"
     # The following adds the Cupertino Icons font to your application.
     # Use with the CupertinoIcons class for iOS style icons.
     cupertino_icons: ">=1.0.2 <2.0.0"
@@ -72,17 +70,16 @@ dependencies:
     archive:
     share_plus:
     logging:
-    local_auth: ^1.1.8
+    local_auth: ^1.1.9
     remove_emoji: ^0.0.6
     safe_device:
     keyboard_dismisser: ^2.0.0
     easy_debounce: ^2.0.2+1
     flutter_foreground_task: ^3.5.4
+    firebase_messaging: ^11.2.4
 dev_dependencies:
     flutter_test:
         sdk: flutter
-
-#    mockito: ^5.0.12
     mocktail:
     build_runner:
     injectable_generator:

@@ -267,6 +267,6 @@ class TokenDataHolder with Loggable {
     _natsToken = await Token.getNatsToken() ?? "";
     _localDatabasePassword = await Token.getLocalDbToken() ?? "";
     logger.fine(
-        "_userId: $_userId, _deviceVirtualId: $_deviceVirtualId, _natsToken: $_natsToken, _localDatabasePassword: $_localDatabasePassword ");
+            ()=>"_userId: $_userId, _deviceVirtualId: $_deviceVirtualId, _natsToken: $_natsToken, _localDatabasePassword: $_localDatabasePassword ");
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/online.dart';
@@ -9,7 +10,7 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 import '../user_functions.dart';
 
 @injectable
-class PingSender {
+class PingSender with Loggable {
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
 
@@ -41,6 +42,7 @@ class PingSender {
 
   void _sendOnline(String channel, UserTable user) {
     if (natsProvider.isConnected) {
+      logger.finest("sendOnline");
       _sendUserOnlinePing(channel, user);
     }
   }

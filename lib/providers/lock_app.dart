@@ -49,7 +49,7 @@ class LockApp {
       cancelButton: localizationInstance.cancel,
       goToSettingsButton: localizationInstance.settings,
       goToSettingsDescription: localizationInstance.touchIdSetup,
-      lockOut: localizationInstance.reenableTouchId,
+      lockOut: localizationInstance.reEnableTouchId,
     );
   }
 

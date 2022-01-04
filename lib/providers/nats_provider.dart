@@ -34,6 +34,10 @@ class NatsProvider {
   final String userId;
   final String deviceVirtualId;
   final String natsToken;
+  ///
+  /// Check if object was disposed by [dispose]
+  ///
+  bool isDisposed = false;
 
   NatsProvider({
     @Named("natsWssUrl") required this.natsWssUrl,
@@ -65,10 +69,15 @@ class NatsProvider {
     _logger.info('Stan disconnected..');
   }
 
+  ///
+  /// Dispose object, clear memory and close connection.
+  /// Please don't use object after dispose please check [isDisposed]
+  ///
   Future<void> dispose() async {
     userChatIdList.clear();
     publicChatIdList.clear();
     await _stan.manualDisconnect();
+    isDisposed = true;
   }
 
   /// Send [text] message to [channel]
@@ -153,8 +162,8 @@ class NatsProvider {
   Future<bool> _connect() async {
     _logger.finest("_connect");
     _logger.finest(
-        "url: $natsWssUrl, cluster: $natsCluster, userId: $userId, natsToken: $natsToken");
-    _logger.finest("certificate data length: ${certificate.length}");
+            ()=>"url: $natsWssUrl, cluster: $natsCluster, userId: $userId, natsToken: $natsToken");
+    _logger.finest(()=>"certificate data length: ${certificate.length}");
 
     var connectResult = await _stan.connectUri(Uri.parse(natsWssUrl),
         certificate: certificate,

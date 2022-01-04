@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/chat_list.dart';
@@ -6,7 +7,7 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 @injectable
-class ChatSaver {
+class ChatSaver with Loggable {
   final ChatDatabase db;
 
   final NatsProvider natsProvider;
@@ -67,7 +68,7 @@ class ChatSaver {
       channels: channels.toSet().toList(),
     );
 
-    print('''
+    logger.finest(() => '''
       SAVING CHATS FOR ${JwtPayload.myId}:
       users: ${users.length}
       chats: ${chats.length}

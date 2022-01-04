@@ -44,7 +44,7 @@ class ChatListListener extends ChannelListener {
   Set<String> _getChatIds = {};
 
   Future<void> subscribe(String userId) async {
-    logger.finest("subscribe: $userId");
+    logger.finest(()=>"subscribe: $userId");
     try {
       final channel = natsProvider.getPrivateUserChatIdList(userId);
       final sub = await natsProvider.listenChatList(channel);
@@ -87,20 +87,20 @@ class ChatListListener extends ChannelListener {
 
       //THIS ORDER IS ESSENTIAL (DO NOT CHANGE)
       if (!await _participantsStored(participants)) {
-        logger.finest("INSERTING PARTICIPANTS... ${new DateTime.now()}");
+        logger.finest(() =>"INSERTING PARTICIPANTS... ${DateTime.now()}");
         await _insertParticipants(participants, chats);
       }
 
       logger.finest('CHAT LIST STARTING...');
       if (!await _usersStored(users)) {
-        logger.finest('INSERTING USERS... ${new DateTime.now()}');
+        logger.finest(()=>'INSERTING USERS... ${DateTime.now()}');
         await _insertUsers(users);
       }
 
-      logger.finest("INSERTING CHATS... ${new DateTime.now()}");
+      logger.finest(()=>"INSERTING CHATS... ${DateTime.now()}");
       await _insertChats(chats);
 
-      logger.finest("INSERTING CHANNELS... ${new DateTime.now()}");
+      logger.finest(()=>"INSERTING CHANNELS... ${DateTime.now()}");
       await _insertChannels(channels);
 
       if (natsProvider.isConnected) {
@@ -111,7 +111,7 @@ class ChatListListener extends ChannelListener {
 
       await chatSaver.saveChats(newChat: null);
 
-      logger.finest("DONE... ${new DateTime.now()}");
+      logger.finest(()=>"DONE... ${DateTime.now()}");
     } on NoConnectionException {
       return;
     } on NoSuchMethodError {

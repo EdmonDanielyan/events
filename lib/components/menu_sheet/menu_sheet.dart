@@ -91,10 +91,37 @@ class MenuSheet extends StatelessWidget {
       MenuSheetItem(
         title: strings.signOff,
         onTap: () async {
-          var messenger = sl<Messenger>();
-          await messenger.dispose();
-          await Token.deleteTokens();
-          Navigator.pushNamedAndRemoveUntil(context, '/init', (route) => true);
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text(localizationInstance.signOffAlertTitle),
+              content: Text(localizationInstance.signOffAlertBody),
+              actions: [
+                TextButton(
+                  child: Text(localizationInstance.cancel),
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: TextButton.styleFrom(
+                    primary: Colors.red,
+                  ),
+                ),
+                TextButton(
+                  child: Text(localizationInstance.yes),
+                  onPressed: () async {
+                    var messenger = sl<Messenger>();
+                    await messenger.dispose();
+                    await Token.deleteTokens();
+                    //todo: Раскоментируйте строку ниже для удаления локальной базы после выхода из аккаунта
+                    // await messenger.chatDatabaseCubit.db.deleteEverything();
+                    await setup();
+                    Navigator.pushNamedAndRemoveUntil(context, '/init', (route) => true);
+                  },
+                  style: TextButton.styleFrom(
+                    primary: Colors.blue,
+                  ),
+                ),
+              ],
+            ),
+          );
         },
         icon: SvgPicture.asset(
           'assets/images/exit_icon.svg',

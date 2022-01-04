@@ -196,7 +196,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget childsFioWidget() {
     return ServiceTextField(
-      hint: _strings.childsFullname,
+      hint: _strings.childFullName,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.fioChildren = val,
     );
@@ -205,7 +205,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget fileWidget() {
     return PickFiles(
       key: _pickFilesKey,
-      title: _strings.childsBirthCertificate,
+      title: _strings.childBirthCertificate,
       titleStyle: TextStyle(fontSize: 16.0),
       onSuccesfullyPicked: (List<File> files) => entities.files = files,
     );

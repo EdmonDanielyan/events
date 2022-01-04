@@ -2,6 +2,7 @@ import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/providers/notifications.dart';
+import 'package:ink_mobile/setup.dart';
 
 import '../../app.dart';
 
@@ -40,8 +41,9 @@ class ChatNotification {
     }
 
     if (showNotification && !chatDatabaseCubit.state.loadingChats) {
-      NotificationsProvider.showNotification(user.name, message.message,
-          id: user.id, payload: chat.id, onSelect: () {
+      sl<LocalNotificationsProvider>().showNotification(
+          user.name, message.message, id: user.id, payload: chat.id,
+          onSelect: () {
         if (App.getContext != null) {
           OpenChat(chatDatabaseCubit, chat)(App.getContext!);
         }

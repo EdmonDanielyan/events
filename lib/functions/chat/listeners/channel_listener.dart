@@ -14,7 +14,7 @@ abstract class ChannelListener with Loggable {
       registry.isListening(channel);
 
   Future<void> onMessage(String channel, NatsMessage message) async {
-    logger.finest("onMessage: $channel");
+    logger.finest(()=>"onMessage: $channel");
   }
 
   Future<void> onListen(String channel,

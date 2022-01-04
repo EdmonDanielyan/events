@@ -16,13 +16,13 @@ class ChannelFunctions with Loggable {
   ChannelFunctions(this.chatDatabaseCubit);
 
   Future<void> saveNatsMessage(NatsMessage message) async {
-    logger.finest("saveNatsMessage: $message");
+    logger.finest(()=>"saveNatsMessage: $message");
     ChannelTable channel = ChannelListView.messageNatsToChannel(message);
     await insertOrUpdate(channel);
   }
 
   Future<ChannelTable?> saveByChannelName(String channelName) async {
-    logger.finest("saveByChannelName: $channelName");
+    logger.finest(()=>"saveByChannelName: $channelName");
 
     final channel = ChannelListView.channelNameToChannel(channelName);
     if (channel != null) {
@@ -34,7 +34,7 @@ class ChannelFunctions with Loggable {
   }
 
   Future<void> insertOrUpdate(ChannelTable channel) async {
-    logger.finest("insertOrUpdate: $channel");
+    logger.finest(()=>"insertOrUpdate: $channel");
     final storedChannel = await getChannel(channel.to);
 
     if (storedChannel != null) {
@@ -50,12 +50,12 @@ class ChannelFunctions with Loggable {
   }
 
   Future<ChannelTable?> getChannel(String channelName) async {
-    logger.finest("getChannel: $channelName");
+    logger.finest(()=>"getChannel: $channelName");
     return await chatDatabaseCubit.db.getChannelByChannelName(channelName);
   }
 
   Future<bool> channelExists(String channelName) async {
-    logger.finest("channelExists: $channelName");
+    logger.finest(()=>"channelExists: $channelName");
     try {
       return await getChannel(channelName) != null;
     } on StateError {
@@ -64,12 +64,12 @@ class ChannelFunctions with Loggable {
   }
 
   Future<int?> insertChannel(ChannelTable channel) async {
-    logger.finest("insertChannel: $channel");
+    logger.finest(()=>"insertChannel: $channel");
     return await chatDatabaseCubit.db.insertChannel(channel);
   }
 
   Future<int?> insertIfNotExists(ChannelTable channel) async {
-    logger.finest("insertIfNotExists: $channel");
+    logger.finest(()=>"insertIfNotExists: $channel");
     bool isChannelExists = await channelExists(channel.to);
 
     if (!isChannelExists) {
@@ -78,7 +78,7 @@ class ChannelFunctions with Loggable {
   }
 
   Future<int?> updateChannel(ChannelTable channel) async {
-    logger.finest("updateChannel: $channel");
+    logger.finest(()=>"updateChannel: $channel");
     return await chatDatabaseCubit.db
         .updateChannelByChannelName(channel.to, channel);
   }
@@ -89,7 +89,7 @@ class ChannelFunctions with Loggable {
   }
 
   Future deleteChannel(String channelName) async {
-    logger.finest("deleteChannel: $channelName");
+    logger.finest(()=>"deleteChannel: $channelName");
     return await chatDatabaseCubit.db.deleteChannelByChannelName(channelName);
   }
 

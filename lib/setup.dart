@@ -4,11 +4,14 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/file_log_appender.dart';
 import 'package:ink_mobile/core/logging/logging.dart';
+import 'package:ink_mobile/cubit/boot/boot_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/providers/notifications.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:logging/logging.dart';
 
+import 'providers/message_provider.dart';
+import 'providers/push_notification_manager.dart';
 import 'setup.config.dart';
 
 final sl = GetIt.instance;
@@ -21,20 +24,26 @@ final sl = GetIt.instance;
 Future<void> setup({
   scope = "dev",
 }) async {
+  await sl.reset();
   WidgetsFlutterBinding.ensureInitialized();
-  NotificationsProvider.init();
-  // await _initForegroundTask();
   await $initGetIt(sl, environment: scope);
   setupI18n(sl);
 
   setupLogging(sl<FileLogAppender>(),
-      //todo: Убрать подробробное логирование перед публикаций в сторы
+      //todo: Убрать подробное логирование перед публикаций в сторы
       forceLevel: Level.ALL);
 
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
   };
 
+  sl<BootCubit>()
+    ..onStart = () async {
+      await sl<LocalNotificationsProvider>().load();
+      await sl<PushNotificationManager>().load();
+      await sl<Messenger>().init();
+      return true;
+    };
   await sl<PackageInfoProvider>().load();
 }
 
@@ -43,7 +52,8 @@ Future<void> _initForegroundTask() async {
     androidNotificationOptions: AndroidNotificationOptions(
       channelId: 'notification_channel_id',
       channelName: 'Foreground Notification',
-      channelDescription: 'This notification appears when the foreground service is running.',
+      channelDescription:
+          'This notification appears when the foreground service is running.',
       channelImportance: NotificationChannelImportance.LOW,
       priority: NotificationPriority.LOW,
       iconData: const NotificationIconData(

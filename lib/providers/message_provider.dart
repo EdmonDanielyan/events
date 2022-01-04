@@ -46,8 +46,6 @@ class Messenger with Loggable {
   late ChatListListener chatListListener;
   late ChatCubit chatCubit;
 
-  Messenger();
-
   //todo: нужно убрать из месенджера все вызовы UI
   bool silentMode = false;
 
@@ -57,6 +55,9 @@ class Messenger with Loggable {
     logger.finest("init");
     await sl<TokenDataHolder>().update();
     this.natsProvider = sl();
+    if (this.natsProvider.isDisposed) {
+      throw "Using disposable NATS Provider is prohibited";
+    }
     this.chatDatabaseCubit = sl();
     this.chatCubit = sl();
     this.userFunctions = sl();
@@ -112,12 +113,11 @@ class Messenger with Loggable {
     registry.unsubscribeFromAll();
     pingSender.stopSending();
     await natsProvider.dispose();
-    await chatDatabaseCubit.db.deleteEverything();
     isConnected = false;
   }
 
   Future<void> subscribeToUserOnline(UserTable user) async {
-    logger.finest('subscribeToUserOnline: id=${user.id} name=${user.name}');
+    logger.finest(()=>'subscribeToUserOnline: id=${user.id} name=${user.name}');
     final listener =
         (registry.listeners[MessageType.Online] as UserOnlineListener?);
     if (listener != null) {

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:fixnum/fixnum.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
@@ -9,7 +10,6 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/online.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
-import 'package:fixnum/fixnum.dart';
 
 import '../user_functions.dart';
 import 'channels_registry.dart';
@@ -96,7 +96,7 @@ class UserOnlineListener extends ChannelListener {
 
     if (storedUser != null && storedUser.online != online) {
       logger.finest(
-          "updateUserStatus: user=${user.name}, was_online: ${user.online}, will_be_online=$online");
+              ()=>"updateUserStatus: user=${user.name}, was_online: ${user.online}, will_be_online=$online");
 
       chatDatabaseCubit.db.updateUser(user.id, user.copyWith(online: online));
     }

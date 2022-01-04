@@ -32,7 +32,16 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion flutter.compileSdkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -42,10 +51,11 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "ru.irkutskoil.portal"
         minSdkVersion 23
-        targetSdkVersion 31
+        targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
+        manifestPlaceholders += [applicationName: "@string/app_label"]
     }
 
     //UNCOMMENT THIS FOR RELEASE
@@ -66,14 +76,14 @@ android {
         }
         
         //UNCOMMENT THIS FOR RELEASE
-        // release {
+         release {
         //     signingConfig signingConfigs.release
 
-        //     minifyEnabled true
-        //     useProguard true
+             minifyEnabled true
+             useProguard true
 
-        //     proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        // }
+             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+         }
     }
 }
 

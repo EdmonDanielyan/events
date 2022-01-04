@@ -12,6 +12,6 @@ class PackageInfoProvider with Loggable{
   Future load() async {
     var _packageInfo = await PackageInfo.fromPlatform();
     _version = "v${_packageInfo.version}(build: ${_packageInfo.buildNumber})";
-    logger.warning("Application version: $_version");
+    logger.warning(()=>"Application version: $_version");
   }
 }

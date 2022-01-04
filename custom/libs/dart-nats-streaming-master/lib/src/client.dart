@@ -279,7 +279,7 @@ class NatsStreamingClient {
       _connected = true;
     } else {
       failPings++;
-      _logger.finest('PING Fail. Attempt: [$failPings/$pingMaxAttempts], '
+      _logger.finest(()=>'PING Fail. Attempt: [$failPings/$pingMaxAttempts], '
           'CLIENT: $_clientID, NATS: [${natsClient.status == nats.Status.connected ? 'connected' : 'disconnected'}]');
     }
 
@@ -494,7 +494,7 @@ class NatsStreamingClient {
       final subscriptionResponse = await tryToSubscribe(subscriptionRequest);
       if (!_subscriptionInboxes.contains(subscriptionResponse.ackInbox)) {
         _logger.finest(
-            'ACK INBOX - $subject - ${subscriptionResponse.ackInbox} WITH POSITION - $startPosition AND SEQUENCE - $startSequence');
+                ()=>'ACK INBOX - $subject - ${subscriptionResponse.ackInbox} WITH POSITION - $startPosition AND SEQUENCE - $startSequence');
         _subscriptionInboxes.add(subscriptionResponse.ackInbox);
         return Subscription(
           subject: subject,
@@ -541,7 +541,7 @@ class NatsStreamingClient {
 
     if (dataMessage.isRedelivery) {
       _logger.finest(
-          'NOT ACKNOWLEDGING - ${ack.subject} - ${subscription.ackInbox} - SEQ = ${ack.sequence}');
+              ()=>'NOT ACKNOWLEDGING - ${ack.subject} - ${subscription.ackInbox} - SEQ = ${ack.sequence}');
       _handleUnAck(subscription,
           unacknowledgedMessageHandler: unacknowledgedMessageHandler);
     }
@@ -559,12 +559,12 @@ class NatsStreamingClient {
     if (unAcknowledgedCounter.containsKey(channel)) {
       int counter = unAcknowledgedCounter[channel]!;
 
-      _logger.finest('_handleUnAck COUNTER = $counter');
+      _logger.finest(()=>'_handleUnAck COUNTER = $counter');
 
       if (counter >= LIMIT_UNACKNOWLEDGED) {
         subscription.subscription.close();
         _logger.warning(
-            'CLOSED $channel after $LIMIT_UNACKNOWLEDGED unacknowledged messages');
+                ()=>'CLOSED $channel after $LIMIT_UNACKNOWLEDGED unacknowledged messages');
       }
 
       unAcknowledgedCounter[channel] = counter + 1;

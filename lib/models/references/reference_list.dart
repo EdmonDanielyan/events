@@ -1,4 +1,5 @@
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+
 import 'delivery_list.dart';
 
 enum ReferencesType {
@@ -89,7 +90,7 @@ class ReferencesList {
           DeliveryType.POST
         ],
         fields: ReferencesField(fioChildren: true, files: true),
-        description: localizationInstance.childsAllowanceInfo,
+        description: localizationInstance.childAllowanceInfo,
       );
   ReferencesItem childAllowanceOneAndHalfYears() => ReferencesItem(
         title: localizationInstance.refChildAllowance1HalfYears,
@@ -102,7 +103,7 @@ class ReferencesList {
           DeliveryType.POST
         ],
         fields: ReferencesField(fioChildren: true, files: true),
-        description: localizationInstance.childsAllowanceInfo,
+        description: localizationInstance.childAllowanceInfo,
       );
   ReferencesItem fifo() => ReferencesItem(
       title: localizationInstance.refFifo,
