@@ -43,7 +43,7 @@ android:release:
     - flutter pub upgrade
     - du -h -d 1 /cache/pub-cache && ls -la /cache/pub-cache
     - flutter build appbundle --verbose --no-sound-null-safety
-    - flutter build apk --verbose --no-sound-null-safety --target-platform=android-arm
+    - flutter build apk --verbose --no-sound-null-safety --target-platform=android-arm64
     - ls -la ${AAB_BUILD_RELATIVE_PATH}
     - ls -la ${APK_BUILD_RELATIVE_PATH}
   artifacts:
