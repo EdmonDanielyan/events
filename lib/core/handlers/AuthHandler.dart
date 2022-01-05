@@ -22,7 +22,7 @@ class AuthHandler with Loggable {
         return;
       }
     }
-    logger.severe("3 attempts of auth failed. Exit application");
+    logger.severe(()=>"$LOCAL_AUTH_MAX_ATTEMPTS attempts of auth failed. Exit application");
     exit(0);
   }
 
@@ -32,9 +32,10 @@ class AuthHandler with Loggable {
 
   Future<bool> authenticate() async {
     final lockApp = sl.get<LockApp>();
-    final auth = await lockApp.authentificate();
+    await lockApp.stopAuthentification();
+    final auth = await lockApp.authenticate();
     if (auth) {
-      lockApp.stopAuthentification();
+      await lockApp.stopAuthentification();
     }
     return auth;
   }

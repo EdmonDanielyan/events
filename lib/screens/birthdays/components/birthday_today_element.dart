@@ -7,7 +7,7 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/setup.dart';
 
 import '../../../setup.dart';

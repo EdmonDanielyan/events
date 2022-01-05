@@ -9,7 +9,7 @@ import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/person_list_params.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/setup.dart';
 
 @injectable

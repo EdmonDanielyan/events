@@ -13,7 +13,7 @@ import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_modes.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat/components/app_bar_title.dart';
 import 'package:ink_mobile/screens/messages/chat/components/scroll_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_btn.dart';

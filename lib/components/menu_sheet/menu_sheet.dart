@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet_item.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/setup.dart';
 
 class MenuSheet extends StatelessWidget {
@@ -110,7 +110,10 @@ class MenuSheet extends StatelessWidget {
                     var messenger = sl<Messenger>();
                     await messenger.dispose();
                     await Token.deleteTokens();
-                    //todo: Раскоментируйте строку ниже для удаления локальной базы после выхода из аккаунта
+                    /* todo: Раскоментируйте строку ниже для удаления локальной базы после выхода из аккаунта,
+                       если это требует сверх безопасности, но это повлечет за собой снижение скорости загрузки приложения
+                     */
+
                     // await messenger.chatDatabaseCubit.db.deleteEverything();
                     await setup();
                     Navigator.pushNamedAndRemoveUntil(context, '/init', (route) => true);

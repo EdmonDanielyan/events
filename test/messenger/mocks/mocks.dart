@@ -185,7 +185,7 @@ MockLockApp mockLockApp(GetIt sl) {
   when(() => lockApp.canCheckBiometrics())
       .thenAnswer((realInvocation) => Future.value(true));
 
-  when(() => lockApp.authentificate())
+  when(() => lockApp.authenticate())
       .thenAnswer((realInvocation) => Future.value(true));
   sl
     ..unregister<LockApp>()

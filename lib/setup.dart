@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/file_log_appender.dart';
@@ -10,11 +9,14 @@ import 'package:ink_mobile/providers/notifications.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:logging/logging.dart';
 
-import 'providers/message_provider.dart';
+import 'providers/messenger.dart';
 import 'providers/push_notification_manager.dart';
 import 'setup.config.dart';
 
 final sl = GetIt.instance;
+//todo: Раскомментировать на релизе
+// const defaultScope = Environment.prod;
+const defaultScope = Environment.dev;
 
 @InjectableInit(
   initializerName: r'$initGetIt', // default
@@ -22,7 +24,7 @@ final sl = GetIt.instance;
   asExtension: false, // default
 )
 Future<void> setup({
-  scope = "dev",
+  scope = defaultScope,
 }) async {
   await sl.reset();
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,36 +47,4 @@ Future<void> setup({
       return true;
     };
   await sl<PackageInfoProvider>().load();
-}
-
-Future<void> _initForegroundTask() async {
-  await FlutterForegroundTask.init(
-    androidNotificationOptions: AndroidNotificationOptions(
-      channelId: 'notification_channel_id',
-      channelName: 'Foreground Notification',
-      channelDescription:
-          'This notification appears when the foreground service is running.',
-      channelImportance: NotificationChannelImportance.LOW,
-      priority: NotificationPriority.LOW,
-      iconData: const NotificationIconData(
-        resType: ResourceType.mipmap,
-        resPrefix: ResourcePrefix.ic,
-        name: 'launcher',
-      ),
-      buttons: [
-        const NotificationButton(id: 'sendButton', text: 'Send'),
-        const NotificationButton(id: 'testButton', text: 'Test'),
-      ],
-    ),
-    iosNotificationOptions: const IOSNotificationOptions(
-      showNotification: true,
-      playSound: false,
-    ),
-    foregroundTaskOptions: const ForegroundTaskOptions(
-      interval: 5000,
-      autoRunOnBoot: true,
-      allowWifiLock: true,
-    ),
-    printDevLog: true,
-  );
 }

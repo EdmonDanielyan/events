@@ -3,7 +3,6 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
-import 'package:ink_mobile/functions/chat/listeners/joined.dart';
 import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
@@ -87,7 +86,7 @@ class ChatLeftListener extends ChannelListener {
           await Future.delayed(Duration(seconds: 2));
         }
 
-        final iJoinedList = ChatJoinedListener.joinedChats
+        final iJoinedList = registry.joinedChats
             .where((element) => element.id == chat.id)
             .toList();
 

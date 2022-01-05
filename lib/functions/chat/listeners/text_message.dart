@@ -15,7 +15,6 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../chat_functions.dart';
-import '../chat_notification.dart';
 import 'channels_registry.dart';
 
 @Named("Text")
@@ -86,15 +85,15 @@ class TextMessageListener extends ChannelListener {
               ChatListView.changeChatForParticipant(fields.chat, [fields.user]);
         }
 
-        _debouncer.run(() {
-          ChatNotification(
-            chatDatabaseCubit: chatDatabaseCubit,
-            chat: chat,
-            myChat: myChat,
-            message: newMessage,
-            user: fields.user,
-          ).call();
-        });
+        // _debouncer.run(() {
+        //   ChatNotification(
+        //     chatDatabaseCubit: chatDatabaseCubit,
+        //     chat: chat,
+        //     myChat: myChat,
+        //     message: newMessage,
+        //     user: fields.user,
+        //   ).call();
+        // });
 
         await GetIt.I<SendMessage>().addMessage(chat, newMessage);
         await userFunctions.insertUser(fields.user);

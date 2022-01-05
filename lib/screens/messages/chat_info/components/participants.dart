@@ -11,7 +11,7 @@ import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/participant_with_user.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/btn_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/participant_card.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';

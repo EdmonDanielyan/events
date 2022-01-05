@@ -7,7 +7,7 @@ import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/person_list_params.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/person_list/components/person_card.dart';
 import 'package:ink_mobile/screens/messages/person_list/person_list_screen.dart';
 import 'package:ink_mobile/setup.dart';

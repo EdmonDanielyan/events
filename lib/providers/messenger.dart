@@ -22,6 +22,7 @@ import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
+import 'package:ink_mobile/providers/push_notification_manager.dart';
 
 import '../setup.dart';
 
@@ -45,11 +46,12 @@ class Messenger with Loggable {
   late ChannelFunctions channelFunctions;
   late ChatListListener chatListListener;
   late ChatCubit chatCubit;
+  late PushNotificationManager pushNotificationManager;
 
   //todo: нужно убрать из месенджера все вызовы UI
   bool silentMode = false;
 
-  bool isConnected = false;
+  bool get isConnected => natsProvider.isConnected;
 
   Future<void> init() async {
     logger.finest("init");
@@ -72,10 +74,10 @@ class Messenger with Loggable {
     this.chatCreation = sl();
     this.pingSender = sl();
     _configureNatsProvider();
-    isConnected = await natsProvider.load();
+    await natsProvider.load();
   }
 
-  void _configureNatsProvider() {
+  Future<void> _configureNatsProvider() async {
     logger.finest("_configureNatsProvider");
     natsProvider.onConnected = () async {
       logger.info("onConnected");
@@ -95,7 +97,6 @@ class Messenger with Loggable {
   Future<void> _onConnected() async {
     //await Future.delayed(Duration(seconds: 1));
     logger.finest('_onConnected');
-    isConnected = true;
     registry.listenToAllMessages();
     await userFunctions.addMe();
     await registry.init();
@@ -104,16 +105,15 @@ class Messenger with Loggable {
 
   Future<void> _softDispose() async {
     logger.finest('_softDispose');
-    registry.unsubscribeFromAll();
+    registry.unsubscribeFromAll(includePush: false);
     pingSender.stopSending();
   }
 
   Future<void> dispose() async {
     logger.finest('dispose');
-    registry.unsubscribeFromAll();
+    registry.unsubscribeFromAll(includePush: true);
     pingSender.stopSending();
     await natsProvider.dispose();
-    isConnected = false;
   }
 
   Future<void> subscribeToUserOnline(UserTable user) async {

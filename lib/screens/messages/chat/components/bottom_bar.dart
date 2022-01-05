@@ -8,7 +8,7 @@ import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container.dart';
 import 'package:ink_mobile/screens/messages/chat/components/send_btn.dart';
 import 'package:ink_mobile/screens/messages/chat/components/textfield.dart';

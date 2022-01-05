@@ -114,7 +114,7 @@ import 'models/token.dart' as _i66;
 import 'providers/certificate_reader.dart' as _i15;
 import 'providers/lock_app.dart' as _i35;
 import 'providers/main_api.dart' as _i36;
-import 'providers/message_provider.dart' as _i40;
+import 'providers/messenger.dart' as _i40;
 import 'providers/nats_provider.dart' as _i89;
 import 'providers/notifications.dart' as _i34;
 import 'providers/package_info.dart' as _i55;
@@ -345,7 +345,8 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       natsProvider: get<_i89.NatsProvider>(),
       channelFunctions: get<_i93.ChannelFunctions>(),
       userFunctions: get<_i91.UserFunctions>(),
-      chatDatabaseCubit: get<_i85.ChatDatabaseCubit>()));
+      chatDatabaseCubit: get<_i85.ChatDatabaseCubit>(),
+      pushNotificationManager: get<_i60.PushNotificationManager>()));
   gh.factory<_i95.ChatCreation>(() => _i95.ChatCreation(
       get<_i85.ChatDatabaseCubit>(),
       get<_i91.UserFunctions>(),

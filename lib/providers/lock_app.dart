@@ -1,12 +1,13 @@
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:local_auth/local_auth.dart';
 
 @singleton
-class LockApp {
+class LockApp with Loggable {
   late LocalAuthentication _localAuth;
   LockApp() {
     _localAuth = LocalAuthentication();
@@ -16,10 +17,10 @@ class LockApp {
       await _localAuth.canCheckBiometrics;
 
   Future<void> init() async {
-    await authentificate();
+    await authenticate();
   }
 
-  Future<bool> authentificate() async {
+  Future<bool> authenticate() async {
     try {
       if (await canCheckBiometrics()) {
         bool didAuthenticate = await _localAuth.authenticate(
@@ -30,11 +31,15 @@ class LockApp {
 
         return didAuthenticate;
       }
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       if (e.code == auth_error.notAvailable) {
         return true;
       }
-      print("ERROR $e");
+
+      if (e.code == "auth_in_progress") {
+        await Future.delayed(Duration(milliseconds: 100));
+      }
+      logger.severe("ERROR during authenticate", e, s);
     }
 
     return false;

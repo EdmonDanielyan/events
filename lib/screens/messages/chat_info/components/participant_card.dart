@@ -4,7 +4,7 @@ import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/components/highlight_text.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
 import 'package:ink_mobile/setup.dart';
 

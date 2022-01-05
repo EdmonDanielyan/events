@@ -9,7 +9,7 @@ import 'package:ink_mobile/functions/date_functions.dart';
 import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
-import 'package:ink_mobile/providers/message_provider.dart';
+import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card_picture.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat/components/sent_on_wrapper.dart';

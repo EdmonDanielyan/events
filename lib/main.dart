@@ -23,9 +23,7 @@ import 'package:logging/logging.dart';
 
 void main() async {
   runZonedGuarded(() async {
-    //todo: Раскомментировать на релизе
-    // await setup(scope: kReleaseMode ? "prod" : "dev" );
-    await setup(scope: "dev");
+    await setup();
     runApp(InkMobile());
   }, (Object error, StackTrace stack) {
     if (error is CustomException) {

@@ -1,6 +1,7 @@
 # Project related
 test/docker-services/nats/data/
 test/docker-services/nats/logs/
+untranslated_messages.txt
 
 # Miscellaneous
 *.class

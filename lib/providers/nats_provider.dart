@@ -352,5 +352,11 @@ class NatsProvider {
           Subscription, DataMessage, Future<void> Function(String, NatsMessage))
       onUnacknowledged = (subscription, message, onMessage) async {};
 
-  bool get isConnected => _stan.connected;
+  bool get isConnected {
+    try {
+      return _stan.connected;
+    } catch (e) {
+      return false;
+    }
+  }
 }
