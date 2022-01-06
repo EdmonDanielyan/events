@@ -10,11 +10,11 @@ import Flutter
     if #available(iOS 10.0, *) {
       UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
     }
+    application.registerForRemoteNotifications()
 
     GeneratedPluginRegistrant.register(with: self)
     // FlutterForegroundTaskPlugin Support 30/12/2021
     SwiftFlutterForegroundTaskPlugin.setPluginRegistrantCallback(registerPlugins)
-    application.registerForRemoteNotifications()
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
