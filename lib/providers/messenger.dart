@@ -15,7 +15,7 @@ import 'package:ink_mobile/functions/chat/sender/chat_events.dart';
 import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
 import 'package:ink_mobile/functions/chat/sender/message_editor_sender.dart';
-import 'package:ink_mobile/functions/chat/sender/ping_sender.dart';
+import 'package:ink_mobile/functions/chat/sender/online_sender.dart';
 import 'package:ink_mobile/functions/chat/sender/text_sender.dart';
 import 'package:ink_mobile/functions/chat/sender/user_reaction_sender.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
@@ -35,7 +35,7 @@ class Messenger with Loggable {
   late InviteSender inviteSender;
   late ChatEventsSender chatEventsSender;
   late MessageEditorSender messageEditorSender;
-  late PingSender pingSender;
+  late OnlineSender onlineSender;
   late TextSender textSender;
   late UserReactionSender userReactionSender;
   late ChatSaver chatSaver;
@@ -72,7 +72,7 @@ class Messenger with Loggable {
     this.textSender = sl();
     this.registry = sl();
     this.chatCreation = sl();
-    this.pingSender = sl();
+    this.onlineSender = sl();
     _configureNatsProvider();
     await natsProvider.load();
   }
@@ -100,19 +100,19 @@ class Messenger with Loggable {
     registry.listenToAllMessages();
     await userFunctions.addMe();
     await registry.init();
-    pingSender.sendUserOnlinePing(user: userFunctions.me);
+    onlineSender.sendUserOnlinePing(user: userFunctions.me);
   }
 
   Future<void> _softDispose() async {
     logger.finest('_softDispose');
     registry.unsubscribeFromAll(includePush: false);
-    pingSender.stopSending();
+    onlineSender.stopSending();
   }
 
   Future<void> dispose() async {
     logger.finest('dispose');
     registry.unsubscribeFromAll(includePush: true);
-    pingSender.stopSending();
+    onlineSender.stopSending();
     await natsProvider.dispose();
   }
 

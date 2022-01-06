@@ -9,14 +9,14 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../user_functions.dart';
 
-@injectable
-class PingSender with Loggable {
+@lazySingleton
+class OnlineSender with Loggable {
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
 
   Timer? _userOnlineTimer;
 
-  PingSender(this.natsProvider, this.userFunctions);
+  OnlineSender(this.natsProvider, this.userFunctions);
 
   Future<bool> _sendUserOnlinePing(String channel, UserTable user) async {
     return await natsProvider.sendSystemMessageToChannel(
@@ -27,11 +27,11 @@ class PingSender with Loggable {
   }
 
   Future<void> sendUserOnlinePing({UserTable? user}) async {
+    stopSending();
     user = user ?? userFunctions.me;
     final channel = natsProvider.getUserOnlineChannel(user.id);
 
     _sendOnline(channel, user);
-
     _userOnlineTimer = Timer.periodic(
       Duration(seconds: 10),
       (timer) {

@@ -37,6 +37,8 @@ class NatsStreamingClient {
 
   static final Logger _logger = Logger('NatsStreamingClient');
 
+  Timer? _pingTimer;
+
   factory NatsStreamingClient() {
     return _client;
   }
@@ -64,11 +66,11 @@ class NatsStreamingClient {
   String host = '';
   int port = 4222;
   bool retryReconnect = true;
-  int retryInterval = 10;
+  int retryInterval = 2;
   int pingMaxAttempts = 3;
   int failPings = 0;
-  int pingInterval = 5;
-  int timeout = 10;
+  int pingInterval = 10;
+  int timeout = 5;
   nats.ConnectOption? connectOption;
   String clusterID = 'default';
 
@@ -90,14 +92,14 @@ class NatsStreamingClient {
   /// Also support self-signed certificate
   Future<bool> connectUri(
     Uri uri, {
-    int timeoutSeconds = 10,
+    int? timeoutSeconds,
     nats.ConnectOption? connectOption,
-    bool retryReconnect = true,
-    int retryIntervalSeconds = 10,
+    bool? retryReconnect,
+    int? retryIntervalSeconds,
     String? clientID,
-    String clusterID = 'default',
-    int pingIntervalSeconds = 5,
-    int pingMaxAttempts = 3,
+    String? clusterID,
+    int? pingIntervalSeconds,
+    int? pingMaxAttempts,
     List<int>? certificate,
   }) {
     this.uri = uri;
@@ -180,23 +182,25 @@ class NatsStreamingClient {
     if (timeout != null) {
       this.timeout = timeout;
     }
+    _pingTimer?.cancel();
+    _pingTimer = Timer.periodic(Duration(seconds: this.pingInterval), (_) async => await _heartbeat());
 
     return await _connect();
   }
 
   Future<bool> _connect() async {
+    _logger.finest('_connect');
+    _connected = false;
     natsClient = nats.Client();
     if (uri != null && uri!.scheme == 'wss') {
       await _wssConnect();
     } else {
       await _tcpConnect();
     }
-
-    Future.delayed(Duration(seconds: pingInterval), () => _heartbeat());
+    _logger.finest('_connect NATS Status: ${natsClient.status}');
 
     if (natsClient.status == nats.Status.connected) {
-      // Generante new clientID for reconnection
-      //_clientID = Uuid().v4();
+      _logger.finest('NATS request');
 
       ConnectRequest connectRequest = ConnectRequest()
         ..clientID = this.clientID
@@ -207,20 +211,30 @@ class NatsStreamingClient {
         ..pingMaxOut = this.pingMaxAttempts;
 
       // Connecting to Streaming Server
-      final _req = await natsClient.request(
-          '_STAN.discover.$clusterID', connectRequest.writeToBuffer());
+      try {
+        final _req = await natsClient.request(
+                  '_STAN.discover.$clusterID', connectRequest.writeToBuffer(), timeout: Duration(seconds: timeout));
+        _connectResponse = ConnectResponse.fromBuffer((_req).data);
+        _logger.finest('$_req');
+        unawaited(pingResponseWatchdog());
+        _logger.finest(()=> 'Response: $_connectResponse');
+        _connected = true;
+      } catch (e) {
+        _logger.severe('Error during request', e);
 
-      _connectResponse = ConnectResponse.fromBuffer((_req).data);
-      unawaited(pingResponseWatchdog());
-
-      if (_onConnect != null) {
+        try {
+          await natsClient.close();
+        } catch (e) {
+          _logger.severe("Error during clean and close", e);
+        }
+        _connected = false;
+      }
+      if (_connected && _onConnect != null) {
         _onConnect!();
       }
 
-      _connected = true;
-      return true;
     }
-    return false;
+    return _connected;
   }
 
   Future<void> _tcpConnect() async {
@@ -235,7 +249,6 @@ class NatsStreamingClient {
       );
     } catch (e, s) {
       _logger.severe('Connecting Error', e, s);
-      unawaited(_reconnect());
     }
   }
 
@@ -250,56 +263,62 @@ class NatsStreamingClient {
       );
     } catch (e, s) {
       _logger.severe('Connecting Error', e, s);
-      unawaited(_reconnect());
     }
   }
 
   Future<void> manualDisconnect() async {
+    _pingTimer?.cancel();
     retryReconnect = false;
     failPings = 0;
     await _disconnect();
   }
 
   Future<void> _disconnect() async {
+    _logger.finest('_disconnect');
     try {
       if (_onDisconnect != null) {
-            _onDisconnect!();
-          }
+        _onDisconnect!();
+      }
     } catch (e, s) {
       _logger.severe('Failed during call onDisconnect', e, s);
     }
-    await natsClient.close();
+    try {
+      await natsClient.close();
+    } catch (e, s) {
+      _logger.severe('Failed during close nats client', e, s);
+    }
+
+    _logger.finest('_disconnect finished: NATS STATUS: ${natsClient.status}');
     _connected = false;
   }
 
   Future<void> _heartbeat() async {
+    _logger.finest('_heartbeat');
     bool p = await pingWithTimeout();
     if (p) {
       failPings = 0;
-      _connected = true;
     } else {
       failPings++;
-      _logger.finest(()=>'PING Fail. Attempt: [$failPings/$pingMaxAttempts], '
-          'CLIENT: $_clientID, NATS: [${natsClient.status == nats.Status.connected ? 'connected' : 'disconnected'}]');
+      _logger.finest(() => 'PING Fail. Attempt: [$failPings/$pingMaxAttempts]');
     }
+    _logger.finest(() => 'NATS STATUS: ${natsClient.status}');
 
     if (failPings >= pingMaxAttempts ||
         natsClient.status != nats.Status.connected) {
+      _logger.finest('retryReconnect: $retryReconnect');
       if (retryReconnect) {
         await _reconnect();
-        return;
       } else {
         await _disconnect();
       }
     }
-    if (retryReconnect || _connected) {
-      Future.delayed(Duration(seconds: pingInterval), () => _heartbeat());
-    }
   }
 
   Future<void> _reconnect() async {
-    await _disconnect();
+    _logger.finest('_reconnect');
+    if (connected) await _disconnect();
     await Future.delayed(Duration(seconds: retryInterval), () => {});
+    _logger.finest('_reconnect: after waiting retryInterval');
     await _connect();
   }
 
@@ -308,8 +327,8 @@ class NatsStreamingClient {
     await for (nats.Message message in _inboxSub!.stream!) {
       try {
         natsClient.pubString(message.replyTo!, '');
-      } catch (_) {
-        //COULD throw on manual disconnect
+      } catch (e) {
+        _logger.severe("PING FAILED", e);
       }
     }
   }
@@ -323,7 +342,8 @@ class NatsStreamingClient {
   }
 
   Future<bool> ping() async {
-    if (!_connected || natsClient.status != nats.Status.connected) {
+    _logger.finest('ping');
+    if (natsClient.status != nats.Status.connected) {
       return false;
     }
     Ping ping = Ping()..connID = connectionIDAscii;
@@ -332,12 +352,14 @@ class NatsStreamingClient {
           _connectResponse!.pingRequests, ping.writeToBuffer());
 
       return message.string.isEmpty;
-    } catch (e) {
+    } catch (e, s) {
+      _logger.severe('Error during PING', e, s);
       return false;
     }
   }
 
   Future<bool> pingWithTimeout() async {
+    _logger.finest('pingWithTimeout');
     try {
       final hasPing = await ping().timeout(Duration(seconds: timeout));
 
@@ -345,12 +367,6 @@ class NatsStreamingClient {
     } catch (e) {
       return false;
     }
-  }
-
-  void close() {
-    _connected = false;
-    natsClient.close();
-    _onDisconnect!();
   }
 
   Future<bool> pubString({
@@ -493,8 +509,8 @@ class NatsStreamingClient {
     for (int i = 1; i <= 10; i++) {
       final subscriptionResponse = await tryToSubscribe(subscriptionRequest);
       if (!_subscriptionInboxes.contains(subscriptionResponse.ackInbox)) {
-        _logger.finest(
-                ()=>'ACK INBOX - $subject - ${subscriptionResponse.ackInbox} WITH POSITION - $startPosition AND SEQUENCE - $startSequence');
+        _logger.finest(() =>
+            'ACK INBOX - $subject - ${subscriptionResponse.ackInbox} WITH POSITION - $startPosition AND SEQUENCE - $startSequence');
         _subscriptionInboxes.add(subscriptionResponse.ackInbox);
         return Subscription(
           subject: subject,
@@ -540,8 +556,8 @@ class NatsStreamingClient {
       ..sequence = dataMessage.sequence;
 
     if (dataMessage.isRedelivery) {
-      _logger.finest(
-              ()=>'NOT ACKNOWLEDGING - ${ack.subject} - ${subscription.ackInbox} - SEQ = ${ack.sequence}');
+      _logger.finest(() =>
+          'NOT ACKNOWLEDGING - ${ack.subject} - ${subscription.ackInbox} - SEQ = ${ack.sequence}');
       _handleUnAck(subscription,
           unacknowledgedMessageHandler: unacknowledgedMessageHandler);
     }
@@ -559,12 +575,12 @@ class NatsStreamingClient {
     if (unAcknowledgedCounter.containsKey(channel)) {
       int counter = unAcknowledgedCounter[channel]!;
 
-      _logger.finest(()=>'_handleUnAck COUNTER = $counter');
+      _logger.finest(() => '_handleUnAck COUNTER = $counter');
 
       if (counter >= LIMIT_UNACKNOWLEDGED) {
         subscription.subscription.close();
-        _logger.warning(
-                ()=>'CLOSED $channel after $LIMIT_UNACKNOWLEDGED unacknowledged messages');
+        _logger.warning(() =>
+            'CLOSED $channel after $LIMIT_UNACKNOWLEDGED unacknowledged messages');
       }
 
       unAcknowledgedCounter[channel] = counter + 1;
