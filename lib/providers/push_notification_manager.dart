@@ -1,4 +1,5 @@
 
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,9 +49,13 @@ class PushNotificationManager with Loggable {
   }
 
   Future load() async {
+    logger.finest('load');
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+
+    await FirebaseMessaging.instance.requestPermission();
+
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
     if (!kIsWeb) {
       /// Update the iOS foreground notification presentation options to allow
@@ -75,5 +80,7 @@ class PushNotificationManager with Loggable {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       logger.finest("FirebaseMessaging.onMessageOpenedApp: $message");
     });
+
+
   }
 }

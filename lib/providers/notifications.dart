@@ -12,6 +12,7 @@ class LocalNotificationsProvider with Loggable {
   late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
   Future<void> load() async {
+    logger.finest('load');
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     var _initializationSettingsIOS =
         IOSInitializationSettings(); //onDidReceiveLocalNotification: onDidReceiveLocalNotification
