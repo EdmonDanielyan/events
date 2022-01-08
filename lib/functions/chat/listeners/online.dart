@@ -37,6 +37,7 @@ class UserOnlineListener extends ChannelListener {
   }
 
   Future<void> subscribeToAllAvailableUsers() async {
+    if (!natsProvider.isConnected) return;
     final users = await chatDatabaseCubit.db.getAllUsers();
 
     if (users.isNotEmpty) {
@@ -47,6 +48,7 @@ class UserOnlineListener extends ChannelListener {
   }
 
   Future<void> subscribeIndividually(UserTable user) async {
+    if (!natsProvider.isConnected) return;
     try {
       if (!subscribedUsers.contains(user.id)) {
         updateUserStatus(user, false);

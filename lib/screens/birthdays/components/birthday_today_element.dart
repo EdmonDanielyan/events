@@ -25,7 +25,7 @@ class BirthdayTodayElement extends StatelessWidget {
     if (_messenger.isConnected) {
       ChatTable newChat = await _messenger.chatCreation.createChatThroughNats(
           ChatUserViewModel.birthdayDataToUserTable(birthday));
-      OpenChat(chatDatabaseCubit, newChat).call(context);
+      OpenChat(chatDatabaseCubit, newChat).call();
     }
   }
 

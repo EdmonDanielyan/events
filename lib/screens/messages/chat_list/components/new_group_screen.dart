@@ -47,7 +47,7 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
           .createGroupThroughNats(name: chatName, users: users);
 
       Navigator.of(context).popUntil((route) => route.isFirst);
-      await OpenChat(widget.chatDatabaseCubit, newChat).call(context);
+      await OpenChat(widget.chatDatabaseCubit, newChat).call();
     } else {
       SimpleCustomSnackbar(
         context: context,

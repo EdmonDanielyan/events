@@ -56,16 +56,19 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
       } else {
         emitError(localizationInstance.applicationSecurityFailed);
       }
-    } on DioError catch (e) {
-      if (e.type == DioErrorType.other) {
+    } on InvalidRefreshTokenException catch (e) {
+      logger.finest('Invalid refresh token', e);
+      emitWelcome();
+    } on DioError catch (e, s) {
+      logger.severe('Error during load', e, s);
+      if ( [DioErrorType.connectTimeout, DioErrorType.receiveTimeout, DioErrorType.sendTimeout].contains(e.type)) {
         emitError(localizationInstance.noConnectionError);
       } else {
         emitWelcome();
       }
-    } on InvalidRefreshTokenException catch (_) {
+    } on Exception catch (e, s) {
+      logger.severe('Error during load', e, s);
       emitWelcome();
-    } on Exception catch (_) {
-      emitError(localizationInstance.noConnectionError);
     }
   }
 

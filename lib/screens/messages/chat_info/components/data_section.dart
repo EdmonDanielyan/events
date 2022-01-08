@@ -46,7 +46,6 @@ class ChatInfoDataSection extends StatelessWidget {
     return ChatInfoBtnWrapper(
       onTap: () {
         OpenChat(messenger.chatDatabaseCubit, chat).call(
-          context,
           chatScreenParams: ChatScreenParamsListView.onlyFiles(title),
         );
       },

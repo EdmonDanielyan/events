@@ -55,7 +55,7 @@ class BuildChatItems extends StatelessWidget {
 
                 return ChatListTile(
                   onTap: () {
-                    OpenChat(chatDatabaseCubit, chats[index]).call(context);
+                    OpenChat(chatDatabaseCubit, chats[index]).call();
                     chatListCubit.setSearchValue("");
                     searchController.text = "";
                     TextFieldUtils.loseTextFieldFocus();

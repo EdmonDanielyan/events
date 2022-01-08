@@ -1,11 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
-import 'package:ink_mobile/screens/initial/initial_screen.dart';
-import 'package:ink_mobile/setup.dart';
-
-import '../app.dart';
 
 @lazySingleton
 class LocalNotificationsProvider with Loggable {
@@ -37,10 +32,10 @@ class LocalNotificationsProvider with Loggable {
     }
   }
 
-  Map<String, VoidCallback> listeners = {};
+  Map<String, void Function(String?)> listeners = {};
 
   void _handleSelections(String? payload) {
-    listeners[payload]?.call();
+    listeners[payload]?.call(payload);
   }
 
   Future<void> selectNotification(String? payload) async {
@@ -48,19 +43,20 @@ class LocalNotificationsProvider with Loggable {
       logger.info(() => 'notification payload: $payload');
     }
 
-    if (App.getContext == null) return;
+    // if (App.getContext == null) return;
 
-    await Navigator.push(
-      App.materialKey!.currentContext!,
-      MaterialPageRoute<void>(
-          builder: (context) => InitPage(
-                cubit: sl()..load(),
-              )),
-    );
+    // await Navigator.push(
+    //   App.materialKey!.currentContext!,
+    //   MaterialPageRoute<void>(
+    //       builder: (context) => InitPage(
+    //             cubit: sl()..load(),
+    //           )),
+    // );
   }
 
   Future<void> showNotification(String title, String body,
-      {int id = 0, String? payload, required VoidCallback onSelect}) async {
+      {String? payload, Function(String?)? onSelect, int id = 0}) async {
+    logger.finest(()=> "showNotification. title: $title, body: $body, payload: $payload");
     final androidPlatformChannelSpecifics = AndroidNotificationDetails(
       '3',
       'Regular notes #3',
@@ -73,7 +69,7 @@ class LocalNotificationsProvider with Loggable {
     NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    if (payload != null) {
+    if (payload != null && onSelect != null) {
       listeners[payload] = onSelect;
     }
 

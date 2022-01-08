@@ -75,12 +75,12 @@ class _NewChatBtnState extends State<NewChatBtn> {
       ChatTable? chat = await messenger.chatCreation.isSingleChatExists(user);
 
       if (chat != null) {
-        OpenChat(_chatDatabaseCubit, chat).call(context);
+        OpenChat(_chatDatabaseCubit, chat).call();
       } else {
         ChatTable newChat =
             await messenger.chatCreation.createChatThroughNats(user);
         Navigator.of(context).pop();
-        OpenChat(_chatDatabaseCubit, newChat).call(context);
+        OpenChat(_chatDatabaseCubit, newChat).call();
       }
     }
   }
@@ -90,7 +90,7 @@ class _NewChatBtnState extends State<NewChatBtn> {
       ChatTable? chat = await messenger.chatCreation.isSingleChatExists(user);
 
       if (chat != null) {
-        OpenChat(_chatDatabaseCubit, chat).call(context);
+        OpenChat(_chatDatabaseCubit, chat).call();
       } else {
         await _createChat(user, context);
       }

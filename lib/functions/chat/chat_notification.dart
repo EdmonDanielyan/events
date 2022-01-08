@@ -42,10 +42,10 @@ class ChatNotification {
 
     if (showNotification && !chatDatabaseCubit.state.loadingChats) {
       sl<LocalNotificationsProvider>().showNotification(
-          user.name, message.message, id: user.id, payload: chat.id,
-          onSelect: () {
+          user.name, message.message, id: message.hashCode, payload: chat.id,
+          onSelect: (payload) {
         if (App.getContext != null) {
-          OpenChat(chatDatabaseCubit, chat)(App.getContext!);
+          OpenChat(chatDatabaseCubit, chat)();
         }
       });
     }

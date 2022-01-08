@@ -41,7 +41,7 @@ class _PersonListBodyState extends State<PersonListBody> {
     }
     Future.delayed(Duration(milliseconds: 300), () {
       Navigator.of(context).popUntil((route) => route.isFirst);
-      OpenChat(_chatDatabaseCubit, chat).call(context);
+      OpenChat(_chatDatabaseCubit, chat).call();
     });
   }
 

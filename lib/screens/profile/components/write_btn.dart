@@ -19,11 +19,11 @@ class WriteBtn extends StatelessWidget {
       ChatTable? chat = await _messenger.chatCreation.isSingleChatExists(user);
 
       if (chat != null) {
-        OpenChat(_chatDatabaseCubit, chat).call(context);
+        OpenChat(_chatDatabaseCubit, chat).call();
       } else {
         ChatTable newChat =
             await _messenger.chatCreation.createChatThroughNats(user);
-        OpenChat(_chatDatabaseCubit, newChat).call(context);
+        OpenChat(_chatDatabaseCubit, newChat).call();
       }
     }
   }
