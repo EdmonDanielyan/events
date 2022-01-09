@@ -92,6 +92,9 @@ class PushNotificationManager with Loggable {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       logger.finest("FirebaseMessaging.onMessageOpenedApp: $message");
     });
+
+    String? token = await FirebaseMessaging.instance.getAPNSToken();
+    print('FlutterFire Messaging Example: Got APNs token: $token');
   }
 
   Future<ChatTable?> get initialChat async {
