@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>293227396933-nq81s2ce3giprtuflaq2qbq112rf4ur2.apps.googleusercontent.com</string>
+	<string>293227396933-o2r1fm9o02ao76r47odrrjkfq1halq5a.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.293227396933-nq81s2ce3giprtuflaq2qbq112rf4ur2</string>
+	<string>com.googleusercontent.apps.293227396933-o2r1fm9o02ao76r47odrrjkfq1halq5a</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDQlOmRoO0IitiL7u5ALRHaCZR_znv47fo</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>test.ru.irkutskoil.portal</string>
+	<string>ru.irkutskoil.portal</string>
 	<key>PROJECT_ID</key>
 	<string>ink-mobile-9dc08</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:293227396933:ios:6d3091e4a67f7c06c2482c</string>
+	<string>1:293227396933:ios:dca6654dffcc0e46c2482c</string>
 </dict>
 </plist>

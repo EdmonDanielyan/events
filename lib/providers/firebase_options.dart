@@ -50,11 +50,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDQlOmRoO0IitiL7u5ALRHaCZR_znv47fo',
-    appId: '1:293227396933:ios:6d3091e4a67f7c06c2482c',
+    appId: '1:293227396933:ios:dca6654dffcc0e46c2482c',
     messagingSenderId: '293227396933',
     projectId: 'ink-mobile-9dc08',
     storageBucket: 'ink-mobile-9dc08.appspot.com',
-    iosClientId: '293227396933-nq81s2ce3giprtuflaq2qbq112rf4ur2.apps.googleusercontent.com',
-    iosBundleId: 'test.ru.irkutskoil.portal',
+    iosClientId: '293227396933-o2r1fm9o02ao76r47odrrjkfq1halq5a.apps.googleusercontent.com',
+    iosBundleId: 'ru.irkutskoil.portal',
   );
 }
