@@ -1,8 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/core/logging/logging.dart';
@@ -16,14 +14,20 @@ import 'package:logging/logging.dart';
 
 import 'firebase_options.dart';
 
+///
+/// Background isolate for FCM. Usage in [PushNotificationManager.load] to configure FCM plugin
+///
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   setIsolateName('FCM');
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setup();
   var logger = Logger('firebaseMessagingBackgroundHandler');
   logger.finest("FirebaseMessaging.onBackgroundMessage: ${message.data}");
   var localNotificationsProvider = sl<LocalNotificationsProvider>();
+  var userId = await Token.getUserId();
+  if (userId.isEmpty) {
+    logger.warning("Not logged in app");
+    return;
+  }
   await localNotificationsProvider.load();
   localNotificationsProvider.showNotification(
       message.data['title'] ?? "ИНК", message.data['body'] ?? "Новое сообщение",
@@ -31,6 +35,10 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       payload: message.data['chat_id'], onSelect: (_) {});
 }
 
+///
+/// Wrap all tasks for Firebase Messaging aspects
+///
+///
 @lazySingleton
 class PushNotificationManager with Loggable {
   final LocalNotificationsProvider localNotificationsProvider;
@@ -44,7 +52,11 @@ class PushNotificationManager with Loggable {
 
   Future unsubscribeFromTopic(String topic) async {
     logger.finest(() => "unsubscribeFromTopic: $topic");
-    await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+    try {
+      await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+    } catch (e, s) {
+      logger.severe("Error during FCM unsubscribe", e, s);
+    }
   }
 
   Future load() async {
@@ -65,6 +77,11 @@ class PushNotificationManager with Loggable {
     }
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       logger.finest("FirebaseMessaging.onMessage: ${message.data}");
+      var userId = await Token.getUserId();
+      if (userId.isEmpty) {
+        logger.warning("Not logged in app");
+        return;
+      }
       await showNotificationIfNeeded(message);
     });
 
@@ -104,19 +121,36 @@ class PushNotificationManager with Loggable {
   }
 
   Future<ChatTable?> get initialChat async {
+    logger.finest('initialChat');
     var message = await FirebaseMessaging.instance.getInitialMessage();
+    logger.finest('Remote initial message: $message');
     if (message != null) {
       return _getChatFromRemote(message);
+    }
+    else {
+      var openChatId = await sl<SecureStorage>().read("open_chat_id");
+      logger.finest("openChatId: $openChatId");
+      if (openChatId != null && openChatId.isNotEmpty){
+        await sl<SecureStorage>().write(key: "open_chat_id", value: "");
+        return _getChatById(openChatId);
+      }
     }
     return null;
   }
 
   Future<ChatTable?> _getChatFromRemote(RemoteMessage message) async {
+    logger.finest("_getChatFromRemote");
     var chatId = message.data["chat_id"];
+    return _getChatById(chatId);
+  }
+
+  Future<ChatTable?> _getChatById(chatId) async {
+    logger.finest("_getChatById chatId: $chatId");
     if (chatId != null) {
       var databaseCubit = sl<ChatDatabaseCubit>();
-      return await databaseCubit.db.selectChatById(chatId);
+      var chatTable = await databaseCubit.db.selectChatById(chatId);
+      logger.finest(()=> "found chat: $chatTable");
+      return chatTable;
     }
-    return null;
   }
 }
