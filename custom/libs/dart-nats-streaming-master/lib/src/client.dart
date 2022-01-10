@@ -84,7 +84,7 @@ class NatsStreamingClient {
 
   List<int> get connectionIDAscii => ascii.encode(this.connectionID);
 
-  int LIMIT_UNACKNOWLEDGED = 3;
+  int LIMIT_UNACKNOWLEDGED = 1000000;
 
   // ####################################################
   //                      Methods

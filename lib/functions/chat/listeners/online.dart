@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dart_nats_streaming/dart_nats_streaming.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:injectable/injectable.dart';
@@ -56,7 +57,7 @@ class UserOnlineListener extends ChannelListener {
         final channel = natsProvider.getUserOnlineChannel(user.id);
         registry.addToListeningChannels(channel);
         bool sub = await natsProvider.subscribeToChannel(channel, onMessage,
-            startSequence: Int64.ZERO);
+            startSequence: Int64.ZERO, startPosition: StartPosition.NewOnly);
 
         if (!sub) {
           throw "offline";

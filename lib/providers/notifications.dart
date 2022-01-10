@@ -1,7 +1,12 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
-
+import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/setup.dart';
+///
+/// Wrapper for Local Notification
+///
+///
 @lazySingleton
 class LocalNotificationsProvider with Loggable {
   late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
@@ -26,6 +31,7 @@ class LocalNotificationsProvider with Loggable {
     var _notificationAppLaunchDetails = await _flutterLocalNotificationsPlugin
         .getNotificationAppLaunchDetails();
     if (_notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+      logger.finest('App was launch from notification');
       final selectedNotificationPayload =
           _notificationAppLaunchDetails!.payload;
       selectNotification(selectedNotificationPayload);
@@ -35,12 +41,15 @@ class LocalNotificationsProvider with Loggable {
   Map<String, void Function(String?)> listeners = {};
 
   void _handleSelections(String? payload) {
+    logger.finest('_handleSelections');
     listeners[payload]?.call(payload);
   }
 
   Future<void> selectNotification(String? payload) async {
     if (payload != null) {
       logger.info(() => 'notification payload: $payload');
+      var secureStorage = sl<SecureStorage>();
+      await secureStorage.write(key: "open_chat_id", value: payload);
     }
   }
 
