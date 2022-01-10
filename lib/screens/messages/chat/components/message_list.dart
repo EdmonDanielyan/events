@@ -49,7 +49,11 @@ class _MessageListState extends State<MessageList> with MessageMixins {
   ScrollController get scrollController => widget.scrollController;
   final Debouncer _debouncer = Debouncer(milliseconds: 500);
 
-  Stream<List<MessageWithUser>> getStream() {
+  final int _fixedLimit = 15;
+
+  late int _limit;
+
+  Stream<List<MessageWithUser>> getStream(int limit) {
     final selectedChat = widget.chatDatabaseCubit.selectedChat;
     final String chatId = selectedChat?.id ?? "";
     if (widget.chatScreenParams.showOnlyFilesAndLinks) {
@@ -57,7 +61,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
     }
 
     return widget.chatDatabaseCubit.db
-        .watchChatMessages(chatId, orderMode: OrderingMode.asc);
+        .watchChatMessages(chatId, orderMode: OrderingMode.desc, limit: limit);
   }
 
   void _messagesLoaded() {
@@ -72,12 +76,24 @@ class _MessageListState extends State<MessageList> with MessageMixins {
   @override
   void initState() {
     super.initState();
+    _limit = _fixedLimit;
     scrollController.addListener(() {
       _listenToScroll();
     });
   }
 
-  void _listenToScroll() {}
+  void _listenToScroll() {
+    if (scrollController.position.atEdge) {
+      bool isTop = scrollController.position.pixels == 0;
+      if (isTop && MessageList.messagesWithUser != null) {
+        if (MessageList.messagesWithUser!.length >= _limit) {
+          setState(() {
+            _limit = _limit + _fixedLimit;
+          });
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,11 +107,12 @@ class _MessageListState extends State<MessageList> with MessageMixins {
           mainAxisSize: MainAxisSize.min,
           children: [
             StreamBuilder(
-              stream: getStream(),
+              stream: getStream(_limit),
               builder:
                   (context, AsyncSnapshot<List<MessageWithUser>> snapshot) {
                 if (snapshot.hasData) {
-                  MessageList.messagesWithUser = snapshot.data ?? [];
+                  MessageList.messagesWithUser =
+                      snapshot.data?.reversed.toList() ?? [];
                   DateTimeSort dateSort = DateTimeSort();
 
                   if (MessageList.messagesWithUser!.length > 0) {

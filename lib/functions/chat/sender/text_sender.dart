@@ -40,7 +40,7 @@ class TextSender with Loggable {
     await chatFunctions.updateMessageStatus(message, status);
 
     if (!success) {
-      await Future.delayed(Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 5));
       return await sendMessage(chat, message);
     }
 
