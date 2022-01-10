@@ -17,22 +17,18 @@ import 'package:logging/logging.dart';
 import 'firebase_options.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
   setIsolateName('FCM');
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setup();
   var logger = Logger('firebaseMessagingBackgroundHandler');
-  logger.warning("Start");
+  logger.finest("FirebaseMessaging.onBackgroundMessage: ${message.data}");
   var localNotificationsProvider = sl<LocalNotificationsProvider>();
   await localNotificationsProvider.load();
-  logger.finest(() => '''
-    Push Notification Message
-    title: ${message.notification?.title}
-    body: ${message.notification?.body}
-    data: ${message.data}
-  ''');
+  localNotificationsProvider.showNotification(
+      message.data['title'] ?? "ИНК", message.data['body'] ?? "Новое сообщение",
+      id: message.hashCode,
+      payload: message.data['chat_id'], onSelect: (_) {});
 }
 
 @lazySingleton
@@ -57,65 +53,70 @@ class PushNotificationManager with Loggable {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    await FirebaseMessaging.instance.requestPermission();
-
+    await FirebaseMessaging.instance.requestPermission(badge: false);
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
     if (!kIsWeb) {
-      /// Update the iOS foreground notification presentation options to allow
-      /// heads up notifications.
       await FirebaseMessaging.instance
           .setForegroundNotificationPresentationOptions(
         alert: true,
-        badge: true,
+        badge: false,
         sound: true,
       );
     }
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      logger.finest("FirebaseMessaging.onMessage: $message");
-      RemoteNotification? notification = message.notification;
-      if (notification != null && !_isMyMessage(message)) {
-        var _chat = await _getChatFromRemote(message);
-        bool isChatOpened = sl<ChatDatabaseCubit>().getSelectedChatId == _chat?.id;
-        if (_chat != null && !isChatOpened) {
-          localNotificationsProvider.showNotification(
-              notification.title ?? "ИНК",
-              notification.body ?? "Новое сообщение",
-              payload: _chat.id,
-              id: message.hashCode,
-              onSelect: (_) {
-                OpenChat(sl(), _chat)();
-              });
-        }
-      }
+      logger.finest("FirebaseMessaging.onMessage: ${message.data}");
+      await showNotificationIfNeeded(message);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-      logger.finest("FirebaseMessaging.onMessageOpenedApp: $message");
+      logger.finest("FirebaseMessaging.onMessageOpenedApp: ${message.data}");
     });
 
-    String? token = await FirebaseMessaging.instance.getAPNSToken();
-    print('FlutterFire Messaging Example: Got APNs token: $token');
-  }
+    String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+    logger.finest("FirebaseMessaging.apnsToken: $apnsToken");
 
-  Future<ChatTable?> get initialChat async {
-    var remoteMessage = await FirebaseMessaging.instance.getInitialMessage();
-    if (remoteMessage != null) {
-      return _getChatFromRemote(remoteMessage);
-    }
-    return null;
-  }
-
-  Future<ChatTable?> _getChatFromRemote(RemoteMessage remoteMessage) async {
-    var chatId = remoteMessage.data["chat_id"];
-    if (chatId != null) {
-      var databaseCubit = sl<ChatDatabaseCubit>();
-      return await databaseCubit.db.selectChatById(chatId);
-    }
-    return null;
+    String? fcmToken = await FirebaseMessaging.instance.getToken();
+    logger.finest("FirebaseMessaging.fcmToken: $fcmToken");
   }
 
   bool _isMyMessage(RemoteMessage remoteMessage) {
     var userId = remoteMessage.data["user_id"];
     return sl<TokenDataHolder>().userId == userId;
+  }
+
+  Future<void> showNotificationIfNeeded(RemoteMessage message) async {
+    if (!_isMyMessage(message)) {
+      var _chat = await _getChatFromRemote(message);
+      bool isChatOpened =
+          sl<ChatDatabaseCubit>().getSelectedChatId == _chat?.id;
+      if (_chat != null && !isChatOpened) {
+        var localNotificationsProvider = sl<LocalNotificationsProvider>();
+        await localNotificationsProvider.load();
+        localNotificationsProvider.showNotification(
+            message.data['title'] ?? "ИНК",
+            message.data['body'] ?? "Новое сообщение",
+            payload: _chat.id,
+            id: message.hashCode, onSelect: (_) {
+          OpenChat(sl(), _chat)();
+        });
+      }
+    }
+  }
+
+  Future<ChatTable?> get initialChat async {
+    var message = await FirebaseMessaging.instance.getInitialMessage();
+    if (message != null) {
+      return _getChatFromRemote(message);
+    }
+    return null;
+  }
+
+  Future<ChatTable?> _getChatFromRemote(RemoteMessage message) async {
+    var chatId = message.data["chat_id"];
+    if (chatId != null) {
+      var databaseCubit = sl<ChatDatabaseCubit>();
+      return await databaseCubit.db.selectChatById(chatId);
+    }
+    return null;
   }
 }

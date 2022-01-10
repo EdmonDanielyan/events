@@ -9,8 +9,8 @@ class LocalNotificationsProvider with Loggable {
   Future<void> load() async {
     logger.finest('load');
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    var _initializationSettingsIOS =
-        IOSInitializationSettings(); //onDidReceiveLocalNotification: onDidReceiveLocalNotification
+    var _initializationSettingsIOS = IOSInitializationSettings(
+        requestBadgePermission: false, defaultPresentBadge: false);
     var _initializationSettingsAndroid =
         AndroidInitializationSettings('note_icon');
     var _initializationSettingsMacOS = MacOSInitializationSettings();
@@ -42,21 +42,12 @@ class LocalNotificationsProvider with Loggable {
     if (payload != null) {
       logger.info(() => 'notification payload: $payload');
     }
-
-    // if (App.getContext == null) return;
-
-    // await Navigator.push(
-    //   App.materialKey!.currentContext!,
-    //   MaterialPageRoute<void>(
-    //       builder: (context) => InitPage(
-    //             cubit: sl()..load(),
-    //           )),
-    // );
   }
 
   Future<void> showNotification(String title, String body,
       {String? payload, Function(String?)? onSelect, int id = 0}) async {
-    logger.finest(()=> "showNotification. title: $title, body: $body, payload: $payload");
+    logger.finest(() =>
+        "showNotification. title: $title, body: $body, payload: $payload");
     final androidPlatformChannelSpecifics = AndroidNotificationDetails(
       '3',
       'Regular notes #3',
@@ -66,8 +57,13 @@ class LocalNotificationsProvider with Loggable {
       ticker: 'ticker',
     );
 
-    NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
+    final iosNotificationDetails = IOSNotificationDetails(
+      presentBadge: false,
+      badgeNumber: 0,
+    );
+
+    NotificationDetails platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics, iOS: iosNotificationDetails);
 
     if (payload != null && onSelect != null) {
       listeners[payload] = onSelect;
