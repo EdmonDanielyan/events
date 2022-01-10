@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/ink_icons.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -39,9 +40,6 @@ class _CommentState extends State<Comment> {
   int barrelsCount;
   _CommentState(this.barrelChecked, this.barrelsCount);
 
-  static const String DEFAULT_AVATAR =
-      'assets/images/avatars/avatar_default.png';
-
   late Color _textColor;
 
   late AppLocalizations _strings;
@@ -62,7 +60,7 @@ class _CommentState extends State<Comment> {
                   flex: 2,
                   child: Container(
                     alignment: Alignment.topCenter,
-                    margin: EdgeInsets.only(right: 5),
+                    margin: EdgeInsets.only(right: 10),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(context, '/personal',

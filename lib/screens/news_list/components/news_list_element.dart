@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:intl/intl.dart';
 
@@ -8,8 +9,6 @@ class NewsListElement extends StatelessWidget {
   const NewsListElement({Key? key, required this.newsItem}) : super(key: key);
 
   final NewsItemData newsItem;
-  static const String DEFAULT_PREVIEW_PICTURE_LINK =
-      'assets/images/default_news.jpg';
 
   @override
   Widget build(BuildContext context) {

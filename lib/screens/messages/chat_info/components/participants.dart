@@ -18,6 +18,7 @@ import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.d
 import 'package:ink_mobile/screens/messages/chat_list/components/new_chat_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/entities/new_chat_screen_params.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/list_participant_with_user.dart';
 
 import '../chat_info_screen.dart';
 
@@ -77,7 +78,7 @@ class ChatInfoParticipants extends StatelessWidget {
       title: _strings.add,
       chosenOneText: _strings.add,
       chosenMultipleText: _strings.add,
-      hideIds: ParticipantWithUserListView.getUserIds(participants),
+      hideIds: participants.getUserIds(),
       onSubmit: _onSubmit,
     );
   }
@@ -89,8 +90,7 @@ class ChatInfoParticipants extends StatelessWidget {
 
   Future<void> _onSubmit(BuildContext context) async {
     List<UserTable> selectedUsers = _selectableCubit.getItems;
-    List<UserTable> userParticipants =
-        ParticipantWithUserListView.getUsers(participants);
+    List<UserTable> userParticipants = participants.getUsers();
     if (messenger.isConnected) {
       await messenger.inviteSender
           .sendInvitations(chat, userParticipants..addAll(selectedUsers));

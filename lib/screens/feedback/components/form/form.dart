@@ -62,13 +62,13 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
             ServiceTextField(
               hint: "${_strings.fullnameHint} ${_strings.notRequired}",
               onChanged: (val) => entities.name = val,
-              inputFormatters: [InputFormatters.lettersOnly],
+              inputFormatters: [InputFormatters().lettersOnly],
             ),
             SizedBox(height: 20.0),
             ServiceTextField(
               hint: "${_strings.email} ${_strings.notRequired}",
-              validator: (val) =>
-                  FieldValidator.emailValidator(val, canBeEmpty: true),
+              validator: (val) => FieldValidator(_strings)
+                  .emailValidator(val, canBeEmpty: true),
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
               onChanged: (val) => entities.email = val,

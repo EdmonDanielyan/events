@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class FileFunctions {
-  static Future<File?> getImageFromGallery() async {
+  Future<File?> getImageFromGallery() async {
     final ImagePicker picker = ImagePicker();
     final image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -16,7 +16,7 @@ class FileFunctions {
     return null;
   }
 
-  static Future<File?> cropImage(File image) async {
+  Future<File?> cropImage(File image) async {
     return await ImageCropper.cropImage(
       sourcePath: image.path,
       aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),

@@ -1,7 +1,10 @@
-import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FieldValidator {
-  static String? emailValidator(
+  final AppLocalizations strings;
+  const FieldValidator(this.strings);
+
+  String? emailValidator(
     String? str, {
     bool canBeEmpty = false,
   }) {
@@ -12,24 +15,24 @@ class FieldValidator {
         .hasMatch(str!);
 
     if (!emailValid) {
-      return localizationInstance.incorrectEmail;
+      return strings.incorrectEmail;
     }
     return null;
   }
 
-  static String? cityValidator(String? str) {
-    return str!.length < 5 ? localizationInstance.fillTheField : null;
+  String? cityValidator(String? str) {
+    return str!.length < 5 ? strings.fillTheField : null;
   }
 
-  static String? streetValidator(String? str) {
-    return str!.length < 8 ? localizationInstance.fillTheField : null;
+  String? streetValidator(String? str) {
+    return str!.length < 8 ? strings.fillTheField : null;
   }
 
-  static String? addressValidator(String? str) {
-    return str!.length < 18 ? localizationInstance.fillTheField : null;
+  String? addressValidator(String? str) {
+    return str!.length < 18 ? strings.fillTheField : null;
   }
 
-  static String? zipCodeValidator(String? str) {
-    return str!.length != 6 ? localizationInstance.fillTheField : null;
+  String? zipCodeValidator(String? str) {
+    return str!.length != 6 ? strings.fillTheField : null;
   }
 }

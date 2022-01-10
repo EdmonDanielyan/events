@@ -183,7 +183,8 @@ class NatsStreamingClient {
       this.timeout = timeout;
     }
     _pingTimer?.cancel();
-    _pingTimer = Timer.periodic(Duration(seconds: this.pingInterval), (_) async => await _heartbeat());
+    _pingTimer = Timer.periodic(
+        Duration(seconds: this.pingInterval), (_) async => await _heartbeat());
 
     return await _connect();
   }
@@ -213,11 +214,12 @@ class NatsStreamingClient {
       // Connecting to Streaming Server
       try {
         final _req = await natsClient.request(
-                  '_STAN.discover.$clusterID', connectRequest.writeToBuffer(), timeout: Duration(seconds: timeout));
+            '_STAN.discover.$clusterID', connectRequest.writeToBuffer(),
+            timeout: Duration(seconds: timeout));
         _connectResponse = ConnectResponse.fromBuffer((_req).data);
         _logger.finest('$_req');
         unawaited(pingResponseWatchdog());
-        _logger.finest(()=> 'Response: $_connectResponse');
+        _logger.finest(() => 'Response: $_connectResponse');
         _connected = true;
       } catch (e) {
         _logger.severe('Error during request', e);
@@ -225,14 +227,13 @@ class NatsStreamingClient {
         try {
           await natsClient.close();
         } catch (e) {
-          _logger.severe("Error during clean and close", e);
+          _logger.severe('Error during clean and close', e);
         }
         _connected = false;
       }
       if (_connected && _onConnect != null) {
         _onConnect!();
       }
-
     }
     return _connected;
   }
@@ -328,7 +329,7 @@ class NatsStreamingClient {
       try {
         natsClient.pubString(message.replyTo!, '');
       } catch (e) {
-        _logger.severe("PING FAILED", e);
+        _logger.severe('PING FAILED', e);
       }
     }
   }

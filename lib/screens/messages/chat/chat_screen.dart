@@ -174,12 +174,6 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
             }
             selectableCubit.clearAll();
           },
-          onSendOn: () {
-            final messages = MessageWithUserListView.getMessagesFromList(
-                selectableCubit.getItems);
-            ChatCreation.sendOn(messages, context);
-            selectableCubit.clearAll();
-          },
         ),
       ),
     );

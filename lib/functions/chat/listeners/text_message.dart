@@ -10,7 +10,6 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats/message.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
-import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
@@ -34,8 +33,6 @@ class TextMessageListener extends ChannelListener {
     this.messageSender,
     this.chatFunctions,
   ) : super(natsProvider, registry);
-
-  Debouncer get _debouncer => Debouncer(milliseconds: 100);
 
   @override
   Future<void> onMessage(String channel, NatsMessage message) async {
@@ -61,7 +58,7 @@ class TextMessageListener extends ChannelListener {
           await chatDatabaseCubit.db.selectMessageById(newMessage.id);
 
       if (messageExists != null) {
-        logger.finest(()=>'''
+        logger.finest(() => '''
         MESSAGE EXISTS
         message: $newMessage
         created: ${message.createdAt}
@@ -69,7 +66,7 @@ class TextMessageListener extends ChannelListener {
         ''');
         chatDatabaseCubit.db.updateMessageById(newMessage.id, newMessage);
       } else {
-        logger.finest(()=>'''
+        logger.finest(() => '''
         MESSAGE INSERTING
         message: $newMessage
         created: ${message.createdAt}
@@ -84,16 +81,6 @@ class TextMessageListener extends ChannelListener {
           chat = myChat ??
               ChatListView.changeChatForParticipant(fields.chat, [fields.user]);
         }
-
-        // _debouncer.run(() {
-        //   ChatNotification(
-        //     chatDatabaseCubit: chatDatabaseCubit,
-        //     chat: chat,
-        //     myChat: myChat,
-        //     message: newMessage,
-        //     user: fields.user,
-        //   ).call();
-        // });
 
         await GetIt.I<SendMessage>().addMessage(chat, newMessage);
         await userFunctions.insertUser(fields.user);

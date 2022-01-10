@@ -88,7 +88,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
       hint: _strings.hospitalName,
       requiredIcon: true,
       validator: (val) => val!.length < 5 ? _strings.fillTheField : null,
-      inputFormatters: [InputFormatters.lettersNumbersOnly],
+      inputFormatters: [InputFormatters().lettersNumbersOnly],
       onChanged: (val) => entities.hospitalName = val,
     );
   }
@@ -98,7 +98,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
       hint: _strings.city,
       requiredIcon: true,
       keyboardType: TextInputType.streetAddress,
-      validator: (val) => FieldValidator.cityValidator(val),
+      validator: (val) => FieldValidator(_strings).cityValidator(val),
       onChanged: (val) => entities.city = val,
     );
   }
@@ -108,7 +108,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
       hint: _strings.address,
       requiredIcon: true,
       keyboardType: TextInputType.streetAddress,
-      validator: (val) => FieldValidator.streetValidator(val),
+      validator: (val) => FieldValidator(_strings).streetValidator(val),
       onChanged: (val) => entities.address = val,
     );
   }
@@ -125,7 +125,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
   }
 
   Widget _dateStart() {
-    MaskTextInputFormatter mask = TextFieldMasks.date;
+    MaskTextInputFormatter mask = TextFieldMasks().date;
     return ServiceTextField(
       hint: _strings.medicalDateStart,
       requiredIcon: true,

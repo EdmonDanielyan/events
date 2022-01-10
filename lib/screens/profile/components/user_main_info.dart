@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/aseets.dart';
 
 class UserMainInfo extends StatelessWidget {
   final String? userName;
   final String? userLastName;
   final String? userPosition;
   final String? pathToAvatar;
-
-  static const String DEFAULT_AVATAR =
-      'assets/images/avatars/avatar_default.png';
 
   UserMainInfo(
       {Key? key,

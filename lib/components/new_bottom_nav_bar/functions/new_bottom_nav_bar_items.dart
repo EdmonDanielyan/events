@@ -52,7 +52,7 @@ class MainBottomNavBarItem extends NavBottomNavBarItem {
   );
 
   void onTap(BuildContext context, Function onChanged, int index) {
-    NavigationUtils.popScreenIfCan(context);
+    NavigationUtils(context).popScreenIfCan();
     onChanged(index);
   }
 }
@@ -66,7 +66,7 @@ class SearchBottomNavBarItem extends NavBottomNavBarItem {
   );
 
   void onTap(BuildContext context, Function onChanged, int index) {
-    NavigationUtils.popScreenIfCan(context);
+    NavigationUtils(context).popScreenIfCan();
     onChanged(index);
   }
 }
@@ -84,7 +84,7 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
   );
 
   void onTap(BuildContext context, Function onChanged, int index) {
-    NavigationUtils.popScreenIfCan(context);
+    NavigationUtils(context).popScreenIfCan();
     onChanged(index);
   }
 }
@@ -107,7 +107,7 @@ class ServicesBottomNavBarItem extends NavBottomNavBarItem {
       ));
 
   void onTap(BuildContext context, Function onChanged, int index) {
-    NavigationUtils.popScreenIfCan(context);
+    NavigationUtils(context).popScreenIfCan();
     onChanged(index);
   }
 }

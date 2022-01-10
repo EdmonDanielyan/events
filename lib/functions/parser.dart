@@ -1,5 +1,9 @@
 class Parser {
-  static int stringToInt(String val) {
+  final String val;
+
+  const Parser({required this.val});
+
+  int stringToInt() {
     try {
       return int.parse(val);
     } catch (_) {

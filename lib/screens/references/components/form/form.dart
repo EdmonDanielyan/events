@@ -212,7 +212,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   }
 
   Widget contactPhoneWidget() {
-    MaskTextInputFormatter mask = TextFieldMasks.phone;
+    MaskTextInputFormatter mask = TextFieldMasks().phone;
     return ServiceTextField(
       hint: _strings.contactPhone,
       validator: (val) =>
@@ -224,20 +224,20 @@ class _ReferencesFormState extends State<ReferencesForm> {
   }
 
   Widget deliveryMethodWidget() => InkDropDown(
-      hint: _strings.deliveryMethod,
-      items: deliveryList.getDeliveryItemsList(currentReferenceItem),
-      selectedIndex: entities.deliveryType,
-      onChanged: (int index) {
-        setState(() {
-          entities.deliveryType = index;
-        });
-      },
-    );
+        hint: _strings.deliveryMethod,
+        items: deliveryList.getDeliveryItemsList(currentReferenceItem),
+        selectedIndex: entities.deliveryType,
+        onChanged: (int index) {
+          setState(() {
+            entities.deliveryType = index;
+          });
+        },
+      );
 
   Widget deliveryAddressWidget() {
     return ServiceTextField(
       hint: _strings.address,
-      validator: (val) => FieldValidator.addressValidator(val!),
+      validator: (val) => FieldValidator(_strings).addressValidator(val!),
       onChanged: (val) => entities.address = val,
       keyboardType: TextInputType.streetAddress,
       autocorrect: false,
@@ -247,7 +247,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget deliveryZipCodeWidget() {
     return ServiceTextField(
       hint: _strings.zipIndex,
-      validator: (val) => FieldValidator.zipCodeValidator(val!),
+      validator: (val) => FieldValidator(_strings).zipCodeValidator(val!),
       onChanged: (val) => entities.postCode = val,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.number,
@@ -266,7 +266,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       changeValueBy: 1,
       mode: NumberSelectFieldMode.int,
       onlyPositive: true,
-      onChanged: (val) => entities.quantity = Parser.stringToInt(val),
+      onChanged: (val) => entities.quantity = Parser(val: val).stringToInt(),
       validator: (value) {},
       style: TextStyle(fontSize: 30, height: 1),
       textAlignVertical: TextAlignVertical.center,
@@ -284,7 +284,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       hint: _strings.toSubmitFor,
       validator: (val) => val!.length < 8 ? _strings.fillTheField : null,
       onChanged: (val) => entities.toProvideIn = val,
-      inputFormatters: [InputFormatters.lettersOnly],
+      inputFormatters: [InputFormatters().lettersOnly],
     );
   }
 
@@ -293,7 +293,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       hint: _strings.period,
       validator: (val) => val!.length < 1 ? _strings.fillTheField : null,
       onChanged: (val) => entities.period = val,
-      inputFormatters: [InputFormatters.lettersNumbersOnly],
+      inputFormatters: [InputFormatters().lettersNumbersOnly],
     );
   }
 

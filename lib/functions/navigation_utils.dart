@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class NavigationUtils {
-  static void popScreenIfCan(BuildContext context) {
+  final BuildContext context;
+  const NavigationUtils(this.context);
+
+  void popScreenIfCan() {
     if (Navigator.of(context).canPop()) {
       Navigator.of(context).maybePop();
     }

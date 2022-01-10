@@ -21,36 +21,3 @@ class ParticipantWithUser {
   @override
   int get hashCode => participant.hashCode ^ user.hashCode;
 }
-
-class ParticipantWithUserListView {
-  static int sortByAdmin(ParticipantWithUser a, ParticipantWithUser b,
-      {int? ownerId}) {
-    if (ownerId != null) {
-      return a.participant!.userId == ownerId ? -1 : 1;
-    }
-
-    return a.participant!.admin ? -1 : 1;
-  }
-
-  static List<int> getUserIds(List<ParticipantWithUser> items) {
-    List<int> ids = [];
-    if (items.isNotEmpty) {
-      for (final item in items) {
-        ids.add(item.user!.id);
-      }
-    }
-
-    return ids;
-  }
-
-  static List<UserTable> getUsers(List<ParticipantWithUser> items) {
-    List<UserTable> users = [];
-    if (items.isNotEmpty) {
-      for (final item in items) {
-        users.add(item.user!);
-      }
-    }
-
-    return users;
-  }
-}

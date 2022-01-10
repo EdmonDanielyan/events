@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/aseets.dart';
 import 'package:shimmer/shimmer.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -12,8 +12,6 @@ import 'package:transparent_image/transparent_image.dart';
 class Header extends StatefulWidget {
   final List<String>? imageLinks;
   final List<String>? videoLinks;
-
-  static const DEFAULT_PREVIEW_PICTURE_LINK = 'assets/images/default_news.jpg';
 
   const Header({Key? key, this.imageLinks, this.videoLinks}) : super(key: key);
 
@@ -90,16 +88,17 @@ class _HeaderState extends State<Header> {
 
     if (images != null && images.isNotEmpty) {
       images.forEach((image) {
-        imagesContainer.add(
-          Stack(
-            children: [
-              Shimmer.fromColors(
-                baseColor: Colors.grey,
-                highlightColor: Colors.grey.withOpacity(0.2),
-                child: Container(
-                    height: 300, width: MediaQuery.of(context).size.width, color: Colors.black),
-              ),
-              FadeInImage.memoryNetwork(
+        imagesContainer.add(Stack(
+          children: [
+            Shimmer.fromColors(
+              baseColor: Colors.grey,
+              highlightColor: Colors.grey.withOpacity(0.2),
+              child: Container(
+                  height: 300,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.black),
+            ),
+            FadeInImage.memoryNetwork(
                 height: 300,
                 fit: BoxFit.fill,
                 fadeInDuration: Duration(milliseconds: 300),
@@ -107,20 +106,18 @@ class _HeaderState extends State<Header> {
                 image: image,
                 imageErrorBuilder: (context, error, stackTrace) {
                   return Image.asset(
-                    Header.DEFAULT_PREVIEW_PICTURE_LINK,
+                    DEFAULT_PREVIEW_PICTURE_LINK,
                     fit: BoxFit.fill,
                     colorBlendMode: BlendMode.darken,
                     color: Colors.black.withOpacity(0.15),
                   );
-                }
-              ),
-            ],
-          )
-        );
+                }),
+          ],
+        ));
       });
     } else {
       imagesContainer.add(Image.asset(
-        Header.DEFAULT_PREVIEW_PICTURE_LINK,
+        DEFAULT_PREVIEW_PICTURE_LINK,
         fit: BoxFit.fill,
         colorBlendMode: BlendMode.darken,
         color: Colors.black.withOpacity(0.15),

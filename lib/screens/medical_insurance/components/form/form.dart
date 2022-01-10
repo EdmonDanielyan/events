@@ -132,7 +132,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
     return ServiceTextField(
       hint: localizationInstance.medAdditionalText,
       onChanged: (val) => entities.additionalText = val,
-      inputFormatters: [InputFormatters.lettersNumbersOnly],
+      inputFormatters: [InputFormatters().lettersNumbersOnly],
       maxLines: 4,
     );
   }

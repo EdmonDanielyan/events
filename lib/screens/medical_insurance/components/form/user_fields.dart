@@ -71,13 +71,13 @@ class _MedicalInsuranceFormUserFieldsState
       validator: (val) =>
           val!.split(" ").length < 3 ? _strings.fillTheField : null,
       autocorrect: false,
-      inputFormatters: [InputFormatters.lettersOnly],
+      inputFormatters: [InputFormatters().lettersOnly],
       onChanged: (val) => widget.entities.fio = val,
     );
   }
 
   Widget _birthDate() {
-    MaskTextInputFormatter mask = TextFieldMasks.date;
+    MaskTextInputFormatter mask = TextFieldMasks().date;
     return ServiceTextField(
       hint: _strings.birthDate,
       requiredIcon: true,
@@ -95,13 +95,13 @@ class _MedicalInsuranceFormUserFieldsState
       hint: _strings.position,
       requiredIcon: true,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
-      inputFormatters: [InputFormatters.lettersOnly],
+      inputFormatters: [InputFormatters().lettersOnly],
       onChanged: (val) => widget.entities.position = val,
     );
   }
 
   Widget _mobilePhoneWidget() {
-    MaskTextInputFormatter mask = TextFieldMasks.phone;
+    MaskTextInputFormatter mask = TextFieldMasks().phone;
     return ServiceTextField(
       hint: _strings.mobilePhone,
       requiredIcon: true,
@@ -118,7 +118,7 @@ class _MedicalInsuranceFormUserFieldsState
       controller: emailController,
       hint: _strings.email,
       requiredIcon: true,
-      validator: (val) => FieldValidator.emailValidator(val),
+      validator: (val) => FieldValidator(_strings).emailValidator(val),
       keyboardType: TextInputType.emailAddress,
       autocorrect: false,
       onChanged: (val) => widget.entities.email = val,

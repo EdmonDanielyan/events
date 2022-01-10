@@ -1,16 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/person_list_params.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:uuid/uuid.dart';
 
 @injectable
 class ChatCreation with Loggable {
@@ -20,11 +18,7 @@ class ChatCreation with Loggable {
 
   ChatCreation(this.chatDatabaseCubit, this.userFunctions, this.messenger);
 
-  static String get generateGroupId =>
-      "${JwtPayload.myId}_${new DateTime.now().millisecondsSinceEpoch}";
-
-  static String generateSingleChatId(List<UserTable> users) =>
-      ChatListView.getChatIdBetweenUsers(users);
+  String get generateGroupId => "${JwtPayload.myId}-${Uuid().v4()}";
 
   Future<ChatTable> createChatThroughNats(UserTable user) async {
     logger.finest('createChatThroughNats');
@@ -209,18 +203,5 @@ class ChatCreation with Loggable {
 
   Future<void> insertMultipleChats(List<ChatTable> chats) async {
     await chatDatabaseCubit.db.insertMultipleChats(chats);
-  }
-
-  static void sendOn(List<MessageTable> messages, BuildContext context) {
-    Future.delayed(Duration(milliseconds: 200), () {
-      Navigator.of(context).pushNamed(
-        "/message_person_list",
-        arguments: PersonListParams(
-          messages: messages,
-          title: localizationInstance.sendOn,
-          type: PersonListParamsEnum.SEND_ON,
-        ),
-      );
-    });
   }
 }

@@ -26,7 +26,7 @@ class MedicalInsuranceGuarLetFields extends StatelessWidget {
   }
 
   Widget _dateWidget() {
-    MaskTextInputFormatter mask = TextFieldMasks.date;
+    MaskTextInputFormatter mask = TextFieldMasks().date;
     final _strings = localizationInstance;
     return ServiceTextField(
       hint: _strings.dateHint,

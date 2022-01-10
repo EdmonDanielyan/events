@@ -11,6 +11,7 @@ import 'package:ink_mobile/screens/messages/chat_info/components/data_section.da
 import 'package:ink_mobile/screens/messages/chat_info/components/header.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/participants.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
+import 'package:ink_mobile/extensions/list_participant_with_user.dart';
 
 class Body extends StatefulWidget {
   final ChatTable chat;
@@ -32,8 +33,8 @@ class _BodyState extends State<Body> {
         .watchParticipants(widget.chat.id)
         .listen((event) {
       if (this.mounted) {
-        event.sort((a, b) => ParticipantWithUserListView.sortByAdmin(a, b,
-            ownerId: widget.chat.ownerId));
+        event.sort(
+            (a, b) => event.sortByAdmind(a, b, ownerId: widget.chat.ownerId));
 
         setState(() {
           participants = event;
