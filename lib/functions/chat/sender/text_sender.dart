@@ -38,6 +38,12 @@ class TextSender with Loggable {
     MessageStatus status = success ? MessageStatus.SENT : MessageStatus.ERROR;
 
     await chatFunctions.updateMessageStatus(message, status);
+
+    if (!success) {
+      await Future.delayed(Duration(seconds: 5));
+      return await sendMessage(chat, message);
+    }
+
     return success;
   }
 
