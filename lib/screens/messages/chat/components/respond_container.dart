@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/models/chat/message_list_view.dart';
+import 'package:ink_mobile/extensions/message_table.dart';
 
 class RespondMessageContainer extends StatelessWidget {
   final void Function()? onCancel;
@@ -52,7 +52,7 @@ class RespondMessageContainer extends StatelessWidget {
   }
 
   Widget _titleWidget() {
-    bool isByMe = MessageListView.isByMe(selectedMessage.message!);
+    bool isByMe = selectedMessage.message!.isByMe();
     return Text(
       isByMe ? _strings.you : selectedMessage.user!.name,
       style: TextStyle(

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/screens/messages/chat/components/respond_container.dart';
-
+import 'package:ink_mobile/extensions/message_table.dart';
 import 'message_list.dart';
 
 class RespondContainerWrapper extends StatelessWidget {
@@ -17,7 +16,7 @@ class RespondContainerWrapper extends StatelessWidget {
     this.textColor,
   }) : super(key: key);
 
-  bool get byMe => MessageListView.isByMe(message);
+  bool get byMe => message.isByMe();
 
   Color get myTxtColor => byMe ? Colors.white : Colors.black;
 

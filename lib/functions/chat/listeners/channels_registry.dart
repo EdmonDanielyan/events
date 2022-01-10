@@ -40,7 +40,8 @@ class ChannelsRegistry with Loggable {
         natsProvider, this, userFunctions, chatDatabaseCubit);
   }
 
-  ChatJoinedListener get chatJoinedListener => listeners[MessageType.UserJoined]! as ChatJoinedListener;
+  ChatJoinedListener get chatJoinedListener =>
+      listeners[MessageType.UserJoined]! as ChatJoinedListener;
 
   final UserFunctions userFunctions;
 
@@ -116,16 +117,16 @@ class ChannelsRegistry with Loggable {
     listeners.clear();
     MessageType.values.forEach((messageType) {
       var messageListenerToSearch = describeEnum(messageType);
-      logger.fine(
-              ()=>'Looking for listener of message type: $messageListenerToSearch');
+      logger.fine(() =>
+          'Looking for listener of message type: $messageListenerToSearch');
 
       try {
         ChannelListener listener =
             sl.get<ChannelListener>(instanceName: messageListenerToSearch);
         listeners.putIfAbsent(messageType, () => listener);
       } catch (e) {
-        logger.warning(
-                ()=>'Not found listener for message type: $messageListenerToSearch');
+        logger.warning(() =>
+            'Not found listener for message type: $messageListenerToSearch');
       }
     });
     chatDatabaseCubit.setLoadingChats(true);
@@ -172,11 +173,11 @@ class ChannelsRegistry with Loggable {
 
   Future<void> _subscribeToChannel(MessageType type, String channel,
       {Int64 startSequence = Int64.ZERO}) async {
-    logger.fine(()=>"_subscribeToChannel: $type, $channel, $startSequence");
+    logger.fine(() => "_subscribeToChannel: $type, $channel, $startSequence");
 
-    if (type == MessageType.Text){
-        //We ignore await here to speed up channel enumeration
-        pushNotificationManager.subscribeToTopic(channel);
+    if (type == MessageType.Text) {
+      //We ignore await here to speed up channel enumeration
+      pushNotificationManager.subscribeToTopic(channel);
     }
 
     if (!natsProvider.isConnected) {
@@ -185,7 +186,7 @@ class ChannelsRegistry with Loggable {
     }
 
     if (!isListening(channel)) {
-      logger.fine(()=>"listeners[$type]=${listeners[type]}");
+      logger.fine(() => "listeners[$type]=${listeners[type]}");
       try {
         await listeners[type]!.onListen(channel, startSequence: startSequence);
         listeningChannels.add(channel);
@@ -196,26 +197,26 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> unSubscribeFromChannel(String channel) async {
-    logger.finest(()=>"unSubscribeFromChannel: $channel");
+    logger.finest(() => "unSubscribeFromChannel: $channel");
     natsProvider.unsubscribeFromChannel(channel);
     if (isListening(channel)) {
       listeningChannels.remove(channel);
     }
-    if (channel.contains("Text")){
+    if (channel.contains("Text")) {
       pushNotificationManager.unsubscribeFromTopic(channel);
     }
     channelFunctions.deleteChannel(channel);
   }
 
   Future<void> subscribeOnChatChannels(String chatId) async {
-    logger.finest(()=>"subscribeOnChatChannels: $chatId");
+    logger.finest(() => "subscribeOnChatChannels: $chatId");
     _chatCleaner(chatId);
 
     final getChannels = getLinkedChannelsById(chatId);
 
     if (getChannels.isNotEmpty) {
       for (final channel in getChannels) {
-        if (!ChatListListener.busyChannels.contains(channel)) {
+        if (!chatListListener.busyChannels.contains(channel)) {
           await channelFunctions.saveByChannelName(channel);
         }
       }
@@ -224,7 +225,7 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> subscribeOnChatChannelsIfNotExists(String chatId) async {
-    logger.finest(()=>"subscribeOnChatChannelsIfNotExists: $chatId");
+    logger.finest(() => "subscribeOnChatChannelsIfNotExists: $chatId");
     _chatCleaner(chatId);
     final getChannels = getLinkedChannelsById(chatId);
 
@@ -247,7 +248,7 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> unSubscribeOnChatDelete(String chatId) async {
-    logger.finest(()=>"unSubscribeOnChatDelete: $chatId");
+    logger.finest(() => "unSubscribeOnChatDelete: $chatId");
     final getChannels = getLinkedChannelsById(chatId);
 
     if (getChannels.isNotEmpty) {
@@ -269,7 +270,7 @@ class ChannelsRegistry with Loggable {
     logger.finest("unsubscribeFromAll");
     listeningChannels.forEach((channel) {
       natsProvider.unsubscribeFromChannel(channel);
-      if (includePush && channel.contains("Text")){
+      if (includePush && channel.contains("Text")) {
         pushNotificationManager.unsubscribeFromTopic(channel);
       }
     });

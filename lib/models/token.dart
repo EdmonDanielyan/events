@@ -29,8 +29,9 @@ abstract class Token {
         throw Exception('invalid token');
       }
 
-      String payload = Converter.decodeBase64(parts[1]);
-      Map<String, dynamic> payloadMap = Converter.decodeJson(payload);
+      String payload = StringConverter(string: parts[1]).decodeBase64();
+      Map<String, dynamic> payloadMap =
+          StringConverter(string: payload).decodeJson();
 
       if (payloadMap is! Map<String, dynamic>) {
         throw Exception('invalid payload');
@@ -242,7 +243,8 @@ abstract class TokenDataInjectorModule {
   String get deviceVirtualId => GetIt.I.get<TokenDataHolder>().deviceVirtualId;
 
   @Named("localDatabasePassword")
-  String get localDatabasePassword => GetIt.I.get<TokenDataHolder>().localDatabasePassword;
+  String get localDatabasePassword =>
+      GetIt.I.get<TokenDataHolder>().localDatabasePassword;
 }
 
 @lazySingleton
@@ -266,7 +268,7 @@ class TokenDataHolder with Loggable {
     _deviceVirtualId = await Token.getDeviceVirtualId() ?? "";
     _natsToken = await Token.getNatsToken() ?? "";
     _localDatabasePassword = await Token.getLocalDbToken() ?? "";
-    logger.fine(
-            ()=>"_userId: $_userId, _deviceVirtualId: $_deviceVirtualId, _natsToken: $_natsToken, _localDatabasePassword: $_localDatabasePassword ");
+    logger.fine(() =>
+        "_userId: $_userId, _deviceVirtualId: $_deviceVirtualId, _natsToken: $_natsToken, _localDatabasePassword: $_localDatabasePassword ");
   }
 }

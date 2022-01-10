@@ -16,6 +16,7 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
 import 'news_comments_state.dart';
 import 'package:ink_mobile/extensions/get_comments_by_id.dart';
+import 'package:ink_mobile/extensions/list_comment_data.dart';
 
 @injectable
 class NewsCommentsCubit extends Cubit<NewsCommentState> {
@@ -88,7 +89,7 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       type: NewsCommentStateType.LOADED,
       data: NewsCommentsData(
         comments: comments,
-        commentCount: CommentDataListView.countComment(comments),
+        commentCount: comments.countComments(),
       ),
     );
   }

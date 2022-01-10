@@ -5,8 +5,7 @@ import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/models/user_data.dart';
-
-import 'chat_list_view.dart';
+import 'package:ink_mobile/extensions/chat_table.dart';
 import 'database/model/message_with_user.dart';
 
 class ChatUserViewModel {
@@ -76,7 +75,7 @@ class ChatUserViewModel {
     List<MessageWithUser>? messages,
     int? userId,
   }) async {
-    if (ChatListView.isGroup(chat) && messages != null) {
+    if (chat.isGroup() && messages != null) {
       return messages.last.user;
     }
 
@@ -90,7 +89,7 @@ class ChatUserViewModel {
   }
 
   static int? getOppositeUserIdFromChat(ChatTable chat, {int? userId}) {
-    if (!ChatListView.isGroup(chat)) {
+    if (!chat.isGroup()) {
       if (userId == null) userId = JwtPayload.myId;
 
       return chat.ownerId == userId ? chat.participantId! : chat.ownerId;

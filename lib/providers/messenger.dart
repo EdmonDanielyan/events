@@ -84,6 +84,7 @@ class Messenger with Loggable {
 
       textSender.redeliverMessages();
       await _onConnected();
+      textSender.redeliverMessages();
     };
 
     natsProvider.onDisconnected = () async {
@@ -117,7 +118,8 @@ class Messenger with Loggable {
   }
 
   Future<void> subscribeToUserOnline(UserTable user) async {
-    logger.finest(()=>'subscribeToUserOnline: id=${user.id} name=${user.name}');
+    logger
+        .finest(() => 'subscribeToUserOnline: id=${user.id} name=${user.name}');
     final listener =
         (registry.listeners[MessageType.Online] as UserOnlineListener?);
     if (listener != null) {

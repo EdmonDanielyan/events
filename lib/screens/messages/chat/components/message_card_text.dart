@@ -15,6 +15,7 @@ import 'package:ink_mobile/screens/messages/chat/components/respond_container_wr
 import 'package:ink_mobile/screens/messages/chat/components/sent_on_wrapper.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/message_table.dart';
 
 class MessageCardText extends StatelessWidget {
   final UserTable user;
@@ -32,9 +33,9 @@ class MessageCardText extends StatelessWidget {
     required this.message,
     this.messageStr,
     required this.chatDatabaseCubit,
-  }): super(key: key) {
+  }) : super(key: key) {
     assert(message != null || messageStr != null);
-    byMe = message != null ? MessageListView.isByMe(message!) : false;
+    byMe = message != null ? message!.isByMe() : false;
   }
 
   ChatTable get getChat => chatDatabaseCubit.selectedChat!;
@@ -178,18 +179,19 @@ class MessageCardText extends StatelessWidget {
   }
 
   Widget _makeUserAvatarWidget(BuildContext context) {
-    return userAvatar ?? (userAvatar = InkWell(
-      onTap: () => Navigator.of(context).pushNamed("/personal",
-          arguments: {'id': user.id, HIDE_BOTTOM_NAV_BAR_CODE: true}),
-      child: SizedBox(
-        child: CustomCircleAvatar(
-          url: user.avatar,
-          name: user.name,
-        ),
-        width: 45,
-        height: 45,
-      ),
-    ));
+    return userAvatar ??
+        (userAvatar = InkWell(
+          onTap: () => Navigator.of(context).pushNamed("/personal",
+              arguments: {'id': user.id, HIDE_BOTTOM_NAV_BAR_CODE: true}),
+          child: SizedBox(
+            child: CustomCircleAvatar(
+              url: user.avatar,
+              name: user.name,
+            ),
+            width: 45,
+            height: 45,
+          ),
+        ));
   }
 
   Widget _dateWidget() {

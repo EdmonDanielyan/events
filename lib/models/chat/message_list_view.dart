@@ -8,6 +8,7 @@ import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
 import 'database/chat_db.dart';
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:ink_mobile/extensions/message_table.dart';
 
 enum MessageStatus { EMPTY, SENDING, SENT, READ, ERROR }
 
@@ -16,11 +17,6 @@ class MessageListView {
     MessageType.Text,
     MessageType.Document
   ];
-
-  static bool isByMe(MessageTable msg, {int? myId}) {
-    myId = myId ?? JwtPayload.myId;
-    return msg.userId == myId;
-  }
 
   static Map<String, dynamic> toJson(MessageTable message) {
     final json = message.toJson();
@@ -106,14 +102,14 @@ class MessageListView {
   static int unreadMessagesByMessageWithUser(List<MessageWithUser> items) =>
       items.fold(0, (previousValue, element) {
         return element.message!.status != MessageStatus.READ &&
-                !isByMe(element.message!)
+                !element.message!.isByMe()
             ? previousValue + 1
             : previousValue + 0;
       });
 
   static int unreadMessagesByMessages(List<MessageTable> items) =>
       items.fold(0, (previousValue, element) {
-        return element.status != MessageStatus.READ && !isByMe(element)
+        return element.status != MessageStatus.READ && !element.isByMe()
             ? previousValue + 1
             : previousValue + 0;
       });
@@ -157,13 +153,13 @@ class MessageListView {
 
   static MessageTable? oppositeNotReadMessage(List<MessageTable> items) {
     return items.lastWhereOrNull(
-        (element) => !isByMe(element) && element.status != MessageStatus.READ);
+        (element) => !element.isByMe() && element.status != MessageStatus.READ);
   }
 
   static List<MessageTable> oppositeNotReadMessages(List<MessageTable> items) {
     return items
         .where((element) =>
-            !isByMe(element) && element.status != MessageStatus.READ)
+            !element.isByMe() && element.status != MessageStatus.READ)
         .toList();
   }
 
@@ -202,7 +198,7 @@ class MessageListView {
 
     if (items.isNotEmpty) {
       for (final item in items) {
-        if (isByMe(item, myId: userId)) {
+        if (item.isByMe(myId: userId)) {
           messages.add(item);
         }
       }

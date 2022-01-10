@@ -13,7 +13,7 @@ import 'package:ink_mobile/screens/messages/chat/components/hover_message.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card_text.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/chat_screen_params.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/paddings.dart';
-
+import 'package:ink_mobile/extensions/message_table.dart';
 import 'message_card_action.dart';
 import 'message_search_wrapper.dart';
 
@@ -68,7 +68,7 @@ class MessageCard extends StatelessWidget {
                   child: Container(
                     padding: ChatScreenPaddings.messageContainerPadding,
                     child: Align(
-                      alignment: MessageListView.isByMe(message)
+                      alignment: message.isByMe()
                           ? Alignment.topRight
                           : Alignment.topLeft,
                       child: _getMessageWidget(),

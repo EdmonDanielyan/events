@@ -2,13 +2,13 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
-import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:uuid/uuid.dart';
+import 'package:ink_mobile/extensions/chat_table.dart';
 
 @injectable
 class ChatCreation with Loggable {
@@ -71,7 +71,7 @@ class ChatCreation with Loggable {
       ChatTable chat, List<UserTable> users) async {
     late ChatTable? newChat;
 
-    if (ChatListView.isGroup(chat)) {
+    if (chat.isGroup()) {
       newChat = await createGroup(
         name: chat.name,
         avatar: chat.avatar,
@@ -148,7 +148,7 @@ class ChatCreation with Loggable {
 
     if (chats.isNotEmpty) {
       for (final chat in chats) {
-        if (!ChatListView.isGroup(chat) &&
+        if (!chat.isGroup() &&
             (chat.ownerId == user.id || chat.participantId == user.id)) {
           chatsWithUser.add(chat);
         }
@@ -163,7 +163,7 @@ class ChatCreation with Loggable {
 
     if (chats.isNotEmpty) {
       for (final chat in chats) {
-        if (!ChatListView.isGroup(chat) &&
+        if (!chat.isGroup() &&
             (chat.ownerId == user.id || chat.participantId == user.id)) {
           return chat;
         }

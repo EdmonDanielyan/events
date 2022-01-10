@@ -1,8 +1,11 @@
 import 'dart:convert';
 
-class Converter {
-  static String decodeBase64(String str) {
-    String output = str.replaceAll('-', '+').replaceAll('_', '/');
+class StringConverter {
+  final String string;
+  const StringConverter({required this.string});
+
+  String decodeBase64() {
+    String output = string.replaceAll('-', '+').replaceAll('_', '/');
 
     switch (output.length % 4) {
       case 0:
@@ -20,7 +23,7 @@ class Converter {
     return utf8.decode(base64Url.decode(output));
   }
 
-  static dynamic decodeJson(String string) {
+  dynamic decodeJson() {
     return json.decode(string);
   }
 }

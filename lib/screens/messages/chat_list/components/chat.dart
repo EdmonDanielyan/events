@@ -3,7 +3,6 @@ import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
@@ -15,6 +14,7 @@ import 'package:ink_mobile/screens/messages/chat_list/components/chat_message.da
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_message_trailing.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_name.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/chat_table.dart';
 
 class ChatListTile extends StatefulWidget {
   final String highlightValue;
@@ -59,7 +59,7 @@ class _ChatListTileState extends State<ChatListTile> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: ChatListView.isGroup(widget.chat)
+      child: widget.chat.isGroup()
           ? Dismissible(
               background: const SizedBox(),
               direction: DismissDirection.endToStart,
@@ -140,9 +140,7 @@ class _ChatListTileState extends State<ChatListTile> {
                 SizedBox(
                   height: 0.0,
                   child: Opacity(
-                      child: CustomCircleAvatar(
-                        url: widget.chat.avatar
-                      ),
+                      child: CustomCircleAvatar(url: widget.chat.avatar),
                       opacity: 0.0),
                 ),
                 SizedBox(width: widget.leadingGap),
@@ -193,7 +191,7 @@ class _ChatListTileState extends State<ChatListTile> {
     if (lastMessage == null) return "";
 
     if (lastMessage!.type == MessageType.Text) {
-      if (ChatListView.isGroup(widget.chat) && lastUser != null) {
+      if (widget.chat.isGroup() && lastUser != null) {
         return lastUser!.id == JwtPayload.myId
             ? localizationInstance.you
             : lastUser!.name;

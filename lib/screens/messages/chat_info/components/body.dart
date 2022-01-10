@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/participant_with_user.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/bottom_btns.dart';
@@ -12,6 +11,7 @@ import 'package:ink_mobile/screens/messages/chat_info/components/header.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/participants.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
 import 'package:ink_mobile/extensions/list_participant_with_user.dart';
+import 'package:ink_mobile/extensions/chat_table.dart';
 
 class Body extends StatefulWidget {
   final ChatTable chat;
@@ -24,7 +24,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  bool get isGroup => ChatListView.isGroup(widget.chat);
+  bool get isGroup => widget.chat.isGroup();
   late StreamSubscription<List<ParticipantWithUser>> participantsListener;
   List<ParticipantWithUser> participants = [];
 

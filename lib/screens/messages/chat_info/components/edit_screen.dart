@@ -6,11 +6,11 @@ import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/edit_entities.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/extensions/chat_table.dart';
 
 class ChatInfoEditScreen extends StatefulWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
@@ -23,7 +23,7 @@ class ChatInfoEditScreen extends StatefulWidget {
 
 class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
   ChatTable get _chat => widget.chatDatabaseCubit.selectedChat!;
-  bool get isGroup => ChatListView.isGroup(_chat);
+  bool get isGroup => _chat.isGroup();
 
   double _horizontalPadding = 20.0;
   late ChatInfoEditEntities entities;

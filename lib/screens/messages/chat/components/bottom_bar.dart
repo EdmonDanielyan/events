@@ -86,7 +86,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   }
 
   void _onMessaging(String val) {
-    entities.text = val;
+    entities.text = val.trim();
   }
 
   @override

@@ -29,7 +29,7 @@ class TextSender with Loggable {
   Future<bool> sendMessage(ChatTable chat, MessageTable message) async {
     bool success = await _sendTxtMessage(chat, message);
 
-    logger.finest(()=>'''
+    logger.finest(() => '''
       SUCCESSFULLY SENT MESSAGE: $success
       MESSAGE: $message
       CHAT: $chat
@@ -63,7 +63,7 @@ class TextSender with Loggable {
 
   Future<void> redeliverMessages({int? userId}) async {
     userId = userId ?? JwtPayload.myId;
-    logger.finest(()=>'redeliverMessages: $userId');
+    logger.finest(() => 'redeliverMessages: $userId');
 
     final unsentMessages =
         await db.getUnsentMessages(userId, orderingMode: OrderingMode.asc);
@@ -72,7 +72,7 @@ class TextSender with Loggable {
 
     if (unsentMessages.isNotEmpty) {
       for (final message in unsentMessages) {
-        logger.finest(()=>'''
+        logger.finest(() => '''
         REDELEVIRING MESSAGE: $message
         ''');
 
@@ -85,8 +85,8 @@ class TextSender with Loggable {
         }
 
         if (chats.containsKey(message.chatId)) {
-          logger.fine(
-                  ()=>'SENDING TO CHAT ${chats[message.chatId]!.name} - ${message.message}');
+          logger.fine(() =>
+              'SENDING TO CHAT ${chats[message.chatId]!.name} - ${message.message}');
 
           await sendMessage(chats[message.chatId]!, message);
         }
@@ -99,7 +99,7 @@ class TextSender with Loggable {
     required CustomTexting customTexting,
     required String chatId,
   }) async {
-    logger.finest(()=>'sendTextingMessage: $channel');
+    logger.finest(() => 'sendTextingMessage: $channel');
     return await natsProvider.sendSystemMessageToChannel(
       channel,
       MessageType.Texting,
