@@ -15,7 +15,8 @@ class MessageMixins {
 
   void bottomGapScroll(ScrollController controller) {
     if (controller.hasClients) {
-      if (isInBottom(controller)) ScrollBottom(controller).scrollSmooth();
+      if (isInBottom(controller, gap: 20))
+        ScrollBottom(controller).scrollSmooth();
     }
   }
 }
