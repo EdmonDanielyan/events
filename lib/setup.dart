@@ -63,4 +63,5 @@ Future<void> FCM_setup({
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
   };
+  await sl<PackageInfoProvider>().load();
 }

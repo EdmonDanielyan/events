@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -18,21 +20,26 @@ import 'firebase_options.dart';
 /// Background isolate for FCM. Usage in [PushNotificationManager.load] to configure FCM plugin
 ///
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("FirebaseMessagingBackgroundHandler");
   setIsolateName('FCM');
-  await FCM_setup();
-  var logger = Logger('firebaseMessagingBackgroundHandler');
-  logger.finest("FirebaseMessaging.onBackgroundMessage: ${message.data}");
-  var localNotificationsProvider = sl<LocalNotificationsProvider>();
-  var userId = await Token.getUserId();
-  if (userId.isEmpty) {
-    logger.warning("Not logged in app");
-    return;
-  }
-  await localNotificationsProvider.load();
-  localNotificationsProvider.showNotification(
-      message.data['title'] ?? "ИНК", message.data['body'] ?? "Новое сообщение",
-      id: message.hashCode,
-      payload: message.data['chat_id'], onSelect: (_) {});
+  runZonedGuarded(() async {
+    await FCM_setup();
+    var logger = Logger('firebaseMessagingBackgroundHandler');
+    logger.finest("FirebaseMessaging.onBackgroundMessage: ${message.data}");
+    var localNotificationsProvider = sl<LocalNotificationsProvider>();
+    var userId = await Token.getUserId();
+    if (userId.isEmpty) {
+      logger.warning("Not logged in app");
+      return;
+    }
+    await localNotificationsProvider.load();
+    localNotificationsProvider.showNotification(
+        message.data['title'] ?? "ИНК", message.data['body'] ?? "Новое сообщение",
+        id: message.hashCode,
+        payload: message.data['chat_id'], onSelect: (_) {});
+  },(Object error, StackTrace stack) {
+    Logger('firebaseMessagingBackgroundHandler').severe('Unexpected error', error, stack);
+  });
 }
 
 ///
