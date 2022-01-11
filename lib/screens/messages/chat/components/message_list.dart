@@ -49,7 +49,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
   ScrollController get scrollController => widget.scrollController;
   final Debouncer _debouncer = Debouncer(milliseconds: 500);
 
-  final int _fixedLimit = 15;
+  final int _fixedLimit = 25;
 
   late int _limit;
 
