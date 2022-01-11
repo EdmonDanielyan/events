@@ -19,7 +19,7 @@ import 'firebase_options.dart';
 ///
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   setIsolateName('FCM');
-  await setup();
+  await FCM_setup();
   var logger = Logger('firebaseMessagingBackgroundHandler');
   logger.finest("FirebaseMessaging.onBackgroundMessage: ${message.data}");
   var localNotificationsProvider = sl<LocalNotificationsProvider>();

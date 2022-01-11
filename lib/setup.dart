@@ -48,3 +48,19 @@ Future<void> setup({
     };
   await sl<PackageInfoProvider>().load();
 }
+
+Future<void> FCM_setup({
+  scope = defaultScope,
+}) async {
+  await sl.reset();
+  WidgetsFlutterBinding.ensureInitialized();
+  await $initGetIt(sl, environment: scope);
+
+  setupLogging(sl<FileLogAppender>(),
+      //todo: Убрать подробное логирование перед публикаций в сторы
+      forceLevel: Level.ALL);
+
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.dumpErrorToConsole(details);
+  };
+}
