@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>293227396933-o2r1fm9o02ao76r47odrrjkfq1halq5a.apps.googleusercontent.com</string>
+	<string>127480352333-o4fqvuasovuvth36vr0mtk51blt5pcag.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.293227396933-o2r1fm9o02ao76r47odrrjkfq1halq5a</string>
+	<string>com.googleusercontent.apps.127480352333-o4fqvuasovuvth36vr0mtk51blt5pcag</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDQlOmRoO0IitiL7u5ALRHaCZR_znv47fo</string>
+	<string>AIzaSyCElCSdC-y2wdXjbBA00h8wBYxeCGj8KqA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>293227396933</string>
+	<string>127480352333</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>ru.irkutskoil.portal</string>
 	<key>PROJECT_ID</key>
-	<string>ink-mobile-9dc08</string>
+	<string>ink-mobile-14dff</string>
 	<key>STORAGE_BUCKET</key>
-	<string>ink-mobile-9dc08.appspot.com</string>
+	<string>ink-mobile-14dff.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:293227396933:ios:dca6654dffcc0e46c2482c</string>
+	<string>1:127480352333:ios:33e71a6997f63ba4425604</string>
 </dict>
 </plist>
