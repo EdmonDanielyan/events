@@ -49,13 +49,12 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCElCSdC-y2wdXjbBA00h8wBYxeCGj8KqA',
-    appId: '1:127480352333:ios:33e71a6997f63ba4425604',
-    messagingSenderId: '127480352333',
-    projectId: 'ink-mobile-14dff',
-    storageBucket: 'ink-mobile-14dff.appspot.com',
-    iosClientId:
-        '127480352333-o4fqvuasovuvth36vr0mtk51blt5pcag.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDQlOmRoO0IitiL7u5ALRHaCZR_znv47fo',
+    appId: '1:293227396933:ios:dca6654dffcc0e46c2482c',
+    messagingSenderId: '293227396933',
+    projectId: 'ink-mobile-9dc08',
+    storageBucket: 'ink-mobile-9dc08.appspot.com',
+    iosClientId: '293227396933-o2r1fm9o02ao76r47odrrjkfq1halq5a.apps.googleusercontent.com',
     iosBundleId: 'ru.irkutskoil.portal',
   );
 }
