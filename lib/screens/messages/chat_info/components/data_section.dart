@@ -19,7 +19,6 @@ class ChatInfoDataSection extends StatelessWidget {
   static late AppLocalizations _strings;
   final Messenger messenger = sl<Messenger>();
 
-
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
@@ -30,7 +29,7 @@ class ChatInfoDataSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          filesAndLinksButton(context),
+          linksButton(context),
           SizedBox(height: 5.0),
           divider(),
           SizedBox(height: 5.0),
@@ -40,9 +39,8 @@ class ChatInfoDataSection extends StatelessWidget {
     );
   }
 
-  Widget filesAndLinksButton(BuildContext context) {
-    final title =
-        "${_strings.files} ${_strings.and.toLowerCase()} ${_strings.links.toLowerCase()}";
+  Widget linksButton(BuildContext context) {
+    final title = _strings.links;
     return ChatInfoBtnWrapper(
       onTap: () {
         OpenChat(messenger.chatDatabaseCubit, chat).call(

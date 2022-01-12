@@ -55,7 +55,8 @@ class _BodyState extends State<Body> {
         SearchBar(
           controller: _searchController,
           contentPadding: _contentPadding,
-          onChanged: (val) => _chatListCubit.setSearchValue(val),
+          onChanged: (val) => _chatListCubit.setSearchValue(val,
+              chatDatabaseCubit: _chatDatabaseCubit),
         ),
         Expanded(
           child: SingleChildScrollView(

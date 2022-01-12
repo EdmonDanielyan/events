@@ -43,17 +43,19 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
   ChatTable? get getChat => widget.chatDatabaseCubit.selectedChat;
 
-  Future<void> onSend(ChatEntities entities) async {
-    if (entities.text.isNotEmpty && getChat != null) {
-      clearForm();
+  Future<void> onSend(ChatEntities getEntities) async {
+    if (getEntities.text.isNotEmpty && getChat != null) {
+      final saveEntities = getEntities;
+
       final sendMessage = sl<SendMessage>();
-      final message = await sendMessage.save(getChat!, entities);
+      final message = await sendMessage.save(getChat!, saveEntities);
+      clearForm();
       if (sl<Messenger>().isConnected) {
         await sl<Messenger>().textSender.sendMessage(getChat!, message);
       }
 
       widget.chatCubit.clean();
-      entities.clear();
+
       ScrollBottom(widget.scrollController).jumpLazy();
     }
   }
@@ -83,6 +85,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   void clearForm() {
     _formKey.currentState!.reset();
     _messageTextEditingController.text = "";
+    entities.clear();
   }
 
   void _onMessaging(String val) {

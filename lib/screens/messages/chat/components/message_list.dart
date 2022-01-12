@@ -49,7 +49,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
   ScrollController get scrollController => widget.scrollController;
   final Debouncer _debouncer = Debouncer(milliseconds: 500);
 
-  final int _fixedLimit = 25;
+  final int _fixedLimit = 20;
 
   late int _limit;
 
@@ -85,12 +85,13 @@ class _MessageListState extends State<MessageList> with MessageMixins {
   void _listenToScroll() {
     if (scrollController.position.atEdge) {
       bool isTop = scrollController.position.pixels == 0;
-      if (isTop && MessageList.messagesWithUser != null) {
-        if (MessageList.messagesWithUser!.length >= _limit) {
-          setState(() {
-            _limit = _limit + _fixedLimit;
-          });
-        }
+
+      if (isTop &&
+          MessageList.messagesWithUser != null &&
+          MessageList.messagesWithUser!.length >= _limit) {
+        setState(() {
+          _limit = _limit + _fixedLimit;
+        });
       }
     }
   }
@@ -119,7 +120,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
                     _messagesLoaded();
 
                     return ListView.builder(
-                      controller: ScrollController(keepScrollOffset: false),
+                      controller: ScrollController(keepScrollOffset: true),
                       itemCount: MessageList.messagesWithUser!.length,
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
