@@ -22,6 +22,10 @@ abstract class Token {
 
   static Future<JwtPayload?> getJwtPayloadObject() async {
     String? jwtToken = await Token.getJwt();
+    return parseJwtPayloadObject(jwtToken);
+  }
+
+  static JwtPayload? parseJwtPayloadObject(String? jwtToken) {
     if (jwtToken != null) {
       List parts = jwtToken.split('.');
 
