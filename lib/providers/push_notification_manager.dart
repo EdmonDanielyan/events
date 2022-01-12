@@ -49,7 +49,7 @@ Future<void> fcmIsolate(RemoteMessage message) async {
     await localNotificationsProvider.showNotification(
         message.data['title'] ?? "ИНК",
         message.data['body'] ?? "Новое сообщение",
-        id: message.hashCode,
+        id: message.data['chat_id'].hashCode,
         payload: message.data['chat_id'],
         onSelect: (_) {});
   }, (Object error, StackTrace stack) {
