@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
@@ -21,19 +23,32 @@ import 'firebase_options.dart';
 ///
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("FirebaseMessagingBackgroundHandler");
+  if (Platform.isIOS) {
+    await compute(fcmIsolate, message);
+  } else {
+    fcmIsolate(message);
+  }
+}
+
+Future<void> fcmIsolate(RemoteMessage message) async {
   setIsolateName('FCM');
-  runZonedGuarded(() async {
+  await runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
     await FCM_setup();
     var logger = Logger('firebaseMessagingBackgroundHandler');
     logger.finest("FirebaseMessaging.onBackgroundMessage: ${message.data}");
-    var localNotificationsProvider = sl<LocalNotificationsProvider>();
     var userId = await Token.getUserId();
     if (userId.isEmpty) {
       logger.warning("Not logged in app");
       return;
     }
+    if (userId == message.data["user_id"]) {
+      logger.finest("Skip own messages");
+      return;
+    }
+    var localNotificationsProvider = sl<LocalNotificationsProvider>();
     await localNotificationsProvider.load();
-    localNotificationsProvider.showNotification(
+    await localNotificationsProvider.showNotification(
         message.data['title'] ?? "ИНК", message.data['body'] ?? "Новое сообщение",
         id: message.hashCode,
         payload: message.data['chat_id'], onSelect: (_) {});
@@ -41,7 +56,6 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     Logger('firebaseMessagingBackgroundHandler').severe('Unexpected error', error, stack);
   });
 }
-
 ///
 /// Wrap all tasks for Firebase Messaging aspects
 ///
