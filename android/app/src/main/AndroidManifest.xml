@@ -26,7 +26,6 @@
             android:label="${applicationName}"
             tools:overrideLibrary="com.xamdesign.safe_device"
             android:icon="@mipmap/ic_launcher">
-        <service android:name="com.pravera.flutter_foreground_task.service.ForegroundService" />
         <activity
                 android:name="com.yalantis.ucrop.UCropActivity"
                 android:screenOrientation="portrait"
@@ -40,7 +39,8 @@
             android:showWhenLocked="false"
             android:turnScreenOn="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false">
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
