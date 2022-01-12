@@ -26,7 +26,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   if (Platform.isIOS) {
     await compute(fcmIsolate, message);
   } else {
-    fcmIsolate(message);
+    await fcmIsolate(message);
   }
 }
 
