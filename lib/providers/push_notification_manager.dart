@@ -33,12 +33,14 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       return;
     }
     await localNotificationsProvider.load();
-    localNotificationsProvider.showNotification(
-        message.data['title'] ?? "ИНК", message.data['body'] ?? "Новое сообщение",
+    localNotificationsProvider.showNotification(message.data['title'] ?? "ИНК",
+        message.data['body'] ?? "Новое сообщение",
         id: message.hashCode,
-        payload: message.data['chat_id'], onSelect: (_) {});
-  },(Object error, StackTrace stack) {
-    Logger('firebaseMessagingBackgroundHandler').severe('Unexpected error', error, stack);
+        payload: message.data['chat_id'],
+        onSelect: (_) {});
+  }, (Object error, StackTrace stack) {
+    Logger('firebaseMessagingBackgroundHandler')
+        .severe('Unexpected error', error, stack);
   });
 }
 
@@ -117,12 +119,14 @@ class PushNotificationManager with Loggable {
         var localNotificationsProvider = sl<LocalNotificationsProvider>();
         await localNotificationsProvider.load();
         localNotificationsProvider.showNotification(
-            message.data['title'] ?? "ИНК",
-            message.data['body'] ?? "Новое сообщение",
-            payload: _chat.id,
-            id: message.hashCode, onSelect: (_) {
-          OpenChat(sl(), _chat)();
-        });
+          message.data['title'] ?? "ИНК",
+          message.data['body'] ?? "Новое сообщение",
+          payload: _chat.id,
+          id: _chat.id.hashCode,
+          onSelect: (_) {
+            OpenChat(sl(), _chat)();
+          },
+        );
       }
     }
   }
@@ -133,11 +137,10 @@ class PushNotificationManager with Loggable {
     logger.finest('Remote initial message: $message');
     if (message != null) {
       return _getChatFromRemote(message);
-    }
-    else {
+    } else {
       var openChatId = await sl<SecureStorage>().read("open_chat_id");
       logger.finest("openChatId: $openChatId");
-      if (openChatId != null && openChatId.isNotEmpty){
+      if (openChatId != null && openChatId.isNotEmpty) {
         await sl<SecureStorage>().write(key: "open_chat_id", value: "");
         return _getChatById(openChatId);
       }
@@ -156,7 +159,7 @@ class PushNotificationManager with Loggable {
     if (chatId != null) {
       var databaseCubit = sl<ChatDatabaseCubit>();
       var chatTable = await databaseCubit.db.selectChatById(chatId);
-      logger.finest(()=> "found chat: $chatTable");
+      logger.finest(() => "found chat: $chatTable");
       return chatTable;
     }
   }

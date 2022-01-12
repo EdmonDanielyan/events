@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -11,6 +12,9 @@ import 'package:ink_mobile/models/chat/chat_app_bar_modes.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/providers/messenger.dart';
+import 'package:ink_mobile/providers/notifications.dart';
+import 'package:ink_mobile/providers/push_notification_manager.dart';
+import 'package:ink_mobile/providers/push_notification_manager.dart';
 import 'package:ink_mobile/screens/messages/chat/components/bottom_bar.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_list.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dart';
@@ -28,12 +32,8 @@ class ChatBody extends StatefulWidget {
 
   final SelectableCubit<MessageWithUser> selectableCubit;
 
-  const ChatBody(
-      this.controller,
-      this.chatCubit,
-      this.chatDataBaseCubit,
-      this.chatScreenParams,
-      this.selectableCubit,
+  const ChatBody(this.controller, this.chatCubit, this.chatDataBaseCubit,
+      this.chatScreenParams, this.selectableCubit,
       {Key? key})
       : super(key: key);
 
@@ -45,6 +45,8 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
   ScrollController get controller => widget.controller;
   late KeyboardVisibilityController keyboardVisibilityController;
   int loadedMessagesCount = 0;
+  final LocalNotificationsProvider notificationsProvider =
+      sl<LocalNotificationsProvider>();
 
   List<MessageWithUser> loadedMessagesWithUser = [];
 
@@ -75,19 +77,31 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
     }
   }
 
-  void _scrollBottom() {
-    Future.delayed(Duration(milliseconds: 100), () {
+  void _scrollBottom({int milliseconds = 100}) {
+    Future.delayed(Duration(milliseconds: milliseconds), () {
       ScrollBottom(controller).jump();
     });
   }
 
   void _onMessagesLoaded() {
     loadedMessagesCount++;
-    if (loadedMessagesCount == 1 || isInBottom(controller, gap: 100)) {
+    if (isInBottom(controller, gap: 100)) {
       _scrollBottom();
       setMessagesToRead();
+      _hideNotifications();
     }
+
     _scrollListener();
+  }
+
+  void _hideNotifications() {
+    final messages = MessageList.messagesWithUser;
+    if (messages != null && messages.isNotEmpty) {
+      final chatId = messages.last.message?.chatId;
+      if (chatId != null) {
+        notificationsProvider.cancelNotification(chatId.hashCode);
+      }
+    }
   }
 
   void _scrollListener() {
@@ -110,6 +124,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
         _scrollListener();
       });
     });
+    _scrollBottom(milliseconds: 200);
   }
 
   Widget? _messageBar;
@@ -136,6 +151,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
         Expanded(
           child: SingleChildScrollView(
             controller: controller,
+            physics: BouncingScrollPhysics(),
             child: MessageList(
               messagesLoaded: _onMessagesLoaded,
               scrollSafe: _scrollSafe,
@@ -147,18 +163,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
             ),
           ),
         ),
-        if (widget.chatScreenParams.showTextField) ...[
-          BlocBuilder<ChatCubit, ChatCubitState>(
-            bloc: widget.chatCubit,
-            builder: (context, state) {
-              if (state.appBarMode != ChatAppBarMode.SEARCH_BAR) {
-                return messageBar;
-              } else {
-                return const SizedBox();
-              }
-            },
-          ),
-        ],
+        if (widget.chatScreenParams.showTextField) ...[messageBar],
       ],
     );
   }
@@ -182,6 +187,10 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
             onFieldSubmitted: (val) => widget.chatCubit.emitSearchValue(val),
             onUp: () => widget.chatCubit.upSearch(),
             onDown: () => widget.chatCubit.downSearch(),
+            onClose: () {
+              widget.chatCubit.emptySearch();
+              widget.chatCubit.emitAppBarEnum(ChatAppBarMode.INITIAL);
+            },
           ),
         ),
       ));

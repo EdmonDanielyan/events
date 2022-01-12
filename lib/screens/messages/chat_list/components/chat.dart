@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
+import 'package:ink_mobile/components/highlight_text.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -176,10 +177,10 @@ class _ChatListTileState extends State<ChatListTile> {
 
   Widget _displayBody() {
     if (lastMessage == null) return const SizedBox();
-
     return ChatMessage(
       displayName: _getDisplayName(),
       message: lastMessage!.message,
+      highlightValue: widget.highlightValue,
     );
   }
 

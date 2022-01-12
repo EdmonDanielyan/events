@@ -64,7 +64,7 @@ class TextMessageListener extends ChannelListener {
         created: ${message.createdAt}
         
         ''');
-        chatDatabaseCubit.db.updateMessageById(newMessage.id, newMessage);
+        await chatDatabaseCubit.db.updateMessageById(newMessage.id, newMessage);
       } else {
         logger.finest(() => '''
         MESSAGE INSERTING

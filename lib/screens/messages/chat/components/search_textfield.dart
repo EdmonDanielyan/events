@@ -7,6 +7,7 @@ class ChatSearchTextfield extends StatelessWidget {
   final void Function(String)? onFieldSubmitted;
   final void Function()? onUp;
   final void Function()? onDown;
+  final void Function()? onClose;
   final Color? textColor;
   const ChatSearchTextfield({
     Key? key,
@@ -14,13 +15,14 @@ class ChatSearchTextfield extends StatelessWidget {
     this.onFieldSubmitted,
     this.onUp,
     this.onDown,
+    required this.onClose,
     this.textColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
-    final _buttonWidth = (onUp != null || onDown != null) ? 100.0 : 0.0;
+    final _buttonWidth = (onUp != null || onDown != null) ? 150.0 : 0.0;
     return Stack(
       children: [
         TextFormField(
@@ -65,6 +67,14 @@ class ChatSearchTextfield extends StatelessWidget {
                     onTap: onDown,
                   ),
                 ],
+                SizedBox(width: 5),
+                InkWell(
+                  child: Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Icon(Icons.close),
+                  ),
+                  onTap: onClose,
+                ),
               ],
             ),
           ),

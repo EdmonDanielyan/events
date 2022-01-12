@@ -54,14 +54,12 @@ class SendMessage with Loggable {
 
   Future<MessageTable> _sendMessageToDatabase(
       ChatTable chat, ChatEntities chatEntities) async {
-    final lastMessageInChat = await chatDatabaseCubit.db
-        .selectMessageByChatIdInOrder(chat.id, OrderingMode.desc);
     MessageTable message = _generateMessage(
       chat.id,
       chatEntities.text,
       repliedMessageId: chatEntities.repliedMessageId,
       type: chatEntities.type,
-      sequence: (lastMessageInChat?.sequence ?? 0) + 1,
+      sequence: 500000 + chatEntities.seq,
     );
 
     await addMessage(chat, message);

@@ -23,15 +23,15 @@ part 'chat_db.g.dart';
   ParticipantTables,
   ChannelTables
 ])
-class ChatDatabase extends _$ChatDatabase with Loggable{
+class ChatDatabase extends _$ChatDatabase with Loggable {
   ChatDatabase(@Named("localDatabasePassword") String localDatabasePassword,
       @Named("userId") String userId)
       : super(
           EncryptedExecutor.inDatabaseFolder(
-            path: "chat_db_$userId.sqlite",
-            password: localDatabasePassword,
-            logStatements: false //kDebugMode,
-          ),
+              path: "chat_db_$userId.sqlite",
+              password: localDatabasePassword,
+              logStatements: false //kDebugMode,
+              ),
         );
 
   //CHATS
@@ -141,6 +141,18 @@ class ChatDatabase extends _$ChatDatabase with Loggable{
   Future<MessageTable?> searchMessageByText(String query) =>
       (select(messageTables)..where((tbl) => tbl.message.contains(query)))
           .getSingleOrNull();
+  Future<MessageTable?> searchMessageByTextAndChatId(
+          String query, String chatId) =>
+      (select(messageTables)
+            ..where((tbl) =>
+                tbl.message.contains(query) & tbl.chatId.equals(chatId))
+            ..orderBy([
+              (t) =>
+                  OrderingTerm(expression: t.sequence, mode: OrderingMode.desc),
+            ])
+            ..limit(1))
+          .getSingleOrNull();
+
   Future<List<MessageTable>> getUnsentMessages(int userId,
           {OrderingMode orderingMode = OrderingMode.asc}) =>
       (select(messageTables)
@@ -155,7 +167,6 @@ class ChatDatabase extends _$ChatDatabase with Loggable{
           .get();
   Stream<List<MessageWithUser>> watchChatMessages(String chatId,
       {OrderingMode orderMode = OrderingMode.asc, int? limit}) {
-
     final sel = (select(messageTables)
           ..where((tbl) => tbl.chatId.equals(chatId)))
         .join([

@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
+
 ///
 /// Wrapper for Local Notification
 ///
@@ -85,5 +86,9 @@ class LocalNotificationsProvider with Loggable {
       platformChannelSpecifics,
       payload: payload,
     );
+  }
+
+  Future<void> cancelNotification(int id) async {
+    await _flutterLocalNotificationsPlugin.cancel(id);
   }
 }
