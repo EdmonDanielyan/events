@@ -19,11 +19,9 @@ class LocalNotificationsProvider with Loggable {
         requestBadgePermission: false, defaultPresentBadge: false);
     var _initializationSettingsAndroid =
         AndroidInitializationSettings('note_icon');
-    var _initializationSettingsMacOS = MacOSInitializationSettings();
     var _initializationSettings = InitializationSettings(
       android: _initializationSettingsAndroid,
       iOS: _initializationSettingsIOS,
-      macOS: _initializationSettingsMacOS,
     );
     await _flutterLocalNotificationsPlugin.initialize(
       _initializationSettings,

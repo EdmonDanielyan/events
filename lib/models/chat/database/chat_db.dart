@@ -174,8 +174,8 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
     ]);
     sel.orderBy([
       orderMode == OrderingMode.asc
-          ? OrderingTerm.asc(messageTables.created)
-          : OrderingTerm.desc(messageTables.created)
+          ? OrderingTerm.asc(messageTables.sequence)
+          : OrderingTerm.desc(messageTables.sequence)
     ]);
 
     if (limit != null) {

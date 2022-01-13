@@ -156,7 +156,6 @@ class ChannelsRegistry with Loggable {
     if (channels.isNotEmpty) {
       for (final channel in channels) {
         Int64 sequence = strToSequence(channel.sequence);
-
         await _subscribeToChannel(
           channel.messageType,
           channel.to,
@@ -177,7 +176,14 @@ class ChannelsRegistry with Loggable {
 
     if (type == MessageType.Text) {
       //We ignore await here to speed up channel enumeration
-      pushNotificationManager.subscribeToTopic(channel);
+      var chatId = channel.split(".").last;
+      var isPushNeed = ((await chatDatabaseCubit.db.selectChatById(chatId))?.notificationsOn) ?? true;
+      if (isPushNeed) {
+        pushNotificationManager.subscribeToTopic(channel);
+      }
+      else {
+        pushNotificationManager.unsubscribeFromTopic(channel);
+      }
     }
 
     if (!natsProvider.isConnected) {

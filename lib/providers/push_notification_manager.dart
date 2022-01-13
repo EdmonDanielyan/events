@@ -34,7 +34,11 @@ Future<void> fcmIsolate(RemoteMessage message) async {
     final FlutterSecureStorage storage = FlutterSecureStorage();
     final String? jwtToken = await storage.read(key: 'token');
     final JwtPayload? jwtPayload = Token.parseJwtPayloadObject(jwtToken);
-    final userId = jwtPayload!.userId.toString();
+    if (jwtPayload == null) {
+      logger.warning("Not logged in app");
+      return;
+    }
+    final userId = jwtPayload.userId.toString();
     logger.finest("FirebaseMessaging.userId: $userId");
     if (userId.isEmpty) {
       logger.warning("Not logged in app");

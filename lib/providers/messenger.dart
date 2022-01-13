@@ -73,8 +73,10 @@ class Messenger with Loggable {
     this.registry = sl();
     this.chatCreation = sl();
     this.onlineSender = sl();
+    this.pushNotificationManager = sl<PushNotificationManager>();
     _configureNatsProvider();
     await natsProvider.load();
+
   }
 
   Future<void> _configureNatsProvider() async {

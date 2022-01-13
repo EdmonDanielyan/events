@@ -51,6 +51,13 @@ class ChatFunctions {
   void updateChat(ChatTable chat) {
     chatDatabaseCubit.setSelectedChat(chat);
     chatDatabaseCubit.db.updateChatById(chat.id, chat);
+    var topic = messenger.natsProvider.getGroupTextChannelById(chat.id);
+    if (chat.notificationsOn ?? true) {
+      messenger.pushNotificationManager.subscribeToTopic(topic);
+    }
+    else {
+      messenger.pushNotificationManager.unsubscribeFromTopic(topic);
+    }
   }
 
   Future<void> updateMessageStatus(

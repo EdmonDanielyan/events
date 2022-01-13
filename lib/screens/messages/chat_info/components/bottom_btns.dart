@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/extensions/chat_table.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:ink_mobile/extensions/chat_table.dart';
 
 class ChatInfoBottomBtns extends StatelessWidget {
   final ChatTable chat;
@@ -18,6 +18,7 @@ class ChatInfoBottomBtns extends StatelessWidget {
 
   void _clearMessages() {
     messenger.chatFunctions.deleteAllChatMessages(chat.id);
+    messenger.chatFunctions.updateChat(chat.copyWith(updatedAt: DateTime.now()));
   }
 
   Future<void> _deleteChat(BuildContext context) async {
