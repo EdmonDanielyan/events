@@ -49,10 +49,12 @@ Future<void> fcmIsolate(RemoteMessage message) async {
       return;
     }
     var localNotificationsProvider = LocalNotificationsProvider();
-    // localNotificationsProvider.displayHandler = (data){
-    //
-    // };
-    // await localNotificationsProvider.load();
+    try {
+      await localNotificationsProvider.load();
+    } catch (error) {
+      Logger('firebaseMessagingBackgroundHandler')
+          .severe('Unexpected error', error);
+    }
     await localNotificationsProvider.showNotification(
         message.data['title'] ?? "ИНК",
         message.data['body'] ?? "Новое сообщение",

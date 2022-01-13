@@ -59,20 +59,6 @@ class LocalNotificationsProvider with Loggable {
             ]);
       }
     });
-
-    // AwesomeNotifications().displayedStream.listen((event) {
-    //   if (_displayHandler != null && event.payload != null) {
-    //     _displayHandler!(event.payload!);
-    //   }
-    // });
-
-    // AwesomeNotifications()
-    //     .actionStream
-    //     .listen((ReceivedNotification receivedNotification) {
-    //   if (_displayHandler != null && receivedNotification.payload != null) {
-    //     _actionHandler!(receivedNotification.payload!);
-    //   }
-    // });
   }
 
   Future showNotification(String title, String body,
@@ -113,10 +99,6 @@ class LocalNotificationsProvider with Loggable {
         required String? channelKey,
         required List<NotificationPermission> permissionList}
       ) async {
-
-    // Check if the basic permission was conceived by the user
-    // if(!await requestBasicPermissionToSendNotifications(context))
-    //   return [];
 
     // Check which of the permissions you need are allowed at this time
     List<NotificationPermission> permissionsAllowed = await AwesomeNotifications().checkPermissionList(
@@ -159,7 +141,7 @@ class LocalNotificationsProvider with Loggable {
           context: context,
           builder: (context) => AlertDialog(
             backgroundColor: Color(0xfffbfbfb),
-            title: Text('Awesome Notificaitons needs your permission',
+            title: Text('Приложение «ИНК-Портал» запрашивает разрешение на отправку Вам уведомлений.',
               textAlign: TextAlign.center,
               maxLines: 2,
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
@@ -167,23 +149,10 @@ class LocalNotificationsProvider with Loggable {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset(
-                  'assets/images/animated-clock.gif',
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  fit: BoxFit.fitWidth,
-                ),
                 Text(
-                  'To proceede, you need to enable the permissions above'+
-                      (channelKey?.isEmpty ?? true ? '' : ' on channel $channelKey')+':',
+                  'Уведомления могут содержать напоминания, звуки и наклейки значков. Их конфигурирование возможно в Настройках.',
                   maxLines: 2,
                   textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 5),
-                Text(
-                  lockedPermissions.join(', ').replaceAll('NotificationPermission.', ''),
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -191,8 +160,8 @@ class LocalNotificationsProvider with Loggable {
               TextButton(
                   onPressed: (){ Navigator.pop(context); },
                   child: Text(
-                    'Deny',
-                    style: TextStyle(color: Colors.red, fontSize: 18),
+                    'Запретить',
+                    style: TextStyle(fontSize: 18),
                   )
               ),
               TextButton(
@@ -213,8 +182,8 @@ class LocalNotificationsProvider with Loggable {
                   Navigator.pop(context);
                 },
                 child: Text(
-                  'Allow',
-                  style: TextStyle(color: Colors.deepPurple, fontSize: 18, fontWeight: FontWeight.bold),
+                  'Разрешить',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
