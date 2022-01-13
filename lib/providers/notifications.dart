@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/app.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
@@ -13,13 +14,6 @@ import 'package:ink_mobile/setup.dart';
 class LocalNotificationsProvider with Loggable {
   Function(Map<String, String>)? _displayHandler;
   Function(Map<String, String>)? _actionHandler;
-  static final permissions = const [
-    NotificationPermission.Alert,
-    NotificationPermission.Sound,
-    NotificationPermission.Vibration,
-    NotificationPermission.Light,
-    NotificationPermission.PreciseAlarms,
-  ];
 
   set displayHandler(Function(Map<String, String>) value) {
     _displayHandler = value;
@@ -50,6 +44,19 @@ class LocalNotificationsProvider with Loggable {
               channelGroupName: 'Messenger group')
         ],
         debug: true);
+
+    var isNotificationAllowed = AwesomeNotifications().isNotificationAllowed();
+    logger.finest(
+        'requestUserPermissions.isNotificationAllowed: $isNotificationAllowed');
+    await requestUserPermissions(App.getContext!,
+        channelKey: 'messenger_channel',
+        permissionList: const [
+          NotificationPermission.Alert,
+          NotificationPermission.Sound,
+          NotificationPermission.Vibration,
+          NotificationPermission.Light,
+          NotificationPermission.PreciseAlarms,
+        ]);
   }
 
   Future showNotification(String title, String body,
@@ -84,16 +91,7 @@ class LocalNotificationsProvider with Loggable {
     await AwesomeNotifications().cancel(id);
   }
 
-  Future<bool> checkPermissions(BuildContext context) async {
-    var checkedList = await AwesomeNotifications().checkPermissionList(
-        channelKey: 'messenger_channel', permissions: permissions);
-    if (checkedList.length != permissions.length){
-      return (await _requestUserPermissions(context, channelKey: 'messenger_channel', permissionList: permissions)).length == permissions.length;
-    }
-    return true;
-  }
-
-  Future<List<NotificationPermission>> _requestUserPermissions(
+  Future<List<NotificationPermission>> requestUserPermissions(
       BuildContext context,
       {
       // if you only intends to request the permissions until app level, set the channelKey value to null

@@ -20,7 +20,6 @@ class InitPage extends StatelessWidget with Loggable{
       body: BlocConsumer<InitialCubit, InitialState>(
         listener: (context, state) async {
           if (state.type == InitialStateType.LOAD_MAIN) {
-            await sl<LocalNotificationsProvider>().checkPermissions(context);
             Navigator.pushNamedAndRemoveUntil(
                       context, '/app_layer', (route) => false);
           }
