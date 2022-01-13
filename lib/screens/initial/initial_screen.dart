@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
+import 'package:ink_mobile/providers/notifications.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_cubit.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_state.dart';
+import 'package:ink_mobile/setup.dart';
 
 class InitPage extends StatelessWidget with Loggable{
   final InitialCubit cubit;
@@ -18,6 +20,7 @@ class InitPage extends StatelessWidget with Loggable{
       body: BlocConsumer<InitialCubit, InitialState>(
         listener: (context, state) async {
           if (state.type == InitialStateType.LOAD_MAIN) {
+            await sl<LocalNotificationsProvider>().checkPermissions(context);
             Navigator.pushNamedAndRemoveUntil(
                       context, '/app_layer', (route) => false);
           }

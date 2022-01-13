@@ -1,7 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/app.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
@@ -14,6 +13,13 @@ import 'package:ink_mobile/setup.dart';
 class LocalNotificationsProvider with Loggable {
   Function(Map<String, String>)? _displayHandler;
   Function(Map<String, String>)? _actionHandler;
+  static final permissions = const [
+    NotificationPermission.Alert,
+    NotificationPermission.Sound,
+    NotificationPermission.Vibration,
+    NotificationPermission.Light,
+    NotificationPermission.PreciseAlarms,
+  ];
 
   set displayHandler(Function(Map<String, String>) value) {
     _displayHandler = value;
@@ -44,21 +50,6 @@ class LocalNotificationsProvider with Loggable {
               channelGroupName: 'Messenger group')
         ],
         debug: true);
-
-    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      if (!isAllowed) {
-        requestUserPermissions(
-            App.getContext!,
-            channelKey: 'messenger_channel',
-            permissionList: const [
-              NotificationPermission.Alert,
-              NotificationPermission.Sound,
-              NotificationPermission.Vibration,
-              NotificationPermission.Light,
-              NotificationPermission.PreciseAlarms,
-            ]);
-      }
-    });
   }
 
   Future showNotification(String title, String body,
@@ -93,58 +84,60 @@ class LocalNotificationsProvider with Loggable {
     await AwesomeNotifications().cancel(id);
   }
 
-  static Future<List<NotificationPermission>> requestUserPermissions(
-      BuildContext context,{
-        // if you only intends to request the permissions until app level, set the channelKey value to null
-        required String? channelKey,
-        required List<NotificationPermission> permissionList}
-      ) async {
+  Future<bool> checkPermissions(BuildContext context) async {
+    var checkedList = await AwesomeNotifications().checkPermissionList(
+        channelKey: 'messenger_channel', permissions: permissions);
+    if (checkedList.length != permissions.length){
+      return (await _requestUserPermissions(context, channelKey: 'messenger_channel', permissionList: permissions)).length == permissions.length;
+    }
+    return true;
+  }
 
+  Future<List<NotificationPermission>> _requestUserPermissions(
+      BuildContext context,
+      {
+      // if you only intends to request the permissions until app level, set the channelKey value to null
+      required String? channelKey,
+      required List<NotificationPermission> permissionList}) async {
     // Check which of the permissions you need are allowed at this time
-    List<NotificationPermission> permissionsAllowed = await AwesomeNotifications().checkPermissionList(
-        channelKey: channelKey,
-        permissions: permissionList
-    );
+    List<NotificationPermission> permissionsAllowed =
+        await AwesomeNotifications().checkPermissionList(
+            channelKey: channelKey, permissions: permissionList);
 
     // If all permissions are allowed, there is nothing to do
-    if(permissionsAllowed.length == permissionList.length)
+    if (permissionsAllowed.length == permissionList.length)
       return permissionsAllowed;
 
     // Refresh the permission list with only the disallowed permissions
     List<NotificationPermission> permissionsNeeded =
-    permissionList.toSet().difference(permissionsAllowed.toSet()).toList();
+        permissionList.toSet().difference(permissionsAllowed.toSet()).toList();
 
     // Check if some of the permissions needed request user's intervention to be enabled
-    List<NotificationPermission> lockedPermissions = await AwesomeNotifications().shouldShowRationaleToRequest(
-        channelKey: channelKey,
-        permissions: permissionsNeeded
-    );
+    List<NotificationPermission> lockedPermissions =
+        await AwesomeNotifications().shouldShowRationaleToRequest(
+            channelKey: channelKey, permissions: permissionsNeeded);
 
     // If there is no permissions depending on user's intervention, so request it directly
-    if(lockedPermissions.isEmpty){
-
+    if (lockedPermissions.isEmpty) {
       // Request the permission through native resources.
       await AwesomeNotifications().requestPermissionToSendNotifications(
-          channelKey: channelKey,
-          permissions: permissionsNeeded
-      );
+          channelKey: channelKey, permissions: permissionsNeeded);
 
       // After the user come back, check if the permissions has successfully enabled
       permissionsAllowed = await AwesomeNotifications().checkPermissionList(
-          channelKey: channelKey,
-          permissions: permissionsNeeded
-      );
-    }
-    else {
-      showDialog(
+          channelKey: channelKey, permissions: permissionsNeeded);
+    } else {
+      await showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Приложение «ИНК-Портал» запрашивает разрешение на отправку Вам уведомлений.'),
+            title: const Text(
+                'Приложение «ИНК-Портал» запрашивает разрешение на отправку Вам уведомлений.'),
             content: SingleChildScrollView(
               child: ListBody(
                 children: const <Widget>[
-                  Text('Уведомления могут содержать напоминания, звуки и наклейки значков. Их конфигурирование возможно в Настройках.'),
+                  Text(
+                      'Уведомления могут содержать напоминания, звуки и наклейки значков. Их конфигурирование возможно в Настройках.'),
                 ],
               ),
             ),
@@ -159,15 +152,15 @@ class LocalNotificationsProvider with Loggable {
                 child: const Text('Разрешить'),
                 onPressed: () async {
                   // Request the permission through native resources. Only one page redirection is done at this point.
-                  await AwesomeNotifications().requestPermissionToSendNotifications(
-                      channelKey: channelKey,
-                      permissions: lockedPermissions
-                  );
+                  await AwesomeNotifications()
+                      .requestPermissionToSendNotifications(
+                          channelKey: channelKey,
+                          permissions: lockedPermissions);
                   // After the user come back, check if the permissions has successfully enabled
-                  permissionsAllowed = await AwesomeNotifications().checkPermissionList(
-                      channelKey: channelKey,
-                      permissions: lockedPermissions
-                  );
+                  permissionsAllowed = await AwesomeNotifications()
+                      .checkPermissionList(
+                          channelKey: channelKey,
+                          permissions: lockedPermissions);
                   Navigator.pop(context);
                 },
               ),
