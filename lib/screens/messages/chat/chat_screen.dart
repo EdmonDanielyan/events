@@ -103,10 +103,12 @@ class ChatScreenState extends State<ChatScreen> {
               _setMessagesToRead();
             },
             buildWhen: (previous, current) {
-              return previous.scrollBtn != current.scrollBtn;
+              return previous.scrollBtn != current.scrollBtn ||
+                  previous.appBarMode != current.appBarMode;
             },
             builder: (context, state) {
-              return state.scrollBtn
+              return state.scrollBtn &&
+                      state.appBarMode != ChatAppBarMode.SEARCH_BAR
                   ? ChatScrollBtn(onPressed: _onScrollBtnClick)
                   : const SizedBox();
             },
