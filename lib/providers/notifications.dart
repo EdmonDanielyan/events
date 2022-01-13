@@ -136,58 +136,44 @@ class LocalNotificationsProvider with Loggable {
       );
     }
     else {
-      // If you need to show a rationale to educate the user to conceived the permission, show it
-      await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            backgroundColor: Color(0xfffbfbfb),
-            title: Text('Приложение «ИНК-Портал» запрашивает разрешение на отправку Вам уведомлений.',
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Приложение «ИНК-Портал» запрашивает разрешение на отправку Вам уведомлений.'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text('Уведомления могут содержать напоминания, звуки и наклейки значков. Их конфигурирование возможно в Настройках.'),
+                ],
+              ),
             ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Уведомления могут содержать напоминания, звуки и наклейки значков. Их конфигурирование возможно в Настройках.',
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-            actions: [
+            actions: <Widget>[
               TextButton(
-                  onPressed: (){ Navigator.pop(context); },
-                  child: Text(
-                    'Запретить',
-                    style: TextStyle(fontSize: 18),
-                  )
+                child: const Text('Запретить'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
               TextButton(
+                child: const Text('Разрешить'),
                 onPressed: () async {
-
                   // Request the permission through native resources. Only one page redirection is done at this point.
                   await AwesomeNotifications().requestPermissionToSendNotifications(
                       channelKey: channelKey,
                       permissions: lockedPermissions
                   );
-
                   // After the user come back, check if the permissions has successfully enabled
                   permissionsAllowed = await AwesomeNotifications().checkPermissionList(
                       channelKey: channelKey,
                       permissions: lockedPermissions
                   );
-
                   Navigator.pop(context);
                 },
-                child: Text(
-                  'Разрешить',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
               ),
             ],
-          )
+          );
+        },
       );
     }
 
