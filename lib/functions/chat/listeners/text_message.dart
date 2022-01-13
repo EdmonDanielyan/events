@@ -47,7 +47,7 @@ class TextMessageListener extends ChannelListener {
 
       final newMessage = fields.message.copyWith(
         sequence: message.sequence.toInt(),
-        created: message.createdAt,
+        created: message.serverTime,
         status: (fields.message.status == MessageStatus.SENDING ||
                 fields.message.status == MessageStatus.ERROR)
             ? MessageStatus.SENT
@@ -61,7 +61,7 @@ class TextMessageListener extends ChannelListener {
         logger.finest(() => '''
         MESSAGE EXISTS
         message: $newMessage
-        created: ${message.createdAt}
+        created: ${message.serverTime}
         
         ''');
         await chatDatabaseCubit.db.updateMessageById(newMessage.id, newMessage);
@@ -69,7 +69,7 @@ class TextMessageListener extends ChannelListener {
         logger.finest(() => '''
         MESSAGE INSERTING
         message: $newMessage
-        created: ${message.createdAt}
+        created: ${message.serverTime}
         
         ''');
         ChatTable? myChat =

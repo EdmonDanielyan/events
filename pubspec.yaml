@@ -66,7 +66,7 @@ dependencies:
         git:
             url: https://github.com/simolus3/moor.git
             path: extras/encryption
-    flutter_local_notifications: ^9.2.0
+    awesome_notifications:
     archive:
     share_plus:
     logging:

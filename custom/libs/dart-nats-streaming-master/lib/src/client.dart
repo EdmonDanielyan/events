@@ -220,6 +220,9 @@ class NatsStreamingClient {
         _logger.finest('$_req');
         unawaited(pingResponseWatchdog());
         _logger.finest(() => 'Response: $_connectResponse');
+        if (_connectResponse?.hasError() ?? false){
+          throw 'NATS protocol: $_connectResponse';
+        }
         _connected = true;
       } catch (e) {
         _logger.severe('Error during request', e);

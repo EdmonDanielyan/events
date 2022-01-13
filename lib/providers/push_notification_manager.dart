@@ -49,12 +49,15 @@ Future<void> fcmIsolate(RemoteMessage message) async {
       return;
     }
     var localNotificationsProvider = LocalNotificationsProvider();
-    await localNotificationsProvider.load();
+    // localNotificationsProvider.displayHandler = (data){
+    //
+    // };
+    // await localNotificationsProvider.load();
     await localNotificationsProvider.showNotification(
         message.data['title'] ?? "ИНК",
         message.data['body'] ?? "Новое сообщение",
         id: message.data['chat_id'].hashCode,
-        payload: message.data['chat_id'],
+        payload: message.data.cast(),
         onSelect: (_) {});
   }, (Object error, StackTrace stack) {
     Logger('firebaseMessagingBackgroundHandler')
@@ -129,17 +132,18 @@ class PushNotificationManager with Loggable {
   }
 
   Future<void> showNotificationIfNeeded(RemoteMessage message) async {
+    logger.finest('showNotificationIfNeeded');
     if (!_isMyMessage(message)) {
       var _chat = await _getChatFromRemote(message);
       bool isChatOpened =
           sl<ChatDatabaseCubit>().getSelectedChatId == _chat?.id;
       if (_chat != null && !isChatOpened) {
         var localNotificationsProvider = sl<LocalNotificationsProvider>();
-        await localNotificationsProvider.load();
+        // await localNotificationsProvider.load();
         localNotificationsProvider.showNotification(
           message.data['title'] ?? "ИНК",
           message.data['body'] ?? "Новое сообщение",
-          payload: _chat.id,
+          payload: message.data.cast(),
           id: _chat.id.hashCode,
           onSelect: (_) {
             OpenChat(sl(), _chat)();

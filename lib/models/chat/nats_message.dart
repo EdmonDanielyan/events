@@ -10,6 +10,7 @@ import 'package:uuid/uuid.dart';
 abstract class Message {
   abstract String id;
   abstract PayloadType type;
+  abstract DateTime serverTime;
   abstract DateTime createdAt;
   abstract bool needAck;
   abstract String from;
@@ -22,13 +23,14 @@ class BaseMessage extends Message {
   late String id;
   late PayloadType type;
   late DateTime createdAt;
+  late DateTime serverTime;
   late bool needAck;
   late String from;
   late String to;
   late Packer _packer;
   late Int64 sequence;
 
-  BaseMessage(id, type, needAck, createdAt, from, to) {
+  BaseMessage(id, type, needAck, createdAt, from, to, serverTime) {
     this.type = type ?? PayloadType.empty;
     this.id = id ?? Uuid().v4();
     this.needAck = needAck ?? true;
@@ -36,6 +38,7 @@ class BaseMessage extends Message {
     this.from = from ?? "";
     this.to = to ?? "";
     this.sequence = Int64.ZERO;
+    this.serverTime = serverTime;
   }
 
   Packer packer() {
@@ -58,7 +61,7 @@ class BaseMessage extends Message {
 
   @override
   String toString() {
-    return '{id: $id, type: $type, createdAt: $createdAt, needAck: $needAck, from: $from, to: $to, sequence: $sequence}';
+    return '{id: $id, type: $type, createdAt: $createdAt, needAck: $needAck, from: $from, to: $to, sequence: $sequence, serverTime: $serverTime}';
   }
 }
 
@@ -97,8 +100,8 @@ class SystemPayload {
 class NatsMessage extends BaseMessage {
   late Object? payload = "";
 
-  NatsMessage({id, type, needAck, createdAt, from, to})
-      : super(id, type, needAck, createdAt, from, to);
+  NatsMessage({id, type, needAck, createdAt, from, to, serverTime})
+      : super(id, type, needAck, createdAt, from, to, serverTime);
 
   void setPayload(String payload) {
     this.type = PayloadType.message;

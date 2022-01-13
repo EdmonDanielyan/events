@@ -16,6 +16,7 @@ import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:logging/logging.dart';
+import 'package:uuid/uuid.dart';
 
 const PUBLIC_CHATS = 'ink.messaging.public';
 const GROUP_CHANNEL = 'ink.messaging.group';
@@ -169,7 +170,7 @@ class NatsProvider {
         certificate: certificate,
         clusterID: natsCluster,
         pingMaxAttempts: 3,
-        clientID: "$userId-$deviceVirtualId",
+        clientID: "$userId-$deviceVirtualId-${Uuid().v4()}",
         retryReconnect: true,
         connectOption:
             nats.ConnectOption(tlsRequired: true, auth_token: natsToken));
@@ -226,6 +227,7 @@ class NatsProvider {
     var sequence = dataMessage.sequence;
     var message = NatsMessage.fromBytes(payload);
     message.sequence = sequence;
+    message.serverTime = DateTime.fromMillisecondsSinceEpoch((dataMessage.timestamp.toDouble() / 1e6).truncate(), isUtc: true);
     return message;
   }
 
