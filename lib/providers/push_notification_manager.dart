@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
-import 'package:ink_mobile/core/logging/logging.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -26,7 +25,6 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> fcmIsolate(RemoteMessage message) async {
-  setIsolateName('FCM');
   var logger = Logger('FCM');
   logger.finest("FirebaseMessaging.onBackgroundMessage: ${message.data}");
   await runZonedGuarded(() async {
@@ -49,12 +47,14 @@ Future<void> fcmIsolate(RemoteMessage message) async {
       return;
     }
     var localNotificationsProvider = LocalNotificationsProvider();
-    await localNotificationsProvider.showNotification(
-        message.data['title'] ?? "ИНК",
-        message.data['body'] ?? "Новое сообщение",
-        id: message.data['chat_id'].hashCode,
-        payload: message.data.cast(),
-        onSelect: (_) {});
+    if (!message.data.containsKey('hidden')) {
+      await localNotificationsProvider.showNotification(
+          message.data['title'] ?? "ИНК",
+          message.data['body'] ?? "Новое сообщение",
+          id: message.data['chat_id'].hashCode,
+          payload: message.data.cast(),
+          onSelect: (_) {});
+    }
   }, (Object error, StackTrace stack) {
     Logger('firebaseMessagingBackgroundHandler')
         .severe('Unexpected error', error, stack);
@@ -135,16 +135,17 @@ class PushNotificationManager with Loggable {
           sl<ChatDatabaseCubit>().getSelectedChatId == _chat?.id;
       if (_chat != null && !isChatOpened) {
         var localNotificationsProvider = sl<LocalNotificationsProvider>();
-        // await localNotificationsProvider.load();
-        localNotificationsProvider.showNotification(
-          message.data['title'] ?? "ИНК",
-          message.data['body'] ?? "Новое сообщение",
-          payload: message.data.cast(),
-          id: _chat.id.hashCode,
-          onSelect: (_) {
-            OpenChat(sl(), _chat)();
-          },
-        );
+        if (!message.data.containsKey('hidden')){
+          localNotificationsProvider.showNotification(
+            message.data['title'] ?? "ИНК",
+            message.data['body'] ?? "Новое сообщение",
+            payload: message.data.cast(),
+            id: _chat.id.hashCode,
+            onSelect: (_) {
+              OpenChat(sl(), _chat)();
+            },
+          );
+        }
       }
     }
   }
