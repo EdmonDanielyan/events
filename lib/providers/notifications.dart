@@ -62,21 +62,26 @@ class LocalNotificationsProvider with Loggable {
   Future showNotification(String title, String body,
       {Map<String, String>? payload,
       Function(String?)? onSelect,
+      List<NotificationActionButton>? actionButtons,
       int id = 0}) async {
     logger.finest(() =>
         "showNotification. title: $title, body: $body, payload: $payload");
     return AwesomeNotifications().createNotification(
-        content: NotificationContent(
-            id: id,
-            category: NotificationCategory.Message,
-            locked: false,
-            autoDismissible: true,
-            displayOnBackground: true,
-            displayOnForeground: true,
-            channelKey: 'messenger_channel',
-            title: title,
-            body: body,
-            notificationLayout: NotificationLayout.Default));
+      content: NotificationContent(
+        id: id,
+        category: NotificationCategory.Message,
+        locked: false,
+        autoDismissible: true,
+        displayOnBackground: true,
+        displayOnForeground: true,
+        channelKey: 'messenger_channel',
+        title: title,
+        payload: payload,
+        body: body,
+        notificationLayout: NotificationLayout.Default,
+      ),
+      actionButtons: actionButtons,
+    );
   }
 
   Future<void> selectNotification(String? payload) async {

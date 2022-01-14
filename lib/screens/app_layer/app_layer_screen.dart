@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
@@ -19,19 +20,18 @@ class AppLayerScreen extends StatefulWidget {
 
 class _AppLayerScreenState extends State<AppLayerScreen>
     with NewBottomNavBarMixin, Loggable {
-
   @override
   void initState() {
     super.initState();
-    sl<PushNotificationManager>().initialChat.then((chat) {
-      if (chat != null) {
-        logger.finest("Scheduling to open chat: ${chat.id}");
-        SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
-          OpenChat(sl(), chat)();
-        });
-      }
-    });
 
+    // sl<PushNotificationManager>().initialChat.then((chat) {
+    //   if (chat != null) {
+    //     logger.finest("Scheduling to open chat: ${chat.id}");
+    //     SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+    //       OpenChat(sl(), chat)();
+    //     });
+    //   }
+    // });
   }
 
   @override

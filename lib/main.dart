@@ -37,7 +37,6 @@ void main() async {
 }
 
 class InkMobile extends StatelessWidget {
-
   InkMobile({Key? key}) : super(key: key);
 
   @override
@@ -50,24 +49,24 @@ class InkMobile extends StatelessWidget {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     return
-      // callback: startCallback,
-      MultiBlocProvider(
-        providers: GlobalProvider.getProviders(context).cast(),
-        child: MaterialApp(
-          navigatorKey: App.materialKey,
-          title: 'ИНК',
-          initialRoute: '/init',
-          localizationsDelegates: [
-            AppLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate
-          ],
-          supportedLocales: I18n.all,
-          routes: MainRoutes.routes,
-          theme: LightTheme().getThemeData(),
-          darkTheme: LightTheme().getThemeData(),
-        ),
+        // callback: startCallback,
+        MultiBlocProvider(
+      providers: GlobalProvider.getProviders(context).cast(),
+      child: MaterialApp(
+        navigatorKey: App.materialKey,
+        title: 'ИНК',
+        initialRoute: '/init',
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate
+        ],
+        supportedLocales: I18n.all,
+        routes: MainRoutes.routes,
+        theme: LightTheme().getThemeData(),
+        darkTheme: LightTheme().getThemeData(),
+      ),
     );
   }
 }
@@ -82,7 +81,8 @@ class FirstTaskHandler extends TaskHandler {
   @override
   Future<void> onStart(DateTime timestamp, SendPort? sendPort) async {
     // You can use the getData function to get the data you saved.
-    final customData = await FlutterForegroundTask.getData<String>(key: 'customData');
+    final customData =
+        await FlutterForegroundTask.getData<String>(key: 'customData');
     print('customData: $customData');
   }
 
