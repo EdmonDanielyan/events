@@ -95,9 +95,8 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
   }
 
   void _hideNotifications() {
-    final messages = MessageList.messagesWithUser;
-    if (messages != null && messages.isNotEmpty) {
-      final chatId = messages.last.message?.chatId;
+    if (widget.chatDataBaseCubit.selectedChat != null) {
+      final chatId = widget.chatDataBaseCubit.selectedChat?.id;
       if (chatId != null) {
         notificationsProvider.cancelNotification(chatId.hashCode);
       }
@@ -125,6 +124,8 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
       });
     });
     _scrollBottom(milliseconds: 200);
+
+    _hideNotifications();
   }
 
   Widget? _messageBar;
