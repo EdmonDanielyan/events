@@ -8,6 +8,7 @@ import 'package:ink_mobile/cubit/chat/chat_state.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
+import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/models/chat/chat_app_bar_modes.dart';
@@ -24,6 +25,9 @@ import 'components/body.dart';
 import 'entities/chat_screen_params.dart';
 
 class ChatScreen extends StatefulWidget {
+  static ChatScreenState of(BuildContext context) =>
+      context.findAncestorStateOfType<ChatScreenState>()!;
+
   final ChatFunctions chatFunctions;
   final ChatScreenParams chatScreenParams;
   final ChatDatabaseCubit chatDatabaseCubit;
@@ -45,6 +49,9 @@ class ChatScreen extends StatefulWidget {
 
 class ChatScreenState extends State<ChatScreen> {
   ChatScreenState();
+
+  SelectableCubit<MessageWithUser> get selectableCubit =>
+      widget.selectableCubit;
 
   final GlobalKey<ChatBodyState> _chatBodyStateKey = GlobalKey<ChatBodyState>();
 
@@ -173,6 +180,12 @@ class _GetAppBar extends StatelessWidget implements PreferredSizeWidget {
                   .messageEditorSender
                   .sendDeleteMessages(messages, context);
             }
+            selectableCubit.clearAll();
+          },
+          onSendOn: () {
+            final messages = MessageWithUserListView.getMessagesFromList(
+                selectableCubit.getItems);
+            sl<SendMessage>().sendOn(messages, context);
             selectableCubit.clearAll();
           },
         ),

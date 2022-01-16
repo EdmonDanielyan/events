@@ -177,11 +177,12 @@ class ChannelsRegistry with Loggable {
     if (type == MessageType.Text) {
       //We ignore await here to speed up channel enumeration
       var chatId = channel.split(".").last;
-      var isPushNeed = ((await chatDatabaseCubit.db.selectChatById(chatId))?.notificationsOn) ?? true;
+      var isPushNeed = ((await chatDatabaseCubit.db.selectChatById(chatId))
+              ?.notificationsOn) ??
+          true;
       if (isPushNeed) {
         pushNotificationManager.subscribeToTopic(channel);
-      }
-      else {
+      } else {
         pushNotificationManager.unsubscribeFromTopic(channel);
       }
     }
@@ -276,6 +277,7 @@ class ChannelsRegistry with Loggable {
     logger.finest("unsubscribeFromAll");
     listeningChannels.forEach((channel) {
       natsProvider.unsubscribeFromChannel(channel);
+      print(channel);
       if (includePush && channel.contains("Text")) {
         pushNotificationManager.unsubscribeFromTopic(channel);
       }

@@ -19,11 +19,11 @@ import 'firebase_options.dart';
 /// Background isolate for FCM. Usage in [PushNotificationManager.load] to configure FCM plugin
 ///
 ///
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   await Firebase.initializeApp();
 
-  print("Handling a background message: ${message.messageId}");
-}
+//   print("Handling a background message: ${message.messageId}");
+// }
 
 ///
 /// Wrap all tasks for Firebase Messaging aspects
