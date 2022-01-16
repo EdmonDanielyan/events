@@ -48,7 +48,7 @@ class ChatPushNotificationModel {
 
   factory ChatPushNotificationModel.fromMap(Map<String, dynamic> map) {
     return ChatPushNotificationModel(
-      userId: map['user_id']?.toInt() ?? 0,
+      userId: int.tryParse(map['user_id']) ?? 0,
       title: map['title'] ?? '',
       body: map['body'] ?? '',
       chatId: map['chat_id'] ?? '',
@@ -91,19 +91,8 @@ class ChatPushNotificationModel {
   }
 
   static ChatPushNotificationModel? fromRemoteMessage(RemoteMessage message) {
-    Map<String, dynamic> data = {};
-
     try {
-      data = jsonDecode(message.data['data']);
-    } catch (_) {}
-
-    try {
-      data = jsonDecode(message.data['data']['data']);
-    } catch (_) {}
-
-    try {
-      print(data);
-      return ChatPushNotificationModel.fromMap(data);
+      return ChatPushNotificationModel.fromMap(message.data);
     } catch (err) {
       print(err.toString());
       return null;
