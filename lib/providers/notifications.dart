@@ -20,7 +20,7 @@ class LocalNotificationsProvider with Loggable {
         defaultPresentBadge: false,
         requestAlertPermission: true);
     var _initializationSettingsAndroid =
-        AndroidInitializationSettings('note_icon');
+        AndroidInitializationSettings('notification_logo');
     var _initializationSettings = InitializationSettings(
       android: _initializationSettingsAndroid,
       iOS: _initializationSettingsIOS,

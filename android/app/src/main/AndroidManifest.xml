@@ -26,6 +26,9 @@
             android:label="${applicationName}"
             tools:overrideLibrary="com.xamdesign.safe_device"
             android:icon="@mipmap/ic_launcher">
+            <meta-data
+                    android:name="com.google.firebase.messaging.default_notification_icon"
+                    android:resource="@drawable/notification_logo" />
         <activity
                 android:name="com.yalantis.ucrop.UCropActivity"
                 android:screenOrientation="portrait"
