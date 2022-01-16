@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/components/alert/loading.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
@@ -26,6 +27,7 @@ class _PersonListBodyState extends State<PersonListBody> {
   final Messenger messenger = sl<Messenger>();
 
   void _respondToChat(ChatTable chat) async {
+    CustomAlertLoading(context).call();
     for (final message in _personListParams.messages!) {
       MessageTable newMessage = MessageListView.renewMessage(
         message,
@@ -35,8 +37,7 @@ class _PersonListBodyState extends State<PersonListBody> {
       );
       await sl<SendMessage>().addMessage(chat, newMessage);
       if (messenger.isConnected) {
-        await messenger.textSender
-            .sendMessage(chat, newMessage);
+        await messenger.textSender.sendMessage(chat, newMessage);
       }
     }
     Future.delayed(Duration(milliseconds: 300), () {

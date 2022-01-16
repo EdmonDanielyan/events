@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -13,8 +12,6 @@ import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/providers/notifications.dart';
-import 'package:ink_mobile/providers/push_notification_manager.dart';
-import 'package:ink_mobile/providers/push_notification_manager.dart';
 import 'package:ink_mobile/screens/messages/chat/components/bottom_bar.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_list.dart';
 import 'package:ink_mobile/screens/messages/chat/components/search_textfield.dart';
@@ -95,9 +92,8 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
   }
 
   void _hideNotifications() {
-    final messages = MessageList.messagesWithUser;
-    if (messages != null && messages.isNotEmpty) {
-      final chatId = messages.last.message?.chatId;
+    if (widget.chatDataBaseCubit.selectedChat != null) {
+      final chatId = widget.chatDataBaseCubit.selectedChat?.id;
       if (chatId != null) {
         notificationsProvider.cancelNotification(chatId.hashCode);
       }
@@ -125,6 +121,8 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
       });
     });
     _scrollBottom(milliseconds: 200);
+
+    _hideNotifications();
   }
 
   Widget? _messageBar;

@@ -76,7 +76,6 @@ class Messenger with Loggable {
     this.pushNotificationManager = sl<PushNotificationManager>();
     _configureNatsProvider();
     await natsProvider.load();
-
   }
 
   Future<void> _configureNatsProvider() async {

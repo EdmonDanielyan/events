@@ -43,6 +43,7 @@ Future<void> setup({
     ..onStart = () async {
       await sl<LocalNotificationsProvider>().load();
       await sl<PushNotificationManager>().load();
+
       await sl<Messenger>().init();
       return true;
     };

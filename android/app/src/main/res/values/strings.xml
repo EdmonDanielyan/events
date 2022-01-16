@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_label">INK-portal</string>
+    <string name="notification_channel_id" translatable="false">chat_notification</string>
+    <string name="notification_channel_name" translatable="false">Chat notification</string>
+    <string name="notification_channel_desc" translatable="false">Chat message notification</string>
 </resources>

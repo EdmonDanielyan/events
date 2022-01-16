@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:isolate';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ink_mobile/app.dart';
@@ -37,7 +35,6 @@ void main() async {
 }
 
 class InkMobile extends StatelessWidget {
-
   InkMobile({Key? key}) : super(key: key);
 
   @override
@@ -50,57 +47,24 @@ class InkMobile extends StatelessWidget {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     return
-      // callback: startCallback,
-      MultiBlocProvider(
-        providers: GlobalProvider.getProviders(context).cast(),
-        child: MaterialApp(
-          navigatorKey: App.materialKey,
-          title: 'ИНК',
-          initialRoute: '/init',
-          localizationsDelegates: [
-            AppLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate
-          ],
-          supportedLocales: I18n.all,
-          routes: MainRoutes.routes,
-          theme: LightTheme().getThemeData(),
-          darkTheme: LightTheme().getThemeData(),
-        ),
+        // callback: startCallback,
+        MultiBlocProvider(
+      providers: GlobalProvider.getProviders(context).cast(),
+      child: MaterialApp(
+        navigatorKey: App.materialKey,
+        title: 'ИНК',
+        initialRoute: '/init',
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate
+        ],
+        supportedLocales: I18n.all,
+        routes: MainRoutes.routes,
+        theme: LightTheme().getThemeData(),
+        darkTheme: LightTheme().getThemeData(),
+      ),
     );
-  }
-}
-
-// The callback function should always be a top-level function.
-void startCallback() {
-  // The setTaskHandler function must be called to handle the task in the background.
-  FlutterForegroundTask.setTaskHandler(FirstTaskHandler());
-}
-
-class FirstTaskHandler extends TaskHandler {
-  @override
-  Future<void> onStart(DateTime timestamp, SendPort? sendPort) async {
-    // You can use the getData function to get the data you saved.
-    final customData = await FlutterForegroundTask.getData<String>(key: 'customData');
-    print('customData: $customData');
-  }
-
-  @override
-  Future<void> onEvent(DateTime timestamp, SendPort? sendPort) async {
-    // Send data to the main isolate.
-    sendPort?.send(timestamp);
-  }
-
-  @override
-  Future<void> onDestroy(DateTime timestamp) async {
-    // You can use the clearAllData function to clear all the stored data.
-    await FlutterForegroundTask.clearAllData();
-  }
-
-  @override
-  void onButtonPressed(String id) {
-    // Called when the notification button on the Android platform is pressed.
-    print('onButtonPressed >> $id');
   }
 }

@@ -4,7 +4,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/components/alert/alert_cancel.dart';
 import 'package:ink_mobile/components/popup/popup_menu_container.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
+import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
+import 'package:ink_mobile/functions/chat/chat_creation.dart';
+import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
@@ -12,6 +15,8 @@ import 'package:ink_mobile/models/chat/select_menu.dart';
 import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/chat_screen_params.dart';
 import 'package:ink_mobile/setup.dart';
+
+import '../chat_screen.dart';
 
 class HoverMessage extends StatelessWidget {
   final int index;
@@ -30,6 +35,7 @@ class HoverMessage extends StatelessWidget {
   }) : super(key: key);
 
   static late AppLocalizations _strings;
+  static late SelectableCubit<MessageWithUser> _selectableCubit;
   final ChatCubit chatCubit;
 
   MessageTable get message => messageWithUser.message!;
@@ -59,9 +65,19 @@ class HoverMessage extends StatelessWidget {
     chatCubit.emitEditMessage(messageWithUser);
   }
 
+  void _onSelect() {
+    _selectableCubit.addItem(messageWithUser);
+  }
+
+  void _onSendOn(BuildContext context) {
+    final sendMessage = sl<SendMessage>();
+    sendMessage.sendOn([message], context);
+  }
+
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
+    _selectableCubit = ChatScreen.of(context).selectableCubit;
 
     if (chatScreenParams.ignoreHoverMessage || ignore) {
       return child;
@@ -76,7 +92,9 @@ class HoverMessage extends StatelessWidget {
           .toList(),
       onItemSelected: (value) async {
         if (value == _strings.quote) _onRespond();
+        if (value == _strings.sendOn) _onSendOn(context);
         if (value == _strings.copy) _onCopy(context);
+        if (value == _strings.select) _onSelect();
         if (value == _strings.delete) {
           Future.delayed(Duration(milliseconds: 200), () {
             CustomAlertCancel(

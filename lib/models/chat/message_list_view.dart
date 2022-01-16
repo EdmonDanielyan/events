@@ -141,6 +141,7 @@ class MessageListView {
       id: id ?? message.id,
       userId: userId ?? JwtPayload.myId,
       repliedMessageId: "",
+      status: MessageStatus.SENDING,
       created: new DateTime.now(),
     );
 

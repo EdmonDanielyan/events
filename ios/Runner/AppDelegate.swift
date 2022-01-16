@@ -4,36 +4,26 @@ import Firebase
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
+
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    FirebaseApp.configure()
     if #available(iOS 10.0, *) {
-      // For iOS 10 display notification (sent via APNS)
-      UNUserNotificationCenter.current().delegate = self
-
-      let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-      UNUserNotificationCenter.current().requestAuthorization(
-        options: authOptions,
-        completionHandler: { _, _ in }
-      )
-    } else {
-      let settings: UIUserNotificationSettings =
-        UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-      application.registerUserNotificationSettings(settings)
+      UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
     }
+
+    GeneratedPluginRegistrant.register(with: self)
 
     application.registerForRemoteNotifications()
 
-    GeneratedPluginRegistrant.register(with: self)
-    // FlutterForegroundTaskPlugin Support 30/12/2021
-    SwiftFlutterForegroundTaskPlugin.setPluginRegistrantCallback(registerPlugins)
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
-}
 
-// FlutterForegroundTaskPlugin Support 30/12/2021
-func registerPlugins(registry: FlutterPluginRegistry) {
-  GeneratedPluginRegistrant.register(with: registry)
+  override func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+
+   Messaging.messaging().apnsToken = deviceToken
+   super.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+ }
 }

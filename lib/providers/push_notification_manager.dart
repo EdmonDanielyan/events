@@ -2,68 +2,31 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/push_notification_model.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/notifications.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:logging/logging.dart';
 
 import 'firebase_options.dart';
 
 ///
 /// Background isolate for FCM. Usage in [PushNotificationManager.load] to configure FCM plugin
 ///
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await fcmIsolate(message);
-}
+///
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   await Firebase.initializeApp();
 
-Future<void> fcmIsolate(RemoteMessage message) async {
-  var logger = Logger('FCM');
-  logger.finest("FirebaseMessaging.onBackgroundMessage: ${message.data}");
-  await runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    final FlutterSecureStorage storage = FlutterSecureStorage();
-    final String? jwtToken = await storage.read(key: 'token');
-    final JwtPayload? jwtPayload = Token.parseJwtPayloadObject(jwtToken);
-    if (jwtPayload == null) {
-      logger.warning("Not logged in app");
-      return;
-    }
-    final userId = jwtPayload.userId.toString();
-    logger.finest("FirebaseMessaging.userId: $userId");
-    if (userId.isEmpty) {
-      logger.warning("Not logged in app");
-      return;
-    }
-    if (userId == message.data["user_id"]) {
-      logger.finest("Skip own messages");
-      return;
-    }
-    var localNotificationsProvider = LocalNotificationsProvider();
-    if (!message.data.containsKey('hidden')) {
-      await localNotificationsProvider.showNotification(
-          message.data['title'] ?? "ИНК",
-          message.data['body'] ?? "Новое сообщение",
-          id: message.data['chat_id'].hashCode,
-          payload: message.data.cast(),
-          onSelect: (_) {});
-    }
-  }, (Object error, StackTrace stack) {
-    Logger('firebaseMessagingBackgroundHandler')
-        .severe('Unexpected error', error, stack);
-  });
-}
+//   print("Handling a background message: ${message.messageId}");
+// }
 
 ///
 /// Wrap all tasks for Firebase Messaging aspects
-///
 ///
 @lazySingleton
 class PushNotificationManager with Loggable {
@@ -71,38 +34,25 @@ class PushNotificationManager with Loggable {
 
   PushNotificationManager(this.localNotificationsProvider);
 
-  Future subscribeToTopic(String topic) async {
-    logger.finest(() => "subscribeToTopic: $topic");
-    await FirebaseMessaging.instance.subscribeToTopic(topic);
-  }
-
-  Future unsubscribeFromTopic(String topic) async {
-    logger.finest(() => "unsubscribeFromTopic: $topic");
-    try {
-      await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
-    } catch (e, s) {
-      logger.severe("Error during FCM unsubscribe", e, s);
-    }
-  }
-
   Future load() async {
     logger.finest('load');
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    await FirebaseMessaging.instance.requestPermission(badge: false);
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    await FirebaseMessaging.instance.requestPermission(badge: true);
+    //FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     if (!kIsWeb) {
-      await FirebaseMessaging.instance
-          .setForegroundNotificationPresentationOptions(
-        alert: true,
-        badge: false,
-        sound: true,
-      );
+      String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+      logger.finest("FirebaseMessaging.apnsToken: $apnsToken");
+
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      logger.finest("FirebaseMessaging.fcmToken: $fcmToken");
     }
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       logger.finest("FirebaseMessaging.onMessage: ${message.data}");
+
       var userId = await Token.getUserId();
       if (userId.isEmpty) {
         logger.warning("Not logged in app");
@@ -112,45 +62,57 @@ class PushNotificationManager with Loggable {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-      logger.finest("FirebaseMessaging.onMessageOpenedApp: ${message.data}");
+      try {
+        logger.finest("FirebaseMessaging.onMessageOpenedApp: ${message.data}");
+
+        final payload = ChatPushNotificationModel.fromRemoteMessage(message);
+        logger.finest("payload: $payload");
+        if (payload != null) {
+          _openChat(payload);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
     });
-
-    String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-    logger.finest("FirebaseMessaging.apnsToken: $apnsToken");
-
-    String? fcmToken = await FirebaseMessaging.instance.getToken();
-    logger.finest("FirebaseMessaging.fcmToken: $fcmToken");
   }
 
-  bool _isMyMessage(RemoteMessage remoteMessage) {
-    var userId = remoteMessage.data["user_id"];
+  Future<void> _openChat(ChatPushNotificationModel payload) async {
+    logger.finest("_openChat");
+    final _chat = await _getChatById(payload.chatId);
+    logger.finest("_chat: $_chat");
+    if (_chat != null) {
+      OpenChat(sl(), _chat)();
+    }
+  }
+
+  bool _isMyMessage(String userId) {
     return sl<TokenDataHolder>().userId == userId;
   }
 
   Future<void> showNotificationIfNeeded(RemoteMessage message) async {
     logger.finest('showNotificationIfNeeded');
-    if (!_isMyMessage(message)) {
-      var _chat = await _getChatFromRemote(message);
+    final data = ChatPushNotificationModel.fromRemoteMessage(message);
+
+    if (data != null && !_isMyMessage(data.userId.toString())) {
+      var _chat = await _getChatById(data.chatId);
       bool isChatOpened =
           sl<ChatDatabaseCubit>().getSelectedChatId == _chat?.id;
       if (_chat != null && !isChatOpened) {
         var localNotificationsProvider = sl<LocalNotificationsProvider>();
-        if (!message.data.containsKey('hidden')){
-          localNotificationsProvider.showNotification(
-            message.data['title'] ?? "ИНК",
-            message.data['body'] ?? "Новое сообщение",
-            payload: message.data.cast(),
-            id: _chat.id.hashCode,
-            onSelect: (_) {
-              OpenChat(sl(), _chat)();
-            },
-          );
-        }
+        localNotificationsProvider.showNotification(
+          data.title,
+          data.body,
+          payload: _chat.id,
+          id: _chat.id.hashCode,
+          onSelect: (_) {
+            OpenChat(sl(), _chat)();
+          },
+        );
       }
     }
   }
 
-  Future<ChatTable?> get initialChat async {
+  Future<ChatTable?> get initialChatd async {
     logger.finest('initialChat');
     var message = await FirebaseMessaging.instance.getInitialMessage();
     logger.finest('Remote initial message: $message');
@@ -169,8 +131,15 @@ class PushNotificationManager with Loggable {
 
   Future<ChatTable?> _getChatFromRemote(RemoteMessage message) async {
     logger.finest("_getChatFromRemote");
-    var chatId = message.data["chat_id"];
-    return _getChatById(chatId);
+    try {
+      final data = ChatPushNotificationModel.fromRemoteMessage(message);
+      if (data == null) {
+        throw "error";
+      }
+      return _getChatById(data.chatId);
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<ChatTable?> _getChatById(chatId) async {
@@ -180,6 +149,20 @@ class PushNotificationManager with Loggable {
       var chatTable = await databaseCubit.db.selectChatById(chatId);
       logger.finest(() => "found chat: $chatTable");
       return chatTable;
+    }
+  }
+
+  Future subscribeToTopic(String topic) async {
+    logger.finest(() => "subscribeToTopic: $topic");
+    await FirebaseMessaging.instance.subscribeToTopic(topic);
+  }
+
+  Future unsubscribeFromTopic(String topic) async {
+    logger.finest(() => "unsubscribeFromTopic: $topic");
+    try {
+      await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+    } catch (e, s) {
+      logger.severe("Error during FCM unsubscribe", e, s);
     }
   }
 }

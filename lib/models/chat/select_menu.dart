@@ -30,6 +30,13 @@ class SelectMessageMenuList {
         ),
       ],
       SelectMessageMenu(
+        name: strings.sendOn,
+        icon: Icon(
+          CupertinoIcons.arrowshape_turn_up_right_fill,
+          size: iconSize,
+        ),
+      ),
+      SelectMessageMenu(
         name: strings.delete,
         icon: Icon(
           Icons.delete,
@@ -40,6 +47,13 @@ class SelectMessageMenuList {
         name: strings.copy,
         icon: Icon(
           Icons.file_copy,
+          size: iconSize,
+        ),
+      ),
+      SelectMessageMenu(
+        name: strings.select,
+        icon: Icon(
+          Icons.check_circle,
           size: iconSize,
         ),
       ),

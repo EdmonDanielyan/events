@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/functions/new_bottom_nav_bar_mixin.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
-import 'package:ink_mobile/functions/chat/open_chat.dart';
-import 'package:ink_mobile/providers/push_notification_manager.dart';
-import 'package:ink_mobile/setup.dart';
 
 class AppLayerScreen extends StatefulWidget {
   final NewBottomNavBarCubit newBottomNavBarCubit;
@@ -19,19 +15,18 @@ class AppLayerScreen extends StatefulWidget {
 
 class _AppLayerScreenState extends State<AppLayerScreen>
     with NewBottomNavBarMixin, Loggable {
-
   @override
   void initState() {
     super.initState();
-    sl<PushNotificationManager>().initialChat.then((chat) {
-      if (chat != null) {
-        logger.finest("Scheduling to open chat: ${chat.id}");
-        SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
-          OpenChat(sl(), chat)();
-        });
-      }
-    });
 
+    // sl<PushNotificationManager>().initialChat.then((chat) {
+    //   if (chat != null) {
+    //     logger.finest("Scheduling to open chat: ${chat.id}");
+    //     SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+    //       OpenChat(sl(), chat)();
+    //     });
+    //   }
+    // });
   }
 
   @override
