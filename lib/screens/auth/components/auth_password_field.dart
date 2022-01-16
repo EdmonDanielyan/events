@@ -32,6 +32,7 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
       onChanged: (value) {
         AuthScreen.of(context).authCubit.password = value;
       },
+      initialValue: AuthScreen.of(context).authCubit.password,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: _obscureText,

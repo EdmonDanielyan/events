@@ -27,7 +27,8 @@ class DioErrorHandler {
     if (e.type == DioErrorType.response) {
       ErrorResponse response = ErrorResponse.fromException(e);
       switch (response.code) {
-        case QMA_6:
+          case QMA_6:
+          case QMA_16:
           return invalidRefreshToken();
         case QMA_13:
           return unknownErrorException(response.title, response.detail);
