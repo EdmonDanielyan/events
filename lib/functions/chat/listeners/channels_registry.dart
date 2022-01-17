@@ -243,11 +243,11 @@ class ChannelsRegistry with Loggable {
           final channelTable =
               await channelFunctions.saveByChannelName(channel);
           if (channelTable != null) {
-            await _subscribeToChannel(
+            _subscribeToChannel(
                 channelTable.messageType, channelTable.to);
           }
         } else {
-          await _subscribeToChannel(channelExists.messageType, channelExists.to,
+           _subscribeToChannel(channelExists.messageType, channelExists.to,
               startSequence: strToSequence(channelExists.sequence));
         }
       }
