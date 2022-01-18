@@ -487,6 +487,7 @@ class NatsStreamingClient {
     Int64? startTimeDelta,
     int? sid,
   }) async {
+    if (!connected) throw 'Not connected';
     // Listen Inbox before subscribing
     final String inbox = '${subject}_${queueGroup ?? ''}_${Uuid().v4()}';
 
@@ -546,7 +547,8 @@ class NatsStreamingClient {
       }
 
       return subscriptionResponse;
-    } catch (e) {
+    } catch (e, s) {
+      _logger.severe(e, s);
       throw Exception('${subscriptionRequest.subject} - $e');
     }
   }

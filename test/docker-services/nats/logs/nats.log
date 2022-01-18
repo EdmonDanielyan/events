@@ -1452,3 +1452,243 @@
 [1] 2021/12/16 01:05:57.414474 [INF] STREAM: Go version: go1.16.9
 [1] 2021/12/16 01:05:57.414766 [INF] STREAM: Git commit: [fcf3b54]
 [1] 2021/12/16 01:06:07.417523 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:35144->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:08:10.581493 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:08:10.582659 [INF] STREAM: ServerID: 6H9CWccu1DkYa3Kb6DhXmh
+[1] 2022/01/18 00:08:10.582940 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:08:10.583169 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:08:20.587115 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:39131->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:08:21.691786 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:08:21.692225 [INF] STREAM: ServerID: nCwlV4mXe41niWTOsZqhqC
+[1] 2022/01/18 00:08:21.692527 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:08:21.693020 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:08:31.695690 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:37373->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:08:32.844704 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:08:32.844962 [INF] STREAM: ServerID: 6dxgUGDUZVsT6UCQilLnHb
+[1] 2022/01/18 00:08:32.845172 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:08:32.845385 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:08:42.848305 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:38031->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:08:43.978499 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:08:43.978750 [INF] STREAM: ServerID: 5oxmQdm2a32GBdmWnmGniG
+[1] 2022/01/18 00:08:43.978950 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:08:43.979136 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:08:53.982206 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:37216->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:08:55.013286 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:08:55.013607 [INF] STREAM: ServerID: DY4VejYraw9ERFZcH5tF8X
+[1] 2022/01/18 00:08:55.013850 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:08:55.014096 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:09:05.016052 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:41029->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:09:05.992040 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:09:05.992332 [INF] STREAM: ServerID: 4AkD6FeW1aHMEyiY6dPUOT
+[1] 2022/01/18 00:09:05.992572 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:09:05.992906 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:09:15.995650 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:39347->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:09:17.072109 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:09:17.072440 [INF] STREAM: ServerID: nPsabW2Zzmy7XgEjqcjJWN
+[1] 2022/01/18 00:09:17.072758 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:09:17.073015 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:09:27.076369 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:35090->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:09:28.109707 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:09:28.109991 [INF] STREAM: ServerID: YvtmQcZ7kl7dUZzo5jHAIz
+[1] 2022/01/18 00:09:28.110200 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:09:28.110405 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:09:38.113306 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:49237->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:09:39.164947 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:09:39.165413 [INF] STREAM: ServerID: zdlKIbOLmwPXr2xpGlv2PB
+[1] 2022/01/18 00:09:39.165784 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:09:39.166079 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:09:46.110566 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: server misbehaving
+[1] 2022/01/18 00:13:10.258848 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:13:10.259506 [INF] STREAM: ServerID: l1br6A0Zi57hYY9arq3pRB
+[1] 2022/01/18 00:13:10.259792 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:13:10.260047 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:13:20.264835 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:39030->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:13:21.252197 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:13:21.252693 [INF] STREAM: ServerID: XL7razP7ri0J5OgZipeYaU
+[1] 2022/01/18 00:13:21.252937 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:13:21.253237 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:13:31.255850 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:56403->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:13:32.314923 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:13:32.315276 [INF] STREAM: ServerID: T1lXlsb1T5OFmBjXchY0Gn
+[1] 2022/01/18 00:13:32.315649 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:13:32.315903 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:13:42.318440 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:36022->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:13:43.373161 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:13:43.373423 [INF] STREAM: ServerID: 7etib84XEk5Y2KtqpQOSly
+[1] 2022/01/18 00:13:43.373641 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:13:43.373916 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:13:53.375754 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:52158->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:13:54.522278 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:13:54.522778 [INF] STREAM: ServerID: 57rKZtTlLPG6DOFaZxtH9x
+[1] 2022/01/18 00:13:54.523056 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:13:54.523454 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:14:04.526145 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:57077->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:14:05.692655 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:14:05.692944 [INF] STREAM: ServerID: jzYBDIbEDhxqhqX3gCvJlf
+[1] 2022/01/18 00:14:05.693153 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:14:05.693391 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:14:15.695516 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:57054->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:14:16.847402 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:14:16.847831 [INF] STREAM: ServerID: d7QABBFgDyqxPi7ageKOME
+[1] 2022/01/18 00:14:16.848195 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:14:16.848538 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:14:26.851778 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:45186->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:14:27.962470 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:14:27.962750 [INF] STREAM: ServerID: eZaQshZ62m2QYKicxwZskj
+[1] 2022/01/18 00:14:27.963108 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:14:27.963399 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:14:37.966281 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:45769->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:14:38.984552 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:14:38.984946 [INF] STREAM: ServerID: 831tTHFibhSyuzTeDjQvbb
+[1] 2022/01/18 00:14:38.985423 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:14:38.985877 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:14:48.989068 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:60463->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:14:50.113599 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:14:50.113896 [INF] STREAM: ServerID: yFcl3skIRRtWFvTkrggyxf
+[1] 2022/01/18 00:14:50.114123 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:14:50.114346 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:15:00.117267 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:43552->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:15:01.238826 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:15:01.239182 [INF] STREAM: ServerID: rx7B21DGuJnP4pzJWaZJc3
+[1] 2022/01/18 00:15:01.239442 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:15:01.239695 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:15:11.242100 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:39961->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:15:12.322911 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:15:12.323170 [INF] STREAM: ServerID: f9K61vRM59P4K5mbn87jlj
+[1] 2022/01/18 00:15:12.323392 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:15:12.323639 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:15:22.324791 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:37027->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:15:23.350410 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:15:23.350713 [INF] STREAM: ServerID: 6IIoIUd7faIh3HS0LPvK9c
+[1] 2022/01/18 00:15:23.350956 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:15:23.351195 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:15:33.352900 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:44657->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:15:34.464135 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:15:34.464477 [INF] STREAM: ServerID: soU2JPNSfEpvzgxtiIpJ23
+[1] 2022/01/18 00:15:34.464756 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:15:34.465159 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:15:44.468726 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:56156->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:15:45.542441 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:15:45.542743 [INF] STREAM: ServerID: RZ06lF41p1ZBKLgSOsQQE4
+[1] 2022/01/18 00:15:45.543076 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:15:45.543342 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:15:55.545641 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:49418->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:15:56.653605 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:15:56.653908 [INF] STREAM: ServerID: QscEMAc6N2y4bprRLoFDxR
+[1] 2022/01/18 00:15:56.654176 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:15:56.654465 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:16:06.657472 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:55868->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:16:07.801148 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:16:07.801512 [INF] STREAM: ServerID: cTooi7CbvrQW3U05TcN4ds
+[1] 2022/01/18 00:16:07.801767 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:16:07.802032 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:16:17.804506 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:60678->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:16:18.913123 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:16:18.913480 [INF] STREAM: ServerID: gcjgtcLHI3dSUr4LkuzdTt
+[1] 2022/01/18 00:16:18.913768 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:16:18.914069 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:16:28.915416 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:41359->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:16:29.971688 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:16:29.972019 [INF] STREAM: ServerID: 2oDotBFVMLBcS9X94gbBcU
+[1] 2022/01/18 00:16:29.972264 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:16:29.972524 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:16:39.975446 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:34504->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:16:41.040420 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:16:41.040739 [INF] STREAM: ServerID: 5QstlcKt2XtSHn4E6Zyu7V
+[1] 2022/01/18 00:16:41.040971 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:16:41.041188 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:16:51.043833 [FTL] STREAM: Failed to start: dial tcp: lookup nats-postgres on 127.0.0.11:53: read udp 127.0.0.1:37314->127.0.0.11:53: i/o timeout
+[1] 2022/01/18 00:16:52.067334 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:16:52.067866 [INF] STREAM: ServerID: AP8Xisu8rF68TjIz7hcVk7
+[1] 2022/01/18 00:16:52.068299 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:16:52.068630 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:17:04.154690 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:17:04.155151 [INF] STREAM: ServerID: gjGfVpuZngEmhxBQIVTTSL
+[1] 2022/01/18 00:17:04.155396 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:17:04.155840 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:17:04.158421 [FTL] STREAM: Failed to start: dial tcp 172.18.0.2:5432: connect: connection refused
+[1] 2022/01/18 00:17:05.212766 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:17:05.213157 [INF] STREAM: ServerID: HvZwuU8ztEQ9iV9MxwC9YM
+[1] 2022/01/18 00:17:05.213448 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:17:05.213692 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:17:05.215474 [FTL] STREAM: Failed to start: dial tcp 172.18.0.2:5432: connect: connection refused
+[1] 2022/01/18 00:17:06.264476 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:17:06.264851 [INF] STREAM: ServerID: Om0C3irIUkDS8X5M8JzA3C
+[1] 2022/01/18 00:17:06.265126 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:17:06.265506 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:17:06.267657 [FTL] STREAM: Failed to start: dial tcp 172.18.0.2:5432: connect: connection refused
+[1] 2022/01/18 00:17:07.428266 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:17:07.428980 [INF] STREAM: ServerID: UmrfcIHaFuM3TjDhDZWgyU
+[1] 2022/01/18 00:17:07.429633 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:17:07.429977 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:17:07.432248 [FTL] STREAM: Failed to start: dial tcp 172.18.0.2:5432: connect: connection refused
+[1] 2022/01/18 00:17:08.886141 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:17:08.886411 [INF] STREAM: ServerID: OCg4ps9BQY0lsQhM3AyiMc
+[1] 2022/01/18 00:17:08.886648 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:17:08.886907 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:17:08.888405 [FTL] STREAM: Failed to start: dial tcp 172.18.0.2:5432: connect: connection refused
+[1] 2022/01/18 00:17:11.148712 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:17:11.149185 [INF] STREAM: ServerID: 7vKsOhUF4ob6nNyhIgth4T
+[1] 2022/01/18 00:17:11.149436 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:17:11.149764 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:17:11.153280 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2022/01/18 00:17:15.014247 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:17:15.014554 [INF] STREAM: ServerID: kchsFRYVUVNQ5ePqHhqX28
+[1] 2022/01/18 00:17:15.014808 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:17:15.015039 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:17:15.017642 [FTL] STREAM: Failed to start: pq: the database system is starting up
+[1] 2022/01/18 00:17:22.083699 [INF] STREAM: Starting nats-streaming-server[test-cluster] version 0.23.0
+[1] 2022/01/18 00:17:22.084032 [INF] STREAM: ServerID: 2u1h6GTcsxRqRlgVqARPO3
+[1] 2022/01/18 00:17:22.084359 [INF] STREAM: Go version: go1.16.9
+[1] 2022/01/18 00:17:22.084685 [INF] STREAM: Git commit: [fcf3b54]
+[1] 2022/01/18 00:17:22.356339 [INF] Starting nats-server
+[1] 2022/01/18 00:17:22.356683 [INF]   Version:  2.6.2
+[1] 2022/01/18 00:17:22.356955 [INF]   Git:      [f7c3ac5]
+[1] 2022/01/18 00:17:22.357229 [INF]   Name:     NAYKBSHR75TKVGF6IHE6GKAU7PF42PBT3XL27XVOV5D3ZCDXC25S7YQA
+[1] 2022/01/18 00:17:22.357507 [INF]   Node:     s6q0AfnO
+[1] 2022/01/18 00:17:22.357761 [INF]   ID:       NAYKBSHR75TKVGF6IHE6GKAU7PF42PBT3XL27XVOV5D3ZCDXC25S7YQA
+[1] 2022/01/18 00:17:22.358056 [INF] Using configuration file: /conf/nats-server.conf
+[1] 2022/01/18 00:17:22.364024 [INF] Starting JetStream
+[1] 2022/01/18 00:17:22.377679 [INF]     _ ___ _____ ___ _____ ___ ___   _   __  __
+[1] 2022/01/18 00:17:22.378016 [INF]  _ | | __|_   _/ __|_   _| _ \ __| /_\ |  \/  |
+[1] 2022/01/18 00:17:22.378316 [INF] | || | _|  | | \__ \ | | |   / _| / _ \| |\/| |
+[1] 2022/01/18 00:17:22.378607 [INF]  \__/|___| |_| |___/ |_| |_|_\___/_/ \_\_|  |_|
+[1] 2022/01/18 00:17:22.378884 [INF] 
+[1] 2022/01/18 00:17:22.379159 [INF]          https://docs.nats.io/jetstream
+[1] 2022/01/18 00:17:22.379432 [INF] 
+[1] 2022/01/18 00:17:22.379704 [INF] ---------------- JETSTREAM ----------------
+[1] 2022/01/18 00:17:22.379978 [INF]   Max Memory:      9.32 GB
+[1] 2022/01/18 00:17:22.380244 [INF]   Max Storage:     248.62 GB
+[1] 2022/01/18 00:17:22.380487 [INF]   Store Directory: "/nats/jetstream"
+[1] 2022/01/18 00:17:22.380763 [INF] -------------------------------------------
+[1] 2022/01/18 00:17:22.399683 [INF] Listening for websocket clients on wss://0.0.0.0:443
+[1] 2022/01/18 00:17:22.400235 [INF] Listening for client connections on 0.0.0.0:4222
+[1] 2022/01/18 00:17:22.400672 [INF] Server is ready
+[1] 2022/01/18 00:17:22.411055 [INF] STREAM: Recovering the state...
+[1] 2022/01/18 00:17:22.729114 [INF] STREAM: Recovered 1 channel(s)
+[1] 2022/01/18 00:17:22.730033 [DBG] STREAM: Did not detect another server instance
+[1] 2022/01/18 00:17:22.730547 [DBG] STREAM: Discover subject:           _STAN.discover.test-cluster
+[1] 2022/01/18 00:17:22.730865 [DBG] STREAM: Publish subject:            _STAN.pub.test-cluster.>
+[1] 2022/01/18 00:17:22.731271 [DBG] STREAM: Subscribe subject:          _STAN.sub.test-cluster
+[1] 2022/01/18 00:17:22.731566 [DBG] STREAM: Subscription Close subject: _STAN.subclose.test-cluster
+[1] 2022/01/18 00:17:22.731895 [DBG] STREAM: Unsubscribe subject:        _STAN.unsub.test-cluster
+[1] 2022/01/18 00:17:22.732157 [DBG] STREAM: Close subject:              _STAN.close.test-cluster
+[1] 2022/01/18 00:17:22.732816 [INF] STREAM: Message store is SQL
+[1] 2022/01/18 00:17:22.733142 [INF] STREAM: ---------- Store Limits ----------
+[1] 2022/01/18 00:17:22.733398 [INF] STREAM: Channels:                  100 *
+[1] 2022/01/18 00:17:22.733741 [INF] STREAM: --------- Channels Limits --------
+[1] 2022/01/18 00:17:22.734196 [INF] STREAM:   Subscriptions:          1000 *
+[1] 2022/01/18 00:17:22.735248 [INF] STREAM:   Messages     :       1000000 *
+[1] 2022/01/18 00:17:22.735729 [INF] STREAM:   Bytes        :     976.56 MB *
+[1] 2022/01/18 00:17:22.736182 [INF] STREAM:   Age          :     unlimited *
+[1] 2022/01/18 00:17:22.736666 [INF] STREAM:   Inactivity   :     unlimited *
+[1] 2022/01/18 00:17:22.736989 [INF] STREAM: ----------------------------------
+[1] 2022/01/18 00:17:22.737324 [INF] STREAM: Streaming Server is ready
+[1] 2022/01/18 07:39:06.426866 [INF] STREAM: Shutting down.
+[1] 2022/01/18 07:39:06.432176 [INF] Initiating Shutdown...
+[1] 2022/01/18 07:39:06.437199 [INF] Initiating JetStream Shutdown...
+[1] 2022/01/18 07:39:06.432257 [DBG] STREAM: connection "_NSS-test-cluster-send" has been closed
+[1] 2022/01/18 07:39:06.438711 [INF] JetStream Shutdown
+[1] 2022/01/18 07:39:06.441438 [DBG] STREAM: connection "_NSS-test-cluster-general" has been closed
+[1] 2022/01/18 07:39:06.442636 [DBG] STREAM: connection "_NSS-test-cluster-acks" has been closed
+[1] 2022/01/18 07:39:06.443001 [DBG] STREAM: connection "_NSS-test-cluster-hb" has been closed
+[1] 2022/01/18 07:39:06.442150 [INF] Server Exiting..
