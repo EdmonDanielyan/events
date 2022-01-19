@@ -9,11 +9,13 @@ import 'package:ink_mobile/cubit/auth/auth_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
 import 'package:ink_mobile/screens/auth/components/sign_in_instructions.dart';
+import 'package:logging/logging.dart';
 
 class AuthButtons extends StatelessWidget {
-  final GlobalKey<FormState>? formKey;
+  static final logger = Logger('AuthButtons');
+  final GlobalKey<FormState> formKey;
 
-  const AuthButtons({Key? key, this.formKey}) : super(key: key);
+  const AuthButtons({Key? key, required this.formKey}) : super(key: key);
   static late AuthCubit authCubit;
   static late NewBottomNavBarCubit _bottomNavBar;
 
@@ -24,8 +26,9 @@ class AuthButtons extends StatelessWidget {
         Navigator.pushNamedAndRemoveUntil(
             context, '/app_layer', (route) => false);
       }
-    }).onError((FormatException error, st) {
-      SimpleCustomSnackbar(context: context, txt: error.message);
+    }).onError((FormatException e, s) {
+      logger.severe('Error during auth', e, s);
+      SimpleCustomSnackbar(context: context, txt: e.message);
     });
   }
 
@@ -94,13 +97,8 @@ class AuthButtons extends StatelessWidget {
             ),
             child: TextButton(
               onPressed: () {
-                bool validate = true;
-
-                if (formKey != null && !formKey!.currentState!.validate()) {
-                  validate = false;
-                }
-
-                if (validate) onSubmit(context);
+                logger.finest(formKey.currentState);
+                if (formKey.currentState!.validate()) onSubmit(context);
               },
               child: Text(
                 localizationInstance.enter,

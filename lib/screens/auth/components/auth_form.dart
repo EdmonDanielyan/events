@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
+
 import 'auth_password_field.dart';
 
 class AuthForm extends StatelessWidget {
@@ -24,6 +25,7 @@ class AuthForm extends StatelessWidget {
             ),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+            initialValue: AuthScreen.of(context).authCubit.login,
             onChanged: (login) {
               AuthScreen.of(context).authCubit.login = login;
             },

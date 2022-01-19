@@ -35,6 +35,7 @@ class NatsProvider {
   final String userId;
   final String deviceVirtualId;
   final String natsToken;
+
   ///
   /// Check if object was disposed by [dispose]
   ///
@@ -124,11 +125,18 @@ class NatsProvider {
     String channel,
     Future<void> Function(String, NatsMessage) onMessageFuture, {
     Int64 startSequence = Int64.ZERO,
+    int ackWaitSeconds = 5,
+    maxInFlight = 1,
     StartPosition? startPosition,
   }) async {
     if (!_channelSubscriptions.containsKey(channel)) {
-      var subscription = await _subscribeToChannel(channel,
-          startPosition: startPosition, startSequence: startSequence);
+      var subscription = await _stan.subscribe(
+        subject: channel,
+        maxInFlight: maxInFlight,
+        ackWaitSeconds: ackWaitSeconds,
+        startPosition: startPosition ?? _getPosition(channel),
+        startSequence: getSequence(channel, startSequence),
+      );
 
       _listenBySubscription(channel, subscription);
       _channelSubscriptions[channel] = subscription;
@@ -162,9 +170,9 @@ class NatsProvider {
 
   Future<bool> _connect() async {
     _logger.finest("_connect");
-    _logger.finest(
-            ()=>"url: $natsWssUrl, cluster: $natsCluster, userId: $userId, natsToken: $natsToken");
-    _logger.finest(()=>"certificate data length: ${certificate.length}");
+    _logger.finest(() =>
+        "url: $natsWssUrl, cluster: $natsCluster, userId: $userId, natsToken: $natsToken");
+    _logger.finest(() => "certificate data length: ${certificate.length}");
 
     var connectResult = await _stan.connectUri(Uri.parse(natsWssUrl),
         certificate: certificate,
@@ -227,31 +235,21 @@ class NatsProvider {
     var sequence = dataMessage.sequence;
     var message = NatsMessage.fromBytes(payload);
     message.sequence = sequence;
-    message.serverTime = DateTime.fromMillisecondsSinceEpoch((dataMessage.timestamp.toDouble() / 1e6).truncate(), isUtc: true);
+    message.serverTime = DateTime.fromMillisecondsSinceEpoch(
+        (dataMessage.timestamp.toDouble() / 1e6).truncate(),
+        isUtc: true);
     return message;
   }
 
   Future<Subscription?> listenChatList(String channel,
       {Int64 startSequence = Int64.ZERO}) async {
-    var _subscriptionToPublicChannel = await _subscribeToChannel(channel,
-        startPosition: StartPosition.LastReceived);
-
+    var _subscriptionToPublicChannel = await _stan.subscribe(
+      subject: channel,
+      startPosition: StartPosition.LastReceived,
+    );
     return _subscriptionToPublicChannel;
   }
 
-  Future<Subscription?> _subscribeToChannel(channel,
-      {StartPosition? startPosition, Int64 startSequence = Int64.ZERO}) async {
-    //var durableName = "$userId-$deviceVirtualId-$channel";
-
-    var subscription = await _stan.subscribe(
-      subject: channel,
-      maxInFlight: 1,
-      startPosition: startPosition ?? _getPosition(channel),
-      startSequence: getSequence(channel, startSequence),
-    );
-
-    return subscription;
-  }
 
   StartPosition _getPosition(String channel) {
     final msgType = MessageListView.getTypeByChannel(channel);
@@ -286,20 +284,26 @@ class NatsProvider {
     if (subscription == null) return;
 
     await for (final dataMessage in subscription.stream) {
-      if (_channelSubscriptions.containsKey(channel)) {
+      try {
         NatsMessage message = parseMessage(dataMessage);
-        if (message.needAck) {
-          acknowledge(subscription, dataMessage);
+        _logger.finest(
+            "Received from channel: ${subscription.subject} ${message.id}");
+        if (_channelSubscriptions.containsKey(channel)) {
+          NatsMessage message = parseMessage(dataMessage);
+          if (message.needAck) {
+            acknowledge(subscription, dataMessage);
+          }
+          if (!dataMessage.isRedelivery) {
+            onMessage(channel, message);
+            Future<void> Function(String, NatsMessage) channelCallback =
+                _channelCallbacks[channel]!;
+            channelCallback(channel, message);
+          }
+        } else {
+          break;
         }
-
-        if (!dataMessage.isRedelivery) {
-          await onMessage(channel, message);
-          Future<void> Function(String, NatsMessage) channelCallback =
-              _channelCallbacks[channel]!;
-          await channelCallback(channel, message);
-        }
-      } else {
-        break;
+      } catch (e, s) {
+        _logger.severe("Error during read stream of channel $channel", e, s);
       }
     }
   }

@@ -84,7 +84,7 @@ class NatsStreamingClient {
 
   List<int> get connectionIDAscii => ascii.encode(this.connectionID);
 
-  int LIMIT_UNACKNOWLEDGED = 1000000;
+  int LIMIT_UNACKNOWLEDGED = 3;
 
   // ####################################################
   //                      Methods
@@ -487,6 +487,7 @@ class NatsStreamingClient {
     Int64? startTimeDelta,
     int? sid,
   }) async {
+    if (!connected) throw 'Not connected';
     // Listen Inbox before subscribing
     final String inbox = '${subject}_${queueGroup ?? ''}_${Uuid().v4()}';
 
@@ -535,7 +536,7 @@ class NatsStreamingClient {
         _connectResponse!.subRequests,
         subscriptionRequest.writeToBuffer(),
         queueGroup: subscriptionRequest.qGroup,
-        timeout: Duration(seconds: 10),
+        timeout: Duration(seconds: timeout),
       );
 
       SubscriptionResponse subscriptionResponse =
@@ -546,7 +547,8 @@ class NatsStreamingClient {
       }
 
       return subscriptionResponse;
-    } catch (e) {
+    } catch (e, s) {
+      _logger.severe(e, s);
       throw Exception('${subscriptionRequest.subject} - $e');
     }
   }
@@ -567,7 +569,10 @@ class NatsStreamingClient {
     }
 
     try {
-      natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
+      var res = natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
+      if (!res) {
+        _logger.warning('ACK failed');
+      }
     } catch (e, s) {
       _logger.severe('Error during send ACK', e, s);
     }

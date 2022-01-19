@@ -6,8 +6,10 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:logging/logging.dart';
 
 class MenuSheet extends StatelessWidget {
+  static final Logger logger = Logger('MenuSheet');
   const MenuSheet({Key? key}) : super(key: key);
 
   @override
@@ -111,17 +113,22 @@ class MenuSheet extends StatelessWidget {
                 TextButton(
                   child: Text(localizationInstance.yes),
                   onPressed: () async {
-                    var messenger = sl<Messenger>();
-                    await messenger.dispose();
-                    await Token.deleteTokens();
-                    /* todo: Раскоментируйте строку ниже для удаления локальной базы после выхода из аккаунта,
-                       если это требует сверх безопасности, но это повлечет за собой снижение скорости загрузки приложения
-                     */
+                    try {
+                      var messenger = sl<Messenger>();
+                      await messenger.dispose();
+                      await Token.deleteTokens();
+                      /* todo: Раскоментируйте строку ниже для удаления локальной базы после выхода из аккаунта,
+                                             если это требует сверх безопасности, но это повлечет за собой снижение скорости загрузки приложения
+                                           */
 
-                    // await messenger.chatDatabaseCubit.db.deleteEverything();
+                      // await messenger.chatDatabaseCubit.db.deleteEverything();
+                    } catch (e, s) {
+                      logger.severe("Error during sing off", e, s);
+                    }
                     await setup();
+                    Navigator.pop(context);
                     Navigator.pushNamedAndRemoveUntil(
-                        context, '/init', (route) => true);
+                        context, '/init', (route) => false);
                   },
                   style: TextButton.styleFrom(
                     primary: Colors.blue,
