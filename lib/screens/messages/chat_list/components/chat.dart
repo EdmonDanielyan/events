@@ -24,7 +24,7 @@ class ChatListTile extends StatefulWidget {
   final double leadingGap;
   final List<MessageWithUser> messagesWithUser;
   final ChatDatabaseCubit chatDatabaseCubit;
-  final MessageTable? displayMessage;
+  final MessageTable? searchMessage;
   final void Function()? onTap;
   final void Function(DismissDirection)? onDismissed;
 
@@ -35,7 +35,7 @@ class ChatListTile extends StatefulWidget {
     required this.chat,
     required this.messagesWithUser,
     required this.chatDatabaseCubit,
-    this.displayMessage,
+    this.searchMessage,
     this.contentPadding,
     this.leadingGap = 15.0,
     this.onTap,
@@ -48,6 +48,8 @@ class ChatListTile extends StatefulWidget {
 
 class _ChatListTileState extends State<ChatListTile> {
   bool get hasMessage => widget.messagesWithUser.isNotEmpty;
+
+  MessageTable? get lastMessage => widget.messagesWithUser.last.message;
 
   UserTable? get lastUser => widget.messagesWithUser.last.user;
 
@@ -101,8 +103,8 @@ class _ChatListTileState extends State<ChatListTile> {
                           SizedBox(width: 2.0),
                           if (hasMessage) ...[
                             ChatDate(
-                              chatDate: widget.displayMessage?.created ??
-                                  new DateTime.now(),
+                              chatDate:
+                                  lastMessage?.created ?? new DateTime.now(),
                             ),
                           ],
                         ],
@@ -173,12 +175,12 @@ class _ChatListTileState extends State<ChatListTile> {
   }
 
   Widget _displayBody() {
-    if (widget.displayMessage == null) return const SizedBox();
+    if (lastMessage == null) return const SizedBox();
 
     final highlightValue = widget.highlightValue.trim();
     return ChatMessage(
       displayName: _getDisplayName(),
-      message: widget.displayMessage!.message,
+      message: widget.searchMessage?.message ?? lastMessage!.message,
       highlightValue: highlightValue,
     );
   }
@@ -188,9 +190,9 @@ class _ChatListTileState extends State<ChatListTile> {
   }
 
   String? _getDisplayName() {
-    if (widget.displayMessage == null) return "";
+    if (lastMessage == null) return "";
 
-    if (widget.displayMessage!.type == MessageType.Text) {
+    if (lastMessage!.type == MessageType.Text) {
       if (widget.chat.isGroup() && lastUser != null) {
         return lastUser!.id == JwtPayload.myId
             ? localizationInstance.you

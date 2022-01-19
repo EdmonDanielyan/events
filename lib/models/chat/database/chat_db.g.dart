@@ -577,6 +577,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
   final DateTime? created;
   final int? sequence;
   final bool? edited;
+  final String? messageToLower;
   MessageTable(
       {required this.id,
       required this.chatId,
@@ -589,7 +590,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       required this.type,
       this.created,
       this.sequence,
-      this.edited});
+      this.edited,
+      this.messageToLower});
   factory MessageTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -618,6 +620,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}sequence']),
       edited: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}edited']),
+      messageToLower: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}message_to_lower']),
     );
   }
   @override
@@ -649,6 +653,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
     if (!nullToAbsent || edited != null) {
       map['edited'] = Variable<bool?>(edited);
     }
+    if (!nullToAbsent || messageToLower != null) {
+      map['message_to_lower'] = Variable<String?>(messageToLower);
+    }
     return map;
   }
 
@@ -673,6 +680,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           : Value(sequence),
       edited:
           edited == null && nullToAbsent ? const Value.absent() : Value(edited),
+      messageToLower: messageToLower == null && nullToAbsent
+          ? const Value.absent()
+          : Value(messageToLower),
     );
   }
 
@@ -692,6 +702,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       created: serializer.fromJson<DateTime?>(json['created']),
       sequence: serializer.fromJson<int?>(json['sequence']),
       edited: serializer.fromJson<bool?>(json['edited']),
+      messageToLower: serializer.fromJson<String?>(json['messageToLower']),
     );
   }
   @override
@@ -710,6 +721,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       'created': serializer.toJson<DateTime?>(created),
       'sequence': serializer.toJson<int?>(sequence),
       'edited': serializer.toJson<bool?>(edited),
+      'messageToLower': serializer.toJson<String?>(messageToLower),
     };
   }
 
@@ -725,7 +737,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           MessageType? type,
           DateTime? created,
           int? sequence,
-          bool? edited}) =>
+          bool? edited,
+          String? messageToLower}) =>
       MessageTable(
         id: id ?? this.id,
         chatId: chatId ?? this.chatId,
@@ -739,6 +752,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
         created: created ?? this.created,
         sequence: sequence ?? this.sequence,
         edited: edited ?? this.edited,
+        messageToLower: messageToLower ?? this.messageToLower,
       );
   @override
   String toString() {
@@ -754,14 +768,15 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           ..write('type: $type, ')
           ..write('created: $created, ')
           ..write('sequence: $sequence, ')
-          ..write('edited: $edited')
+          ..write('edited: $edited, ')
+          ..write('messageToLower: $messageToLower')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, chatId, message, userId, repliedMessageId,
-      read, sentOn, status, type, created, sequence, edited);
+      read, sentOn, status, type, created, sequence, edited, messageToLower);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -777,7 +792,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           other.type == this.type &&
           other.created == this.created &&
           other.sequence == this.sequence &&
-          other.edited == this.edited);
+          other.edited == this.edited &&
+          other.messageToLower == this.messageToLower);
 }
 
 class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
@@ -793,6 +809,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
   final Value<DateTime?> created;
   final Value<int?> sequence;
   final Value<bool?> edited;
+  final Value<String?> messageToLower;
   const MessageTablesCompanion({
     this.id = const Value.absent(),
     this.chatId = const Value.absent(),
@@ -806,6 +823,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     this.created = const Value.absent(),
     this.sequence = const Value.absent(),
     this.edited = const Value.absent(),
+    this.messageToLower = const Value.absent(),
   });
   MessageTablesCompanion.insert({
     required String id,
@@ -820,6 +838,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     this.created = const Value.absent(),
     this.sequence = const Value.absent(),
     this.edited = const Value.absent(),
+    this.messageToLower = const Value.absent(),
   })  : id = Value(id),
         chatId = Value(chatId),
         message = Value(message),
@@ -839,6 +858,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     Expression<DateTime?>? created,
     Expression<int?>? sequence,
     Expression<bool?>? edited,
+    Expression<String?>? messageToLower,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -853,6 +873,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       if (created != null) 'created': created,
       if (sequence != null) 'sequence': sequence,
       if (edited != null) 'edited': edited,
+      if (messageToLower != null) 'message_to_lower': messageToLower,
     });
   }
 
@@ -868,7 +889,8 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       Value<MessageType>? type,
       Value<DateTime?>? created,
       Value<int?>? sequence,
-      Value<bool?>? edited}) {
+      Value<bool?>? edited,
+      Value<String?>? messageToLower}) {
     return MessageTablesCompanion(
       id: id ?? this.id,
       chatId: chatId ?? this.chatId,
@@ -882,6 +904,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       created: created ?? this.created,
       sequence: sequence ?? this.sequence,
       edited: edited ?? this.edited,
+      messageToLower: messageToLower ?? this.messageToLower,
     );
   }
 
@@ -926,6 +949,9 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     if (edited.present) {
       map['edited'] = Variable<bool?>(edited.value);
     }
+    if (messageToLower.present) {
+      map['message_to_lower'] = Variable<String?>(messageToLower.value);
+    }
     return map;
   }
 
@@ -943,7 +969,8 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
           ..write('type: $type, ')
           ..write('created: $created, ')
           ..write('sequence: $sequence, ')
-          ..write('edited: $edited')
+          ..write('edited: $edited, ')
+          ..write('messageToLower: $messageToLower')
           ..write(')'))
         .toString();
   }
@@ -1030,6 +1057,14 @@ class $MessageTablesTable extends MessageTables
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (edited IN (0, 1))',
       defaultValue: Constant(false));
+  final VerificationMeta _messageToLowerMeta =
+      const VerificationMeta('messageToLower');
+  @override
+  late final GeneratedColumn<String?> messageToLower = GeneratedColumn<String?>(
+      'message_to_lower', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      defaultValue: Constant(""));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -1043,7 +1078,8 @@ class $MessageTablesTable extends MessageTables
         type,
         created,
         sequence,
-        edited
+        edited,
+        messageToLower
       ];
   @override
   String get aliasedName => _alias ?? 'message_tables';
@@ -1104,6 +1140,12 @@ class $MessageTablesTable extends MessageTables
     if (data.containsKey('edited')) {
       context.handle(_editedMeta,
           edited.isAcceptableOrUnknown(data['edited']!, _editedMeta));
+    }
+    if (data.containsKey('message_to_lower')) {
+      context.handle(
+          _messageToLowerMeta,
+          messageToLower.isAcceptableOrUnknown(
+              data['message_to_lower']!, _messageToLowerMeta));
     }
     return context;
   }

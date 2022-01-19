@@ -18,7 +18,7 @@ class ChatListCubit extends Cubit<ChatListState> {
   void setSearchValue(String value,
       {ChatDatabaseCubit? chatDatabaseCubit}) async {
     searchMessage = null;
-    value = value.trim();
+    value = value.toLowerCase().trim();
     List<ChatTable> items = ChatListView.searchChats(value, state.chats);
 
     if (chatDatabaseCubit != null) {

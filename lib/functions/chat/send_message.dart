@@ -34,6 +34,7 @@ class SendMessage with Loggable {
       id: generateMessageId,
       chatId: chatId,
       message: message,
+      messageToLower: message.toLowerCase(),
       userId: userId ?? JwtPayload.myId,
       read: false,
       sentOn: false,

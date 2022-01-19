@@ -157,7 +157,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           String query, String chatId) =>
       (select(messageTables)
             ..where((tbl) =>
-                tbl.message.contains(query) & tbl.chatId.equals(chatId))
+                tbl.messageToLower.contains(query) & tbl.chatId.equals(chatId))
             ..orderBy([
               (t) =>
                   OrderingTerm(expression: t.sequence, mode: OrderingMode.desc),
@@ -346,7 +346,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
-  int get schemaVersion => 37;
+  int get schemaVersion => 39;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
