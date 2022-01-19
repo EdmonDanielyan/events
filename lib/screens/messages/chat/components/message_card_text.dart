@@ -7,6 +7,7 @@ import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/date_functions.dart';
 import 'package:ink_mobile/functions/files.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/providers/messenger.dart';
@@ -16,6 +17,8 @@ import 'package:ink_mobile/screens/messages/chat/components/sent_on_wrapper.dart
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_tick.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/extensions/message_table.dart';
+
+import 'edited.dart';
 
 class MessageCardText extends StatelessWidget {
   final UserTable user;
@@ -149,6 +152,12 @@ class MessageCardText extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           _showMessage(),
+          if (message?.edited ?? false) ...[
+            const SizedBox(width: 7.0),
+            MessageEditedCard(
+              brightness: byMe ? Brightness.dark : Brightness.light,
+            ),
+          ],
           const SizedBox(width: 5.0),
           _dateWidget(),
           if (byMe) ...[

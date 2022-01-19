@@ -576,6 +576,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
   final MessageType type;
   final DateTime? created;
   final int? sequence;
+  final bool? edited;
   MessageTable(
       {required this.id,
       required this.chatId,
@@ -587,7 +588,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       required this.status,
       required this.type,
       this.created,
-      this.sequence});
+      this.sequence,
+      this.edited});
   factory MessageTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -614,6 +616,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}created']),
       sequence: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}sequence']),
+      edited: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}edited']),
     );
   }
   @override
@@ -642,6 +646,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
     if (!nullToAbsent || sequence != null) {
       map['sequence'] = Variable<int?>(sequence);
     }
+    if (!nullToAbsent || edited != null) {
+      map['edited'] = Variable<bool?>(edited);
+    }
     return map;
   }
 
@@ -664,6 +671,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       sequence: sequence == null && nullToAbsent
           ? const Value.absent()
           : Value(sequence),
+      edited:
+          edited == null && nullToAbsent ? const Value.absent() : Value(edited),
     );
   }
 
@@ -682,6 +691,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       type: serializer.fromJson<MessageType>(json['type']),
       created: serializer.fromJson<DateTime?>(json['created']),
       sequence: serializer.fromJson<int?>(json['sequence']),
+      edited: serializer.fromJson<bool?>(json['edited']),
     );
   }
   @override
@@ -699,6 +709,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       'type': serializer.toJson<MessageType>(type),
       'created': serializer.toJson<DateTime?>(created),
       'sequence': serializer.toJson<int?>(sequence),
+      'edited': serializer.toJson<bool?>(edited),
     };
   }
 
@@ -713,7 +724,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           MessageStatus? status,
           MessageType? type,
           DateTime? created,
-          int? sequence}) =>
+          int? sequence,
+          bool? edited}) =>
       MessageTable(
         id: id ?? this.id,
         chatId: chatId ?? this.chatId,
@@ -726,6 +738,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
         type: type ?? this.type,
         created: created ?? this.created,
         sequence: sequence ?? this.sequence,
+        edited: edited ?? this.edited,
       );
   @override
   String toString() {
@@ -740,14 +753,15 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           ..write('status: $status, ')
           ..write('type: $type, ')
           ..write('created: $created, ')
-          ..write('sequence: $sequence')
+          ..write('sequence: $sequence, ')
+          ..write('edited: $edited')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, chatId, message, userId, repliedMessageId,
-      read, sentOn, status, type, created, sequence);
+      read, sentOn, status, type, created, sequence, edited);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -762,7 +776,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           other.status == this.status &&
           other.type == this.type &&
           other.created == this.created &&
-          other.sequence == this.sequence);
+          other.sequence == this.sequence &&
+          other.edited == this.edited);
 }
 
 class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
@@ -777,6 +792,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
   final Value<MessageType> type;
   final Value<DateTime?> created;
   final Value<int?> sequence;
+  final Value<bool?> edited;
   const MessageTablesCompanion({
     this.id = const Value.absent(),
     this.chatId = const Value.absent(),
@@ -789,6 +805,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     this.type = const Value.absent(),
     this.created = const Value.absent(),
     this.sequence = const Value.absent(),
+    this.edited = const Value.absent(),
   });
   MessageTablesCompanion.insert({
     required String id,
@@ -802,6 +819,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     required MessageType type,
     this.created = const Value.absent(),
     this.sequence = const Value.absent(),
+    this.edited = const Value.absent(),
   })  : id = Value(id),
         chatId = Value(chatId),
         message = Value(message),
@@ -820,6 +838,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     Expression<MessageType>? type,
     Expression<DateTime?>? created,
     Expression<int?>? sequence,
+    Expression<bool?>? edited,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -833,6 +852,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       if (type != null) 'type': type,
       if (created != null) 'created': created,
       if (sequence != null) 'sequence': sequence,
+      if (edited != null) 'edited': edited,
     });
   }
 
@@ -847,7 +867,8 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       Value<MessageStatus>? status,
       Value<MessageType>? type,
       Value<DateTime?>? created,
-      Value<int?>? sequence}) {
+      Value<int?>? sequence,
+      Value<bool?>? edited}) {
     return MessageTablesCompanion(
       id: id ?? this.id,
       chatId: chatId ?? this.chatId,
@@ -860,6 +881,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       type: type ?? this.type,
       created: created ?? this.created,
       sequence: sequence ?? this.sequence,
+      edited: edited ?? this.edited,
     );
   }
 
@@ -901,6 +923,9 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     if (sequence.present) {
       map['sequence'] = Variable<int?>(sequence.value);
     }
+    if (edited.present) {
+      map['edited'] = Variable<bool?>(edited.value);
+    }
     return map;
   }
 
@@ -917,7 +942,8 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
           ..write('status: $status, ')
           ..write('type: $type, ')
           ..write('created: $created, ')
-          ..write('sequence: $sequence')
+          ..write('sequence: $sequence, ')
+          ..write('edited: $edited')
           ..write(')'))
         .toString();
   }
@@ -996,6 +1022,14 @@ class $MessageTablesTable extends MessageTables
       type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
+  final VerificationMeta _editedMeta = const VerificationMeta('edited');
+  @override
+  late final GeneratedColumn<bool?> edited = GeneratedColumn<bool?>(
+      'edited', aliasedName, true,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (edited IN (0, 1))',
+      defaultValue: Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -1008,7 +1042,8 @@ class $MessageTablesTable extends MessageTables
         status,
         type,
         created,
-        sequence
+        sequence,
+        edited
       ];
   @override
   String get aliasedName => _alias ?? 'message_tables';
@@ -1065,6 +1100,10 @@ class $MessageTablesTable extends MessageTables
     if (data.containsKey('sequence')) {
       context.handle(_sequenceMeta,
           sequence.isAcceptableOrUnknown(data['sequence']!, _sequenceMeta));
+    }
+    if (data.containsKey('edited')) {
+      context.handle(_editedMeta,
+          edited.isAcceptableOrUnknown(data['edited']!, _editedMeta));
     }
     return context;
   }
