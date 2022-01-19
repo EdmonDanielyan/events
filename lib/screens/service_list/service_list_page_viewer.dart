@@ -9,6 +9,7 @@ import 'package:ink_mobile/cubit/send_feedback_form/send_form_cubit.dart';
 import 'package:ink_mobile/cubit/send_medical_ins_form/send_form_cubit.dart';
 import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart';
 import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart';
+import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/page_viewer.dart';
 import 'package:ink_mobile/screens/feedback/feedback_screen.dart';
@@ -61,7 +62,10 @@ class ServiceListPageViewerState extends State<ServiceListPageViewer> {
           referencesScreen(),
           medicalInsuranceScreen(),
         ],
-        onPageChanged: pageViewer.onPageChanged,
+        onPageChanged: (page) {
+          TextFieldUtils.loseTextFieldFocus();
+          pageViewer.onPageChanged(page);
+        },
         physics: NeverScrollableScrollPhysics(),
       ),
     );

@@ -7,7 +7,8 @@ import 'package:ink_mobile/setup.dart';
 import 'cubit/new_bottom_nav_bar_cubit.dart';
 
 class NewBottomNavBar extends StatefulWidget {
-  const NewBottomNavBar({Key? key}) : super(key: key);
+  final bool showActive;
+  const NewBottomNavBar({Key? key, this.showActive = true}) : super(key: key);
 
   @override
   State<NewBottomNavBar> createState() => _NewBottomNavBarState();
@@ -22,7 +23,7 @@ class _NewBottomNavBarState extends State<NewBottomNavBar>
   @override
   void initState() {
     super.initState();
-    navBarItems = getItems();
+    navBarItems = getItems(showActive: widget.showActive);
   }
 
   @override
@@ -31,7 +32,8 @@ class _NewBottomNavBarState extends State<NewBottomNavBar>
       builder: (BuildContext context, int currentIndex) {
         return BottomNavigationBar(
           currentIndex: currentIndex,
-          selectedItemColor: const Color(0xff12512a),
+          selectedItemColor:
+              widget.showActive ? Color(0xff12512a) : Colors.grey,
           unselectedItemColor: Colors.grey,
           selectedFontSize: 12.0,
           iconSize: 30,

@@ -19,15 +19,16 @@ class NewBottomNavBarMixin {
     return items;
   }
 
-  List<BottomNavigationBarItem> getItems() {
+  List<BottomNavigationBarItem> getItems({bool showActive = true}) {
     List<BottomNavigationBarItem> items = [];
-    navBottomNavBarItems
-        .forEach((element) => items.add(_buildNewBottomNavItem(element)));
+    navBottomNavBarItems.forEach((element) =>
+        items.add(_buildNewBottomNavItem(element, showActive: showActive)));
 
     return items;
   }
 
-  BottomNavigationBarItem _buildNewBottomNavItem(NavBottomNavBarItem item) {
+  BottomNavigationBarItem _buildNewBottomNavItem(NavBottomNavBarItem item,
+      {bool showActive = true}) {
     return BottomNavigationBarItem(
       icon: Stack(
         children: [
@@ -42,17 +43,19 @@ class NewBottomNavBarMixin {
               : SizedBox()
         ],
       ),
-      activeIcon: Stack(
-        children: [
-          Container(
-            height: 25,
-            child: SvgPicture.asset(item.icon, color: Color(0xff12512a)),
-          ),
-          item.indicator != null
-              ? NavBarIndicator(indicatorCubit: item.indicator!)
-              : SizedBox()
-        ],
-      ),
+      activeIcon: !showActive
+          ? null
+          : Stack(
+              children: [
+                Container(
+                  height: 25,
+                  child: SvgPicture.asset(item.icon, color: Color(0xff12512a)),
+                ),
+                item.indicator != null
+                    ? NavBarIndicator(indicatorCubit: item.indicator!)
+                    : SizedBox()
+              ],
+            ),
       label: item.label,
     );
   }

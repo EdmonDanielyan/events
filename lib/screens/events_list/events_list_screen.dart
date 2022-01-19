@@ -17,7 +17,7 @@ class EventsListScreen extends StatelessWidget {
     return Scaffold(
       appBar: InkAppBarWithText(title: _strings.events),
       body: Body(cubit: eventsListCubit),
-      bottomNavigationBar: const NewBottomNavBar(),
+      bottomNavigationBar: NewBottomNavBar(showActive: false),
     );
   }
 }

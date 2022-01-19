@@ -50,6 +50,7 @@ class _MessageTextfieldState extends State<MessageTextfield> {
         alignment: Alignment.centerRight,
         children: [
           TextFormField(
+            textCapitalization: TextCapitalization.sentences,
             controller: textEditingController,
             onChanged: widget.onChanged,
             minLines: 1,

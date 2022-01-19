@@ -51,6 +51,7 @@ class MenuSheet extends StatelessWidget {
       MenuSheetItem(
         title: strings.news,
         onTap: () {
+          Navigator.of(context).pop();
           Navigator.pushNamed(context, '/news_list');
         },
         icon: SvgPicture.asset(
@@ -61,6 +62,7 @@ class MenuSheet extends StatelessWidget {
       MenuSheetItem(
         title: strings.events,
         onTap: () {
+          Navigator.of(context).pop();
           Navigator.pushNamed(context, '/events_list');
         },
         icon: SvgPicture.asset(
@@ -71,6 +73,7 @@ class MenuSheet extends StatelessWidget {
       MenuSheetItem(
         title: strings.announcements,
         onTap: () {
+          Navigator.of(context).pop();
           Navigator.pushNamed(context, '/announcements_list');
         },
         icon: SvgPicture.asset(
@@ -81,6 +84,7 @@ class MenuSheet extends StatelessWidget {
       MenuSheetItem(
         title: strings.myData,
         onTap: () {
+          Navigator.of(context).pop();
           Navigator.pushNamed(context, '/personal');
         },
         icon: SvgPicture.asset(
@@ -116,7 +120,8 @@ class MenuSheet extends StatelessWidget {
 
                     // await messenger.chatDatabaseCubit.db.deleteEverything();
                     await setup();
-                    Navigator.pushNamedAndRemoveUntil(context, '/init', (route) => true);
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/init', (route) => true);
                   },
                   style: TextButton.styleFrom(
                     primary: Colors.blue,
