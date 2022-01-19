@@ -14,7 +14,7 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/chat_list.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
-
+import 'package:fixnum/fixnum.dart';
 import '../../../extensions/chat_list.dart';
 import '../../../extensions/participant_list.dart';
 import '../../../extensions/user_list.dart';
@@ -148,7 +148,10 @@ class ChatListListener extends ChannelListener {
       _getChatIds.add(chat.id);
       chatsToInsert.add(chat);
 
-      await registry.subscribeOnChatChannelsIfNotExists(chat.id);
+      await registry.subscribeOnChatChannelsIfNotExists(chat.id,
+          sequence: chat.lastMessageSeq != null
+              ? Int64.parseInt(chat.lastMessageSeq.toString()).toInt64()
+              : Int64.ZERO);
     }
     if (!await _chatsStored(chats)) {
       await chatCreation.insertMultipleChats(chatsToInsert);

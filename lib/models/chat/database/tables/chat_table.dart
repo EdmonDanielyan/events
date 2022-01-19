@@ -15,6 +15,7 @@ class ChatTables extends Table {
   BoolColumn get notificationsOn =>
       boolean().nullable().withDefault(Constant(true))();
   BoolColumn get deleted => boolean().nullable().withDefault(Constant(false))();
+  IntColumn get lastMessageSeq => integer().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};

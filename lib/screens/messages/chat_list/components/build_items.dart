@@ -8,6 +8,7 @@ import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:moor/moor.dart';
+import 'package:ink_mobile/extensions/chat_table.dart';
 
 import 'chat.dart';
 
@@ -52,6 +53,11 @@ class BuildChatItems extends StatelessWidget {
             builder: (context, AsyncSnapshot<List<MessageWithUser>?> snapshot) {
               if (snapshot.hasData) {
                 List<MessageWithUser> messagesWithUser = snapshot.data ?? [];
+
+                //HIDING EMPTY SINGLE CHATS
+                if (messagesWithUser.isEmpty && !chats[index].isGroup()) {
+                  return const SizedBox();
+                }
 
                 return ChatListTile(
                   onTap: () {

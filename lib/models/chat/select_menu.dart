@@ -29,13 +29,13 @@ class SelectMessageMenuList {
           ),
         ),
       ],
-      SelectMessageMenu(
-        name: strings.sendOn,
-        icon: Icon(
-          CupertinoIcons.arrowshape_turn_up_right_fill,
-          size: iconSize,
-        ),
-      ),
+      // SelectMessageMenu(
+      //   name: strings.sendOn,
+      //   icon: Icon(
+      //     CupertinoIcons.arrowshape_turn_up_right_fill,
+      //     size: iconSize,
+      //   ),
+      // ),
       SelectMessageMenu(
         name: strings.delete,
         icon: Icon(
@@ -50,13 +50,13 @@ class SelectMessageMenuList {
           size: iconSize,
         ),
       ),
-      SelectMessageMenu(
-        name: strings.select,
-        icon: Icon(
-          Icons.check_circle,
-          size: iconSize,
-        ),
-      ),
+      // SelectMessageMenu(
+      //   name: strings.select,
+      //   icon: Icon(
+      //     Icons.check_circle,
+      //     size: iconSize,
+      //   ),
+      // ),
       SelectMessageMenu(
         name: strings.quote,
         icon: Icon(

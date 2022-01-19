@@ -5,6 +5,7 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/messenger.dart';
+import 'package:ink_mobile/extensions/chat_table.dart';
 
 @injectable
 class ChatFunctions {
@@ -54,8 +55,7 @@ class ChatFunctions {
     var topic = messenger.natsProvider.getGroupTextChannelById(chat.id);
     if (chat.notificationsOn ?? true) {
       messenger.pushNotificationManager.subscribeToTopic(topic);
-    }
-    else {
+    } else {
       messenger.pushNotificationManager.unsubscribeFromTopic(topic);
     }
   }
@@ -91,5 +91,22 @@ class ChatFunctions {
     }
 
     return myMessages;
+  }
+
+  Future<void> clearSingleChat(ChatTable chat) async {
+    final lastMessageSeq =
+        await chatDatabaseCubit.db.selectMessageByChatIdInSeqOrder(chat.id);
+
+    if (lastMessageSeq != null) {
+      updateChat(chat.copyWith(
+          updatedAt: DateTime.now(), lastMessageSeq: lastMessageSeq.sequence));
+    }
+    deleteAllChatMessages(chat.id);
+    await messenger.chatSaver.saveChats(newChat: null);
+  }
+
+  Future<void> clearGroup(ChatTable chat) async {
+    deleteAllChatMessages(chat.id);
+    updateChat(chat.copyWith(updatedAt: DateTime.now()));
   }
 }

@@ -11,7 +11,7 @@ import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/build_items.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/search_bar.dart';
-
+import 'package:ink_mobile/extensions/chat_table.dart';
 import '../../../../setup.dart';
 
 class Body extends StatefulWidget {
@@ -32,9 +32,13 @@ class _BodyState extends State<Body> {
   Future<bool> _deleteChat(ChatTable chat, BuildContext context) async {
     bool removed = false;
     if (messenger.isConnected) {
-      messenger.chatFunctions.deleteAllChatMessages(chat.id);
-      messenger.chatFunctions.deleteChat(chat.id);
-      messenger.chatEventsSender.sendLeftMessage(chat);
+      if (chat.isGroup()) {
+        messenger.chatFunctions.deleteAllChatMessages(chat.id);
+        messenger.chatFunctions.deleteChat(chat.id);
+        messenger.chatEventsSender.sendLeftMessage(chat);
+      } else {
+        messenger.chatFunctions.clearSingleChat(chat);
+      }
 
       removed = true;
     }

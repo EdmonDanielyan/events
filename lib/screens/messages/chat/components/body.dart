@@ -120,7 +120,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
         _scrollListener();
       });
     });
-    _scrollBottom(milliseconds: 200);
+    _scrollBottom(milliseconds: 400);
 
     _hideNotifications();
   }

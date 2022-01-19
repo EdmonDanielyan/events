@@ -73,22 +73,22 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              textfieldWidget(
-                initalValue: _chat.avatar,
-                hint: _strings.avatarUrl,
-                onChanged: (val) => entities.avatarUrl = val,
-                validator: (val) {
-                  if (val!.isEmpty) {
-                    return null;
-                  }
-                  return !isStringUrl(val)
-                      ? _strings.fillTheFieldCorrectly
-                      : null;
-                },
-              ),
-              //avatarWidget(),
-              const SizedBox(height: 5.0),
-              divider(),
+              // textfieldWidget(
+              //   initalValue: _chat.avatar,
+              //   hint: _strings.avatarUrl,
+              //   onChanged: (val) => entities.avatarUrl = val,
+              //   validator: (val) {
+              //     if (val!.isEmpty) {
+              //       return null;
+              //     }
+              //     return !isStringUrl(val)
+              //         ? _strings.fillTheFieldCorrectly
+              //         : null;
+              //   },
+              // ),
+              // //avatarWidget(),
+              // const SizedBox(height: 5.0),
+              // divider(),
               textfieldWidget(
                 initalValue: _chat.name,
                 hint: _strings.groupName,

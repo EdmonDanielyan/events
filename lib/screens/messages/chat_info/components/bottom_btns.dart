@@ -17,8 +17,11 @@ class ChatInfoBottomBtns extends StatelessWidget {
   bool get isGroup => chat.isGroup();
 
   void _clearMessages() {
-    messenger.chatFunctions.deleteAllChatMessages(chat.id);
-    messenger.chatFunctions.updateChat(chat.copyWith(updatedAt: DateTime.now()));
+    if (isGroup) {
+      messenger.chatFunctions.clearGroup(chat);
+    } else {
+      messenger.chatFunctions.clearSingleChat(chat);
+    }
   }
 
   Future<void> _deleteChat(BuildContext context) async {

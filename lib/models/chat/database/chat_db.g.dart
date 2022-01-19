@@ -18,6 +18,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   final String? millisecondsSinceEpoch;
   final bool? notificationsOn;
   final bool? deleted;
+  final int? lastMessageSeq;
   ChatTable(
       {required this.id,
       required this.name,
@@ -28,7 +29,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       required this.updatedAt,
       this.millisecondsSinceEpoch,
       this.notificationsOn,
-      this.deleted});
+      this.deleted,
+      this.lastMessageSeq});
   factory ChatTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -53,6 +55,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}notifications_on']),
       deleted: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
+      lastMessageSeq: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}last_message_seq']),
     );
   }
   @override
@@ -77,6 +81,9 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
     if (!nullToAbsent || deleted != null) {
       map['deleted'] = Variable<bool?>(deleted);
     }
+    if (!nullToAbsent || lastMessageSeq != null) {
+      map['last_message_seq'] = Variable<int?>(lastMessageSeq);
+    }
     return map;
   }
 
@@ -100,6 +107,9 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       deleted: deleted == null && nullToAbsent
           ? const Value.absent()
           : Value(deleted),
+      lastMessageSeq: lastMessageSeq == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastMessageSeq),
     );
   }
 
@@ -118,6 +128,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           serializer.fromJson<String?>(json['millisecondsSinceEpoch']),
       notificationsOn: serializer.fromJson<bool?>(json['notificationsOn']),
       deleted: serializer.fromJson<bool?>(json['deleted']),
+      lastMessageSeq: serializer.fromJson<int?>(json['lastMessageSeq']),
     );
   }
   @override
@@ -135,6 +146,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           serializer.toJson<String?>(millisecondsSinceEpoch),
       'notificationsOn': serializer.toJson<bool?>(notificationsOn),
       'deleted': serializer.toJson<bool?>(deleted),
+      'lastMessageSeq': serializer.toJson<int?>(lastMessageSeq),
     };
   }
 
@@ -148,7 +160,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           DateTime? updatedAt,
           String? millisecondsSinceEpoch,
           bool? notificationsOn,
-          bool? deleted}) =>
+          bool? deleted,
+          int? lastMessageSeq}) =>
       ChatTable(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -161,6 +174,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
             millisecondsSinceEpoch ?? this.millisecondsSinceEpoch,
         notificationsOn: notificationsOn ?? this.notificationsOn,
         deleted: deleted ?? this.deleted,
+        lastMessageSeq: lastMessageSeq ?? this.lastMessageSeq,
       );
   @override
   String toString() {
@@ -174,7 +188,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           ..write('updatedAt: $updatedAt, ')
           ..write('millisecondsSinceEpoch: $millisecondsSinceEpoch, ')
           ..write('notificationsOn: $notificationsOn, ')
-          ..write('deleted: $deleted')
+          ..write('deleted: $deleted, ')
+          ..write('lastMessageSeq: $lastMessageSeq')
           ..write(')'))
         .toString();
   }
@@ -190,7 +205,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       updatedAt,
       millisecondsSinceEpoch,
       notificationsOn,
-      deleted);
+      deleted,
+      lastMessageSeq);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -204,7 +220,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           other.updatedAt == this.updatedAt &&
           other.millisecondsSinceEpoch == this.millisecondsSinceEpoch &&
           other.notificationsOn == this.notificationsOn &&
-          other.deleted == this.deleted);
+          other.deleted == this.deleted &&
+          other.lastMessageSeq == this.lastMessageSeq);
 }
 
 class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
@@ -218,6 +235,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   final Value<String?> millisecondsSinceEpoch;
   final Value<bool?> notificationsOn;
   final Value<bool?> deleted;
+  final Value<int?> lastMessageSeq;
   const ChatTablesCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -229,6 +247,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     this.millisecondsSinceEpoch = const Value.absent(),
     this.notificationsOn = const Value.absent(),
     this.deleted = const Value.absent(),
+    this.lastMessageSeq = const Value.absent(),
   });
   ChatTablesCompanion.insert({
     required String id,
@@ -241,6 +260,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     this.millisecondsSinceEpoch = const Value.absent(),
     this.notificationsOn = const Value.absent(),
     this.deleted = const Value.absent(),
+    this.lastMessageSeq = const Value.absent(),
   })  : id = Value(id),
         name = Value(name),
         description = Value(description),
@@ -257,6 +277,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     Expression<String?>? millisecondsSinceEpoch,
     Expression<bool?>? notificationsOn,
     Expression<bool?>? deleted,
+    Expression<int?>? lastMessageSeq,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -270,6 +291,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
         'milliseconds_since_epoch': millisecondsSinceEpoch,
       if (notificationsOn != null) 'notifications_on': notificationsOn,
       if (deleted != null) 'deleted': deleted,
+      if (lastMessageSeq != null) 'last_message_seq': lastMessageSeq,
     });
   }
 
@@ -283,7 +305,8 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       Value<DateTime>? updatedAt,
       Value<String?>? millisecondsSinceEpoch,
       Value<bool?>? notificationsOn,
-      Value<bool?>? deleted}) {
+      Value<bool?>? deleted,
+      Value<int?>? lastMessageSeq}) {
     return ChatTablesCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -296,6 +319,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
           millisecondsSinceEpoch ?? this.millisecondsSinceEpoch,
       notificationsOn: notificationsOn ?? this.notificationsOn,
       deleted: deleted ?? this.deleted,
+      lastMessageSeq: lastMessageSeq ?? this.lastMessageSeq,
     );
   }
 
@@ -333,6 +357,9 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     if (deleted.present) {
       map['deleted'] = Variable<bool?>(deleted.value);
     }
+    if (lastMessageSeq.present) {
+      map['last_message_seq'] = Variable<int?>(lastMessageSeq.value);
+    }
     return map;
   }
 
@@ -348,7 +375,8 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
           ..write('updatedAt: $updatedAt, ')
           ..write('millisecondsSinceEpoch: $millisecondsSinceEpoch, ')
           ..write('notificationsOn: $notificationsOn, ')
-          ..write('deleted: $deleted')
+          ..write('deleted: $deleted, ')
+          ..write('lastMessageSeq: $lastMessageSeq')
           ..write(')'))
         .toString();
   }
@@ -427,6 +455,12 @@ class $ChatTablesTable extends ChatTables
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (deleted IN (0, 1))',
       defaultValue: Constant(false));
+  final VerificationMeta _lastMessageSeqMeta =
+      const VerificationMeta('lastMessageSeq');
+  @override
+  late final GeneratedColumn<int?> lastMessageSeq = GeneratedColumn<int?>(
+      'last_message_seq', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -438,7 +472,8 @@ class $ChatTablesTable extends ChatTables
         updatedAt,
         millisecondsSinceEpoch,
         notificationsOn,
-        deleted
+        deleted,
+        lastMessageSeq
       ];
   @override
   String get aliasedName => _alias ?? 'chat_tables';
@@ -505,6 +540,12 @@ class $ChatTablesTable extends ChatTables
     if (data.containsKey('deleted')) {
       context.handle(_deletedMeta,
           deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
+    }
+    if (data.containsKey('last_message_seq')) {
+      context.handle(
+          _lastMessageSeqMeta,
+          lastMessageSeq.isAcceptableOrUnknown(
+              data['last_message_seq']!, _lastMessageSeqMeta));
     }
     return context;
   }

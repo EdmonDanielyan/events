@@ -94,6 +94,18 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
               (t) => OrderingTerm(expression: t.sequence, mode: orderingMode),
             ]))
           .getSingleOrNull();
+
+  Future<MessageTable?> selectMessageByChatIdInSeqOrder(String id) =>
+      (select(messageTables)
+            ..where(
+              (tbl) => tbl.chatId.equals(id),
+            )
+            ..orderBy([
+              (t) =>
+                  OrderingTerm(expression: t.sequence, mode: OrderingMode.desc),
+            ])
+            ..limit(1))
+          .getSingleOrNull();
   Future<List<MessageTable>> selectMessagesByUserAndChatId(
           String chatId, int userId) =>
       (select(messageTables)
@@ -126,8 +138,8 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
     return res;
   }
 
-  Future<int> insertMessage(MessageTable messageTable) =>
-      into(messageTables).insert(messageTable);
+  Future<int> insertMessage(MessageTable messageTable) => into(messageTables)
+      .insert(messageTable, mode: InsertMode.insertOrReplace);
   Future<void> insertMultipleMessages(List<MessageTable> messages) async {
     await batch((batch) {
       batch.insertAll(

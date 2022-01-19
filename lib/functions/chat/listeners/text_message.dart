@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
+import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
@@ -12,6 +13,8 @@ import 'package:ink_mobile/models/chat/nats/message.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
+import 'package:ink_mobile/providers/notifications.dart';
+import 'package:ink_mobile/setup.dart';
 
 import '../chat_functions.dart';
 import 'channels_registry.dart';
@@ -66,6 +69,8 @@ class TextMessageListener extends ChannelListener {
         ''');
         await chatDatabaseCubit.db.updateMessageById(newMessage.id, newMessage);
       } else {
+        _showNotification(message, fields.chat, fields.message, fields.user);
+
         logger.finest(() => '''
         MESSAGE INSERTING
         message: $newMessage
@@ -87,6 +92,27 @@ class TextMessageListener extends ChannelListener {
       }
     } on NoSuchMethodError {
       return;
+    }
+  }
+
+  Future<void> _showNotification(NatsMessage message, ChatTable chat,
+      MessageTable chatMessage, UserTable user) async {
+    final twentySecondsBefore =
+        DateTime.now().subtract(const Duration(seconds: 20));
+    if (message.serverTime.isAfter(twentySecondsBefore)) {
+      bool isChatOpened = chatDatabaseCubit.getSelectedChatId == chat.id;
+      if (!isChatOpened) {
+        var localNotificationsProvider = sl<LocalNotificationsProvider>();
+        localNotificationsProvider.showNotification(
+          user.name,
+          chatMessage.message,
+          payload: chat.id,
+          id: chat.id.hashCode,
+          onSelect: (_) {
+            OpenChat(sl(), chat)();
+          },
+        );
+      }
     }
   }
 }

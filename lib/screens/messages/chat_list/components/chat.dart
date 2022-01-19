@@ -59,17 +59,15 @@ class _ChatListTileState extends State<ChatListTile> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: widget.chat.isGroup()
-          ? Dismissible(
-              background: const SizedBox(),
-              direction: DismissDirection.endToStart,
-              secondaryBackground: Icon(Icons.delete, color: Colors.red),
-              resizeDuration: null,
-              onDismissed: widget.onDismissed,
-              key: UniqueKey(),
-              child: _chatContainer(),
-            )
-          : _chatContainer(),
+      child: Dismissible(
+        background: const SizedBox(),
+        direction: DismissDirection.endToStart,
+        secondaryBackground: Icon(Icons.delete, color: Colors.red),
+        resizeDuration: null,
+        onDismissed: widget.onDismissed,
+        key: UniqueKey(),
+        child: _chatContainer(),
+      ),
     );
   }
 

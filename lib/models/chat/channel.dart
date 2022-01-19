@@ -4,6 +4,7 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:fixnum/fixnum.dart';
 
 class ChannelListView {
   static ChannelTable messageNatsToChannel(NatsMessage message) {
@@ -19,7 +20,7 @@ class ChannelListView {
     );
   }
 
-  static ChannelTable? channelNameToChannel(String name) {
+  static ChannelTable? channelNameToChannel(String name, {Int64? sequence}) {
     final messageType = MessageListView.getTypeByChannel(name);
     if (messageType != null) {
       return ChannelTable(
@@ -28,7 +29,7 @@ class ChannelListView {
         needAck: true,
         from: JwtPayload.myId.toString(),
         to: name,
-        sequence: "0",
+        sequence: sequence != null ? sequence.toString() : "0",
         messageType: messageType,
       );
     }

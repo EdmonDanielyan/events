@@ -35,45 +35,45 @@ class PushNotificationManager with Loggable {
   PushNotificationManager(this.localNotificationsProvider);
 
   Future load() async {
-    logger.finest('load');
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    // logger.finest('load');
+    // await Firebase.initializeApp(
+    //   options: DefaultFirebaseOptions.currentPlatform,
+    // );
 
-    await FirebaseMessaging.instance.requestPermission(badge: true);
-    //FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    if (!kIsWeb) {
-      String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-      logger.finest("FirebaseMessaging.apnsToken: $apnsToken");
+    // await FirebaseMessaging.instance.requestPermission(badge: true);
+    // //FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    // if (!kIsWeb) {
+    //   String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+    //   logger.finest("FirebaseMessaging.apnsToken: $apnsToken");
 
-      String? fcmToken = await FirebaseMessaging.instance.getToken();
-      logger.finest("FirebaseMessaging.fcmToken: $fcmToken");
-    }
+    //   String? fcmToken = await FirebaseMessaging.instance.getToken();
+    //   logger.finest("FirebaseMessaging.fcmToken: $fcmToken");
+    // }
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      logger.finest("FirebaseMessaging.onMessage: ${message.data}");
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+    //   logger.finest("FirebaseMessaging.onMessage: ${message.data}");
 
-      var userId = await Token.getUserId();
-      if (userId.isEmpty) {
-        logger.warning("Not logged in app");
-        return;
-      }
-      await showNotificationIfNeeded(message);
-    });
+    //   var userId = await Token.getUserId();
+    //   if (userId.isEmpty) {
+    //     logger.warning("Not logged in app");
+    //     return;
+    //   }
+    //   await showNotificationIfNeeded(message);
+    // });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-      try {
-        logger.finest("FirebaseMessaging.onMessageOpenedApp: ${message.data}");
+    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+    //   try {
+    //     logger.finest("FirebaseMessaging.onMessageOpenedApp: ${message.data}");
 
-        final payload = ChatPushNotificationModel.fromRemoteMessage(message);
-        logger.finest("payload: $payload");
-        if (payload != null) {
-          _openChat(payload);
-        }
-      } catch (e) {
-        print(e.toString());
-      }
-    });
+    //     final payload = ChatPushNotificationModel.fromRemoteMessage(message);
+    //     logger.finest("payload: $payload");
+    //     if (payload != null) {
+    //       _openChat(payload);
+    //     }
+    //   } catch (e) {
+    //     print(e.toString());
+    //   }
+    // });
   }
 
   Future<void> _openChat(ChatPushNotificationModel payload) async {
@@ -154,13 +154,13 @@ class PushNotificationManager with Loggable {
 
   Future subscribeToTopic(String topic) async {
     logger.finest(() => "subscribeToTopic: $topic");
-    await FirebaseMessaging.instance.subscribeToTopic(topic);
+    //await FirebaseMessaging.instance.subscribeToTopic(topic);
   }
 
   Future unsubscribeFromTopic(String topic) async {
     logger.finest(() => "unsubscribeFromTopic: $topic");
     try {
-      await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+      //await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
     } catch (e, s) {
       logger.severe("Error during FCM unsubscribe", e, s);
     }

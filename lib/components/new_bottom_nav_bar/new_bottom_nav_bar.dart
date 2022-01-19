@@ -29,6 +29,7 @@ class _NewBottomNavBarState extends State<NewBottomNavBar>
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NewBottomNavBarCubit, int>(
+      bloc: _cubit,
       builder: (BuildContext context, int currentIndex) {
         return BottomNavigationBar(
           currentIndex: currentIndex,
