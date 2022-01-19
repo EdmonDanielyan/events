@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
@@ -55,8 +56,10 @@ class _MessageTextfieldState extends State<MessageTextfield> {
             onChanged: widget.onChanged,
             minLines: 1,
             maxLines: 3,
+            maxLength: 1000,
             focusNode: widget.focusNode,
             decoration: InputDecoration(
+              counterText: "",
               hintText: _hintText ?? _originalHint,
               border: OutlineInputBorder(
                 borderRadius: const BorderRadius.all(
