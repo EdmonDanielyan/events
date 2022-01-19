@@ -71,6 +71,10 @@ class BuildChatItems extends StatelessWidget {
                   index: index,
                   chat: chats[index],
                   contentPadding: contentPadding,
+                  displayMessage: chatListCubit.searchMessage != null &&
+                          chatListCubit.searchMessage!.chatId == chats[index].id
+                      ? chatListCubit.searchMessage
+                      : messagesWithUser.last.message,
                   chatDatabaseCubit: chatDatabaseCubit,
                   messagesWithUser: messagesWithUser,
                 );
