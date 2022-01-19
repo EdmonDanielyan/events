@@ -126,9 +126,8 @@ class MenuSheet extends StatelessWidget {
                       logger.severe("Error during sing off", e, s);
                     }
                     await setup();
-                    Navigator.pop(context);
                     Navigator.pushNamedAndRemoveUntil(
-                        context, '/init', (route) => false);
+                        context, '/init', (route) => true);
                   },
                   style: TextButton.styleFrom(
                     primary: Colors.blue,
