@@ -17,6 +17,9 @@ class MessageTables extends Table {
       dateTime().withDefault(Constant(new DateTime.now())).nullable()();
   IntColumn get sequence =>
       integer().nullable().withDefault(const Constant(0))();
+  BoolColumn get edited => boolean().nullable().withDefault(Constant(false))();
+  TextColumn get messageToLower =>
+      text().nullable().withDefault(Constant(""))();
 
   @override
   Set<Column> get primaryKey => {id, chatId};

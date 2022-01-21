@@ -24,6 +24,7 @@ class ChatListTile extends StatefulWidget {
   final double leadingGap;
   final List<MessageWithUser> messagesWithUser;
   final ChatDatabaseCubit chatDatabaseCubit;
+  final MessageTable? searchMessage;
   final void Function()? onTap;
   final void Function(DismissDirection)? onDismissed;
 
@@ -34,6 +35,7 @@ class ChatListTile extends StatefulWidget {
     required this.chat,
     required this.messagesWithUser,
     required this.chatDatabaseCubit,
+    this.searchMessage,
     this.contentPadding,
     this.leadingGap = 15.0,
     this.onTap,
@@ -174,10 +176,12 @@ class _ChatListTileState extends State<ChatListTile> {
 
   Widget _displayBody() {
     if (lastMessage == null) return const SizedBox();
+
+    final highlightValue = widget.highlightValue.trim();
     return ChatMessage(
       displayName: _getDisplayName(),
-      message: lastMessage!.message,
-      highlightValue: widget.highlightValue,
+      message: widget.searchMessage?.message ?? lastMessage!.message,
+      highlightValue: highlightValue,
     );
   }
 
