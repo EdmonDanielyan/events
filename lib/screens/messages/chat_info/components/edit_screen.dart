@@ -98,14 +98,14 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
               ),
               const SizedBox(height: 5.0),
               divider(),
-              if (isGroup) ...[
-                textfieldWidget(
-                  initalValue: _chat.description,
-                  hint: _strings.description,
-                  onChanged: (val) => entities.description = val,
-                ),
-                divider(),
-              ],
+              // if (isGroup) ...[
+              //   textfieldWidget(
+              //     initalValue: _chat.description,
+              //     hint: _strings.description,
+              //     onChanged: (val) => entities.description = val,
+              //   ),
+              //   divider(),
+              // ],
               SizedBox(height: 50),
             ],
           ),
