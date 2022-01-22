@@ -7,7 +7,7 @@ import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
+import 'package:ink_mobile/cubit/chat_list/search_chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
@@ -77,7 +77,7 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
   MessageIndicatorCubit? indicator = MessageIndicatorCubit(
       sl<ChatDatabaseCubit>().db.watchAllMessages(), sl<ChatDatabaseCubit>());
   Widget screen = ChatListScreen(
-    chatListCubit: sl<ChatListCubit>(),
+    searchChatCubit: sl<SearchChatCubit>(),
     chatDatabaseCubit: sl<ChatDatabaseCubit>(),
     selectableCubit: SelectableCubit<UserTable>(),
     chatPersonListCubit: sl<ChatPersonListCubit>(),

@@ -174,25 +174,24 @@ class ChannelsRegistry with Loggable {
       {Int64 startSequence = Int64.ZERO}) async {
     logger.fine(() => "_subscribeToChannel: $type, $channel, $startSequence");
 
-    if (type == MessageType.Text) {
-      //We ignore await here to speed up channel enumeration
-      var chatId = channel.split(".").last;
-      var isPushNeed = ((await chatDatabaseCubit.db.selectChatById(chatId))
-              ?.notificationsOn) ??
-          true;
-      if (isPushNeed) {
-        pushNotificationManager.subscribeToTopic(channel);
-      } else {
-        pushNotificationManager.unsubscribeFromTopic(channel);
-      }
-    }
-
     if (!natsProvider.isConnected) {
       logger.warning("nats is not connected");
       return;
     }
 
     if (!isListening(channel)) {
+      var chatId = channel.split(".").last;
+      if (type == MessageType.Text) {
+        //We ignore await here to speed up channel enumeration
+        var isPushNeed = ((await chatDatabaseCubit.db.selectChatById(chatId))
+            ?.notificationsOn) ??
+            true;
+        if (isPushNeed) {
+          pushNotificationManager.subscribeToTopic(channel);
+        } else {
+          pushNotificationManager.unsubscribeFromTopic(channel);
+        }
+      }
       logger.fine(() => "listeners[$type]=${listeners[type]}");
       try {
         await listeners[type]!.onListen(channel, startSequence: startSequence);

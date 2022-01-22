@@ -22,6 +22,7 @@ abstract class ChannelListener with Loggable {
     try {
       if (!registry.isListening(channel)) {
         await natsProvider.subscribeToChannel(channel, onMessage,
+            maxInFlight: 1024,
             startSequence: startSequence);
       }
     } on SubscriptionAlreadyExistException {}

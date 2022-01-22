@@ -17,6 +17,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   final DateTime updatedAt;
   final String? millisecondsSinceEpoch;
   final bool? notificationsOn;
+  final bool? unreadCounterOn;
   final bool? deleted;
   final int? lastMessageSeq;
   ChatTable(
@@ -29,6 +30,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       required this.updatedAt,
       this.millisecondsSinceEpoch,
       this.notificationsOn,
+      this.unreadCounterOn,
       this.deleted,
       this.lastMessageSeq});
   factory ChatTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
@@ -53,6 +55,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           data['${effectivePrefix}milliseconds_since_epoch']),
       notificationsOn: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}notifications_on']),
+      unreadCounterOn: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}unread_counter_on']),
       deleted: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
       lastMessageSeq: const IntType()
@@ -77,6 +81,9 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
     }
     if (!nullToAbsent || notificationsOn != null) {
       map['notifications_on'] = Variable<bool?>(notificationsOn);
+    }
+    if (!nullToAbsent || unreadCounterOn != null) {
+      map['unread_counter_on'] = Variable<bool?>(unreadCounterOn);
     }
     if (!nullToAbsent || deleted != null) {
       map['deleted'] = Variable<bool?>(deleted);
@@ -104,6 +111,9 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       notificationsOn: notificationsOn == null && nullToAbsent
           ? const Value.absent()
           : Value(notificationsOn),
+      unreadCounterOn: unreadCounterOn == null && nullToAbsent
+          ? const Value.absent()
+          : Value(unreadCounterOn),
       deleted: deleted == null && nullToAbsent
           ? const Value.absent()
           : Value(deleted),
@@ -127,6 +137,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       millisecondsSinceEpoch:
           serializer.fromJson<String?>(json['millisecondsSinceEpoch']),
       notificationsOn: serializer.fromJson<bool?>(json['notificationsOn']),
+      unreadCounterOn: serializer.fromJson<bool?>(json['unreadCounterOn']),
       deleted: serializer.fromJson<bool?>(json['deleted']),
       lastMessageSeq: serializer.fromJson<int?>(json['lastMessageSeq']),
     );
@@ -145,6 +156,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       'millisecondsSinceEpoch':
           serializer.toJson<String?>(millisecondsSinceEpoch),
       'notificationsOn': serializer.toJson<bool?>(notificationsOn),
+      'unreadCounterOn': serializer.toJson<bool?>(unreadCounterOn),
       'deleted': serializer.toJson<bool?>(deleted),
       'lastMessageSeq': serializer.toJson<int?>(lastMessageSeq),
     };
@@ -160,6 +172,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           DateTime? updatedAt,
           String? millisecondsSinceEpoch,
           bool? notificationsOn,
+          bool? unreadCounterOn,
           bool? deleted,
           int? lastMessageSeq}) =>
       ChatTable(
@@ -173,6 +186,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
         millisecondsSinceEpoch:
             millisecondsSinceEpoch ?? this.millisecondsSinceEpoch,
         notificationsOn: notificationsOn ?? this.notificationsOn,
+        unreadCounterOn: unreadCounterOn ?? this.unreadCounterOn,
         deleted: deleted ?? this.deleted,
         lastMessageSeq: lastMessageSeq ?? this.lastMessageSeq,
       );
@@ -188,6 +202,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           ..write('updatedAt: $updatedAt, ')
           ..write('millisecondsSinceEpoch: $millisecondsSinceEpoch, ')
           ..write('notificationsOn: $notificationsOn, ')
+          ..write('unreadCounterOn: $unreadCounterOn, ')
           ..write('deleted: $deleted, ')
           ..write('lastMessageSeq: $lastMessageSeq')
           ..write(')'))
@@ -205,6 +220,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       updatedAt,
       millisecondsSinceEpoch,
       notificationsOn,
+      unreadCounterOn,
       deleted,
       lastMessageSeq);
   @override
@@ -220,6 +236,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           other.updatedAt == this.updatedAt &&
           other.millisecondsSinceEpoch == this.millisecondsSinceEpoch &&
           other.notificationsOn == this.notificationsOn &&
+          other.unreadCounterOn == this.unreadCounterOn &&
           other.deleted == this.deleted &&
           other.lastMessageSeq == this.lastMessageSeq);
 }
@@ -234,6 +251,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   final Value<DateTime> updatedAt;
   final Value<String?> millisecondsSinceEpoch;
   final Value<bool?> notificationsOn;
+  final Value<bool?> unreadCounterOn;
   final Value<bool?> deleted;
   final Value<int?> lastMessageSeq;
   const ChatTablesCompanion({
@@ -246,6 +264,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     this.updatedAt = const Value.absent(),
     this.millisecondsSinceEpoch = const Value.absent(),
     this.notificationsOn = const Value.absent(),
+    this.unreadCounterOn = const Value.absent(),
     this.deleted = const Value.absent(),
     this.lastMessageSeq = const Value.absent(),
   });
@@ -259,6 +278,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     this.updatedAt = const Value.absent(),
     this.millisecondsSinceEpoch = const Value.absent(),
     this.notificationsOn = const Value.absent(),
+    this.unreadCounterOn = const Value.absent(),
     this.deleted = const Value.absent(),
     this.lastMessageSeq = const Value.absent(),
   })  : id = Value(id),
@@ -276,6 +296,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     Expression<DateTime>? updatedAt,
     Expression<String?>? millisecondsSinceEpoch,
     Expression<bool?>? notificationsOn,
+    Expression<bool?>? unreadCounterOn,
     Expression<bool?>? deleted,
     Expression<int?>? lastMessageSeq,
   }) {
@@ -290,6 +311,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       if (millisecondsSinceEpoch != null)
         'milliseconds_since_epoch': millisecondsSinceEpoch,
       if (notificationsOn != null) 'notifications_on': notificationsOn,
+      if (unreadCounterOn != null) 'unread_counter_on': unreadCounterOn,
       if (deleted != null) 'deleted': deleted,
       if (lastMessageSeq != null) 'last_message_seq': lastMessageSeq,
     });
@@ -305,6 +327,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       Value<DateTime>? updatedAt,
       Value<String?>? millisecondsSinceEpoch,
       Value<bool?>? notificationsOn,
+      Value<bool?>? unreadCounterOn,
       Value<bool?>? deleted,
       Value<int?>? lastMessageSeq}) {
     return ChatTablesCompanion(
@@ -318,6 +341,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       millisecondsSinceEpoch:
           millisecondsSinceEpoch ?? this.millisecondsSinceEpoch,
       notificationsOn: notificationsOn ?? this.notificationsOn,
+      unreadCounterOn: unreadCounterOn ?? this.unreadCounterOn,
       deleted: deleted ?? this.deleted,
       lastMessageSeq: lastMessageSeq ?? this.lastMessageSeq,
     );
@@ -354,6 +378,9 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     if (notificationsOn.present) {
       map['notifications_on'] = Variable<bool?>(notificationsOn.value);
     }
+    if (unreadCounterOn.present) {
+      map['unread_counter_on'] = Variable<bool?>(unreadCounterOn.value);
+    }
     if (deleted.present) {
       map['deleted'] = Variable<bool?>(deleted.value);
     }
@@ -375,6 +402,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
           ..write('updatedAt: $updatedAt, ')
           ..write('millisecondsSinceEpoch: $millisecondsSinceEpoch, ')
           ..write('notificationsOn: $notificationsOn, ')
+          ..write('unreadCounterOn: $unreadCounterOn, ')
           ..write('deleted: $deleted, ')
           ..write('lastMessageSeq: $lastMessageSeq')
           ..write(')'))
@@ -428,7 +456,7 @@ class $ChatTablesTable extends ChatTables
       'updated_at', aliasedName, false,
       type: const IntType(),
       requiredDuringInsert: false,
-      defaultValue: Constant(new DateTime.now().toUtc()));
+      defaultValue: Constant(DateTime.now().toUtc()));
   final VerificationMeta _millisecondsSinceEpochMeta =
       const VerificationMeta('millisecondsSinceEpoch');
   @override
@@ -437,7 +465,7 @@ class $ChatTablesTable extends ChatTables
           type: const StringType(),
           requiredDuringInsert: false,
           defaultValue:
-              Constant(new DateTime.now().millisecondsSinceEpoch.toString()));
+              Constant(DateTime.now().millisecondsSinceEpoch.toString()));
   final VerificationMeta _notificationsOnMeta =
       const VerificationMeta('notificationsOn');
   @override
@@ -446,6 +474,15 @@ class $ChatTablesTable extends ChatTables
       type: const BoolType(),
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (notifications_on IN (0, 1))',
+      defaultValue: Constant(true));
+  final VerificationMeta _unreadCounterOnMeta =
+      const VerificationMeta('unreadCounterOn');
+  @override
+  late final GeneratedColumn<bool?> unreadCounterOn = GeneratedColumn<bool?>(
+      'unread_counter_on', aliasedName, true,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (unread_counter_on IN (0, 1))',
       defaultValue: Constant(true));
   final VerificationMeta _deletedMeta = const VerificationMeta('deleted');
   @override
@@ -472,6 +509,7 @@ class $ChatTablesTable extends ChatTables
         updatedAt,
         millisecondsSinceEpoch,
         notificationsOn,
+        unreadCounterOn,
         deleted,
         lastMessageSeq
       ];
@@ -536,6 +574,12 @@ class $ChatTablesTable extends ChatTables
           _notificationsOnMeta,
           notificationsOn.isAcceptableOrUnknown(
               data['notifications_on']!, _notificationsOnMeta));
+    }
+    if (data.containsKey('unread_counter_on')) {
+      context.handle(
+          _unreadCounterOnMeta,
+          unreadCounterOn.isAcceptableOrUnknown(
+              data['unread_counter_on']!, _unreadCounterOnMeta));
     }
     if (data.containsKey('deleted')) {
       context.handle(_deletedMeta,

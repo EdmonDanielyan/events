@@ -9,10 +9,12 @@ class ChatTables extends Table {
   IntColumn get ownerId => integer()();
   IntColumn get participantId => integer().nullable()();
   DateTimeColumn get updatedAt =>
-      dateTime().withDefault(Constant(new DateTime.now().toUtc()))();
+      dateTime().withDefault(Constant(DateTime.now().toUtc()))();
   TextColumn get millisecondsSinceEpoch => text().nullable().withDefault(
-      Constant(new DateTime.now().millisecondsSinceEpoch.toString()))();
+      Constant(DateTime.now().millisecondsSinceEpoch.toString()))();
   BoolColumn get notificationsOn =>
+      boolean().nullable().withDefault(Constant(true))();
+  BoolColumn get unreadCounterOn =>
       boolean().nullable().withDefault(Constant(true))();
   BoolColumn get deleted => boolean().nullable().withDefault(Constant(false))();
   IntColumn get lastMessageSeq => integer().nullable()();

@@ -101,7 +101,8 @@ class TextMessageListener extends ChannelListener {
         DateTime.now().subtract(const Duration(seconds: 20));
     if (message.serverTime.isAfter(twentySecondsBefore)) {
       bool isChatOpened = chatDatabaseCubit.getSelectedChatId == chat.id;
-      if (!isChatOpened) {
+      ChatTable? chatFromDb = await chatDatabaseCubit.db.selectChatById(chat.id);
+      if (!isChatOpened && (chatFromDb != null && (chatFromDb.notificationsOn ?? true))) {
         var localNotificationsProvider = sl<LocalNotificationsProvider>();
         localNotificationsProvider.showNotification(
           user.name,

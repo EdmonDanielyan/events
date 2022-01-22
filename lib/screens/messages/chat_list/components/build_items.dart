@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_state.dart';
+import 'package:ink_mobile/cubit/chat_list/search_chat_cubit.dart';
+import 'package:ink_mobile/cubit/chat_list/search_chat_state.dart';
+import 'package:ink_mobile/extensions/chat_table.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:moor/moor.dart';
-import 'package:ink_mobile/extensions/chat_table.dart';
 
 import 'chat.dart';
 
 class BuildChatItems extends StatelessWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
-  final ChatListCubit chatListCubit;
+  final SearchChatCubit searchChatCubit;
   final EdgeInsetsGeometry? contentPadding;
   final Function(ChatTable, BuildContext) deleteChat;
   final TextEditingController searchController;
   const BuildChatItems({
     Key? key,
-    required this.chatListCubit,
+    required this.searchChatCubit,
     required this.chatDatabaseCubit,
     required this.contentPadding,
     required this.deleteChat,
@@ -29,8 +29,8 @@ class BuildChatItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChatListCubit, ChatListState>(
-      bloc: chatListCubit,
+    return BlocBuilder<SearchChatCubit, SearchChatState>(
+      bloc: searchChatCubit,
       builder: (context, state) {
         List<ChatTable> chats = state.searchChats;
         chats.sort((a, b) {
@@ -62,7 +62,7 @@ class BuildChatItems extends StatelessWidget {
                 return ChatListTile(
                   onTap: () {
                     OpenChat(chatDatabaseCubit, chats[index]).call();
-                    chatListCubit.setSearchValue("");
+                    searchChatCubit.setSearchValue("");
                     searchController.text = "";
                     TextFieldUtils.loseTextFieldFocus();
                   },
@@ -71,9 +71,9 @@ class BuildChatItems extends StatelessWidget {
                   index: index,
                   chat: chats[index],
                   contentPadding: contentPadding,
-                  searchMessage: chatListCubit.searchMessage != null &&
-                          chatListCubit.searchMessage!.chatId == chats[index].id
-                      ? chatListCubit.searchMessage
+                  searchMessage: searchChatCubit.searchMessage != null &&
+                          searchChatCubit.searchMessage!.chatId == chats[index].id
+                      ? searchChatCubit.searchMessage
                       : null,
                   chatDatabaseCubit: chatDatabaseCubit,
                   messagesWithUser: messagesWithUser,

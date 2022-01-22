@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/constants/timeouts.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:main_api_client/api.dart';
 
@@ -22,6 +23,7 @@ class MainApiProvider extends MainApiClient {
   MainApiProvider(LogInterceptor logInterceptor, @Named("apiUrl") String apiUrl,
       @Named("apiCertificate") this.certificate)
       : super(basePathOverride: apiUrl) {
+    dio.options.connectTimeout = API_CONNECT_TIMEOUT_MS;
     dio.interceptors.add(logInterceptor);
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         _sslPinnedHttpClient;

@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/loader/error_loading_widget.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_state.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_cubit.dart';
+import 'package:ink_mobile/cubit/chat_list/search_chat_cubit.dart';
+import 'package:ink_mobile/extensions/chat_table.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/debouncer.dart';
@@ -11,7 +12,7 @@ import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/build_items.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/search_bar.dart';
-import 'package:ink_mobile/extensions/chat_table.dart';
+
 import '../../../../setup.dart';
 
 class Body extends StatefulWidget {
@@ -24,7 +25,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   final _contentPadding = EdgeInsets.symmetric(horizontal: 10);
   late ChatDatabaseCubit _chatDatabaseCubit;
-  late ChatListCubit _chatListCubit;
+  late SearchChatCubit _chatListCubit;
   final TextEditingController _searchController = TextEditingController();
   final Messenger messenger = sl<Messenger>();
   final Debouncer _debouncer = Debouncer(milliseconds: 3000);
@@ -112,7 +113,7 @@ class _BodyState extends State<Body> {
   Widget _chatsBuilder() {
     return BuildChatItems(
       chatDatabaseCubit: _chatDatabaseCubit,
-      chatListCubit: _chatListCubit,
+      searchChatCubit: _chatListCubit,
       contentPadding: _contentPadding,
       deleteChat: _deleteChat,
       searchController: _searchController,

@@ -1,13 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/cubit/chat_list/chat_list_state.dart';
+import 'package:ink_mobile/cubit/chat_list/search_chat_state.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 
 @injectable
-class ChatListCubit extends Cubit<ChatListState> {
-  ChatListCubit() : super(ChatListState(chats: [], searchChats: []));
+class SearchChatCubit extends Cubit<SearchChatState> {
+  SearchChatCubit() : super(SearchChatState(chats: [], searchChats: []));
 
   MessageTable? searchMessage;
 
