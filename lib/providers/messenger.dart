@@ -4,13 +4,11 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/channel_functions.dart';
 import 'package:ink_mobile/functions/chat/chat_creation.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/functions/chat/listeners/channels_registry.dart';
 import 'package:ink_mobile/functions/chat/listeners/chat_list.dart';
-import 'package:ink_mobile/functions/chat/listeners/online.dart';
 import 'package:ink_mobile/functions/chat/sender/chat_events.dart';
 import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
@@ -19,7 +17,6 @@ import 'package:ink_mobile/functions/chat/sender/online_sender.dart';
 import 'package:ink_mobile/functions/chat/sender/text_sender.dart';
 import 'package:ink_mobile/functions/chat/sender/user_reaction_sender.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
-import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:ink_mobile/providers/push_notification_manager.dart';
@@ -115,19 +112,5 @@ class Messenger with Loggable {
     registry.unsubscribeFromAll(includePush: true);
     onlineSender.stopSending();
     await natsProvider.dispose();
-  }
-
-  Future<void> subscribeToUserOnline(UserTable user) async {
-    logger
-        .finest(() => 'subscribeToUserOnline: id=${user.id} name=${user.name}');
-    final listener =
-        (registry.listeners[MessageType.Online] as UserOnlineListener?);
-    if (listener != null) {
-      await listener.subscribeIndividually(user);
-    } else {
-      await Future.delayed(Duration(seconds: 3), () async {
-        await subscribeToUserOnline(user);
-      });
-    }
   }
 }

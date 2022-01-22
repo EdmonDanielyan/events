@@ -29,20 +29,19 @@ class OnlineSender with Loggable {
   Future<void> sendUserOnlinePing({UserTable? user}) async {
     stopSending();
     user = user ?? userFunctions.me;
-    final channel = natsProvider.getUserOnlineChannel(user.id);
-
-    _sendOnline(channel, user);
+    _sendOnline(user);
     _userOnlineTimer = Timer.periodic(
       Duration(seconds: 10),
       (timer) {
-        _sendOnline(channel, user!);
+        _sendOnline(user!);
       },
     );
   }
 
-  void _sendOnline(String channel, UserTable user) {
+  void _sendOnline(UserTable user) {
     if (natsProvider.isConnected) {
       logger.finest("sendOnline");
+      final channel = natsProvider.getOnlineChannel();
       _sendUserOnlinePing(channel, user);
     }
   }

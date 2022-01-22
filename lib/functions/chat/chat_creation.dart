@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/extensions/chat_table.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
@@ -8,7 +9,6 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:uuid/uuid.dart';
-import 'package:ink_mobile/extensions/chat_table.dart';
 
 @injectable
 class ChatCreation with Loggable {
@@ -57,8 +57,6 @@ class ChatCreation with Loggable {
     logger.finest('_afterNatsChatCreation');
     if (messenger.isConnected) {
       logger.finest('Messenger is ok. Preparing channels');
-      await messenger.registry.userOnlineListener
-          .subscribeToAllAvailableUsers();
       await messenger.registry.subscribeOnChatChannels(chat.id);
       await messenger.inviteSender.sendInvitations(chat, users);
       await messenger.chatSaver.saveChats(newChat: null);

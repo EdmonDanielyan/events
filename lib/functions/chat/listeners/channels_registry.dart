@@ -31,7 +31,7 @@ class ChannelsRegistry with Loggable {
   ChatListListener get chatListListener =>
       listeners[MessageType.ChatList]! as ChatListListener;
 
-  UserOnlineListener get userOnlineListener {
+  UserOnlineListener get onlineListener {
     final listener = listeners[MessageType.Online] as UserOnlineListener?;
 
     if (listener != null) return listener;
@@ -130,10 +130,9 @@ class ChannelsRegistry with Loggable {
       }
     });
     chatDatabaseCubit.setLoadingChats(true);
+    await onlineListener.subscribeOnline();
     await chatListListener.subscribe(userFunctions.me.id.toString());
-    await userOnlineListener.subscribeIndividually(userFunctions.me);
     await _listenToInvitations();
-    await userOnlineListener.subscribeToAllAvailableUsers();
 
     chatDatabaseCubit.setLoadingChats(false);
   }
@@ -281,7 +280,7 @@ class ChannelsRegistry with Loggable {
         pushNotificationManager.unsubscribeFromTopic(channel);
       }
     });
-    userOnlineListener.clear();
+    onlineListener.clear();
     listeningChannels.clear();
   }
 

@@ -18,7 +18,7 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';
 
-const PUBLIC_CHATS = 'ink.messaging.public';
+const PUBLIC = 'ink.messaging.public';
 const GROUP_CHANNEL = 'ink.messaging.group';
 const PRIVATE_USER = 'ink.messaging.private';
 const DELETE_ACTION = 'delete';
@@ -195,7 +195,7 @@ class NatsProvider {
   }
 
   String getPublicChatIdList() =>
-      '$PUBLIC_CHATS.${describeEnum(MessageType.ChatList)}';
+      '$PUBLIC.${describeEnum(MessageType.ChatList)}';
 
   String getPrivateUserChatIdList(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.ChatList)}.$userId';
@@ -227,8 +227,8 @@ class NatsProvider {
   String getGroupChatInfoById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UpdateChatInfo)}.$chatId';
 
-  String getUserOnlineChannel(int userId) =>
-      '$PRIVATE_USER.${describeEnum(MessageType.Online)}.$userId';
+  String getOnlineChannel() =>
+      '$PUBLIC.${describeEnum(MessageType.Online)}';
 
   NatsMessage parseMessage(dataMessage) {
     var payload = (dataMessage as DataMessage).encodedPayload;

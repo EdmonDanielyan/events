@@ -87,7 +87,7 @@ class _ParticipantCardState extends State<ParticipantCard> {
 
   bool getIndicator() {
     if (widget.indicatorReadOnly && widget.user != null) {
-      return messenger.registry.userOnlineListener.onlineUsers
+      return messenger.registry.onlineListener.onlineUsers
           .contains(widget.user?.id);
     }
 
