@@ -118,7 +118,7 @@ class ChatLeftListener extends ChannelListener {
         chatId: chat.id,
         userName: user.name,
         type: MessageType.UserLeftChat,
-        created: message.createdAt,
+        created: message.serverTime,
         userId: user.id,
       );
 
