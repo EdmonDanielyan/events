@@ -98,11 +98,13 @@ class TextMessageListener extends ChannelListener {
   Future<void> _showNotification(NatsMessage message, ChatTable chat,
       MessageTable chatMessage, UserTable user) async {
     final twentySecondsBefore =
-        DateTime.now().subtract(const Duration(seconds: 20));
+        DateTime.now().subtract(const Duration(minutes: 10));
     if (message.serverTime.isAfter(twentySecondsBefore)) {
       bool isChatOpened = chatDatabaseCubit.getSelectedChatId == chat.id;
-      ChatTable? chatFromDb = await chatDatabaseCubit.db.selectChatById(chat.id);
-      if (!isChatOpened && (chatFromDb != null && (chatFromDb.notificationsOn ?? true))) {
+      ChatTable? chatFromDb =
+          await chatDatabaseCubit.db.selectChatById(chat.id);
+      if (!isChatOpened &&
+          (chatFromDb != null && (chatFromDb.notificationsOn ?? true))) {
         var localNotificationsProvider = sl<LocalNotificationsProvider>();
         localNotificationsProvider.showNotification(
           user.name,
