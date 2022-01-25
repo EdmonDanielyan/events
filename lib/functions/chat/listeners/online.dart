@@ -7,7 +7,6 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/nats/online.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
@@ -49,14 +48,12 @@ class UserOnlineListener extends ChannelListener {
     super.onMessage(channel, message);
 
     try {
-      final mapPayload = message.payload! as SystemPayload;
-      UserOnlineFields fields = UserOnlineFields.fromMap(mapPayload.fields);
-      final user = fields.user;
+      final user = int.parse(message.from);
 
       updateUserStatus(user, true);
 
       EasyDebounce.debounce(
-        user.id.toString(),
+        user.toString(),
         Duration(seconds: 50),
         () => updateUserStatus(user, false),
       );
@@ -67,25 +64,25 @@ class UserOnlineListener extends ChannelListener {
 
   void listenForOffline(UserTable user) {}
 
-  Future<void> updateUserStatus(UserTable user, bool online) async {
-    final storedUser = await chatDatabaseCubit.db.selectUserById(user.id);
+  Future<void> updateUserStatus(int user, bool online) async {
+    final storedUser = await chatDatabaseCubit.db.selectUserById(user);
 
     if (storedUser != null && storedUser.online != online) {
       logger.finest(
-              ()=>"updateUserStatus: user=${user.name}, was_online: ${user.online}, will_be_online=$online");
+              ()=>"updateUserStatus: user=${storedUser.name}, was_online: ${storedUser.online}, will_be_online=$online");
 
-      chatDatabaseCubit.db.updateUser(user.id, user.copyWith(online: online));
+      chatDatabaseCubit.db.updateUser(user, storedUser.copyWith(online: online));
     }
     _handleList(user, online);
   }
 
-  void _handleList(UserTable user, bool online) {
-    if (online && !onlineUsers.contains(user.id)) {
-      onlineUsers.add(user.id);
+  void _handleList(int userId, bool online) {
+    if (online && !onlineUsers.contains(userId)) {
+      onlineUsers.add(userId);
     }
 
-    if (!online && onlineUsers.contains(user.id)) {
-      onlineUsers.remove(user.id);
+    if (!online && onlineUsers.contains(userId)) {
+      onlineUsers.remove(userId);
     }
   }
 }

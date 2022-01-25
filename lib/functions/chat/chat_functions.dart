@@ -5,7 +5,6 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/messenger.dart';
-import 'package:ink_mobile/extensions/chat_table.dart';
 
 @injectable
 class ChatFunctions {

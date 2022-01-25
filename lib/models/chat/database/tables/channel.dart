@@ -7,7 +7,6 @@ class ChannelTables extends Table {
   IntColumn get payloadType => intEnum<PayloadType>()();
   DateTimeColumn get createdAt =>
       dateTime().withDefault(Constant(new DateTime.now())).nullable()();
-  BoolColumn get needAck => boolean()();
   TextColumn get from => text()();
   TextColumn get to => text()();
   TextColumn get sequence => text()();

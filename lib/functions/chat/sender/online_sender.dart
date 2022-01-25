@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
-import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/nats/online.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../user_functions.dart';
@@ -18,31 +17,29 @@ class OnlineSender with Loggable {
 
   OnlineSender(this.natsProvider, this.userFunctions);
 
-  Future<bool> _sendUserOnlinePing(String channel, UserTable user) async {
-    return await natsProvider.sendSystemMessageToChannel(
+  Future<bool> _sendUserOnlinePing(String channel, int userId) async {
+    return await natsProvider.sendEmptyMessageToChannel(
       channel,
-      MessageType.Online,
-      UserOnlineFields(user: user).toMap(),
+      MessageType.Online
     );
   }
 
-  Future<void> sendUserOnlinePing({UserTable? user}) async {
+  Future<void> sendUserOnlinePing() async {
     stopSending();
-    user = user ?? userFunctions.me;
-    _sendOnline(user);
+    _sendOnline(JwtPayload.myId);
     _userOnlineTimer = Timer.periodic(
       Duration(seconds: 10),
       (timer) {
-        _sendOnline(user!);
+        _sendOnline(JwtPayload.myId);
       },
     );
   }
 
-  void _sendOnline(UserTable user) {
+  void _sendOnline(int userId) {
     if (natsProvider.isConnected) {
       logger.finest("sendOnline");
       final channel = natsProvider.getOnlineChannel();
-      _sendUserOnlinePing(channel, user);
+      _sendUserOnlinePing(channel, userId);
     }
   }
 

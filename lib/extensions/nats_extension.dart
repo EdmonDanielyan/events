@@ -1,6 +1,12 @@
 import 'package:flutter/foundation.dart';
 
-enum PayloadType { empty, message, document, system }
+enum PayloadType {
+  empty,
+  message,
+  document,
+  system,
+  json
+}
 
 extension PayloadTypeEx on String {
   PayloadType toPayloadType() => PayloadType.values

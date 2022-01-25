@@ -3,10 +3,6 @@ import 'dart:typed_data';
 import 'package:dart_nats/dart_nats.dart' as nats;
 import 'package:dart_nats_streaming/dart_nats_streaming.dart';
 // ignore: implementation_imports
-import 'package:dart_nats_streaming/src/data_message.dart';
-// ignore: implementation_imports
-import 'package:dart_nats_streaming/src/protocol.dart';
-// ignore: implementation_imports
 import 'package:dart_nats_streaming/src/subscription.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
@@ -18,9 +14,11 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';
 
-const PUBLIC = 'ink.messaging.public';
-const GROUP_CHANNEL = 'ink.messaging.group';
-const PRIVATE_USER = 'ink.messaging.private';
+const DOMAIN = 'ink.messaging';
+const PROTOCOL = 'v1';
+const PUBLIC = '$DOMAIN.$PROTOCOL.public';
+const GROUP_CHANNEL = '$DOMAIN.$PROTOCOL.group';
+const PRIVATE_USER = '$DOMAIN.$PROTOCOL.private';
 const DELETE_ACTION = 'delete';
 
 @lazySingleton
@@ -86,7 +84,7 @@ class NatsProvider {
   Future<bool> sendTextMessageToChannel(String channel, String text) async {
     if (channel.contains(describeEnum(MessageType.Text))) {
       NatsMessage message = NatsMessage(from: userId, to: channel);
-      message.setPayload(text);
+      message.setMessagePayload(text);
       return _sendMessage(channel, message);
     } else {
       throw WrongChannelUsedToPubMessageException(message: 'channel: $channel');
@@ -107,12 +105,25 @@ class NatsProvider {
 
   /// Send system message which contains [fields] to [channel] by [type]
   Future<bool> sendSystemMessageToChannel(
-      String channel, MessageType type, Map<String, String> fields) async {
+      String channel, MessageType type, Map<String, dynamic> fields) async {
     NatsMessage message = NatsMessage(
       from: userId,
       to: channel,
     );
     message.setSystemPayload(type, fields);
+    bool sent = await _sendMessage(channel, message);
+
+    return sent;
+  }
+
+  /// Send system message which contains [fields] to [channel] by [type]
+  Future<bool> sendJsonMessageToChannel(
+      String channel, MessageType type, Map<String, dynamic> json) async {
+    NatsMessage message = NatsMessage(
+      from: userId,
+      to: channel,
+    );
+    message.setJsonPayload(type, json);
     bool sent = await _sendMessage(channel, message);
 
     return sent;
@@ -227,15 +238,14 @@ class NatsProvider {
   String getGroupChatInfoById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UpdateChatInfo)}.$chatId';
 
-  String getOnlineChannel() =>
-      '$PUBLIC.${describeEnum(MessageType.Online)}';
+  String getOnlineChannel() => '$PUBLIC.${describeEnum(MessageType.Online)}';
 
-  NatsMessage parseMessage(dataMessage) {
-    var payload = (dataMessage as DataMessage).encodedPayload;
+  NatsMessage parseMessage(DataMessage dataMessage) {
+    var payload = dataMessage.encodedPayload;
     var sequence = dataMessage.sequence;
     var message = NatsMessage.fromBytes(payload);
     message.sequence = sequence;
-    message.serverTime = DateTime.fromMillisecondsSinceEpoch(
+    message.createdAt = DateTime.fromMillisecondsSinceEpoch(
         (dataMessage.timestamp.toDouble() / 1e6).truncate(),
         isUtc: true);
     return message;
@@ -249,7 +259,6 @@ class NatsProvider {
     );
     return _subscriptionToPublicChannel;
   }
-
 
   StartPosition _getPosition(String channel) {
     final msgType = MessageListView.getTypeByChannel(channel);
@@ -283,33 +292,27 @@ class NatsProvider {
       channel, Subscription? subscription) async {
     if (subscription == null) return;
 
-    await for (final dataMessage in subscription.stream) {
+    subscription.listen((dataMessage) {
       try {
-        NatsMessage message = parseMessage(dataMessage);
-        _logger.finest(
-            "Received from channel: ${subscription.subject} ${message.id}");
-        if (_channelSubscriptions.containsKey(channel)) {
+        _logger.finest("Received data from channel: ${subscription.subject}");
+        if (!acknowledge(subscription, dataMessage)) return;
+
+        if (!_channelSubscriptions.containsKey(channel)) return;
+        if (!dataMessage.isRedelivery) {
           NatsMessage message = parseMessage(dataMessage);
-          if (message.needAck) {
-            acknowledge(subscription, dataMessage);
-          }
-          if (!dataMessage.isRedelivery) {
-            onMessage(channel, message);
-            Future<void> Function(String, NatsMessage) channelCallback =
-                _channelCallbacks[channel]!;
-            channelCallback(channel, message);
-          }
-        } else {
-          break;
+          onMessage(channel, message);
+          Future<void> Function(String, NatsMessage) channelCallback =
+              _channelCallbacks[channel]!;
+          channelCallback(channel, message);
         }
       } catch (e, s) {
         _logger.severe("Error during read stream of channel $channel", e, s);
       }
-    }
+    });
   }
 
-  void acknowledge(Subscription subscription, DataMessage message) {
-    _stan.acknowledge(
+  bool acknowledge(Subscription subscription, DataMessage message) {
+    return _stan.acknowledge(
       subscription,
       message,
       unacknowledgedMessageHandler: _unAcknowledgedMessageHandler,
@@ -364,5 +367,12 @@ class NatsProvider {
     } catch (e) {
       return false;
     }
+  }
+
+  Future<bool> sendEmptyMessageToChannel(
+      String channel, MessageType type) async {
+    NatsMessage message = NatsMessage(from: userId, to: channel);
+    message.setEmptyPayload();
+    return _sendMessage(channel, message);
   }
 }

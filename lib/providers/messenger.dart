@@ -98,7 +98,7 @@ class Messenger with Loggable {
     registry.listenToAllMessages();
     await userFunctions.addMe();
     await registry.init();
-    onlineSender.sendUserOnlinePing(user: userFunctions.me);
+    onlineSender.sendUserOnlinePing();
   }
 
   Future<void> _softDispose() async {

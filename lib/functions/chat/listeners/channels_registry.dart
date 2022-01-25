@@ -105,8 +105,8 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> saveChannel(NatsMessage message) async {
-    final payload = message.payload as SystemPayload;
-    if (!notStorableTypes.contains(payload.type)) {
+    final payload = message.payload;
+    if (payload is Payload && !notStorableTypes.contains(payload.type)) {
       await channelFunctions.saveNatsMessage(message);
     }
   }

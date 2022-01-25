@@ -50,7 +50,7 @@ Future<void> setup({
   await sl<PackageInfoProvider>().load();
 }
 
-Future<void> FCM_setup({
+Future<void> fcmSetup({
   scope = defaultScope,
 }) async {
   await sl.reset();

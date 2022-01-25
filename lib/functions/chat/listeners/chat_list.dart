@@ -2,6 +2,7 @@ import 'dart:async';
 
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/data_message.dart';
+import 'package:fixnum/fixnum.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
@@ -14,7 +15,7 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/chat_list.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
-import 'package:fixnum/fixnum.dart';
+
 import '../../../extensions/chat_list.dart';
 import '../../../extensions/participant_list.dart';
 import '../../../extensions/user_list.dart';
@@ -60,11 +61,12 @@ class ChatListListener extends ChannelListener {
         }
 
         if (dataMessage != null) {
-          natsProvider.acknowledge(sub, dataMessage);
-          NatsMessage message = natsProvider.parseMessage(dataMessage);
-          await onMessage(channel, message);
-          //todo: рано отписываемся по идеи надо прочитать самую валидную для этого клиента запись и потом отписаться
-          sub.subscription.close();
+          if (natsProvider.acknowledge(sub, dataMessage)){
+            NatsMessage message = natsProvider.parseMessage(dataMessage);
+            await onMessage(channel, message);
+            //todo: рано отписываемся по идеи надо прочитать самую валидную для этого клиента запись и потом отписаться
+            sub.subscription.close();
+          }
         }
       }
     } on SubscriptionAlreadyExistException {

@@ -8,9 +8,9 @@ class LightTheme {
     return ThemeData(
       primarySwatch: primarySwatch,
       fontFamily: fontFamily,
-      primaryColor: Color(0xff2b5e4a),
-      accentColor: Color(0xFF757678),
-      iconTheme: IconThemeData(color: Color(0xffbbbbbb)),
+      primaryColor: const Color(0xff2b5e4a),
+      colorScheme: ColorScheme.light(primary: const Color(0xff2b5e4a), secondary: const Color(0xFF757678)),
+      iconTheme: IconThemeData(color: const Color(0xffbbbbbb)),
     );
   }
 }

@@ -37,7 +37,6 @@ class ChatInvitationListener extends ChannelListener {
 
       await sl<ChatCreation>().createDynamically(chat, fields.users);
       await _chatLinkedListeners(chat.id);
-      await registry.onlineListener.subscribeOnline();
       await chatSaver.saveChats(newChat: null);
     } on NoSuchMethodError {
       return;

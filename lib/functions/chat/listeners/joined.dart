@@ -69,7 +69,7 @@ class ChatJoinedListener extends ChannelListener {
         chatId: chat.id,
         userName: user.name,
         type: MessageType.UserJoined,
-        created: message.serverTime,
+        created: message.createdAt,
         userId: user.id,
       );
 
