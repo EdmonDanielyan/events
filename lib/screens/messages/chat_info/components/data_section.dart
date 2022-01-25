@@ -134,7 +134,6 @@ class ChatInfoDataSection extends StatelessWidget {
 
         return ChatInfoBtnWrapper(
           onTap: () {
-            print(">>>${selectedChat.unreadCounterOn}");
             final chat = selectedChat.copyWith(
                 updatedAt: DateTime.now(),
                 unreadCounterOn: !(selectedChat.unreadCounterOn ?? true));
@@ -157,7 +156,7 @@ class ChatInfoDataSection extends StatelessWidget {
               ])),
           children: [
             Text(
-              "$str ${"счетчик непрочитых сообщений"}",
+              "$str ${_strings.unreadCounter}",
               maxLines: 1,
             ),
           ],
