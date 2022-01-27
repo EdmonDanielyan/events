@@ -111,6 +111,12 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    widget.chatCubit.setScrollBtn(false);
+  }
+
+  @override
   void initState() {
     super.initState();
 

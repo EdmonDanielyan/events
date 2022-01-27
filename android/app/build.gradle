@@ -58,31 +58,31 @@ android {
     }
 
     //UNCOMMENT THIS FOR RELEASE
-     signingConfigs {
-         release {
-             keyAlias keystoreProperties['keyAlias']
-             keyPassword keystoreProperties['keyPassword']
-             storeFile file(keystoreProperties['storeFile'])
-             storePassword keystoreProperties['storePassword']
-         }
-     }
+    //  signingConfigs {
+    //      release {
+    //          keyAlias keystoreProperties['keyAlias']
+    //          keyPassword keystoreProperties['keyPassword']
+    //          storeFile file(keystoreProperties['storeFile'])
+    //          storePassword keystoreProperties['storePassword']
+    //      }
+    //  }
 
     buildTypes {
 
         //DEBUG
-//        release {
-//            signingConfig signingConfigs.debug
-//        }
+       release {
+           signingConfig signingConfigs.debug
+       }
         
         //UNCOMMENT THIS FOR RELEASE
-         release {
-             signingConfig signingConfigs.release
+        //  release {
+        //      signingConfig signingConfigs.release
 
-             minifyEnabled true
-             useProguard true
+        //      minifyEnabled true
+        //      useProguard true
 
-             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-         }
+        //      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        //  }
     }
 }
 

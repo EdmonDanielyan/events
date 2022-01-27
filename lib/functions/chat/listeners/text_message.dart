@@ -112,7 +112,11 @@ class TextMessageListener extends ChannelListener {
           payload: chat.id,
           id: chat.id.hashCode,
           onSelect: (_) {
-            OpenChat(sl(), chat)();
+            final openedChat = chatDatabaseCubit.getSelectedChatId;
+
+            if (openedChat != chat.id) {
+              OpenChat(sl(), chat)();
+            }
           },
         );
       }
