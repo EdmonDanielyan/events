@@ -104,7 +104,6 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
   Widget build(BuildContext context) {
     return InkWell(
       onTapDown: (TapDownDetails details) {
-        //Todo: _tapDownPosition может быть не заполнен поскольку onTapDown не вызывается на onLongPress
         _tapDownPosition = details.globalPosition;
       },
       onLongPress: onTap,
