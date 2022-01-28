@@ -74,7 +74,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
     }
   }
 
-  void _scrollBottom({int milliseconds = 100}) {
+  void _scrollBottom({int milliseconds = 50}) {
     Future.delayed(Duration(milliseconds: milliseconds), () {
       ScrollBottom(controller).jump();
     });
@@ -108,6 +108,12 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
     } else if ((MessageList.messagesWithUser?.length ?? 0) > 15) {
       widget.chatCubit.setScrollBtn(true);
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget.chatCubit.setScrollBtn(false);
   }
 
   @override

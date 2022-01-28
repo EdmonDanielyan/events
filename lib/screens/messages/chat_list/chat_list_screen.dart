@@ -46,6 +46,7 @@ class ChatListScreenState extends State<ChatListScreen>
 
     return Scaffold(
       appBar: InkAppBarWithText(
+        leading: const SizedBox(),
         title: localizationInstance.messages,
         actions: [const NewChatBtn()],
       ),

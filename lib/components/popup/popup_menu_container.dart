@@ -21,7 +21,7 @@ class PopupMenuContainer<T> extends StatefulWidget {
 }
 
 class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
-  late Offset _tapDownPosition;
+  Offset? _tapDownPosition;
   late T? value;
 
   bool isMenuShown = false;
@@ -86,10 +86,10 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
       context: context,
       items: widget.items,
       position: RelativeRect.fromLTRB(
-        _tapDownPosition.dx,
-        _tapDownPosition.dy + 25,
-        overlay.size.width - _tapDownPosition.dx,
-        overlay.size.height - _tapDownPosition.dy,
+        _tapDownPosition?.dx ?? 0,
+        (_tapDownPosition?.dy ?? 0) + 25,
+        overlay.size.width - (_tapDownPosition?.dx ?? 0),
+        overlay.size.height - (_tapDownPosition?.dy ?? 0),
       ),
     ).then((value) {
       if (value != null) {
@@ -104,6 +104,7 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
   Widget build(BuildContext context) {
     return InkWell(
       onTapDown: (TapDownDetails details) {
+        //Todo: _tapDownPosition может быть не заполнен поскольку onTapDown не вызывается на onLongPress
         _tapDownPosition = details.globalPosition;
       },
       onLongPress: onTap,
