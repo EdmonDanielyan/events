@@ -103,7 +103,7 @@ class _ChatListTileState extends State<ChatListTile> {
                           SizedBox(width: 2.0),
                           if (hasMessage) ...[
                             ChatDate(
-                              chatDate: lastMessage?.createAtAsLocalDateTime ?? DateTime.now(),
+                              chatDate: lastMessage?.created ?? DateTime.now(),
                             ),
                           ],
                         ],

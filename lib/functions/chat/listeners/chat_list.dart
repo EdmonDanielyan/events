@@ -49,24 +49,22 @@ class ChatListListener extends MessageListener {
     try {
       final channel = natsProvider.getPrivateUserChatIdList(userId);
       final sub = await natsProvider.listenChatList(channel);
-      if (sub != null) {
-        DataMessage? dataMessage;
-        try {
-          //todo: возможно то что лежит в стриме первым это плохая запись или совсем старая, нельзя на это полагаться
-          // Если произошел косяк в локальной базе то последнее сообщение в чат листе битое
-          // нужно перечитать весь стрим этого канала и только тогда пристпать к парсингу
-          dataMessage = await sub.stream.first.timeout(Duration(seconds: 10));
-        } on TimeoutException {
-          logger.severe('timeout during read ChatList channel');
-        }
+      DataMessage? dataMessage;
+      try {
+        //todo: возможно то что лежит в стриме первым это плохая запись или совсем старая, нельзя на это полагаться
+        // Если произошел косяк в локальной базе то последнее сообщение в чат листе битое
+        // нужно перечитать весь стрим этого канала и только тогда пристпать к парсингу
+        dataMessage = await sub.stream.first.timeout(Duration(seconds: 5));
+      } on TimeoutException {
+        logger.severe('timeout during read ChatList channel');
+      }
 
-        if (dataMessage != null) {
-          if (natsProvider.acknowledge(sub, dataMessage)){
-            NatsMessage message = natsProvider.parseMessage(dataMessage);
-            await onMessage(channel, message);
-            //todo: рано отписываемся по идеи надо прочитать самую валидную для этого клиента запись и потом отписаться
-            sub.subscription.close();
-          }
+      if (dataMessage != null) {
+        if (natsProvider.acknowledge(sub, dataMessage)){
+          NatsMessage message = natsProvider.parseMessage(dataMessage);
+          await onMessage(channel, message);
+          //todo: рано отписываемся по идеи надо прочитать самую валидную для этого клиента запись и потом отписаться
+          sub.subscription.close();
         }
       }
     } on SubscriptionAlreadyExistException {

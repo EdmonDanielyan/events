@@ -225,7 +225,7 @@ class NatsStreamingClient {
         }
         _connected = true;
       } catch (e) {
-        _logger.severe('Error during request', e);
+        _logger.severe('Error during connect request', e);
 
         try {
           await natsClient.close();
@@ -476,7 +476,7 @@ class NatsStreamingClient {
 
   final Set<String> _subscriptionInboxes = {};
 
-  Future<Subscription?> subscribe({
+  Future<Subscription> subscribe({
     required String subject,
     int maxInFlight = 1,
     int ackWaitSeconds = 5,
@@ -511,10 +511,10 @@ class NatsStreamingClient {
       subscriptionRequest.startTimeDelta = startTimeDelta;
     }
 
-    SubscriptionResponse subscriptionResponse;
     for (int i = 1; i <= 10; i++) {
-      subscriptionResponse = await tryToSubscribe(subscriptionRequest);
-      if (!_subscriptionInboxes.contains(subscriptionResponse.ackInbox)) {
+      var tryToSubscribeResponse = await tryToSubscribe(subscriptionRequest);
+      if (tryToSubscribeResponse != null && !_subscriptionInboxes.contains(tryToSubscribeResponse.ackInbox)) {
+        SubscriptionResponse subscriptionResponse = tryToSubscribeResponse;
         _logger.finest(() =>
             'ACK INBOX - $subject - ${subscriptionResponse.ackInbox} WITH POSITION - $startPosition AND SEQUENCE - $startSequence');
         _subscriptionInboxes.add(subscriptionResponse.ackInbox);
@@ -530,8 +530,10 @@ class NatsStreamingClient {
     throw 'Could not subscribe to channel $subject';
   }
 
-  Future<SubscriptionResponse> tryToSubscribe(
+  Future<SubscriptionResponse?> tryToSubscribe(
       SubscriptionRequest subscriptionRequest) async {
+    if (!_client.connected) return null;
+
     try {
       final _req = await natsClient.request(
         _connectResponse!.subRequests,
@@ -550,14 +552,17 @@ class NatsStreamingClient {
       return subscriptionResponse;
     } catch (e, s) {
       _logger.severe('Error for channel ${subscriptionRequest.subject}: $e', e, s);
-      throw Exception('${subscriptionRequest.subject} - $e');
     }
+    return null;
   }
 
   Map<String, int> unAcknowledgedCounter = {};
 
   bool acknowledge(Subscription subscription, DataMessage dataMessage,
       {Function(Subscription, DataMessage)? unacknowledgedMessageHandler}) {
+
+    if (!_client.connected) return false;
+
     Ack ack = Ack()
       ..subject = dataMessage.subject
       ..sequence = dataMessage.sequence;
@@ -597,6 +602,7 @@ class NatsStreamingClient {
     }
     subscription.subscription.close();
     natsClient.unSub(subscription.subscription);
+    return;
     _logger.warning('Resubscribing ${subscription.subject}');
     subscribe(
       subject: subscription.subscriptionRequest.subject,
@@ -608,11 +614,10 @@ class NatsStreamingClient {
       queueGroup: subscription.subscriptionRequest.qGroup,
       startTimeDelta: subscription.subscriptionRequest.startTimeDelta,
     ).then((newSubscription) {
-      if (newSubscription != null) {
+        newSubscription.redeliveryCounter;
         subscription.listeners.forEach((onDataFunc) {
           newSubscription.listen(onDataFunc);
         });
-      }
     });
   }
 }

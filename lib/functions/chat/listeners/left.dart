@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
+import 'package:ink_mobile/functions/chat/listeners/message_listener.dart';
 import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
@@ -14,12 +15,11 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../send_message.dart';
 import '../user_functions.dart';
-import 'channel_listener.dart';
 import 'channels_registry.dart';
 
 @Named("UserLeftChat")
-@Injectable(as: ChannelListener)
-class ChatLeftListener extends ChannelListener {
+@Injectable(as: MessageListener)
+class ChatLeftListener extends MessageListener {
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatSaver chatSaver;
@@ -118,7 +118,7 @@ class ChatLeftListener extends ChannelListener {
         chatId: chat.id,
         userName: user.name,
         type: MessageType.UserLeftChat,
-        createdUtc: message.serverTime,
+        createdUtc: message.createdAt,
         userId: user.id,
       );
 

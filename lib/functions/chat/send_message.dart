@@ -40,7 +40,7 @@ class SendMessage with Loggable {
       read: false,
       sentOn: false,
       status: status,
-      created: created?.millisecondsSinceEpoch ?? DateTime.now().millisecondsSinceEpoch,
+      created: created ?? DateTime.now(),
       type: type,
       repliedMessageId: repliedMessageId,
       sequence: sequence ?? 0,

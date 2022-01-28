@@ -1,7 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
@@ -18,6 +17,7 @@ import 'package:ink_mobile/setup.dart';
 
 import '../chat_functions.dart';
 import 'channels_registry.dart';
+import 'message_listener.dart';
 
 @Named("Text")
 @Injectable(as: MessageListener)
@@ -50,7 +50,7 @@ class TextMessageListener extends MessageListener {
 
       final newMessage = fields.message.copyWith(
         sequence: message.sequence.toInt(),
-        created: message.serverTime.millisecondsSinceEpoch,
+        created: message.createdAt,
         status: (fields.message.status == MessageStatus.SENDING ||
                 fields.message.status == MessageStatus.ERROR)
             ? MessageStatus.SENT
@@ -64,7 +64,7 @@ class TextMessageListener extends MessageListener {
             logger.finest(() => '''
         MESSAGE EXISTS
         message: $newMessage
-        created: ${message.serverTime}
+        created: ${message.createdAt}
         
         ''');
         await chatDatabaseCubit.db.updateMessageById(newMessage.id, newMessage);
@@ -74,7 +74,7 @@ class TextMessageListener extends MessageListener {
         logger.finest(() => '''
         MESSAGE INSERTING
         message: $newMessage
-        created: ${message.serverTime}
+        created: ${message.createdAt}
         
         ''');
         ChatTable? myChat =
@@ -99,7 +99,7 @@ class TextMessageListener extends MessageListener {
       MessageTable chatMessage, UserTable user) async {
     final tenMinutesBefore =
         DateTime.now().subtract(const Duration(minutes: 10));
-    if (message.serverTime.isAfter(tenMinutesBefore)) {
+    if (message.createdAt.toLocal().isAfter(tenMinutesBefore)) {
       bool isChatOpened = chatDatabaseCubit.getSelectedChatId == chat.id;
       ChatTable? chatFromDb =
           await chatDatabaseCubit.db.selectChatById(chat.id);

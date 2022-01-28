@@ -56,7 +56,7 @@ class ChannelsRegistry with Loggable {
   });
 
   String lastChannelStr = "";
-  Set<String> listeningChannels = {};
+  Set<String> subscribedChannels = {};
 
   List<String> getLinkedChannelsById(String chatId) {
     List<String> channels = [];
@@ -86,8 +86,9 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> init() async {
-    await Future.delayed(Duration(seconds: 1));
     logger.finest('init');
+    chatDatabaseCubit.setLoadingChats(true);
+    await Future.delayed(Duration(seconds: 1));
     listeners.clear();
     MessageType.values.forEach((messageType) {
       var messageListenerToSearch = describeEnum(messageType);
@@ -103,15 +104,16 @@ class ChannelsRegistry with Loggable {
             'Not found listener for message type: $messageListenerToSearch');
       }
     });
-    chatDatabaseCubit.setLoadingChats(true);
     await onlineListener.subscribeOnline();
     await chatListListener.subscribe(userFunctions.me.id.toString());
-    await _listenToInvitations();
+    await subscribeToInvitations();
 
     chatDatabaseCubit.setLoadingChats(false);
+    logger.finest('init is finished');
   }
 
-  Future<void> _listenToInvitations() async {
+  Future<void> subscribeToInvitations() async {
+    logger.finest("subscribeToInvitations");
     final exists = await channelFunctions.channelExists(inviteUserChannel);
 
     if (!exists) {
@@ -181,7 +183,7 @@ class ChannelsRegistry with Loggable {
         await natsProvider.subscribeToChannel(channel, onChannelMessage,
             maxInFlight: 1024,
             startSequence: startSequence);
-        listeningChannels.add(channel);
+        subscribedChannels.add(channel);
       } catch (_e, stacktrace) {
         logger.severe("Unexpected error", _e, stacktrace);
       }
@@ -192,7 +194,7 @@ class ChannelsRegistry with Loggable {
     logger.finest(() => "unSubscribeFromChannel: $channel");
     natsProvider.unsubscribeFromChannel(channel);
     if (isListening(channel)) {
-      listeningChannels.remove(channel);
+      subscribedChannels.remove(channel);
     }
     if (channel.contains("Text")) {
       pushNotificationManager.unsubscribeFromTopic(channel);
@@ -251,24 +253,24 @@ class ChannelsRegistry with Loggable {
     }
   }
 
-  bool isListening(String channel) => listeningChannels.contains(channel);
+  bool isListening(String channel) => subscribedChannels.contains(channel);
 
   void addToListeningChannels(String channel) {
-    if (!listeningChannels.contains(channel)) {
-      listeningChannels.add(channel);
+    if (!subscribedChannels.contains(channel)) {
+      subscribedChannels.add(channel);
     }
   }
 
   void unsubscribeFromAll({required bool includePush}) {
     logger.finest("unsubscribeFromAll");
-    listeningChannels.forEach((channel) {
+    subscribedChannels.forEach((channel) {
       natsProvider.unsubscribeFromChannel(channel);
-      if (includePush && channel.contains("Text")) {
+      if (includePush) {
         pushNotificationManager.unsubscribeFromTopic(channel);
       }
     });
     onlineListener.clear();
-    listeningChannels.clear();
+    subscribedChannels = {};
   }
 
   void _chatCleaner(String chatId) {

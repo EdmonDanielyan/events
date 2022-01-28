@@ -148,7 +148,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
     return Column(
       children: [
         DateWidget(
-          dateTime: dateSort.getMessageDateTime(message.createAtAsLocalDateTime),
+          dateTime: dateSort.getMessageDateTime(message.created ?? DateTime.now()),
         ),
         MessageCard(
           messageWithUser: messageWithUser,

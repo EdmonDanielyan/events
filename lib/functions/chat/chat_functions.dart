@@ -17,7 +17,7 @@ class ChatFunctions {
     chatDatabaseCubit.db.updateChatById(
       chat.id,
       chat.copyWith(
-        updatedAt: DateTime.now().millisecondsSinceEpoch,
+        updatedAt: DateTime.now(),
         millisecondsSinceEpoch:
             DateTime.now().millisecondsSinceEpoch.toString(),
       ),
@@ -98,7 +98,7 @@ class ChatFunctions {
 
     if (lastMessageSeq != null) {
       updateChat(chat.copyWith(
-          updatedAt: DateTime.now().millisecondsSinceEpoch, lastMessageSeq: lastMessageSeq.sequence));
+          updatedAt: DateTime.now(), lastMessageSeq: lastMessageSeq.sequence));
     }
     deleteAllChatMessages(chat.id);
     await messenger.chatSaver.saveChats(newChat: null);
@@ -106,6 +106,6 @@ class ChatFunctions {
 
   Future<void> clearGroup(ChatTable chat) async {
     deleteAllChatMessages(chat.id);
-    updateChat(chat.copyWith(updatedAt: DateTime.now().millisecondsSinceEpoch));
+    updateChat(chat.copyWith(updatedAt: DateTime.now()));
   }
 }

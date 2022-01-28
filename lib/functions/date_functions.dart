@@ -39,10 +39,8 @@ class DateFunctions {
     return dayMonthYear();
   }
 
-  String hourMinute() {
-    DateFormat formatter = new DateFormat("HH:mm:ss:SSS");
-    return formatter.format(passedDate.toLocal());
-  }
+  String hourMinute() => DateFormat("HH:mm").format(passedDate.toLocal());
+
 
   String displayDate() {
     if (isToday())

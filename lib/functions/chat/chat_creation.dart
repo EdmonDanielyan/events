@@ -185,7 +185,7 @@ class ChatCreation with Loggable {
       avatar: avatar,
       ownerId: ownerId ?? JwtPayload.myId,
       participantId: participantId,
-      updatedAt: DateTime.now().millisecondsSinceEpoch,
+      updatedAt: DateTime.now(),
       millisecondsSinceEpoch: DateTime.now().millisecondsSinceEpoch.toString(),
       notificationsOn: true,
     );

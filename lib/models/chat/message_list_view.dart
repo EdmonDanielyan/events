@@ -143,7 +143,7 @@ class MessageListView {
       userId: userId ?? JwtPayload.myId,
       repliedMessageId: "",
       status: MessageStatus.SENDING,
-      created: DateTime.now().millisecondsSinceEpoch,
+      created: DateTime.now(),
     );
 
     if (newChat != null) newMessage = newMessage.copyWith(chatId: newChat.id);

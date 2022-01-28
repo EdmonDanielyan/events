@@ -5,13 +5,13 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../user_functions.dart';
 import 'channels_registry.dart';
+import 'message_listener.dart';
 
 @Named("Online")
 @Injectable(as: MessageListener)
@@ -38,10 +38,10 @@ class UserOnlineListener extends MessageListener {
   Future<void> subscribeOnline() async {
     if (!natsProvider.isConnected) return;
     final channel = natsProvider.getOnlineChannel();
-    registry.addToListeningChannels(channel);
     await natsProvider.subscribeToChannel(channel, onMessage,
         maxInFlight: 100,
         startSequence: Int64.ZERO, startPosition: StartPosition.NewOnly);
+    registry.addToListeningChannels(channel);
   }
 
   Future<void> onMessage(String channel, NatsMessage message) async {

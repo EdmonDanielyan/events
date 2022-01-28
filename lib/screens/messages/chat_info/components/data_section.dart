@@ -135,7 +135,7 @@ class ChatInfoDataSection extends StatelessWidget {
         return ChatInfoBtnWrapper(
           onTap: () {
             final chat = selectedChat.copyWith(
-                updatedAt: DateTime.now().millisecondsSinceEpoch,
+                updatedAt: DateTime.now(),
                 unreadCounterOn: !(selectedChat.unreadCounterOn ?? true));
             messenger.chatFunctions.updateChat(chat);
           },

@@ -18,10 +18,11 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';
 
-const DOMAIN='test.ink.messaging';
-const PUBLIC_CHATS = '$DOMAIN.public';
-const GROUP_CHANNEL = '$DOMAIN.group';
-const PRIVATE_USER = '$DOMAIN.private';
+const DOMAIN = 'ink.messaging';
+const PROTOCOL = 'v1';
+const PUBLIC = '$DOMAIN.$PROTOCOL.public';
+const GROUP_CHANNEL = '$DOMAIN.$PROTOCOL.group';
+const PRIVATE_USER = '$DOMAIN.$PROTOCOL.private';
 const DELETE_ACTION = 'delete';
 
 @lazySingleton
@@ -87,7 +88,7 @@ class NatsProvider {
   Future<bool> sendTextMessageToChannel(String channel, String text) async {
     if (channel.contains(describeEnum(MessageType.Text))) {
       NatsMessage message = NatsMessage(from: userId, to: channel);
-      message.setPayload(text);
+      message.setMessagePayload(text);
       return _sendMessage(channel, message);
     } else {
       throw WrongChannelUsedToPubMessageException(message: 'channel: $channel');
@@ -135,7 +136,7 @@ class NatsProvider {
   Iterable<String> get subscribedChannels => _channelSubscriptions.keys;
 
   /// Subscribe to [channel] using [startSequence] if needed
-  Future<bool> subscribeToChannel(
+  Future<void> subscribeToChannel(
     String channel,
     Future<void> Function(String, NatsMessage) onMessageFuture, {
     Int64 startSequence = Int64.ZERO,
@@ -155,11 +156,6 @@ class NatsProvider {
       _listenBySubscription(channel, subscription);
       _channelSubscriptions[channel] = subscription;
       _channelCallbacks[channel] = onMessageFuture;
-
-      if (subscription != null) {
-        return true;
-      }
-      return false;
     } else {
       throw SubscriptionAlreadyExistException(message: 'channel: $channel');
     }
@@ -209,7 +205,7 @@ class NatsProvider {
   }
 
   String getPublicChatIdList() =>
-      '$PUBLIC_CHATS.${describeEnum(MessageType.ChatList)}';
+      '$PUBLIC.${describeEnum(MessageType.ChatList)}';
 
   String getPrivateUserChatIdList(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.ChatList)}.$userId';
@@ -244,21 +240,20 @@ class NatsProvider {
   String getGroupChatInfoById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UpdateChatInfo)}.$chatId';
 
-  String getUserOnlineChannel(int userId) =>
-      '$PRIVATE_USER.${describeEnum(MessageType.Online)}.$userId';
+  String getOnlineChannel() => '$PUBLIC.${describeEnum(MessageType.Online)}';
 
-  NatsMessage parseMessage(dataMessage) {
-    var payload = (dataMessage as DataMessage).encodedPayload;
+  NatsMessage parseMessage(DataMessage dataMessage) {
+    var payload = dataMessage.encodedPayload;
     var sequence = dataMessage.sequence;
     var message = NatsMessage.fromBytes(payload);
     message.sequence = sequence;
-    message.serverTime = DateTime.fromMillisecondsSinceEpoch(
+    message.createdAt = DateTime.fromMillisecondsSinceEpoch(
         (dataMessage.timestamp.toDouble() / 1e6).truncate(),
         isUtc: true);
     return message;
   }
 
-  Future<Subscription?> listenChatList(String channel,
+  Future<Subscription> listenChatList(String channel,
       {Int64 startSequence = Int64.ZERO}) async {
     var _subscriptionToPublicChannel = await _stan.subscribe(
       subject: channel,
@@ -266,7 +261,6 @@ class NatsProvider {
     );
     return _subscriptionToPublicChannel;
   }
-
 
   StartPosition _getPosition(String channel) {
     final msgType = MessageListView.getTypeByChannel(channel);

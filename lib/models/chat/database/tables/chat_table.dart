@@ -8,10 +8,8 @@ class ChatTables extends Table {
   TextColumn get avatar => text()();
   IntColumn get ownerId => integer()();
   IntColumn get participantId => integer().nullable()();
-  IntColumn get updatedAt =>
-      integer().withDefault(Constant(DateTime.now().toUtc().millisecondsSinceEpoch))();
-  TextColumn get millisecondsSinceEpoch => text().nullable().withDefault(
-      Constant(DateTime.now().millisecondsSinceEpoch.toString()))();
+  DateTimeColumn get updatedAt =>
+      dateTime().withDefault(Constant(DateTime.now().toUtc()))();
   BoolColumn get notificationsOn =>
       boolean().nullable().withDefault(Constant(true))();
   BoolColumn get unreadCounterOn =>

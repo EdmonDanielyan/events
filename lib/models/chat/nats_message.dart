@@ -175,10 +175,6 @@ class NatsMessage extends BaseMessage {
 
     switch (message.type) {
       case (PayloadType.system):
-        //Skip old
-        unpacker.unpackString();
-        //Skip old
-        unpacker.unpackBool();
         message.from = unpacker.unpackString()!;
         message.to = unpacker.unpackString()!;
         message.payload = SystemPayload.fromUnpacker(unpacker);

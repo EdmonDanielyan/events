@@ -13,8 +13,8 @@ class MessageTables extends Table {
   BoolColumn get sentOn => boolean().withDefault(Constant(false))();
   IntColumn get status => intEnum<MessageStatus>()();
   IntColumn get type => intEnum<MessageType>()();
-  IntColumn get created =>
-      integer().withDefault(Constant(DateTime.now().millisecondsSinceEpoch)).nullable()();
+  DateTimeColumn get created =>
+      dateTime().withDefault(Constant(new DateTime.now())).nullable()();
   IntColumn get sequence =>
       integer().nullable().withDefault(const Constant(0))();
   BoolColumn get edited => boolean().nullable().withDefault(Constant(false))();

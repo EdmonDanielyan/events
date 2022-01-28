@@ -206,7 +206,7 @@ class MessageCardText extends StatelessWidget {
 
   Widget _dateWidget() {
     return Text(
-      DateFunctions(passedDate: message!.createAtAsLocalDateTime).hourMinute(),
+      DateFunctions(passedDate: message?.created ?? DateTime.now()).hourMinute(),
       style: TextStyle(
         fontSize: 11.0,
         color: textColor(),
@@ -219,7 +219,7 @@ class MessageCardText extends StatelessWidget {
       width: 14,
       height: 14,
       child: ChatTick(
-        chatStatus: message!.status,
+        chatStatus: message?.status ?? MessageStatus.EMPTY,
         brightness: message?.type == MessageType.Document
             ? Brightness.light
             : Brightness.dark,
