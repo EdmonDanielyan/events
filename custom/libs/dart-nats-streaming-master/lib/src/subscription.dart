@@ -8,19 +8,26 @@ import 'package:logging/logging.dart';
 class Subscription {
   static final _logger = Logger('Subscription');
   final nats.Subscription subscription;
-  final List<StreamSubscription> _listeners = [];
-  final String subject;
+  final List<void Function(DataMessage dataMessage)> _listeners = [];
+
+  List<void Function(DataMessage dataMessage)> get listeners => _listeners;
+
+  String get subject => subscriptionRequest.subject;
   final String ackInbox;
+  int redeliveryCounter = 0;
+  int maxInFlight = 1;
 
   Stream<DataMessage>? _stream;
+
+  final SubscriptionRequest subscriptionRequest;
+
   Stream<DataMessage> get stream => _stream ??=
       subscription.stream!.transform(_protoTransformer).asBroadcastStream();
 
-  Subscription({
-    required this.subscription,
-    required this.subject,
-    required this.ackInbox,
-  });
+  Subscription(
+      {required this.subscriptionRequest,
+      required this.subscription,
+      required this.ackInbox});
 
   StreamSubscription<DataMessage> listen(
       void Function(DataMessage dataMessage) onData,
@@ -29,7 +36,7 @@ class Subscription {
       bool? cancelOnError}) {
     var listener = stream.listen(onData,
         onError: onError, onDone: onDone, cancelOnError: cancelOnError);
-    _listeners.add(listener);
+    _listeners.add(onData);
 
     return listener;
   }

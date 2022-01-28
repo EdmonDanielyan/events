@@ -4,9 +4,7 @@ import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/selectfield.dart';
-import 'package:multi_select_flutter/dialog/mult_select_dialog.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ServiceSelectFieldCubit extends StatelessWidget {

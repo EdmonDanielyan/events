@@ -5,13 +5,13 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 class InkDropDown extends StatefulWidget {
   final List<String> items;
   final void Function(int value) onChanged;
-  int? selectedIndex;
+  final int? selectedIndex;
   final String hint;
   InkDropDown(
       {Key? key,
       required this.items,
       required this.onChanged,
-      this.selectedIndex,
+      required this.selectedIndex,
       required this.hint})
       : super(key: key);
 
@@ -20,6 +20,14 @@ class InkDropDown extends StatefulWidget {
 }
 
 class _InkDropDownState extends State<InkDropDown> {
+  late int? selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = widget.selectedIndex;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -37,8 +45,8 @@ class _InkDropDownState extends State<InkDropDown> {
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(),
             child: Text(
-              widget.selectedIndex != null
-                  ? widget.items[widget.selectedIndex!]
+                  selectedIndex != null
+                  ? widget.items[selectedIndex!]
                   : widget.hint,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(color: Colors.black, fontSize: 17),
@@ -59,12 +67,12 @@ class _InkDropDownState extends State<InkDropDown> {
         builder: (context) {
           return SelectDialog(
             items: widget.items,
-            selectedIndex: widget.selectedIndex,
+            selectedIndex: selectedIndex,
           );
         });
     if (selected != null) {
       setState(() {
-        widget.selectedIndex = selected;
+        selectedIndex = selected;
       });
       widget.onChanged(selected);
     }

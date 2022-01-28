@@ -57,8 +57,6 @@ class ChatCreation with Loggable {
     logger.finest('_afterNatsChatCreation');
     if (messenger.isConnected) {
       logger.finest('Messenger is ok. Preparing channels');
-      await messenger.registry.userOnlineListener
-          .subscribeToAllAvailableUsers();
       await messenger.registry.subscribeOnChatChannels(chat.id);
       await messenger.inviteSender.sendInvitations(chat, users);
       await messenger.chatSaver.saveChats(newChat: null);

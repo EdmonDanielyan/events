@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/functions/chat/listeners/message_listener.dart';
+import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';

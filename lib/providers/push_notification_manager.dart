@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
@@ -13,7 +11,6 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/notifications.dart';
 import 'package:ink_mobile/setup.dart';
 
-import 'firebase_options.dart';
 
 ///
 /// Background isolate for FCM. Usage in [PushNotificationManager.load] to configure FCM plugin
@@ -76,14 +73,14 @@ class PushNotificationManager with Loggable {
     // });
   }
 
-  Future<void> _openChat(ChatPushNotificationModel payload) async {
-    logger.finest("_openChat");
-    final _chat = await _getChatById(payload.chatId);
-    logger.finest("_chat: $_chat");
-    if (_chat != null) {
-      OpenChat(sl(), _chat)();
-    }
-  }
+  // Future<void> _openChat(ChatPushNotificationModel payload) async {
+  //   logger.finest("_openChat");
+  //   final _chat = await _getChatById(payload.chatId);
+  //   logger.finest("_chat: $_chat");
+  //   if (_chat != null) {
+  //     OpenChat(sl(), _chat)();
+  //   }
+  // }
 
   bool _isMyMessage(String userId) {
     return sl<TokenDataHolder>().userId == userId;

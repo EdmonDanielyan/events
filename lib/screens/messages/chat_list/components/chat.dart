@@ -160,7 +160,7 @@ class _ChatListTileState extends State<ChatListTile> {
         builder: (context, AsyncSnapshot<UserTable?> snapshot) {
           return CustomCircleAvatar(
             url: widget.chat.avatar,
-            indicator: messenger.registry.userOnlineListener.onlineUsers
+            indicator: messenger.registry.onlineListener.onlineUsers
                 .contains(oppositeUserId),
             name: widget.chat.name,
           );

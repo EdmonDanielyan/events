@@ -119,6 +119,19 @@ class NatsProvider {
     return sent;
   }
 
+  /// Send system message which contains [fields] to [channel] by [type]
+  Future<bool> sendJsonMessageToChannel(
+      String channel, MessageType type, Map<String, dynamic> json) async {
+    NatsMessage message = NatsMessage(
+      from: userId,
+      to: channel,
+    );
+    message.setJsonPayload(type, json);
+    bool sent = await _sendMessage(channel, message);
+
+    return sent;
+  }
+
   Iterable<String> get subscribedChannels => _channelSubscriptions.keys;
 
   /// Subscribe to [channel] using [startSequence] if needed
@@ -287,33 +300,27 @@ class NatsProvider {
       channel, Subscription? subscription) async {
     if (subscription == null) return;
 
-    await for (final dataMessage in subscription.stream) {
+    subscription.listen((dataMessage) {
       try {
-        NatsMessage message = parseMessage(dataMessage);
-        _logger.finest(
-            "Received from channel: ${subscription.subject} ${message.id}");
-        if (_channelSubscriptions.containsKey(channel)) {
+        _logger.finest("Received data from channel: ${subscription.subject}");
+        if (!acknowledge(subscription, dataMessage)) return;
+
+        if (!_channelSubscriptions.containsKey(channel)) return;
+        if (!dataMessage.isRedelivery) {
           NatsMessage message = parseMessage(dataMessage);
-          if (message.needAck) {
-            acknowledge(subscription, dataMessage);
-          }
-          if (!dataMessage.isRedelivery) {
-            onMessage(channel, message);
-            Future<void> Function(String, NatsMessage) channelCallback =
-                _channelCallbacks[channel]!;
-            channelCallback(channel, message);
-          }
-        } else {
-          break;
+          onMessage(channel, message);
+          Future<void> Function(String, NatsMessage) channelCallback =
+              _channelCallbacks[channel]!;
+          channelCallback(channel, message);
         }
       } catch (e, s) {
         _logger.severe("Error during read stream of channel $channel", e, s);
       }
-    }
+    });
   }
 
-  void acknowledge(Subscription subscription, DataMessage message) {
-    _stan.acknowledge(
+  bool acknowledge(Subscription subscription, DataMessage message) {
+    return _stan.acknowledge(
       subscription,
       message,
       unacknowledgedMessageHandler: _unAcknowledgedMessageHandler,
@@ -368,5 +375,12 @@ class NatsProvider {
     } catch (e) {
       return false;
     }
+  }
+
+  Future<bool> sendEmptyMessageToChannel(
+      String channel, MessageType type) async {
+    NatsMessage message = NatsMessage(from: userId, to: channel);
+    message.setEmptyPayload();
+    return _sendMessage(channel, message);
   }
 }

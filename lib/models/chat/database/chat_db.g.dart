@@ -1676,7 +1676,6 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
   final String id;
   final PayloadType payloadType;
   final DateTime? createdAt;
-  final bool needAck;
   final String from;
   final String to;
   final String sequence;
@@ -1685,7 +1684,6 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
       {required this.id,
       required this.payloadType,
       this.createdAt,
-      required this.needAck,
       required this.from,
       required this.to,
       required this.sequence,
@@ -1700,8 +1698,6 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}payload_type']))!,
       createdAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
-      needAck: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}need_ack'])!,
       from: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}from'])!,
       to: const StringType()
@@ -1723,7 +1719,6 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
     if (!nullToAbsent || createdAt != null) {
       map['created_at'] = Variable<DateTime?>(createdAt);
     }
-    map['need_ack'] = Variable<bool>(needAck);
     map['from'] = Variable<String>(from);
     map['to'] = Variable<String>(to);
     map['sequence'] = Variable<String>(sequence);
@@ -1741,7 +1736,6 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
       createdAt: createdAt == null && nullToAbsent
           ? const Value.absent()
           : Value(createdAt),
-      needAck: Value(needAck),
       from: Value(from),
       to: Value(to),
       sequence: Value(sequence),
@@ -1756,7 +1750,6 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
       id: serializer.fromJson<String>(json['id']),
       payloadType: serializer.fromJson<PayloadType>(json['payloadType']),
       createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
-      needAck: serializer.fromJson<bool>(json['needAck']),
       from: serializer.fromJson<String>(json['from']),
       to: serializer.fromJson<String>(json['to']),
       sequence: serializer.fromJson<String>(json['sequence']),
@@ -1770,7 +1763,6 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
       'id': serializer.toJson<String>(id),
       'payloadType': serializer.toJson<PayloadType>(payloadType),
       'createdAt': serializer.toJson<DateTime?>(createdAt),
-      'needAck': serializer.toJson<bool>(needAck),
       'from': serializer.toJson<String>(from),
       'to': serializer.toJson<String>(to),
       'sequence': serializer.toJson<String>(sequence),
@@ -1782,7 +1774,6 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
           {String? id,
           PayloadType? payloadType,
           DateTime? createdAt,
-          bool? needAck,
           String? from,
           String? to,
           String? sequence,
@@ -1791,7 +1782,6 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
         id: id ?? this.id,
         payloadType: payloadType ?? this.payloadType,
         createdAt: createdAt ?? this.createdAt,
-        needAck: needAck ?? this.needAck,
         from: from ?? this.from,
         to: to ?? this.to,
         sequence: sequence ?? this.sequence,
@@ -1803,7 +1793,6 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
           ..write('id: $id, ')
           ..write('payloadType: $payloadType, ')
           ..write('createdAt: $createdAt, ')
-          ..write('needAck: $needAck, ')
           ..write('from: $from, ')
           ..write('to: $to, ')
           ..write('sequence: $sequence, ')
@@ -1813,8 +1802,8 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, payloadType, createdAt, needAck, from, to, sequence, messageType);
+  int get hashCode =>
+      Object.hash(id, payloadType, createdAt, from, to, sequence, messageType);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1822,7 +1811,6 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
           other.id == this.id &&
           other.payloadType == this.payloadType &&
           other.createdAt == this.createdAt &&
-          other.needAck == this.needAck &&
           other.from == this.from &&
           other.to == this.to &&
           other.sequence == this.sequence &&
@@ -1833,7 +1821,6 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
   final Value<String> id;
   final Value<PayloadType> payloadType;
   final Value<DateTime?> createdAt;
-  final Value<bool> needAck;
   final Value<String> from;
   final Value<String> to;
   final Value<String> sequence;
@@ -1842,7 +1829,6 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
     this.id = const Value.absent(),
     this.payloadType = const Value.absent(),
     this.createdAt = const Value.absent(),
-    this.needAck = const Value.absent(),
     this.from = const Value.absent(),
     this.to = const Value.absent(),
     this.sequence = const Value.absent(),
@@ -1852,14 +1838,12 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
     required String id,
     required PayloadType payloadType,
     this.createdAt = const Value.absent(),
-    required bool needAck,
     required String from,
     required String to,
     required String sequence,
     required MessageType messageType,
   })  : id = Value(id),
         payloadType = Value(payloadType),
-        needAck = Value(needAck),
         from = Value(from),
         to = Value(to),
         sequence = Value(sequence),
@@ -1868,7 +1852,6 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
     Expression<String>? id,
     Expression<PayloadType>? payloadType,
     Expression<DateTime?>? createdAt,
-    Expression<bool>? needAck,
     Expression<String>? from,
     Expression<String>? to,
     Expression<String>? sequence,
@@ -1878,7 +1861,6 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
       if (id != null) 'id': id,
       if (payloadType != null) 'payload_type': payloadType,
       if (createdAt != null) 'created_at': createdAt,
-      if (needAck != null) 'need_ack': needAck,
       if (from != null) 'from': from,
       if (to != null) 'to': to,
       if (sequence != null) 'sequence': sequence,
@@ -1890,7 +1872,6 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
       {Value<String>? id,
       Value<PayloadType>? payloadType,
       Value<DateTime?>? createdAt,
-      Value<bool>? needAck,
       Value<String>? from,
       Value<String>? to,
       Value<String>? sequence,
@@ -1899,7 +1880,6 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
       id: id ?? this.id,
       payloadType: payloadType ?? this.payloadType,
       createdAt: createdAt ?? this.createdAt,
-      needAck: needAck ?? this.needAck,
       from: from ?? this.from,
       to: to ?? this.to,
       sequence: sequence ?? this.sequence,
@@ -1920,9 +1900,6 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime?>(createdAt.value);
-    }
-    if (needAck.present) {
-      map['need_ack'] = Variable<bool>(needAck.value);
     }
     if (from.present) {
       map['from'] = Variable<String>(from.value);
@@ -1947,7 +1924,6 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
           ..write('id: $id, ')
           ..write('payloadType: $payloadType, ')
           ..write('createdAt: $createdAt, ')
-          ..write('needAck: $needAck, ')
           ..write('from: $from, ')
           ..write('to: $to, ')
           ..write('sequence: $sequence, ')
@@ -1981,13 +1957,6 @@ class $ChannelTablesTable extends ChannelTables
       type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: Constant(new DateTime.now()));
-  final VerificationMeta _needAckMeta = const VerificationMeta('needAck');
-  @override
-  late final GeneratedColumn<bool?> needAck = GeneratedColumn<bool?>(
-      'need_ack', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (need_ack IN (0, 1))');
   final VerificationMeta _fromMeta = const VerificationMeta('from');
   @override
   late final GeneratedColumn<String?> from = GeneratedColumn<String?>(
@@ -2012,7 +1981,7 @@ class $ChannelTablesTable extends ChannelTables
           .withConverter<MessageType>($ChannelTablesTable.$converter1);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, payloadType, createdAt, needAck, from, to, sequence, messageType];
+      [id, payloadType, createdAt, from, to, sequence, messageType];
   @override
   String get aliasedName => _alias ?? 'channel_tables';
   @override
@@ -2031,12 +2000,6 @@ class $ChannelTablesTable extends ChannelTables
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    }
-    if (data.containsKey('need_ack')) {
-      context.handle(_needAckMeta,
-          needAck.isAcceptableOrUnknown(data['need_ack']!, _needAckMeta));
-    } else if (isInserting) {
-      context.missing(_needAckMeta);
     }
     if (data.containsKey('from')) {
       context.handle(

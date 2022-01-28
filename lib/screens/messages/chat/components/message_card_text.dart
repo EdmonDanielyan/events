@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/components/linkify_text.dart';

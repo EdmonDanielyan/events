@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/selectable_widget.dart';
@@ -5,6 +7,7 @@ import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_state.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/extensions/message_table.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
@@ -13,7 +16,7 @@ import 'package:ink_mobile/screens/messages/chat/components/hover_message.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card_text.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/chat_screen_params.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/paddings.dart';
-import 'package:ink_mobile/extensions/message_table.dart';
+
 import 'message_card_action.dart';
 import 'message_search_wrapper.dart';
 

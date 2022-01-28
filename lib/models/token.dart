@@ -37,10 +37,6 @@ abstract class Token {
       Map<String, dynamic> payloadMap =
           StringConverter(string: payload).decodeJson();
 
-      if (payloadMap is! Map<String, dynamic>) {
-        throw Exception('invalid payload');
-      }
-
       return new JwtPayload(payloadMap);
     }
 

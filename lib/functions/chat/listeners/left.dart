@@ -14,12 +14,12 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../send_message.dart';
 import '../user_functions.dart';
+import 'channel_listener.dart';
 import 'channels_registry.dart';
-import 'message_listener.dart';
 
 @Named("UserLeftChat")
-@Injectable(as: MessageListener)
-class ChatLeftListener extends MessageListener {
+@Injectable(as: ChannelListener)
+class ChatLeftListener extends ChannelListener {
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatSaver chatSaver;

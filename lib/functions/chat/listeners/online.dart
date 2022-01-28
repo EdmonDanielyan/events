@@ -5,10 +5,8 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/functions/chat/listeners/message_listener.dart';
+import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/nats/online.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
@@ -37,53 +35,25 @@ class UserOnlineListener extends MessageListener {
     onlineUsers = {};
   }
 
-  Future<void> subscribeToAllAvailableUsers() async {
+  Future<void> subscribeOnline() async {
     if (!natsProvider.isConnected) return;
-    final users = await chatDatabaseCubit.db.getAllUsers();
-
-    if (users.isNotEmpty) {
-      for (final user in users) {
-        await subscribeIndividually(user);
-      }
-    }
-  }
-
-  Future<void> subscribeIndividually(UserTable user) async {
-    if (!natsProvider.isConnected) return;
-    try {
-      if (!subscribedUsers.contains(user.id)) {
-        updateUserStatus(user, false);
-        subscribedUsers.add(user.id);
-        final channel = natsProvider.getUserOnlineChannel(user.id);
-        registry.addToListeningChannels(channel);
-        bool sub = await natsProvider.subscribeToChannel(channel, onMessage,
-            startSequence: Int64.ZERO, startPosition: StartPosition.NewOnly);
-
-        if (!sub) {
-          throw "offline";
-        }
-      }
-    } on SubscriptionAlreadyExistException {
-    } catch (e) {
-      //CLIENT IS OFFLINE
-
-      logger.warning("Error during subscribe", e);
-      updateUserStatus(user, false);
-    }
+    final channel = natsProvider.getOnlineChannel();
+    registry.addToListeningChannels(channel);
+    await natsProvider.subscribeToChannel(channel, onMessage,
+        maxInFlight: 100,
+        startSequence: Int64.ZERO, startPosition: StartPosition.NewOnly);
   }
 
   Future<void> onMessage(String channel, NatsMessage message) async {
     super.onMessage(channel, message);
 
     try {
-      final mapPayload = message.payload! as SystemPayload;
-      UserOnlineFields fields = UserOnlineFields.fromMap(mapPayload.fields);
-      final user = fields.user;
+      final user = int.parse(message.from);
 
       updateUserStatus(user, true);
 
       EasyDebounce.debounce(
-        user.id.toString(),
+        user.toString(),
         Duration(seconds: 50),
         () => updateUserStatus(user, false),
       );
@@ -94,25 +64,25 @@ class UserOnlineListener extends MessageListener {
 
   void listenForOffline(UserTable user) {}
 
-  Future<void> updateUserStatus(UserTable user, bool online) async {
-    final storedUser = await chatDatabaseCubit.db.selectUserById(user.id);
+  Future<void> updateUserStatus(int user, bool online) async {
+    final storedUser = await chatDatabaseCubit.db.selectUserById(user);
 
     if (storedUser != null && storedUser.online != online) {
       logger.finest(
-              ()=>"updateUserStatus: user=${user.name}, was_online: ${user.online}, will_be_online=$online");
+              ()=>"updateUserStatus: user=${storedUser.name}, was_online: ${storedUser.online}, will_be_online=$online");
 
-      chatDatabaseCubit.db.updateUser(user.id, user.copyWith(online: online));
+      chatDatabaseCubit.db.updateUser(user, storedUser.copyWith(online: online));
     }
     _handleList(user, online);
   }
 
-  void _handleList(UserTable user, bool online) {
-    if (online && !onlineUsers.contains(user.id)) {
-      onlineUsers.add(user.id);
+  void _handleList(int userId, bool online) {
+    if (online && !onlineUsers.contains(userId)) {
+      onlineUsers.add(userId);
     }
 
-    if (!online && onlineUsers.contains(user.id)) {
-      onlineUsers.remove(user.id);
+    if (!online && onlineUsers.contains(userId)) {
+      onlineUsers.remove(userId);
     }
   }
 }
