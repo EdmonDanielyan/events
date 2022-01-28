@@ -74,7 +74,7 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
     }
   }
 
-  void _scrollBottom({int milliseconds = 100}) {
+  void _scrollBottom({int milliseconds = 50}) {
     Future.delayed(Duration(milliseconds: milliseconds), () {
       ScrollBottom(controller).jump();
     });
