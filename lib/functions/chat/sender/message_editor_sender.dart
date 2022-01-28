@@ -27,7 +27,7 @@ class MessageEditorSender {
     bool result = true;
     if (makeRequest) {
       final chatId = messages.last.chatId;
-      final channel = natsProvider.getGroupDeleteMessageChannelById(chatId);
+      final channel = natsProvider.getChatChannelById(chatId);
       final sent = await natsProvider.sendSystemMessageToChannel(
         channel,
         MessageType.RemoveMessage,

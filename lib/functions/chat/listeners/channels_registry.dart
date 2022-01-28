@@ -1,3 +1,5 @@
+
+import 'package:dart_nats_streaming/dart_nats_streaming.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
@@ -117,8 +119,7 @@ class ChannelsRegistry with Loggable {
     final exists = await channelFunctions.channelExists(inviteUserChannel);
 
     if (!exists) {
-      await _subscribeToChannel(
-          MessageType.InviteUserToJoinChat, inviteUserChannel);
+      await _subscribeToChannel(inviteUserChannel);
     }
   }
 
@@ -126,14 +127,12 @@ class ChannelsRegistry with Loggable {
     logger.finest('listenToMyStoredChannels');
     List<ChannelTable> channels = List<ChannelTable>.unmodifiable(
         await channelFunctions.getAllChannels());
-    // List<ChannelTable> channels = await channelFunctions.getAllChannels();
 
     if (channels.isNotEmpty) {
       for (final channel in channels) {
-        Int64 sequence = strToSequence(channel.sequence);
+        Int64 sequence = Int64.fromInts(0, channel.sequence);
         await _subscribeToChannel(
-          channel.messageType,
-          channel.to,
+          channel.id,
           startSequence: sequence,
         );
       }
@@ -158,9 +157,9 @@ class ChannelsRegistry with Loggable {
     }
   }
 
-  Future<void> _subscribeToChannel(MessageType type, String channel,
+  Future<void> _subscribeToChannel(String channel,
       {Int64 startSequence = Int64.ZERO}) async {
-    logger.fine(() => "_subscribeToChannel: $type, $channel, $startSequence");
+    logger.fine(() => "_subscribeToChannel: $channel, $startSequence");
 
     if (!natsProvider.isConnected) {
       logger.warning("nats is not connected");
@@ -178,9 +177,9 @@ class ChannelsRegistry with Loggable {
       } else {
         pushNotificationManager.unsubscribeFromTopic(channel);
       }
-      logger.fine(() => "listeners[$type]=${listeners[type]}");
       try {
         await natsProvider.subscribeToChannel(channel, onChannelMessage,
+            startPosition: StartPosition.SequenceStart,
             maxInFlight: 1024,
             startSequence: startSequence);
         subscribedChannels.add(channel);
@@ -231,12 +230,12 @@ class ChannelsRegistry with Loggable {
           final channelTable = await channelFunctions.saveByChannelName(channel,
               sequence: sequence);
           if (channelTable != null) {
-            await _subscribeToChannel(channelTable.messageType, channelTable.to,
+            await _subscribeToChannel(channelTable.id,
                 startSequence: sequence);
           }
         } else {
-          await _subscribeToChannel(channelExists.messageType, channelExists.to,
-              startSequence: strToSequence(channelExists.sequence));
+          await _subscribeToChannel(channelExists.id,
+              startSequence: Int64.fromInts(0, channelExists.sequence));
         }
       }
     }

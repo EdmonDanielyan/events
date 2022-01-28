@@ -15,7 +15,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   final int ownerId;
   final int? participantId;
   final DateTime updatedAt;
-  final String? millisecondsSinceEpoch;
   final bool? notificationsOn;
   final bool? unreadCounterOn;
   final bool? deleted;
@@ -28,7 +27,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       required this.ownerId,
       this.participantId,
       required this.updatedAt,
-      this.millisecondsSinceEpoch,
       this.notificationsOn,
       this.unreadCounterOn,
       this.deleted,
@@ -51,8 +49,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}participant_id']),
       updatedAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
-      millisecondsSinceEpoch: const StringType().mapFromDatabaseResponse(
-          data['${effectivePrefix}milliseconds_since_epoch']),
       notificationsOn: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}notifications_on']),
       unreadCounterOn: const BoolType()
@@ -75,10 +71,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       map['participant_id'] = Variable<int?>(participantId);
     }
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    if (!nullToAbsent || millisecondsSinceEpoch != null) {
-      map['milliseconds_since_epoch'] =
-          Variable<String?>(millisecondsSinceEpoch);
-    }
     if (!nullToAbsent || notificationsOn != null) {
       map['notifications_on'] = Variable<bool?>(notificationsOn);
     }
@@ -105,9 +97,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           ? const Value.absent()
           : Value(participantId),
       updatedAt: Value(updatedAt),
-      millisecondsSinceEpoch: millisecondsSinceEpoch == null && nullToAbsent
-          ? const Value.absent()
-          : Value(millisecondsSinceEpoch),
       notificationsOn: notificationsOn == null && nullToAbsent
           ? const Value.absent()
           : Value(notificationsOn),
@@ -134,8 +123,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       ownerId: serializer.fromJson<int>(json['ownerId']),
       participantId: serializer.fromJson<int?>(json['participantId']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      millisecondsSinceEpoch:
-          serializer.fromJson<String?>(json['millisecondsSinceEpoch']),
       notificationsOn: serializer.fromJson<bool?>(json['notificationsOn']),
       unreadCounterOn: serializer.fromJson<bool?>(json['unreadCounterOn']),
       deleted: serializer.fromJson<bool?>(json['deleted']),
@@ -153,8 +140,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       'ownerId': serializer.toJson<int>(ownerId),
       'participantId': serializer.toJson<int?>(participantId),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'millisecondsSinceEpoch':
-          serializer.toJson<String?>(millisecondsSinceEpoch),
       'notificationsOn': serializer.toJson<bool?>(notificationsOn),
       'unreadCounterOn': serializer.toJson<bool?>(unreadCounterOn),
       'deleted': serializer.toJson<bool?>(deleted),
@@ -170,7 +155,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           int? ownerId,
           int? participantId,
           DateTime? updatedAt,
-          String? millisecondsSinceEpoch,
           bool? notificationsOn,
           bool? unreadCounterOn,
           bool? deleted,
@@ -183,8 +167,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
         ownerId: ownerId ?? this.ownerId,
         participantId: participantId ?? this.participantId,
         updatedAt: updatedAt ?? this.updatedAt,
-        millisecondsSinceEpoch:
-            millisecondsSinceEpoch ?? this.millisecondsSinceEpoch,
         notificationsOn: notificationsOn ?? this.notificationsOn,
         unreadCounterOn: unreadCounterOn ?? this.unreadCounterOn,
         deleted: deleted ?? this.deleted,
@@ -200,7 +182,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           ..write('ownerId: $ownerId, ')
           ..write('participantId: $participantId, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('millisecondsSinceEpoch: $millisecondsSinceEpoch, ')
           ..write('notificationsOn: $notificationsOn, ')
           ..write('unreadCounterOn: $unreadCounterOn, ')
           ..write('deleted: $deleted, ')
@@ -218,7 +199,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       ownerId,
       participantId,
       updatedAt,
-      millisecondsSinceEpoch,
       notificationsOn,
       unreadCounterOn,
       deleted,
@@ -234,7 +214,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           other.ownerId == this.ownerId &&
           other.participantId == this.participantId &&
           other.updatedAt == this.updatedAt &&
-          other.millisecondsSinceEpoch == this.millisecondsSinceEpoch &&
           other.notificationsOn == this.notificationsOn &&
           other.unreadCounterOn == this.unreadCounterOn &&
           other.deleted == this.deleted &&
@@ -249,7 +228,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   final Value<int> ownerId;
   final Value<int?> participantId;
   final Value<DateTime> updatedAt;
-  final Value<String?> millisecondsSinceEpoch;
   final Value<bool?> notificationsOn;
   final Value<bool?> unreadCounterOn;
   final Value<bool?> deleted;
@@ -262,7 +240,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     this.ownerId = const Value.absent(),
     this.participantId = const Value.absent(),
     this.updatedAt = const Value.absent(),
-    this.millisecondsSinceEpoch = const Value.absent(),
     this.notificationsOn = const Value.absent(),
     this.unreadCounterOn = const Value.absent(),
     this.deleted = const Value.absent(),
@@ -276,7 +253,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     required int ownerId,
     this.participantId = const Value.absent(),
     this.updatedAt = const Value.absent(),
-    this.millisecondsSinceEpoch = const Value.absent(),
     this.notificationsOn = const Value.absent(),
     this.unreadCounterOn = const Value.absent(),
     this.deleted = const Value.absent(),
@@ -294,7 +270,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     Expression<int>? ownerId,
     Expression<int?>? participantId,
     Expression<DateTime>? updatedAt,
-    Expression<String?>? millisecondsSinceEpoch,
     Expression<bool?>? notificationsOn,
     Expression<bool?>? unreadCounterOn,
     Expression<bool?>? deleted,
@@ -308,8 +283,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       if (ownerId != null) 'owner_id': ownerId,
       if (participantId != null) 'participant_id': participantId,
       if (updatedAt != null) 'updated_at': updatedAt,
-      if (millisecondsSinceEpoch != null)
-        'milliseconds_since_epoch': millisecondsSinceEpoch,
       if (notificationsOn != null) 'notifications_on': notificationsOn,
       if (unreadCounterOn != null) 'unread_counter_on': unreadCounterOn,
       if (deleted != null) 'deleted': deleted,
@@ -325,7 +298,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       Value<int>? ownerId,
       Value<int?>? participantId,
       Value<DateTime>? updatedAt,
-      Value<String?>? millisecondsSinceEpoch,
       Value<bool?>? notificationsOn,
       Value<bool?>? unreadCounterOn,
       Value<bool?>? deleted,
@@ -338,8 +310,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       ownerId: ownerId ?? this.ownerId,
       participantId: participantId ?? this.participantId,
       updatedAt: updatedAt ?? this.updatedAt,
-      millisecondsSinceEpoch:
-          millisecondsSinceEpoch ?? this.millisecondsSinceEpoch,
       notificationsOn: notificationsOn ?? this.notificationsOn,
       unreadCounterOn: unreadCounterOn ?? this.unreadCounterOn,
       deleted: deleted ?? this.deleted,
@@ -371,10 +341,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
-    if (millisecondsSinceEpoch.present) {
-      map['milliseconds_since_epoch'] =
-          Variable<String?>(millisecondsSinceEpoch.value);
-    }
     if (notificationsOn.present) {
       map['notifications_on'] = Variable<bool?>(notificationsOn.value);
     }
@@ -400,7 +366,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
           ..write('ownerId: $ownerId, ')
           ..write('participantId: $participantId, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('millisecondsSinceEpoch: $millisecondsSinceEpoch, ')
           ..write('notificationsOn: $notificationsOn, ')
           ..write('unreadCounterOn: $unreadCounterOn, ')
           ..write('deleted: $deleted, ')
@@ -457,15 +422,6 @@ class $ChatTablesTable extends ChatTables
       type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: Constant(DateTime.now().toUtc()));
-  final VerificationMeta _millisecondsSinceEpochMeta =
-      const VerificationMeta('millisecondsSinceEpoch');
-  @override
-  late final GeneratedColumn<String?> millisecondsSinceEpoch =
-      GeneratedColumn<String?>('milliseconds_since_epoch', aliasedName, true,
-          type: const StringType(),
-          requiredDuringInsert: false,
-          defaultValue:
-              Constant(DateTime.now().millisecondsSinceEpoch.toString()));
   final VerificationMeta _notificationsOnMeta =
       const VerificationMeta('notificationsOn');
   @override
@@ -507,7 +463,6 @@ class $ChatTablesTable extends ChatTables
         ownerId,
         participantId,
         updatedAt,
-        millisecondsSinceEpoch,
         notificationsOn,
         unreadCounterOn,
         deleted,
@@ -562,12 +517,6 @@ class $ChatTablesTable extends ChatTables
     if (data.containsKey('updated_at')) {
       context.handle(_updatedAtMeta,
           updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
-    }
-    if (data.containsKey('milliseconds_since_epoch')) {
-      context.handle(
-          _millisecondsSinceEpochMeta,
-          millisecondsSinceEpoch.isAcceptableOrUnknown(
-              data['milliseconds_since_epoch']!, _millisecondsSinceEpochMeta));
     }
     if (data.containsKey('notifications_on')) {
       context.handle(
@@ -1674,72 +1623,30 @@ class $ParticipantTablesTable extends ParticipantTables
 
 class ChannelTable extends DataClass implements Insertable<ChannelTable> {
   final String id;
-  final PayloadType payloadType;
-  final DateTime? createdAt;
-  final String from;
-  final String to;
-  final String sequence;
-  final MessageType messageType;
-  ChannelTable(
-      {required this.id,
-      required this.payloadType,
-      this.createdAt,
-      required this.from,
-      required this.to,
-      required this.sequence,
-      required this.messageType});
+  final int sequence;
+  ChannelTable({required this.id, required this.sequence});
   factory ChannelTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return ChannelTable(
       id: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      payloadType: $ChannelTablesTable.$converter0.mapToDart(const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}payload_type']))!,
-      createdAt: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
-      from: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}from'])!,
-      to: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}to'])!,
-      sequence: const StringType()
+      sequence: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}sequence'])!,
-      messageType: $ChannelTablesTable.$converter1.mapToDart(const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}message_type']))!,
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    {
-      final converter = $ChannelTablesTable.$converter0;
-      map['payload_type'] = Variable<int>(converter.mapToSql(payloadType)!);
-    }
-    if (!nullToAbsent || createdAt != null) {
-      map['created_at'] = Variable<DateTime?>(createdAt);
-    }
-    map['from'] = Variable<String>(from);
-    map['to'] = Variable<String>(to);
-    map['sequence'] = Variable<String>(sequence);
-    {
-      final converter = $ChannelTablesTable.$converter1;
-      map['message_type'] = Variable<int>(converter.mapToSql(messageType)!);
-    }
+    map['sequence'] = Variable<int>(sequence);
     return map;
   }
 
   ChannelTablesCompanion toCompanion(bool nullToAbsent) {
     return ChannelTablesCompanion(
       id: Value(id),
-      payloadType: Value(payloadType),
-      createdAt: createdAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(createdAt),
-      from: Value(from),
-      to: Value(to),
       sequence: Value(sequence),
-      messageType: Value(messageType),
     );
   }
 
@@ -1748,12 +1655,7 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return ChannelTable(
       id: serializer.fromJson<String>(json['id']),
-      payloadType: serializer.fromJson<PayloadType>(json['payloadType']),
-      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
-      from: serializer.fromJson<String>(json['from']),
-      to: serializer.fromJson<String>(json['to']),
-      sequence: serializer.fromJson<String>(json['sequence']),
-      messageType: serializer.fromJson<MessageType>(json['messageType']),
+      sequence: serializer.fromJson<int>(json['sequence']),
     );
   }
   @override
@@ -1761,129 +1663,58 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'payloadType': serializer.toJson<PayloadType>(payloadType),
-      'createdAt': serializer.toJson<DateTime?>(createdAt),
-      'from': serializer.toJson<String>(from),
-      'to': serializer.toJson<String>(to),
-      'sequence': serializer.toJson<String>(sequence),
-      'messageType': serializer.toJson<MessageType>(messageType),
+      'sequence': serializer.toJson<int>(sequence),
     };
   }
 
-  ChannelTable copyWith(
-          {String? id,
-          PayloadType? payloadType,
-          DateTime? createdAt,
-          String? from,
-          String? to,
-          String? sequence,
-          MessageType? messageType}) =>
-      ChannelTable(
+  ChannelTable copyWith({String? id, int? sequence}) => ChannelTable(
         id: id ?? this.id,
-        payloadType: payloadType ?? this.payloadType,
-        createdAt: createdAt ?? this.createdAt,
-        from: from ?? this.from,
-        to: to ?? this.to,
         sequence: sequence ?? this.sequence,
-        messageType: messageType ?? this.messageType,
       );
   @override
   String toString() {
     return (StringBuffer('ChannelTable(')
           ..write('id: $id, ')
-          ..write('payloadType: $payloadType, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('from: $from, ')
-          ..write('to: $to, ')
-          ..write('sequence: $sequence, ')
-          ..write('messageType: $messageType')
+          ..write('sequence: $sequence')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, payloadType, createdAt, from, to, sequence, messageType);
+  int get hashCode => Object.hash(id, sequence);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ChannelTable &&
           other.id == this.id &&
-          other.payloadType == this.payloadType &&
-          other.createdAt == this.createdAt &&
-          other.from == this.from &&
-          other.to == this.to &&
-          other.sequence == this.sequence &&
-          other.messageType == this.messageType);
+          other.sequence == this.sequence);
 }
 
 class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
   final Value<String> id;
-  final Value<PayloadType> payloadType;
-  final Value<DateTime?> createdAt;
-  final Value<String> from;
-  final Value<String> to;
-  final Value<String> sequence;
-  final Value<MessageType> messageType;
+  final Value<int> sequence;
   const ChannelTablesCompanion({
     this.id = const Value.absent(),
-    this.payloadType = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.from = const Value.absent(),
-    this.to = const Value.absent(),
     this.sequence = const Value.absent(),
-    this.messageType = const Value.absent(),
   });
   ChannelTablesCompanion.insert({
     required String id,
-    required PayloadType payloadType,
-    this.createdAt = const Value.absent(),
-    required String from,
-    required String to,
-    required String sequence,
-    required MessageType messageType,
-  })  : id = Value(id),
-        payloadType = Value(payloadType),
-        from = Value(from),
-        to = Value(to),
-        sequence = Value(sequence),
-        messageType = Value(messageType);
+    this.sequence = const Value.absent(),
+  }) : id = Value(id);
   static Insertable<ChannelTable> custom({
     Expression<String>? id,
-    Expression<PayloadType>? payloadType,
-    Expression<DateTime?>? createdAt,
-    Expression<String>? from,
-    Expression<String>? to,
-    Expression<String>? sequence,
-    Expression<MessageType>? messageType,
+    Expression<int>? sequence,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (payloadType != null) 'payload_type': payloadType,
-      if (createdAt != null) 'created_at': createdAt,
-      if (from != null) 'from': from,
-      if (to != null) 'to': to,
       if (sequence != null) 'sequence': sequence,
-      if (messageType != null) 'message_type': messageType,
     });
   }
 
-  ChannelTablesCompanion copyWith(
-      {Value<String>? id,
-      Value<PayloadType>? payloadType,
-      Value<DateTime?>? createdAt,
-      Value<String>? from,
-      Value<String>? to,
-      Value<String>? sequence,
-      Value<MessageType>? messageType}) {
+  ChannelTablesCompanion copyWith({Value<String>? id, Value<int>? sequence}) {
     return ChannelTablesCompanion(
       id: id ?? this.id,
-      payloadType: payloadType ?? this.payloadType,
-      createdAt: createdAt ?? this.createdAt,
-      from: from ?? this.from,
-      to: to ?? this.to,
       sequence: sequence ?? this.sequence,
-      messageType: messageType ?? this.messageType,
     );
   }
 
@@ -1893,27 +1724,8 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
-    if (payloadType.present) {
-      final converter = $ChannelTablesTable.$converter0;
-      map['payload_type'] =
-          Variable<int>(converter.mapToSql(payloadType.value)!);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime?>(createdAt.value);
-    }
-    if (from.present) {
-      map['from'] = Variable<String>(from.value);
-    }
-    if (to.present) {
-      map['to'] = Variable<String>(to.value);
-    }
     if (sequence.present) {
-      map['sequence'] = Variable<String>(sequence.value);
-    }
-    if (messageType.present) {
-      final converter = $ChannelTablesTable.$converter1;
-      map['message_type'] =
-          Variable<int>(converter.mapToSql(messageType.value)!);
+      map['sequence'] = Variable<int>(sequence.value);
     }
     return map;
   }
@@ -1922,12 +1734,7 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
   String toString() {
     return (StringBuffer('ChannelTablesCompanion(')
           ..write('id: $id, ')
-          ..write('payloadType: $payloadType, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('from: $from, ')
-          ..write('to: $to, ')
-          ..write('sequence: $sequence, ')
-          ..write('messageType: $messageType')
+          ..write('sequence: $sequence')
           ..write(')'))
         .toString();
   }
@@ -1943,45 +1750,15 @@ class $ChannelTablesTable extends ChannelTables
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
       'id', aliasedName, false,
       type: const StringType(), requiredDuringInsert: true);
-  final VerificationMeta _payloadTypeMeta =
-      const VerificationMeta('payloadType');
-  @override
-  late final GeneratedColumnWithTypeConverter<PayloadType, int?> payloadType =
-      GeneratedColumn<int?>('payload_type', aliasedName, false,
-              type: const IntType(), requiredDuringInsert: true)
-          .withConverter<PayloadType>($ChannelTablesTable.$converter0);
-  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
-  @override
-  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
-      'created_at', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultValue: Constant(new DateTime.now()));
-  final VerificationMeta _fromMeta = const VerificationMeta('from');
-  @override
-  late final GeneratedColumn<String?> from = GeneratedColumn<String?>(
-      'from', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
-  final VerificationMeta _toMeta = const VerificationMeta('to');
-  @override
-  late final GeneratedColumn<String?> to = GeneratedColumn<String?>(
-      'to', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _sequenceMeta = const VerificationMeta('sequence');
   @override
-  late final GeneratedColumn<String?> sequence = GeneratedColumn<String?>(
+  late final GeneratedColumn<int?> sequence = GeneratedColumn<int?>(
       'sequence', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
-  final VerificationMeta _messageTypeMeta =
-      const VerificationMeta('messageType');
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: Constant(0));
   @override
-  late final GeneratedColumnWithTypeConverter<MessageType, int?> messageType =
-      GeneratedColumn<int?>('message_type', aliasedName, false,
-              type: const IntType(), requiredDuringInsert: true)
-          .withConverter<MessageType>($ChannelTablesTable.$converter1);
-  @override
-  List<GeneratedColumn> get $columns =>
-      [id, payloadType, createdAt, from, to, sequence, messageType];
+  List<GeneratedColumn> get $columns => [id, sequence];
   @override
   String get aliasedName => _alias ?? 'channel_tables';
   @override
@@ -1996,34 +1773,15 @@ class $ChannelTablesTable extends ChannelTables
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    context.handle(_payloadTypeMeta, const VerificationResult.success());
-    if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    }
-    if (data.containsKey('from')) {
-      context.handle(
-          _fromMeta, from.isAcceptableOrUnknown(data['from']!, _fromMeta));
-    } else if (isInserting) {
-      context.missing(_fromMeta);
-    }
-    if (data.containsKey('to')) {
-      context.handle(_toMeta, to.isAcceptableOrUnknown(data['to']!, _toMeta));
-    } else if (isInserting) {
-      context.missing(_toMeta);
-    }
     if (data.containsKey('sequence')) {
       context.handle(_sequenceMeta,
           sequence.isAcceptableOrUnknown(data['sequence']!, _sequenceMeta));
-    } else if (isInserting) {
-      context.missing(_sequenceMeta);
     }
-    context.handle(_messageTypeMeta, const VerificationResult.success());
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {to};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   ChannelTable map(Map<String, dynamic> data, {String? tablePrefix}) {
     return ChannelTable.fromData(data, _db,
@@ -2034,11 +1792,6 @@ class $ChannelTablesTable extends ChannelTables
   $ChannelTablesTable createAlias(String alias) {
     return $ChannelTablesTable(_db, alias);
   }
-
-  static TypeConverter<PayloadType, int> $converter0 =
-      const EnumIndexConverter<PayloadType>(PayloadType.values);
-  static TypeConverter<MessageType, int> $converter1 =
-      const EnumIndexConverter<MessageType>(MessageType.values);
 }
 
 abstract class _$ChatDatabase extends GeneratedDatabase {

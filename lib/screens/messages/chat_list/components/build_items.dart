@@ -34,13 +34,8 @@ class BuildChatItems extends StatelessWidget {
       builder: (context, state) {
         List<ChatTable> chats = state.searchChats;
         chats.sort((a, b) {
-          if (a.millisecondsSinceEpoch != null &&
-              b.millisecondsSinceEpoch != null) {
-            return b.millisecondsSinceEpoch!
-                .compareTo(a.millisecondsSinceEpoch!);
-          }
-
-          return b.updatedAt.compareTo(a.updatedAt);
+          return b.updatedAt
+              .compareTo(a.updatedAt);
         });
 
         return ListView.builder(

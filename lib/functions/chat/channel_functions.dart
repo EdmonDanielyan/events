@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:fixnum/fixnum.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
@@ -37,11 +38,11 @@ class ChannelFunctions with Loggable {
 
   Future<void> insertOrUpdate(ChannelTable channel) async {
     logger.finest(() => "insertOrUpdate: $channel");
-    final storedChannel = await getChannel(channel.to);
+    final storedChannel = await getChannel(channel.id);
 
     if (storedChannel != null) {
-      int currentChannelSeq = int.tryParse(storedChannel.sequence) ?? 0;
-      int updateChannelSeq = int.tryParse(channel.sequence) ?? 0;
+      int currentChannelSeq = storedChannel.sequence;
+      int updateChannelSeq = channel.sequence;
 
       if (updateChannelSeq >= currentChannelSeq) {
         await updateChannel(channel);
@@ -53,13 +54,13 @@ class ChannelFunctions with Loggable {
 
   Future<ChannelTable?> getChannel(String channelName) async {
     logger.finest(() => "getChannel: $channelName");
-    return await chatDatabaseCubit.db.getChannelByChannelName(channelName);
+    return await chatDatabaseCubit.db.getChannelById(channelName);
   }
 
-  Future<bool> channelExists(String channelName) async {
-    logger.finest(() => "channelExists: $channelName");
+  Future<bool> channelExists(String id) async {
+    logger.finest(() => "channelExists: $id");
     try {
-      return await getChannel(channelName) != null;
+      return await getChannel(id) != null;
     } on StateError {
       return true;
     }
@@ -72,7 +73,7 @@ class ChannelFunctions with Loggable {
 
   Future<int?> insertIfNotExists(ChannelTable channel) async {
     logger.finest(() => "insertIfNotExists: $channel");
-    bool isChannelExists = await channelExists(channel.to);
+    bool isChannelExists = await channelExists(channel.id);
 
     if (!isChannelExists) {
       await insertChannel(channel);
@@ -82,7 +83,7 @@ class ChannelFunctions with Loggable {
   Future<int?> updateChannel(ChannelTable channel) async {
     logger.finest(() => "updateChannel: $channel");
     return await chatDatabaseCubit.db
-        .updateChannelByChannelName(channel.to, channel);
+        .updateChannelById(channel.id, channel);
   }
 
   Future<List<ChannelTable>> getAllChannels() async {
@@ -92,7 +93,7 @@ class ChannelFunctions with Loggable {
 
   Future deleteChannel(String channelName) async {
     logger.finest(() => "deleteChannel: $channelName");
-    return await chatDatabaseCubit.db.deleteChannelByChannelName(channelName);
+    return await chatDatabaseCubit.db.deleteChannelById(channelName);
   }
 
   static String listChannelsToString(List<ChannelTable> channels) {

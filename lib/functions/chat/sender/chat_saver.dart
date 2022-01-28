@@ -28,7 +28,7 @@ class ChatSaver with Loggable {
     List<ChannelTable> channels = [];
 
     final inviteUserChannel =
-        await db.getChannelByChannelName(getInviteUserChannel);
+        await db.getChannelById(getInviteUserChannel);
     if (inviteUserChannel != null) {
       channels.add(inviteUserChannel);
     }

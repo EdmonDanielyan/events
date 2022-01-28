@@ -149,7 +149,7 @@ MockChatDatabase mockChatDatabase(GetIt sl, FakeDatabaseData databaseData) {
     return 1;
   });
 
-  when(() => chatDataBase.getChannelByChannelName(any()))
+  when(() => chatDataBase.getChannelById(any()))
       .thenAnswer((realInvocation) async {
     var result = databaseData.channels.where((element) {
       return element.id == realInvocation.positionalArguments[0];

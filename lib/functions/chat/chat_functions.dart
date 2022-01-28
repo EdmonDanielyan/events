@@ -18,8 +18,6 @@ class ChatFunctions {
       chat.id,
       chat.copyWith(
         updatedAt: DateTime.now(),
-        millisecondsSinceEpoch:
-            DateTime.now().millisecondsSinceEpoch.toString(),
       ),
     );
   }
@@ -51,7 +49,7 @@ class ChatFunctions {
   void updateChat(ChatTable chat) {
     chatDatabaseCubit.setSelectedChat(chat);
     chatDatabaseCubit.db.updateChatById(chat.id, chat);
-    var topic = messenger.natsProvider.getGroupTextChannelById(chat.id);
+    var topic = messenger.natsProvider.getChatChannelById(chat.id);
     if (chat.notificationsOn ?? true) {
       messenger.pushNotificationManager.subscribeToTopic(topic);
     } else {

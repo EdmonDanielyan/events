@@ -23,7 +23,7 @@ class ChatEventsSender {
       this.natsProvider, this.userFunctions, this.chatSaver, this.registry);
 
   Future<bool> sendNewChatInfo(ChatTable chat, {UserTable? user}) async {
-    var channel = natsProvider.getGroupChatInfoById(chat.id);
+    var channel = natsProvider.getChatChannelById(chat.id);
     bool send = await natsProvider.sendSystemMessageToChannel(
       channel,
       MessageType.UpdateChatInfo,
@@ -40,7 +40,7 @@ class ChatEventsSender {
   Future<bool> sendUserChatJoinedMessage(
       ChatTable chat, List<UserTable> users) async {
     bool send = await natsProvider.sendSystemMessageToChannel(
-      natsProvider.getGroupJoinedChannelById(chat.id),
+      natsProvider.getChatChannelById(chat.id),
       MessageType.UserJoined,
       ChatInvitationFields(
         users: users,
@@ -59,7 +59,7 @@ class ChatEventsSender {
     int? countLefts,
   }) async {
     await natsProvider.sendSystemMessageToChannel(
-      natsProvider.getGroupLeftChannelById(chat.id),
+      natsProvider.getChatChannelById(chat.id),
       MessageType.UserLeftChat,
       ChatLeftJoinedFields(
         users: users ?? [userFunctions.me],

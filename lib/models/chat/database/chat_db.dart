@@ -274,17 +274,17 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   //CHANNEL
   Future<List<ChannelTable>> getAllChannels() => select(channelTables).get();
-  Future<ChannelTable?> getChannelByChannelName(String channelName) =>
-      (select(channelTables)..where((tbl) => tbl.to.equals(channelName)))
+  Future<ChannelTable?> getChannelById(String id) =>
+      (select(channelTables)..where((tbl) => tbl.id.equals(id)))
           .getSingleOrNull();
   Future<int> insertChannel(ChannelTable channel) =>
       into(channelTables).insert(channel);
-  Future<int> updateChannelByChannelName(
-          String channelName, ChannelTable channel) =>
-      (update(channelTables)..where((tbl) => tbl.to.equals(channelName)))
+  Future<int> updateChannelById(
+          String id, ChannelTable channel) =>
+      (update(channelTables)..where((tbl) => tbl.id.equals(id)))
           .write(channel);
-  Future deleteChannelByChannelName(String channelName) =>
-      (delete(channelTables)..where((tbl) => tbl.to.equals(channelName))).go();
+  Future deleteChannelById(String id) =>
+      (delete(channelTables)..where((tbl) => tbl.id.equals(id))).go();
 
   /// PARTICIPANTS
   Future<List<ParticipantTable>> getAllParticipants() =>

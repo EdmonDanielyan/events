@@ -62,7 +62,7 @@ class InviteSender {
         await inviteUser(
           user: user,
           chat: chat,
-          chatChannel: natsProvider.getGroupTextChannelById(chat.id),
+          chatChannel: natsProvider.getChatChannelById(chat.id),
           users: users,
         );
       }

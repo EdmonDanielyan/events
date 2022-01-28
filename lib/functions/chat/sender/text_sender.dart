@@ -53,7 +53,7 @@ class TextSender with Loggable {
     UserTable? user,
   }) async {
     final ping = await natsProvider.ping();
-    var channelById = natsProvider.getGroupTextChannelById(chat.id);
+    var channelById = natsProvider.getChatChannelById(chat.id);
     return ping &&
         await natsProvider.sendSystemMessageToChannel(
           channelById,

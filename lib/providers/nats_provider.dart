@@ -2,12 +2,6 @@ import 'dart:typed_data';
 
 import 'package:dart_nats/dart_nats.dart' as nats;
 import 'package:dart_nats_streaming/dart_nats_streaming.dart';
-// ignore: implementation_imports
-import 'package:dart_nats_streaming/src/data_message.dart';
-// ignore: implementation_imports
-import 'package:dart_nats_streaming/src/protocol.dart';
-// ignore: implementation_imports
-import 'package:dart_nats_streaming/src/subscription.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
@@ -18,7 +12,7 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';
 
-const DOMAIN = 'ink.messaging';
+const DOMAIN = 'test2.ink.messaging';
 const PROTOCOL = 'v1';
 const PUBLIC = '$DOMAIN.$PROTOCOL.public';
 const GROUP_CHANNEL = '$DOMAIN.$PROTOCOL.group';
@@ -145,6 +139,7 @@ class NatsProvider {
     StartPosition? startPosition,
   }) async {
     if (!_channelSubscriptions.containsKey(channel)) {
+      _logger.finest("subscribeToChannel: $channel");
       var subscription = await _stan.subscribe(
         subject: channel,
         maxInFlight: maxInFlight,
@@ -210,35 +205,12 @@ class NatsProvider {
   String getPrivateUserChatIdList(String userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.ChatList)}.$userId';
 
-  String getPrivateUserTextChannel(int userId) =>
-      '$PRIVATE_USER.${describeEnum(MessageType.Text)}.$userId';
-
-  String getGroupTextChannelById(String chatId) =>
-      '$GROUP_CHANNEL.${describeEnum(MessageType.Text)}.$chatId';
 
   String getChatChannelById(String chatId) =>
       '$GROUP_CHANNEL.$chatId';
 
-  String getGroupReactedChannelById(String chatId) =>
-      '$GROUP_CHANNEL.${describeEnum(MessageType.UserReacted)}.$chatId';
-
-  String getGroupJoinedChannelById(String chatId) =>
-      '$GROUP_CHANNEL.${describeEnum(MessageType.UserJoined)}.$chatId';
-
-  String getGroupLeftChannelById(String chatId) =>
-      '$GROUP_CHANNEL.${describeEnum(MessageType.UserLeftChat)}.$chatId';
-
-  String getGroupDeleteMessageChannelById(String chatId) =>
-      '$GROUP_CHANNEL.${describeEnum(MessageType.RemoveMessage)}.$chatId';
-
-  String getGroupTextingChannelById(String chatId) =>
-      '$GROUP_CHANNEL.${describeEnum(MessageType.Texting)}.$chatId';
-
   String getInviteUserToJoinChatChannel(int userId) =>
       '$PRIVATE_USER.${describeEnum(MessageType.InviteUserToJoinChat)}.$userId';
-
-  String getGroupChatInfoById(String chatId) =>
-      '$GROUP_CHANNEL.${describeEnum(MessageType.UpdateChatInfo)}.$chatId';
 
   String getOnlineChannel() => '$PUBLIC.${describeEnum(MessageType.Online)}';
 

@@ -89,11 +89,6 @@ class _PersonListBodyState extends State<PersonListBody> {
 
   Widget _userListWidget(List<ChatTable> items) {
     items.sort((a, b) {
-      if (a.millisecondsSinceEpoch != null &&
-          b.millisecondsSinceEpoch != null) {
-        return b.millisecondsSinceEpoch!.compareTo(a.millisecondsSinceEpoch!);
-      }
-
       return b.updatedAt.compareTo(a.updatedAt);
     });
     return ListView.builder(

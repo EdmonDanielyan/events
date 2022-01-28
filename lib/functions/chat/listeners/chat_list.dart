@@ -213,7 +213,7 @@ class ChatListListener extends MessageListener {
   void _setBusyChannels(List<ChannelTable> channels) {
     logger.finest('_setBusyChannels');
     for (final channel in channels) {
-      busyChannels.add(channel.to);
+      busyChannels.add(channel.id);
     }
   }
 }

@@ -31,7 +31,7 @@ class UserReactionSender {
   Future<bool> setMessagesToReadNats(List<MessageTable> messages,
       {bool sendRequest = true}) async {
     String chatId = messages.last.chatId;
-    final channel = natsProvider.getGroupReactedChannelById(chatId);
+    final channel = natsProvider.getChatChannelById(chatId);
     await chatFunctions.messagesToRead(messages.last, onlyIfMyMessages: false);
     if (sendRequest) {
       bool send = await sendReadMessageStatus(channel, messages);
