@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -75,9 +76,6 @@ class _MessageTextfieldState extends State<MessageTextfield> {
               ),
             ),
           ),
-          // Container(
-          //     padding: EdgeInsets.only(right: 10.0),
-          //     child: AttachIcon(onSend: onSend)),
         ],
       ),
     );
