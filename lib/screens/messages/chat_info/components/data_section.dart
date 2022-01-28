@@ -152,7 +152,7 @@ class ChatInfoDataSection extends StatelessWidget {
                         transform: Matrix4.skewY(0.0)
                           ..rotateX(pi)
                           ..rotateZ(pi * 0.8))),
-                Center(child: const ChatCount(count: 42))
+                Center(child: const ChatCount(count: 0))
               ])),
           children: [
             Text(

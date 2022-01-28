@@ -1,7 +1,7 @@
 library(dplyr)
 library(ggplot2)
 
-tab=read.csv("joined_data.csv")
+tab <- read.csv("joined_data.csv")
 # tab$time = as.POSIXct(tab$time)
 tab$posixTime=as.POSIXct(lubridate::hms(tab$time), origin = lubridate::origin)
 # tab$posixTime
