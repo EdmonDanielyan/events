@@ -14,7 +14,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   final String avatar;
   final int ownerId;
   final int? participantId;
-  final DateTime updatedAt;
+  final int updatedAt;
   final String? millisecondsSinceEpoch;
   final bool? notificationsOn;
   final bool? unreadCounterOn;
@@ -49,7 +49,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}owner_id'])!,
       participantId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}participant_id']),
-      updatedAt: const DateTimeType()
+      updatedAt: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
       millisecondsSinceEpoch: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}milliseconds_since_epoch']),
@@ -74,7 +74,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
     if (!nullToAbsent || participantId != null) {
       map['participant_id'] = Variable<int?>(participantId);
     }
-    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['updated_at'] = Variable<int>(updatedAt);
     if (!nullToAbsent || millisecondsSinceEpoch != null) {
       map['milliseconds_since_epoch'] =
           Variable<String?>(millisecondsSinceEpoch);
@@ -133,7 +133,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       avatar: serializer.fromJson<String>(json['avatar']),
       ownerId: serializer.fromJson<int>(json['ownerId']),
       participantId: serializer.fromJson<int?>(json['participantId']),
-      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
       millisecondsSinceEpoch:
           serializer.fromJson<String?>(json['millisecondsSinceEpoch']),
       notificationsOn: serializer.fromJson<bool?>(json['notificationsOn']),
@@ -152,7 +152,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       'avatar': serializer.toJson<String>(avatar),
       'ownerId': serializer.toJson<int>(ownerId),
       'participantId': serializer.toJson<int?>(participantId),
-      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
       'millisecondsSinceEpoch':
           serializer.toJson<String?>(millisecondsSinceEpoch),
       'notificationsOn': serializer.toJson<bool?>(notificationsOn),
@@ -169,7 +169,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           String? avatar,
           int? ownerId,
           int? participantId,
-          DateTime? updatedAt,
+          int? updatedAt,
           String? millisecondsSinceEpoch,
           bool? notificationsOn,
           bool? unreadCounterOn,
@@ -248,7 +248,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   final Value<String> avatar;
   final Value<int> ownerId;
   final Value<int?> participantId;
-  final Value<DateTime> updatedAt;
+  final Value<int> updatedAt;
   final Value<String?> millisecondsSinceEpoch;
   final Value<bool?> notificationsOn;
   final Value<bool?> unreadCounterOn;
@@ -293,7 +293,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     Expression<String>? avatar,
     Expression<int>? ownerId,
     Expression<int?>? participantId,
-    Expression<DateTime>? updatedAt,
+    Expression<int>? updatedAt,
     Expression<String?>? millisecondsSinceEpoch,
     Expression<bool?>? notificationsOn,
     Expression<bool?>? unreadCounterOn,
@@ -324,7 +324,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       Value<String>? avatar,
       Value<int>? ownerId,
       Value<int?>? participantId,
-      Value<DateTime>? updatedAt,
+      Value<int>? updatedAt,
       Value<String?>? millisecondsSinceEpoch,
       Value<bool?>? notificationsOn,
       Value<bool?>? unreadCounterOn,
@@ -369,7 +369,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       map['participant_id'] = Variable<int?>(participantId.value);
     }
     if (updatedAt.present) {
-      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+      map['updated_at'] = Variable<int>(updatedAt.value);
     }
     if (millisecondsSinceEpoch.present) {
       map['milliseconds_since_epoch'] =
@@ -452,11 +452,11 @@ class $ChatTablesTable extends ChatTables
       type: const IntType(), requiredDuringInsert: false);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
-  late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
+  late final GeneratedColumn<int?> updatedAt = GeneratedColumn<int?>(
       'updated_at', aliasedName, false,
       type: const IntType(),
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now().toUtc()));
+      defaultValue: Constant(DateTime.now().toUtc().millisecondsSinceEpoch));
   final VerificationMeta _millisecondsSinceEpochMeta =
       const VerificationMeta('millisecondsSinceEpoch');
   @override
@@ -618,7 +618,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
   final bool sentOn;
   final MessageStatus status;
   final MessageType type;
-  final DateTime? created;
+  final int? created;
   final int? sequence;
   final bool? edited;
   final String? messageToLower;
@@ -658,7 +658,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}status']))!,
       type: $MessageTablesTable.$converter1.mapToDart(const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}type']))!,
-      created: const DateTimeType()
+      created: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}created']),
       sequence: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}sequence']),
@@ -689,7 +689,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       map['type'] = Variable<int>(converter.mapToSql(type)!);
     }
     if (!nullToAbsent || created != null) {
-      map['created'] = Variable<DateTime?>(created);
+      map['created'] = Variable<int?>(created);
     }
     if (!nullToAbsent || sequence != null) {
       map['sequence'] = Variable<int?>(sequence);
@@ -743,7 +743,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       sentOn: serializer.fromJson<bool>(json['sentOn']),
       status: serializer.fromJson<MessageStatus>(json['status']),
       type: serializer.fromJson<MessageType>(json['type']),
-      created: serializer.fromJson<DateTime?>(json['created']),
+      created: serializer.fromJson<int?>(json['created']),
       sequence: serializer.fromJson<int?>(json['sequence']),
       edited: serializer.fromJson<bool?>(json['edited']),
       messageToLower: serializer.fromJson<String?>(json['messageToLower']),
@@ -762,7 +762,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       'sentOn': serializer.toJson<bool>(sentOn),
       'status': serializer.toJson<MessageStatus>(status),
       'type': serializer.toJson<MessageType>(type),
-      'created': serializer.toJson<DateTime?>(created),
+      'created': serializer.toJson<int?>(created),
       'sequence': serializer.toJson<int?>(sequence),
       'edited': serializer.toJson<bool?>(edited),
       'messageToLower': serializer.toJson<String?>(messageToLower),
@@ -779,7 +779,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           bool? sentOn,
           MessageStatus? status,
           MessageType? type,
-          DateTime? created,
+          int? created,
           int? sequence,
           bool? edited,
           String? messageToLower}) =>
@@ -850,7 +850,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
   final Value<bool> sentOn;
   final Value<MessageStatus> status;
   final Value<MessageType> type;
-  final Value<DateTime?> created;
+  final Value<int?> created;
   final Value<int?> sequence;
   final Value<bool?> edited;
   final Value<String?> messageToLower;
@@ -899,7 +899,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     Expression<bool>? sentOn,
     Expression<MessageStatus>? status,
     Expression<MessageType>? type,
-    Expression<DateTime?>? created,
+    Expression<int?>? created,
     Expression<int?>? sequence,
     Expression<bool?>? edited,
     Expression<String?>? messageToLower,
@@ -931,7 +931,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       Value<bool>? sentOn,
       Value<MessageStatus>? status,
       Value<MessageType>? type,
-      Value<DateTime?>? created,
+      Value<int?>? created,
       Value<int?>? sequence,
       Value<bool?>? edited,
       Value<String?>? messageToLower}) {
@@ -985,7 +985,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       map['type'] = Variable<int>(converter.mapToSql(type.value)!);
     }
     if (created.present) {
-      map['created'] = Variable<DateTime?>(created.value);
+      map['created'] = Variable<int?>(created.value);
     }
     if (sequence.present) {
       map['sequence'] = Variable<int?>(sequence.value);
@@ -1081,11 +1081,11 @@ class $MessageTablesTable extends MessageTables
           .withConverter<MessageType>($MessageTablesTable.$converter1);
   final VerificationMeta _createdMeta = const VerificationMeta('created');
   @override
-  late final GeneratedColumn<DateTime?> created = GeneratedColumn<DateTime?>(
+  late final GeneratedColumn<int?> created = GeneratedColumn<int?>(
       'created', aliasedName, true,
       type: const IntType(),
       requiredDuringInsert: false,
-      defaultValue: Constant(new DateTime.now()));
+      defaultValue: Constant(DateTime.now().toUtc().millisecondsSinceEpoch));
   final VerificationMeta _sequenceMeta = const VerificationMeta('sequence');
   @override
   late final GeneratedColumn<int?> sequence = GeneratedColumn<int?>(

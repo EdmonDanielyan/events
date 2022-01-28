@@ -1,14 +1,14 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/foundation.dart';
+import 'package:ink_mobile/extensions/message_table.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
 import 'database/chat_db.dart';
-import 'package:collection/collection.dart' show IterableExtension;
-import 'package:ink_mobile/extensions/message_table.dart';
 
 enum MessageStatus { EMPTY, SENDING, SENT, READ, ERROR }
 
@@ -143,7 +143,7 @@ class MessageListView {
       userId: userId ?? JwtPayload.myId,
       repliedMessageId: "",
       status: MessageStatus.SENDING,
-      created: new DateTime.now(),
+      created: DateTime.now().millisecondsSinceEpoch,
     );
 
     if (newChat != null) newMessage = newMessage.copyWith(chatId: newChat.id);

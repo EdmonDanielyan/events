@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
-import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
 import 'package:ink_mobile/functions/chat/listeners/channels_registry.dart';
+import 'package:ink_mobile/functions/chat/listeners/message_listener.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats/message_status.dart';
@@ -9,8 +9,8 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 @Named("UserReacted")
-@Injectable(as: ChannelListener)
-class MessageStatusListener extends ChannelListener {
+@Injectable(as: MessageListener)
+class MessageStatusListener extends MessageListener {
   final ChatFunctions chatFunctions;
 
   MessageStatusListener(

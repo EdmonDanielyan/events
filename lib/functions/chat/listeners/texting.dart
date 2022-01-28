@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
 import 'package:ink_mobile/functions/chat/listeners/channels_registry.dart';
+import 'package:ink_mobile/functions/chat/listeners/message_listener.dart';
 import 'package:ink_mobile/models/chat/nats/texting.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
@@ -11,8 +11,8 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 @Named("Texting")
-@Injectable(as: ChannelListener)
-class MessageTextingListener extends ChannelListener {
+@Injectable(as: MessageListener)
+class MessageTextingListener extends MessageListener {
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatCubit chatCubit;
 

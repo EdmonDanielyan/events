@@ -8,12 +8,12 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../../../setup.dart';
-import 'channel_listener.dart';
 import 'channels_registry.dart';
+import 'message_listener.dart';
 
 @Named("InviteUserToJoinChat")
-@Injectable(as: ChannelListener)
-class ChatInvitationListener extends ChannelListener {
+@Injectable(as: MessageListener)
+class ChatInvitationListener extends MessageListener {
   final InviteSender messageSender;
   final ChatDatabaseCubit chatDatabaseCubit;
 

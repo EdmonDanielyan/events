@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
-import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
+import 'package:ink_mobile/functions/chat/listeners/message_listener.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/chat/sender/chat_saver.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
@@ -17,8 +17,8 @@ import '../user_functions.dart';
 import 'channels_registry.dart';
 
 @Named("UserJoined")
-@Injectable(as: ChannelListener)
-class ChatJoinedListener extends ChannelListener {
+@Injectable(as: MessageListener)
+class ChatJoinedListener extends MessageListener {
   final ChatFunctions chatFunctions;
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
@@ -54,7 +54,7 @@ class ChatJoinedListener extends ChannelListener {
         await userFunctions.insertMultipleUsers(users);
         await userFunctions.insertMultipleParticipants(
             ChatUserViewModel.toParticipants(users, chat));
-        setMessage(users, chat, message);
+        await setMessage(users, chat, message);
         await chatSaver.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
@@ -69,7 +69,7 @@ class ChatJoinedListener extends ChannelListener {
         chatId: chat.id,
         userName: user.name,
         type: MessageType.UserJoined,
-        created: message.serverTime,
+        createdUtc: message.serverTime,
         userId: user.id,
       );
 

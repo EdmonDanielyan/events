@@ -9,6 +9,7 @@ import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/person_list_params.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
+import 'package:uuid/uuid.dart';
 
 import 'chat_functions.dart';
 
@@ -39,15 +40,14 @@ class SendMessage with Loggable {
       read: false,
       sentOn: false,
       status: status,
-      created: created ?? new DateTime.now(),
+      created: created?.millisecondsSinceEpoch ?? DateTime.now().millisecondsSinceEpoch,
       type: type,
       repliedMessageId: repliedMessageId,
       sequence: sequence ?? 0,
     );
   }
 
-  String get generateMessageId =>
-      "${JwtPayload.myId}_${new DateTime.now().microsecondsSinceEpoch}";
+  String get generateMessageId => Uuid().v4();
 
   Future<MessageTable> save(ChatTable chat, ChatEntities entities) async {
     final message = await _sendMessageToDatabase(chat, entities);
@@ -61,6 +61,7 @@ class SendMessage with Loggable {
       chatEntities.text,
       repliedMessageId: chatEntities.repliedMessageId,
       type: chatEntities.type,
+      created: DateTime.now(),
       sequence: 500000 + chatEntities.seq,
     );
 
@@ -88,15 +89,6 @@ class SendMessage with Loggable {
     return message.id;
   }
 
-  Future<void> addMessagesIfNotExists(
-      ChatTable chat, List<MessageTable> messages) async {
-    if (messages.isNotEmpty) {
-      for (final message in messages) {
-        await addMessage(chat, message);
-      }
-    }
-  }
-
   Future<void> insertMultipleMessages(List<MessageTable> messages) async {
     await chatDatabaseCubit.db.insertMultipleMessages(messages);
   }
@@ -105,7 +97,7 @@ class SendMessage with Loggable {
     required String chatId,
     required String userName,
     required MessageType type,
-    required DateTime created,
+    required DateTime createdUtc,
     required int userId,
   }) {
     bool isJoined = type == MessageType.UserJoined;
@@ -122,7 +114,7 @@ class SendMessage with Loggable {
         text,
         status: MessageStatus.EMPTY,
         type: type,
-        created: created,
+        created: createdUtc,
         userId: userId,
       );
     }

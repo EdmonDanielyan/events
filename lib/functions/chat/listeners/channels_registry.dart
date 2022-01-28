@@ -16,7 +16,7 @@ import 'package:ink_mobile/providers/nats_provider.dart';
 import 'package:ink_mobile/providers/push_notification_manager.dart';
 
 import '../../../setup.dart';
-import 'channel_listener.dart';
+import 'message_listener.dart';
 
 @lazySingleton
 class ChannelsRegistry with Loggable {
@@ -45,7 +45,7 @@ class ChannelsRegistry with Loggable {
 
   final UserFunctions userFunctions;
 
-  Map<MessageType, ChannelListener> listeners = {};
+  Map<MessageType, MessageListener> listeners = {};
 
   ChannelsRegistry({
     required this.natsProvider,
@@ -58,35 +58,9 @@ class ChannelsRegistry with Loggable {
   String lastChannelStr = "";
   Set<String> listeningChannels = {};
 
-  String textChannel(String chatId) =>
-      natsProvider.getGroupTextChannelById(chatId);
-
-  String removeMessageChannel(String chatId) =>
-      natsProvider.getGroupDeleteMessageChannelById(chatId);
-
-  String readChannel(String chatId) =>
-      natsProvider.getGroupReactedChannelById(chatId);
-
-  String textingChannel(String chatId) =>
-      natsProvider.getGroupTextingChannelById(chatId);
-
-  String joinedChannel(String chatId) =>
-      natsProvider.getGroupJoinedChannelById(chatId);
-
-  String leftChannel(String chatId) =>
-      natsProvider.getGroupLeftChannelById(chatId);
-
-  String chatInfo(String chatId) => natsProvider.getGroupChatInfoById(chatId);
-
   List<String> getLinkedChannelsById(String chatId) {
     List<String> channels = [];
-    channels.add(joinedChannel(chatId));
-    channels.add(leftChannel(chatId));
-    channels.add(textChannel(chatId));
-    channels.add(removeMessageChannel(chatId));
-    channels.add(readChannel(chatId));
-    //channels.add(textingChannel(chatId));
-    channels.add(chatInfo(chatId));
+    channels.add(natsProvider.getChatChannelById(chatId));
     return channels;
   }
 
@@ -121,8 +95,8 @@ class ChannelsRegistry with Loggable {
           'Looking for listener of message type: $messageListenerToSearch');
 
       try {
-        ChannelListener listener =
-            sl.get<ChannelListener>(instanceName: messageListenerToSearch);
+        MessageListener listener =
+            sl.get<MessageListener>(instanceName: messageListenerToSearch);
         listeners.putIfAbsent(messageType, () => listener);
       } catch (e) {
         logger.warning(() =>
@@ -170,6 +144,19 @@ class ChannelsRegistry with Loggable {
     return currentSeq == 0 ? currentSeq : currentSeq + 1;
   }
 
+  Future<void> onChannelMessage(String channel, NatsMessage message) async {
+    PayloadType type = message.type;
+    if (type == PayloadType.system){
+      var messageType = (message.payload as SystemPayload).type;
+      var listener = listeners[messageType];
+      if (listener == null) {
+        logger.warning("No listener registered for message type: $messageType");
+        return;
+      }
+      return listener.onMessage(channel, message);
+    }
+  }
+
   Future<void> _subscribeToChannel(MessageType type, String channel,
       {Int64 startSequence = Int64.ZERO}) async {
     logger.fine(() => "_subscribeToChannel: $type, $channel, $startSequence");
@@ -181,20 +168,20 @@ class ChannelsRegistry with Loggable {
 
     if (!isListening(channel)) {
       var chatId = channel.split(".").last;
-      if (type == MessageType.Text) {
-        //We ignore await here to speed up channel enumeration
-        var isPushNeed = ((await chatDatabaseCubit.db.selectChatById(chatId))
-            ?.notificationsOn) ??
-            true;
-        if (isPushNeed) {
-          pushNotificationManager.subscribeToTopic(channel);
-        } else {
-          pushNotificationManager.unsubscribeFromTopic(channel);
-        }
+      //We ignore await here to speed up channel enumeration
+      var isPushNeed = ((await chatDatabaseCubit.db.selectChatById(chatId))
+              ?.notificationsOn) ??
+          true;
+      if (isPushNeed) {
+        pushNotificationManager.subscribeToTopic(channel);
+      } else {
+        pushNotificationManager.unsubscribeFromTopic(channel);
       }
       logger.fine(() => "listeners[$type]=${listeners[type]}");
       try {
-        await listeners[type]!.onListen(channel, startSequence: startSequence);
+        await natsProvider.subscribeToChannel(channel, onChannelMessage,
+            maxInFlight: 1024,
+            startSequence: startSequence);
         listeningChannels.add(channel);
       } catch (_e, stacktrace) {
         logger.severe("Unexpected error", _e, stacktrace);

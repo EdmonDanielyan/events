@@ -11,12 +11,12 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../chat_notification.dart';
-import 'channel_listener.dart';
 import 'channels_registry.dart';
+import 'message_listener.dart';
 
 @Named("RemoveMessage")
-@Injectable(as: ChannelListener)
-class MessageDeletedListener extends ChannelListener {
+@Injectable(as: MessageListener)
+class MessageDeletedListener extends MessageListener {
   final ChatFunctions chatFunctions;
   final InviteSender messageSender;
   final ChatDatabaseCubit chatDatabaseCubit;

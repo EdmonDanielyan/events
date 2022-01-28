@@ -6,7 +6,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
+import 'package:ink_mobile/functions/chat/listeners/message_listener.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats/online.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
@@ -16,8 +16,8 @@ import '../user_functions.dart';
 import 'channels_registry.dart';
 
 @Named("Online")
-@Injectable(as: ChannelListener)
-class UserOnlineListener extends ChannelListener {
+@Injectable(as: MessageListener)
+class UserOnlineListener extends MessageListener {
   late Timer userOnlineTimer;
   Set<int> subscribedUsers = {};
   Set<int> onlineUsers = {};

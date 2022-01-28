@@ -40,7 +40,7 @@ class DateFunctions {
   }
 
   String hourMinute() {
-    DateFormat formatter = new DateFormat("HH:mm");
+    DateFormat formatter = new DateFormat("HH:mm:ss:SSS");
     return formatter.format(passedDate.toLocal());
   }
 

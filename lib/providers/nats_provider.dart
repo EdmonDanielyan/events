@@ -18,9 +18,10 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';
 
-const PUBLIC_CHATS = 'ink.messaging.public';
-const GROUP_CHANNEL = 'ink.messaging.group';
-const PRIVATE_USER = 'ink.messaging.private';
+const DOMAIN='test.ink.messaging';
+const PUBLIC_CHATS = '$DOMAIN.public';
+const GROUP_CHANNEL = '$DOMAIN.group';
+const PRIVATE_USER = '$DOMAIN.private';
 const DELETE_ACTION = 'delete';
 
 @lazySingleton
@@ -205,6 +206,9 @@ class NatsProvider {
 
   String getGroupTextChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.Text)}.$chatId';
+
+  String getChatChannelById(String chatId) =>
+      '$GROUP_CHANNEL.$chatId';
 
   String getGroupReactedChannelById(String chatId) =>
       '$GROUP_CHANNEL.${describeEnum(MessageType.UserReacted)}.$chatId';

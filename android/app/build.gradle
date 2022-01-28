@@ -62,7 +62,11 @@ android {
          release {
              keyAlias keystoreProperties['keyAlias']
              keyPassword keystoreProperties['keyPassword']
-             storeFile file(keystoreProperties['storeFile'])
+             try {
+                 storeFile file("keys/key.jks").exists() ? file("keys/key.jks"): new File(System.env.KEY_STORE)
+             } catch (Exception e) {
+                 println("please specify keystore: ${e}")
+             }
              storePassword keystoreProperties['storePassword']
          }
      }

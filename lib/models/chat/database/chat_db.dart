@@ -2,6 +2,7 @@ import 'package:encrypted_moor/encrypted_moor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
+import 'package:ink_mobile/functions/date_functions.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/database/tables/channel.dart';
 import 'package:ink_mobile/models/chat/database/tables/chat_table.dart';
@@ -186,8 +187,8 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
     ]);
     sel.orderBy([
       orderMode == OrderingMode.asc
-          ? OrderingTerm.asc(messageTables.created)
-          : OrderingTerm.desc(messageTables.created)
+          ? OrderingTerm.asc(messageTables.sequence)
+          : OrderingTerm.desc(messageTables.sequence),
     ]);
 
     if (limit != null) {
@@ -352,4 +353,9 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   MigrationStrategy get migration => MigrationStrategy(
         onUpgrade: (migrator, from, to) async {},
       );
+}
+
+extension MessageTableExt on MessageTable {
+  DateTime get createAtAsLocalDateTime => this.created != null ? DateTime.fromMillisecondsSinceEpoch(this.created!): DateTime.now();
+  DateTime get createAtAsUtcDateTime => this.created != null ? DateTime.fromMillisecondsSinceEpoch(this.created!, isUtc: true): DateTime.now().toUtc();
 }

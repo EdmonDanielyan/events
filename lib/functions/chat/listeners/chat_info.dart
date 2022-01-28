@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
+import 'package:ink_mobile/functions/chat/listeners/message_listener.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
 import 'package:ink_mobile/models/chat/nats/chat_info.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
@@ -10,8 +10,8 @@ import '../user_functions.dart';
 import 'channels_registry.dart';
 
 @Named("UpdateChatInfo")
-@Injectable(as: ChannelListener)
-class ChatInfoListener extends ChannelListener {
+@Injectable(as: MessageListener)
+class ChatInfoListener extends MessageListener {
   final ChatDatabaseCubit chatDatabaseCubit;
 
   final InviteSender messageSender;

@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/functions/chat/listeners/channel_listener.dart';
+import 'package:ink_mobile/functions/chat/listeners/message_listener.dart';
 import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
@@ -20,8 +20,8 @@ import '../chat_functions.dart';
 import 'channels_registry.dart';
 
 @Named("Text")
-@Injectable(as: ChannelListener)
-class TextMessageListener extends ChannelListener {
+@Injectable(as: MessageListener)
+class TextMessageListener extends MessageListener {
   final UserFunctions userFunctions;
   final ChatDatabaseCubit chatDatabaseCubit;
   final InviteSender messageSender;
@@ -50,18 +50,18 @@ class TextMessageListener extends ChannelListener {
 
       final newMessage = fields.message.copyWith(
         sequence: message.sequence.toInt(),
-        created: message.serverTime,
+        created: message.serverTime.millisecondsSinceEpoch,
         status: (fields.message.status == MessageStatus.SENDING ||
                 fields.message.status == MessageStatus.ERROR)
             ? MessageStatus.SENT
             : fields.message.status,
       );
 
-      final messageExists =
-          await chatDatabaseCubit.db.selectMessageById(newMessage.id);
+          final messageExists =
+              await chatDatabaseCubit.db.selectMessageById(newMessage.id);
 
-      if (messageExists != null) {
-        logger.finest(() => '''
+          if (messageExists != null) {
+            logger.finest(() => '''
         MESSAGE EXISTS
         message: $newMessage
         created: ${message.serverTime}

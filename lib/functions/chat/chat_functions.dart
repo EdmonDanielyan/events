@@ -5,7 +5,6 @@ import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/messenger.dart';
-import 'package:ink_mobile/extensions/chat_table.dart';
 
 @injectable
 class ChatFunctions {
@@ -18,9 +17,9 @@ class ChatFunctions {
     chatDatabaseCubit.db.updateChatById(
       chat.id,
       chat.copyWith(
-        updatedAt: new DateTime.now(),
+        updatedAt: DateTime.now().millisecondsSinceEpoch,
         millisecondsSinceEpoch:
-            new DateTime.now().millisecondsSinceEpoch.toString(),
+            DateTime.now().millisecondsSinceEpoch.toString(),
       ),
     );
   }
@@ -99,7 +98,7 @@ class ChatFunctions {
 
     if (lastMessageSeq != null) {
       updateChat(chat.copyWith(
-          updatedAt: DateTime.now(), lastMessageSeq: lastMessageSeq.sequence));
+          updatedAt: DateTime.now().millisecondsSinceEpoch, lastMessageSeq: lastMessageSeq.sequence));
     }
     deleteAllChatMessages(chat.id);
     await messenger.chatSaver.saveChats(newChat: null);
@@ -107,6 +106,6 @@ class ChatFunctions {
 
   Future<void> clearGroup(ChatTable chat) async {
     deleteAllChatMessages(chat.id);
-    updateChat(chat.copyWith(updatedAt: DateTime.now()));
+    updateChat(chat.copyWith(updatedAt: DateTime.now().millisecondsSinceEpoch));
   }
 }
