@@ -56,7 +56,8 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
       .watch();
   Stream<ChatTable> watchChatById(String id) =>
       (select(chatTables)..where((tbl) => tbl.id.equals(id))).watchSingle();
-  Future<int> insertChat(ChatTable chat) => into(chatTables).insert(chat);
+  Future<int> insertChat(ChatTable chat) =>
+      into(chatTables).insert(chat, mode: InsertMode.insertOrReplace);
   Future<void> insertMultipleChats(List<ChatTable> chats) async {
     await batch((batch) {
       batch.insertAll(
@@ -253,7 +254,8 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   //USER
   Future<List<UserTable>> getAllUsers() => select(userTables).get();
-  Future<int> insertUser(UserTable user) => into(userTables).insert(user);
+  Future<int> insertUser(UserTable user) =>
+      into(userTables).insert(user, mode: InsertMode.insertOrReplace);
   Future<void> insertMultipleUsers(List<UserTable> users) async {
     await batch((batch) {
       batch.insertAll(
@@ -278,7 +280,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
       (select(channelTables)..where((tbl) => tbl.to.equals(channelName)))
           .getSingleOrNull();
   Future<int> insertChannel(ChannelTable channel) =>
-      into(channelTables).insert(channel);
+      into(channelTables).insert(channel, mode: InsertMode.insertOrReplace);
   Future<int> updateChannelByChannelName(
           String channelName, ChannelTable channel) =>
       (update(channelTables)..where((tbl) => tbl.to.equals(channelName)))
@@ -290,7 +292,8 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   Future<List<ParticipantTable>> getAllParticipants() =>
       select(participantTables).get();
   Future<int> insertParticipant(ParticipantTable participant) =>
-      into(participantTables).insert(participant);
+      into(participantTables)
+          .insert(participant, mode: InsertMode.insertOrReplace);
   Future<void> insertMultipleParticipants(
       List<ParticipantTable> participants) async {
     await batch((batch) {
