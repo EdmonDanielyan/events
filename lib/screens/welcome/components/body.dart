@@ -114,14 +114,16 @@ class _BodyState extends State<Body> {
                 Container(
                   child: SignInInstructions(),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Stack(
+                  alignment: AlignmentDirectional.center,
                   children: [
-                    Text(
-                      widget.packageInfo.version,
-                      style: TextStyle(color: Colors.grey[400], fontSize: 13.0),
+                    Center(
+                      child: Text(
+                        widget.packageInfo.version,
+                        style: TextStyle(color: Colors.grey[400], fontSize: 13.0),
+                      ),
                     ),
-                    IconButton(onPressed: () => sendErrorLog(sl(instanceName: "logFile")), icon: Icon(Icons.bug_report))
+                    Align(alignment: Alignment.centerRight, child: IconButton(onPressed: () => sendErrorLog(sl(instanceName: "logFile")), icon: Icon(Icons.bug_report)))
                   ],
                 ),
               ],
