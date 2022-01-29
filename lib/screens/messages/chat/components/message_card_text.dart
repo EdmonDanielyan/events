@@ -190,17 +190,17 @@ class MessageCardText extends StatelessWidget {
 
   Widget _makeUserAvatarWidget(BuildContext context) {
     return userAvatar ??
-        (userAvatar = InkWell(
-          onTap: () => Navigator.of(context).pushNamed("/personal",
-              arguments: {'id': user.id, HIDE_BOTTOM_NAV_BAR_CODE: true}),
-          child: SizedBox(
+        (userAvatar = SizedBox(
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pushNamed("/personal",
+                arguments: {'id': user.id, HIDE_BOTTOM_NAV_BAR_CODE: true}),
             child: CustomCircleAvatar(
               url: user.avatar,
               name: user.name,
             ),
-            width: 45,
-            height: 45,
           ),
+          width: 45,
+          height: 45,
         ));
   }
 

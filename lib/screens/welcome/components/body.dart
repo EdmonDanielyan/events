@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/core/logging/send_log.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/screens/auth/components/sign_in_instructions.dart';
 import 'package:ink_mobile/screens/welcome/components/background.dart';
+import 'package:ink_mobile/setup.dart';
 
 class Body extends StatefulWidget {
   final PackageInfoProvider packageInfo;
@@ -112,9 +114,17 @@ class _BodyState extends State<Body> {
                 Container(
                   child: SignInInstructions(),
                 ),
-                Text(
-                  widget.packageInfo.version,
-                  style: TextStyle(color: Colors.grey[400], fontSize: 13.0),
+                Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    Center(
+                      child: Text(
+                        widget.packageInfo.version,
+                        style: TextStyle(color: Colors.grey[400], fontSize: 13.0),
+                      ),
+                    ),
+                    Align(alignment: Alignment.centerRight, child: IconButton(onPressed: () => sendErrorLog(sl(instanceName: "logFile")), icon: Icon(Icons.bug_report)))
+                  ],
                 ),
               ],
             ),
