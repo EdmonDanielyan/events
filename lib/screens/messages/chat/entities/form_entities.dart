@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:ink_mobile/extensions/nats_extension.dart';
+import 'package:ink_mobile/models/chat/database/tables/db_enum.dart';
 
 class ChatEntities {
   String text;
   String? repliedMessageId;
   List<File>? files;
   List<File>? picsVids;
-  MessageType type;
+  StoredMessageType type;
   int seq;
 
   ChatEntities(
@@ -15,7 +15,7 @@ class ChatEntities {
       this.repliedMessageId,
       this.files,
       this.picsVids,
-      this.type = MessageType.Text,
+      this.type = StoredMessageType.TEXT,
       this.seq = 0});
 
   void clear() {

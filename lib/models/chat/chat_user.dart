@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/extensions/chat_table.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/models/user_data.dart';
-import 'package:ink_mobile/extensions/chat_table.dart';
+
 import 'database/model/message_with_user.dart';
 
 class ChatUserViewModel {
@@ -147,7 +148,6 @@ class ChatUserViewModel {
       id: user.id,
       name: name,
       avatar: user.pathToAvatar ?? "",
-      online: false,
     );
   }
 
@@ -157,7 +157,6 @@ class ChatUserViewModel {
       id: user.id,
       name: name,
       avatar: user.pathToAvatar ?? "",
-      online: false,
     );
   }
 }

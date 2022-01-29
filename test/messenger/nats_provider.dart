@@ -86,7 +86,7 @@ void main() async {
       var natsProvider = sl<NatsProvider>();
       natsProvider.onConnected = () async {
         natsProvider.subscribeToChannel(channelId, (channel, message) async {
-          print(message.createdAt);
+          print(message.timestamp);
           print((message.payload as JsonPayload).json);
         },
             startPosition: StartPosition.SequenceStart);

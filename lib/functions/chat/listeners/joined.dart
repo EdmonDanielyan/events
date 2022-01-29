@@ -69,7 +69,7 @@ class ChatJoinedListener extends MessageListener {
         chatId: chat.id,
         userName: user.name,
         type: MessageType.UserJoined,
-        createdUtc: message.createdAt,
+        timestampUtc: message.timestamp,
         userId: user.id,
       );
 

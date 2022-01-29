@@ -8,9 +8,9 @@ import 'package:ink_mobile/core/cubit/selectable/selectable_state.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/message_table.dart';
-import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
+import 'package:ink_mobile/models/chat/database/tables/db_enum.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/screens/messages/chat/components/hover_message.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card_text.dart';
@@ -89,8 +89,8 @@ class MessageCard extends StatelessWidget {
       final message = messageWithUser.message!;
       final user = messageWithUser.user!;
 
-      if (message.type == MessageType.UserLeftChat ||
-          message.type == MessageType.UserJoined) {
+      if (message.type == StoredMessageType.USER_LEFT ||
+          message.type == StoredMessageType.USER_JOINED) {
         return MessageCardAction(
           text: message.message,
         );

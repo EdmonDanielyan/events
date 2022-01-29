@@ -28,6 +28,7 @@ class Messenger with Loggable {
   late ChatDatabaseCubit chatDatabaseCubit;
   late NatsProvider natsProvider;
   late ChatFunctions chatFunctions;
+  final Set<int> onlineUsers = {};
 
   late InviteSender inviteSender;
   late ChatEventsSender chatEventsSender;
@@ -44,9 +45,6 @@ class Messenger with Loggable {
   late ChatListListener chatListListener;
   late ChatCubit chatCubit;
   late PushNotificationManager pushNotificationManager;
-
-  //todo: нужно убрать из месенджера все вызовы UI
-  bool silentMode = false;
 
   bool get isConnected => natsProvider.isConnected;
 

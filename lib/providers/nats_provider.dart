@@ -12,7 +12,7 @@ import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';
 
-const DOMAIN = 'test2.ink.messaging';
+const DOMAIN = 'test3.ink.messaging';
 const PROTOCOL = 'v1';
 const PUBLIC = '$DOMAIN.$PROTOCOL.public';
 const GROUP_CHANNEL = '$DOMAIN.$PROTOCOL.group';
@@ -219,7 +219,7 @@ class NatsProvider {
     var sequence = dataMessage.sequence;
     var message = NatsMessage.fromBytes(payload);
     message.sequence = sequence;
-    message.createdAt = DateTime.fromMillisecondsSinceEpoch(
+    message.timestamp = DateTime.fromMillisecondsSinceEpoch(
         (dataMessage.timestamp.toDouble() / 1e6).truncate(),
         isUtc: true);
     return message;

@@ -5,12 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat/chat_state.dart';
-import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/functions/date_sort.dart';
 import 'package:ink_mobile/functions/message_mixins.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
+import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat/components/date_widget.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/chat_screen_params.dart';
@@ -23,19 +23,18 @@ class MessageList extends StatefulWidget {
   final void Function()? messagesLoaded;
   final void Function()? scrollSafe;
   final ScrollController scrollController;
-  final ChatDatabaseCubit chatDatabaseCubit;
   final ChatScreenParams chatScreenParams;
-  final ChatCubit chatCubit;
   final SelectableCubit<MessageWithUser> selectableCubit;
+
+  final Messenger messenger;
 
   const MessageList({
     Key? key,
     this.messagesLoaded,
     this.scrollSafe,
+    required this.messenger,
     required this.scrollController,
-    required this.chatDatabaseCubit,
     required this.chatScreenParams,
-    required this.chatCubit,
     required this.selectableCubit,
   }) : super(key: key);
 
@@ -53,13 +52,13 @@ class _MessageListState extends State<MessageList> with MessageMixins {
   late int _limit;
 
   Stream<List<MessageWithUser>> getStream(int limit) {
-    final selectedChat = widget.chatDatabaseCubit.selectedChat;
+    final selectedChat = widget.messenger.chatDatabaseCubit.selectedChat;
     final String chatId = selectedChat?.id ?? "";
     if (widget.chatScreenParams.showOnlyFilesAndLinks) {
-      return widget.chatDatabaseCubit.db.watchChatFilesMessages(chatId);
+      return widget.messenger.chatDatabaseCubit.db.watchChatFilesMessages(chatId);
     }
 
-    return widget.chatDatabaseCubit.db
+    return widget.messenger.chatDatabaseCubit.db
         .watchChatMessages(chatId, orderMode: OrderingMode.desc, limit: limit);
   }
 
@@ -67,7 +66,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
     if (widget.messagesLoaded != null) {
       widget.messagesLoaded!();
     }
-    widget.chatCubit.updateMessages(widget.chatDatabaseCubit);
+    widget.messenger.chatCubit.updateMessages(widget.messenger.chatDatabaseCubit);
   }
 
   @override
@@ -148,13 +147,13 @@ class _MessageListState extends State<MessageList> with MessageMixins {
     return Column(
       children: [
         DateWidget(
-          dateTime: dateSort.getMessageDateTime(message.created ?? DateTime.now()),
+          dateTime: dateSort.getMessageDateTime(message.timestamp ?? DateTime.now()),
         ),
         MessageCard(
           messageWithUser: messageWithUser,
           index: index,
-          chatDatabaseCubit: widget.chatDatabaseCubit,
-          chatCubit: widget.chatCubit,
+          chatDatabaseCubit: widget.messenger.chatDatabaseCubit,
+          chatCubit: widget.messenger.chatCubit,
           selectableCubit: widget.selectableCubit,
           chatScreenParams: widget.chatScreenParams,
         ),
@@ -164,7 +163,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
 
   Widget _textingWidget() {
     return BlocBuilder<ChatCubit, ChatCubitState>(
-      bloc: widget.chatCubit,
+      bloc: widget.messenger.chatCubit,
       buildWhen: (previous, current) {
         return previous.texting != current.texting;
       },
@@ -180,7 +179,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
               user: state.texting!.user,
               messageStr: "...",
               message: null,
-              chatDatabaseCubit: widget.chatDatabaseCubit,
+              chatDatabaseCubit: widget.messenger.chatDatabaseCubit,
             ),
           );
         }

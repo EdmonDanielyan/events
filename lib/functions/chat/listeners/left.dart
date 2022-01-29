@@ -118,7 +118,7 @@ class ChatLeftListener extends MessageListener {
         chatId: chat.id,
         userName: user.name,
         type: MessageType.UserLeftChat,
-        createdUtc: message.createdAt,
+        timestampUtc: message.timestamp,
         userId: user.id,
       );
 

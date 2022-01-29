@@ -5,7 +5,7 @@ import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/message_list_view.dart';
+import 'package:ink_mobile/models/chat/database/tables/db_enum.dart';
 import 'package:ink_mobile/models/chat/person_list_params.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
@@ -25,9 +25,10 @@ class SendMessage with Loggable {
     String chatId,
     String message, {
     String? repliedMessageId,
-    MessageStatus status = MessageStatus.SENDING,
-    MessageType type = MessageType.Text,
-    DateTime? created,
+    MessageSentStatus status = MessageSentStatus.SENDING,
+    StoredMessageType type = StoredMessageType.TEXT,
+    actionsStatus = MessageActions.EMPTY,
+    DateTime? timestamp,
     int? userId,
     int? sequence,
   }) {
@@ -35,15 +36,14 @@ class SendMessage with Loggable {
       id: generateMessageId,
       chatId: chatId,
       message: message,
-      messageToLower: message.toLowerCase(),
       userId: userId ?? JwtPayload.myId,
       read: false,
-      sentOn: false,
-      status: status,
-      created: created ?? DateTime.now(),
-      type: type,
+      sentStatus: status,
+      timestamp: timestamp ?? DateTime.now(),
       repliedMessageId: repliedMessageId,
       sequence: sequence ?? 0,
+      actionsStatus: actionsStatus,
+      type: StoredMessageType.TEXT,
     );
   }
 
@@ -61,7 +61,7 @@ class SendMessage with Loggable {
       chatEntities.text,
       repliedMessageId: chatEntities.repliedMessageId,
       type: chatEntities.type,
-      created: DateTime.now(),
+      timestamp: DateTime.now(),
       sequence: 500000 + chatEntities.seq,
     );
 
@@ -97,7 +97,7 @@ class SendMessage with Loggable {
     required String chatId,
     required String userName,
     required MessageType type,
-    required DateTime createdUtc,
+    required DateTime timestampUtc,
     required int userId,
   }) {
     bool isJoined = type == MessageType.UserJoined;
@@ -112,9 +112,8 @@ class SendMessage with Loggable {
       return _generateMessage(
         chatId,
         text,
-        status: MessageStatus.EMPTY,
-        type: type,
-        created: createdUtc,
+        type: StoredMessageType.USER_JOINED,
+        timestamp: timestampUtc,
         userId: userId,
       );
     }

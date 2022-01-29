@@ -2,7 +2,6 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/chat_functions.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats/message_status.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
@@ -39,7 +38,7 @@ class UserReactionSender {
         await chatFunctions.messagesToRead(
           messages.last,
           onlyIfMyMessages: false,
-          messageStatus: MessageStatus.SENT,
+          readStatus: false,
         );
       }
       return send;

@@ -38,8 +38,7 @@ class ChannelsRegistry with Loggable {
 
     if (listener != null) return listener;
 
-    return UserOnlineListener(
-        natsProvider, this, userFunctions, chatDatabaseCubit);
+    return sl.get<MessageListener>(instanceName: "Online") as UserOnlineListener;
   }
 
   ChatJoinedListener get chatJoinedListener =>
@@ -268,7 +267,6 @@ class ChannelsRegistry with Loggable {
         pushNotificationManager.unsubscribeFromTopic(channel);
       }
     });
-    onlineListener.clear();
     subscribedChannels = {};
   }
 

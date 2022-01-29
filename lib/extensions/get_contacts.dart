@@ -15,7 +15,6 @@ extension GetContactsExt on Response<GetContacts> {
         id: item['id'],
         name: "${item['name']} ${item['last_name']}".trim(),
         avatar: item["photo"] ?? "",
-        online: false,
       );
 
       if (hideIds != null && hideIds.contains(user.id)) continue;

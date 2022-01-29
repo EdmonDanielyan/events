@@ -3,7 +3,7 @@ import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/listeners/channels_registry.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/message_list_view.dart';
+import 'package:ink_mobile/models/chat/database/tables/db_enum.dart';
 import 'package:ink_mobile/models/chat/nats/message.dart';
 import 'package:ink_mobile/models/chat/nats/texting.dart';
 import 'package:ink_mobile/models/chat/texting.dart';
@@ -35,7 +35,7 @@ class TextSender with Loggable {
       CHAT: $chat
     ''');
 
-    MessageStatus status = success ? MessageStatus.SENT : MessageStatus.ERROR;
+    MessageSentStatus status = success ? MessageSentStatus.SENT : MessageSentStatus.ERROR;
 
     await chatFunctions.updateMessageStatus(message, status);
 

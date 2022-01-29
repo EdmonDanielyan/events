@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
-import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/models/chat/database/tables/db_enum.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/attach_entities.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
@@ -23,7 +23,7 @@ class _ChatAttachScreenState extends State<ChatAttachScreen> {
     if (widget.onSend != null) {
       final entities = ChatEntities(
         text: chatAttachEntities.link,
-        type: MessageType.Document,
+        type: StoredMessageType.DOCUMENT,
       );
       widget.onSend!(entities);
       Navigator.of(context).pop();

@@ -28,7 +28,7 @@ class ChatNotification {
       showNotification = false;
     }
 
-    final newMessageDate = (message.created ?? DateTime.now()).add(Duration(seconds: 30));
+    final newMessageDate = (message.timestamp ?? DateTime.now()).add(Duration(seconds: 30));
 
     if (checkTime &&
         newMessageDate.isBefore(DateTime.now().toUtc())) {

@@ -5,8 +5,8 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
+import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/providers/nats_provider.dart';
 
 import '../user_functions.dart';
@@ -17,23 +17,17 @@ import 'message_listener.dart';
 @Injectable(as: MessageListener)
 class UserOnlineListener extends MessageListener {
   late Timer userOnlineTimer;
-  Set<int> subscribedUsers = {};
-  Set<int> onlineUsers = {};
 
   final ChatDatabaseCubit chatDatabaseCubit;
   final UserFunctions userFunctions;
 
-  UserOnlineListener(
-    NatsProvider natsProvider,
-    ChannelsRegistry registry,
-    this.userFunctions,
-    this.chatDatabaseCubit,
-  ) : super(natsProvider, registry);
+  Messenger messenger;
 
-  void clear() {
-    subscribedUsers = {};
-    onlineUsers = {};
-  }
+  UserOnlineListener(NatsProvider natsProvider,
+      ChannelsRegistry registry,
+      this.messenger,
+      this.userFunctions,
+      this.chatDatabaseCubit,) : super(natsProvider, registry);
 
   Future<void> subscribeOnline() async {
     if (!natsProvider.isConnected) return;
@@ -50,39 +44,25 @@ class UserOnlineListener extends MessageListener {
     try {
       final user = int.parse(message.from);
 
-      updateUserStatus(user, true);
+      _handleStatus(user, true);
 
       EasyDebounce.debounce(
-        user.toString(),
-        Duration(seconds: 50),
-        () => updateUserStatus(user, false),
+          user.toString(),
+          Duration(seconds: 50),
+              () => _handleStatus(user, false)
       );
     } on NoSuchMethodError {
       return;
     }
   }
 
-  void listenForOffline(UserTable user) {}
-
-  Future<void> updateUserStatus(int user, bool online) async {
-    final storedUser = await chatDatabaseCubit.db.selectUserById(user);
-
-    if (storedUser != null && storedUser.online != online) {
-      logger.finest(
-              ()=>"updateUserStatus: user=${storedUser.name}, was_online: ${storedUser.online}, will_be_online=$online");
-
-      chatDatabaseCubit.db.updateUser(user, storedUser.copyWith(online: online));
-    }
-    _handleList(user, online);
-  }
-
-  void _handleList(int userId, bool online) {
-    if (online && !onlineUsers.contains(userId)) {
-      onlineUsers.add(userId);
+  void _handleStatus(int userId, bool online) {
+    if (online && !messenger.onlineUsers.contains(userId)) {
+      messenger.onlineUsers.add(userId);
     }
 
-    if (!online && onlineUsers.contains(userId)) {
-      onlineUsers.remove(userId);
+    if (!online && messenger.onlineUsers.contains(userId)) {
+      messenger.onlineUsers.remove(userId);
     }
   }
 }

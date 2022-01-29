@@ -1,8 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/message_list_view.dart';
+import 'package:ink_mobile/models/chat/database/tables/db_enum.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/messenger.dart';
 
@@ -58,28 +57,28 @@ class ChatFunctions {
   }
 
   Future<void> updateMessageStatus(
-      MessageTable message, MessageStatus messageStatus) async {
-    message = message.copyWith(status: messageStatus);
+      MessageTable message, MessageSentStatus messageStatus) async {
+    message = message.copyWith(sentStatus: messageStatus);
     chatDatabaseCubit.db.updateMessageById(message.id, message);
   }
 
   Future<void> messagesToRead(MessageTable message,
       {required bool onlyIfMyMessages,
-      MessageStatus messageStatus = MessageStatus.READ}) async {
+      bool readStatus = true}) async {
     bool setRead = true;
     if (onlyIfMyMessages && message.userId != JwtPayload.myId) {
       setRead = false;
     }
 
     if (setRead) {
-      await chatDatabaseCubit.db.updateMessagesStatus(message,
-          exceptUserId: onlyIfMyMessages ? 0 : JwtPayload.myId,
-          messageStatus: messageStatus);
+      await chatDatabaseCubit.db.updateMessagesReadStatus(message,
+          onlyIfMyMessages ? 0 : JwtPayload.myId,
+          readStatus);
     }
   }
 
   Future<List<MessageTable>> getMyMessagesByType(
-      String chatId, MessageType type,
+      String chatId, StoredMessageType type,
       {required int userId}) async {
     var myMessages = await chatDatabaseCubit.db
         .selectMessagesByUserAndChatId(chatId, userId);

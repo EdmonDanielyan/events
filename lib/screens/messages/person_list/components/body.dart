@@ -33,7 +33,7 @@ class _PersonListBodyState extends State<PersonListBody> {
         message,
         id: sl<SendMessage>().generateMessageId,
         newChat: chat,
-        sentOn: true,
+        forwarded: true,
       );
       await sl<SendMessage>().addMessage(chat, newMessage);
       if (messenger.isConnected) {

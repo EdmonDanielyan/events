@@ -6,11 +6,11 @@ import 'package:ink_mobile/components/linkify_text.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/message_table.dart';
-import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/functions/chat/send_message.dart';
 import 'package:ink_mobile/functions/date_functions.dart';
 import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/models/chat/database/tables/db_enum.dart';
 import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat/components/message_card_picture.dart';
@@ -45,14 +45,14 @@ class MessageCardText extends StatelessWidget {
   ChatTable get getChat => chatDatabaseCubit.selectedChat!;
 
   Color textColor() {
-    if (message?.type == MessageType.Document) {
+    if (message?.type == StoredMessageType.DOCUMENT) {
       return Colors.black;
     }
     return byMe ? Colors.white : Colors.black;
   }
 
   Color bgColor() {
-    if (message?.type == MessageType.Document) {
+    if (message?.type == StoredMessageType.DOCUMENT) {
       return Colors.transparent;
     }
     return byMe ? const Color(0XFF46966E) : Colors.grey.shade200;
@@ -106,7 +106,7 @@ class MessageCardText extends StatelessWidget {
   }
 
   Widget _errorIconReload(BuildContext context) {
-    if (message != null && message!.status == MessageStatus.ERROR) {
+    if (message != null && message!.sentStatus == MessageSentStatus.ERROR) {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -130,7 +130,7 @@ class MessageCardText extends StatelessWidget {
   }
 
   Widget _sentOn() {
-    if (message != null && message!.sentOn) {
+    if (message != null && message!.actionsStatus == MessageActions.FORWARDED) {
       return Container(
         margin: EdgeInsets.only(bottom: 5),
         child: SentOnWidget(),
@@ -153,7 +153,7 @@ class MessageCardText extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           _showMessage(),
-          if (message?.edited ?? false) ...[
+          if (message?.actionsStatus == MessageActions.EDITED) ...[
             const SizedBox(width: 7.0),
             MessageEditedCard(
               brightness: byMe ? Brightness.dark : Brightness.light,
@@ -206,7 +206,7 @@ class MessageCardText extends StatelessWidget {
 
   Widget _dateWidget() {
     return Text(
-      DateFunctions(passedDate: message?.created ?? DateTime.now()).hourMinute(),
+      DateFunctions(passedDate: message?.timestamp ?? DateTime.now()).hourMinute(),
       style: TextStyle(
         fontSize: 11.0,
         color: textColor(),
@@ -219,8 +219,8 @@ class MessageCardText extends StatelessWidget {
       width: 14,
       height: 14,
       child: ChatTick(
-        chatStatus: message?.status ?? MessageStatus.EMPTY,
-        brightness: message?.type == MessageType.Document
+        message: message,
+        brightness: message?.type == StoredMessageType.DOCUMENT
             ? Brightness.light
             : Brightness.dark,
       ),

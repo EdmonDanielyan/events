@@ -5,7 +5,6 @@ import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_cubit
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_cubit.dart';
-import 'package:ink_mobile/cubit/chat/chat_cubit.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart';
@@ -18,6 +17,7 @@ import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.d
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/chat/person_list_params.dart';
+import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/screens/announcements_detail/announcements_detail_screen.dart';
 import 'package:ink_mobile/screens/announcements_list/announcements_list_screen.dart';
@@ -120,8 +120,7 @@ class MainRoutes {
       if (args is ChatScreenParams) {
         return ChatScreen(
           chatScreenParams: args,
-          chatDatabaseCubit: sl<ChatDatabaseCubit>(),
-          chatCubit: sl<ChatCubit>(),
+          messenger: sl<Messenger>(),
           selectableCubit: SelectableCubit<MessageWithUser>(),
           chatFunctions: sl(),
         );

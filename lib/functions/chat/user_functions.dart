@@ -13,7 +13,6 @@ class UserFunctions {
         id: JwtPayload.myId,
         name: JwtPayload.myName,
         avatar: JwtPayload.myAvatar,
-        online: false,
       );
 
   Future<void> addMe() async {

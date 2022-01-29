@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/custom_circle_avatar.dart';
 import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/extensions/chat_table.dart';
-import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/chat_user.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
+import 'package:ink_mobile/models/chat/database/tables/db_enum.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat_list/components/chat_date.dart';
@@ -103,7 +103,7 @@ class _ChatListTileState extends State<ChatListTile> {
                           SizedBox(width: 2.0),
                           if (hasMessage) ...[
                             ChatDate(
-                              chatDate: lastMessage?.created ?? DateTime.now(),
+                              chatDate: lastMessage?.timestamp ?? DateTime.now(),
                             ),
                           ],
                         ],
@@ -160,8 +160,7 @@ class _ChatListTileState extends State<ChatListTile> {
         builder: (context, AsyncSnapshot<UserTable?> snapshot) {
           return CustomCircleAvatar(
             url: widget.chat.avatar,
-            indicator: messenger.registry.onlineListener.onlineUsers
-                .contains(oppositeUserId),
+            indicator: messenger.onlineUsers.contains(oppositeUserId),
             name: widget.chat.name,
           );
         },
@@ -192,7 +191,7 @@ class _ChatListTileState extends State<ChatListTile> {
   String? _getDisplayName() {
     if (lastMessage == null) return "";
 
-    if (lastMessage!.type == MessageType.Text) {
+    if (lastMessage!.type == StoredMessageType.TEXT) {
       if (widget.chat.isGroup() && lastUser != null) {
         return lastUser!.id == JwtPayload.myId
             ? localizationInstance.you

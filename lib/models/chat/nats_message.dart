@@ -11,7 +11,7 @@ import 'package:uuid/uuid.dart';
 abstract class Message {
   abstract String id;
   abstract PayloadType type;
-  abstract DateTime createdAt;
+  abstract DateTime timestamp;
   abstract String from;
   abstract String to;
 
@@ -19,7 +19,7 @@ abstract class Message {
 }
 
 class BaseMessage extends Message {
-  late DateTime createdAt;
+  late DateTime timestamp;
   late String id;
   late PayloadType type;
   late String from;
@@ -27,10 +27,10 @@ class BaseMessage extends Message {
   late Packer _packer;
   late Int64 sequence;
 
-  BaseMessage({id, type, createdAt, from, to}) {
+  BaseMessage({id, type, timestamp, from, to}) {
     this.type = type ?? PayloadType.empty;
     this.id = id ?? Uuid().v4();
-    this.createdAt = (createdAt ?? DateTime.now()).toUtc();
+    this.timestamp = (timestamp ?? DateTime.now()).toUtc();
     this.from = from ?? "";
     this.to = to ?? "";
     this.sequence = Int64.ZERO;
@@ -54,7 +54,7 @@ class BaseMessage extends Message {
 
   @override
   String toString() {
-    return '{id: $id, type: $type, from: $from, to: $to, sequence: $sequence, createdAt: $createdAt}';
+    return '{id: $id, type: $type, from: $from, to: $to, sequence: $sequence, timestamp: $timestamp}';
   }
 }
 
@@ -119,8 +119,8 @@ class JsonPayload extends Payload {
 class NatsMessage extends BaseMessage {
   late Object? payload = "";
 
-  NatsMessage({id, type, from, to, createdAt})
-      : super(id: id, type: type, from: from, to: to, createdAt: createdAt);
+  NatsMessage({id, type, from, to, timestamp})
+      : super(id: id, type: type, from: from, to: to, timestamp: timestamp);
 
   void setEmptyPayload() {
     this.type = PayloadType.empty;

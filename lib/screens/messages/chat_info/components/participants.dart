@@ -5,10 +5,12 @@ import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
-import 'package:ink_mobile/extensions/nats_extension.dart';
+import 'package:ink_mobile/extensions/chat_table.dart';
+import 'package:ink_mobile/extensions/list_participant_with_user.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/models/chat/database/model/participant_with_user.dart';
+import 'package:ink_mobile/models/chat/database/tables/db_enum.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/screens/messages/chat_info/components/btn_wrapper.dart';
@@ -17,8 +19,7 @@ import 'package:ink_mobile/screens/messages/chat_info/entities/design_entities.d
 import 'package:ink_mobile/screens/messages/chat_list/components/new_chat_screen.dart';
 import 'package:ink_mobile/screens/messages/chat_list/entities/new_chat_screen_params.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:ink_mobile/extensions/list_participant_with_user.dart';
-import 'package:ink_mobile/extensions/chat_table.dart';
+
 import '../chat_info_screen.dart';
 
 class ChatInfoParticipants extends StatelessWidget {
@@ -38,7 +39,7 @@ class ChatInfoParticipants extends StatelessWidget {
       CustomAlertLoading(context).call();
 
       final countLefts = await messenger.chatFunctions.getMyMessagesByType(
-          chat.id, MessageType.UserLeftChat,
+          chat.id, StoredMessageType.USER_LEFT,
           userId: user.id);
       await messenger.chatEventsSender.sendLeftMessage(
         chat,

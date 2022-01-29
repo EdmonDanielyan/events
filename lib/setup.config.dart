@@ -412,6 +412,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => _i105.UserOnlineListener(
           get<_i89.NatsProvider>(),
           get<_i94.ChannelsRegistry>(),
+          get<_i39.Messenger>(),
           get<_i91.UserFunctions>(),
           get<_i85.ChatDatabaseCubit>()),
       instanceName: 'Online');

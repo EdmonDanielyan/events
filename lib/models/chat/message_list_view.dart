@@ -9,19 +9,17 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
 import 'database/chat_db.dart';
+import 'database/tables/db_enum.dart';
 
-enum MessageStatus { EMPTY, SENDING, SENT, READ, ERROR }
 
 class MessageListView {
-  static List<MessageType> notIgnoringHoverTypes = [
-    MessageType.Text,
-    MessageType.Document
+  static List<StoredMessageType> notIgnoringHoverTypes = [
+    StoredMessageType.TEXT,
+    StoredMessageType.DOCUMENT
   ];
 
   static Map<String, dynamic> toJson(MessageTable message) {
     final json = message.toJson();
-    json["status"] = messageEnumToString(json["status"]);
-    json["type"] = messageEnumToString(json["type"]);
     return json;
   }
 
@@ -30,8 +28,6 @@ class MessageListView {
   }
 
   static MessageTable fromJson(Map<String, dynamic> json) {
-    json["status"] = messageStatusStringToObject(json["status"]);
-    json["type"] = messageTypeStringToEnum(json["type"]);
     return MessageTable.fromJson(json);
   }
 
@@ -43,8 +39,8 @@ class MessageListView {
     return "$json";
   }
 
-  static MessageStatus messageStatusStringToObject(String json) {
-    for (final value in MessageStatus.values) {
+  static MessageSentStatus messageStatusStringToObject(String json) {
+    for (final value in MessageSentStatus.values) {
       if (json
           .toString()
           .toLowerCase()
@@ -52,11 +48,11 @@ class MessageListView {
         return value;
       }
     }
-    return MessageStatus.ERROR;
+    return MessageSentStatus.ERROR;
   }
 
-  static MessageType messageTypeStringToEnum(String json) {
-    for (final value in MessageType.values) {
+  static StoredMessageType messageTypeStringToEnum(String json) {
+    for (final value in StoredMessageType.values) {
       if (json
           .toString()
           .toLowerCase()
@@ -64,7 +60,7 @@ class MessageListView {
         return value;
       }
     }
-    return MessageType.Text;
+    return StoredMessageType.TEXT;
   }
 
   static MessageType getType(ChatEntities entities) {
@@ -101,7 +97,7 @@ class MessageListView {
 
   static int unreadMessagesByMessageWithUser(List<MessageWithUser> items) =>
       items.fold(0, (previousValue, element) {
-        return element.message!.status != MessageStatus.READ &&
+        return !element.message!.read && notIgnoringHoverTypes.contains(element.message?.type) &&
                 !element.message!.isByMe()
             ? previousValue + 1
             : previousValue + 0;
@@ -109,7 +105,7 @@ class MessageListView {
 
   static int unreadMessagesByMessages(List<MessageTable> items) =>
       items.fold(0, (previousValue, element) {
-        return element.status != MessageStatus.READ && !element.isByMe()
+        return !element.read && notIgnoringHoverTypes.contains(element.type) && !element.isByMe()
             ? previousValue + 1
             : previousValue + 0;
       });
@@ -128,7 +124,7 @@ class MessageListView {
 
   static MessageTable editMessage(MessageTable message, String txt) {
     return message.copyWith(
-        message: txt, messageToLower: txt.toLowerCase(), edited: true);
+        message: txt, actionsStatus: MessageActions.EDITED);
   }
 
   static MessageTable renewMessage(
@@ -136,38 +132,38 @@ class MessageListView {
     String? id,
     int? userId,
     ChatTable? newChat,
-    bool? sentOn,
+    bool? forwarded,
   }) {
     MessageTable newMessage = message.copyWith(
       id: id ?? message.id,
       userId: userId ?? JwtPayload.myId,
       repliedMessageId: "",
-      status: MessageStatus.SENDING,
-      created: DateTime.now(),
+      sentStatus: MessageSentStatus.SENDING,
+      timestamp: DateTime.now(),
     );
 
     if (newChat != null) newMessage = newMessage.copyWith(chatId: newChat.id);
 
-    if (sentOn != null) newMessage = newMessage.copyWith(sentOn: sentOn);
+    if (forwarded != null) newMessage = newMessage.copyWith(actionsStatus: MessageActions.FORWARDED);
 
     return newMessage;
   }
 
   static MessageTable? oppositeNotReadMessage(List<MessageTable> items) {
     return items.lastWhereOrNull(
-        (element) => !element.isByMe() && element.status != MessageStatus.READ);
+        (element) => !element.isByMe() && !element.read);
   }
 
   static List<MessageTable> oppositeNotReadMessages(List<MessageTable> items) {
     return items
         .where((element) =>
-            !element.isByMe() && element.status != MessageStatus.READ)
+            !element.isByMe() && !element.read)
         .toList();
   }
 
   static List<MessageTable> notReadMessages(List<MessageTable> items) {
     return items
-        .where((element) => element.status != MessageStatus.READ)
+        .where((element) => !element.read)
         .toList();
   }
 

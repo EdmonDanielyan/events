@@ -7,7 +7,7 @@ import 'package:ink_mobile/functions/chat/sender/invite_sender.dart';
 import 'package:ink_mobile/functions/chat/user_functions.dart';
 import 'package:ink_mobile/models/chat/chat_list_view.dart';
 import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/message_list_view.dart';
+import 'package:ink_mobile/models/chat/database/tables/db_enum.dart';
 import 'package:ink_mobile/models/chat/nats/message.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:ink_mobile/models/token.dart';
@@ -50,11 +50,11 @@ class TextMessageListener extends MessageListener {
 
       final newMessage = fields.message.copyWith(
         sequence: message.sequence.toInt(),
-        created: message.createdAt,
-        status: (fields.message.status == MessageStatus.SENDING ||
-                fields.message.status == MessageStatus.ERROR)
-            ? MessageStatus.SENT
-            : fields.message.status,
+        timestamp: message.timestamp,
+        sentStatus: (fields.message.sentStatus == MessageSentStatus.SENDING ||
+                fields.message.sentStatus == MessageSentStatus.ERROR)
+            ? MessageSentStatus.SENT
+            : fields.message.sentStatus,
       );
 
           final messageExists =
@@ -64,7 +64,7 @@ class TextMessageListener extends MessageListener {
             logger.finest(() => '''
         MESSAGE EXISTS
         message: $newMessage
-        created: ${message.createdAt}
+        timestamp: ${message.timestamp}
         
         ''');
         await chatDatabaseCubit.db.updateMessageById(newMessage.id, newMessage);
@@ -74,7 +74,7 @@ class TextMessageListener extends MessageListener {
         logger.finest(() => '''
         MESSAGE INSERTING
         message: $newMessage
-        created: ${message.createdAt}
+        timestamp: ${message.timestamp}
         
         ''');
         ChatTable? myChat =
@@ -99,7 +99,7 @@ class TextMessageListener extends MessageListener {
       MessageTable chatMessage, UserTable user) async {
     final tenMinutesBefore =
         DateTime.now().subtract(const Duration(minutes: 10));
-    if (message.createdAt.toLocal().isAfter(tenMinutesBefore)) {
+    if (message.timestamp.toLocal().isAfter(tenMinutesBefore)) {
       bool isChatOpened = chatDatabaseCubit.getSelectedChatId == chat.id;
       ChatTable? chatFromDb =
           await chatDatabaseCubit.db.selectChatById(chat.id);
