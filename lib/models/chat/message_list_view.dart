@@ -1,12 +1,9 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/foundation.dart';
 import 'package:ink_mobile/extensions/message_table.dart';
-import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
 
 import 'database/chat_db.dart';
 import 'database/tables/db_enum.dart';
@@ -20,6 +17,9 @@ class MessageListView {
 
   static Map<String, dynamic> toJson(MessageTable message) {
     final json = message.toJson();
+    json["sentStatus"] = (json["sentStatus"] as MessageSentStatus).toJson();
+    json["actionsStatus"] = (json["actionsStatus"] as MessageActions).toJson();
+    json["type"] = (json["type"] as StoredMessageType).toJson();
     return json;
   }
 
@@ -32,7 +32,11 @@ class MessageListView {
   }
 
   static MessageTable fromString(String str) {
-    return fromJson(jsonDecode(str));
+    var json = jsonDecode(str);
+    json["sentStatus"] = toMessageSentStatus(json["sentStatus"]);
+    json["actionsStatus"] = toMessageActions(json["actionsStatus"]);
+    json["type"] = toStoredMessageType(json["type"]);
+    return fromJson(json);
   }
 
   static String messageEnumToString(dynamic json) {
@@ -61,24 +65,6 @@ class MessageListView {
       }
     }
     return StoredMessageType.TEXT;
-  }
-
-  static MessageType getType(ChatEntities entities) {
-    if (entities.files != null && entities.files!.length > 0)
-      return MessageType.Document;
-
-    return MessageType.Text;
-  }
-
-  static MessageType? getTypeByChannel(String channel) {
-    for (final value in MessageType.values) {
-      final channelComparing = channel.toLowerCase();
-      final valueToComparing = describeEnum(value).toLowerCase();
-      if (channelComparing.contains(valueToComparing)) {
-        return value;
-      }
-    }
-    return null;
   }
 
   static List<MessageTable> searchMessagesByStr(

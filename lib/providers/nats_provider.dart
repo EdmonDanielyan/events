@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
-import 'package:ink_mobile/models/chat/message_list_view.dart';
 import 'package:ink_mobile/models/chat/nats_message.dart';
 import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';
@@ -136,7 +135,7 @@ class NatsProvider {
     Int64 startSequence = Int64.ZERO,
     int ackWaitSeconds = 5,
     maxInFlight = 1,
-    StartPosition? startPosition,
+    startPosition = StartPosition.SequenceStart,
   }) async {
     if (!_channelSubscriptions.containsKey(channel)) {
       _logger.finest("subscribeToChannel: $channel");
@@ -144,8 +143,8 @@ class NatsProvider {
         subject: channel,
         maxInFlight: maxInFlight,
         ackWaitSeconds: ackWaitSeconds,
-        startPosition: startPosition ?? _getPosition(channel),
-        startSequence: getSequence(channel, startSequence),
+        startPosition: startPosition,
+        startSequence: startSequence,
       );
 
       _listenBySubscription(channel, subscription);
@@ -234,34 +233,6 @@ class NatsProvider {
     return _subscriptionToPublicChannel;
   }
 
-  StartPosition _getPosition(String channel) {
-    final msgType = MessageListView.getTypeByChannel(channel);
-
-    if (msgType != null) {
-      if (_startSeqTypes.contains(msgType)) return StartPosition.SequenceStart;
-
-      if (_lastReceivedType.contains(msgType))
-        return StartPosition.LastReceived;
-    }
-
-    return StartPosition.NewOnly;
-  }
-
-  Int64? getSequence(String channel, Int64 startSequence) {
-    final msgType = MessageListView.getTypeByChannel(channel);
-
-    if (msgType != null) {
-      if (_startSeqTypes.contains(msgType) ||
-          _lastReceivedType.contains(msgType)) {
-        return startSequence;
-      }
-
-      return Int64.ZERO;
-    }
-
-    return null;
-  }
-
   Future<void> _listenBySubscription(
       channel, Subscription? subscription) async {
     if (subscription == null) return;
@@ -308,19 +279,6 @@ class NatsProvider {
   final Set<String> userChatIdList = {};
   final Set<String> publicChatIdList = {};
   final Map<String, Subscription?> _channelSubscriptions = {};
-  final Set<MessageType> _lastReceivedType = {
-    MessageType.UpdateChatInfo,
-    MessageType.ChatList,
-  };
-  final Set<MessageType> _startSeqTypes = {
-    MessageType.InviteUserToJoinChat,
-    MessageType.UserJoined,
-    MessageType.UserLeftChat,
-    MessageType.UserReacted,
-    MessageType.Text,
-    MessageType.Document,
-    MessageType.RemoveMessage,
-  };
 
   Future<void> Function(String, NatsMessage) onMessage =
       (channel, message) async {

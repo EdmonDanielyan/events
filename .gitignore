@@ -20,7 +20,7 @@ untranslated_messages.txt
 *.ipr
 *.iws
 .idea/
-*scratch.dart
+lib/scratch.dart
 
 # Visual Studio Code related
 .classpath

@@ -17,6 +17,7 @@ import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/themes/light.dart';
 import 'package:logging/logging.dart';
 
+
 void main() async {
   runZonedGuarded(() async {
     await setup();
