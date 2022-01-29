@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/core/logging/send_log.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
-import 'package:ink_mobile/functions/send_log.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+
 import 'section_title.dart';
 
 class Diagnostics extends StatefulWidget {
