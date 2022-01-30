@@ -1,5 +1,5 @@
-import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/database/model/participant_with_user.dart';
+import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/messenger/models/chat/database/model/participant_with_user.dart';
 
 extension ListParticipantWithUserExt on List<ParticipantWithUser> {
   int sortByAdmind(ParticipantWithUser a, ParticipantWithUser b,

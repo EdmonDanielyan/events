@@ -7,7 +7,7 @@
 // import 'package:ink_mobile/core/logging/logging.dart';
 // import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 // import 'package:ink_mobile/cubit/boot/boot_cubit.dart';
-// import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
+// import 'package:ink_mobile/messenger/blocs/chat_person_list/chat_person_list_cubit.dart';
 // import 'package:ink_mobile/models/chat/database/chat_db.dart';
 // import 'package:ink_mobile/providers/messenger.dart';
 // import 'package:ink_mobile/setup.config.dart';

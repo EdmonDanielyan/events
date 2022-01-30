@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/constants/codes.dart';
-import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
+import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/screens/profile/components/body.dart';
 
 class ProfileScreen extends StatefulWidget {

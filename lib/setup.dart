@@ -5,12 +5,12 @@ import 'package:ink_mobile/core/logging/file_log_appender.dart';
 import 'package:ink_mobile/core/logging/logging.dart';
 import 'package:ink_mobile/cubit/boot/boot_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/providers/notifications.dart';
+import 'package:ink_mobile/messenger/providers/notifications/notifications.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:logging/logging.dart';
 
-import 'providers/messenger.dart';
-import 'providers/push_notification_manager.dart';
+import 'messenger/providers/messenger.dart';
+import 'messenger/providers/notifications/push_notification_manager.dart';
 import 'setup.config.dart';
 
 final sl = GetIt.instance;

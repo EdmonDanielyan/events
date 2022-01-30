@@ -1,4 +1,4 @@
-import 'package:ink_mobile/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 
 extension ListUserTableExtension on List<ParticipantTable> {
   bool compareLight(List<ParticipantTable> list) {

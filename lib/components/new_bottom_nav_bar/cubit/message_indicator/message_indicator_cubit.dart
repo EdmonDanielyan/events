@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/chat/message_list_view.dart';
+import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/messenger/models/message_list_view.dart';
 import 'package:ink_mobile/models/debouncer.dart';
 
 class MessageIndicatorCubit extends Cubit<int> {

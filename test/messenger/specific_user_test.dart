@@ -7,12 +7,12 @@
 // import 'package:ink_mobile/core/logging/logging.dart';
 // import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 // import 'package:ink_mobile/cubit/boot/boot_cubit.dart';
-// import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
+// import 'package:ink_mobile/messenger/blocs/chat_person_list/chat_person_list_cubit.dart';
 // import 'package:ink_mobile/functions/chat/send_message.dart';
 // import 'package:ink_mobile/models/chat/database/chat_db.dart';
 // import 'package:ink_mobile/models/token.dart';
 // import 'package:ink_mobile/providers/messenger.dart';
-// import 'package:ink_mobile/screens/messages/chat/entities/form_entities.dart';
+// import 'package:ink_mobile/messenger/screens/chat/entities/form_entities.dart';
 // import 'package:ink_mobile/setup.config.dart';
 // import 'package:ink_mobile/setup.dart';
 // import 'package:logging/logging.dart';

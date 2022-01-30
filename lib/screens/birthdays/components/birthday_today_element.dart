@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/constants/aseets.dart';
-import 'package:ink_mobile/cubit/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/functions/chat/open_chat.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/messenger/cases/open_chat.dart';
+import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/messenger/models/chat_user.dart';
+import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
-import 'package:ink_mobile/models/chat/chat_user.dart';
-import 'package:ink_mobile/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/setup.dart';
 
 import '../../../setup.dart';

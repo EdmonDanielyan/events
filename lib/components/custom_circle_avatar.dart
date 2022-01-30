@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/models/chat/chat_user.dart';
+import 'package:ink_mobile/messenger/models/chat_user.dart';
 
 class CustomCircleAvatar extends StatelessWidget {
   final String? url;

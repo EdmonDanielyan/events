@@ -3,8 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet_item.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:ink_mobile/providers/messenger.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:logging/logging.dart';
 

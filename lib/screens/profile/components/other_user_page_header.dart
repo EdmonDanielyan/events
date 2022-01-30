@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/models/chat/chat_user.dart';
+import 'package:ink_mobile/messenger/models/chat_user.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/other_user_votes_bar.dart';
 import 'package:ink_mobile/screens/profile/components/thanks_button.dart';
