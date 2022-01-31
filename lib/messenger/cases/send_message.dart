@@ -115,7 +115,9 @@ class SendMessage with Loggable {
         type: type,
         timestamp: timestampUtc,
         userId: userId,
-        sequence: sequence
+        sequence: sequence,
+        actionsStatus: MessageActions.EMPTY,
+        status: MessageSentStatus.EMPTY
       );
     }
     return null;

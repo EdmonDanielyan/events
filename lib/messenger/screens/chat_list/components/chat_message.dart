@@ -31,10 +31,10 @@ class ChatMessage extends StatelessWidget {
           ),
           SizedBox(height: 3.0),
         ],
-        HighlightText(
-          txt: message,
-          highlightTxt: highlightValue,
-          textStyle: TextStyle(
+        Text(
+          message,
+          // highlightTxt: highlightValue,
+          style: TextStyle(
             fontSize: 14.0,
             color: Colors.grey[700],
             fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
