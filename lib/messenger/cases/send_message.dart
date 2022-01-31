@@ -42,7 +42,7 @@ class SendMessage with Loggable {
       repliedMessageId: repliedMessageId,
       sequence: sequence ?? 0,
       actionsStatus: actionsStatus,
-      type: StoredMessageType.TEXT,
+      type: type,
     );
   }
 
