@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/cases/chat_functions.dart';
 import 'package:ink_mobile/messenger/cases/send_message.dart';
 import 'package:ink_mobile/messenger/listeners/message_listener.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
 import 'package:ink_mobile/messenger/models/chat/nats/leftJoined.dart';
 import 'package:ink_mobile/messenger/models/chat_user.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
@@ -115,12 +115,12 @@ class ChatLeftListener extends MessageListener {
       List<UserTable> users, ChatTable chat, NatsMessage message) async {
     for (final user in users) {
       final generateMessage = GetIt.I<SendMessage>().joinedLeftMessage(
-        chatId: chat.id,
-        userName: user.name,
-        type: MessageType.UserLeftChat,
-        timestampUtc: message.timestamp,
-        userId: user.id,
-      );
+          chatId: chat.id,
+          userName: user.name,
+          type: StoredMessageType.USER_LEFT,
+          timestampUtc: message.timestamp,
+          userId: user.id,
+          sequence: message.sequence.toInt());
 
       if (generateMessage != null) {
         await GetIt.I<SendMessage>()

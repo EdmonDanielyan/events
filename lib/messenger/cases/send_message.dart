@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
-import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/cases/chat_functions.dart';
@@ -96,12 +95,13 @@ class SendMessage with Loggable {
   MessageTable? joinedLeftMessage({
     required String chatId,
     required String userName,
-    required MessageType type,
+    required StoredMessageType type,
     required DateTime timestampUtc,
     required int userId,
+    required int sequence
   }) {
-    bool isJoined = type == MessageType.UserJoined;
-    bool isLeft = type == MessageType.UserLeftChat;
+    bool isJoined = type == StoredMessageType.USER_JOINED;
+    bool isLeft = type == StoredMessageType.USER_LEFT;
     if (isJoined || isLeft) {
       String action = isJoined
           ? localizationInstance.joinedChat
@@ -112,9 +112,10 @@ class SendMessage with Loggable {
       return _generateMessage(
         chatId,
         text,
-        type: StoredMessageType.USER_JOINED,
+        type: type,
         timestamp: timestampUtc,
         userId: userId,
+        sequence: sequence
       );
     }
     return null;

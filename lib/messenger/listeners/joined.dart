@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/cases/chat_functions.dart';
 import 'package:ink_mobile/messenger/cases/send_message.dart';
 import 'package:ink_mobile/messenger/listeners/message_listener.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
 import 'package:ink_mobile/messenger/models/chat/nats/invitation.dart';
 import 'package:ink_mobile/messenger/models/chat_user.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
@@ -68,9 +68,10 @@ class ChatJoinedListener extends MessageListener {
       final generateMessage = GetIt.I<SendMessage>().joinedLeftMessage(
         chatId: chat.id,
         userName: user.name,
-        type: MessageType.UserJoined,
+        type: StoredMessageType.USER_JOINED,
         timestampUtc: message.timestamp,
         userId: user.id,
+        sequence: message.sequence.toInt()
       );
 
       if (generateMessage != null) {
