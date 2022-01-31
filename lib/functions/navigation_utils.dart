@@ -9,4 +9,10 @@ class NavigationUtils {
       Navigator.of(context).maybePop();
     }
   }
+
+  void popToFirstScreenIfCan() {
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    }
+  }
 }
