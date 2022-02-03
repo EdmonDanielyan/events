@@ -3,8 +3,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Content extends StatefulWidget {
   final int viewCount;
@@ -33,12 +31,8 @@ class Content extends StatefulWidget {
 }
 
 class _ContentState extends State<Content> {
-  late AppLocalizations _strings;
-
   @override
   Widget build(BuildContext context) {
-    _strings = localizationInstance;
-
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,

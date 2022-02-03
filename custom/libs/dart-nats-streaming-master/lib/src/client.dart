@@ -513,7 +513,8 @@ class NatsStreamingClient {
 
     for (int i = 1; i <= 10; i++) {
       var tryToSubscribeResponse = await tryToSubscribe(subscriptionRequest);
-      if (tryToSubscribeResponse != null && !_subscriptionInboxes.contains(tryToSubscribeResponse.ackInbox)) {
+      if (tryToSubscribeResponse != null &&
+          !_subscriptionInboxes.contains(tryToSubscribeResponse.ackInbox)) {
         SubscriptionResponse subscriptionResponse = tryToSubscribeResponse;
         _logger.finest(() =>
             'ACK INBOX - $subject - ${subscriptionResponse.ackInbox} WITH POSITION - $startPosition AND SEQUENCE - $startSequence');
@@ -551,7 +552,8 @@ class NatsStreamingClient {
 
       return subscriptionResponse;
     } catch (e, s) {
-      _logger.severe('Error for channel ${subscriptionRequest.subject}: $e', e, s);
+      _logger.severe(
+          'Error for channel ${subscriptionRequest.subject}: $e', e, s);
     }
     return null;
   }
@@ -560,7 +562,6 @@ class NatsStreamingClient {
 
   bool acknowledge(Subscription subscription, DataMessage dataMessage,
       {Function(Subscription, DataMessage)? unacknowledgedMessageHandler}) {
-
     if (!_client.connected) return false;
 
     Ack ack = Ack()
@@ -569,7 +570,8 @@ class NatsStreamingClient {
 
     bool ackSendSuccess = false;
     try {
-      ackSendSuccess = natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
+      ackSendSuccess =
+          natsClient.pub(subscription.ackInbox, ack.writeToBuffer());
       if (!ackSendSuccess) {
         _logger.warning('ACK failed');
       }
@@ -589,35 +591,19 @@ class NatsStreamingClient {
     return true;
   }
 
-  void _handleAckErrors(Subscription subscription, DataMessage dataMessage, bool ackSendResult) {
+  void _handleAckErrors(
+      Subscription subscription, DataMessage dataMessage, bool ackSendResult) {
     final channel = subscription.subject;
     if (subscription.redeliveryCounter >= LIMIT_REDELIVERY) {
       _logger.warning(() =>
-      'CLOSED $channel after $LIMIT_REDELIVERY unacknowledged messages to prevent possible forever redelivering');
+          'CLOSED $channel after $LIMIT_REDELIVERY unacknowledged messages to prevent possible forever redelivering');
     }
 
     if (!ackSendResult) {
-      _logger.warning(() =>
-      'CLOSED $channel because error during ACK send');
+      _logger.warning(() => 'CLOSED $channel because error during ACK send');
     }
     subscription.subscription.close();
     natsClient.unSub(subscription.subscription);
     return;
-    _logger.warning('Resubscribing ${subscription.subject}');
-    subscribe(
-      subject: subscription.subscriptionRequest.subject,
-      maxInFlight: subscription.subscriptionRequest.maxInFlight,
-      ackWaitSeconds: subscription.subscriptionRequest.ackWaitInSecs,
-      startPosition: subscription.subscriptionRequest.startPosition,
-      durableName: subscription.subscriptionRequest.durableName,
-      startSequence: dataMessage.sequence,
-      queueGroup: subscription.subscriptionRequest.qGroup,
-      startTimeDelta: subscription.subscriptionRequest.startTimeDelta,
-    ).then((newSubscription) {
-        newSubscription.redeliveryCounter;
-        subscription.listeners.forEach((onDataFunc) {
-          newSubscription.listen(onDataFunc);
-        });
-    });
   }
 }

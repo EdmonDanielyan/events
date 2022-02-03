@@ -1,4 +1,3 @@
-
 import 'package:dart_nats_streaming/dart_nats_streaming.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/foundation.dart';
@@ -38,7 +37,8 @@ class ChannelsRegistry with Loggable {
 
     if (listener != null) return listener;
 
-    return sl.get<MessageListener>(instanceName: "Online") as UserOnlineListener;
+    return sl.get<MessageListener>(instanceName: "Online")
+        as UserOnlineListener;
   }
 
   ChatJoinedListener get chatJoinedListener =>
@@ -129,23 +129,21 @@ class ChannelsRegistry with Loggable {
 
     if (channels.isNotEmpty) {
       for (final channel in channels) {
-        Int64 sequence = Int64.fromInts(0, channel.sequence);
         await _subscribeToChannel(
           channel.id,
-          startSequence: sequence,
+          startSequence: getSequence(channel.sequence),
         );
       }
     }
   }
 
-  Int64 strToSequence(String sequence) {
-    Int64 currentSeq = Int64.parseInt(sequence).toInt64();
-    return currentSeq == 0 ? currentSeq : currentSeq + 1;
+  Int64 getSequence(int sequence) {
+    return Int64.fromInts(0, sequence == 0 ? sequence : sequence + 1);
   }
 
   Future<void> onChannelMessage(String channel, NatsMessage message) async {
     PayloadType type = message.type;
-    if (type == PayloadType.system){
+    if (type == PayloadType.system) {
       var messageType = (message.payload as SystemPayload).type;
       var listener = listeners[messageType];
       if (listener == null) {
@@ -229,12 +227,11 @@ class ChannelsRegistry with Loggable {
           final channelTable = await channelFunctions.saveByChannelName(channel,
               sequence: sequence);
           if (channelTable != null) {
-            await _subscribeToChannel(channelTable.id,
-                startSequence: sequence);
+            await _subscribeToChannel(channelTable.id, startSequence: sequence);
           }
         } else {
           await _subscribeToChannel(channelExists.id,
-              startSequence: Int64.fromInts(0, channelExists.sequence));
+              startSequence: getSequence(channelExists.sequence));
         }
       }
     }
