@@ -8,6 +8,7 @@ import 'package:ink_mobile/cubit/birthdays/birthdays_cubit.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart';
 import 'package:ink_mobile/cubit/events_list/events_list_cubit.dart';
 import 'package:ink_mobile/cubit/learning_materials_list/learning_materials_list_cubit.dart';
+import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
@@ -54,7 +55,9 @@ import 'package:ink_mobile/setup.dart';
 
 class MainRoutes {
   static Map<String, Widget Function(BuildContext)> routes = {
-    '/init': (BuildContext context) => InitPage(cubit: sl()..load(),),
+    '/init': (BuildContext context) => InitPage(
+          cubit: sl()..load(),
+        ),
     '/app_layer': (BuildContext context) => AppLayerScreen(
           newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
         ),
@@ -72,9 +75,11 @@ class MainRoutes {
         logFile: sl(instanceName: "logFile")),
     '/news_detail': (BuildContext context) => NewsDetailScreen(
           newsDetailCubit: sl<NewsDetailCubit>(),
+          newsBlockCubit: sl<NewsBlockCubit>(),
         ),
     '/news_comment': (BuildContext context) => NewsCommentScreen(
           newsCommentsCubit: sl<NewsCommentsCubit>(),
+          newsBlockCubit: sl<NewsBlockCubit>(),
         ),
     '/announcement_detail': (BuildContext context) => AnnouncementsDetailScreen(
           announcementCubit: sl<AnnouncementCubit>(),

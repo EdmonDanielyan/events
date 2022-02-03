@@ -200,7 +200,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.factory<_i38.MainPageCubit>(() => _i38.MainPageCubit());
   gh.lazySingleton<_i39.Messenger>(() => _i39.Messenger());
   gh.singleton<_i40.NewBottomNavBarCubit>(_i40.NewBottomNavBarCubit());
-  gh.factory<_i41.NewsBlockCubit>(() => _i41.NewsBlockCubit());
+  gh.singleton<_i41.NewsBlockCubit>(_i41.NewsBlockCubit());
   gh.factoryParam<_i42.NewsCommentsAddNetworkRequest, _i43.NewCommentEntities?,
           dynamic>(
       (comment, _) => _i42.NewsCommentsAddNetworkRequest(comment: comment));

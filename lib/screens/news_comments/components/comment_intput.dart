@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/constants/aseets.dart';
+import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../extensions/list_news_item_data.dart';
 
 class NewsCommentInput extends StatelessWidget {
-  NewsCommentInput({Key? key, required this.newsCommentsCubit})
+  NewsCommentInput(
+      {Key? key, required this.newsCommentsCubit, required this.newsBlockCubit})
       : super(key: key);
   static late AppLocalizations _strings;
+  final NewsBlockCubit newsBlockCubit;
   final NewsCommentsCubit newsCommentsCubit;
 
   @override
@@ -90,6 +94,13 @@ class NewsCommentInput extends StatelessWidget {
   }
 
   Future<void> _onMessageSend(BuildContext context, int id) async {
+    final getItem = newsBlockCubit.state.data.getItem(id);
+    if (getItem != null) {
+      final newItem =
+          getItem.copyWith(commentCount: (getItem.commentCount ?? 0) + 1);
+      newsBlockCubit.updateItem(newItem);
+    }
+
     await newsCommentsCubit.addComment(id).onError((error, stackTrace) {
       String errorMessage;
 

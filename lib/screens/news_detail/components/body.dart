@@ -2,16 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
+import 'package:ink_mobile/cubit/main_page/news_block_state.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_state.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/news_detail/components/content.dart';
 import 'package:ink_mobile/screens/news_detail/components/header.dart';
 import 'package:ink_mobile/screens/news_detail/components/header_info.dart';
+import '../../../extensions/list_news_item_data.dart';
 
 class Body extends StatelessWidget {
   final NewsDetailCubit newsDetailCubit;
-  const Body({Key? key, required this.newsDetailCubit}) : super(key: key);
+  final NewsBlockCubit newsBlockCubit;
+  const Body(
+      {Key? key, required this.newsDetailCubit, required this.newsBlockCubit})
+      : super(key: key);
+
+  void _onLike(NewsItemData item) {
+    final newItme = item.isLiked != null && item.isLiked!
+        ? item.copyWith(isLiked: false, likeCount: (item.likeCount ?? 1) - 1)
+        : item.copyWith(isLiked: true, likeCount: (item.likeCount ?? 0) + 1);
+    newsBlockCubit.updateItem(newItme);
+  }
+
+  void _updateWatchedCounter(NewsItemData item) {
+    newsBlockCubit.updateItem(item);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +54,8 @@ class Body extends StatelessWidget {
               {
                 NewsItemData newsItem = state.data!;
 
+                _updateWatchedCounter(newsItem);
+
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -58,14 +77,29 @@ class Body extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 22, fontWeight: FontWeight.bold),
                           )),
-                      Content(
-                        id: newsItem.id ?? 0,
-                        viewCount: newsItem.viewCount ?? 0,
-                        commentsCount: newsItem.commentCount ?? 0,
-                        likeCount: newsItem.likeCount ?? 0,
-                        text: newsItem.detailText ?? '',
-                        isLiked: newsItem.isLiked ?? false,
-                        cubit: newsDetailCubit,
+                      BlocBuilder<NewsBlockCubit, NewsBlockState>(
+                        bloc: newsBlockCubit,
+                        builder: (context, state) {
+                          final getElementFromList =
+                              state.data.getItem(newsItem.id ?? 0);
+                          return Content(
+                            onLike: () =>
+                                _onLike(getElementFromList ?? newsItem),
+                            id: newsItem.id ?? 0,
+                            viewCount: newsItem.viewCount ?? 0,
+                            commentsCount: getElementFromList != null
+                                ? getElementFromList.commentCount ?? 0
+                                : newsItem.commentCount ?? 0,
+                            likeCount: getElementFromList != null
+                                ? getElementFromList.likeCount ?? 0
+                                : (newsItem.likeCount ?? 0),
+                            text: newsItem.detailText ?? '',
+                            isLiked: getElementFromList != null
+                                ? getElementFromList.isLiked ?? false
+                                : newsItem.isLiked ?? false,
+                            cubit: newsDetailCubit,
+                          );
+                        },
                       ),
                     ],
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
+import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/news_comments/components/body.dart';
@@ -7,7 +8,9 @@ import 'package:ink_mobile/screens/news_comments/components/comment_intput.dart'
 
 class NewsCommentScreen extends StatelessWidget {
   final NewsCommentsCubit newsCommentsCubit;
-  NewsCommentScreen({Key? key, required this.newsCommentsCubit})
+  final NewsBlockCubit newsBlockCubit;
+  NewsCommentScreen(
+      {Key? key, required this.newsCommentsCubit, required this.newsBlockCubit})
       : super(key: key);
 
   @override
@@ -21,7 +24,10 @@ class NewsCommentScreen extends StatelessWidget {
           Expanded(
             child: Body(newsCommentsCubit: newsCommentsCubit),
           ),
-          NewsCommentInput(newsCommentsCubit: newsCommentsCubit),
+          NewsCommentInput(
+            newsCommentsCubit: newsCommentsCubit,
+            newsBlockCubit: newsBlockCubit,
+          ),
         ],
       ),
     );

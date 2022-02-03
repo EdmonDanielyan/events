@@ -14,6 +14,7 @@ import 'package:ink_mobile/models/custom_tab.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/guar_let_fields.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/reg_app_fields.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/user_fields.dart';
+import 'package:ink_mobile/screens/service_list/service_list_page_viewer.dart';
 import 'entities.dart';
 
 class MedicalInsuranceForm extends StatefulWidget {
@@ -162,9 +163,14 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
           return CustomCircularProgressIndicator();
         } else {
           return ServiceBtn(
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                widget.sendMedicalInsFormCubit.send(entities: entities);
+                final sent = await widget.sendMedicalInsFormCubit
+                    .send(entities: entities);
+                if (sent) {
+                  ServiceListPageViewerState.pageViewer.pageController
+                      .jumpToPage(0);
+                }
               }
             },
             txt: localizationInstance.submit,

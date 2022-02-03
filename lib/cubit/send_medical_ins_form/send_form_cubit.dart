@@ -15,7 +15,7 @@ class SendMedicalInsFormCubit extends Cubit<BtnCubitState> {
   SendMedicalInsFormCubit()
       : super(BtnCubitState(state: BtnCubitStateEnums.INITIAL));
 
-  Future<void> send({required MedicalInsuranceFormEntities entities}) async {
+  Future<bool> send({required MedicalInsuranceFormEntities entities}) async {
     emitState(newState: BtnCubitStateEnums.SENDING);
 
     try {
@@ -26,6 +26,8 @@ class SendMedicalInsFormCubit extends Cubit<BtnCubitState> {
       res.data!.success
           ? emitSuccess(res.data!.data)
           : emitError(res.data!.data);
+
+      return res.data!.success;
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 
@@ -33,6 +35,8 @@ class SendMedicalInsFormCubit extends Cubit<BtnCubitState> {
     } catch (_) {
       emitError(localizationInstance.errorOccurred);
     }
+
+    return false;
   }
 
   void emitSuccess(String msg) {

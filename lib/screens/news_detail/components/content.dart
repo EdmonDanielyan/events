@@ -3,7 +3,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
-import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -15,6 +14,7 @@ class Content extends StatefulWidget {
   final String text;
   final bool isLiked;
   final NewsDetailCubit cubit;
+  final void Function() onLike;
 
   const Content({
     Key? key,
@@ -25,6 +25,7 @@ class Content extends StatefulWidget {
     required this.text,
     required this.isLiked,
     required this.cubit,
+    required this.onLike,
   }) : super(key: key);
 
   @override
@@ -61,9 +62,8 @@ class _ContentState extends State<Content> {
             child: Row(
               children: [
                 GestureDetector(
-                  onTap: () async {
-                    await _onLike(context);
-                    setState(() {});
+                  onTap: () {
+                    widget.onLike();
                   },
                   child: Container(
                     color: Colors.white,
@@ -127,23 +127,5 @@ class _ContentState extends State<Content> {
         ],
       ),
     );
-  }
-
-  Future<void> _onLike(BuildContext context) async {
-    await widget.cubit.like(widget.id).onError((error, stackTrace) {
-      String message;
-
-      if (error is NoConnectionException) {
-        message = _strings.noConnectionError;
-      } else {
-        message = _strings.errorOccurred;
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(message),
-        duration: Duration(seconds: 1),
-      ));
-      return false;
-    });
   }
 }

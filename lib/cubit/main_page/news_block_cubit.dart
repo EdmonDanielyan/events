@@ -13,7 +13,7 @@ import 'package:dio/dio.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/extensions/get_news.dart';
 
-@injectable
+@singleton
 class NewsBlockCubit extends Cubit<NewsBlockState> {
   NewsBlockCubit() : super(NewsBlockState(type: NewsBlockStateType.LOADING));
 
@@ -36,6 +36,20 @@ class NewsBlockCubit extends Cubit<NewsBlockState> {
     } on Exception catch (_) {
       emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
+    }
+  }
+
+  void updateItem(NewsItemData newItem) {
+    if (state.data != null) {
+      List<NewsItemData> items = [];
+      for (final item in state.data!) {
+        if (item.id == newItem.id) {
+          items.add(newItem);
+        } else {
+          items.add(item);
+        }
+      }
+      emitSuccess(items);
     }
   }
 

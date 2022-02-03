@@ -18,7 +18,7 @@ class SendReferenceFormCubit extends Cubit<BtnCubitState> {
   SendReferenceFormCubit()
       : super(BtnCubitState(state: BtnCubitStateEnums.INITIAL));
 
-  Future<void> send(
+  Future<bool> send(
       {required ReferencesFormEntities entities,
       required ReferencesItem referencesItem,
       required DeliveryItem deliveryItem}) async {
@@ -36,6 +36,8 @@ class SendReferenceFormCubit extends Cubit<BtnCubitState> {
       res.data!.success
           ? emitSuccess(res.data!.data)
           : emitError(res.data!.data);
+
+      return res.data!.success;
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 
@@ -43,6 +45,8 @@ class SendReferenceFormCubit extends Cubit<BtnCubitState> {
     } catch (_) {
       emitError(localizationInstance.errorOccurred);
     }
+
+    return false;
   }
 
   void emitSuccess(String msg) {

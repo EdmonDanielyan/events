@@ -24,6 +24,7 @@ import 'package:ink_mobile/models/references/delivery_list.dart';
 import 'package:ink_mobile/models/references/reference_list.dart';
 import 'package:ink_mobile/screens/references/components/form/entities.dart';
 import 'package:ink_mobile/screens/references/components/form/validator.dart';
+import 'package:ink_mobile/screens/service_list/service_list_page_viewer.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ReferencesForm extends StatefulWidget {
@@ -214,9 +215,8 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget contactPhoneWidget() {
     MaskTextInputFormatter mask = TextFieldMasks().phone;
     return ServiceTextField(
-      hint: _strings.contactPhone,
-      validator: (val) =>
-          !mask.isFill() || val!.isEmpty ? _strings.fillTheField : null,
+      hint: "+7 (ххх) xxx-xx-xx",
+      validator: (val) => val!.length < 17 ? _strings.fillTheField : null,
       onChanged: (val) => entities.phone = val,
       keyboardType: TextInputType.phone,
       inputFormatters: [mask],
@@ -282,9 +282,8 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget toProvideInWidget() {
     return ServiceTextField(
       hint: _strings.toSubmitFor,
-      validator: (val) => val!.length < 8 ? _strings.fillTheField : null,
+      validator: (val) => val!.length < 2 ? _strings.fillTheField : null,
       onChanged: (val) => entities.toProvideIn = val,
-      inputFormatters: [InputFormatters().lettersOnly],
     );
   }
 
@@ -343,13 +342,18 @@ class _ReferencesFormState extends State<ReferencesForm> {
           return CustomCircularProgressIndicator();
         } else {
           return ServiceBtn(
-            onPressed: () {
+            onPressed: () async {
               if (validatorMixin.validateForm(context, entities)) {
-                widget.sendReferenceFormCubit.send(
+                final sent = await widget.sendReferenceFormCubit.send(
                   entities: entities,
                   referencesItem: currentReferenceItem,
                   deliveryItem: deliveryItem!,
                 );
+
+                if (sent) {
+                  ServiceListPageViewerState.pageViewer.pageController
+                      .jumpToPage(0);
+                }
               }
             },
             txt: _strings.order,
