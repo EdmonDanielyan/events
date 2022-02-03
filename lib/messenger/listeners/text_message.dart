@@ -57,11 +57,11 @@ class TextMessageListener extends MessageListener {
             : fields.message.sentStatus,
       );
 
-          final messageExists =
-              await chatDatabaseCubit.db.selectMessageById(newMessage.id);
+      final messageExists =
+          await chatDatabaseCubit.db.selectMessageById(newMessage.id);
 
-          if (messageExists != null) {
-            logger.finest(() => '''
+      if (messageExists != null) {
+        logger.finest(() => '''
         MESSAGE EXISTS
         message: $newMessage
         timestamp: ${message.timestamp}
@@ -104,7 +104,7 @@ class TextMessageListener extends MessageListener {
       ChatTable? chatFromDb =
           await chatDatabaseCubit.db.selectChatById(chat.id);
 
-      if (!isChatOpened && (chatFromDb?.notificationsOn ?? true) ) {
+      if (!isChatOpened && (chatFromDb?.notificationsOn ?? true)) {
         var localNotificationsProvider = sl<LocalNotificationsProvider>();
         localNotificationsProvider.showNotification(
           user.name,

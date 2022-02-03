@@ -569,6 +569,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
   final StoredMessageType type;
   final DateTime? timestamp;
   final int? sequence;
+  final String? messageToLower;
   MessageTable(
       {required this.id,
       required this.userId,
@@ -580,7 +581,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       required this.read,
       required this.type,
       this.timestamp,
-      this.sequence});
+      this.sequence,
+      this.messageToLower});
   factory MessageTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -607,6 +609,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}timestamp']),
       sequence: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}sequence']),
+      messageToLower: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}message_to_lower']),
     );
   }
   @override
@@ -638,6 +642,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
     if (!nullToAbsent || sequence != null) {
       map['sequence'] = Variable<int?>(sequence);
     }
+    if (!nullToAbsent || messageToLower != null) {
+      map['message_to_lower'] = Variable<String?>(messageToLower);
+    }
     return map;
   }
 
@@ -660,6 +667,9 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       sequence: sequence == null && nullToAbsent
           ? const Value.absent()
           : Value(sequence),
+      messageToLower: messageToLower == null && nullToAbsent
+          ? const Value.absent()
+          : Value(messageToLower),
     );
   }
 
@@ -678,6 +688,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       type: serializer.fromJson<StoredMessageType>(json['type']),
       timestamp: serializer.fromJson<DateTime?>(json['timestamp']),
       sequence: serializer.fromJson<int?>(json['sequence']),
+      messageToLower: serializer.fromJson<String?>(json['messageToLower']),
     );
   }
   @override
@@ -695,6 +706,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       'type': serializer.toJson<StoredMessageType>(type),
       'timestamp': serializer.toJson<DateTime?>(timestamp),
       'sequence': serializer.toJson<int?>(sequence),
+      'messageToLower': serializer.toJson<String?>(messageToLower),
     };
   }
 
@@ -709,7 +721,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           bool? read,
           StoredMessageType? type,
           DateTime? timestamp,
-          int? sequence}) =>
+          int? sequence,
+          String? messageToLower}) =>
       MessageTable(
         id: id ?? this.id,
         userId: userId ?? this.userId,
@@ -722,6 +735,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
         type: type ?? this.type,
         timestamp: timestamp ?? this.timestamp,
         sequence: sequence ?? this.sequence,
+        messageToLower: messageToLower ?? this.messageToLower,
       );
   @override
   String toString() {
@@ -736,14 +750,26 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           ..write('read: $read, ')
           ..write('type: $type, ')
           ..write('timestamp: $timestamp, ')
-          ..write('sequence: $sequence')
+          ..write('sequence: $sequence, ')
+          ..write('messageToLower: $messageToLower')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, userId, chatId, message, repliedMessageId,
-      sentStatus, actionsStatus, read, type, timestamp, sequence);
+  int get hashCode => Object.hash(
+      id,
+      userId,
+      chatId,
+      message,
+      repliedMessageId,
+      sentStatus,
+      actionsStatus,
+      read,
+      type,
+      timestamp,
+      sequence,
+      messageToLower);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -758,7 +784,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           other.read == this.read &&
           other.type == this.type &&
           other.timestamp == this.timestamp &&
-          other.sequence == this.sequence);
+          other.sequence == this.sequence &&
+          other.messageToLower == this.messageToLower);
 }
 
 class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
@@ -773,6 +800,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
   final Value<StoredMessageType> type;
   final Value<DateTime?> timestamp;
   final Value<int?> sequence;
+  final Value<String?> messageToLower;
   const MessageTablesCompanion({
     this.id = const Value.absent(),
     this.userId = const Value.absent(),
@@ -785,6 +813,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     this.type = const Value.absent(),
     this.timestamp = const Value.absent(),
     this.sequence = const Value.absent(),
+    this.messageToLower = const Value.absent(),
   });
   MessageTablesCompanion.insert({
     required String id,
@@ -798,6 +827,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     required StoredMessageType type,
     this.timestamp = const Value.absent(),
     this.sequence = const Value.absent(),
+    this.messageToLower = const Value.absent(),
   })  : id = Value(id),
         userId = Value(userId),
         chatId = Value(chatId),
@@ -817,6 +847,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     Expression<StoredMessageType>? type,
     Expression<DateTime?>? timestamp,
     Expression<int?>? sequence,
+    Expression<String?>? messageToLower,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -830,6 +861,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       if (type != null) 'type': type,
       if (timestamp != null) 'timestamp': timestamp,
       if (sequence != null) 'sequence': sequence,
+      if (messageToLower != null) 'message_to_lower': messageToLower,
     });
   }
 
@@ -844,7 +876,8 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       Value<bool>? read,
       Value<StoredMessageType>? type,
       Value<DateTime?>? timestamp,
-      Value<int?>? sequence}) {
+      Value<int?>? sequence,
+      Value<String?>? messageToLower}) {
     return MessageTablesCompanion(
       id: id ?? this.id,
       userId: userId ?? this.userId,
@@ -857,6 +890,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       type: type ?? this.type,
       timestamp: timestamp ?? this.timestamp,
       sequence: sequence ?? this.sequence,
+      messageToLower: messageToLower ?? this.messageToLower,
     );
   }
 
@@ -900,6 +934,9 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     if (sequence.present) {
       map['sequence'] = Variable<int?>(sequence.value);
     }
+    if (messageToLower.present) {
+      map['message_to_lower'] = Variable<String?>(messageToLower.value);
+    }
     return map;
   }
 
@@ -916,7 +953,8 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
           ..write('read: $read, ')
           ..write('type: $type, ')
           ..write('timestamp: $timestamp, ')
-          ..write('sequence: $sequence')
+          ..write('sequence: $sequence, ')
+          ..write('messageToLower: $messageToLower')
           ..write(')'))
         .toString();
   }
@@ -995,6 +1033,14 @@ class $MessageTablesTable extends MessageTables
       type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
+  final VerificationMeta _messageToLowerMeta =
+      const VerificationMeta('messageToLower');
+  @override
+  late final GeneratedColumn<String?> messageToLower = GeneratedColumn<String?>(
+      'message_to_lower', aliasedName, true,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      defaultValue: Constant(""));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -1007,7 +1053,8 @@ class $MessageTablesTable extends MessageTables
         read,
         type,
         timestamp,
-        sequence
+        sequence,
+        messageToLower
       ];
   @override
   String get aliasedName => _alias ?? 'message_tables';
@@ -1061,6 +1108,12 @@ class $MessageTablesTable extends MessageTables
     if (data.containsKey('sequence')) {
       context.handle(_sequenceMeta,
           sequence.isAcceptableOrUnknown(data['sequence']!, _sequenceMeta));
+    }
+    if (data.containsKey('message_to_lower')) {
+      context.handle(
+          _messageToLowerMeta,
+          messageToLower.isAcceptableOrUnknown(
+              data['message_to_lower']!, _messageToLowerMeta));
     }
     return context;
   }

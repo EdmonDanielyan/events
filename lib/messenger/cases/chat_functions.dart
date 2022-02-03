@@ -45,8 +45,10 @@ class ChatFunctions {
     chatDatabaseCubit.db.deleteChatById(chatId);
   }
 
-  void updateChat(ChatTable chat) {
-    chatDatabaseCubit.setSelectedChat(chat);
+  void updateChat(ChatTable chat, {bool setSelectedChat = false}) {
+    if (setSelectedChat) {
+      chatDatabaseCubit.setSelectedChat(chat);
+    }
     chatDatabaseCubit.db.updateChatById(chat.id, chat);
     var topic = messenger.natsProvider.getChatChannelById(chat.id);
     if (chat.notificationsOn ?? true) {
@@ -63,17 +65,15 @@ class ChatFunctions {
   }
 
   Future<void> messagesToRead(MessageTable message,
-      {required bool onlyIfMyMessages,
-      bool readStatus = true}) async {
+      {required bool onlyIfMyMessages, bool readStatus = true}) async {
     bool setRead = true;
     if (onlyIfMyMessages && message.userId != JwtPayload.myId) {
       setRead = false;
     }
 
     if (setRead) {
-      await chatDatabaseCubit.db.updateMessagesReadStatus(message,
-          onlyIfMyMessages ? 0 : JwtPayload.myId,
-          readStatus);
+      await chatDatabaseCubit.db.updateMessagesReadStatus(
+          message, onlyIfMyMessages ? 0 : JwtPayload.myId, readStatus);
     }
   }
 
@@ -94,8 +94,13 @@ class ChatFunctions {
         await chatDatabaseCubit.db.selectMessageByChatIdInSeqOrder(chat.id);
 
     if (lastMessageSeq != null) {
-      updateChat(chat.copyWith(
-          updatedAt: DateTime.now(), lastMessageSeq: lastMessageSeq.sequence));
+      updateChat(
+        chat.copyWith(
+          updatedAt: DateTime.now(),
+          lastMessageSeq: lastMessageSeq.sequence,
+          notificationsOn: true,
+        ),
+      );
     }
     deleteAllChatMessages(chat.id);
     await messenger.chatSaver.saveChats(newChat: null);

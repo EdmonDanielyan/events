@@ -105,7 +105,8 @@ class _ChatListTileState extends State<ChatListTile> {
                           SizedBox(width: 2.0),
                           if (hasMessage) ...[
                             ChatDate(
-                              chatDate: lastMessage?.timestamp ?? DateTime.now(),
+                              chatDate:
+                                  lastMessage?.timestamp ?? DateTime.now(),
                             ),
                           ],
                         ],
@@ -120,7 +121,8 @@ class _ChatListTileState extends State<ChatListTile> {
                             ),
                             if (widget.messagesWithUser.length > 0) ...[
                               ChatMessageTrailing(
-                                  showUnread: widget.chat.unreadCounterOn ?? true,
+                                  showUnread:
+                                      widget.chat.unreadCounterOn ?? true,
                                   messagesWithUser: widget.messagesWithUser),
                             ],
                           ],

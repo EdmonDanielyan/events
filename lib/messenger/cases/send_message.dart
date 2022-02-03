@@ -11,7 +11,6 @@ import 'package:ink_mobile/messenger/screens/chat/entities/form_entities.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:uuid/uuid.dart';
 
-
 @injectable
 class SendMessage with Loggable {
   final ChatDatabaseCubit chatDatabaseCubit;
@@ -35,6 +34,7 @@ class SendMessage with Loggable {
       id: generateMessageId,
       chatId: chatId,
       message: message,
+      messageToLower: message.toLowerCase(),
       userId: userId ?? JwtPayload.myId,
       read: false,
       sentStatus: status,
@@ -92,14 +92,13 @@ class SendMessage with Loggable {
     await chatDatabaseCubit.db.insertMultipleMessages(messages);
   }
 
-  MessageTable? joinedLeftMessage({
-    required String chatId,
-    required String userName,
-    required StoredMessageType type,
-    required DateTime timestampUtc,
-    required int userId,
-    required int sequence
-  }) {
+  MessageTable? joinedLeftMessage(
+      {required String chatId,
+      required String userName,
+      required StoredMessageType type,
+      required DateTime timestampUtc,
+      required int userId,
+      required int sequence}) {
     bool isJoined = type == StoredMessageType.USER_JOINED;
     bool isLeft = type == StoredMessageType.USER_LEFT;
     if (isJoined || isLeft) {
@@ -109,16 +108,13 @@ class SendMessage with Loggable {
 
       final text = "$userName $action";
 
-      return _generateMessage(
-        chatId,
-        text,
-        type: type,
-        timestamp: timestampUtc,
-        userId: userId,
-        sequence: sequence,
-        actionsStatus: MessageActions.EMPTY,
-        status: MessageSentStatus.EMPTY
-      );
+      return _generateMessage(chatId, text,
+          type: type,
+          timestamp: timestampUtc,
+          userId: userId,
+          sequence: sequence,
+          actionsStatus: MessageActions.EMPTY,
+          status: MessageSentStatus.EMPTY);
     }
     return null;
   }

@@ -59,7 +59,8 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   Stream<ChatTable> watchChatById(String id) =>
       (select(chatTables)..where((tbl) => tbl.id.equals(id))).watchSingle();
 
-  Future<int> insertChat(ChatTable chat) => into(chatTables).insert(chat);
+  Future<int> insertChat(ChatTable chat) =>
+      into(chatTables).insert(chat, mode: InsertMode.insertOrReplace);
 
   Future<void> insertMultipleChats(List<ChatTable> chats) async {
     await batch((batch) {
@@ -168,12 +169,11 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   Future<MessageTable?> searchMessageByText(String query) =>
       (select(messageTables)..where((tbl) => tbl.message.contains(query)))
           .getSingleOrNull();
-
   Future<MessageTable?> searchMessageByTextAndChatId(
           String query, String chatId) =>
       (select(messageTables)
             ..where((tbl) =>
-                tbl.message.lower().contains(query) & tbl.chatId.equals(chatId))
+                tbl.messageToLower.contains(query) & tbl.chatId.equals(chatId))
             ..orderBy([
               (t) =>
                   OrderingTerm(expression: t.sequence, mode: OrderingMode.desc),
@@ -272,7 +272,8 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   //USER
   Future<List<UserTable>> getAllUsers() => select(userTables).get();
 
-  Future<int> insertUser(UserTable user) => into(userTables).insert(user);
+  Future<int> insertUser(UserTable user) =>
+      into(userTables).insert(user, mode: InsertMode.insertOrReplace);
 
   Future<void> insertMultipleUsers(List<UserTable> users) async {
     await batch((batch) {
@@ -302,7 +303,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           .getSingleOrNull();
 
   Future<int> insertChannel(ChannelTable channel) =>
-      into(channelTables).insert(channel);
+      into(channelTables).insert(channel, mode: InsertMode.insertOrReplace);
 
   Future<int> updateChannelById(String id, ChannelTable channel) =>
       (update(channelTables)..where((tbl) => tbl.id.equals(id))).write(channel);
@@ -315,7 +316,8 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
       select(participantTables).get();
 
   Future<int> insertParticipant(ParticipantTable participant) =>
-      into(participantTables).insert(participant);
+      into(participantTables)
+          .insert(participant, mode: InsertMode.insertOrReplace);
 
   Future<void> insertMultipleParticipants(
       List<ParticipantTable> participants) async {
@@ -373,7 +375,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
-  int get schemaVersion => 39;
+  int get schemaVersion => 40;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

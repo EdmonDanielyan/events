@@ -97,7 +97,7 @@ class ChatInfoDataSection extends StatelessWidget {
           onTap: () {
             final chat = selectedChat.copyWith(
                 notificationsOn: !(selectedChat.notificationsOn ?? true));
-            messenger.chatFunctions.updateChat(chat);
+            messenger.chatFunctions.updateChat(chat, setSelectedChat: true);
           },
           icon: Container(
             padding: const EdgeInsets.all(2.0),
@@ -137,7 +137,7 @@ class ChatInfoDataSection extends StatelessWidget {
             final chat = selectedChat.copyWith(
                 updatedAt: DateTime.now(),
                 unreadCounterOn: !(selectedChat.unreadCounterOn ?? true));
-            messenger.chatFunctions.updateChat(chat);
+            messenger.chatFunctions.updateChat(chat, setSelectedChat: true);
           },
           //Можно было бы найти иконку по стилю каунтера
           icon: SizedBox(

@@ -26,6 +26,8 @@ class MessageTables extends Table {
 
   IntColumn get sequence =>
       integer().nullable().withDefault(const Constant(0))();
+  TextColumn get messageToLower =>
+      text().nullable().withDefault(Constant(""))();
 
   @override
   Set<Column> get primaryKey => {id, chatId};

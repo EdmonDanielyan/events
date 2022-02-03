@@ -7,7 +7,6 @@ import 'package:ink_mobile/messenger/models/chat/database/model/message_with_use
 import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
 import 'package:ink_mobile/models/token.dart';
 
-
 class MessageListView {
   static List<StoredMessageType> notIgnoringHoverTypes = [
     StoredMessageType.TEXT,
@@ -82,7 +81,8 @@ class MessageListView {
 
   static int unreadMessagesByMessageWithUser(List<MessageWithUser> items) =>
       items.fold(0, (previousValue, element) {
-        return !element.message!.read && notIgnoringHoverTypes.contains(element.message?.type) &&
+        return !element.message!.read &&
+                notIgnoringHoverTypes.contains(element.message?.type) &&
                 !element.message!.isByMe()
             ? previousValue + 1
             : previousValue + 0;
@@ -90,7 +90,9 @@ class MessageListView {
 
   static int unreadMessagesByMessages(List<MessageTable> items) =>
       items.fold(0, (previousValue, element) {
-        return !element.read && notIgnoringHoverTypes.contains(element.type) && !element.isByMe()
+        return !element.read &&
+                notIgnoringHoverTypes.contains(element.type) &&
+                !element.isByMe()
             ? previousValue + 1
             : previousValue + 0;
       });
@@ -109,7 +111,9 @@ class MessageListView {
 
   static MessageTable editMessage(MessageTable message, String txt) {
     return message.copyWith(
-        message: txt, actionsStatus: MessageActions.EDITED);
+        message: txt,
+        messageToLower: txt.toLowerCase(),
+        actionsStatus: MessageActions.EDITED);
   }
 
   static MessageTable renewMessage(
@@ -129,27 +133,25 @@ class MessageListView {
 
     if (newChat != null) newMessage = newMessage.copyWith(chatId: newChat.id);
 
-    if (forwarded != null) newMessage = newMessage.copyWith(actionsStatus: MessageActions.FORWARDED);
+    if (forwarded != null)
+      newMessage = newMessage.copyWith(actionsStatus: MessageActions.FORWARDED);
 
     return newMessage;
   }
 
   static MessageTable? oppositeNotReadMessage(List<MessageTable> items) {
-    return items.lastWhereOrNull(
-        (element) => !element.isByMe() && !element.read);
+    return items
+        .lastWhereOrNull((element) => !element.isByMe() && !element.read);
   }
 
   static List<MessageTable> oppositeNotReadMessages(List<MessageTable> items) {
     return items
-        .where((element) =>
-            !element.isByMe() && !element.read)
+        .where((element) => !element.isByMe() && !element.read)
         .toList();
   }
 
   static List<MessageTable> notReadMessages(List<MessageTable> items) {
-    return items
-        .where((element) => !element.read)
-        .toList();
+    return items.where((element) => !element.read).toList();
   }
 
   static String listMessagesToString(List<MessageTable> messages) {
