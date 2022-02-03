@@ -7,7 +7,7 @@ import 'package:ink_mobile/messenger/models/chat/database/model/message_with_use
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/models/user_data.dart';
-
+import 'package:remove_emoji/remove_emoji.dart';
 
 class ChatUserViewModel {
   static bool isAdmin(UserTable user, List<UserTable> admins) {
@@ -126,7 +126,7 @@ class ChatUserViewModel {
   }
 
   static String cutName(String name) {
-    String newName = name;
+    String newName = name.removemoji;
     final splitName = newName.split(" ");
     if (splitName.length >= 2 &&
         splitName[0].length > 1 &&

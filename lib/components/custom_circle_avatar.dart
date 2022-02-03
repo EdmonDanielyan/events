@@ -79,7 +79,10 @@ class CustomCircleAvatar extends StatelessWidget {
           ? null
           : Text(
               ChatUserViewModel.cutName(name).toUpperCase(),
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Noto",
+              ),
             ),
     );
   }

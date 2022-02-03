@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/components/highlight_text.dart';
+import 'package:substring_highlight/substring_highlight.dart';
 
 class ChatName extends StatelessWidget {
   final String name;
@@ -12,18 +12,18 @@ class ChatName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HighlightText(
-      txt: name,
-      highlightTxt: highlightValue,
-      showRegularIfEmpty: true,
+    return SubstringHighlight(
+      text: name,
+      maxLines: 1,
+      term: highlightValue,
       textStyle: TextStyle(
         fontSize: 15.0,
         fontWeight: FontWeight.bold,
         color: Colors.black,
         fontFamily: "Noto",
       ),
+      textStyleHighlight: const TextStyle(color: Colors.blue),
       overflow: TextOverflow.ellipsis,
-      maxLines: 1,
     );
   }
 }

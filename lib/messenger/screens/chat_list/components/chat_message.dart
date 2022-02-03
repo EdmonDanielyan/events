@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/highlight_text.dart';
+import 'package:substring_highlight/substring_highlight.dart';
 
 class ChatMessage extends StatelessWidget {
   final String message;
@@ -31,16 +32,17 @@ class ChatMessage extends StatelessWidget {
           ),
           SizedBox(height: 3.0),
         ],
-        Text(
-          message,
-          // highlightTxt: highlightValue,
-          style: TextStyle(
+        SubstringHighlight(
+          text: message,
+          maxLines: 2,
+          term: highlightValue,
+          textStyle: TextStyle(
             fontSize: 14.0,
             color: Colors.grey[700],
             fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
           ),
+          textStyleHighlight: const TextStyle(color: Colors.blue),
           overflow: TextOverflow.ellipsis,
-          maxLines: 2,
         ),
       ],
     );
