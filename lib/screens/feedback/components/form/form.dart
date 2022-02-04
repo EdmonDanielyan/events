@@ -111,7 +111,8 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
         return IgnorePointer(
           ignoring: state.data.length < 1,
           child: ServiceSelectFieldCubit(
-            hint: localizationInstance.topic,
+            hint:
+                "${localizationInstance.topic} (${localizationInstance.markMultiple})",
             cubit: selectfieldCubit,
             items: getItems,
             validator: (_) => _validator.toWhomValidator(entities.toWhom),

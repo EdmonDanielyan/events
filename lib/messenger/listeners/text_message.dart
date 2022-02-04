@@ -104,7 +104,9 @@ class TextMessageListener extends MessageListener {
       ChatTable? chatFromDb =
           await chatDatabaseCubit.db.selectChatById(chat.id);
 
-      if (!isChatOpened && (chatFromDb?.notificationsOn ?? true)) {
+      if (!isChatOpened &&
+          (chatFromDb?.notificationsOn ?? true) &&
+          chatMessage.userId != JwtPayload.myId) {
         var localNotificationsProvider = sl<LocalNotificationsProvider>();
         localNotificationsProvider.showNotification(
           user.name,
