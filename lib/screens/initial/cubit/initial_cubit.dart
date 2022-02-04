@@ -53,7 +53,7 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
           await authHandler.byPassChallenge();
         }
         await updateToken();
-        await sl<AuthHandler>().authChallenge();
+
         emitState(type: InitialStateType.LOAD_MAIN);
       } else {
         emitError(localizationInstance.applicationSecurityFailed);
