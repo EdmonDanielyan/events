@@ -14,7 +14,12 @@ class AuthHandler with Loggable {
 
   AuthHandler(this.bootCubit);
 
-  Future<void> authChallenge() async {
+  Future<void> authChallenge({bool pass = false}) async {
+    if (pass) {
+      await bootCubit.load();
+      return;
+    }
+
     for (var i = 0; i < LOCAL_AUTH_MAX_ATTEMPTS - 1; i++) {
       logger.severe("Attempting authenticate");
       if (await authenticate()) {
@@ -22,7 +27,8 @@ class AuthHandler with Loggable {
         return;
       }
     }
-    logger.severe(()=>"$LOCAL_AUTH_MAX_ATTEMPTS attempts of auth failed. Exit application");
+    logger.severe(() =>
+        "$LOCAL_AUTH_MAX_ATTEMPTS attempts of auth failed. Exit application");
     exit(0);
   }
 

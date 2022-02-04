@@ -10,6 +10,7 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/certificate_reader.dart';
 import 'package:ink_mobile/providers/security_checker.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_state.dart';
+import 'package:ink_mobile/setup.dart';
 
 @injectable
 class InitialCubit extends Cubit<InitialState> with Loggable {
@@ -44,7 +45,7 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
       if (await securityChecker.checkApplication()) {
         await certificateReader.read();
         await readRefreshToken();
-        if (await isTokenExpired()){
+        if (await isTokenExpired()) {
           logger.finest('token is expired. Updating');
           await authHandler.authChallenge();
         } else {
@@ -52,6 +53,7 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
           await authHandler.byPassChallenge();
         }
         await updateToken();
+        await sl<AuthHandler>().authChallenge();
         emitState(type: InitialStateType.LOAD_MAIN);
       } else {
         emitError(localizationInstance.applicationSecurityFailed);
@@ -61,7 +63,11 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
       emitWelcome();
     } on DioError catch (e, s) {
       logger.severe('Error during load', e, s);
-      if ( [DioErrorType.connectTimeout, DioErrorType.receiveTimeout, DioErrorType.sendTimeout].contains(e.type)) {
+      if ([
+        DioErrorType.connectTimeout,
+        DioErrorType.receiveTimeout,
+        DioErrorType.sendTimeout
+      ].contains(e.type)) {
         emitError(localizationInstance.noConnectionError);
       } else {
         emitWelcome();
