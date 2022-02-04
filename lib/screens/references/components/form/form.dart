@@ -351,6 +351,10 @@ class _ReferencesFormState extends State<ReferencesForm> {
                 );
 
                 if (sent) {
+                  setState(() {
+                    stage = 1;
+                  });
+
                   ServiceListPageViewerState.pageViewer.pageController
                       .jumpToPage(0);
                 }

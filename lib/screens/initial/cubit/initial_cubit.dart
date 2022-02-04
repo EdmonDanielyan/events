@@ -10,7 +10,6 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/certificate_reader.dart';
 import 'package:ink_mobile/providers/security_checker.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_state.dart';
-import 'package:ink_mobile/setup.dart';
 
 @injectable
 class InitialCubit extends Cubit<InitialState> with Loggable {
