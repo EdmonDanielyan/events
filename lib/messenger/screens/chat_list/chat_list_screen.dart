@@ -57,7 +57,9 @@ class ChatListScreenState extends State<ChatListScreen>
         builder: (context, state) {
           if (state.loadingChats) {
             return ChatListLoadingComponent(
-                chatDatabaseCubit: chatDatabaseCubit);
+              chatDatabaseCubit: chatDatabaseCubit,
+              length: chatDatabaseCubit.currentLoadingChatsCounter,
+            );
           }
           return const Body();
         },

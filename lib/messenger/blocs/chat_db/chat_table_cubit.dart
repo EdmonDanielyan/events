@@ -8,8 +8,14 @@ import 'package:ink_mobile/messenger/models/chat/database/model/message_with_use
 class ChatDatabaseCubit extends Cubit<ChatDatabaseCubitState> {
   ChatDatabaseCubit(ChatDatabase db) : super(ChatDatabaseCubitState(db: db));
 
+  int _loadingChats = 0;
+
   void setLoadingChats(bool loading) {
     emit(state.copyWith(loadingChats: loading));
+  }
+
+  void setLoadingChatsCounter(int chats) {
+    _loadingChats = chats;
   }
 
   void setSelectedChat(ChatTable? chat) {
@@ -40,4 +46,5 @@ class ChatDatabaseCubit extends Cubit<ChatDatabaseCubitState> {
   }
 
   String get getSelectedChatId => selectedChat != null ? selectedChat!.id : "";
+  int get currentLoadingChatsCounter => _loadingChats;
 }

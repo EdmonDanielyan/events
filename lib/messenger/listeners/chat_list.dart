@@ -60,7 +60,7 @@ class ChatListListener extends MessageListener {
       }
 
       if (dataMessage != null) {
-        if (natsProvider.acknowledge(sub, dataMessage)){
+        if (natsProvider.acknowledge(sub, dataMessage)) {
           NatsMessage message = natsProvider.parseMessage(dataMessage);
           await onMessage(channel, message);
           //todo: рано отписываемся по идеи надо прочитать самую валидную для этого клиента запись и потом отписаться
@@ -84,6 +84,7 @@ class ChatListListener extends MessageListener {
       final users = fields.users;
       final participants = fields.participants;
       final channels = fields.channels;
+      chatDatabaseCubit.setLoadingChatsCounter(chats.length);
 
       //THIS ORDER IS ESSENTIAL (DO NOT CHANGE)
       if (!await _participantsStored(participants)) {

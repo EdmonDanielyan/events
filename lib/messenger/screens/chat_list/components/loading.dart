@@ -5,7 +5,9 @@ import 'package:ink_mobile/messenger/screens/chat_list/components/search_bar.dar
 
 class ChatListLoadingComponent extends StatelessWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
-  const ChatListLoadingComponent({Key? key, required this.chatDatabaseCubit})
+  final int length;
+  const ChatListLoadingComponent(
+      {Key? key, required this.chatDatabaseCubit, this.length = 7})
       : super(key: key);
 
   @override
@@ -19,7 +21,7 @@ class ChatListLoadingComponent extends StatelessWidget {
             SearchBar(contentPadding: _contentPadding),
             Column(
                 children: List.generate(
-              7,
+              length,
               (index) => IgnorePointer(
                 child: ChatListTileShimmer(contentPadding: _contentPadding),
               ),
