@@ -6,8 +6,10 @@ void showErrorDialog(
   String title = 'Ошибка',
   List<TextButton>? actions,
 }) {
+  var buildContext = App.materialKey!.currentContext;
+  if (buildContext == null) return;
   showDialog(
-      context: App.materialKey!.currentContext!,
+      context: buildContext,
       builder: (context) {
         return AlertDialog(
           title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),

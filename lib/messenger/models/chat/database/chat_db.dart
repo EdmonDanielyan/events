@@ -2,25 +2,25 @@ import 'package:encrypted_moor/encrypted_moor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/channel.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/chat_table.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/message_table.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/participant_table.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/user_table.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/channel_schema.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/chat_table_schema.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/message_table_schema.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/participant_table_schema.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/user_table_schema.dart';
 import 'package:moor/moor.dart';
 
 import 'model/participant_with_user.dart';
-import 'tables/db_enum.dart';
 
 part 'chat_db.g.dart';
 
 @lazySingleton
 @UseMoor(tables: [
-  ChatTables,
-  MessageTables,
-  UserTables,
-  ParticipantTables,
-  ChannelTables
+  ChatTableSchema,
+  MessageTableSchema,
+  UserTableSchema,
+  ParticipantTableSchema,
+  ChannelTableSchema
 ])
 class ChatDatabase extends _$ChatDatabase with Loggable {
   ChatDatabase(@Named("localDatabasePassword") String localDatabasePassword,
@@ -35,13 +35,17 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   //CHATS
   Future<ChatTable?> selectChatById(String chatId) =>
-      (select(chatTables)..where((tbl) => tbl.id.equals(chatId)))
+      (select(chatTableSchema)..where((tbl) => tbl.id.equals(chatId)))
           .getSingleOrNull();
 
-  Future<List<ChatTable>> getAllChats() => select(chatTables).get();
+  Future<ChatTable?> selectChatByParticipantId (int participantId) =>
+      (select(chatTableSchema)..where((tbl) => tbl.participantId.equals(participantId)))
+          .getSingleOrNull();
+
+  Future<List<ChatTable>> getAllChats() => select(chatTableSchema).get();
 
   Stream<List<ChatTable>> searchChats(String query) {
-    return (select(chatTables)
+    return (select(chatTableSchema)
           ..where((tbl) => tbl.name.like('%$query%'))
           ..orderBy([
             (t) =>
@@ -50,22 +54,21 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
         .watch();
   }
 
-  Stream<List<ChatTable>> watchAllChats() => (select(chatTables)
+  Stream<List<ChatTable>> watchAllChats() => (select(chatTableSchema)
         ..orderBy([
           (t) => OrderingTerm(expression: t.updatedAt, mode: OrderingMode.desc)
         ]))
       .watch();
 
   Stream<ChatTable> watchChatById(String id) =>
-      (select(chatTables)..where((tbl) => tbl.id.equals(id))).watchSingle();
+      (select(chatTableSchema)..where((tbl) => tbl.id.equals(id))).watchSingle();
 
-  Future<int> insertChat(ChatTable chat) =>
-      into(chatTables).insert(chat, mode: InsertMode.insertOrReplace);
+  Future<int> insertChat(ChatTable chat) => into(chatTableSchema).insert(chat, mode: InsertMode.insertOrReplace);
 
   Future<void> insertMultipleChats(List<ChatTable> chats) async {
     await batch((batch) {
       batch.insertAll(
-        chatTables,
+        chatTableSchema,
         chats.map((e) => e.toCompanion(true)).toList(),
         mode: InsertMode.insertOrReplace,
       );
@@ -73,30 +76,30 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   }
 
   Future updateChatById(String id, ChatTable chat) =>
-      (update(chatTables)..where((tbl) => tbl.id.equals(id)))
+      (update(chatTableSchema)..where((tbl) => tbl.id.equals(id)))
           .write(chat)
           .catchError((_e) {
         logger.severe("Sql migration error. Please, reinstall the app.", _e);
       });
 
-  Future deleteChat(ChatTable chat) => delete(chatTables).delete(chat);
+  Future deleteChat(ChatTable chat) => delete(chatTableSchema).delete(chat);
 
   Future deleteChatById(String id) =>
-      (delete(chatTables)..where((tbl) => tbl.id.equals(id))).go();
+      (delete(chatTableSchema)..where((tbl) => tbl.id.equals(id))).go();
 
   //MESSAGES
   Stream<List<MessageTable>> watchAllMessages() =>
-      (select(messageTables)).watch();
+      (select(messageTableSchema)).watch();
 
-  Future<List<MessageTable>> getAllMessages() => select(messageTables).get();
+  Future<List<MessageTable>> getAllMessages() => select(messageTableSchema).get();
 
   Future<MessageTable?> selectMessageById(String id) =>
-      (select(messageTables)..where((tbl) => tbl.id.equals(id)))
+      (select(messageTableSchema)..where((tbl) => tbl.id.equals(id)))
           .getSingleOrNull();
 
   Future<MessageTable?> selectMessageByChatIdInOrder(
           String id, OrderingMode orderingMode) =>
-      (select(messageTables)
+      (select(messageTableSchema)
             ..where(
               (tbl) => tbl.id.equals(id),
             )
@@ -106,7 +109,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           .getSingleOrNull();
 
   Future<MessageTable?> selectMessageByChatIdInSeqOrder(String id) =>
-      (select(messageTables)
+      (select(messageTableSchema)
             ..where(
               (tbl) => tbl.chatId.equals(id),
             )
@@ -119,47 +122,47 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   Future<List<MessageTable>> selectMessagesByUserAndChatId(
           String chatId, int userId) =>
-      (select(messageTables)
+      (select(messageTableSchema)
             ..where(
                 (tbl) => tbl.chatId.equals(chatId) & tbl.userId.equals(userId)))
           .get();
 
   Future<int> updateMessageById(String id, MessageTable message) =>
-      (update(messageTables)..where((tbl) => tbl.id.equals(id))).write(message);
+      (update(messageTableSchema)..where((tbl) => tbl.id.equals(id))).write(message);
 
   Future<void> updateMessagesReadStatus(
       MessageTable message, int exceptUserId, bool read) async {
-    (update(messageTables)
+    (update(messageTableSchema)
           ..where((tbl) =>
               tbl.chatId.equals(message.chatId) &
               tbl.userId.equals(exceptUserId).not() &
               tbl.read.equals(false)))
         .write(
-      MessageTablesCompanion(read: Value(true)),
+      MessageTableSchemaCompanion(read: Value(true)),
     );
   }
 
   Future<int> countUnreadMessages(String id) async {
     var count = countAll(
-        filter: messageTables.id.equals(id) &
-            messageTables.type.isIn([
+        filter: messageTableSchema.id.equals(id) &
+            messageTableSchema.type.isIn([
               StoredMessageType.TEXT.index,
               StoredMessageType.DOCUMENT.index
             ]) &
-            messageTables.read.equals(true));
-    var res = await (selectOnly(messageTables)..addColumns([count]))
+            messageTableSchema.read.equals(true));
+    var res = await (selectOnly(messageTableSchema)..addColumns([count]))
         .map((row) => row.read(count))
         .getSingle();
     return res;
   }
 
-  Future<int> insertMessage(MessageTable messageTable) => into(messageTables)
+  Future<int> insertMessage(MessageTable messageTable) => into(messageTableSchema)
       .insert(messageTable, mode: InsertMode.insertOrReplace);
 
   Future<void> insertMultipleMessages(List<MessageTable> messages) async {
     await batch((batch) {
       batch.insertAll(
-        messageTables,
+        messageTableSchema,
         messages.map((e) => e.toCompanion(true)).toList(),
         mode: InsertMode.insertOrReplace,
       );
@@ -167,13 +170,14 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   }
 
   Future<MessageTable?> searchMessageByText(String query) =>
-      (select(messageTables)..where((tbl) => tbl.message.contains(query)))
+      (select(messageTableSchema)..where((tbl) => tbl.message.contains(query)))
           .getSingleOrNull();
+
   Future<MessageTable?> searchMessageByTextAndChatId(
           String query, String chatId) =>
-      (select(messageTables)
+      (select(messageTableSchema)
             ..where((tbl) =>
-                tbl.messageToLower.contains(query) & tbl.chatId.equals(chatId))
+                tbl.message.lower().contains(query) & tbl.chatId.equals(chatId))
             ..orderBy([
               (t) =>
                   OrderingTerm(expression: t.sequence, mode: OrderingMode.desc),
@@ -183,7 +187,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   Future<List<MessageTable>> getUnsentMessages(int userId,
           {OrderingMode orderingMode = OrderingMode.asc}) =>
-      (select(messageTables)
+      (select(messageTableSchema)
             ..where((tbl) =>
                 tbl.userId.equals(userId) &
                 (tbl.sentStatus.equals(MessageSentStatus.ERROR.index) |
@@ -196,15 +200,15 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   Stream<List<MessageWithUser>> watchChatMessages(String chatId,
       {OrderingMode orderMode = OrderingMode.asc, int? limit}) {
-    final sel = (select(messageTables)
+    final sel = (select(messageTableSchema)
           ..where((tbl) => tbl.chatId.equals(chatId)))
         .join([
-      leftOuterJoin(userTables, userTables.id.equalsExp(messageTables.userId))
+      leftOuterJoin(userTableSchema, userTableSchema.id.equalsExp(messageTableSchema.userId))
     ]);
     sel.orderBy([
       orderMode == OrderingMode.asc
-          ? OrderingTerm.asc(messageTables.sequence)
-          : OrderingTerm.desc(messageTables.sequence),
+          ? OrderingTerm.asc(messageTableSchema.sequence)
+          : OrderingTerm.desc(messageTableSchema.sequence),
     ]);
 
     if (limit != null) {
@@ -213,15 +217,15 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
     return sel.watch().map((rows) {
       return rows.map((row) {
         return MessageWithUser(
-          message: row.readTableOrNull(messageTables),
-          user: row.readTableOrNull(userTables),
+          message: row.readTableOrNull(messageTableSchema),
+          user: row.readTableOrNull(userTableSchema),
         );
       }).toList();
     });
   }
 
   Stream<List<MessageWithUser>> watchChatFilesMessages(String chatId) {
-    return (select(messageTables)
+    return (select(messageTableSchema)
           ..where((tbl) =>
               tbl.chatId.equals(chatId) & (tbl.message.contains("http")))
           ..orderBy([
@@ -229,56 +233,55 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           ]))
         .join([
           leftOuterJoin(
-              userTables, userTables.id.equalsExp(messageTables.userId))
+              userTableSchema, userTableSchema.id.equalsExp(messageTableSchema.userId))
         ])
         .watch()
         .map((rows) {
           return rows.map((row) {
             return MessageWithUser(
-              message: row.readTableOrNull(messageTables),
-              user: row.readTableOrNull(userTables),
+              message: row.readTableOrNull(messageTableSchema),
+              user: row.readTableOrNull(userTableSchema),
             );
           }).toList();
         });
   }
 
   Future<List<MessageWithUser>> getChatMessages(String chatId) async {
-    return await (select(messageTables)
+    return await (select(messageTableSchema)
           ..where((tbl) => tbl.chatId.equals(chatId))
           ..orderBy([
             (t) => OrderingTerm(expression: t.timestamp, mode: OrderingMode.asc)
           ]))
         .join([
           leftOuterJoin(
-              userTables, userTables.id.equalsExp(messageTables.userId))
+              userTableSchema, userTableSchema.id.equalsExp(messageTableSchema.userId))
         ])
         .get()
         .then((rows) {
           return rows.map((row) {
             return MessageWithUser(
-              message: row.readTableOrNull(messageTables),
-              user: row.readTableOrNull(userTables),
+              message: row.readTableOrNull(messageTableSchema),
+              user: row.readTableOrNull(userTableSchema),
             );
           }).toList();
         });
   }
 
   Future deleteMessagesByChatId(String chatId) =>
-      (delete(messageTables)..where((tbl) => tbl.chatId.equals(chatId))).go();
+      (delete(messageTableSchema)..where((tbl) => tbl.chatId.equals(chatId))).go();
 
   Future deleteMessageById(String id) =>
-      (delete(messageTables)..where((tbl) => tbl.id.equals(id))).go();
+      (delete(messageTableSchema)..where((tbl) => tbl.id.equals(id))).go();
 
   //USER
-  Future<List<UserTable>> getAllUsers() => select(userTables).get();
+  Future<List<UserTable>> getAllUsers() => select(userTableSchema).get();
 
-  Future<int> insertUser(UserTable user) =>
-      into(userTables).insert(user, mode: InsertMode.insertOrReplace);
+  Future<int> insertUserOrUpdate(UserTable user) => into(userTableSchema).insert(user, mode: InsertMode.insertOrReplace);
 
   Future<void> insertMultipleUsers(List<UserTable> users) async {
     await batch((batch) {
       batch.insertAll(
-        userTables,
+        userTableSchema,
         users.map((e) => e.toCompanion(true)).toList(),
         mode: InsertMode.insertOrReplace,
       );
@@ -286,44 +289,55 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   }
 
   Future<int> updateUser(int id, UserTable user) =>
-      (update(userTables)..where((tbl) => tbl.id.equals(id))).write(user);
+      (update(userTableSchema)..where((tbl) => tbl.id.equals(id))).write(user);
 
   Future<UserTable?> selectUserById(int id) =>
-      (select(userTables)..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+      (select(userTableSchema)..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+
+  Future<int> countMessagesByTypeChatUser(String chatId, int userId, StoredMessageType type) async {
+    var count = countAll(
+        filter:
+        messageTableSchema.chatId.equals(chatId) &
+        messageTableSchema.userId.equals(userId) &
+        messageTableSchema.type.equals(type.index));
+    var res = await (selectOnly(messageTableSchema)..addColumns([count]))
+        .map((row) => row.read(count))
+        .getSingle();
+    return res;
+  }
 
   Stream<UserTable?> watchUser(int userId) =>
-      (select(userTables)..where((tbl) => tbl.id.equals(userId)))
+      (select(userTableSchema)..where((tbl) => tbl.id.equals(userId)))
           .watchSingleOrNull();
 
   //CHANNEL
-  Future<List<ChannelTable>> getAllChannels() => select(channelTables).get();
+  Future<List<ChannelTable>> getAllChannels() => select(channelTableSchema).get();
 
   Future<ChannelTable?> getChannelById(String id) =>
-      (select(channelTables)..where((tbl) => tbl.id.equals(id)))
+      (select(channelTableSchema)..where((tbl) => tbl.id.equals(id)))
           .getSingleOrNull();
 
   Future<int> insertChannel(ChannelTable channel) =>
-      into(channelTables).insert(channel, mode: InsertMode.insertOrReplace);
+      into(channelTableSchema).insert(channel, mode: InsertMode.insertOrReplace);
 
   Future<int> updateChannelById(String id, ChannelTable channel) =>
-      (update(channelTables)..where((tbl) => tbl.id.equals(id))).write(channel);
+      (update(channelTableSchema)..where((tbl) => tbl.id.equals(id))).write(channel);
 
   Future deleteChannelById(String id) =>
-      (delete(channelTables)..where((tbl) => tbl.id.equals(id))).go();
+      (delete(channelTableSchema)..where((tbl) => tbl.id.equals(id))).go();
 
   /// PARTICIPANTS
   Future<List<ParticipantTable>> getAllParticipants() =>
-      select(participantTables).get();
+      select(participantTableSchema).get();
 
-  Future<int> insertParticipant(ParticipantTable participant) =>
-      into(participantTables)
-          .insert(participant, mode: InsertMode.insertOrReplace);
+  Future<int> insertParticipantOrUpdate(ParticipantTable participant) =>
+      into(participantTableSchema).insert(participant, mode: InsertMode.insertOrReplace);
 
   Future<void> insertMultipleParticipants(
       List<ParticipantTable> participants) async {
     await batch((batch) {
       batch.insertAll(
-        participantTables,
+        participantTableSchema,
         participants.map((e) => e.toCompanion(true)).toList(),
         mode: InsertMode.insertOrReplace,
       );
@@ -331,35 +345,35 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   }
 
   Future deleteParticipant(int userId, String chatId) => (delete(
-          participantTables)
+          participantTableSchema)
         ..where((tbl) => tbl.userId.equals(userId) & tbl.chatId.equals(chatId)))
       .go();
 
   Future<void> deleteParticipants(List<int> userIds, String chatId) async {
-    (delete(participantTables)
+    (delete(participantTableSchema)
           ..where(
               (tbl) => tbl.userId.isIn(userIds) & tbl.chatId.equals(chatId)))
         .go();
   }
 
   Future<ParticipantTable?> selectParticipantById(int id, String chatId) =>
-      (select(participantTables)
+      (select(participantTableSchema)
             ..where((tbl) => tbl.userId.equals(id) & tbl.chatId.equals(chatId)))
           .getSingleOrNull();
 
   Stream<List<ParticipantWithUser>> watchParticipants(String chatId) {
-    return (select(participantTables)
+    return (select(participantTableSchema)
           ..where((tbl) => tbl.chatId.equals(chatId)))
         .join([
           leftOuterJoin(
-              userTables, userTables.id.equalsExp(participantTables.userId))
+              userTableSchema, userTableSchema.id.equalsExp(participantTableSchema.userId))
         ])
         .watch()
         .map((rows) {
           return rows.map((row) {
             return ParticipantWithUser(
-              participant: row.readTableOrNull(participantTables),
-              user: row.readTableOrNull(userTables),
+              participant: row.readTableOrNull(participantTableSchema),
+              user: row.readTableOrNull(userTableSchema),
             );
           }).toList();
         });
@@ -375,7 +389,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
-  int get schemaVersion => 40;
+  int get schemaVersion => 39;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

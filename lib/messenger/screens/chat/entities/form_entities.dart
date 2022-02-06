@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 
 class ChatEntities {
   String text;

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/nats/invitation.dart';
 
 import 'chat_user.dart';
 
@@ -44,29 +43,6 @@ class ChatListView {
 
     for (final item in items) {
       chats.add(ChatTable.fromJson(jsonDecode(item)));
-    }
-
-    return chats;
-  }
-
-  static String listChatsWithParticipantsToString(
-      List<ChatInvitationFields> chats) {
-    List<String> object = [];
-
-    for (final chat in chats) {
-      object.add(chat.toJson());
-    }
-
-    return jsonEncode(object);
-  }
-
-  static List<ChatInvitationFields> listChatsFromString(String data) {
-    List<ChatInvitationFields> chats = [];
-
-    final items = jsonDecode(data) as List<dynamic>;
-
-    for (final item in items) {
-      chats.add(ChatInvitationFields.fromJson(jsonDecode(item)));
     }
 
     return chats;

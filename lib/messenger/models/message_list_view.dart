@@ -4,8 +4,8 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ink_mobile/extensions/message_table.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 
 class MessageListView {
   static List<StoredMessageType> notIgnoringHoverTypes = [

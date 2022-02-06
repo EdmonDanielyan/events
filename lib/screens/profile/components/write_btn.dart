@@ -22,7 +22,7 @@ class WriteBtn extends StatelessWidget {
         OpenChat(_chatDatabaseCubit, chat).call();
       } else {
         ChatTable newChat =
-            await _messenger.chatCreation.createChatThroughNats(user);
+            await _messenger.chatCreation.createDialogChat(user);
         OpenChat(_chatDatabaseCubit, newChat).call();
       }
     }

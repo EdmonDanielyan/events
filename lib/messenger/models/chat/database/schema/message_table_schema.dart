@@ -1,8 +1,8 @@
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 import 'package:moor/moor.dart';
 
 @DataClassName('MessageTable')
-class MessageTables extends Table {
+class MessageTableSchema extends Table {
   TextColumn get id => text()();
 
   IntColumn get userId => integer()();

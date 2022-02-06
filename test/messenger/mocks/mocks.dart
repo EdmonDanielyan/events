@@ -68,7 +68,7 @@ MockChatDatabase mockChatDatabase(GetIt sl, FakeDatabaseData databaseData) {
     return databaseData.chats[chatId];
   });
 
-  when(() => chatDataBase.insertParticipant(any()))
+  when(() => chatDataBase.insertParticipantOrUpdate(any()))
       .thenAnswer((realInvocation) async {
     databaseData.participates
         .add(realInvocation.positionalArguments[0] as ParticipantTable);
@@ -104,7 +104,7 @@ MockChatDatabase mockChatDatabase(GetIt sl, FakeDatabaseData databaseData) {
     return 1;
   });
 
-  when(() => chatDataBase.insertUser(any())).thenAnswer((realInvocation) async {
+  when(() => chatDataBase.insertUserOrUpdate(any())).thenAnswer((realInvocation) async {
     var userTable = realInvocation.positionalArguments[0] as UserTable;
     databaseData.users[userTable.id] = userTable;
     return 1;

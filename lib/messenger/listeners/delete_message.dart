@@ -8,7 +8,7 @@ import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/sender/chat_saver.dart';
 import 'package:ink_mobile/messenger/sender/invite_sender.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 
 import '../cases/chat_notification.dart';
 import 'channels_registry.dart';

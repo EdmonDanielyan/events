@@ -38,18 +38,7 @@ class ChannelFunctions with Loggable {
 
   Future<void> insertOrUpdate(ChannelTable channel) async {
     logger.finest(() => "insertOrUpdate: $channel");
-    final storedChannel = await getChannel(channel.id);
-
-    if (storedChannel != null) {
-      int currentChannelSeq = storedChannel.sequence;
-      int updateChannelSeq = channel.sequence;
-
-      if (updateChannelSeq >= currentChannelSeq) {
-        await updateChannel(channel);
-      }
-    } else {
-      await insertChannel(channel);
-    }
+    await insertChannel(channel);
   }
 
   Future<ChannelTable?> getChannel(String channelName) async {
@@ -71,19 +60,9 @@ class ChannelFunctions with Loggable {
     return await chatDatabaseCubit.db.insertChannel(channel);
   }
 
-  Future<int?> insertIfNotExists(ChannelTable channel) async {
-    logger.finest(() => "insertIfNotExists: $channel");
-    bool isChannelExists = await channelExists(channel.id);
-
-    if (!isChannelExists) {
-      await insertChannel(channel);
-    }
-  }
-
   Future<int?> updateChannel(ChannelTable channel) async {
     logger.finest(() => "updateChannel: $channel");
-    return await chatDatabaseCubit.db
-        .updateChannelById(channel.id, channel);
+    return await chatDatabaseCubit.db.updateChannelById(channel.id, channel);
   }
 
   Future<List<ChannelTable>> getAllChannels() async {

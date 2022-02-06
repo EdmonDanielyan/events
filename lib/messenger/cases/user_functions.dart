@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 
 @injectable
 class UserFunctions {
@@ -22,7 +22,7 @@ class UserFunctions {
   Future<int> insertUser(UserTable user, {bool update = true}) async {
     UserTable? userExists = await chatDatabaseCubit.db.selectUserById(user.id);
     if (userExists == null) {
-      return await chatDatabaseCubit.db.insertUser(user);
+      return await chatDatabaseCubit.db.insertUserOrUpdate(user);
     } else if (update) {
       await chatDatabaseCubit.db.updateUser(userExists.id, user);
     }
@@ -51,7 +51,7 @@ class UserFunctions {
     ParticipantTable? exists =
         await getParticipant(participant.userId, chat.id);
     if (exists == null) {
-      return await chatDatabaseCubit.db.insertParticipant(participant);
+      return await chatDatabaseCubit.db.insertParticipantOrUpdate(participant);
     }
     return exists.userId;
   }
@@ -60,7 +60,7 @@ class UserFunctions {
     ParticipantTable? exists =
         await getParticipant(participant.userId, participant.chatId);
     if (exists == null) {
-      return await chatDatabaseCubit.db.insertParticipant(participant);
+      return await chatDatabaseCubit.db.insertParticipantOrUpdate(participant);
     }
     return exists.userId;
   }

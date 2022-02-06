@@ -6,7 +6,7 @@ import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat_user.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:uuid/uuid.dart';
 
@@ -20,11 +20,11 @@ class ChatCreation with Loggable {
 
   String get generateGroupId => "${JwtPayload.myId}-${Uuid().v4()}";
 
-  Future<ChatTable> createChatThroughNats(UserTable user) async {
+  Future<ChatTable> createDialogChat(UserTable user) async {
     logger.finest('createChatThroughNats');
     List<UserTable> users = [user, userFunctions.me];
 
-    final chat = await createSingleChat(
+    final chat = await _createSingleChat(
       user,
       name: await singleChatName(user),
     );
@@ -57,64 +57,66 @@ class ChatCreation with Loggable {
     logger.finest('_afterNatsChatCreation');
     if (messenger.isConnected) {
       logger.finest('Messenger is ok. Preparing channels');
-      await messenger.registry.subscribeOnChatChannels(chat.id);
+      await messenger.registry.subscribeOnChatChannels(chat.channel);
       await messenger.inviteSender.sendInvitations(chat, users);
+      await messenger.chatEventsSender.sendUserChatJoinedMessage(chat, users);
       await messenger.chatSaver.saveChats(newChat: null);
     } else {
       logger.warning('Messenger is not ok. Check network');
     }
   }
 
-  Future<ChatTable> createDynamically(
-      ChatTable chat, List<UserTable> users) async {
+  Future<ChatTable> createFromInvite(
+      ChatTable chat, UserTable whoInvites) async {
     late ChatTable? newChat;
+
+    chatDatabaseCubit.db.insertUserOrUpdate(whoInvites);
+    chatDatabaseCubit.db.insertParticipantOrUpdate(ParticipantTable(
+        chatId: chat.id,
+        userId: whoInvites.id,
+        admin: whoInvites.id == chat.ownerId));
 
     if (chat.isGroup()) {
       newChat = await createGroup(
         name: chat.name,
         avatar: chat.avatar,
-        users: users,
+        users: [],
         chat: chat,
       );
     } else {
-      UserTable oppositeUser = ChatUserViewModel.getOppositeUser(users);
-
       newChat = chat.copyWith(
-        name: await singleChatName(oppositeUser),
-        avatar: oppositeUser.avatar,
+        name: await singleChatName(whoInvites),
+        avatar: whoInvites.avatar,
       );
 
-      await insertChat(newChat, shouldCheck: true);
+      await chatDatabaseCubit.db.insertChat(newChat);
     }
 
     return newChat;
   }
 
-  Future<ChatTable> createSingleChat(
+  Future<ChatTable> _createSingleChat(
     UserTable user, {
-    String? chatId,
     String? name,
     String? avatar,
     List<UserTable>? users,
   }) async {
     users = users ?? [user, userFunctions.me];
 
-    String newChatId = chatId ?? generateGroupId;
+    var chat = await chatDatabaseCubit.db.selectChatByParticipantId(user.id);
 
-    ChatTable? chatExists = await isChatExists(newChatId);
-    if (chatExists == null) {
-      chatExists = _makeChat(
-        newChatId,
+    if (chat == null) {
+      chat = await _makeChat(
         name ?? user.name,
         avatar ?? user.avatar,
         participantId: user.id,
       );
 
-      await insertChat(chatExists, shouldCheck: false);
+      await chatDatabaseCubit.db.insertChat(chat);
     }
     await UserFunctions(chatDatabaseCubit).insertMultipleUsers(users);
 
-    return chatExists;
+    return chat;
   }
 
   Future<ChatTable> createGroup({
@@ -123,9 +125,9 @@ class ChatCreation with Loggable {
     required List<UserTable> users,
     ChatTable? chat,
   }) async {
-    var newChat = chat ?? _makeChat(generateGroupId, name, avatar);
+    var newChat = chat ?? await _makeChat(name, avatar);
 
-    await insertChat(newChat);
+    await chatDatabaseCubit.db.insertChat(newChat);
 
     final userFunctions = UserFunctions(chatDatabaseCubit);
     await userFunctions.insertMultipleUsers(users);
@@ -133,11 +135,6 @@ class ChatCreation with Loggable {
         ChatUserViewModel.toParticipants(users, newChat));
 
     return newChat;
-  }
-
-  Future<ChatTable?> isChatExists(String id) async {
-    final chatExists = await chatDatabaseCubit.db.selectChatById(id);
-    return chatExists;
   }
 
   Future<List<ChatTable>> getSingleChatsWithUser(UserTable user) async {
@@ -171,31 +168,27 @@ class ChatCreation with Loggable {
     return null;
   }
 
-  ChatTable _makeChat(
-    String id,
+  Future<ChatTable> _makeChat(
     String name,
     String avatar, {
     int? ownerId,
     int? participantId,
-  }) {
+  }) async {
+    logger.finest(() => "_makeChat: $name, $avatar, $ownerId, $participantId");
+    var createChatResponse = await messenger.natsProvider.createChat();
+    if (createChatResponse == null) throw "Can not create chat";
     return ChatTable(
-      id: id,
+      id: createChatResponse.chatId,
       name: name,
       description: "",
       avatar: avatar,
+      channel: createChatResponse.chatChannel,
       ownerId: ownerId ?? JwtPayload.myId,
       participantId: participantId,
       updatedAt: DateTime.now(),
       notificationsOn: true,
+      unreadCounterOn: true,
     );
-  }
-
-  Future<String> insertChat(ChatTable chat, {bool shouldCheck = true}) async {
-    ChatTable? chatExists = shouldCheck ? await isChatExists(chat.id) : null;
-    if (chatExists == null) {
-      await chatDatabaseCubit.db.insertChat(chat);
-    }
-    return chat.id;
   }
 
   Future<void> insertMultipleChats(List<ChatTable> chats) async {

@@ -9,7 +9,7 @@ import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/cases/send_message.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 import 'package:ink_mobile/messenger/models/message_list_view.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/message_card_picture.dart';

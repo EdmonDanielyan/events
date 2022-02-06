@@ -5,8 +5,8 @@ import 'package:ink_mobile/messenger/cases/chat_functions.dart';
 import 'package:ink_mobile/messenger/cases/send_message.dart';
 import 'package:ink_mobile/messenger/listeners/message_listener.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
-import 'package:ink_mobile/messenger/models/chat/nats/invitation.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/left_joined.dart';
 import 'package:ink_mobile/messenger/models/chat_user.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
@@ -42,15 +42,14 @@ class ChatJoinedListener extends MessageListener {
     }
 
     try {
-      final mapPayload = message.payload! as SystemPayload;
-      ChatInvitationFields fields =
-          ChatInvitationFields.fromMap(mapPayload.fields);
+      final mapPayload = message.payload! as JsonPayload;
+      LeftJoinedPayload payload = LeftJoinedPayload.fromJson(mapPayload.json);
 
-      final users = fields.users;
-      final chat = fields.chat;
+      final users = payload.users.map<UserTable>((e) => e.toUserTable()).toList();
+      final chatId = payload.chatId;
+      var chat = await chatDatabaseCubit.db.selectChatById(chatId);
 
-      if (users.isNotEmpty) {
-        registry.joinedChats.add(chat);
+      if (users.isNotEmpty && chat != null) {
         await userFunctions.insertMultipleUsers(users);
         await userFunctions.insertMultipleParticipants(
             ChatUserViewModel.toParticipants(users, chat));

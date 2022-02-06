@@ -10,8 +10,7 @@ import 'package:ink_mobile/messenger/cases/channel_functions.dart';
 import 'package:ink_mobile/messenger/cases/user_functions.dart';
 import 'package:ink_mobile/messenger/listeners/message_listener.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/nats/chat_list.dart';
-import 'package:ink_mobile/messenger/models/chat_list_view.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/chat_list.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/sender/chat_saver.dart';
@@ -47,7 +46,7 @@ class ChatListListener extends MessageListener {
   Future<void> subscribe(String userId) async {
     logger.finest(() => "subscribe: $userId");
     try {
-      final channel = natsProvider.getPrivateUserChatIdList(userId);
+      final channel = natsProvider.getPrivateUserChatIdList();
       final sub = await natsProvider.listenChatList(channel);
       DataMessage? dataMessage;
       try {
@@ -78,7 +77,7 @@ class ChatListListener extends MessageListener {
     final mapPayload = message.payload! as SystemPayload;
 
     try {
-      ChatListFields fields = ChatListFields.fromMap(mapPayload.fields);
+      ChatListPayload fields = ChatListPayload.fromMap(mapPayload.fields);
 
       var chats = fields.chats;
       final users = fields.users;
@@ -141,18 +140,17 @@ class ChatListListener extends MessageListener {
     if (chats.isEmpty) return;
 
     final distinctChats = chats.toSet().toList();
-    distinctChats.sort((a, b) => ChatListView.sortChats(a, b));
 
     final List<ChatTable> chatsToInsert = [];
 
     for (final chat in distinctChats) {
       _getChatIds.add(chat.id);
       chatsToInsert.add(chat);
-
-      await registry.subscribeOnChatChannelsIfNotExists(chat.id,
-          sequence: chat.lastMessageSeq != null
-              ? Int64.parseInt(chat.lastMessageSeq.toString()).toInt64()
-              : Int64.ZERO);
+      var channel = chat.channel;
+      await registry.subscribeOnChatChannelsIfNotExists(channel,
+        sequence: chat.lastMessageSeq != null
+            ? Int64.parseInt(chat.lastMessageSeq.toString()).toInt64()
+            : Int64.ZERO);
     }
     if (!await _chatsStored(chats)) {
       await chatCreation.insertMultipleChats(chatsToInsert);

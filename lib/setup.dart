@@ -16,7 +16,8 @@ import 'setup.config.dart';
 final sl = GetIt.instance;
 //todo: Раскомментировать на релизе
 // const defaultScope = Environment.prod;
-const defaultScope = Environment.dev;
+const stage = Environment("stage");
+const defaultScope = "stage";
 
 @InjectableInit(
   initializerName: r'$initGetIt', // default

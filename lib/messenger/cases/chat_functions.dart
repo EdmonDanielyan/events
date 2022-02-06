@@ -1,9 +1,9 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 
 @injectable
 class ChatFunctions {
@@ -50,7 +50,7 @@ class ChatFunctions {
       chatDatabaseCubit.setSelectedChat(chat);
     }
     chatDatabaseCubit.db.updateChatById(chat.id, chat);
-    var topic = messenger.natsProvider.getChatChannelById(chat.id);
+    var topic = chat.channel;
     if (chat.notificationsOn ?? true) {
       messenger.pushNotificationManager.subscribeToTopic(topic);
     } else {

@@ -109,7 +109,7 @@ class PushNotificationManager with Loggable {
     }
   }
 
-  Future<ChatTable?> get initialChatd async {
+  Future<ChatTable?> get initialChat async {
     logger.finest('initialChat');
     var message = await FirebaseMessaging.instance.getInitialMessage();
     logger.finest('Remote initial message: $message');
@@ -147,6 +147,7 @@ class PushNotificationManager with Loggable {
       logger.finest(() => "found chat: $chatTable");
       return chatTable;
     }
+    return null;
   }
 
   Future subscribeToTopic(String topic) async {

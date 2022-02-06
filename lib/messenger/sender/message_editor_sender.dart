@@ -27,16 +27,20 @@ class MessageEditorSender {
     bool result = true;
     if (makeRequest) {
       final chatId = messages.last.chatId;
-      final channel = natsProvider.getChatChannelById(chatId);
-      final sent = await natsProvider.sendSystemMessageToChannel(
-        channel,
-        MessageType.RemoveMessage,
-        ChatMessageDeleteFields(
-          messages: messages,
-          user: userFunctions.me,
-          edited: edited,
-        ).toMap(),
-      );
+      var chat = await chatFunctions.chatDatabaseCubit.db.selectChatById(chatId);
+      var sent = false;
+      if (chat != null) {
+        sent = await natsProvider.sendSystemMessageToChannel(
+          chat.channel,
+          MessageType.RemoveMessage,
+          ChatMessageDeleteFields(
+            messages: messages,
+            user: userFunctions.me,
+            edited: edited,
+          ).toMap(),
+        );
+
+      }
       if (!edited) {
         if (sent) {
           chatFunctions.deleteMessages(messages);

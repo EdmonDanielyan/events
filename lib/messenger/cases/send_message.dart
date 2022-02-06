@@ -5,10 +5,10 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/cases/chat_functions.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 import 'package:ink_mobile/messenger/models/person_list_params.dart';
 import 'package:ink_mobile/messenger/screens/chat/entities/form_entities.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:uuid/uuid.dart';
 
 @injectable

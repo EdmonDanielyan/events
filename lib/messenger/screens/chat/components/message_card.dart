@@ -10,7 +10,7 @@ import 'package:ink_mobile/messenger/blocs/chat/chat_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 import 'package:ink_mobile/messenger/models/message_list_view.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/hover_message.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/message_card_text.dart';

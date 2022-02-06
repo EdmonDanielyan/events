@@ -3,9 +3,11 @@ import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/messenger/cases/user_functions.dart';
 import 'package:ink_mobile/messenger/listeners/channels_registry.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/nats/invitation.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/chat_payload.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/invite_payload.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/user_payload.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 
 import '../cases/chat_functions.dart';
 import 'chat_saver.dart';
@@ -30,7 +32,7 @@ class InviteSender {
     bool public = false,
   }) async {
     await natsProvider.sendSystemMessageToChannel(
-      natsProvider.getPrivateUserChatIdList(userId.toString()),
+      natsProvider.getPrivateUserChatIdList(),
       MessageType.ChatList,
       {
         chat.id: DELETE_ACTION,
@@ -40,31 +42,15 @@ class InviteSender {
     );
   }
 
-  Future<void> inviteUser({
-    required UserTable user,
-    required ChatTable chat,
-    required List<UserTable> users,
-    required String chatChannel,
-  }) async {
-    await natsProvider.sendSystemMessageToChannel(
-      natsProvider.getInviteUserToJoinChatChannel(user.id),
-      MessageType.InviteUserToJoinChat,
-      ChatInvitationFields(
-        chat: chat,
-        users: users,
-      ).toMap(),
-    );
-  }
-
   Future<void> sendInvitations(ChatTable chat, List<UserTable> users) async {
     for (final user in users) {
       if (user.id != JwtPayload.myId) {
-        await inviteUser(
-          user: user,
-          chat: chat,
-          chatChannel: natsProvider.getChatChannelById(chat.id),
-          users: users,
-        );
+        await natsProvider.invite(
+            users.map<InvitePayload>((u) => InvitePayload(
+                whoInvites: UserPayload.fromUserTable(userFunctions.me),
+                invitedUserId: user.id.toString(),
+                chat: ChatPayload.fromChatTable(chat))).toList()
+            );
       }
     }
   }

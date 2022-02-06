@@ -1,17 +1,18 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
+import 'package:ink_mobile/cubit/profile/profile_state.dart';
 import 'package:ink_mobile/cubit/profile/sources/fetch/network.dart';
 import 'package:ink_mobile/cubit/profile/sources/thank/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
+import 'package:ink_mobile/extensions/get_user_success.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:ink_mobile/cubit/profile/profile_state.dart';
 import 'package:ink_mobile/models/user_data.dart';
-import 'package:dio/dio.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:ink_mobile/extensions/get_user_success.dart';
 
 @injectable
 class ProfileCubit extends Cubit<ProfileState> {

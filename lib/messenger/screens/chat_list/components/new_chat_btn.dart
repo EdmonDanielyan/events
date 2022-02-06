@@ -12,7 +12,7 @@ import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/new_chat_screen.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/entities/new_chat_screen_params.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/setup.dart';
 
 class NewChatBtn extends StatefulWidget {
@@ -78,7 +78,7 @@ class _NewChatBtnState extends State<NewChatBtn> {
         OpenChat(_chatDatabaseCubit, chat).call();
       } else {
         ChatTable newChat =
-            await messenger.chatCreation.createChatThroughNats(user);
+            await messenger.chatCreation.createDialogChat(user);
         Navigator.of(context).pop();
         OpenChat(_chatDatabaseCubit, newChat).call();
       }

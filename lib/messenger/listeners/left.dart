@@ -5,14 +5,14 @@ import 'package:ink_mobile/messenger/cases/chat_functions.dart';
 import 'package:ink_mobile/messenger/cases/send_message.dart';
 import 'package:ink_mobile/messenger/listeners/message_listener.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
-import 'package:ink_mobile/messenger/models/chat/nats/leftJoined.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/left_joined.dart';
 import 'package:ink_mobile/messenger/models/chat_user.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/sender/chat_saver.dart';
 import 'package:ink_mobile/messenger/sender/invite_sender.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 
 import '../cases/user_functions.dart';
 import 'channels_registry.dart';
@@ -44,23 +44,24 @@ class ChatLeftListener extends MessageListener {
     }
 
     try {
-      final mapPayload = message.payload! as SystemPayload;
-      ChatLeftJoinedFields fields =
-          ChatLeftJoinedFields.fromMap(mapPayload.fields);
+      final mapPayload = message.payload! as JsonPayload;
+      LeftJoinedPayload payload =
+          LeftJoinedPayload.fromJson(mapPayload.json);
 
-      final users = fields.users;
-      final chat = fields.chat;
-      final senderId = fields.senderId;
+      final users = payload.users.map<UserTable>((e) => e.toUserTable()).toList();
 
-      if (users.isNotEmpty) {
-        final me = await _deleteIfItsMe(users, chat,
-            countLefts: fields.countLefts, senderId: senderId);
+      final chatId = payload.chatId;
+      final senderId = message.from;
+      var chat = await chatDatabaseCubit.db.selectChatById(chatId);
+
+      if (users.isNotEmpty && chat != null) {
+        await setMessage(users, chat, message);
+        final me = await _deleteIfItsMe(users, chat, senderId);
 
         if (!me) {
           final participants = ChatUserViewModel.toParticipants(users, chat);
 
           await userFunctions.deleteParticipants(participants, chat);
-          setMessage(users, chat, message);
         }
 
         await chatSaver.saveChats(newChat: null);
@@ -72,25 +73,24 @@ class ChatLeftListener extends MessageListener {
 
   Future<bool> _deleteIfItsMe(
     List<UserTable> users,
-    ChatTable chat, {
-    int? countLefts,
-    required int senderId,
-  }) async {
+    ChatTable chat,
+    String senderId,
+  ) async {
     for (final user in users) {
       if (user.id == JwtPayload.myId) {
         bool delete = true;
 
-        if (senderId == JwtPayload.myId) {
+        if (senderId == JwtPayload.myId.toString()) {
           delete = false;
         } else {
           await Future.delayed(Duration(seconds: 2));
         }
 
-        final iJoinedList = registry.joinedChats
-            .where((element) => element.id == chat.id)
-            .toList();
 
-        if (countLefts != null && countLefts < iJoinedList.length) {
+        var countLefts = await chatDatabaseCubit.db.countMessagesByTypeChatUser(chat.id, user.id, StoredMessageType.USER_LEFT);
+        var countJoins = await chatDatabaseCubit.db.countMessagesByTypeChatUser(chat.id, user.id, StoredMessageType.USER_JOINED);
+
+        if (countLefts < countJoins) {
           delete = false;
         }
 

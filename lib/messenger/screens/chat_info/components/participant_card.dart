@@ -22,6 +22,7 @@ class ParticipantCard extends StatefulWidget {
   final bool indicatorIsOn;
   final bool indicatorReadOnly;
   final String? avatarName;
+
   const ParticipantCard({
     Key? key,
     required this.user,
@@ -64,7 +65,17 @@ class _ParticipantCardState extends State<ParticipantCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 nameWidget(context),
-                _onlineStatusWidget(),
+                BlocBuilder<OnlineBloc, OnlineBlocState>(
+                    bloc: messenger.onlineBloc,
+                    builder: (context, state) => Text(
+                          state.isOnline(widget.user?.id)
+                              ? _strings.online
+                              : _strings.offline,
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12.0,
+                          ),
+                        ))
               ],
             ),
           ),
@@ -79,8 +90,7 @@ class _ParticipantCardState extends State<ParticipantCard> {
   Widget _avatarWidget() {
     return BlocBuilder<OnlineBloc, OnlineBlocState>(
       bloc: messenger.onlineBloc,
-      builder: (context, state) =>
-      CustomCircleAvatar(
+      builder: (context, state) => CustomCircleAvatar(
         avatarHeight: widget.avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
         avatarWidth: widget.avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
         url: widget.overrideAvatar ?? widget.user?.avatar,
@@ -92,10 +102,9 @@ class _ParticipantCardState extends State<ParticipantCard> {
   }
 
   bool getIndicator() {
-    if (widget.indicatorReadOnly && widget.user != null) {
-      return messenger.onlineBloc.state.isOnline(widget.user?.id);
-    }
-    return false;
+    // if (widget.indicatorReadOnly && widget.user != null) {
+    // }
+    return messenger.onlineBloc.state.isOnline(widget.user?.id);
   }
 
   Widget nameWidget(BuildContext context) {
@@ -109,20 +118,6 @@ class _ParticipantCardState extends State<ParticipantCard> {
         fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
       ),
     );
-  }
-
-  Widget _onlineStatusWidget() {
-    if (widget.indicatorIsOn || widget.indicatorReadOnly) {
-      return Text(
-        getIndicator() ? _strings.online : _strings.offline,
-        style: TextStyle(
-          color: Colors.grey,
-          fontSize: 12.0,
-        ),
-      );
-    }
-
-    return SizedBox();
   }
 
   Widget _trailingLableWidget(String text) {

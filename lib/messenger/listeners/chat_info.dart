@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/listeners/message_listener.dart';
-import 'package:ink_mobile/messenger/models/chat/nats/chat_info.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/chat_info.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/sender/invite_sender.dart';
@@ -30,9 +30,9 @@ class ChatInfoListener extends MessageListener {
     }
 
     try {
-      final mapPayload = message.payload! as SystemPayload;
-      ChatInfoFields fields = ChatInfoFields.fromMap(mapPayload.fields);
-      final chat = fields.chat;
+      final mapPayload = message.payload! as JsonPayload;
+      ChatInfoUpdatePayload data = ChatInfoUpdatePayload.fromJson(mapPayload.json);
+      var chat = data.chat.toChatTable();
       chatDatabaseCubit.db.updateChatById(chat.id, chat);
     } on NoSuchMethodError {
       return;

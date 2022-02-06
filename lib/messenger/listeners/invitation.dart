@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/cases/chat_creation.dart';
-import 'package:ink_mobile/messenger/models/chat/nats/invitation.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/invite_payload.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/sender/chat_saver.dart';
@@ -30,20 +30,16 @@ class ChatInvitationListener extends MessageListener {
     }
 
     try {
-      final mapPayload = message.payload! as SystemPayload;
-      ChatInvitationFields fields =
-          ChatInvitationFields.fromMap(mapPayload.fields);
-      final chat = fields.chat;
+      final payload = message.payload! as JsonPayload;
 
-      await sl<ChatCreation>().createDynamically(chat, fields.users);
-      await _chatLinkedListeners(chat.id);
+      InvitePayload data = InvitePayload.fromJson(payload.json);
+      var chat = data.chat.toChatTable();
+      await sl<ChatCreation>().createFromInvite(chat, data.whoInvites.toUserTable());
+      await registry.subscribeOnChatChannels(chat.channel);
       await chatSaver.saveChats(newChat: null);
     } on NoSuchMethodError {
       return;
     }
   }
 
-  Future<void> _chatLinkedListeners(String chatId) {
-    return registry.subscribeOnChatChannels(chatId);
-  }
 }

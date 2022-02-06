@@ -21,9 +21,9 @@
         </intent>
     </queries>
     <application
-            android:name="io.flutter.app.FlutterApplication"
+            android:name="${applicationName}"
             android:allowBackup="false"
-            android:label="${applicationName}"
+            android:label="@string/app_label"
             tools:overrideLibrary="com.xamdesign.safe_device"
             android:icon="@mipmap/ic_launcher">
             <meta-data

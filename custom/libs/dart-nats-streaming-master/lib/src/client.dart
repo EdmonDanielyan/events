@@ -16,12 +16,16 @@ import 'package:uuid/uuid.dart';
 
 class WssHttpOverrides extends HttpOverrides {
   final List<int> certificate;
+  static final _logger = Logger('WssHttpOverrides');
 
   @override
   HttpClient createHttpClient(SecurityContext? context) {
+    _logger.finest('createHttpClient');
     SecurityContext _ctx = context ?? SecurityContext();
     _ctx.setTrustedCertificatesBytes(certificate);
     var client = super.createHttpClient(_ctx);
+    //todo: Убрать после проверки этот коллбэк это Security Issue
+    client.badCertificateCallback = (_, host, port) => true;
     return client;
   }
 
@@ -132,10 +136,6 @@ class NatsStreamingClient {
     }
   }
 
-  // ####################################################
-
-  ///
-  @Deprecated('Use connectUri instead')
   Future<bool> connect({
     required String host,
     int port = 4222,

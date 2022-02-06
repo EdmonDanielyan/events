@@ -10,14 +10,13 @@ import 'package:ink_mobile/messenger/blocs/chat_person_list/chat_person_list_cub
 import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/participant_with_user.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/messenger/screens/chat_info/components/btn_wrapper.dart';
 import 'package:ink_mobile/messenger/screens/chat_info/components/participant_card.dart';
 import 'package:ink_mobile/messenger/screens/chat_info/entities/design_entities.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/new_chat_screen.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/entities/new_chat_screen_params.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/setup.dart';
 
 import '../chat_info_screen.dart';
@@ -38,14 +37,10 @@ class ChatInfoParticipants extends StatelessWidget {
     if (messenger.isConnected) {
       CustomAlertLoading(context).call();
 
-      final countLefts = await messenger.chatFunctions.getMyMessagesByType(
-          chat.id, StoredMessageType.USER_LEFT,
-          userId: user.id);
       await messenger.chatEventsSender.sendLeftMessage(
         chat,
         unsubFromChat: false,
-        users: [user],
-        countLefts: countLefts.length,
+        users: [user]
       );
 
       Navigator.of(context).pop();
@@ -94,6 +89,7 @@ class ChatInfoParticipants extends StatelessWidget {
     if (messenger.isConnected) {
       await messenger.inviteSender
           .sendInvitations(chat, userParticipants..addAll(selectedUsers));
+      //todo: Возможная проблема с между этими двумя вызовами. Когда пользователи получили инвайт но не знают кто присоединился к чату
       await messenger.chatEventsSender.sendUserChatJoinedMessage(
         chat,
         selectedUsers,

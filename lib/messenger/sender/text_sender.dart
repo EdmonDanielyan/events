@@ -3,12 +3,12 @@ import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/messenger/listeners/channels_registry.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 import 'package:ink_mobile/messenger/models/chat/nats/message.dart';
 import 'package:ink_mobile/messenger/models/chat/nats/texting.dart';
 import 'package:ink_mobile/messenger/models/texting.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:moor/moor.dart';
 
 import '../cases/chat_functions.dart';
@@ -53,13 +53,12 @@ class TextSender with Loggable {
     UserTable? user,
   }) async {
     final ping = await natsProvider.ping();
-    var channelById = natsProvider.getChatChannelById(chat.id);
     return ping &&
         await natsProvider.sendSystemMessageToChannel(
-          channelById,
+          chat.channel,
           MessageType.Text,
           ChatMessageFields(
-            channel: channelById,
+            channel: chat.channel,
             chat: chat,
             message: message,
             user: user ?? userFunctions.me,

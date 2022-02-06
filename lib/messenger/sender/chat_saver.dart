@@ -2,9 +2,9 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/nats/chat_list.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/chat_list.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 
 @injectable
 class ChatSaver with Loggable {
@@ -15,7 +15,7 @@ class ChatSaver with Loggable {
   ChatSaver(this.db, this.natsProvider);
 
   String get getInviteUserChannel =>
-      natsProvider.getInviteUserToJoinChatChannel(JwtPayload.myId);
+      natsProvider.getInviteUserToJoinChatChannel();
 
   Future<void> saveChats(
       {required ChatTable? newChat,
@@ -61,7 +61,7 @@ class ChatSaver with Loggable {
     required List<ParticipantTable> participants,
     required List<ChannelTable> channels,
   }) async {
-    final chatListFields = ChatListFields(
+    final chatListFields = ChatListPayload(
       chats: chats.toSet().toList(),
       users: users.toSet().toList(),
       participants: participants.toSet().toList(),
@@ -77,7 +77,7 @@ class ChatSaver with Loggable {
       ''');
 
     await natsProvider.sendSystemMessageToChannel(
-      natsProvider.getPrivateUserChatIdList(userId.toString()),
+      natsProvider.getPrivateUserChatIdList(),
       MessageType.ChatList,
       chatListFields.toMap(),
     );

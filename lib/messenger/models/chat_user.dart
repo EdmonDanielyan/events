@@ -5,7 +5,7 @@ import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:remove_emoji/remove_emoji.dart';
 

@@ -78,7 +78,9 @@ class Messenger with Loggable {
     logger.finest("_configureNatsProvider");
     natsProvider.onConnected = () async {
       logger.info("onConnected");
-
+      await natsProvider.auth(
+          login: sl.get(instanceName: "messengerAuthLogin"),
+          password: sl.get(instanceName: "messengerAuthPassword"));
       textSender.redeliverMessages();
       await _onConnected();
     };

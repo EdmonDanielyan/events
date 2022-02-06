@@ -267,7 +267,9 @@ class _ReferencesFormState extends State<ReferencesForm> {
       mode: NumberSelectFieldMode.int,
       onlyPositive: true,
       onChanged: (val) => entities.quantity = Parser(val: val).stringToInt(),
-      validator: (value) {},
+      validator: (value) {
+        return null;
+      },
       style: TextStyle(fontSize: 30, height: 1),
       textAlignVertical: TextAlignVertical.center,
       flex: NumberSelectFieldFlex(

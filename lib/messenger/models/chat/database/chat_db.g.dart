@@ -11,6 +11,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   final String id;
   final String name;
   final String description;
+  final String channel;
   final String avatar;
   final int ownerId;
   final int? participantId;
@@ -23,6 +24,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       {required this.id,
       required this.name,
       required this.description,
+      required this.channel,
       required this.avatar,
       required this.ownerId,
       this.participantId,
@@ -41,6 +43,8 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       description: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
+      channel: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}channel'])!,
       avatar: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}avatar'])!,
       ownerId: const IntType()
@@ -65,6 +69,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
     map['id'] = Variable<String>(id);
     map['name'] = Variable<String>(name);
     map['description'] = Variable<String>(description);
+    map['channel'] = Variable<String>(channel);
     map['avatar'] = Variable<String>(avatar);
     map['owner_id'] = Variable<int>(ownerId);
     if (!nullToAbsent || participantId != null) {
@@ -86,11 +91,12 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
     return map;
   }
 
-  ChatTablesCompanion toCompanion(bool nullToAbsent) {
-    return ChatTablesCompanion(
+  ChatTableSchemaCompanion toCompanion(bool nullToAbsent) {
+    return ChatTableSchemaCompanion(
       id: Value(id),
       name: Value(name),
       description: Value(description),
+      channel: Value(channel),
       avatar: Value(avatar),
       ownerId: Value(ownerId),
       participantId: participantId == null && nullToAbsent
@@ -119,6 +125,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       description: serializer.fromJson<String>(json['description']),
+      channel: serializer.fromJson<String>(json['channel']),
       avatar: serializer.fromJson<String>(json['avatar']),
       ownerId: serializer.fromJson<int>(json['ownerId']),
       participantId: serializer.fromJson<int?>(json['participantId']),
@@ -136,6 +143,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String>(name),
       'description': serializer.toJson<String>(description),
+      'channel': serializer.toJson<String>(channel),
       'avatar': serializer.toJson<String>(avatar),
       'ownerId': serializer.toJson<int>(ownerId),
       'participantId': serializer.toJson<int?>(participantId),
@@ -151,6 +159,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           {String? id,
           String? name,
           String? description,
+          String? channel,
           String? avatar,
           int? ownerId,
           int? participantId,
@@ -163,6 +172,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
         id: id ?? this.id,
         name: name ?? this.name,
         description: description ?? this.description,
+        channel: channel ?? this.channel,
         avatar: avatar ?? this.avatar,
         ownerId: ownerId ?? this.ownerId,
         participantId: participantId ?? this.participantId,
@@ -178,6 +188,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('description: $description, ')
+          ..write('channel: $channel, ')
           ..write('avatar: $avatar, ')
           ..write('ownerId: $ownerId, ')
           ..write('participantId: $participantId, ')
@@ -195,6 +206,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       id,
       name,
       description,
+      channel,
       avatar,
       ownerId,
       participantId,
@@ -210,6 +222,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           other.id == this.id &&
           other.name == this.name &&
           other.description == this.description &&
+          other.channel == this.channel &&
           other.avatar == this.avatar &&
           other.ownerId == this.ownerId &&
           other.participantId == this.participantId &&
@@ -220,10 +233,11 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           other.lastMessageSeq == this.lastMessageSeq);
 }
 
-class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
+class ChatTableSchemaCompanion extends UpdateCompanion<ChatTable> {
   final Value<String> id;
   final Value<String> name;
   final Value<String> description;
+  final Value<String> channel;
   final Value<String> avatar;
   final Value<int> ownerId;
   final Value<int?> participantId;
@@ -232,10 +246,11 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   final Value<bool?> unreadCounterOn;
   final Value<bool?> deleted;
   final Value<int?> lastMessageSeq;
-  const ChatTablesCompanion({
+  const ChatTableSchemaCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.description = const Value.absent(),
+    this.channel = const Value.absent(),
     this.avatar = const Value.absent(),
     this.ownerId = const Value.absent(),
     this.participantId = const Value.absent(),
@@ -245,10 +260,11 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     this.deleted = const Value.absent(),
     this.lastMessageSeq = const Value.absent(),
   });
-  ChatTablesCompanion.insert({
+  ChatTableSchemaCompanion.insert({
     required String id,
     required String name,
     required String description,
+    required String channel,
     required String avatar,
     required int ownerId,
     this.participantId = const Value.absent(),
@@ -260,12 +276,14 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   })  : id = Value(id),
         name = Value(name),
         description = Value(description),
+        channel = Value(channel),
         avatar = Value(avatar),
         ownerId = Value(ownerId);
   static Insertable<ChatTable> custom({
     Expression<String>? id,
     Expression<String>? name,
     Expression<String>? description,
+    Expression<String>? channel,
     Expression<String>? avatar,
     Expression<int>? ownerId,
     Expression<int?>? participantId,
@@ -279,6 +297,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (description != null) 'description': description,
+      if (channel != null) 'channel': channel,
       if (avatar != null) 'avatar': avatar,
       if (ownerId != null) 'owner_id': ownerId,
       if (participantId != null) 'participant_id': participantId,
@@ -290,10 +309,11 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     });
   }
 
-  ChatTablesCompanion copyWith(
+  ChatTableSchemaCompanion copyWith(
       {Value<String>? id,
       Value<String>? name,
       Value<String>? description,
+      Value<String>? channel,
       Value<String>? avatar,
       Value<int>? ownerId,
       Value<int?>? participantId,
@@ -302,10 +322,11 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       Value<bool?>? unreadCounterOn,
       Value<bool?>? deleted,
       Value<int?>? lastMessageSeq}) {
-    return ChatTablesCompanion(
+    return ChatTableSchemaCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
+      channel: channel ?? this.channel,
       avatar: avatar ?? this.avatar,
       ownerId: ownerId ?? this.ownerId,
       participantId: participantId ?? this.participantId,
@@ -328,6 +349,9 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
+    }
+    if (channel.present) {
+      map['channel'] = Variable<String>(channel.value);
     }
     if (avatar.present) {
       map['avatar'] = Variable<String>(avatar.value);
@@ -358,10 +382,11 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
 
   @override
   String toString() {
-    return (StringBuffer('ChatTablesCompanion(')
+    return (StringBuffer('ChatTableSchemaCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('description: $description, ')
+          ..write('channel: $channel, ')
           ..write('avatar: $avatar, ')
           ..write('ownerId: $ownerId, ')
           ..write('participantId: $participantId, ')
@@ -375,11 +400,11 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   }
 }
 
-class $ChatTablesTable extends ChatTables
-    with TableInfo<$ChatTablesTable, ChatTable> {
+class $ChatTableSchemaTable extends ChatTableSchema
+    with TableInfo<$ChatTableSchemaTable, ChatTable> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $ChatTablesTable(this._db, [this._alias]);
+  $ChatTableSchemaTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -398,6 +423,11 @@ class $ChatTablesTable extends ChatTables
   @override
   late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
       'description', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _channelMeta = const VerificationMeta('channel');
+  @override
+  late final GeneratedColumn<String?> channel = GeneratedColumn<String?>(
+      'channel', aliasedName, false,
       type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _avatarMeta = const VerificationMeta('avatar');
   @override
@@ -459,6 +489,7 @@ class $ChatTablesTable extends ChatTables
         id,
         name,
         description,
+        channel,
         avatar,
         ownerId,
         participantId,
@@ -469,9 +500,9 @@ class $ChatTablesTable extends ChatTables
         lastMessageSeq
       ];
   @override
-  String get aliasedName => _alias ?? 'chat_tables';
+  String get aliasedName => _alias ?? 'chat_table_schema';
   @override
-  String get actualTableName => 'chat_tables';
+  String get actualTableName => 'chat_table_schema';
   @override
   VerificationContext validateIntegrity(Insertable<ChatTable> instance,
       {bool isInserting = false}) {
@@ -495,6 +526,12 @@ class $ChatTablesTable extends ChatTables
               data['description']!, _descriptionMeta));
     } else if (isInserting) {
       context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('channel')) {
+      context.handle(_channelMeta,
+          channel.isAcceptableOrUnknown(data['channel']!, _channelMeta));
+    } else if (isInserting) {
+      context.missing(_channelMeta);
     }
     if (data.containsKey('avatar')) {
       context.handle(_avatarMeta,
@@ -552,8 +589,8 @@ class $ChatTablesTable extends ChatTables
   }
 
   @override
-  $ChatTablesTable createAlias(String alias) {
-    return $ChatTablesTable(_db, alias);
+  $ChatTableSchemaTable createAlias(String alias) {
+    return $ChatTableSchemaTable(_db, alias);
   }
 }
 
@@ -597,13 +634,14 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}message'])!,
       repliedMessageId: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}replied_message_id']),
-      sentStatus: $MessageTablesTable.$converter0.mapToDart(const IntType()
+      sentStatus: $MessageTableSchemaTable.$converter0.mapToDart(const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}sent_status']))!,
-      actionsStatus: $MessageTablesTable.$converter1.mapToDart(const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}actions_status']))!,
+      actionsStatus: $MessageTableSchemaTable.$converter1.mapToDart(
+          const IntType().mapFromDatabaseResponse(
+              data['${effectivePrefix}actions_status']))!,
       read: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}read'])!,
-      type: $MessageTablesTable.$converter2.mapToDart(const IntType()
+      type: $MessageTableSchemaTable.$converter2.mapToDart(const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}type']))!,
       timestamp: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}timestamp']),
@@ -624,16 +662,16 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
       map['replied_message_id'] = Variable<String?>(repliedMessageId);
     }
     {
-      final converter = $MessageTablesTable.$converter0;
+      final converter = $MessageTableSchemaTable.$converter0;
       map['sent_status'] = Variable<int>(converter.mapToSql(sentStatus)!);
     }
     {
-      final converter = $MessageTablesTable.$converter1;
+      final converter = $MessageTableSchemaTable.$converter1;
       map['actions_status'] = Variable<int>(converter.mapToSql(actionsStatus)!);
     }
     map['read'] = Variable<bool>(read);
     {
-      final converter = $MessageTablesTable.$converter2;
+      final converter = $MessageTableSchemaTable.$converter2;
       map['type'] = Variable<int>(converter.mapToSql(type)!);
     }
     if (!nullToAbsent || timestamp != null) {
@@ -648,8 +686,8 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
     return map;
   }
 
-  MessageTablesCompanion toCompanion(bool nullToAbsent) {
-    return MessageTablesCompanion(
+  MessageTableSchemaCompanion toCompanion(bool nullToAbsent) {
+    return MessageTableSchemaCompanion(
       id: Value(id),
       userId: Value(userId),
       chatId: Value(chatId),
@@ -788,7 +826,7 @@ class MessageTable extends DataClass implements Insertable<MessageTable> {
           other.messageToLower == this.messageToLower);
 }
 
-class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
+class MessageTableSchemaCompanion extends UpdateCompanion<MessageTable> {
   final Value<String> id;
   final Value<int> userId;
   final Value<String> chatId;
@@ -801,7 +839,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
   final Value<DateTime?> timestamp;
   final Value<int?> sequence;
   final Value<String?> messageToLower;
-  const MessageTablesCompanion({
+  const MessageTableSchemaCompanion({
     this.id = const Value.absent(),
     this.userId = const Value.absent(),
     this.chatId = const Value.absent(),
@@ -815,7 +853,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     this.sequence = const Value.absent(),
     this.messageToLower = const Value.absent(),
   });
-  MessageTablesCompanion.insert({
+  MessageTableSchemaCompanion.insert({
     required String id,
     required int userId,
     required String chatId,
@@ -865,7 +903,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
     });
   }
 
-  MessageTablesCompanion copyWith(
+  MessageTableSchemaCompanion copyWith(
       {Value<String>? id,
       Value<int>? userId,
       Value<String>? chatId,
@@ -878,7 +916,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       Value<DateTime?>? timestamp,
       Value<int?>? sequence,
       Value<String?>? messageToLower}) {
-    return MessageTablesCompanion(
+    return MessageTableSchemaCompanion(
       id: id ?? this.id,
       userId: userId ?? this.userId,
       chatId: chatId ?? this.chatId,
@@ -913,11 +951,11 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       map['replied_message_id'] = Variable<String?>(repliedMessageId.value);
     }
     if (sentStatus.present) {
-      final converter = $MessageTablesTable.$converter0;
+      final converter = $MessageTableSchemaTable.$converter0;
       map['sent_status'] = Variable<int>(converter.mapToSql(sentStatus.value)!);
     }
     if (actionsStatus.present) {
-      final converter = $MessageTablesTable.$converter1;
+      final converter = $MessageTableSchemaTable.$converter1;
       map['actions_status'] =
           Variable<int>(converter.mapToSql(actionsStatus.value)!);
     }
@@ -925,7 +963,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
       map['read'] = Variable<bool>(read.value);
     }
     if (type.present) {
-      final converter = $MessageTablesTable.$converter2;
+      final converter = $MessageTableSchemaTable.$converter2;
       map['type'] = Variable<int>(converter.mapToSql(type.value)!);
     }
     if (timestamp.present) {
@@ -942,7 +980,7 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
 
   @override
   String toString() {
-    return (StringBuffer('MessageTablesCompanion(')
+    return (StringBuffer('MessageTableSchemaCompanion(')
           ..write('id: $id, ')
           ..write('userId: $userId, ')
           ..write('chatId: $chatId, ')
@@ -960,11 +998,11 @@ class MessageTablesCompanion extends UpdateCompanion<MessageTable> {
   }
 }
 
-class $MessageTablesTable extends MessageTables
-    with TableInfo<$MessageTablesTable, MessageTable> {
+class $MessageTableSchemaTable extends MessageTableSchema
+    with TableInfo<$MessageTableSchemaTable, MessageTable> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $MessageTablesTable(this._db, [this._alias]);
+  $MessageTableSchemaTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -996,7 +1034,8 @@ class $MessageTablesTable extends MessageTables
   late final GeneratedColumnWithTypeConverter<MessageSentStatus, int?>
       sentStatus = GeneratedColumn<int?>('sent_status', aliasedName, false,
               type: const IntType(), requiredDuringInsert: true)
-          .withConverter<MessageSentStatus>($MessageTablesTable.$converter0);
+          .withConverter<MessageSentStatus>(
+              $MessageTableSchemaTable.$converter0);
   final VerificationMeta _actionsStatusMeta =
       const VerificationMeta('actionsStatus');
   @override
@@ -1004,7 +1043,7 @@ class $MessageTablesTable extends MessageTables
       actionsStatus = GeneratedColumn<int?>(
               'actions_status', aliasedName, false,
               type: const IntType(), requiredDuringInsert: true)
-          .withConverter<MessageActions>($MessageTablesTable.$converter1);
+          .withConverter<MessageActions>($MessageTableSchemaTable.$converter1);
   final VerificationMeta _readMeta = const VerificationMeta('read');
   @override
   late final GeneratedColumn<bool?> read = GeneratedColumn<bool?>(
@@ -1018,7 +1057,8 @@ class $MessageTablesTable extends MessageTables
   late final GeneratedColumnWithTypeConverter<StoredMessageType, int?> type =
       GeneratedColumn<int?>('type', aliasedName, false,
               type: const IntType(), requiredDuringInsert: true)
-          .withConverter<StoredMessageType>($MessageTablesTable.$converter2);
+          .withConverter<StoredMessageType>(
+              $MessageTableSchemaTable.$converter2);
   final VerificationMeta _timestampMeta = const VerificationMeta('timestamp');
   @override
   late final GeneratedColumn<DateTime?> timestamp = GeneratedColumn<DateTime?>(
@@ -1057,9 +1097,9 @@ class $MessageTablesTable extends MessageTables
         messageToLower
       ];
   @override
-  String get aliasedName => _alias ?? 'message_tables';
+  String get aliasedName => _alias ?? 'message_table_schema';
   @override
-  String get actualTableName => 'message_tables';
+  String get actualTableName => 'message_table_schema';
   @override
   VerificationContext validateIntegrity(Insertable<MessageTable> instance,
       {bool isInserting = false}) {
@@ -1127,8 +1167,8 @@ class $MessageTablesTable extends MessageTables
   }
 
   @override
-  $MessageTablesTable createAlias(String alias) {
-    return $MessageTablesTable(_db, alias);
+  $MessageTableSchemaTable createAlias(String alias) {
+    return $MessageTableSchemaTable(_db, alias);
   }
 
   static TypeConverter<MessageSentStatus, int> $converter0 =
@@ -1165,8 +1205,8 @@ class UserTable extends DataClass implements Insertable<UserTable> {
     return map;
   }
 
-  UserTablesCompanion toCompanion(bool nullToAbsent) {
-    return UserTablesCompanion(
+  UserTableSchemaCompanion toCompanion(bool nullToAbsent) {
+    return UserTableSchemaCompanion(
       id: Value(id),
       name: Value(name),
       avatar: Value(avatar),
@@ -1218,16 +1258,16 @@ class UserTable extends DataClass implements Insertable<UserTable> {
           other.avatar == this.avatar);
 }
 
-class UserTablesCompanion extends UpdateCompanion<UserTable> {
+class UserTableSchemaCompanion extends UpdateCompanion<UserTable> {
   final Value<int> id;
   final Value<String> name;
   final Value<String> avatar;
-  const UserTablesCompanion({
+  const UserTableSchemaCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.avatar = const Value.absent(),
   });
-  UserTablesCompanion.insert({
+  UserTableSchemaCompanion.insert({
     this.id = const Value.absent(),
     required String name,
     required String avatar,
@@ -1245,9 +1285,9 @@ class UserTablesCompanion extends UpdateCompanion<UserTable> {
     });
   }
 
-  UserTablesCompanion copyWith(
+  UserTableSchemaCompanion copyWith(
       {Value<int>? id, Value<String>? name, Value<String>? avatar}) {
-    return UserTablesCompanion(
+    return UserTableSchemaCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       avatar: avatar ?? this.avatar,
@@ -1271,7 +1311,7 @@ class UserTablesCompanion extends UpdateCompanion<UserTable> {
 
   @override
   String toString() {
-    return (StringBuffer('UserTablesCompanion(')
+    return (StringBuffer('UserTableSchemaCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('avatar: $avatar')
@@ -1280,11 +1320,11 @@ class UserTablesCompanion extends UpdateCompanion<UserTable> {
   }
 }
 
-class $UserTablesTable extends UserTables
-    with TableInfo<$UserTablesTable, UserTable> {
+class $UserTableSchemaTable extends UserTableSchema
+    with TableInfo<$UserTableSchemaTable, UserTable> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $UserTablesTable(this._db, [this._alias]);
+  $UserTableSchemaTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
@@ -1306,9 +1346,9 @@ class $UserTablesTable extends UserTables
   @override
   List<GeneratedColumn> get $columns => [id, name, avatar];
   @override
-  String get aliasedName => _alias ?? 'user_tables';
+  String get aliasedName => _alias ?? 'user_table_schema';
   @override
-  String get actualTableName => 'user_tables';
+  String get actualTableName => 'user_table_schema';
   @override
   VerificationContext validateIntegrity(Insertable<UserTable> instance,
       {bool isInserting = false}) {
@@ -1341,8 +1381,8 @@ class $UserTablesTable extends UserTables
   }
 
   @override
-  $UserTablesTable createAlias(String alias) {
-    return $UserTablesTable(_db, alias);
+  $UserTableSchemaTable createAlias(String alias) {
+    return $UserTableSchemaTable(_db, alias);
   }
 }
 
@@ -1375,8 +1415,8 @@ class ParticipantTable extends DataClass
     return map;
   }
 
-  ParticipantTablesCompanion toCompanion(bool nullToAbsent) {
-    return ParticipantTablesCompanion(
+  ParticipantTableSchemaCompanion toCompanion(bool nullToAbsent) {
+    return ParticipantTableSchemaCompanion(
       chatId: Value(chatId),
       userId: Value(userId),
       admin: Value(admin),
@@ -1429,16 +1469,17 @@ class ParticipantTable extends DataClass
           other.admin == this.admin);
 }
 
-class ParticipantTablesCompanion extends UpdateCompanion<ParticipantTable> {
+class ParticipantTableSchemaCompanion
+    extends UpdateCompanion<ParticipantTable> {
   final Value<String> chatId;
   final Value<int> userId;
   final Value<bool> admin;
-  const ParticipantTablesCompanion({
+  const ParticipantTableSchemaCompanion({
     this.chatId = const Value.absent(),
     this.userId = const Value.absent(),
     this.admin = const Value.absent(),
   });
-  ParticipantTablesCompanion.insert({
+  ParticipantTableSchemaCompanion.insert({
     required String chatId,
     required int userId,
     this.admin = const Value.absent(),
@@ -1456,9 +1497,9 @@ class ParticipantTablesCompanion extends UpdateCompanion<ParticipantTable> {
     });
   }
 
-  ParticipantTablesCompanion copyWith(
+  ParticipantTableSchemaCompanion copyWith(
       {Value<String>? chatId, Value<int>? userId, Value<bool>? admin}) {
-    return ParticipantTablesCompanion(
+    return ParticipantTableSchemaCompanion(
       chatId: chatId ?? this.chatId,
       userId: userId ?? this.userId,
       admin: admin ?? this.admin,
@@ -1482,7 +1523,7 @@ class ParticipantTablesCompanion extends UpdateCompanion<ParticipantTable> {
 
   @override
   String toString() {
-    return (StringBuffer('ParticipantTablesCompanion(')
+    return (StringBuffer('ParticipantTableSchemaCompanion(')
           ..write('chatId: $chatId, ')
           ..write('userId: $userId, ')
           ..write('admin: $admin')
@@ -1491,11 +1532,11 @@ class ParticipantTablesCompanion extends UpdateCompanion<ParticipantTable> {
   }
 }
 
-class $ParticipantTablesTable extends ParticipantTables
-    with TableInfo<$ParticipantTablesTable, ParticipantTable> {
+class $ParticipantTableSchemaTable extends ParticipantTableSchema
+    with TableInfo<$ParticipantTableSchemaTable, ParticipantTable> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $ParticipantTablesTable(this._db, [this._alias]);
+  $ParticipantTableSchemaTable(this._db, [this._alias]);
   final VerificationMeta _chatIdMeta = const VerificationMeta('chatId');
   @override
   late final GeneratedColumn<String?> chatId = GeneratedColumn<String?>(
@@ -1517,9 +1558,9 @@ class $ParticipantTablesTable extends ParticipantTables
   @override
   List<GeneratedColumn> get $columns => [chatId, userId, admin];
   @override
-  String get aliasedName => _alias ?? 'participant_tables';
+  String get aliasedName => _alias ?? 'participant_table_schema';
   @override
-  String get actualTableName => 'participant_tables';
+  String get actualTableName => 'participant_table_schema';
   @override
   VerificationContext validateIntegrity(Insertable<ParticipantTable> instance,
       {bool isInserting = false}) {
@@ -1553,8 +1594,8 @@ class $ParticipantTablesTable extends ParticipantTables
   }
 
   @override
-  $ParticipantTablesTable createAlias(String alias) {
-    return $ParticipantTablesTable(_db, alias);
+  $ParticipantTableSchemaTable createAlias(String alias) {
+    return $ParticipantTableSchemaTable(_db, alias);
   }
 }
 
@@ -1580,8 +1621,8 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
     return map;
   }
 
-  ChannelTablesCompanion toCompanion(bool nullToAbsent) {
-    return ChannelTablesCompanion(
+  ChannelTableSchemaCompanion toCompanion(bool nullToAbsent) {
+    return ChannelTableSchemaCompanion(
       id: Value(id),
       sequence: Value(sequence),
     );
@@ -1627,14 +1668,14 @@ class ChannelTable extends DataClass implements Insertable<ChannelTable> {
           other.sequence == this.sequence);
 }
 
-class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
+class ChannelTableSchemaCompanion extends UpdateCompanion<ChannelTable> {
   final Value<String> id;
   final Value<int> sequence;
-  const ChannelTablesCompanion({
+  const ChannelTableSchemaCompanion({
     this.id = const Value.absent(),
     this.sequence = const Value.absent(),
   });
-  ChannelTablesCompanion.insert({
+  ChannelTableSchemaCompanion.insert({
     required String id,
     this.sequence = const Value.absent(),
   }) : id = Value(id);
@@ -1648,8 +1689,9 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
     });
   }
 
-  ChannelTablesCompanion copyWith({Value<String>? id, Value<int>? sequence}) {
-    return ChannelTablesCompanion(
+  ChannelTableSchemaCompanion copyWith(
+      {Value<String>? id, Value<int>? sequence}) {
+    return ChannelTableSchemaCompanion(
       id: id ?? this.id,
       sequence: sequence ?? this.sequence,
     );
@@ -1669,7 +1711,7 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
 
   @override
   String toString() {
-    return (StringBuffer('ChannelTablesCompanion(')
+    return (StringBuffer('ChannelTableSchemaCompanion(')
           ..write('id: $id, ')
           ..write('sequence: $sequence')
           ..write(')'))
@@ -1677,11 +1719,11 @@ class ChannelTablesCompanion extends UpdateCompanion<ChannelTable> {
   }
 }
 
-class $ChannelTablesTable extends ChannelTables
-    with TableInfo<$ChannelTablesTable, ChannelTable> {
+class $ChannelTableSchemaTable extends ChannelTableSchema
+    with TableInfo<$ChannelTableSchemaTable, ChannelTable> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $ChannelTablesTable(this._db, [this._alias]);
+  $ChannelTableSchemaTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -1697,9 +1739,9 @@ class $ChannelTablesTable extends ChannelTables
   @override
   List<GeneratedColumn> get $columns => [id, sequence];
   @override
-  String get aliasedName => _alias ?? 'channel_tables';
+  String get aliasedName => _alias ?? 'channel_table_schema';
   @override
-  String get actualTableName => 'channel_tables';
+  String get actualTableName => 'channel_table_schema';
   @override
   VerificationContext validateIntegrity(Insertable<ChannelTable> instance,
       {bool isInserting = false}) {
@@ -1726,22 +1768,31 @@ class $ChannelTablesTable extends ChannelTables
   }
 
   @override
-  $ChannelTablesTable createAlias(String alias) {
-    return $ChannelTablesTable(_db, alias);
+  $ChannelTableSchemaTable createAlias(String alias) {
+    return $ChannelTableSchemaTable(_db, alias);
   }
 }
 
 abstract class _$ChatDatabase extends GeneratedDatabase {
   _$ChatDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  late final $ChatTablesTable chatTables = $ChatTablesTable(this);
-  late final $MessageTablesTable messageTables = $MessageTablesTable(this);
-  late final $UserTablesTable userTables = $UserTablesTable(this);
-  late final $ParticipantTablesTable participantTables =
-      $ParticipantTablesTable(this);
-  late final $ChannelTablesTable channelTables = $ChannelTablesTable(this);
+  late final $ChatTableSchemaTable chatTableSchema =
+      $ChatTableSchemaTable(this);
+  late final $MessageTableSchemaTable messageTableSchema =
+      $MessageTableSchemaTable(this);
+  late final $UserTableSchemaTable userTableSchema =
+      $UserTableSchemaTable(this);
+  late final $ParticipantTableSchemaTable participantTableSchema =
+      $ParticipantTableSchemaTable(this);
+  late final $ChannelTableSchemaTable channelTableSchema =
+      $ChannelTableSchemaTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [chatTables, messageTables, userTables, participantTables, channelTables];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        chatTableSchema,
+        messageTableSchema,
+        userTableSchema,
+        participantTableSchema,
+        channelTableSchema
+      ];
 }

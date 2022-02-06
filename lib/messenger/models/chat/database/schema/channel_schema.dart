@@ -1,7 +1,7 @@
 import 'package:moor/moor.dart';
 
 @DataClassName('ChannelTable')
-class ChannelTables extends Table {
+class ChannelTableSchema extends Table {
   TextColumn get id => text()();
   IntColumn get sequence => integer().withDefault(Constant(0))();
 

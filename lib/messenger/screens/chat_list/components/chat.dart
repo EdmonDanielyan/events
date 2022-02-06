@@ -7,7 +7,7 @@ import 'package:ink_mobile/messenger/blocs/online/online_bloc.dart';
 import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 import 'package:ink_mobile/messenger/models/chat_user.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_date.dart';
@@ -15,7 +15,7 @@ import 'package:ink_mobile/messenger/screens/chat_list/components/chat_divider.d
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_message.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_message_trailing.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_name.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/setup.dart';
 
 class ChatListTile extends StatefulWidget {

@@ -1,5 +1,31 @@
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/setup.dart';
+
+//todo: Разнести константы API и Nats
+
+@module
+abstract class UrlsConfigStaging {
+  @stage
+  @Named("natsWssUrl")
+  String get natsWssUrl => "wss://95.217.133.151:443";
+
+  @stage
+  @Named("natsCluster")
+  String get natsCluster => "ink";
+
+  @stage
+  @Named("natsCertificatePath")
+  String get natsCertificatePath => "assets/certs/95.217.133.151.pem";
+
+  @stage
+  @Named("apiUrl")
+  String get apiUrl => "https://test.ink.vpool.qsoft.ru/api/v1";
+
+  @stage
+  @Named("apiCertificatePath")
+  String get apiCertificatePath => "assets/certs/test.ink.vpool.qsoft.ru.pem";
+}
 
 @module
 abstract class UrlsConfigDev {

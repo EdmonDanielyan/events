@@ -1,10 +1,11 @@
 import 'package:moor/moor.dart';
 
 @DataClassName('ChatTable')
-class ChatTables extends Table {
+class ChatTableSchema extends Table {
   TextColumn get id => text()();
   TextColumn get name => text().withLength(min: 0, max: 150)();
   TextColumn get description => text()();
+  TextColumn get channel => text()();
   TextColumn get avatar => text()();
   IntColumn get ownerId => integer()();
   IntColumn get participantId => integer().nullable()();

@@ -14,6 +14,8 @@ import 'package:main_api_client/api/auth_api.dart';
 import 'package:main_api_client/model/refresh_token_params.dart';
 import 'package:uuid/uuid.dart';
 
+import 'jwt_payload.dart';
+
 abstract class Token {
   static Future<String> getUserId() async {
     JwtPayload? authUser = await Token.getJwtPayloadObject();
@@ -37,7 +39,7 @@ abstract class Token {
       Map<String, dynamic> payloadMap =
           StringConverter(string: payload).decodeJson();
 
-      return new JwtPayload(payloadMap);
+      return JwtPayload.fromJson(payloadMap);
     }
 
     return null;
@@ -202,39 +204,18 @@ class DeviceType {
   const DeviceType(String key) : key = key;
 }
 
-class JwtPayload {
-  String natsToken = '';
 
-  int expirationTime = 0;
-  int userId = 0;
-  String avatar = '';
-  String name = '';
-  String lastName = '';
-  String secondName = '';
-
-  static late int myId;
-  static late String myAvatar;
-  static late String myName;
-
-  JwtPayload(Map<String, dynamic> payloadMap) {
-    this.natsToken = payloadMap['nats_token'] ?? null;
-    this.expirationTime = payloadMap['exp'];
-    this.userId = payloadMap['userId'];
-    this.avatar = payloadMap['avatar'];
-    this.name = payloadMap['name'];
-    this.lastName = payloadMap['last_name'];
-    this.secondName = payloadMap['second_name'];
-
-    myId = payloadMap['userId'];
-    myAvatar = payloadMap['avatar'] ?? "";
-    myName = "${payloadMap['name']} ${payloadMap['last_name']}".trim();
-  }
-}
 
 @module
 abstract class TokenDataInjectorModule {
   @Named("userId")
   String get userId => GetIt.I.get<TokenDataHolder>().userId;
+
+  @Named("messengerAuthLogin")
+  String get messengerAuthLogin => GetIt.I.get<TokenDataHolder>().userId;
+
+  @Named("messengerAuthPassword")
+  String get messengerAuthPassword => GetIt.I.get<TokenDataHolder>().localDatabasePassword;
 
   @Named("natsToken")
   String get natsToken => GetIt.I.get<TokenDataHolder>().natsToken;

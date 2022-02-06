@@ -6,13 +6,13 @@ import 'package:ink_mobile/messenger/models/chat_list_view.dart';
 import 'package:ink_mobile/messenger/models/chat_user.dart';
 
 
-class ChatListFields {
+class ChatListPayload {
   final List<ChatTable> chats;
   final List<UserTable> users;
   final List<ParticipantTable> participants;
   final List<ChannelTable> channels;
 
-  const ChatListFields({
+  const ChatListPayload({
     required this.chats,
     required this.users,
     required this.participants,
@@ -28,8 +28,8 @@ class ChatListFields {
     };
   }
 
-  factory ChatListFields.fromMap(Map<String, dynamic> map) {
-    return ChatListFields(
+  factory ChatListPayload.fromMap(Map<String, dynamic> map) {
+    return ChatListPayload(
       chats: ChatListView.getChatsFromString(map['chats'] ?? "[]"),
       users: ChatUserViewModel.getUsersFromString(map['users'] ?? "[]"),
       participants: ChatUserViewModel.getParticipantsFromString(
@@ -40,6 +40,6 @@ class ChatListFields {
 
   String toJson() => json.encode(toMap());
 
-  factory ChatListFields.fromJson(String source) =>
-      ChatListFields.fromMap(json.decode(source));
+  factory ChatListPayload.fromJson(String source) =>
+      ChatListPayload.fromMap(json.decode(source));
 }

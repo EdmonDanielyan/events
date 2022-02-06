@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 import 'package:ink_mobile/messenger/screens/chat/entities/attach_entities.dart';
 import 'package:ink_mobile/messenger/screens/chat/entities/form_entities.dart';
 

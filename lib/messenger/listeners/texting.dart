@@ -8,7 +8,7 @@ import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/models/texting.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/models/debouncer.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 
 @Named("Texting")
 @Injectable(as: MessageListener)

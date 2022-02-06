@@ -5,14 +5,14 @@ import 'package:ink_mobile/messenger/cases/open_chat.dart';
 import 'package:ink_mobile/messenger/cases/send_message.dart';
 import 'package:ink_mobile/messenger/cases/user_functions.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 import 'package:ink_mobile/messenger/models/chat/nats/message.dart';
 import 'package:ink_mobile/messenger/models/chat_list_view.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/providers/notifications/notifications.dart';
 import 'package:ink_mobile/messenger/sender/invite_sender.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/setup.dart';
 
 import '../cases/chat_functions.dart';

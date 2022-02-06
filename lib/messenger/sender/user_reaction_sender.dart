@@ -4,7 +4,7 @@ import 'package:ink_mobile/messenger/cases/chat_functions.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/nats/message_status.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
-import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 
 @injectable
 class UserReactionSender {
@@ -30,7 +30,10 @@ class UserReactionSender {
   Future<bool> setMessagesToReadNats(List<MessageTable> messages,
       {bool sendRequest = true}) async {
     String chatId = messages.last.chatId;
-    final channel = natsProvider.getChatChannelById(chatId);
+    var chatTable = await chatFunctions.chatDatabaseCubit.db.selectChatById(chatId);
+    if (chatTable == null) return false;
+
+    final channel = chatTable.channel;
     await chatFunctions.messagesToRead(messages.last, onlyIfMyMessages: false);
     if (sendRequest) {
       bool send = await sendReadMessageStatus(channel, messages);

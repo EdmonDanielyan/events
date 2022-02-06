@@ -2,11 +2,11 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/messenger/listeners/channels_registry.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/nats/chat_info.dart';
-import 'package:ink_mobile/messenger/models/chat/nats/invitation.dart';
-import 'package:ink_mobile/messenger/models/chat/nats/leftJoined.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/chat_info.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/chat_payload.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/left_joined.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/user_payload.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
-import 'package:ink_mobile/models/token.dart';
 
 import '../cases/user_functions.dart';
 import 'chat_saver.dart';
@@ -23,15 +23,20 @@ class ChatEventsSender {
       this.natsProvider, this.userFunctions, this.chatSaver, this.registry);
 
   Future<bool> sendNewChatInfo(ChatTable chat, {UserTable? user}) async {
-    var channel = natsProvider.getChatChannelById(chat.id);
-    bool send = await natsProvider.sendSystemMessageToChannel(
-      channel,
+    bool send = await natsProvider.sendJsonMessageToChannel(
+      chat.channel,
       MessageType.UpdateChatInfo,
-      ChatInfoFields(
-        channel: channel,
-        chat: chat,
-        user: userFunctions.me,
-      ).toMap(),
+      ChatInfoUpdatePayload(
+        chat: ChatPayload(
+            id: chat.id,
+            name: chat.name,
+            description: chat.description,
+            ownerId: chat.ownerId,
+            participantId: chat.participantId,
+            avatar: chat.avatar,
+            channel: chat.channel),
+        userId: userFunctions.me.id.toString(),
+      ).toJson(),
     );
     chatSaver.saveChats(newChat: null);
     return send;
@@ -39,13 +44,16 @@ class ChatEventsSender {
 
   Future<bool> sendUserChatJoinedMessage(
       ChatTable chat, List<UserTable> users) async {
-    bool send = await natsProvider.sendSystemMessageToChannel(
-      natsProvider.getChatChannelById(chat.id),
+    bool send = await natsProvider.sendJsonMessageToChannel(
+      chat.channel,
       MessageType.UserJoined,
-      ChatInvitationFields(
-        users: users,
-        chat: chat,
-      ).toMap(),
+      LeftJoinedPayload(
+        users: users
+            .map<UserPayload>(
+                (u) => UserPayload(id: u.id, name: u.name, avatar: u.avatar))
+            .toList(),
+        chatId: chat.id,
+      ).toJson(),
     );
     chatSaver.saveChats(newChat: null);
     return send;
@@ -55,22 +63,21 @@ class ChatEventsSender {
     ChatTable chat, {
     List<UserTable>? users,
     bool unsubFromChat = true,
-    int? senderId,
-    int? countLefts,
   }) async {
-    await natsProvider.sendSystemMessageToChannel(
-      natsProvider.getChatChannelById(chat.id),
+    var channel = chat.channel;
+    await natsProvider.sendJsonMessageToChannel(
+      channel,
       MessageType.UserLeftChat,
-      ChatLeftJoinedFields(
-        users: users ?? [userFunctions.me],
-        chat: chat,
-        senderId: senderId ?? JwtPayload.myId,
-        countLefts: countLefts,
-      ).toMap(),
+      LeftJoinedPayload(
+        users: (users ?? [userFunctions.me])
+            .map<UserPayload>(
+                (e) => UserPayload(id: e.id, name: e.name, avatar: e.avatar))
+            .toList(),
+        chatId: chat.id,
+      ).toJson(),
     );
-
     if (unsubFromChat) {
-      await registry.unSubscribeOnChatDelete(chat.id);
+      await registry.unSubscribeOnChatDelete(channel);
     }
 
     await chatSaver.saveChats(newChat: null);
