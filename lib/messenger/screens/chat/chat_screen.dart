@@ -11,6 +11,7 @@ import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_state.dart';
 import 'package:ink_mobile/messenger/cases/chat_functions.dart';
 import 'package:ink_mobile/messenger/cases/send_message.dart';
+import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/messenger/models/chat_app_bar_modes.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
@@ -46,7 +47,7 @@ class ChatScreen extends StatefulWidget {
   ChatScreenState createState() => ChatScreenState();
 }
 
-class ChatScreenState extends State<ChatScreen> {
+class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   ChatScreenState();
 
   SelectableCubit<MessageWithUser> get selectableCubit =>
@@ -56,10 +57,24 @@ class ChatScreenState extends State<ChatScreen> {
 
   ScrollController controller = ScrollController();
 
-  // ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
-  // ChatCubit get chatCubit => widget.chatCubit;
-  // SelectableCubit<MessageWithUser> get selectableCubit =>
-  //     widget.selectableCubit;
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.paused) {
+      widget.messenger.chatDatabaseCubit.isChatInBackground = true;
+    }
+
+    if (state == AppLifecycleState.resumed) {
+      widget.messenger.chatDatabaseCubit.isChatInBackground = false;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addObserver(this);
+  }
 
   void _setMessagesToRead() {
     if (_chatBodyStateKey.currentState != null) {
@@ -73,6 +88,7 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
     widget.messenger.chatCubit.emitEditMessage(null);
     widget.messenger.chatCubit.emitSelectedMessageId(null);
