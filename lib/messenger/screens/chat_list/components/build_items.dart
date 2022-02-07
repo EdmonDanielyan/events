@@ -34,8 +34,7 @@ class BuildChatItems extends StatelessWidget {
       builder: (context, state) {
         List<ChatTable> chats = state.searchChats;
         chats.sort((a, b) {
-          return b.updatedAt
-              .compareTo(a.updatedAt);
+          return b.updatedAt.compareTo(a.updatedAt);
         });
 
         return ListView.builder(
@@ -54,6 +53,16 @@ class BuildChatItems extends StatelessWidget {
                   return const SizedBox();
                 }
 
+                MessageTable? searchMessage;
+
+                if (searchChatCubit.searchMessage != null) {
+                  searchChatCubit.searchMessage!.forEach((element) {
+                    if (element.chatId == chats[index].id) {
+                      searchMessage = element;
+                    }
+                  });
+                }
+
                 return ChatListTile(
                   onTap: () {
                     OpenChat(chatDatabaseCubit, chats[index]).call();
@@ -66,11 +75,7 @@ class BuildChatItems extends StatelessWidget {
                   index: index,
                   chat: chats[index],
                   contentPadding: contentPadding,
-                  searchMessage: searchChatCubit.searchMessage != null &&
-                          searchChatCubit.searchMessage!.chatId ==
-                              chats[index].id
-                      ? searchChatCubit.searchMessage
-                      : null,
+                  searchMessage: searchMessage,
                   chatDatabaseCubit: chatDatabaseCubit,
                   messagesWithUser: messagesWithUser,
                 );
