@@ -24,8 +24,6 @@ class WssHttpOverrides extends HttpOverrides {
     SecurityContext _ctx = context ?? SecurityContext();
     _ctx.setTrustedCertificatesBytes(certificate);
     var client = super.createHttpClient(_ctx);
-    //todo: Убрать после проверки этот коллбэк это Security Issue
-    client.badCertificateCallback = (_, host, port) => true;
     return client;
   }
 

@@ -8,7 +8,7 @@ import 'package:ink_mobile/setup.dart';
 abstract class UrlsConfigStaging {
   @stage
   @Named("natsWssUrl")
-  String get natsWssUrl => "wss://95.217.133.151:443";
+  String get natsWssUrl => "wss://messenger.jetrabbits.com";
 
   @stage
   @Named("natsCluster")
@@ -16,7 +16,7 @@ abstract class UrlsConfigStaging {
 
   @stage
   @Named("natsCertificatePath")
-  String get natsCertificatePath => "assets/certs/95.217.133.151.pem";
+  String get natsCertificatePath => "assets/certs/messenger.jetrabbits.com.pem";
 
   @stage
   @Named("apiUrl")
