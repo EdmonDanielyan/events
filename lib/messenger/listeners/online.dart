@@ -4,6 +4,7 @@ import 'package:dart_nats_streaming/dart_nats_streaming.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
+import 'package:ink_mobile/messenger/constants/nats_constants.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
@@ -30,7 +31,9 @@ class UserOnlineListener extends MessageListener {
   Future<void> subscribeOnline() async {
     if (!natsProvider.isConnected) return;
     final channel = natsProvider.getOnlineChannel();
+    if (registry.isListening(channel)) return;
     await natsProvider.subscribeToChannel(channel, onMessage,
+        ackWaitSeconds: ACK_WAITS_SECONDS,
         maxInFlight: 100,
         startSequence: Int64.ZERO, startPosition: StartPosition.NewOnly);
     registry.addToListeningChannels(channel);

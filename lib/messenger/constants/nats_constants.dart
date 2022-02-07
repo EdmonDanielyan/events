@@ -1,0 +1,1 @@
+const ACK_WAITS_SECONDS = 30;
