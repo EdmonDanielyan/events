@@ -133,16 +133,13 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> onChannelMessage(String channel, NatsMessage message) async {
-    PayloadType type = message.type;
-    if (type == PayloadType.system) {
-      var messageType = (message.payload as SystemPayload).type;
+      var messageType = (message.payload as Payload).type;
       var listener = listeners[messageType];
       if (listener == null) {
         logger.warning("No listener registered for message type: $messageType");
         return;
       }
       return listener.onMessage(channel, message);
-    }
   }
 
   Future<void> _subscribeToChannel(String channel,

@@ -68,6 +68,7 @@ class ChatCreation with Loggable {
 
   Future<ChatTable> createFromInvite(
       ChatTable chat, UserTable whoInvites) async {
+    logger.finest('createFromInvite');
     late ChatTable? newChat;
 
     chatDatabaseCubit.db.insertUserOrUpdate(whoInvites);
@@ -77,6 +78,8 @@ class ChatCreation with Loggable {
         admin: whoInvites.id == chat.ownerId));
 
     if (chat.isGroup()) {
+      logger.finest('createFromInvite: group');
+
       newChat = await createGroup(
         name: chat.name,
         avatar: chat.avatar,
@@ -84,9 +87,11 @@ class ChatCreation with Loggable {
         chat: chat,
       );
     } else {
+      logger.finest('createFromInvite: dialog');
       newChat = chat.copyWith(
         name: await singleChatName(whoInvites),
         avatar: whoInvites.avatar,
+        participantId: whoInvites.id
       );
 
       await chatDatabaseCubit.db.insertChat(newChat);
@@ -98,10 +103,9 @@ class ChatCreation with Loggable {
   Future<ChatTable> _createSingleChat(
     UserTable user, {
     String? name,
-    String? avatar,
-    List<UserTable>? users,
+    String? avatar
   }) async {
-    users = users ?? [user, userFunctions.me];
+    var users = [user, userFunctions.me];
 
     var chat = await chatDatabaseCubit.db.selectChatByParticipantId(user.id);
 
@@ -109,6 +113,7 @@ class ChatCreation with Loggable {
       chat = await _makeChat(
         name ?? user.name,
         avatar ?? user.avatar,
+        ownerId: userFunctions.me.id,
         participantId: user.id,
       );
 

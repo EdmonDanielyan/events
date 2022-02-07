@@ -167,7 +167,7 @@ class NatsMessage extends BaseMessage {
     return this.payload as JsonPayload;
   }
 
-  static NatsMessage fromBytes(Uint8List bytes) {
+  static NatsMessage fromStructuredPayload(Uint8List bytes) {
     final unpacker = Unpacker(bytes);
     NatsMessage message = NatsMessage();
     message.id = unpacker.unpackString()!;

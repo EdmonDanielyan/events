@@ -239,8 +239,10 @@ class NatsProvider {
     _logger.finest(() => "invite: $invites");
 
     try {
-      await _stan.natsClient.requestString(INVITE,
-          jsonEncode(InviteRequest(token: authResponse.token, invites: invites).toJson()),
+      var data = jsonEncode(InviteRequest(token: authResponse.token, invites: invites).toJson());
+      _logger.finest("Sending: $data");
+      await _stan.natsClient.request(INVITE,
+          Uint8List.fromList(utf8.encode(data)),
           timeout: Duration(seconds: timeoutInSeconds));
       return true;
     } catch (e, s) {
@@ -248,6 +250,8 @@ class NatsProvider {
     }
     return false;
   }
+
+
 
   Future<bool> _sendMessage(String channel, NatsMessage message) async {
     return await _stan.pubBytes(
@@ -264,7 +268,19 @@ class NatsProvider {
   NatsMessage parseMessage(DataMessage dataMessage) {
     var payload = dataMessage.encodedPayload;
     var sequence = dataMessage.sequence;
-    var message = NatsMessage.fromBytes(payload);
+    dynamic json;
+    try {
+      var source = utf8.decode(payload.toList());
+      json = jsonDecode(source);
+    } catch (e) {
+    }
+    NatsMessage message;
+    if (json != null) {
+      message = NatsMessage(id: Uuid().v4(), type: PayloadType.json, to: dataMessage.subject);
+      message.payload = JsonPayload(MessageType.InviteUserToJoinChat, json);
+    } else {
+      message = NatsMessage.fromStructuredPayload(payload);
+    }
     message.sequence = sequence;
     message.timestamp = DateTime.fromMillisecondsSinceEpoch(
         (dataMessage.timestamp.toDouble() / 1e6).truncate(),

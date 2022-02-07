@@ -43,15 +43,11 @@ class InviteSender {
   }
 
   Future<void> sendInvitations(ChatTable chat, List<UserTable> users) async {
-    for (final user in users) {
-      if (user.id != JwtPayload.myId) {
-        await natsProvider.invite(
-            users.map<InvitePayload>((u) => InvitePayload(
-                whoInvites: UserPayload.fromUserTable(userFunctions.me),
-                invitedUserId: user.id.toString(),
-                chat: ChatPayload.fromChatTable(chat))).toList()
-            );
-      }
-    }
+    await natsProvider.invite(
+        users.where((user) => user.id != JwtPayload.myId).map<InvitePayload>((u) => InvitePayload(
+            whoInvites: UserPayload.fromUserTable(userFunctions.me),
+            invitedUserId: u.id.toString(),
+            chat: ChatPayload.fromChatTable(chat))).toList()
+    );
   }
 }

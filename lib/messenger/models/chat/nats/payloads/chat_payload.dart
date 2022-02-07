@@ -43,5 +43,6 @@ class ChatPayload {
       avatar: avatar,
       ownerId: ownerId,
       channel: channel,
+      participantId: participantId,
       updatedAt: DateTime.now());
 }

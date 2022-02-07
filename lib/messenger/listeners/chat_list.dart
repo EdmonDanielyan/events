@@ -50,9 +50,6 @@ class ChatListListener extends MessageListener {
       final sub = await natsProvider.listenChatList(channel);
       DataMessage? dataMessage;
       try {
-        //todo: возможно то что лежит в стриме первым это плохая запись или совсем старая, нельзя на это полагаться
-        // Если произошел косяк в локальной базе то последнее сообщение в чат листе битое
-        // нужно перечитать весь стрим этого канала и только тогда пристпать к парсингу
         dataMessage = await sub.stream.first.timeout(Duration(seconds: 5));
       } on TimeoutException {
         logger.severe('timeout during read ChatList channel');
