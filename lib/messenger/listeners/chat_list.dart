@@ -84,6 +84,8 @@ class ChatListListener extends MessageListener {
       final participants = fields.participants;
       final channels = fields.channels;
       chatDatabaseCubit.setLoadingChatsCounter(chats.length);
+      chatDatabaseCubit.setLoadingChats(false);
+      chatDatabaseCubit.setLoadingChats(true);
 
       //THIS ORDER IS ESSENTIAL (DO NOT CHANGE)
       if (!await _participantsStored(participants)) {

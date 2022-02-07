@@ -80,7 +80,6 @@ class ChannelsRegistry with Loggable {
 
   Future<void> init() async {
     logger.finest('init');
-    chatDatabaseCubit.setLoadingChats(true);
     await Future.delayed(Duration(seconds: 1));
     listeners.clear();
     MessageType.values.forEach((messageType) {

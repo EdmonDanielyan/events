@@ -23,8 +23,7 @@ class ContactsNetworkRequest extends ContactsRequestDependency {
         .getContacts(
             search: query!.length < 3 ? null : query,
             pageNumber: pageNumber,
-            countOnPage: 70)
-        .timeout(Duration(seconds: 4));
+            countOnPage: 70);
     return response;
   }
 }

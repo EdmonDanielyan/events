@@ -9,7 +9,7 @@ import 'package:ink_mobile/messenger/models/chat_list_view.dart';
 class SearchChatCubit extends Cubit<SearchChatState> {
   SearchChatCubit() : super(SearchChatState(chats: [], searchChats: []));
 
-  MessageTable? searchMessage;
+  Set<MessageTable>? searchMessage;
 
   void emitChats(List<ChatTable> chats) {
     emit(state.copyWith(chats: chats, searchChats: chats));
@@ -22,12 +22,13 @@ class SearchChatCubit extends Cubit<SearchChatState> {
     List<ChatTable> items = ChatListView.searchChats(value, state.chats);
 
     if (chatDatabaseCubit != null) {
+      searchMessage = {};
       for (final chat in state.chats) {
         final findMessage = await chatDatabaseCubit.db
             .searchMessageByTextAndChatId(value, chat.id);
 
         if (findMessage != null) {
-          searchMessage = findMessage;
+          searchMessage!.add(findMessage);
           items.add(chat);
         }
       }
