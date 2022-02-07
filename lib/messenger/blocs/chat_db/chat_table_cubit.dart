@@ -10,6 +10,8 @@ class ChatDatabaseCubit extends Cubit<ChatDatabaseCubitState> {
 
   int _loadingChats = 0;
 
+  bool isChatInBackground = false;
+
   void setLoadingChats(bool loading) {
     emit(state.copyWith(loadingChats: loading));
   }
