@@ -37,7 +37,6 @@ class ChatListScreenState extends State<ChatListScreen>
     with AutomaticKeepAliveClientMixin {
   ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
   SelectableCubit<UserTable> get selectableCubit => widget.selectableCubit;
-  ChatPersonListCubit get chatPersonListCubit => widget.chatPersonListCubit;
   SearchChatCubit get chatListCubit => widget.searchChatCubit;
 
   @override

@@ -17,7 +17,9 @@ class TestScreen extends StatelessWidget {
             changeValueBy: 2.3,
             mode: NumberSelectFieldMode.double,
             onlyPositive: true,
-            validator: (value) {},
+            validator: (value) {
+              return null;
+            },
             style: TextStyle(fontSize: 30, height: 1),
             textAlignVertical: TextAlignVertical.center,
             flex: NumberSelectFieldFlex(

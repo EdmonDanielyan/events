@@ -147,6 +147,7 @@ class PushNotificationManager with Loggable {
       logger.finest(() => "found chat: $chatTable");
       return chatTable;
     }
+    return null;
   }
 
   Future subscribeToTopic(String topic) async {

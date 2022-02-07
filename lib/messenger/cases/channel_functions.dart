@@ -78,6 +78,7 @@ class ChannelFunctions with Loggable {
     if (!isChannelExists) {
       await insertChannel(channel);
     }
+    return null;
   }
 
   Future<int?> updateChannel(ChannelTable channel) async {
