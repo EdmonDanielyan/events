@@ -9,28 +9,29 @@ void showErrorDialog(
   var buildContext = App.materialKey!.currentContext;
   if (buildContext == null) return;
   showDialog(
-      context: buildContext,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-          content: Text(message),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          actions: actions ??
-              [
-                TextButton(
-                  child: Text(
-                    'Закрыть',
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    maxLines: 1,
+    context: buildContext,
+    builder: (context) {
+      return AlertDialog(
+        title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+        content: Text(message),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        actions: actions ??
+            [
+              TextButton(
+                child: Text(
+                  'Закрыть',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
                   ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  maxLines: 1,
                 ),
-              ],
-        );
-      });
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+      );
+    },
+  );
 }
