@@ -21,6 +21,8 @@ import '../../../extensions/user_list.dart';
 import '../../../messenger/extensions/chat_list.dart';
 import '../cases/chat_creation.dart';
 import 'channels_registry.dart';
+import 'package:ink_mobile/messenger/extensions/chat_table.dart';
+import 'package:collection/collection.dart';
 
 @Named("ChatList")
 @Injectable(as: MessageListener)
@@ -80,13 +82,12 @@ class ChatListListener extends MessageListener {
     try {
       ChatListFields fields = ChatListFields.fromMap(mapPayload.fields);
 
-      var chats = fields.chats;
+      var chats = _filterChats(fields.chats);
       final users = fields.users;
       final participants = fields.participants;
       final channels = fields.channels;
-      chatDatabaseCubit.setLoadingChatsCounter(chats.length);
-      chatDatabaseCubit.setLoadingChats(false);
-      chatDatabaseCubit.setLoadingChats(true);
+
+      _setLoadingChats(chats);
 
       //THIS ORDER IS ESSENTIAL (DO NOT CHANGE)
       if (!await _participantsStored(participants)) {
@@ -124,6 +125,45 @@ class ChatListListener extends MessageListener {
     }
   }
 
+  List<ChatTable> _filterChats(List<ChatTable> chats) {
+    var newChats = chats.cutIdenticalChats();
+    _cleanFromDatabase(chats, newChats);
+
+    return newChats.toSet().toList();
+  }
+
+  Future<void> _cleanFromDatabase(
+      List<ChatTable> originalChats, List<ChatTable> newChats) async {
+    if (originalChats.isNotEmpty) {
+      for (final chat in originalChats) {
+        final getChatFromNew =
+            newChats.firstWhereOrNull((element) => element.id == chat.id);
+
+        if (getChatFromNew == null) {
+          await chatDatabaseCubit.db.deleteChatById(chat.id);
+        }
+      }
+    }
+  }
+
+  Future<void> _setLoadingChats(List<ChatTable> chats) async {
+    int chatsLength = 0;
+    for (final chat in chats) {
+      if (!chat.isGroup() && chat.lastMessageSeq != null) {
+        final hasMessages = await chatDatabaseCubit.db.getChatMessages(chat.id);
+        if (hasMessages.isEmpty) {
+          continue;
+        }
+      }
+
+      chatsLength++;
+    }
+
+    chatDatabaseCubit.setLoadingChatsCounter(chatsLength);
+    chatDatabaseCubit.setLoadingChats(false);
+    chatDatabaseCubit.setLoadingChats(true);
+  }
+
   Future<bool> _usersStored(List<UserTable> users) async {
     final storedItems = await chatDatabaseCubit.db.getAllUsers();
     return users.compareLight(storedItems);
@@ -142,12 +182,11 @@ class ChatListListener extends MessageListener {
   Future<void> _insertChats(List<ChatTable> chats) async {
     if (chats.isEmpty) return;
 
-    final distinctChats = chats.toSet().toList();
-    distinctChats.sort((a, b) => ChatListView.sortChats(a, b));
+    chats.sort((a, b) => ChatListView.sortChats(a, b));
 
     final List<ChatTable> chatsToInsert = [];
 
-    for (final chat in distinctChats) {
+    for (final chat in chats) {
       _getChatIds.add(chat.id);
       chatsToInsert.add(chat);
 

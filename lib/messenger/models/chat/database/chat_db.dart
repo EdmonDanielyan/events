@@ -375,7 +375,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
-  int get schemaVersion => 40;
+  int get schemaVersion => 41;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

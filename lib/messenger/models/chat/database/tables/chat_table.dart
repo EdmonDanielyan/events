@@ -16,6 +16,8 @@ class ChatTables extends Table {
       boolean().nullable().withDefault(Constant(true))();
   BoolColumn get deleted => boolean().nullable().withDefault(Constant(false))();
   IntColumn get lastMessageSeq => integer().nullable()();
+  DateTimeColumn get createdAt =>
+      dateTime().withDefault(Constant(DateTime.now())).nullable()();
 
   @override
   Set<Column> get primaryKey => {id};

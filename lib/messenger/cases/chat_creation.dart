@@ -33,13 +33,7 @@ class ChatCreation with Loggable {
   }
 
   Future<String> singleChatName(UserTable user) async {
-    final chats = await getSingleChatsWithUser(user);
-
-    if (chats.length == 0) {
-      return user.name;
-    }
-
-    return "#${chats.length + 1} ${user.name}";
+    return user.name;
   }
 
   Future<ChatTable> createGroupThroughNats(

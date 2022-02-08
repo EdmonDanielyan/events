@@ -19,7 +19,9 @@ class ScrollBottom {
   void jumpLazy() {
     if (_controller.hasClients) {
       Future.delayed(Duration(milliseconds: 150), () {
-        _controller.jumpTo(_controller.position.maxScrollExtent);
+        if (_controller.hasClients) {
+          _controller.jumpTo(_controller.position.maxScrollExtent);
+        }
       });
     }
   }
