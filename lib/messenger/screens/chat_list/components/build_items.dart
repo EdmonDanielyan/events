@@ -33,6 +33,7 @@ class BuildChatItems extends StatelessWidget {
       bloc: searchChatCubit,
       builder: (context, state) {
         List<ChatTable> chats = state.searchChats;
+
         chats.sort((a, b) {
           return b.updatedAt.compareTo(a.updatedAt);
         });
