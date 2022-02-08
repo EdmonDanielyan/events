@@ -222,11 +222,11 @@ class NatsProvider {
     return true;
   }
 
-  Future<CreateChatResponse?> createChat({int timeoutInSeconds = 5}) async {
+  Future<CreateChatResponse?> createChat({int timeoutInSeconds = 5, String? participantId}) async {
     _logger.finest("createChat");
     try {
       var response = await _stan.natsClient.requestString(CREATE_CHAT,
-          jsonEncode(CreateChatRequest(token: authResponse.token, ownerId: userId).toJson()),
+          jsonEncode(CreateChatRequest(token: authResponse.token, ownerId: userId, participantId: participantId).toJson()),
           timeout: Duration(seconds: timeoutInSeconds));
       return CreateChatResponse.fromJson(jsonDecode(response.string));
     } catch (e, s) {
