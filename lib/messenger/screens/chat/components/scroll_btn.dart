@@ -10,7 +10,10 @@ class ChatScrollBtn extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 100),
       child: FloatingActionButton(
         onPressed: onPressed,
-        child: Icon(Icons.keyboard_arrow_down),
+        child: Icon(
+          Icons.keyboard_arrow_down,
+          color: Colors.white,
+        ),
       ),
     );
   }

@@ -19,11 +19,12 @@ class Body extends StatelessWidget {
       {Key? key, required this.newsDetailCubit, required this.newsBlockCubit})
       : super(key: key);
 
-  void _onLike(NewsItemData item) {
+  Future<void> _onLike(NewsItemData item) async {
     final newItme = item.isLiked != null && item.isLiked!
         ? item.copyWith(isLiked: false, likeCount: (item.likeCount ?? 1) - 1)
         : item.copyWith(isLiked: true, likeCount: (item.likeCount ?? 0) + 1);
     newsBlockCubit.updateItem(newItme);
+    await newsDetailCubit.like(item.id ?? 0);
   }
 
   void _updateWatchedCounter(NewsItemData item) {

@@ -9,6 +9,7 @@ import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/extensions/get_events.dart';
 
@@ -24,6 +25,7 @@ class MainEventsListCubit extends Cubit<EventsListState> {
   Future<void> fetchEvents() async {
     try {
       if (eventList == null) {
+        await Token.setNewTokensIfExpired();
         final response =
             await sl<EventsListNetworkRequest>(param1: pagination)();
         final mapResponse = response.mapResponse(pagination);

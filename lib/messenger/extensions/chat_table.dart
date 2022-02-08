@@ -8,4 +8,18 @@ extension ChatTableExt on ChatTable {
     myId = myId ?? JwtPayload.myId;
     return this.ownerId == myId;
   }
+
+  ChatTable? isSingleChatExistsInList(List<ChatTable> chats) {
+    if (chats.isNotEmpty) {
+      for (final chat in chats) {
+        if (!chat.isGroup() &&
+            this.ownerId == chat.ownerId &&
+            this.participantId == chat.participantId) {
+          return chat;
+        }
+      }
+    }
+
+    return null;
+  }
 }

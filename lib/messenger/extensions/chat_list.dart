@@ -1,4 +1,5 @@
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
+import './chat_table.dart';
 
 extension ListUserTableExtension on List<ChatTable> {
   bool compareLight(List<ChatTable> list) {
@@ -12,5 +13,41 @@ extension ListUserTableExtension on List<ChatTable> {
     }
 
     return false;
+  }
+
+  List<ChatTable> cutIdenticalChats() {
+    List<ChatTable> newChats = [];
+
+    if (this.isNotEmpty) {
+      for (final chat in this) {
+        final getIdenticalChat = chat.isSingleChatExistsInList(newChats);
+        if (getIdenticalChat != null) {
+          if (chat.updatedAt.isAfter(getIdenticalChat.updatedAt) ||
+              chat.updatedAt.isAtSameMomentAs(getIdenticalChat.updatedAt)) {
+            newChats
+                .removeWhere((element) => element.id == getIdenticalChat.id);
+          }
+        }
+
+        newChats.add(chat);
+      }
+    }
+
+    return newChats.toSet().toList();
+  }
+
+  List<ChatTable> getIdenticalChats() {
+    List<ChatTable> newChats = [];
+
+    if (this.isNotEmpty) {
+      for (final chat in this) {
+        final getIdenticalChat = chat.isSingleChatExistsInList(newChats);
+        if (getIdenticalChat != null) {
+          newChats.add(chat);
+        }
+      }
+    }
+
+    return newChats.toSet().toList();
   }
 }

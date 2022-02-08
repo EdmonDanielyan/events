@@ -10,7 +10,8 @@ import 'package:ink_mobile/messenger/cases/channel_functions.dart';
 import 'package:ink_mobile/messenger/cases/user_functions.dart';
 import 'package:ink_mobile/messenger/listeners/message_listener.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/nats/payloads/chat_list.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/chat_list.dart';
+import 'package:ink_mobile/messenger/models/chat_list_view.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/sender/chat_saver.dart';
@@ -46,10 +47,13 @@ class ChatListListener extends MessageListener {
   Future<void> subscribe(String userId) async {
     logger.finest(() => "subscribe: $userId");
     try {
-      final channel = natsProvider.getPrivateUserChatIdList();
+      final channel = natsProvider.getPrivateUserChatIdList(userId);
       final sub = await natsProvider.listenChatList(channel);
       DataMessage? dataMessage;
       try {
+        //todo: возможно то что лежит в стриме первым это плохая запись или совсем старая, нельзя на это полагаться
+        // Если произошел косяк в локальной базе то последнее сообщение в чат листе битое
+        // нужно перечитать весь стрим этого канала и только тогда пристпать к парсингу
         dataMessage = await sub.stream.first.timeout(Duration(seconds: 5));
       } on TimeoutException {
         logger.severe('timeout during read ChatList channel');
@@ -76,13 +80,12 @@ class ChatListListener extends MessageListener {
     try {
       ChatListPayload fields = ChatListPayload.fromMap(mapPayload.fields);
 
-      var chats = fields.chats;
+      var chats = _filterChats(fields.chats);
       final users = fields.users;
       final participants = fields.participants;
       final channels = fields.channels;
-      chatDatabaseCubit.setLoadingChatsCounter(chats.length);
-      chatDatabaseCubit.setLoadingChats(false);
-      chatDatabaseCubit.setLoadingChats(true);
+
+      _setLoadingChats(chats);
 
       //THIS ORDER IS ESSENTIAL (DO NOT CHANGE)
       if (!await _participantsStored(participants)) {
@@ -120,6 +123,45 @@ class ChatListListener extends MessageListener {
     }
   }
 
+  List<ChatTable> _filterChats(List<ChatTable> chats) {
+    var newChats = chats.cutIdenticalChats();
+    _cleanFromDatabase(chats, newChats);
+
+    return newChats.toSet().toList();
+  }
+
+  Future<void> _cleanFromDatabase(
+      List<ChatTable> originalChats, List<ChatTable> newChats) async {
+    if (originalChats.isNotEmpty) {
+      for (final chat in originalChats) {
+        final getChatFromNew =
+            newChats.firstWhereOrNull((element) => element.id == chat.id);
+
+        if (getChatFromNew == null) {
+          await chatDatabaseCubit.db.deleteChatById(chat.id);
+        }
+      }
+    }
+  }
+
+  Future<void> _setLoadingChats(List<ChatTable> chats) async {
+    int chatsLength = 0;
+    for (final chat in chats) {
+      if (!chat.isGroup() && chat.lastMessageSeq != null) {
+        final hasMessages = await chatDatabaseCubit.db.getChatMessages(chat.id);
+        if (hasMessages.isEmpty) {
+          continue;
+        }
+      }
+
+      chatsLength++;
+    }
+
+    chatDatabaseCubit.setLoadingChatsCounter(chatsLength);
+    chatDatabaseCubit.setLoadingChats(false);
+    chatDatabaseCubit.setLoadingChats(true);
+  }
+
   Future<bool> _usersStored(List<UserTable> users) async {
     final storedItems = await chatDatabaseCubit.db.getAllUsers();
     return users.compareLight(storedItems);
@@ -138,11 +180,11 @@ class ChatListListener extends MessageListener {
   Future<void> _insertChats(List<ChatTable> chats) async {
     if (chats.isEmpty) return;
 
-    final distinctChats = chats.toSet().toList();
+    chats.sort((a, b) => ChatListView.sortChats(a, b));
 
     final List<ChatTable> chatsToInsert = [];
 
-    for (final chat in distinctChats) {
+    for (final chat in chats) {
       _getChatIds.add(chat.id);
       chatsToInsert.add(chat);
       var channel = chat.channel;

@@ -46,7 +46,7 @@ class ChatScreen extends StatefulWidget {
   ChatScreenState createState() => ChatScreenState();
 }
 
-class ChatScreenState extends State<ChatScreen> {
+class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   ChatScreenState();
 
   SelectableCubit<MessageWithUser> get selectableCubit =>
@@ -56,10 +56,24 @@ class ChatScreenState extends State<ChatScreen> {
 
   ScrollController controller = ScrollController();
 
-  // ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
-  // ChatCubit get chatCubit => widget.chatCubit;
-  // SelectableCubit<MessageWithUser> get selectableCubit =>
-  //     widget.selectableCubit;
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.paused) {
+      widget.messenger.chatDatabaseCubit.isChatInBackground = true;
+    }
+
+    if (state == AppLifecycleState.resumed) {
+      widget.messenger.chatDatabaseCubit.isChatInBackground = false;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addObserver(this);
+  }
 
   void _setMessagesToRead() {
     if (_chatBodyStateKey.currentState != null) {
@@ -73,6 +87,7 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
     widget.messenger.chatCubit.emitEditMessage(null);
     widget.messenger.chatCubit.emitSelectedMessageId(null);

@@ -9,6 +9,7 @@ import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/pagination.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/extensions/get_announcements.dart';
 
@@ -24,6 +25,7 @@ class MainAnnouncementsListCubit extends Cubit<AnnouncementsListState> {
   Future<void> fetchAnnouncements() async {
     try {
       if (announcementsList == null) {
+        await Token.setNewTokensIfExpired();
         final response =
             await sl<AnnouncementsListNetworkRequest>(param1: pagination)();
         final mapResponse = response.mapResponse(pagination);

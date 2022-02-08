@@ -94,7 +94,6 @@ class ChatPushNotificationModel {
     try {
       return ChatPushNotificationModel.fromMap(message.data);
     } catch (err) {
-      print(err.toString());
       return null;
     }
   }
