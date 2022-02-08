@@ -18,10 +18,11 @@ extension GetCommentsByIdExt on Response<GetCommentsById> {
               id: commentChildren.id,
               pathToAvatar: commentChildren.avatar,
               authorName: commentChildren.userName,
+              authorLastName: commentChildren.userLastName,
               comment: commentChildren.postText,
               barrels: commentChildren.likes,
               barrelsChecked: commentChildren.likedByUser,
-              timeCreate: commentChildren.dateCreate,
+              timeCreate: commentChildren.dateCreate.toLocal(),
               authorId: commentChildren.authorId));
         });
       }
@@ -31,8 +32,9 @@ extension GetCommentsByIdExt on Response<GetCommentsById> {
           id: comment.id,
           pathToAvatar: comment.avatar,
           authorName: comment.userName,
+          authorLastName: comment.userLastName,
           comment: comment.postText,
-          timeCreate: comment.dateCreate,
+          timeCreate: comment.dateCreate.toLocal(),
           barrels: comment.likes,
           barrelsChecked: comment.likedByUser,
           children: commentsChildren,
