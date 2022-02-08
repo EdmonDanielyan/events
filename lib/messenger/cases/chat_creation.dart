@@ -84,7 +84,7 @@ class ChatCreation with Loggable {
       newChat = chat.copyWith(
         name: await singleChatName(whoInvites),
         avatar: whoInvites.avatar,
-        participantId: whoInvites.id
+        participantId: whoInvites.id,
       );
 
       await chatDatabaseCubit.db.insertChat(newChat);
@@ -93,11 +93,8 @@ class ChatCreation with Loggable {
     return newChat;
   }
 
-  Future<ChatTable> _createSingleChat(
-    UserTable user, {
-    String? name,
-    String? avatar
-  }) async {
+  Future<ChatTable> _createSingleChat(UserTable user,
+      {String? name, String? avatar}) async {
     var users = [user, userFunctions.me];
 
     var chat = await chatDatabaseCubit.db.selectChatByParticipantId(user.id);
@@ -173,7 +170,8 @@ class ChatCreation with Loggable {
     int? participantId,
   }) async {
     logger.finest(() => "_makeChat: $name, $avatar, $ownerId, $participantId");
-    var createChatResponse = await messenger.natsProvider.createChat(participantId: participantId?.toString());
+    var createChatResponse = await messenger.natsProvider
+        .createChat(participantId: participantId?.toString());
     if (createChatResponse == null) throw "Can not create chat";
     return ChatTable(
       id: createChatResponse.chatId,

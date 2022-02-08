@@ -12,6 +12,7 @@ import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/sender/chat_saver.dart';
 import 'package:ink_mobile/messenger/sender/invite_sender.dart';
+import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 
 import '../cases/user_functions.dart';
 import 'channels_registry.dart';
@@ -45,7 +46,8 @@ class ChatJoinedListener extends MessageListener {
       final mapPayload = message.payload! as JsonPayload;
       LeftJoinedPayload payload = LeftJoinedPayload.fromJson(mapPayload.json);
 
-      final users = payload.users.map<UserTable>((e) => e.toUserTable()).toList();
+      final users =
+          payload.users.map<UserTable>((e) => e.toUserTable()).toList();
       final chatId = payload.chatId;
       var chat = await chatDatabaseCubit.db.selectChatById(chatId);
 
@@ -53,7 +55,9 @@ class ChatJoinedListener extends MessageListener {
         await userFunctions.insertMultipleUsers(users);
         await userFunctions.insertMultipleParticipants(
             ChatUserViewModel.toParticipants(users, chat));
-        await setMessage(users, chat, message);
+        if (chat.isGroup()) {
+          await setMessage(users, chat, message);
+        }
         await chatSaver.saveChats(newChat: null);
       }
     } on NoSuchMethodError {
@@ -65,13 +69,12 @@ class ChatJoinedListener extends MessageListener {
       List<UserTable> users, ChatTable chat, NatsMessage message) async {
     for (final user in users) {
       final generateMessage = GetIt.I<SendMessage>().joinedLeftMessage(
-        chatId: chat.id,
-        userName: user.name,
-        type: StoredMessageType.USER_JOINED,
-        timestampUtc: message.timestamp,
-        userId: user.id,
-        sequence: message.sequence.toInt()
-      );
+          chatId: chat.id,
+          userName: user.name,
+          type: StoredMessageType.USER_JOINED,
+          timestampUtc: message.timestamp,
+          userId: user.id,
+          sequence: message.sequence.toInt());
 
       if (generateMessage != null) {
         await GetIt.I<SendMessage>()

@@ -13,6 +13,7 @@ import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/sender/chat_saver.dart';
 import 'package:ink_mobile/messenger/sender/invite_sender.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
+import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 
 import '../cases/user_functions.dart';
 import 'channels_registry.dart';
@@ -45,17 +46,19 @@ class ChatLeftListener extends MessageListener {
 
     try {
       final mapPayload = message.payload! as JsonPayload;
-      LeftJoinedPayload payload =
-          LeftJoinedPayload.fromJson(mapPayload.json);
+      LeftJoinedPayload payload = LeftJoinedPayload.fromJson(mapPayload.json);
 
-      final users = payload.users.map<UserTable>((e) => e.toUserTable()).toList();
+      final users =
+          payload.users.map<UserTable>((e) => e.toUserTable()).toList();
 
       final chatId = payload.chatId;
       final senderId = message.from;
       var chat = await chatDatabaseCubit.db.selectChatById(chatId);
 
       if (users.isNotEmpty && chat != null) {
-        await setMessage(users, chat, message);
+        if (chat.isGroup()) {
+          await setMessage(users, chat, message);
+        }
         final me = await _deleteIfItsMe(users, chat, senderId);
 
         if (!me) {
@@ -86,9 +89,10 @@ class ChatLeftListener extends MessageListener {
           await Future.delayed(Duration(seconds: 2));
         }
 
-
-        var countLefts = await chatDatabaseCubit.db.countMessagesByTypeChatUser(chat.id, user.id, StoredMessageType.USER_LEFT);
-        var countJoins = await chatDatabaseCubit.db.countMessagesByTypeChatUser(chat.id, user.id, StoredMessageType.USER_JOINED);
+        var countLefts = await chatDatabaseCubit.db.countMessagesByTypeChatUser(
+            chat.id, user.id, StoredMessageType.USER_LEFT);
+        var countJoins = await chatDatabaseCubit.db.countMessagesByTypeChatUser(
+            chat.id, user.id, StoredMessageType.USER_JOINED);
 
         if (countLefts < countJoins) {
           delete = false;

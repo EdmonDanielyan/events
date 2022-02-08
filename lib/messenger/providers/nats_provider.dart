@@ -103,8 +103,8 @@ class NatsProvider {
   }
 
   /// Send [document] message to [channel]
-  Future<bool> sendDocumentMessageToChannel(String channel,
-      List<int> document) async {
+  Future<bool> sendDocumentMessageToChannel(
+      String channel, List<int> document) async {
     if (channel.contains(describeEnum(MessageType.Document))) {
       NatsMessage message = NatsMessage(from: userId, to: channel);
       message.setBinaryPayload(document);
@@ -115,8 +115,8 @@ class NatsProvider {
   }
 
   /// Send system message which contains [fields] to [channel] by [type]
-  Future<bool> sendSystemMessageToChannel(String channel, MessageType type,
-      Map<String, String> fields) async {
+  Future<bool> sendSystemMessageToChannel(
+      String channel, MessageType type, Map<String, String> fields) async {
     NatsMessage message = NatsMessage(
       from: userId,
       to: channel,
@@ -128,8 +128,8 @@ class NatsProvider {
   }
 
   /// Send system message which contains [fields] to [channel] by [type]
-  Future<bool> sendJsonMessageToChannel(String channel, MessageType type,
-      Map<String, dynamic> json) async {
+  Future<bool> sendJsonMessageToChannel(
+      String channel, MessageType type, Map<String, dynamic> json) async {
     NatsMessage message = NatsMessage(
       from: userId,
       to: channel,
@@ -143,13 +143,14 @@ class NatsProvider {
   Iterable<String> get subscribedChannels => _channelSubscriptions.keys;
 
   /// Subscribe to [channel] using [startSequence] if needed
-  Future<void> subscribeToChannel(String channel,
-      Future<void> Function(String, NatsMessage) onMessageFuture, {
-        Int64 startSequence = Int64.ZERO,
-        int ackWaitSeconds = 5,
-        maxInFlight = 1,
-        startPosition = StartPosition.SequenceStart,
-      }) async {
+  Future<void> subscribeToChannel(
+    String channel,
+    Future<void> Function(String, NatsMessage) onMessageFuture, {
+    Int64 startSequence = Int64.ZERO,
+    int ackWaitSeconds = 5,
+    maxInFlight = 1,
+    startPosition = StartPosition.SequenceStart,
+  }) async {
     if (!_channelSubscriptions.containsKey(channel)) {
       _logger.finest("subscribeToChannel: $channel");
       var subscription = await _stan.subscribe(
@@ -188,7 +189,7 @@ class NatsProvider {
   Future<bool> _connect() async {
     _logger.finest("_connect");
     _logger.finest(() =>
-    "url: $natsWssUrl, cluster: $natsCluster, userId: $userId, natsToken: $natsToken");
+        "url: $natsWssUrl, cluster: $natsCluster, userId: $userId, natsToken: $natsToken");
     _logger.finest(() => "certificate data length: ${certificate.length}");
 
     var connectResult = await _stan.connectUri(Uri.parse(natsWssUrl),
@@ -198,7 +199,7 @@ class NatsProvider {
         clientID: "$userId-$deviceVirtualId-${Uuid().v4()}",
         retryReconnect: true,
         connectOption:
-        nats.ConnectOption(tlsRequired: true, auth_token: natsToken));
+            nats.ConnectOption(tlsRequired: true, auth_token: natsToken));
     return connectResult;
   }
 
@@ -206,15 +207,17 @@ class NatsProvider {
     return _stan.pingWithTimeout();
   }
 
-
-  Future<bool> auth({required String login, required String password, int timeoutInSeconds = 5}) async {
+  Future<bool> auth(
+      {required String login,
+      required String password,
+      int timeoutInSeconds = 5}) async {
     _logger.finest("auth");
     try {
       var response = await _stan.natsClient.requestString(AUTH,
-              jsonEncode(AuthRequest(login: login, password: password).toJson()),
-              timeout: Duration(seconds: timeoutInSeconds));
+          jsonEncode(AuthRequest(login: login, password: password).toJson()),
+          timeout: Duration(seconds: timeoutInSeconds));
       authResponse = AuthResponse.fromJson(jsonDecode(response.string));
-      _logger.finest(()=>"auth response: ${authResponse.toJson()}");
+      _logger.finest(() => "auth response: ${authResponse.toJson()}");
     } catch (e, s) {
       _logger.severe("Auth error", e, s);
       return false;
@@ -222,12 +225,19 @@ class NatsProvider {
     return true;
   }
 
-  Future<CreateChatResponse?> createChat({int timeoutInSeconds = 5, String? participantId}) async {
+  Future<CreateChatResponse?> createChat(
+      {int timeoutInSeconds = 5, String? participantId}) async {
     _logger.finest("createChat");
     try {
-      var response = await _stan.natsClient.requestString(CREATE_CHAT,
-          jsonEncode(CreateChatRequest(token: authResponse.token, ownerId: userId, participantId: participantId).toJson()),
+      var response = await _stan.natsClient.requestString(
+          CREATE_CHAT,
+          jsonEncode(CreateChatRequest(
+                  token: authResponse.token,
+                  ownerId: userId,
+                  participantId: participantId)
+              .toJson()),
           timeout: Duration(seconds: timeoutInSeconds));
+      print(response.data);
       return CreateChatResponse.fromJson(jsonDecode(response.string));
     } catch (e, s) {
       _logger.severe("Chat create error", e, s);
@@ -235,14 +245,16 @@ class NatsProvider {
     return null;
   }
 
-  Future<bool> invite(List<InvitePayload> invites, {int timeoutInSeconds = 5}) async {
+  Future<bool> invite(List<InvitePayload> invites,
+      {int timeoutInSeconds = 5}) async {
     _logger.finest(() => "invite: $invites");
 
     try {
-      var data = jsonEncode(InviteRequest(token: authResponse.token, invites: invites).toJson());
+      var data = jsonEncode(
+          InviteRequest(token: authResponse.token, invites: invites).toJson());
       _logger.finest("Sending: $data");
-      await _stan.natsClient.request(INVITE,
-          Uint8List.fromList(utf8.encode(data)),
+      await _stan.natsClient.request(
+          INVITE, Uint8List.fromList(utf8.encode(data)),
           timeout: Duration(seconds: timeoutInSeconds));
       return true;
     } catch (e, s) {
@@ -250,8 +262,6 @@ class NatsProvider {
     }
     return false;
   }
-
-
 
   Future<bool> _sendMessage(String channel, NatsMessage message) async {
     return await _stan.pubBytes(
@@ -272,11 +282,11 @@ class NatsProvider {
     try {
       var source = utf8.decode(payload.toList());
       json = jsonDecode(source);
-    } catch (e) {
-    }
+    } catch (e) {}
     NatsMessage message;
     if (json != null) {
-      message = NatsMessage(id: Uuid().v4(), type: PayloadType.json, to: dataMessage.subject);
+      message = NatsMessage(
+          id: Uuid().v4(), type: PayloadType.json, to: dataMessage.subject);
       message.payload = JsonPayload(MessageType.InviteUserToJoinChat, json);
     } else {
       message = NatsMessage.fromStructuredPayload(payload);
@@ -297,8 +307,8 @@ class NatsProvider {
     return _subscriptionToPublicChannel;
   }
 
-  Future<void> _listenBySubscription(channel,
-      Subscription? subscription) async {
+  Future<void> _listenBySubscription(
+      channel, Subscription? subscription) async {
     if (subscription == null) return;
 
     subscription.listen((dataMessage) {
@@ -311,7 +321,7 @@ class NatsProvider {
           NatsMessage message = parseMessage(dataMessage);
           onMessage(channel, message);
           Future<void> Function(String, NatsMessage) channelCallback =
-          _channelCallbacks[channel]!;
+              _channelCallbacks[channel]!;
           channelCallback(channel, message);
         }
       } catch (e, s) {
@@ -328,13 +338,13 @@ class NatsProvider {
     );
   }
 
-  Future<void> _unAcknowledgedMessageHandler(Subscription subscription,
-      DataMessage message) async {
+  Future<void> _unAcknowledgedMessageHandler(
+      Subscription subscription, DataMessage message) async {
     final String channel = subscription.subject;
 
     if (_channelCallbacks.containsKey(channel)) {
       Future<void> Function(String, NatsMessage) channelCallback =
-      _channelCallbacks[channel]!;
+          _channelCallbacks[channel]!;
 
       onUnacknowledged(subscription, message, channelCallback);
     }
@@ -349,13 +359,13 @@ class NatsProvider {
     _logger.info(message);
   };
   final Map<String, Future<void> Function(String, NatsMessage)>
-  _channelCallbacks = {};
+      _channelCallbacks = {};
 
   Future<void> Function() onConnected = () async {};
   Future<void> Function() onDisconnected = () async {};
   Future<void> Function(
-      Subscription, DataMessage, Future<void> Function(String, NatsMessage))
-  onUnacknowledged = (subscription, message, onMessage) async {};
+          Subscription, DataMessage, Future<void> Function(String, NatsMessage))
+      onUnacknowledged = (subscription, message, onMessage) async {};
 
   bool get isConnected {
     try {
@@ -365,8 +375,8 @@ class NatsProvider {
     }
   }
 
-  Future<bool> sendEmptyMessageToChannel(String channel,
-      MessageType type) async {
+  Future<bool> sendEmptyMessageToChannel(
+      String channel, MessageType type) async {
     NatsMessage message = NatsMessage(from: userId, to: channel);
     message.setEmptyPayload();
     return _sendMessage(channel, message);

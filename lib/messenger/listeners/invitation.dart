@@ -34,12 +34,12 @@ class ChatInvitationListener extends MessageListener {
 
       InvitePayload data = InvitePayload.fromJson(payload.json);
       var chat = data.chat.toChatTable();
-      await sl<ChatCreation>().createFromInvite(chat, data.whoInvites.toUserTable());
+      await sl<ChatCreation>()
+          .createFromInvite(chat, data.whoInvites.toUserTable());
       await registry.subscribeOnChatChannels(chat.channel);
       await chatSaver.saveChats(newChat: null);
     } on NoSuchMethodError {
       return;
     }
   }
-
 }

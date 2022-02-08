@@ -191,9 +191,9 @@ class ChatListListener extends MessageListener {
       chatsToInsert.add(chat);
       var channel = chat.channel;
       await registry.subscribeOnChatChannelsIfNotExists(channel,
-        sequence: chat.lastMessageSeq != null
-            ? Int64.parseInt(chat.lastMessageSeq.toString()).toInt64()
-            : Int64.ZERO);
+          sequence: chat.lastMessageSeq != null
+              ? Int64.parseInt(chat.lastMessageSeq.toString()).toInt64()
+              : Int64.ZERO);
     }
     if (!await _chatsStored(chats)) {
       await chatCreation.insertMultipleChats(chatsToInsert);

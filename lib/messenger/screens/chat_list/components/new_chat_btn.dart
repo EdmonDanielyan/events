@@ -53,7 +53,7 @@ class _NewChatBtnState extends State<NewChatBtn> {
       chosenOneText: strings.writeHint,
       chosenMultipleText: "${strings.create} ${strings.chat.toLowerCase()}",
       onSubmit: _onCreate,
-      onUserTap: _onUserTap,
+      onUserTap: (context, user) => _createChat(user, context),
       hideIds: [JwtPayload.myId],
     );
   }
@@ -77,22 +77,9 @@ class _NewChatBtnState extends State<NewChatBtn> {
       if (chat != null) {
         OpenChat(_chatDatabaseCubit, chat).call();
       } else {
-        ChatTable newChat =
-            await messenger.chatCreation.createDialogChat(user);
+        ChatTable newChat = await messenger.chatCreation.createDialogChat(user);
         Navigator.of(context).pop();
         OpenChat(_chatDatabaseCubit, newChat).call();
-      }
-    }
-  }
-
-  Future<void> _onUserTap(BuildContext context, UserTable user) async {
-    if (messenger.isConnected) {
-      ChatTable? chat = await messenger.chatCreation.isSingleChatExists(user);
-
-      if (chat != null) {
-        OpenChat(_chatDatabaseCubit, chat).call();
-      } else {
-        await _createChat(user, context);
       }
     }
   }
