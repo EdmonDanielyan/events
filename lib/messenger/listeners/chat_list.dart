@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/data_message.dart';
 import 'package:fixnum/fixnum.dart';
@@ -8,9 +9,10 @@ import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/cases/channel_functions.dart';
 import 'package:ink_mobile/messenger/cases/user_functions.dart';
+import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 import 'package:ink_mobile/messenger/listeners/message_listener.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/nats/chat_list.dart';
+import 'package:ink_mobile/messenger/models/chat/nats/payloads/chat_list.dart';
 import 'package:ink_mobile/messenger/models/chat_list_view.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
@@ -47,7 +49,7 @@ class ChatListListener extends MessageListener {
   Future<void> subscribe(String userId) async {
     logger.finest(() => "subscribe: $userId");
     try {
-      final channel = natsProvider.getPrivateUserChatIdList(userId);
+      final channel = natsProvider.getPrivateUserChatIdList();
       final sub = await natsProvider.listenChatList(channel);
       DataMessage? dataMessage;
       try {
