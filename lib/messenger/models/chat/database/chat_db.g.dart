@@ -19,7 +19,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
   final bool? unreadCounterOn;
   final bool? deleted;
   final int? lastMessageSeq;
-  final DateTime? createdAt;
   ChatTable(
       {required this.id,
       required this.name,
@@ -31,8 +30,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       this.notificationsOn,
       this.unreadCounterOn,
       this.deleted,
-      this.lastMessageSeq,
-      this.createdAt});
+      this.lastMessageSeq});
   factory ChatTable.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -59,8 +57,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
       lastMessageSeq: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}last_message_seq']),
-      createdAt: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
     );
   }
   @override
@@ -86,9 +82,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
     }
     if (!nullToAbsent || lastMessageSeq != null) {
       map['last_message_seq'] = Variable<int?>(lastMessageSeq);
-    }
-    if (!nullToAbsent || createdAt != null) {
-      map['created_at'] = Variable<DateTime?>(createdAt);
     }
     return map;
   }
@@ -116,9 +109,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       lastMessageSeq: lastMessageSeq == null && nullToAbsent
           ? const Value.absent()
           : Value(lastMessageSeq),
-      createdAt: createdAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(createdAt),
     );
   }
 
@@ -137,7 +127,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       unreadCounterOn: serializer.fromJson<bool?>(json['unreadCounterOn']),
       deleted: serializer.fromJson<bool?>(json['deleted']),
       lastMessageSeq: serializer.fromJson<int?>(json['lastMessageSeq']),
-      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
     );
   }
   @override
@@ -155,7 +144,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       'unreadCounterOn': serializer.toJson<bool?>(unreadCounterOn),
       'deleted': serializer.toJson<bool?>(deleted),
       'lastMessageSeq': serializer.toJson<int?>(lastMessageSeq),
-      'createdAt': serializer.toJson<DateTime?>(createdAt),
     };
   }
 
@@ -170,8 +158,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           bool? notificationsOn,
           bool? unreadCounterOn,
           bool? deleted,
-          int? lastMessageSeq,
-          DateTime? createdAt}) =>
+          int? lastMessageSeq}) =>
       ChatTable(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -184,7 +171,6 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
         unreadCounterOn: unreadCounterOn ?? this.unreadCounterOn,
         deleted: deleted ?? this.deleted,
         lastMessageSeq: lastMessageSeq ?? this.lastMessageSeq,
-        createdAt: createdAt ?? this.createdAt,
       );
   @override
   String toString() {
@@ -199,8 +185,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           ..write('notificationsOn: $notificationsOn, ')
           ..write('unreadCounterOn: $unreadCounterOn, ')
           ..write('deleted: $deleted, ')
-          ..write('lastMessageSeq: $lastMessageSeq, ')
-          ..write('createdAt: $createdAt')
+          ..write('lastMessageSeq: $lastMessageSeq')
           ..write(')'))
         .toString();
   }
@@ -217,8 +202,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
       notificationsOn,
       unreadCounterOn,
       deleted,
-      lastMessageSeq,
-      createdAt);
+      lastMessageSeq);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -233,8 +217,7 @@ class ChatTable extends DataClass implements Insertable<ChatTable> {
           other.notificationsOn == this.notificationsOn &&
           other.unreadCounterOn == this.unreadCounterOn &&
           other.deleted == this.deleted &&
-          other.lastMessageSeq == this.lastMessageSeq &&
-          other.createdAt == this.createdAt);
+          other.lastMessageSeq == this.lastMessageSeq);
 }
 
 class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
@@ -249,7 +232,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
   final Value<bool?> unreadCounterOn;
   final Value<bool?> deleted;
   final Value<int?> lastMessageSeq;
-  final Value<DateTime?> createdAt;
   const ChatTablesCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -262,7 +244,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     this.unreadCounterOn = const Value.absent(),
     this.deleted = const Value.absent(),
     this.lastMessageSeq = const Value.absent(),
-    this.createdAt = const Value.absent(),
   });
   ChatTablesCompanion.insert({
     required String id,
@@ -276,7 +257,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     this.unreadCounterOn = const Value.absent(),
     this.deleted = const Value.absent(),
     this.lastMessageSeq = const Value.absent(),
-    this.createdAt = const Value.absent(),
   })  : id = Value(id),
         name = Value(name),
         description = Value(description),
@@ -294,7 +274,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     Expression<bool?>? unreadCounterOn,
     Expression<bool?>? deleted,
     Expression<int?>? lastMessageSeq,
-    Expression<DateTime?>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -308,7 +287,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       if (unreadCounterOn != null) 'unread_counter_on': unreadCounterOn,
       if (deleted != null) 'deleted': deleted,
       if (lastMessageSeq != null) 'last_message_seq': lastMessageSeq,
-      if (createdAt != null) 'created_at': createdAt,
     });
   }
 
@@ -323,8 +301,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       Value<bool?>? notificationsOn,
       Value<bool?>? unreadCounterOn,
       Value<bool?>? deleted,
-      Value<int?>? lastMessageSeq,
-      Value<DateTime?>? createdAt}) {
+      Value<int?>? lastMessageSeq}) {
     return ChatTablesCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -337,7 +314,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
       unreadCounterOn: unreadCounterOn ?? this.unreadCounterOn,
       deleted: deleted ?? this.deleted,
       lastMessageSeq: lastMessageSeq ?? this.lastMessageSeq,
-      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -377,9 +353,6 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
     if (lastMessageSeq.present) {
       map['last_message_seq'] = Variable<int?>(lastMessageSeq.value);
     }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime?>(createdAt.value);
-    }
     return map;
   }
 
@@ -396,8 +369,7 @@ class ChatTablesCompanion extends UpdateCompanion<ChatTable> {
           ..write('notificationsOn: $notificationsOn, ')
           ..write('unreadCounterOn: $unreadCounterOn, ')
           ..write('deleted: $deleted, ')
-          ..write('lastMessageSeq: $lastMessageSeq, ')
-          ..write('createdAt: $createdAt')
+          ..write('lastMessageSeq: $lastMessageSeq')
           ..write(')'))
         .toString();
   }
@@ -482,13 +454,6 @@ class $ChatTablesTable extends ChatTables
   late final GeneratedColumn<int?> lastMessageSeq = GeneratedColumn<int?>(
       'last_message_seq', aliasedName, true,
       type: const IntType(), requiredDuringInsert: false);
-  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
-  @override
-  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
-      'created_at', aliasedName, true,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -501,8 +466,7 @@ class $ChatTablesTable extends ChatTables
         notificationsOn,
         unreadCounterOn,
         deleted,
-        lastMessageSeq,
-        createdAt
+        lastMessageSeq
       ];
   @override
   String get aliasedName => _alias ?? 'chat_tables';
@@ -575,10 +539,6 @@ class $ChatTablesTable extends ChatTables
           _lastMessageSeqMeta,
           lastMessageSeq.isAcceptableOrUnknown(
               data['last_message_seq']!, _lastMessageSeqMeta));
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
     }
     return context;
   }
