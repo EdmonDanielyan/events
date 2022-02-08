@@ -53,6 +53,7 @@ class ChatCreation with Loggable {
       logger.finest('Messenger is ok. Preparing channels');
       await messenger.registry.subscribeOnChatChannels(chat.channel);
       await messenger.inviteSender.sendInvitations(chat, users);
+      await messenger.chatEventsSender.sendUserChatJoinedMessage(chat, users);
       await messenger.chatSaver.saveChats(newChat: null);
     } else {
       logger.warning('Messenger is not ok. Check network');
