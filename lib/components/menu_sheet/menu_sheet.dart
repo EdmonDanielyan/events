@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,10 +9,15 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:logging/logging.dart';
 
-class MenuSheet extends StatelessWidget {
+class MenuSheet extends StatefulWidget {
   static final Logger logger = Logger('MenuSheet');
   const MenuSheet({Key? key}) : super(key: key);
 
+  @override
+  State<MenuSheet> createState() => _MenuSheetState();
+}
+
+class _MenuSheetState extends State<MenuSheet> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -99,42 +105,7 @@ class MenuSheet extends StatelessWidget {
         onTap: () async {
           showDialog(
             context: context,
-            builder: (_) => AlertDialog(
-              title: Text(localizationInstance.signOffAlertTitle),
-              content: Text(localizationInstance.signOffAlertBody),
-              actions: [
-                TextButton(
-                  child: Text(localizationInstance.cancel),
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: TextButton.styleFrom(
-                    primary: Colors.red,
-                  ),
-                ),
-                TextButton(
-                  child: Text(localizationInstance.yes),
-                  onPressed: () async {
-                    try {
-                      var messenger = sl<Messenger>();
-                      await messenger.dispose();
-                      await Token.deleteTokens();
-                      /* todo: Раскоментируйте строку ниже для удаления локальной базы после выхода из аккаунта,
-                                             если это требует сверх безопасности, но это повлечет за собой снижение скорости загрузки приложения
-                                           */
-
-                      // await messenger.chatDatabaseCubit.db.deleteEverything();
-                    } catch (e, s) {
-                      logger.severe("Error during sing off", e, s);
-                    }
-                    await setup();
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/init', (route) => true);
-                  },
-                  style: TextButton.styleFrom(
-                    primary: Colors.blue,
-                  ),
-                ),
-              ],
-            ),
+            builder: (_) => ExitAlertDialog(),
           );
         },
         icon: SvgPicture.asset(
@@ -144,5 +115,73 @@ class MenuSheet extends StatelessWidget {
         withBottomDivider: false,
       ),
     ];
+  }
+}
+
+class ExitAlertDialog extends StatefulWidget {
+  const ExitAlertDialog({Key? key}) : super(key: key);
+
+  @override
+  _ExitAlertDialogState createState() => _ExitAlertDialogState();
+}
+
+class _ExitAlertDialogState extends State<ExitAlertDialog> {
+  bool _deleteCheckbox = false;
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(localizationInstance.signOffAlertTitle),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(localizationInstance.signOffAlertBody),
+          CheckboxListTile(
+            contentPadding: const EdgeInsets.all(0),
+            value: _deleteCheckbox,
+            title: Text(localizationInstance.deleteData),
+            onChanged: (check) {
+              if (check != null) {
+                setState(() {
+                  _deleteCheckbox = check;
+                });
+              }
+            },
+          )
+        ],
+      ),
+      actions: [
+        TextButton(
+          child: Text(localizationInstance.cancel),
+          onPressed: () => Navigator.of(context).pop(),
+          style: TextButton.styleFrom(
+            primary: Colors.red,
+          ),
+        ),
+        TextButton(
+          child: Text(localizationInstance.yes),
+          onPressed: () => _exit(context),
+          style: TextButton.styleFrom(
+            primary: Colors.blue,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _exit(BuildContext context) async {
+    try {
+      var messenger = sl<Messenger>();
+      await messenger.dispose();
+      await Token.deleteTokens();
+
+      if (_deleteCheckbox) {
+        await messenger.chatDatabaseCubit.db.deleteEverything();
+      }
+    } catch (e, s) {
+      MenuSheet.logger.severe("Error during sing off", e, s);
+    }
+    await setup();
+    Navigator.pushNamedAndRemoveUntil(context, '/init', (route) => true);
   }
 }

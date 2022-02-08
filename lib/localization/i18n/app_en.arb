@@ -236,5 +236,6 @@
 	"you": "You",
 	"zipIndex": "Zip index",
 	"unreadCounter": "unread counter",
-	"markMultiple": "can mark multiple"
+	"markMultiple": "can mark multiple",
+	"deleteData": "Delete data"
 }

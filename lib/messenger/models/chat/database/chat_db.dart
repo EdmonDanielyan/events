@@ -51,8 +51,9 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   }
 
   Stream<List<ChatTable>> watchAllChats() => (select(chatTables)
-        ..orderBy([
-          (t) => OrderingTerm(expression: t.updatedAt, mode: OrderingMode.desc)
+        ..join([
+          leftOuterJoin(
+              messageTables, messageTables.chatId.equalsExp(chatTables.id))
         ]))
       .watch();
 
@@ -89,6 +90,11 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
       (select(messageTables)).watch();
 
   Future<List<MessageTable>> getAllMessages() => select(messageTables).get();
+  Future<List<MessageTable>> getAllMessagesBySort() => (select(messageTables)
+        ..orderBy([
+          (t) => OrderingTerm(expression: t.sequence, mode: OrderingMode.desc),
+        ]))
+      .get();
 
   Future<MessageTable?> selectMessageById(String id) =>
       (select(messageTables)..where((tbl) => tbl.id.equals(id)))

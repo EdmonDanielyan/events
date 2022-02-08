@@ -55,7 +55,8 @@ class _MessageListState extends State<MessageList> with MessageMixins {
     final selectedChat = widget.messenger.chatDatabaseCubit.selectedChat;
     final String chatId = selectedChat?.id ?? "";
     if (widget.chatScreenParams.showOnlyFilesAndLinks) {
-      return widget.messenger.chatDatabaseCubit.db.watchChatFilesMessages(chatId);
+      return widget.messenger.chatDatabaseCubit.db
+          .watchChatFilesMessages(chatId);
     }
 
     return widget.messenger.chatDatabaseCubit.db
@@ -66,7 +67,8 @@ class _MessageListState extends State<MessageList> with MessageMixins {
     if (widget.messagesLoaded != null) {
       widget.messagesLoaded!();
     }
-    widget.messenger.chatCubit.updateMessages(widget.messenger.chatDatabaseCubit);
+    widget.messenger.chatCubit
+        .updateMessages(widget.messenger.chatDatabaseCubit);
   }
 
   @override
@@ -147,7 +149,8 @@ class _MessageListState extends State<MessageList> with MessageMixins {
     return Column(
       children: [
         DateWidget(
-          dateTime: dateSort.getMessageDateTime(message.timestamp ?? DateTime.now()),
+          dateTime:
+              dateSort.getMessageDateTime(message.timestamp ?? DateTime.now()),
         ),
         MessageCard(
           messageWithUser: messageWithUser,
