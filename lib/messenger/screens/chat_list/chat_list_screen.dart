@@ -21,6 +21,7 @@ class ChatListScreen extends StatefulWidget {
   final SearchChatCubit searchChatCubit;
   final SelectableCubit<UserTable> selectableCubit;
   final ChatPersonListCubit chatPersonListCubit;
+
   const ChatListScreen({
     Key? key,
     required this.searchChatCubit,

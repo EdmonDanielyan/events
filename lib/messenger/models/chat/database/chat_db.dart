@@ -91,6 +91,11 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   Stream<List<MessageTable>> watchAllMessages() =>
       (select(messageTableSchema)).watch();
 
+  Future<List<MessageTable>> getAllMessagesBySort() => (select(messageTableSchema)
+        ..orderBy([
+          (t) => OrderingTerm(expression: t.sequence, mode: OrderingMode.desc),
+        ]))
+      .get();
   Future<List<MessageTable>> getAllMessages() => select(messageTableSchema).get();
 
   Future<MessageTable?> selectMessageById(String id) =>
@@ -177,7 +182,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           String query, String chatId) =>
       (select(messageTableSchema)
             ..where((tbl) =>
-                tbl.message.lower().contains(query) & tbl.chatId.equals(chatId))
+                tbl.messageToLower.contains(query) & tbl.chatId.equals(chatId))
             ..orderBy([
               (t) =>
                   OrderingTerm(expression: t.sequence, mode: OrderingMode.desc),
