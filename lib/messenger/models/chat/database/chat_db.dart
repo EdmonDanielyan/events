@@ -2,25 +2,25 @@ import 'package:encrypted_moor/encrypted_moor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/channel.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/chat_table.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/message_table.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/participant_table.dart';
-import 'package:ink_mobile/messenger/models/chat/database/tables/user_table.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/channel_schema.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/chat_table_schema.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/message_table_schema.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/participant_table_schema.dart';
+import 'package:ink_mobile/messenger/models/chat/database/schema/user_table_schema.dart';
 import 'package:moor/moor.dart';
 
 import 'model/participant_with_user.dart';
-import 'tables/db_enum.dart';
 
 part 'chat_db.g.dart';
 
 @lazySingleton
 @UseMoor(tables: [
-  ChatTables,
-  MessageTables,
-  UserTables,
-  ParticipantTables,
-  ChannelTables
+  ChatTableSchema,
+  MessageTableSchema,
+  UserTableSchema,
+  ParticipantTableSchema,
+  ChannelTableSchema
 ])
 class ChatDatabase extends _$ChatDatabase with Loggable {
   ChatDatabase(@Named("localDatabasePassword") String localDatabasePassword,
@@ -35,13 +35,17 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   //CHATS
   Future<ChatTable?> selectChatById(String chatId) =>
-      (select(chatTables)..where((tbl) => tbl.id.equals(chatId)))
+      (select(chatTableSchema)..where((tbl) => tbl.id.equals(chatId)))
           .getSingleOrNull();
 
-  Future<List<ChatTable>> getAllChats() => select(chatTables).get();
+  Future<ChatTable?> selectChatByParticipantId (int participantId) =>
+      (select(chatTableSchema)..where((tbl) => tbl.participantId.equals(participantId)))
+          .getSingleOrNull();
+
+  Future<List<ChatTable>> getAllChats() => select(chatTableSchema).get();
 
   Stream<List<ChatTable>> searchChats(String query) {
-    return (select(chatTables)
+    return (select(chatTableSchema)
           ..where((tbl) => tbl.name.like('%$query%'))
           ..orderBy([
             (t) =>
@@ -50,22 +54,21 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
         .watch();
   }
 
-  Stream<List<ChatTable>> watchAllChats() => (select(chatTables)
+  Stream<List<ChatTable>> watchAllChats() => (select(chatTableSchema)
         ..orderBy([
           (t) => OrderingTerm(expression: t.updatedAt, mode: OrderingMode.desc)
         ]))
       .watch();
 
   Stream<ChatTable> watchChatById(String id) =>
-      (select(chatTables)..where((tbl) => tbl.id.equals(id))).watchSingle();
+      (select(chatTableSchema)..where((tbl) => tbl.id.equals(id))).watchSingle();
 
-  Future<int> insertChat(ChatTable chat) =>
-      into(chatTables).insert(chat, mode: InsertMode.insertOrReplace);
+  Future<int> insertChat(ChatTable chat) => into(chatTableSchema).insert(chat, mode: InsertMode.insertOrReplace);
 
   Future<void> insertMultipleChats(List<ChatTable> chats) async {
     await batch((batch) {
       batch.insertAll(
-        chatTables,
+        chatTableSchema,
         chats.map((e) => e.toCompanion(true)).toList(),
         mode: InsertMode.insertOrReplace,
       );
@@ -73,7 +76,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   }
 
   Future updateChatById(String id, ChatTable chat) =>
-      (update(chatTables)..where((tbl) => tbl.id.equals(id)))
+      (update(chatTableSchema)..where((tbl) => tbl.id.equals(id)))
           .write(chat)
           .catchError((_e) {
         logger.severe("Sql migration error. Please, reinstall the app.", _e);
@@ -177,7 +180,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   Future<MessageTable?> searchMessageByTextAndChatId(
           String query, String chatId) =>
-      (select(messageTables)
+      (select(messageTableSchema)
             ..where((tbl) =>
                 tbl.messageToLower.contains(query) & tbl.chatId.equals(chatId))
             ..orderBy([
