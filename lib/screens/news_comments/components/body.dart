@@ -111,12 +111,15 @@ class _BodyState extends State<Body> {
     List<Widget> comments = [];
 
     data.comments?.forEach((comment) {
+      String? name = comment.authorName;
+      String? lastName = comment.authorLastName;
+
       comments.add(
         Comment(
           id: comment.id,
           authorId: comment.authorId,
           avatar: comment.pathToAvatar,
-          name: comment.authorName,
+          name: name != null && lastName != null ? lastName + " " + name : name,
           text: comment.comment,
           barrelChecked: comment.barrelsChecked,
           barrelsCount: comment.barrels,
@@ -126,6 +129,10 @@ class _BodyState extends State<Body> {
       );
 
       comment.children?.forEach((childrenComment) {
+
+        String? name = childrenComment.authorName;
+        String? lastName = childrenComment.authorLastName;
+
         comments.add(
           Container(
             margin: EdgeInsets.only(left: 25),
@@ -133,7 +140,7 @@ class _BodyState extends State<Body> {
               id: childrenComment.id,
               authorId: childrenComment.authorId,
               avatar: childrenComment.pathToAvatar,
-              name: childrenComment.authorName,
+              name: name != null && lastName != null ? lastName + " " + name : name,
               text: childrenComment.comment,
               barrelChecked: childrenComment.barrelsChecked,
               barrelsCount: childrenComment.barrels,
