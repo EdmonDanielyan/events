@@ -103,10 +103,9 @@ class _MedicalInsuranceFormUserFieldsState
   Widget _mobilePhoneWidget() {
     MaskTextInputFormatter mask = TextFieldMasks().phone;
     return ServiceTextField(
-      hint: _strings.mobilePhone,
+      hint: "+7 (ххх) xxx-xx-xx",
       requiredIcon: true,
-      validator: (val) =>
-          !mask.isFill() || val!.isEmpty ? _strings.fillTheField : null,
+      validator: (val) => val!.length < 17 ? _strings.fillTheField : null,
       onChanged: (val) => widget.entities.phone = val,
       keyboardType: TextInputType.phone,
       inputFormatters: [mask],
