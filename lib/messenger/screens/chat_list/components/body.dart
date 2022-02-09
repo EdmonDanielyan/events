@@ -7,7 +7,6 @@ import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_state.dart';
 import 'package:ink_mobile/messenger/blocs/chat_list/search_chat_cubit.dart';
 import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/database/model/chat_with_message.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/build_items.dart';

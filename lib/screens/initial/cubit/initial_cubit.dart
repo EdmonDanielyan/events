@@ -25,13 +25,13 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
     if (refreshToken == null) throw InvalidRefreshTokenException();
   }
 
-  Future<bool> isTokenExpired() async {
-    return await Token.setNewTokensIfExpired();
-  }
-
   Future<void> updateToken() async {
-    String? oldJwt = await Token.getJwt();
-    SetOauthToken(token: oldJwt ?? "").setBearer();
+    bool wasExpired = await Token.setNewTokensIfExpired();
+
+    if (!wasExpired) {
+      String? oldJwt = await Token.getJwt();
+      SetOauthToken(token: oldJwt ?? "").setBearer();
+    }
   }
 
   Future<void> init() async {}
@@ -44,8 +44,8 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
       if (await securityChecker.checkApplication()) {
         await certificateReader.read();
         await readRefreshToken();
-        await authHandler.authChallenge();
         await updateToken();
+        await authHandler.authChallenge();
 
         emitState(type: InitialStateType.LOAD_MAIN);
       } else {

@@ -26,7 +26,16 @@ class LockApp with Loggable {
         bool didAuthenticate = await _localAuth.authenticate(
           localizedReason: localizationInstance.biometricReason,
           iOSAuthStrings: _iosStrings(),
-          androidAuthStrings: _androidStrings(),
+          androidAuthStrings: _androidStrings(
+              biometricHint: localizationInstance.biometricHint),
+        );
+
+        return didAuthenticate;
+      } else {
+        bool didAuthenticate = await _localAuth.authenticate(
+          localizedReason: "",
+          iOSAuthStrings: _iosStrings(),
+          androidAuthStrings: _androidStrings(biometricHint: null),
         );
 
         return didAuthenticate;
@@ -58,10 +67,10 @@ class LockApp with Loggable {
     );
   }
 
-  AndroidAuthMessages _androidStrings() {
+  AndroidAuthMessages _androidStrings({String? biometricHint}) {
     return AndroidAuthMessages(
       signInTitle: localizationInstance.authenticationRequired,
-      biometricHint: localizationInstance.biometricHint,
+      biometricHint: biometricHint,
       cancelButton: localizationInstance.cancel,
       goToSettingsButton: localizationInstance.settings,
       goToSettingsDescription: localizationInstance.touchIdSetup,

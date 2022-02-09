@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 // ignore: implementation_imports
 import 'package:dart_nats_streaming/src/data_message.dart';
 import 'package:fixnum/fixnum.dart';
