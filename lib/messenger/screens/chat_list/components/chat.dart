@@ -184,6 +184,7 @@ class _ChatListTileState extends State<ChatListTile> {
     if (lastMessage == null) return const SizedBox();
 
     final highlightValue = widget.highlightValue.trim();
+
     return ChatMessage(
       displayName: _getDisplayName(),
       message: widget.searchMessage?.message ?? lastMessage!.message,

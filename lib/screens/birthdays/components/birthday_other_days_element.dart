@@ -56,6 +56,8 @@ class BirthdayOtherDaysElement extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             )),
                         Expanded(
@@ -69,6 +71,8 @@ class BirthdayOtherDaysElement extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         )

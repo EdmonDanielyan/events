@@ -21,7 +21,7 @@ class BirthdayData {
   factory BirthdayData.fromResponse(UserProperties userData) {
     return BirthdayData(
         id: userData.id,
-        name: userData.name,
+        name: "${userData.lastName} ${userData.name}".trim(),
         workPosition: userData.workPosition,
         city: userData.workCity,
         birthday: userData.birthdayString,

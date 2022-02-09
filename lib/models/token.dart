@@ -204,8 +204,6 @@ class DeviceType {
   const DeviceType(String key) : key = key;
 }
 
-
-
 @module
 abstract class TokenDataInjectorModule {
   @Named("userId")
@@ -215,7 +213,8 @@ abstract class TokenDataInjectorModule {
   String get messengerAuthLogin => GetIt.I.get<TokenDataHolder>().userId;
 
   @Named("messengerAuthPassword")
-  String get messengerAuthPassword => GetIt.I.get<TokenDataHolder>().localDatabasePassword;
+  String get messengerAuthPassword =>
+      GetIt.I.get<TokenDataHolder>().localDatabasePassword;
 
   @Named("natsToken")
   String get natsToken => GetIt.I.get<TokenDataHolder>().natsToken;

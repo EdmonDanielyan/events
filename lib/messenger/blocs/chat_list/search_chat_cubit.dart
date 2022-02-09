@@ -4,7 +4,6 @@ import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat_list/search_chat_state.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat_list_view.dart';
-import 'package:collection/collection.dart';
 
 @injectable
 class SearchChatCubit extends Cubit<SearchChatState> {
@@ -24,6 +23,23 @@ class SearchChatCubit extends Cubit<SearchChatState> {
 
     emit(state.copyWith(chats: chats, searchChats: chats));
   }
+
+  // Future<void> emitChats(List<ChatWithMessage> chatsWithMessage,
+  //     {bool sort = true}) async {
+  //   if (sort) {
+  //     chatsWithMessage.sort((a, b) {
+  //       DateTime compareA =
+  //           a.message?.timestamp ?? (a.chat?.updatedAt ?? DateTime.now());
+  //       DateTime compareB =
+  //           b.message?.timestamp ?? (b.chat?.updatedAt ?? DateTime.now());
+
+  //       return compareB.compareTo(compareA);
+  //     });
+  //   }
+  //   List<ChatTable> chats = chatsWithMessage.map((e) => e.chat!).toList();
+
+  //   emit(state.copyWith(chats: chats, searchChats: chats));
+  // }
 
   void setSearchValue(String value,
       {ChatDatabaseCubit? chatDatabaseCubit}) async {

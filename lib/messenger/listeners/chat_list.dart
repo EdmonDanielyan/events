@@ -126,24 +126,7 @@ class ChatListListener extends MessageListener {
   }
 
   List<ChatTable> _filterChats(List<ChatTable> chats) {
-    var newChats = chats.cutIdenticalChats();
-    _cleanFromDatabase(chats, newChats);
-
-    return newChats.toSet().toList();
-  }
-
-  Future<void> _cleanFromDatabase(
-      List<ChatTable> originalChats, List<ChatTable> newChats) async {
-    if (originalChats.isNotEmpty) {
-      for (final chat in originalChats) {
-        final getChatFromNew =
-            newChats.firstWhereOrNull((element) => element.id == chat.id);
-
-        if (getChatFromNew == null) {
-          await chatDatabaseCubit.db.deleteChatById(chat.id);
-        }
-      }
-    }
+    return chats.toSet().toList();
   }
 
   Future<void> _setLoadingChats(List<ChatTable> chats) async {
@@ -187,6 +170,8 @@ class ChatListListener extends MessageListener {
     final List<ChatTable> chatsToInsert = [];
 
     for (final chat in chats) {
+      print("CHAT LIST");
+      print("${chat.name} - ${chat.updatedAt}");
       _getChatIds.add(chat.id);
       chatsToInsert.add(chat);
       var channel = chat.channel;

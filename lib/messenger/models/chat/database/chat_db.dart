@@ -10,6 +10,7 @@ import 'package:ink_mobile/messenger/models/chat/database/schema/participant_tab
 import 'package:ink_mobile/messenger/models/chat/database/schema/user_table_schema.dart';
 import 'package:moor/moor.dart';
 
+import 'model/chat_with_message.dart';
 import 'model/participant_with_user.dart';
 
 part 'chat_db.g.dart';
@@ -55,7 +56,30 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
         .watch();
   }
 
-  Stream<List<ChatTable>> watchAllChats() => (select(chatTableSchema)).watch();
+  Stream<List<ChatTable>> watchAllChats() => (select(chatTableSchema)
+        ..orderBy([
+          (t) => OrderingTerm(expression: t.updatedAt, mode: OrderingMode.desc)
+        ]))
+      .watch();
+
+  Stream<List<ChatWithMessage>> watchAllChatsWithMessagesJoin() {
+    final sel = (select(chatTableSchema)).join([
+      leftOuterJoin(messageTableSchema,
+          messageTableSchema.chatId.equalsExp(chatTableSchema.id))
+    ]);
+
+    sel.orderBy([OrderingTerm.desc(messageTableSchema.timestamp)]);
+    sel.groupBy([chatTableSchema.id]);
+
+    return sel.watch().map((rows) {
+      return rows.map((row) {
+        return ChatWithMessage(
+          message: row.readTableOrNull(messageTableSchema),
+          chat: row.readTableOrNull(chatTableSchema),
+        );
+      }).toList();
+    });
+  }
 
   Stream<ChatTable> watchChatById(String id) =>
       (select(chatTableSchema)..where((tbl) => tbl.id.equals(id)))

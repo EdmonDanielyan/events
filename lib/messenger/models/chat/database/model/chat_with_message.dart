@@ -1,23 +1,23 @@
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 
-class ChatWithMessages {
+class ChatWithMessage {
   final ChatTable? chat;
-  final MessageTable? messages;
+  final MessageTable? message;
 
-  const ChatWithMessages({
+  const ChatWithMessage({
     required this.chat,
-    required this.messages,
+    required this.message,
   });
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ChatWithMessages &&
+    return other is ChatWithMessage &&
         other.chat == chat &&
-        other.messages == messages;
+        other.message == message;
   }
 
   @override
-  int get hashCode => chat.hashCode ^ messages.hashCode;
+  int get hashCode => chat.hashCode ^ message.hashCode;
 }
