@@ -68,7 +68,6 @@ abstract class Token {
   static Future<bool> setNewTokensIfExpired() async {
     bool isJwtExpired = await Token.isJwtExpired();
     if (isJwtExpired) {
-      Logger("Token").finest('token is expired');
       await Token._setNewTokens();
     }
 
@@ -101,6 +100,15 @@ abstract class Token {
     } else {
       throw InvalidRefreshTokenException();
     }
+  }
+
+  static Future<DateTime?> getJwtExpired() async {
+    final payload = await Token.getJwtPayloadObject();
+
+    return payload != null
+        ? DateTime.fromMillisecondsSinceEpoch(payload.expirationTime,
+            isUtc: true)
+        : null;
   }
 
   static Future<String?> getJwt() async {

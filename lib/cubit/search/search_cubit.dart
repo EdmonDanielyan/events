@@ -4,6 +4,7 @@ import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/cubit/search/sources/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/search/data.dart';
 import 'package:ink_mobile/models/search/search_model.dart';
@@ -17,19 +18,23 @@ import 'package:ink_mobile/extensions/get_search_success.dart';
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit() : super(SearchState(type: SearchStateType.STARTING));
 
+  Debouncer _debouncer = Debouncer(milliseconds: 500);
+
   Future<void> search(String query) async {
     emit(SearchState(type: SearchStateType.LOADING));
     try {
-      await Token.setNewTokensIfExpired();
+      _debouncer.run(() async {
+        await Token.setNewTokensIfExpired();
 
-      final response = await sl<SearchNetworkRequest>(param1: query)();
-      SearchModel? searchModel = response.mapResponse();
+        final response = await sl<SearchNetworkRequest>(param1: query)();
+        SearchModel? searchModel = response.mapResponse();
 
-      if (searchModel == null) {
-        emitEmpty();
-        return;
-      }
-      searchModel.isEmpty() ? emitEmpty() : emitSuccess(searchModel);
+        if (searchModel == null) {
+          emitEmpty();
+          return;
+        }
+        searchModel.isEmpty() ? emitEmpty() : emitSuccess(searchModel);
+      });
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
