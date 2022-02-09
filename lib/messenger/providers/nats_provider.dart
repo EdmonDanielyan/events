@@ -331,6 +331,7 @@ class NatsProvider {
   }
 
   bool acknowledge(Subscription subscription, DataMessage message) {
+    _logger.finest("acknowledge: ${subscription.subject}");
     return _stan.acknowledge(
       subscription,
       message,
