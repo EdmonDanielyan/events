@@ -192,7 +192,8 @@ class ChatListListener extends MessageListener {
       var channel = chat.channel;
       await registry.subscribeOnChatChannelsIfNotExists(channel,
           sequence: chat.lastMessageSeq != null
-              ? Int64.parseInt(chat.lastMessageSeq.toString()).toInt64()
+              ? Int64.parseInt(((chat.lastMessageSeq ?? -1) + 1).toString())
+                  .toInt64()
               : Int64.ZERO);
     }
     if (!await _chatsStored(chats)) {

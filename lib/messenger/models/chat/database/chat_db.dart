@@ -55,11 +55,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
         .watch();
   }
 
-  Stream<List<ChatTable>> watchAllChats() => (select(chatTableSchema)
-        ..orderBy([
-          (t) => OrderingTerm(expression: t.updatedAt, mode: OrderingMode.desc)
-        ]))
-      .watch();
+  Stream<List<ChatTable>> watchAllChats() => (select(chatTableSchema)).watch();
 
   Stream<ChatTable> watchChatById(String id) =>
       (select(chatTableSchema)..where((tbl) => tbl.id.equals(id)))

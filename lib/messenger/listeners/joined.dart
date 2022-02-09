@@ -77,8 +77,7 @@ class ChatJoinedListener extends MessageListener {
           sequence: message.sequence.toInt());
 
       if (generateMessage != null) {
-        await GetIt.I<SendMessage>()
-            .addMessage(chat, generateMessage, setChatToFirst: true);
+        await GetIt.I<SendMessage>().addMessage(chat, generateMessage);
       }
     }
   }

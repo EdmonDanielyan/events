@@ -12,11 +12,11 @@ class ChatFunctions {
 
   const ChatFunctions(this.chatDatabaseCubit, this.messenger);
 
-  void setChatToFirst(ChatTable chat) {
+  void setChatToFirst(ChatTable chat, {DateTime? updatedAt}) {
     chatDatabaseCubit.db.updateChatById(
       chat.id,
       chat.copyWith(
-        updatedAt: DateTime.now(),
+        updatedAt: updatedAt ?? DateTime.now(),
       ),
     );
   }
@@ -96,7 +96,7 @@ class ChatFunctions {
     if (lastMessageSeq != null) {
       updateChat(
         chat.copyWith(
-          updatedAt: DateTime.now(),
+          updatedAt: lastMessageSeq.timestamp,
           lastMessageSeq: lastMessageSeq.sequence,
           notificationsOn: true,
         ),

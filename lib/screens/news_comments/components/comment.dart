@@ -3,6 +3,7 @@ import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/ink_icons.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:intl/intl.dart';
 import 'package:ink_mobile/extensions/int_extension.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -99,35 +100,42 @@ class _CommentState extends State<Comment> {
                         child: Row(
                           children: [
                             Expanded(
-                                flex: 2,
-                                child: Container(
-                                    child: GestureDetector(
-                                  onTap: () async {
-                                    await _onLike(context);
-                                    setState(() {});
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        InkIcons.barrel,
-                                        color: barrelChecked
-                                            ? Theme.of(context).primaryColor
-                                            : _textColor,
-                                      ),
-                                      Text(
-                                        barrelsCount > 1000
-                                            ? barrelsCount.toThousandsString()
-                                            : barrelsCount.toString(),
-                                        style: TextStyle(
-                                          color: barrelChecked
-                                              ? Theme.of(context).primaryColor
-                                              : _textColor,
-                                          fontSize: 15,
+                              flex: 2,
+                              child: JwtPayload.myId != widget.authorId
+                                  ? Container(
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          await _onLike(context);
+                                          setState(() {});
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              InkIcons.barrel,
+                                              color: barrelChecked
+                                                  ? Theme.of(context)
+                                                      .primaryColor
+                                                  : _textColor,
+                                            ),
+                                            Text(
+                                              barrelsCount > 1000
+                                                  ? barrelsCount
+                                                      .toThousandsString()
+                                                  : barrelsCount.toString(),
+                                              style: TextStyle(
+                                                color: barrelChecked
+                                                    ? Theme.of(context)
+                                                        .primaryColor
+                                                    : _textColor,
+                                                fontSize: 15,
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                ))),
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                            ),
                             Expanded(
                               flex: 4,
                               child: Container(

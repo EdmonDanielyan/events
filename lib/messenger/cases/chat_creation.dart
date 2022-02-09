@@ -83,6 +83,7 @@ class ChatCreation with Loggable {
     } else {
       logger.finest('createFromInvite: dialog');
       newChat = chat.copyWith(
+        ownerId: JwtPayload.myId,
         name: await singleChatName(whoInvites),
         avatar: whoInvites.avatar,
         participantId: whoInvites.id,
