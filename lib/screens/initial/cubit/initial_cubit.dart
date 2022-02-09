@@ -44,13 +44,7 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
       if (await securityChecker.checkApplication()) {
         await certificateReader.read();
         await readRefreshToken();
-        if (await isTokenExpired()) {
-          logger.finest('token is expired. Updating');
-          await authHandler.authChallenge();
-        } else {
-          logger.finest('token is ok. Continue');
-          await authHandler.byPassChallenge();
-        }
+        await authHandler.authChallenge();
         await updateToken();
 
         emitState(type: InitialStateType.LOAD_MAIN);
