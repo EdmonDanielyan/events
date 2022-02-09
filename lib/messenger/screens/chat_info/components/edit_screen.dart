@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/components/changable_avatar.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
+import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/extensions/chat_table.dart';
@@ -72,22 +73,22 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // textfieldWidget(
-              //   initalValue: _chat.avatar,
-              //   hint: _strings.avatarUrl,
-              //   onChanged: (val) => entities.avatarUrl = val,
-              //   validator: (val) {
-              //     if (val!.isEmpty) {
-              //       return null;
-              //     }
-              //     return !isStringUrl(val)
-              //         ? _strings.fillTheFieldCorrectly
-              //         : null;
-              //   },
-              // ),
-              // //avatarWidget(),
-              // const SizedBox(height: 5.0),
-              // divider(),
+              textfieldWidget(
+                initalValue: _chat.avatar,
+                hint: _strings.avatarUrl,
+                onChanged: (val) => entities.avatarUrl = val,
+                validator: (val) {
+                  if (val!.isEmpty) {
+                    return null;
+                  }
+                  return !isStringUrl(val)
+                      ? _strings.fillTheFieldCorrectly
+                      : null;
+                },
+              ),
+              //avatarWidget(),
+              const SizedBox(height: 5.0),
+              divider(),
               textfieldWidget(
                 initalValue: _chat.name,
                 hint: _strings.groupName,
