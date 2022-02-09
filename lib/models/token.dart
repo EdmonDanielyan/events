@@ -10,6 +10,7 @@ import 'package:ink_mobile/models/converter.dart';
 import 'package:ink_mobile/providers/device_info.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:logging/logging.dart';
 import 'package:main_api_client/api/auth_api.dart';
 import 'package:main_api_client/model/refresh_token_params.dart';
 import 'package:uuid/uuid.dart';
@@ -58,17 +59,16 @@ abstract class Token {
       int curDateTimestamp =
           (curDateTime.millisecondsSinceEpoch.toInt() / 1000).ceil();
 
-      if (curDateTimestamp > payload.expirationTime - 5) {
-        return true;
-      }
+      return curDateTimestamp > payload.expirationTime - 5;
     }
 
-    return false;
+    return true;
   }
 
   static Future<bool> setNewTokensIfExpired() async {
     bool isJwtExpired = await Token.isJwtExpired();
     if (isJwtExpired) {
+      Logger("Token").finest('token is expired');
       await Token._setNewTokens();
     }
 
@@ -97,8 +97,6 @@ abstract class Token {
         SetOauthToken(token: newJwt).setBearer();
         await Token.setJwt(newJwt);
         await Token.setRefresh(newRefresh);
-      } else {
-        throw UnknownErrorException();
       }
     } else {
       throw InvalidRefreshTokenException();
@@ -162,6 +160,7 @@ abstract class Token {
 @lazySingleton
 class SecureStorage {
   final FlutterSecureStorage _prefs = FlutterSecureStorage();
+
   Future<String?> read(String key) async {
     return _prefs.read(key: key);
   }
@@ -188,6 +187,7 @@ class TokenTypes {
 
 class TokenType {
   final String key;
+
   const TokenType(String key) : key = key;
 }
 
@@ -201,6 +201,7 @@ class NatsTypes {
 
 class DeviceType {
   final String key;
+
   const DeviceType(String key) : key = key;
 }
 
@@ -238,8 +239,11 @@ class TokenDataHolder with Loggable {
   late String _localDatabasePassword;
 
   String get userId => _userId;
+
   String get deviceVirtualId => _deviceVirtualId;
+
   String get natsToken => _natsToken;
+
   String get localDatabasePassword => _localDatabasePassword;
 
   Future<void> update() async {

@@ -1,5 +1,7 @@
 import 'package:ink_mobile/assets/constants.dart';
 
+//todo: снести всю иерархию классов
+
 abstract class CustomException implements FormatException {}
 
 abstract class AuthException implements CustomException {}
