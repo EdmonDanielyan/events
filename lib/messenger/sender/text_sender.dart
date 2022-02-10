@@ -35,7 +35,8 @@ class TextSender with Loggable {
       CHAT: $chat
     ''');
 
-    MessageSentStatus status = success ? MessageSentStatus.SENT : MessageSentStatus.ERROR;
+    MessageSentStatus status =
+        success ? MessageSentStatus.SENT : MessageSentStatus.ERROR;
 
     await chatFunctions.updateMessageStatus(message, status);
 
