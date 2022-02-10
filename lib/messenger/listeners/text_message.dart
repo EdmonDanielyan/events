@@ -51,10 +51,7 @@ class TextMessageListener extends MessageListener {
       final newMessage = fields.message.copyWith(
         sequence: message.sequence.toInt(),
         timestamp: message.timestamp,
-        sentStatus: (fields.message.sentStatus == MessageSentStatus.SENDING ||
-                fields.message.sentStatus == MessageSentStatus.ERROR)
-            ? MessageSentStatus.SENT
-            : fields.message.sentStatus,
+        sentStatus: MessageSentStatus.SENT,
       );
 
       final messageExists =
