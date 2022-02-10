@@ -12,7 +12,7 @@ import Firebase
     if #available(iOS 10.0, *) {
       UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
     }
-
+    FirebaseApp.configure()
     GeneratedPluginRegistrant.register(with: self)
 
     application.registerForRemoteNotifications()

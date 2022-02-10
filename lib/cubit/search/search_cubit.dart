@@ -18,12 +18,12 @@ import 'package:ink_mobile/extensions/get_search_success.dart';
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit() : super(SearchState(type: SearchStateType.STARTING));
 
-  Debouncer _debouncer = Debouncer(milliseconds: 500);
+  Debouncer _debouncer = Debouncer(milliseconds: 300);
 
   Future<void> search(String query) async {
     emit(SearchState(type: SearchStateType.LOADING));
-    try {
-      _debouncer.run(() async {
+    _debouncer.run(() async {
+      try {
         await Token.setNewTokensIfExpired();
 
         final response = await sl<SearchNetworkRequest>(param1: query)();
@@ -34,15 +34,15 @@ class SearchCubit extends Cubit<SearchState> {
           return;
         }
         searchModel.isEmpty() ? emitEmpty() : emitSuccess(searchModel);
-      });
-    } on DioError catch (e) {
-      ErrorModel error = DioErrorHandler(e: e).call();
-      emitError(error.msg);
-      throw error.exception;
-    } on Exception catch (_) {
-      emitError(localizationInstance.errorOccurred);
-      throw UnknownErrorException();
-    }
+      } on DioError catch (e) {
+        ErrorModel error = DioErrorHandler(e: e).call();
+        emitError(error.msg);
+        throw error.exception;
+      } on Exception catch (_) {
+        emitError(localizationInstance.errorOccurred);
+        throw UnknownErrorException();
+      }
+    });
   }
 
   void emitSuccess(SearchModel model) {
