@@ -81,9 +81,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
                   if (val!.isEmpty) {
                     return null;
                   }
-                  return !isStringUrl(val)
-                      ? _strings.fillTheFieldCorrectly
-                      : null;
+                  return !isStrPicture(val) ? _strings.incorrectPicture : null;
                 },
               ),
               //avatarWidget(),

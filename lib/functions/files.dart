@@ -20,8 +20,8 @@ bool isStringUrl(String url) {
 
 bool isStrPicture(String picture) {
   picture = picture.toLowerCase();
-  bool hasType = picture.contains("jpg") ||
-      picture.contains("png") ||
-      picture.contains("jpeg");
+  bool hasType = picture.endsWith("jpg") ||
+      picture.endsWith("png") ||
+      picture.endsWith("jpeg");
   return isStringUrl(picture) && hasType;
 }

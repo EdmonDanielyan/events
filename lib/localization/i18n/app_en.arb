@@ -237,5 +237,6 @@
 	"zipIndex": "Zip index",
 	"unreadCounter": "unread counter",
 	"markMultiple": "can mark multiple",
-	"deleteData": "Delete data"
+	"deleteData": "Delete data",
+	"incorrectPicture": "Incorrect picture"
 }
