@@ -196,7 +196,7 @@ class NatsProvider {
         certificate: certificate,
         clusterID: natsCluster,
         pingMaxAttempts: 3,
-        clientID: "$userId-$deviceVirtualId-${Uuid().v4()}",
+        clientIdPrefix: "$userId-$deviceVirtualId",
         retryReconnect: true,
         connectOption:
             nats.ConnectOption(tlsRequired: true, auth_token: natsToken));

@@ -41,6 +41,8 @@ class NatsStreamingClient {
 
   Timer? _pingTimer;
 
+  late String clientId;
+
   factory NatsStreamingClient() {
     return _client;
   }
@@ -53,7 +55,7 @@ class NatsStreamingClient {
 
   late nats.Client natsClient;
   final String connectionID = Uuid().v4();
-  String _clientID = Uuid().v4();
+  String _clientIdPrefix = Uuid().v4();
   bool _connected = false;
   ConnectResponse? _connectResponse;
   Function? _onConnect;
@@ -82,7 +84,7 @@ class NatsStreamingClient {
 
   bool get connected => _connected;
 
-  String get clientID => _clientID;
+  String get clientIdPrefix => _clientIdPrefix;
 
   List<int> get connectionIDAscii => ascii.encode(this.connectionID);
 
@@ -98,7 +100,7 @@ class NatsStreamingClient {
     nats.ConnectOption? connectOption,
     bool? retryReconnect,
     int? retryIntervalSeconds,
-    String? clientID,
+    String? clientIdPrefix,
     String? clusterID,
     int? pingIntervalSeconds,
     int? pingMaxAttempts,
@@ -114,7 +116,7 @@ class NatsStreamingClient {
             connectOption: connectOption,
             retryReconnect: retryReconnect,
             retryInterval: retryIntervalSeconds,
-            clientID: clientID,
+            clientIdPrefix: clientIdPrefix,
             clusterID: clusterID,
             pingInterval: pingIntervalSeconds,
             pingMaxAttempts: pingMaxAttempts);
@@ -127,7 +129,7 @@ class NatsStreamingClient {
           connectOption: connectOption,
           retryReconnect: retryReconnect,
           retryInterval: retryIntervalSeconds,
-          clientID: clientID,
+          clientIdPrefix: clientIdPrefix,
           clusterID: clusterID,
           pingInterval: pingIntervalSeconds,
           pingMaxAttempts: pingMaxAttempts);
@@ -141,7 +143,7 @@ class NatsStreamingClient {
     nats.ConnectOption? connectOption,
     bool? retryReconnect,
     int? retryInterval,
-    String? clientID,
+    String? clientIdPrefix,
     String? clusterID,
     int? pingInterval,
     int? pingMaxAttempts,
@@ -149,8 +151,8 @@ class NatsStreamingClient {
     this.host = host;
     this.port = port;
 
-    if (clientID != null) {
-      _clientID = clientID;
+    if (clientIdPrefix != null) {
+      _clientIdPrefix = clientIdPrefix;
     }
 
     if (retryReconnect != null) {
@@ -199,10 +201,11 @@ class NatsStreamingClient {
     _logger.finest('_connect NATS Status: ${natsClient.status}');
 
     if (natsClient.status == nats.Status.connected) {
-      _logger.finest('NATS request');
+      clientId = '$clientIdPrefix-${Uuid().v4()}';
+      _logger.finest(() =>'NATS connect request with clientId: $clientId');
 
       ConnectRequest connectRequest = ConnectRequest()
-        ..clientID = this.clientID
+        ..clientID = clientId
         ..heartbeatInbox = this.connectionID
         ..connID = this.connectionIDAscii
         ..protocol = 1
@@ -387,7 +390,7 @@ class NatsStreamingClient {
         }
         final Encoding encoding = utf8;
         pubMsg = PubMsg()
-          ..clientID = this.clientID
+          ..clientID = this.clientIdPrefix
           ..guid = guid ?? Uuid().v4()
           ..subject = subject
           ..data = encoding.encode(string)
@@ -419,7 +422,7 @@ class NatsStreamingClient {
           throw Exception('Not connected');
         }
         pubMsg = PubMsg()
-          ..clientID = this.clientID
+          ..clientID = this.clientIdPrefix
           ..guid = guid ?? Uuid().v4()
           ..subject = subject
           ..data = bytes
@@ -493,7 +496,7 @@ class NatsStreamingClient {
 
     // Subscribing
     SubscriptionRequest subscriptionRequest = SubscriptionRequest()
-      ..clientID = this.clientID
+      ..clientID = this.clientId
       ..subject = subject
       ..maxInFlight = maxInFlight
       ..ackWaitInSecs = ackWaitSeconds
