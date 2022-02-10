@@ -45,7 +45,7 @@ class ChatInfoScreenState extends State<ChatInfoScreen> {
       appBar: InkAppBarWithText(
         title: _strings.chatInfo,
         actions: [
-          if (isGroup) ...[
+          if (isGroup && iAmOwner) ...[
             ChatInfoEditBtn(),
           ],
         ],
