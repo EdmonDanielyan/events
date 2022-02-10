@@ -238,5 +238,6 @@
 	"unreadCounter": "unread counter",
 	"markMultiple": "can mark multiple",
 	"deleteData": "Delete data",
-	"incorrectPicture": "Incorrect picture"
+	"incorrectPicture": "Incorrect picture",
+	"deleteChatHint": "Are you sure you want to delete this chat?"
 }

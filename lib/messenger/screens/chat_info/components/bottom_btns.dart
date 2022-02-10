@@ -7,6 +7,8 @@ import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/messenger/screens/chat_info/entities/design_entities.dart';
 import 'package:ink_mobile/setup.dart';
 
+import '../../../../components/alert/alert_cancel.dart';
+
 class ChatInfoBottomBtns extends StatelessWidget {
   final ChatTable chat;
   final Messenger messenger = sl<Messenger>();
@@ -64,7 +66,16 @@ class ChatInfoBottomBtns extends StatelessWidget {
 
   Widget leaveChat(BuildContext context) {
     return textButton(
-      onPressed: () => _deleteChat(context),
+      onPressed: () {
+        CustomAlertCancel(
+          context,
+          title: localizationInstance.delete,
+          body: localizationInstance.deleteChatHint,
+          onSubmit: () async {
+            await _deleteChat(context);
+          },
+        ).call();
+      },
       color: Colors.red,
       text: isGroup
           ? "${_strings.leave} ${_strings.chat.toLowerCase()}"

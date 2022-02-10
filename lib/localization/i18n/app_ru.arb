@@ -238,5 +238,6 @@
 	"unreadCounter": "счетчик непрочитанных сообщений",
 	"markMultiple": "можно отметить несколько",
 	"deleteData": "Удалить данные",
-	"incorrectPicture": "Неправильная ссылка"
+	"incorrectPicture": "Неправильная ссылка",
+	"deleteChatHint": "Вы уверены, что хотите удалить чат?"
 }
