@@ -119,7 +119,7 @@ class ChatLeftListener extends MessageListener {
       List<UserTable> users, ChatTable chat, NatsMessage message) async {
     for (final user in users) {
       final generateMessage = GetIt.I<SendMessage>().joinedLeftMessage(
-          id: message.id,
+          id: "${message.id}_${user.id}",
           chatId: chat.id,
           userName: user.name,
           type: StoredMessageType.USER_LEFT,

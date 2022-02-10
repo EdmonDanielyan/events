@@ -160,7 +160,10 @@ class MessageCardText extends StatelessWidget {
             ),
           ],
           const SizedBox(width: 5.0),
-          _dateWidget(),
+          if (message?.sentStatus != MessageSentStatus.SENDING &&
+              message?.sentStatus != MessageSentStatus.ERROR) ...[
+            _dateWidget(),
+          ],
           if (byMe) ...[
             const SizedBox(width: 4.0),
             _statusWidget(),
@@ -206,7 +209,8 @@ class MessageCardText extends StatelessWidget {
 
   Widget _dateWidget() {
     return Text(
-      DateFunctions(passedDate: message?.timestamp ?? DateTime.now()).hourMinute(),
+      DateFunctions(passedDate: message?.timestamp ?? DateTime.now())
+          .hourMinute(),
       style: TextStyle(
         fontSize: 11.0,
         color: textColor(),

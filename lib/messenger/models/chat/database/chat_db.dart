@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:encrypted_moor/encrypted_moor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
@@ -8,6 +10,7 @@ import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 import 'package:ink_mobile/messenger/models/chat/database/schema/message_table_schema.dart';
 import 'package:ink_mobile/messenger/models/chat/database/schema/participant_table_schema.dart';
 import 'package:ink_mobile/messenger/models/chat/database/schema/user_table_schema.dart';
+import 'package:ink_mobile/models/debouncer.dart';
 import 'package:moor/moor.dart';
 
 import 'model/chat_with_message.dart';
@@ -56,11 +59,20 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
         .watch();
   }
 
-  Stream<List<ChatTable>> watchAllChats() => (select(chatTableSchema)
-        ..orderBy([
-          (t) => OrderingTerm(expression: t.updatedAt, mode: OrderingMode.desc)
-        ]))
-      .watch();
+  Stream<List<ChatTable>> watchAllChats() {
+    final _debouncer = Debouncer(milliseconds: 300);
+    return (select(chatTableSchema)
+          ..orderBy([
+            (t) =>
+                OrderingTerm(expression: t.updatedAt, mode: OrderingMode.desc)
+          ]))
+        .watch()
+        .transform(StreamTransformer.fromHandlers(handleData: (data, sink) {
+      _debouncer.run(() {
+        sink.add(data);
+      });
+    }));
+  }
 
   Stream<List<ChatWithMessage>> watchAllChatsWithMessagesJoin() {
     final sel = (select(chatTableSchema)).join([
@@ -71,6 +83,8 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
     sel.orderBy([OrderingTerm.desc(messageTableSchema.timestamp)]);
     sel.groupBy([chatTableSchema.id]);
 
+    final _debouncer = Debouncer(milliseconds: 300);
+
     return sel.watch().map((rows) {
       return rows.map((row) {
         return ChatWithMessage(
@@ -78,7 +92,11 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           chat: row.readTableOrNull(chatTableSchema),
         );
       }).toList();
-    });
+    }).transform(StreamTransformer.fromHandlers(handleData: (data, sink) {
+      _debouncer.run(() {
+        sink.add(data);
+      });
+    }));
   }
 
   Stream<ChatTable> watchChatById(String id) =>
@@ -245,6 +263,8 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           : OrderingTerm.desc(messageTableSchema.sequence),
     ]);
 
+    Debouncer _debouncer = Debouncer(milliseconds: 300);
+
     if (limit != null) {
       sel..limit(limit);
     }
@@ -255,7 +275,11 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           user: row.readTableOrNull(userTableSchema),
         );
       }).toList();
-    });
+    }).transform(StreamTransformer.fromHandlers(handleData: (data, sink) {
+      _debouncer.run(() {
+        sink.add(data);
+      });
+    }));
   }
 
   Stream<List<MessageWithUser>> watchChatFilesMessages(String chatId) {

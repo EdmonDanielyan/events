@@ -62,8 +62,7 @@ class ChannelsRegistry with Loggable {
     MessageType.ChatList
   };
 
-  String get inviteUserChannel =>
-      natsProvider.getInviteUserToJoinChatChannel();
+  String get inviteUserChannel => natsProvider.getInviteUserToJoinChatChannel();
 
   void listenToAllMessages() {
     natsProvider.onMessage = (String channelStr, NatsMessage message) async {
@@ -133,13 +132,13 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> onChannelMessage(String channel, NatsMessage message) async {
-      var messageType = (message.payload as Payload).type;
-      var listener = listeners[messageType];
-      if (listener == null) {
-        logger.warning("No listener registered for message type: $messageType");
-        return;
-      }
-      return listener.onMessage(channel, message);
+    var messageType = (message.payload as Payload).type;
+    var listener = listeners[messageType];
+    if (listener == null) {
+      logger.warning("No listener registered for message type: $messageType");
+      return;
+    }
+    return listener.onMessage(channel, message);
   }
 
   Future<void> _subscribeToChannel(String channel,

@@ -237,7 +237,6 @@ class NatsProvider {
                   participantId: participantId)
               .toJson()),
           timeout: Duration(seconds: timeoutInSeconds));
-      print(response.data);
       return CreateChatResponse.fromJson(jsonDecode(response.string));
     } catch (e, s) {
       _logger.severe("Chat create error", e, s);

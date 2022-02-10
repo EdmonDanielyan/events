@@ -4,6 +4,7 @@ import 'package:ink_mobile/extensions/nats_extension.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/nats/payloads/chat_list.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
+import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
 
 @injectable
@@ -13,6 +14,8 @@ class ChatSaver with Loggable {
   final NatsProvider natsProvider;
 
   ChatSaver(this.db, this.natsProvider);
+
+  Debouncer _chatListDebouncer = Debouncer(milliseconds: 300);
 
   String get getInviteUserChannel =>
       natsProvider.getInviteUserToJoinChatChannel();
@@ -27,8 +30,7 @@ class ChatSaver with Loggable {
     final participants = await db.getAllParticipants();
     List<ChannelTable> channels = [];
 
-    final inviteUserChannel =
-        await db.getChannelById(getInviteUserChannel);
+    final inviteUserChannel = await db.getChannelById(getInviteUserChannel);
     if (inviteUserChannel != null) {
       channels.add(inviteUserChannel);
     }
@@ -61,14 +63,15 @@ class ChatSaver with Loggable {
     required List<ParticipantTable> participants,
     required List<ChannelTable> channels,
   }) async {
-    final chatListFields = ChatListPayload(
-      chats: chats.toSet().toList(),
-      users: users.toSet().toList(),
-      participants: participants.toSet().toList(),
-      channels: channels.toSet().toList(),
-    );
+    await _chatListDebouncer.run(() async {
+      final chatListFields = ChatListPayload(
+        chats: chats.toSet().toList(),
+        users: users.toSet().toList(),
+        participants: participants.toSet().toList(),
+        channels: channels.toSet().toList(),
+      );
 
-    logger.finest(() => '''
+      logger.finest(() => '''
       SAVING CHATS FOR ${JwtPayload.myId}:
       users: ${users.length}
       chats: ${chats.length}
@@ -76,10 +79,11 @@ class ChatSaver with Loggable {
       channels: ${channels.length}
       ''');
 
-    await natsProvider.sendSystemMessageToChannel(
-      natsProvider.getPrivateUserChatIdList(),
-      MessageType.ChatList,
-      chatListFields.toMap(),
-    );
+      await natsProvider.sendSystemMessageToChannel(
+        natsProvider.getPrivateUserChatIdList(),
+        MessageType.ChatList,
+        chatListFields.toMap(),
+      );
+    });
   }
 }
