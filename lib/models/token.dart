@@ -10,7 +10,6 @@ import 'package:ink_mobile/models/converter.dart';
 import 'package:ink_mobile/providers/device_info.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:logging/logging.dart';
 import 'package:main_api_client/api/auth_api.dart';
 import 'package:main_api_client/model/refresh_token_params.dart';
 import 'package:uuid/uuid.dart';

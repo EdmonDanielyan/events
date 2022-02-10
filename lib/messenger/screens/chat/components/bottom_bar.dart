@@ -45,10 +45,8 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
   Future<void> onSend() async {
     if (entities.text.isNotEmpty && getChat != null) {
-      print("ON SEND HIT");
       final saveEntities = entities.copyWith();
       clearForm();
-      print(saveEntities.text);
       final sendMessage = sl<SendMessage>();
       final message = await sendMessage.save(getChat!, saveEntities);
       if (sl<Messenger>().isConnected) {

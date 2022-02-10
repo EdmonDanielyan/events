@@ -101,40 +101,37 @@ class _CommentState extends State<Comment> {
                           children: [
                             Expanded(
                               flex: 2,
-                              child: JwtPayload.myId != widget.authorId
-                                  ? Container(
-                                      child: GestureDetector(
-                                        onTap: () async {
+                              child: Container(
+                                child: GestureDetector(
+                                  onTap: JwtPayload.myId != widget.authorId
+                                      ? () async {
                                           await _onLike(context);
                                           setState(() {});
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              InkIcons.barrel,
-                                              color: barrelChecked
-                                                  ? Theme.of(context)
-                                                      .primaryColor
-                                                  : _textColor,
-                                            ),
-                                            Text(
-                                              barrelsCount > 1000
-                                                  ? barrelsCount
-                                                      .toThousandsString()
-                                                  : barrelsCount.toString(),
-                                              style: TextStyle(
-                                                color: barrelChecked
-                                                    ? Theme.of(context)
-                                                        .primaryColor
-                                                    : _textColor,
-                                                fontSize: 15,
-                                              ),
-                                            )
-                                          ],
-                                        ),
+                                        }
+                                      : null,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        InkIcons.barrel,
+                                        color: barrelChecked
+                                            ? Theme.of(context).primaryColor
+                                            : _textColor,
                                       ),
-                                    )
-                                  : const SizedBox(),
+                                      Text(
+                                        barrelsCount > 1000
+                                            ? barrelsCount.toThousandsString()
+                                            : barrelsCount.toString(),
+                                        style: TextStyle(
+                                          color: barrelChecked
+                                              ? Theme.of(context).primaryColor
+                                              : _textColor,
+                                          fontSize: 15,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                             Expanded(
                               flex: 4,

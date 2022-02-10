@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/screens/chat/entities/form_entities.dart';
 
 class MessageTextfield extends StatefulWidget {
   final TextEditingController textEditingController;
