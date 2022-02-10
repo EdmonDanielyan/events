@@ -109,7 +109,7 @@ class ChannelsRegistry with Loggable {
     final exists = await channelFunctions.channelExists(inviteUserChannel);
 
     if (!exists) {
-      await _subscribeToChannel(inviteUserChannel, startPosition: StartPosition.NewOnly);
+      await _subscribeToChannel(inviteUserChannel);
     }
   }
 
