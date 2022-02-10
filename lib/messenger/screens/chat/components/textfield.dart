@@ -9,13 +9,11 @@ class MessageTextfield extends StatefulWidget {
   final TextEditingController textEditingController;
   final FocusNode? focusNode;
   final Function(String)? onChanged;
-  final Function(ChatEntities)? onSend;
   const MessageTextfield({
     Key? key,
     required this.textEditingController,
     this.onChanged,
     this.focusNode,
-    this.onSend,
   }) : super(key: key);
 
   @override

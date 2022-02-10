@@ -43,13 +43,14 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
 
   ChatTable? get getChat => widget.chatDatabaseCubit.selectedChat;
 
-  Future<void> onSend(ChatEntities getEntities) async {
-    if (getEntities.text.isNotEmpty && getChat != null) {
-      final saveEntities = getEntities;
-
+  Future<void> onSend() async {
+    if (entities.text.isNotEmpty && getChat != null) {
+      print("ON SEND HIT");
+      final saveEntities = entities.copyWith();
+      clearForm();
+      print(saveEntities.text);
       final sendMessage = sl<SendMessage>();
       final message = await sendMessage.save(getChat!, saveEntities);
-      clearForm();
       if (sl<Messenger>().isConnected) {
         await sl<Messenger>().textSender.sendMessage(getChat!, message);
       }
@@ -126,7 +127,6 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
                       textEditingController: _messageTextEditingController,
                       onChanged: _onMessaging,
                       focusNode: textfieldFocus,
-                      onSend: onSend,
                     ),
                   ),
                   SizedBox(width: 8.0),
@@ -229,7 +229,7 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
           );
         }
 
-        return MessageSendBtn(onPressed: () => onSend(entities));
+        return MessageSendBtn(onPressed: onSend);
       },
     );
   }
