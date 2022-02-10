@@ -1,1 +1,2 @@
-const ACK_WAITS_SECONDS = 30;
+const ACK_WAITS_SECONDS = 3600;
+const MAX_IN_FLIGHTS = 1;
