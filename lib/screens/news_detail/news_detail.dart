@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
+import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/screens/news_detail/components/body.dart';
 
 class NewsDetailScreen extends StatelessWidget {
   final NewsDetailCubit newsDetailCubit;
   final NewsBlockCubit newsBlockCubit;
+  final NewsListCubit newsListCubit;
   const NewsDetailScreen(
-      {Key? key, required this.newsDetailCubit, required this.newsBlockCubit})
+      {Key? key,
+      required this.newsDetailCubit,
+      required this.newsBlockCubit,
+      required this.newsListCubit})
       : super(key: key);
 
   @override
@@ -17,6 +22,7 @@ class NewsDetailScreen extends StatelessWidget {
       body: Body(
         newsDetailCubit: newsDetailCubit,
         newsBlockCubit: newsBlockCubit,
+        newsListCubit: newsListCubit,
       ),
       bottomNavigationBar: const NewBottomNavBar(),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat_list/search_chat_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat_list/search_chat_state.dart';
@@ -10,13 +11,14 @@ import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
 import 'package:moor/moor.dart';
 
+import '../../../../components/alert/alert_cancel.dart';
 import 'chat.dart';
 
 class BuildChatItems extends StatelessWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
   final SearchChatCubit searchChatCubit;
   final EdgeInsetsGeometry? contentPadding;
-  final Function(ChatTable, BuildContext) deleteChat;
+  final Future<bool> Function(ChatTable, BuildContext) deleteChat;
   final TextEditingController searchController;
   const BuildChatItems({
     Key? key,
@@ -67,7 +69,22 @@ class BuildChatItems extends StatelessWidget {
                     searchController.text = "";
                     TextFieldUtils.loseTextFieldFocus();
                   },
-                  onDismissed: (dismissed) => deleteChat(chats[index], context),
+                  //onDismissed: (dismissed) => deleteChat(chats[index], context),
+                  confirmDismiss: (direction) async {
+                    CustomAlertCancel(
+                      context,
+                      title: localizationInstance.delete,
+                      body: localizationInstance.deleteChatHint,
+                      onSubmit: () async {
+                        final deleted = await deleteChat(chats[index], context);
+                        if (deleted) {
+                          Navigator.of(context).pop();
+                        }
+                      },
+                    ).call();
+
+                    return false;
+                  },
                   highlightValue: state.searchValue,
                   index: index,
                   chat: chats[index],

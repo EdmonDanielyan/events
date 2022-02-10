@@ -53,6 +53,8 @@ import 'package:ink_mobile/screens/test/test_screen.dart';
 import 'package:ink_mobile/screens/welcome/welcome_screen.dart';
 import 'package:ink_mobile/setup.dart';
 
+import '../cubit/main_page/announcements_list_cubit.dart';
+
 class MainRoutes {
   static Map<String, Widget Function(BuildContext)> routes = {
     '/init': (BuildContext context) => InitPage(
@@ -76,6 +78,7 @@ class MainRoutes {
     '/news_detail': (BuildContext context) => NewsDetailScreen(
           newsDetailCubit: sl<NewsDetailCubit>(),
           newsBlockCubit: sl<NewsBlockCubit>(),
+          newsListCubit: sl<NewsListCubit>(),
         ),
     '/news_comment': (BuildContext context) => NewsCommentScreen(
           newsCommentsCubit: sl<NewsCommentsCubit>(),
@@ -83,6 +86,8 @@ class MainRoutes {
         ),
     '/announcement_detail': (BuildContext context) => AnnouncementsDetailScreen(
           announcementCubit: sl<AnnouncementCubit>(),
+          mainAnnouncementsListCubit: sl<MainAnnouncementsListCubit>(),
+          announcementsListCubit: sl<AnnouncementsListCubit>(),
         ),
     '/404': (BuildContext context) => PageNotFoundScreen(),
     '/event_detail': (BuildContext context) => EventDetailScreen(

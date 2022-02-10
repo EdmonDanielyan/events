@@ -16,7 +16,7 @@ import 'news_list_state.dart';
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/extensions/get_news.dart';
 
-@injectable
+@singleton
 class NewsListCubit extends Cubit<NewsListState> {
   Pagination<NewsItemData> pagination =
       Pagination<NewsItemData>(countOnPage: 5);
@@ -50,6 +50,20 @@ class NewsListCubit extends Cubit<NewsListState> {
   void resetProperties() {
     pagination.clear();
     scrollBottomToLoad.clear();
+  }
+
+  void updateItem(NewsItemData newItem) {
+    if (state.data != null) {
+      List<NewsItemData> items = [];
+      for (final item in state.data!) {
+        if (item.id == newItem.id) {
+          items.add(newItem);
+        } else {
+          items.add(item);
+        }
+      }
+      emitSuccess(items);
+    }
   }
 
   void refresh() {

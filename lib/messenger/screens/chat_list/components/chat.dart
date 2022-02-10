@@ -29,20 +29,22 @@ class ChatListTile extends StatefulWidget {
   final MessageTable? searchMessage;
   final void Function()? onTap;
   final void Function(DismissDirection)? onDismissed;
+  final Future<bool?> Function(DismissDirection)? confirmDismiss;
 
-  const ChatListTile({
-    Key? key,
-    this.highlightValue = "",
-    required this.index,
-    required this.chat,
-    required this.messagesWithUser,
-    required this.chatDatabaseCubit,
-    this.searchMessage,
-    this.contentPadding,
-    this.leadingGap = 15.0,
-    this.onTap,
-    this.onDismissed,
-  }) : super(key: key);
+  const ChatListTile(
+      {Key? key,
+      this.highlightValue = "",
+      required this.index,
+      required this.chat,
+      required this.messagesWithUser,
+      required this.chatDatabaseCubit,
+      this.searchMessage,
+      this.contentPadding,
+      this.leadingGap = 15.0,
+      this.onTap,
+      this.onDismissed,
+      this.confirmDismiss})
+      : super(key: key);
 
   @override
   State<ChatListTile> createState() => _ChatListTileState();
@@ -67,6 +69,7 @@ class _ChatListTileState extends State<ChatListTile> {
         background: const SizedBox(),
         direction: DismissDirection.endToStart,
         secondaryBackground: Icon(Icons.delete, color: Colors.red),
+        confirmDismiss: widget.confirmDismiss,
         resizeDuration: null,
         onDismissed: widget.onDismissed,
         key: UniqueKey(),
@@ -160,12 +163,12 @@ class _ChatListTileState extends State<ChatListTile> {
   Widget _avatarWidget() {
     if (oppositeUserId != null) {
       return BlocBuilder<OnlineBloc, OnlineBlocState>(
-            bloc: messenger.onlineBloc,
-            builder: (context, state) => CustomCircleAvatar(
-              url: widget.chat.avatar,
-              indicator: state.isOnline(oppositeUserId),
-              name: widget.chat.name,
-      ));
+          bloc: messenger.onlineBloc,
+          builder: (context, state) => CustomCircleAvatar(
+                url: widget.chat.avatar,
+                indicator: state.isOnline(oppositeUserId),
+                name: widget.chat.name,
+              ));
     }
 
     return CustomCircleAvatar(

@@ -16,7 +16,7 @@ import 'announcements_list_state.dart';
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/extensions/get_announcements.dart';
 
-@injectable
+@singleton
 class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
   Pagination<AnnouncementData> pagination =
       Pagination<AnnouncementData>(countOnPage: 5);
@@ -41,6 +41,20 @@ class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
     } on Exception catch (_) {
       emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
+    }
+  }
+
+  void updateItem(AnnouncementData newItem) {
+    if (state.data != null) {
+      List<AnnouncementData> items = [];
+      for (final item in state.data!) {
+        if (item.id == newItem.id) {
+          items.add(newItem);
+        } else {
+          items.add(item);
+        }
+      }
+      emitSuccess(items);
     }
   }
 
