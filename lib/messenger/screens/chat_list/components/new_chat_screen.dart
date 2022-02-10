@@ -14,6 +14,8 @@ import 'package:ink_mobile/messenger/screens/chat_list/components/new_chat_perso
 import 'package:ink_mobile/messenger/screens/chat_list/entities/new_chat_screen_params.dart';
 import 'package:ink_mobile/screens/search/components/search_field.dart';
 
+import '../../../../components/custom_circle_avatar.dart';
+
 class NewChatScreen extends StatefulWidget {
   final NewChatScreenParams newChatScreenParams;
   final SelectableCubit<UserTable> selectableCubit;
@@ -73,6 +75,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
         return BlocBuilder(
           bloc: selectableCubit,
           builder: (context, selectableState) {
+            final _users = selectableCubit.state.items;
             return CustomBottomSheetChild(
               constraints: BoxConstraints(
                 minHeight: 250.0,
@@ -97,14 +100,42 @@ class _NewChatScreenState extends State<NewChatScreen> {
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: _horizontalPadding),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       SearchField(
                         hint: _strings.searchHint,
                         onChanged: (val) =>
                             chatPersonListCubit.setSearchValue(val),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
+                      hintText(),
+                      const SizedBox(height: 15),
+                      if (_users.length > 0) ...[
+                        Container(
+                          width: double.infinity,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: List.generate(
+                                _users.length,
+                                (index) {
+                                  return Container(
+                                    margin: const EdgeInsets.all(5.0),
+                                    child: CustomCircleAvatar(
+                                      avatarHeight: 40,
+                                      avatarWidth: 40,
+                                      url: _users[index].avatar,
+                                      name: _users[index].name,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Divider(),
+                      ],
                       Expanded(child: getChildWidget(personCubitState)),
                     ],
                   ),
@@ -125,8 +156,6 @@ class _NewChatScreenState extends State<NewChatScreen> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          hintText(),
-          SizedBox(height: 15),
           Expanded(
             child: ListView.builder(
               shrinkWrap: true,
