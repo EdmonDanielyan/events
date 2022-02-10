@@ -245,7 +245,6 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
                     tbl.sentStatus.equals(MessageSentStatus.SENDING.index)))
             ..orderBy([
               (t) => OrderingTerm(expression: t.sequence, mode: orderingMode),
-              (t) => OrderingTerm(expression: t.timestamp, mode: orderingMode),
             ]))
           .get();
 
