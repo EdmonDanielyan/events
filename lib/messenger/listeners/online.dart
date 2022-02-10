@@ -34,7 +34,7 @@ class UserOnlineListener extends MessageListener {
     if (registry.isListening(channel)) return;
     await natsProvider.subscribeToChannel(channel, onMessage,
         ackWaitSeconds: ACK_WAITS_SECONDS,
-        maxInFlight: 100,
+        // maxInFlight: 100,
         startSequence: Int64.ZERO, startPosition: StartPosition.NewOnly);
     registry.addToListeningChannels(channel);
   }

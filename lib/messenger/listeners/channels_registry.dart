@@ -146,7 +146,7 @@ class ChannelsRegistry with Loggable {
       {pushSubscription = true,
       startSequence = Int64.ZERO,
       startPosition = StartPosition.SequenceStart,
-      maxInFlight = 1024}) async {
+      maxInFlight = MAX_IN_FLIGHTS}) async {
     logger.fine(() => "_subscribeToChannel: $channel, $startSequence");
 
     if (!natsProvider.isConnected) {

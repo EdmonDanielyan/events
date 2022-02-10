@@ -22,6 +22,7 @@ class SendMessage with Loggable {
   MessageTable _generateMessage(
     String chatId,
     String message, {
+    String? id,
     String? repliedMessageId,
     MessageSentStatus status = MessageSentStatus.SENDING,
     StoredMessageType type = StoredMessageType.TEXT,
@@ -31,7 +32,7 @@ class SendMessage with Loggable {
     int? sequence,
   }) {
     return MessageTable(
-      id: generateMessageId,
+      id: id ?? generateMessageId,
       chatId: chatId,
       message: message,
       messageToLower: message.toLowerCase(),
@@ -88,17 +89,14 @@ class SendMessage with Loggable {
     return message.id;
   }
 
-  Future<void> insertMultipleMessages(List<MessageTable> messages) async {
-    await chatDatabaseCubit.db.insertMultipleMessages(messages);
-  }
-
   MessageTable? joinedLeftMessage(
       {required String chatId,
       required String userName,
       required StoredMessageType type,
       required DateTime timestampUtc,
       required int userId,
-      required int sequence}) {
+      required int sequence,
+      String? id}) {
     bool isJoined = type == StoredMessageType.USER_JOINED;
     bool isLeft = type == StoredMessageType.USER_LEFT;
     if (isJoined || isLeft) {
@@ -109,6 +107,7 @@ class SendMessage with Loggable {
       final text = "$userName $action";
 
       return _generateMessage(chatId, text,
+          id: id,
           type: type,
           timestamp: timestampUtc,
           userId: userId,

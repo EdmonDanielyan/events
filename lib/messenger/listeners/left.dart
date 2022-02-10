@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/cases/chat_functions.dart';
 import 'package:ink_mobile/messenger/cases/send_message.dart';
+import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 import 'package:ink_mobile/messenger/listeners/message_listener.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
@@ -13,7 +14,6 @@ import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/sender/chat_saver.dart';
 import 'package:ink_mobile/messenger/sender/invite_sender.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
-import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 
 import '../cases/user_functions.dart';
 import 'channels_registry.dart';
@@ -119,6 +119,7 @@ class ChatLeftListener extends MessageListener {
       List<UserTable> users, ChatTable chat, NatsMessage message) async {
     for (final user in users) {
       final generateMessage = GetIt.I<SendMessage>().joinedLeftMessage(
+          id: message.id,
           chatId: chat.id,
           userName: user.name,
           type: StoredMessageType.USER_LEFT,
