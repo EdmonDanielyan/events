@@ -6,6 +6,7 @@ import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_state.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_state.dart';
+import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/news_detail/components/content.dart';
 import 'package:ink_mobile/screens/news_detail/components/header.dart';
@@ -15,20 +16,26 @@ import '../../../extensions/list_news_item_data.dart';
 class Body extends StatelessWidget {
   final NewsDetailCubit newsDetailCubit;
   final NewsBlockCubit newsBlockCubit;
+  final NewsListCubit newsListCubit;
   const Body(
-      {Key? key, required this.newsDetailCubit, required this.newsBlockCubit})
+      {Key? key,
+      required this.newsDetailCubit,
+      required this.newsBlockCubit,
+      required this.newsListCubit})
       : super(key: key);
 
   Future<void> _onLike(NewsItemData item) async {
-    final newItme = item.isLiked != null && item.isLiked!
+    final newItem = item.isLiked != null && item.isLiked!
         ? item.copyWith(isLiked: false, likeCount: (item.likeCount ?? 1) - 1)
         : item.copyWith(isLiked: true, likeCount: (item.likeCount ?? 0) + 1);
-    newsBlockCubit.updateItem(newItme);
+    newsBlockCubit.updateItem(newItem);
+    newsListCubit.updateItem(newItem);
     await newsDetailCubit.like(item.id ?? 0);
   }
 
   void _updateWatchedCounter(NewsItemData item) {
     newsBlockCubit.updateItem(item);
+    newsListCubit.updateItem(item);
   }
 
   @override

@@ -149,7 +149,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.factoryParam<_i4.AnnouncementsDetailNetworkRequest, int?, dynamic>(
       (announcementId, _) => _i4.AnnouncementsDetailNetworkRequest(
           announcementId: announcementId));
-  gh.factory<_i5.AnnouncementsListCubit>(() => _i5.AnnouncementsListCubit());
+  gh.singleton<_i5.AnnouncementsListCubit>(_i5.AnnouncementsListCubit());
   gh.factoryParam<_i6.AnnouncementsListNetworkRequest,
           _i7.Pagination<_i8.AnnouncementData>?, dynamic>(
       (pagination, _) =>
@@ -196,8 +196,8 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => _i33.LocalNotificationsProvider());
   gh.singleton<_i34.LockApp>(_i34.LockApp());
   gh.lazySingleton<_i35.LogInterceptor>(() => _i35.LogInterceptor());
-  gh.factory<_i36.MainAnnouncementsListCubit>(
-      () => _i36.MainAnnouncementsListCubit());
+  gh.singleton<_i36.MainAnnouncementsListCubit>(
+      _i36.MainAnnouncementsListCubit());
   gh.factory<_i37.MainEventsListCubit>(() => _i37.MainEventsListCubit());
   gh.factory<_i38.MainPageCubit>(() => _i38.MainPageCubit());
   gh.lazySingleton<_i39.Messenger>(() => _i39.Messenger());
@@ -217,7 +217,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       (newsId, _) => _i48.NewsDetailNetworkRequest(newsId: newsId));
   gh.factoryParam<_i49.NewsLikeNetworkRequest, int?, dynamic>(
       (newsId, _) => _i49.NewsLikeNetworkRequest(newsId: newsId));
-  gh.factory<_i50.NewsListCubit>(() => _i50.NewsListCubit());
+  gh.singleton<_i50.NewsListCubit>(_i50.NewsListCubit());
   gh.factoryParam<_i51.NewsListNetworkRequest,
           _i7.Pagination<_i52.NewsItemData>?, String?>(
       (pagination, filter) =>

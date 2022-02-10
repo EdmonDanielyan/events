@@ -2,14 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
+import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/screens/announcements_detail/components/background.dart';
 import 'package:intl/intl.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   final AnnouncementData announcement;
+  final MainAnnouncementsListCubit mainAnnouncementsListCubit;
+  final AnnouncementsListCubit announcementsListCubit;
 
-  Body({Key? key, required this.announcement}) : super(key: key);
+  const Body(
+      {Key? key,
+      required this.announcement,
+      required this.announcementsListCubit,
+      required this.mainAnnouncementsListCubit})
+      : super(key: key);
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  void _updateMainAnnouncementListCubit() {
+    widget.mainAnnouncementsListCubit.updateItem(widget.announcement);
+  }
+
+  void _updateAnnouncementListCubit() {
+    widget.announcementsListCubit.updateItem(widget.announcement);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _updateMainAnnouncementListCubit();
+    _updateAnnouncementListCubit();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +57,8 @@ class Body extends StatelessWidget {
             ),
             Container(
                 child: Text(
-                    announcement.viewCount != null
-                        ? announcement.viewCount.toString()
+                    widget.announcement.viewCount != null
+                        ? widget.announcement.viewCount.toString()
                         : '',
                     style: TextStyle(
                         fontFamily: "Helvetica",
@@ -36,8 +66,9 @@ class Body extends StatelessWidget {
                         color: Colors.grey)),
                 margin: EdgeInsets.only(right: 16.0)),
             Text(
-                announcement.dateCreate != null
-                    ? DateFormat('dd.MM.yyyy').format(announcement.dateCreate!)
+                widget.announcement.dateCreate != null
+                    ? DateFormat('dd.MM.yyyy')
+                        .format(widget.announcement.dateCreate!)
                     : '',
                 style: TextStyle(
                   fontFamily: "Helvetica",
@@ -51,7 +82,7 @@ class Body extends StatelessWidget {
       Container(
           child: Column(children: [
             Text(
-              announcement.title ?? '',
+              widget.announcement.title ?? '',
               style: TextStyle(
                 fontSize: 26.0,
                 height: 1.3,
@@ -68,7 +99,7 @@ class Body extends StatelessWidget {
           margin: EdgeInsets.only(top: 16.0, bottom: 11.0)),
       Container(
           margin: EdgeInsets.symmetric(horizontal: 10),
-          child: Html(data: announcement.detailText ?? ''))
+          child: Html(data: widget.announcement.detailText ?? ''))
     ]));
   }
 }
