@@ -34,6 +34,8 @@ class NewChatScreen extends StatefulWidget {
 }
 
 class _NewChatScreenState extends State<NewChatScreen> {
+  ScrollController _selectedUsersScrollController = ScrollController();
+
   double _avatarSize = 35.0;
   double _titleGap = 15.0;
   double _horizontalPadding = 20.0;
@@ -114,22 +116,27 @@ class _NewChatScreenState extends State<NewChatScreen> {
                       if (_users.length > 0) ...[
                         Container(
                           width: double.infinity,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: List.generate(
-                                _users.length,
-                                (index) {
-                                  return Container(
-                                    margin: const EdgeInsets.all(5.0),
-                                    child: CustomCircleAvatar(
-                                      avatarHeight: 40,
-                                      avatarWidth: 40,
-                                      url: _users[index].avatar,
-                                      name: _users[index].name,
-                                    ),
-                                  );
-                                },
+                          child: Scrollbar(
+                            controller: _selectedUsersScrollController,
+                            isAlwaysShown: true,
+                            child: SingleChildScrollView(
+                              controller: _selectedUsersScrollController,
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: List.generate(
+                                  _users.length,
+                                  (index) {
+                                    return Container(
+                                      margin: const EdgeInsets.all(5.0),
+                                      child: CustomCircleAvatar(
+                                        avatarHeight: 40,
+                                        avatarWidth: 40,
+                                        url: _users[index].avatar,
+                                        name: _users[index].name,
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           ),
