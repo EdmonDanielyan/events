@@ -239,5 +239,6 @@
 	"markMultiple": "can mark multiple",
 	"deleteData": "Delete data",
 	"incorrectPicture": "Incorrect picture",
-	"deleteChatHint": "Are you sure you want to delete this chat?"
+	"deleteChatHint": "Are you sure you want to delete this chat?",
+	"allFiles": "All files"
 }

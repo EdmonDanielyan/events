@@ -13,10 +13,11 @@ class AttachIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => CustomBottomSheet(
-          context: context,
-          child: ChatAttachScreen(
-            onSend: onSend,
-          )),
+        context: context,
+        child: ChatAttachScreen(
+          onSend: onSend,
+        ),
+      ),
       child: Transform.rotate(
         angle: math.pi / -4,
         child: Icon(Icons.attach_file),

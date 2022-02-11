@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/bottom_sheet.dart';
+import 'package:ink_mobile/screens/feedback/components/select_file_dialog.dart';
 import 'package:path/path.dart';
 
 class PickFiles extends StatefulWidget {
@@ -26,19 +28,13 @@ class PickFilesState extends State<PickFiles> {
   final String noFilePicked = "Файл не выбран";
   List<File> pickedFiles = [];
 
-  Future<void> _pickFile() async {
+  Future<void> _pickFile(FileType fileType) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: [
-          "jpg",
-          "jpeg",
-          "png",
-          "doc",
-          "docx",
-          "xls",
-          "xlsx",
-          "pdf"
-        ]);
+      type: fileType,
+      allowedExtensions: fileType == FileType.custom
+          ? ["jpg", "jpeg", "png", "doc", "docx", "xls", "xlsx", "pdf"]
+          : null,
+    );
 
     if (result != null) {
       File file = File(result.files.single.path!);
@@ -111,7 +107,15 @@ class PickFilesState extends State<PickFiles> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: ElevatedButton(
-        onPressed: _pickFile,
+        onPressed: () {
+          CustomBottomSheet(
+            context: context,
+            child: SelectFileDialog(
+              onGallery: () => _pickFile(FileType.media),
+              onFiles: () => _pickFile(FileType.custom),
+            ),
+          );
+        },
         child: Text("Выбрать файл"),
         style: ElevatedButton.styleFrom(
           primary: Theme.of(context).primaryColor,
