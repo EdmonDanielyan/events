@@ -54,7 +54,7 @@ abstract class UrlsConfigDev {
 abstract class UrlsConfigProd {
   @prod
   @Named("natsWssUrl")
-  String get natsWssUrl => "wss://messenger.irkutskoil.ru";
+  String get natsWssUrl => "wss://messenger.irkutskoil.ru:442";
 
   @prod
   @Named("natsCluster")
