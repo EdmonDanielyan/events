@@ -30,6 +30,7 @@ import 'package:ink_mobile/screens/announcements_list/announcements_list_screen.
 import 'package:ink_mobile/screens/app_layer/app_layer_screen.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
 import 'package:ink_mobile/screens/birthdays/birthdays_screen.dart';
+import 'package:ink_mobile/screens/config/config_screen.dart';
 import 'package:ink_mobile/screens/error/404_screen.dart';
 import 'package:ink_mobile/screens/events_detail/events_detail_screen.dart';
 import 'package:ink_mobile/screens/events_list/events_list_screen.dart';
@@ -62,6 +63,10 @@ class MainRoutes {
         ),
     '/app_layer': (BuildContext context) => AppLayerScreen(
           newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
+        ),
+    '/config': (BuildContext context)  => ConfigScreen(
+          packageInfoProvider: sl<PackageInfoProvider>(),
+          env: currentEnv,
         ),
     '/welcome': (BuildContext context) => WelcomeScreen(
           packageInfoProvider: sl<PackageInfoProvider>(),

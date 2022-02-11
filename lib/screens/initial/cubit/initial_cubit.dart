@@ -34,7 +34,11 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
     }
   }
 
-  Future<void> init() async {}
+  Future<void> init() async {
+    await certificateReader.read();
+    await readRefreshToken();
+    await updateToken();
+  }
 
   Future<void> load() async {
     logger.finest('load');
@@ -42,9 +46,7 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
 
     try {
       if (await securityChecker.checkApplication()) {
-        await certificateReader.read();
-        await readRefreshToken();
-        await updateToken();
+        await init();
         await authHandler.authChallenge();
 
         emitState(type: InitialStateType.LOAD_MAIN);

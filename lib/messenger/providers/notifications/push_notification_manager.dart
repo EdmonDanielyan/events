@@ -11,6 +11,8 @@ import 'package:ink_mobile/messenger/providers/notifications/notifications.dart'
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
 
+import '../../../providers/secure_storage.dart';
+
 
 ///
 /// Background isolate for FCM. Usage in [PushNotificationManager.load] to configure FCM plugin

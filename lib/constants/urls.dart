@@ -5,24 +5,24 @@ import 'package:ink_mobile/setup.dart';
 //todo: Разнести константы API и Nats
 
 @module
-abstract class UrlsConfigStaging {
-  @stage
+abstract class UrlsConfigTest {
+  @test
   @Named("natsWssUrl")
   String get natsWssUrl => "wss://messenger.jetrabbits.com";
 
-  @stage
+  @test
   @Named("natsCluster")
   String get natsCluster => "ink";
 
-  @stage
+  @test
   @Named("natsCertificatePath")
   String get natsCertificatePath => "assets/certs/messenger.jetrabbits.com.pem";
 
-  @stage
+  @test
   @Named("apiUrl")
   String get apiUrl => "https://test.ink.vpool.qsoft.ru/api/v1";
 
-  @stage
+  @test
   @Named("apiCertificatePath")
   String get apiCertificatePath => "assets/certs/test.ink.vpool.qsoft.ru.pem";
 }
@@ -31,15 +31,15 @@ abstract class UrlsConfigStaging {
 abstract class UrlsConfigDev {
   @dev
   @Named("natsWssUrl")
-  String get natsWssUrl => "wss://cloud.jetrabbits.com:9191";
+  String get natsWssUrl => "wss://messenger-dev.jetrabbits.com";
 
   @dev
   @Named("natsCluster")
-  String get natsCluster => "test-cluster";
+  String get natsCluster => "ink";
 
   @dev
   @Named("natsCertificatePath")
-  String get natsCertificatePath => "assets/certs/cloud.jetrabbits.com.pem";
+  String get natsCertificatePath => "assets/certs/messenger-dev.jetrabbits.com.pem";
 
   @dev
   @Named("apiUrl")
@@ -58,7 +58,7 @@ abstract class UrlsConfigProd {
 
   @prod
   @Named("natsCluster")
-  String get natsCluster => "test-cluster";
+  String get natsCluster => "ink";
 
   @prod
   @Named("natsCertificatePath")
@@ -74,24 +74,24 @@ abstract class UrlsConfigProd {
 }
 
 @module
-abstract class UrlsConfigTest {
-  @test
+abstract class UrlsConfigUnitTest {
+  @unitTest
   @Named("natsWssUrl")
   String get natsWssUrl => "tcp://cloud.jetrabbits.com:7070";
 
-  @test
+  @unitTest
   @Named("natsCluster")
   String get natsCluster => kReleaseMode ? "test-cluster" : "test-cluster";
 
-  @test
+  @unitTest
   @Named("natsCertificatePath")
   String get natsCertificatePath => "./assets/certs/cloud.jetrabbits.com.pem";
 
-  @test
+  @unitTest
   @Named("apiUrl")
   String get apiUrl => "https://mobile.ink.vpool.qsoft.ru/api/v1";
 
-  @test
+  @unitTest
   @Named("apiCertificatePath")
   String get apiCertificatePath => "assets/certs/mobile.ink.vpool.qsoft.ru.pem";
 }

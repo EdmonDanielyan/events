@@ -1,8 +1,9 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
-import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
+
+import '../../../providers/secure_storage.dart';
 
 ///
 /// Wrapper for Local Notification

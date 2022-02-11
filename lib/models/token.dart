@@ -1,6 +1,5 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
@@ -14,6 +13,7 @@ import 'package:main_api_client/api/auth_api.dart';
 import 'package:main_api_client/model/refresh_token_params.dart';
 import 'package:uuid/uuid.dart';
 
+import '../providers/secure_storage.dart';
 import 'jwt_payload.dart';
 
 abstract class Token {
@@ -161,27 +161,6 @@ abstract class Token {
 
   static setLocalDbToken(String dbLocalToken) async {
     await Token._setTokenByType(TokenTypes.localDbToken, dbLocalToken);
-  }
-}
-
-@lazySingleton
-class SecureStorage {
-  final FlutterSecureStorage _prefs = FlutterSecureStorage();
-
-  Future<String?> read(String key) async {
-    return _prefs.read(key: key);
-  }
-
-  Future<void> deleteAll() {
-    return _prefs.deleteAll();
-  }
-
-  Future<void> write({required String key, required String value}) {
-    return _prefs.write(key: key, value: value);
-  }
-
-  Future<bool> containsKey(String key) {
-    return _prefs.containsKey(key: key);
   }
 }
 

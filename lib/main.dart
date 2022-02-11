@@ -20,7 +20,8 @@ import 'package:logging/logging.dart';
 
 void main() async {
   runZonedGuarded(() async {
-    await setup();
+    WidgetsFlutterBinding.ensureInitialized();
+    await setup(scope: await readEnv());
     runApp(InkMobile());
   }, (Object error, StackTrace stack) {
     if (error is CustomException) {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:encrypted_moor/encrypted_moor.dart';
 import 'package:injectable/injectable.dart';
@@ -12,6 +13,7 @@ import 'package:ink_mobile/messenger/models/chat/database/schema/participant_tab
 import 'package:ink_mobile/messenger/models/chat/database/schema/user_table_schema.dart';
 import 'package:ink_mobile/models/debouncer.dart';
 import 'package:moor/moor.dart';
+import 'package:sqflite_sqlcipher/sqflite.dart';
 
 import 'model/chat_with_message.dart';
 import 'model/participant_with_user.dart';
@@ -452,6 +454,15 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
       for (final table in allTables) {
         await delete(table).go();
       }
+    });
+  }
+
+  Future<void> deleteDatabaseFiles() async {
+    String path = await getDatabasesPath();
+    final regExp = RegExp(r'.*[.]sqlite');
+    Directory(path).list().where((file) => regExp.hasMatch(file.path)).forEach((file) {
+      logger.finest("Delete file: ${file.path}");
+      file.deleteSync();
     });
   }
 

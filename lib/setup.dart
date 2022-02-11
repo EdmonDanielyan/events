@@ -7,6 +7,7 @@ import 'package:ink_mobile/cubit/boot/boot_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/providers/notifications/notifications.dart';
 import 'package:ink_mobile/providers/package_info.dart';
+import 'package:ink_mobile/providers/secure_storage.dart';
 import 'package:logging/logging.dart';
 
 import 'messenger/providers/messenger.dart';
@@ -14,10 +15,23 @@ import 'messenger/providers/notifications/push_notification_manager.dart';
 import 'setup.config.dart';
 
 final sl = GetIt.instance;
+
+const unitTest = Environment("unitTest");
 //todo: Раскомментировать на релизе
 // const defaultScope = Environment.prod;
-const stage = Environment("stage");
-const defaultScope = "stage";
+const defaultScope = Environment.test;
+
+late String currentEnv;
+
+Future<String> readEnv() async {
+  currentEnv = await SecureStorage().read("environment") ?? defaultScope;
+  return currentEnv;
+}
+
+void writeEnv(String value) async {
+  SecureStorage().write(key: "environment", value: value);
+  currentEnv = value;
+}
 
 @InjectableInit(
   initializerName: r'$initGetIt', // default
@@ -28,7 +42,6 @@ Future<void> setup({
   scope = defaultScope,
 }) async {
   await sl.reset();
-  WidgetsFlutterBinding.ensureInitialized();
   await $initGetIt(sl, environment: scope);
   setupI18n(sl);
 

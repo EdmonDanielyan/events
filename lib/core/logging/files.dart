@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 @module
 abstract class LogFilePathInjector {
   @preResolve
-  @stage
+  @test
   @prod
   @dev
   @Named('logFile')
@@ -14,7 +14,7 @@ abstract class LogFilePathInjector {
 
 @module
 abstract class TestLogFilePathInjector {
-  @test
+  @unitTest
   @Named('logFile')
   String get logFile => 'application.log';
 }

@@ -17,6 +17,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  int tapCount = 0;
   @override
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
@@ -30,10 +31,21 @@ class _BodyState extends State<Body> {
             width: size.width * 0.60,
             child: Column(
               children: [
-                SvgPicture.asset(
-                  'assets/images/logo.svg',
-                  semanticsLabel: 'INK Logo',
-                  height: size.height * 0.15,
+                GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      tapCount++;
+                      if (tapCount > 5) {
+                        tapCount = 0;
+                        Navigator.of(context).pushNamed("/config");
+                      }
+                    });
+                  },
+                  child: SvgPicture.asset(
+                    'assets/images/logo.svg',
+                    semanticsLabel: 'INK Logo',
+                    height: size.height * 0.15,
+                  ),
                 ),
                 Text(
                   _strings.welcomeTxt,
