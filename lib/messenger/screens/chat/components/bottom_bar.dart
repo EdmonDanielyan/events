@@ -44,13 +44,14 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   ChatTable? get getChat => widget.chatDatabaseCubit.selectedChat;
 
   Future<void> onSend() async {
-    if (entities.text.isNotEmpty && getChat != null) {
+    final currentChat = getChat?.copyWith();
+    if (entities.text.isNotEmpty && currentChat != null) {
       final saveEntities = entities.copyWith();
       clearForm();
       final sendMessage = sl<SendMessage>();
-      final message = await sendMessage.save(getChat!, saveEntities);
+      final message = await sendMessage.save(currentChat, saveEntities);
       if (sl<Messenger>().isConnected) {
-        await sl<Messenger>().textSender.sendMessage(getChat!, message);
+        await sl<Messenger>().textSender.sendMessage(currentChat, message);
       }
 
       widget.chatCubit.clean();

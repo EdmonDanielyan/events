@@ -114,7 +114,7 @@ class TextMessageListener extends MessageListener {
             final openedChat = chatDatabaseCubit.getSelectedChatId;
 
             if (openedChat != chat.id) {
-              OpenChat(sl(), chat)();
+              OpenChat(sl(), chat, goToFirstScreen: true)();
             }
           },
         );
