@@ -129,8 +129,16 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
       (delete(chatTableSchema)..where((tbl) => tbl.id.equals(id))).go();
 
   //MESSAGES
-  Stream<List<MessageTable>> watchAllMessages() =>
-      (select(messageTableSchema)).watch();
+  Stream<List<MessageTable>> watchAllMessages() {
+    Debouncer _debouncer = Debouncer(milliseconds: 300);
+    return (select(messageTableSchema))
+        .watch()
+        .transform(StreamTransformer.fromHandlers(handleData: (data, sink) {
+      _debouncer.run(() {
+        sink.add(data);
+      });
+    }));
+  }
 
   Future<List<MessageTable>> getAllMessagesBySort() =>
       (select(messageTableSchema)
@@ -248,8 +256,13 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
             ]))
           .get();
 
-  Stream<List<MessageWithUser>> watchChatMessages(String chatId,
-      {OrderingMode orderMode = OrderingMode.asc, int? limit}) {
+  Stream<List<MessageWithUser>> watchChatMessages(
+    String chatId, {
+    OrderingMode orderMode = OrderingMode.asc,
+    int? limit,
+    void Function(List<MessageWithUser>, EventSink<List<MessageWithUser>>)?
+        handleData,
+  }) {
     final sel = (select(messageTableSchema)
           ..where((tbl) => tbl.chatId.equals(chatId)))
         .join([
@@ -274,11 +287,17 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           user: row.readTableOrNull(userTableSchema),
         );
       }).toList();
-    }).transform(StreamTransformer.fromHandlers(handleData: (data, sink) {
-      _debouncer.run(() {
-        sink.add(data);
-      });
-    }));
+    }).transform(
+      StreamTransformer.fromHandlers(
+        handleData: handleData != null
+            ? handleData
+            : (data, sink) {
+                _debouncer.run(() {
+                  sink.add(data);
+                });
+              },
+      ),
+    );
   }
 
   Stream<List<MessageWithUser>> watchChatFilesMessages(String chatId) {

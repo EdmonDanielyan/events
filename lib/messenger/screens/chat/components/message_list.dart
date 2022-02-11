@@ -15,6 +15,8 @@ import 'package:ink_mobile/messenger/screens/chat/components/message_card.dart';
 import 'package:ink_mobile/messenger/screens/chat/entities/chat_screen_params.dart';
 import 'package:ink_mobile/messenger/screens/chat/entities/paddings.dart';
 import 'package:ink_mobile/messenger/utils/date_sort.dart';
+import 'package:ink_mobile/models/debouncer.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:moor/moor.dart' show OrderingMode;
 
 import 'message_card_text.dart';
@@ -47,9 +49,24 @@ class MessageList extends StatefulWidget {
 class _MessageListState extends State<MessageList> with MessageMixins {
   ScrollController get scrollController => widget.scrollController;
 
+  Debouncer _streamDebouncer = Debouncer(milliseconds: 300);
+
   final int _fixedLimit = 20;
 
   late int _limit;
+
+  void _handleData(
+    List<MessageWithUser> data,
+    EventSink<List<MessageWithUser>> sink,
+  ) {
+    if (data.isNotEmpty && data.first.message?.userId == JwtPayload.myId) {
+      sink.add(data);
+    } else {
+      _streamDebouncer.run(() {
+        sink.add(data);
+      });
+    }
+  }
 
   Stream<List<MessageWithUser>> getStream(int limit) {
     final selectedChat = widget.messenger.chatDatabaseCubit.selectedChat;
@@ -59,8 +76,8 @@ class _MessageListState extends State<MessageList> with MessageMixins {
           .watchChatFilesMessages(chatId);
     }
 
-    return widget.messenger.chatDatabaseCubit.db
-        .watchChatMessages(chatId, orderMode: OrderingMode.desc, limit: limit);
+    return widget.messenger.chatDatabaseCubit.db.watchChatMessages(chatId,
+        orderMode: OrderingMode.desc, limit: limit, handleData: _handleData);
   }
 
   void _messagesLoaded() {

@@ -7,8 +7,10 @@ import 'package:ink_mobile/messenger/screens/chat/entities/chat_screen_params.da
 class OpenChat {
   final ChatTable chatTable;
   final ChatDatabaseCubit chatDatabaseCubit;
+  final bool goToFirstScreen;
 
-  OpenChat(this.chatDatabaseCubit, this.chatTable);
+  OpenChat(this.chatDatabaseCubit, this.chatTable,
+      {this.goToFirstScreen = false});
 
   Future<void> call({ChatScreenParams? chatScreenParams}) async {
     final currentSelectedChat = chatDatabaseCubit.selectedChat;
@@ -17,6 +19,10 @@ class OpenChat {
     final params = chatScreenParams ?? ChatScreenParams();
     BuildContext? context = App.getContext;
     if (context != null) {
+      if (goToFirstScreen) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      }
+
       await Navigator.of(context).pushNamed(
         "/message",
         arguments: params,
