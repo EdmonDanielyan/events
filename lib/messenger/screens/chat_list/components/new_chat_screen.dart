@@ -118,24 +118,29 @@ class _NewChatScreenState extends State<NewChatScreen> {
                           width: double.infinity,
                           child: Scrollbar(
                             controller: _selectedUsersScrollController,
+                            scrollbarOrientation: ScrollbarOrientation.top,
                             isAlwaysShown: true,
                             child: SingleChildScrollView(
                               controller: _selectedUsersScrollController,
                               scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: List.generate(
-                                  _users.length,
-                                  (index) {
-                                    return Container(
-                                      margin: const EdgeInsets.all(5.0),
-                                      child: CustomCircleAvatar(
-                                        avatarHeight: 40,
-                                        avatarWidth: 40,
-                                        url: _users[index].avatar,
-                                        name: _users[index].name,
-                                      ),
-                                    );
-                                  },
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10.0),
+                                child: Row(
+                                  children: List.generate(
+                                    _users.length,
+                                    (index) {
+                                      return Container(
+                                        margin: const EdgeInsets.all(5.0),
+                                        child: CustomCircleAvatar(
+                                          avatarHeight: 40,
+                                          avatarWidth: 40,
+                                          url: _users[index].avatar,
+                                          name: _users[index].name,
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
