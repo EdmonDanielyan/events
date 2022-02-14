@@ -60,7 +60,9 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
         .watch();
   }
 
-  Stream<List<ChatTable>> watchAllChats() {
+  Stream<List<ChatTable>> watchAllChats(
+      {void Function(List<ChatTable>, EventSink<List<ChatTable>>)?
+          handleData}) {
     final _debouncer = Debouncer(milliseconds: 100);
     return (select(chatTableSchema)
           ..orderBy([
@@ -69,9 +71,13 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           ]))
         .watch()
         .transform(StreamTransformer.fromHandlers(handleData: (data, sink) {
-      _debouncer.run(() {
-        sink.add(data);
-      });
+      if (handleData != null) {
+        handleData(data, sink);
+      } else {
+        _debouncer.run(() {
+          sink.add(data);
+        });
+      }
     }));
   }
 

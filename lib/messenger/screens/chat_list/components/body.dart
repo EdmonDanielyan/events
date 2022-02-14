@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/loader/error_loading_widget.dart';
@@ -53,6 +55,14 @@ class _BodyState extends State<Body> {
 
   Widget? _buildChats;
 
+  Debouncer _streamDebouncer = Debouncer(milliseconds: 0);
+
+  void _handleStream(List<ChatTable> data, EventSink<List<ChatTable>> sink) {
+    _streamDebouncer.run(() {
+      sink.add(data);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     _chatDatabaseCubit = ChatListScreen.of(context).chatDatabaseCubit;
@@ -76,12 +86,13 @@ class _BodyState extends State<Body> {
                   bloc: _chatDatabaseCubit,
                   builder: (_context, state) {
                     return StreamBuilder(
-                      stream: state.db.watchAllChats(),
+                      stream: state.db.watchAllChats(handleData: _handleStream),
                       builder:
                           (context, AsyncSnapshot<List<ChatTable>> snapshot) {
                         if (snapshot.hasData) {
                           final items = snapshot.data ?? [];
                           if (items.isNotEmpty) {
+                            _streamDebouncer = Debouncer(milliseconds: 300);
                             _chatListCubit.emitChats(items);
 
                             _debouncer.run(() {
