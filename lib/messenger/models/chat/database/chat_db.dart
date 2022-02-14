@@ -99,6 +99,20 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
         logger.severe("Sql migration error. Please, reinstall the app.", _e);
       });
 
+  Future<void> updateFieldsOfChatById({
+    required String id,
+    required String name,
+    required String description,
+    required String avatarUrl,
+  }) async {
+    (update(chatTableSchema)..where((tbl) => tbl.id.equals(id))).write(
+      ChatTableSchemaCompanion(
+          name: Value(name),
+          description: Value(description),
+          avatar: Value(avatarUrl)),
+    );
+  }
+
   Future deleteChat(ChatTable chat) => delete(chatTableSchema).delete(chat);
 
   Future deleteChatById(String id) =>

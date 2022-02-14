@@ -14,7 +14,7 @@ import 'package:moor/moor.dart';
 import '../../../../components/alert/alert_cancel.dart';
 import 'chat.dart';
 
-class BuildChatItems extends StatelessWidget {
+class BuildChatItems extends StatefulWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
   final SearchChatCubit searchChatCubit;
   final EdgeInsetsGeometry? contentPadding;
@@ -30,9 +30,14 @@ class BuildChatItems extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<BuildChatItems> createState() => _BuildChatItemsState();
+}
+
+class _BuildChatItemsState extends State<BuildChatItems> {
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<SearchChatCubit, SearchChatState>(
-      bloc: searchChatCubit,
+      bloc: widget.searchChatCubit,
       builder: (context, state) {
         List<ChatTable> chats = state.searchChats;
 
@@ -41,7 +46,8 @@ class BuildChatItems extends StatelessWidget {
           shrinkWrap: true,
           controller: ScrollController(keepScrollOffset: false),
           itemBuilder: (_, index) => StreamBuilder(
-            stream: chatDatabaseCubit.db.watchChatMessages(chats[index].id,
+            stream: widget.chatDatabaseCubit.db.watchChatMessages(
+                chats[index].id,
                 orderMode: OrderingMode.asc),
             builder: (context, AsyncSnapshot<List<MessageWithUser>?> snapshot) {
               if (snapshot.hasData) {
@@ -54,8 +60,8 @@ class BuildChatItems extends StatelessWidget {
 
                 MessageTable? searchMessage;
 
-                if (searchChatCubit.searchMessage != null) {
-                  searchChatCubit.searchMessage!.forEach((element) {
+                if (widget.searchChatCubit.searchMessage != null) {
+                  widget.searchChatCubit.searchMessage!.forEach((element) {
                     if (element.chatId == chats[index].id) {
                       searchMessage = element;
                     }
@@ -64,9 +70,9 @@ class BuildChatItems extends StatelessWidget {
 
                 return ChatListTile(
                   onTap: () {
-                    OpenChat(chatDatabaseCubit, chats[index]).call();
-                    searchChatCubit.setSearchValue("");
-                    searchController.text = "";
+                    OpenChat(widget.chatDatabaseCubit, chats[index]).call();
+                    widget.searchChatCubit.setSearchValue("");
+                    widget.searchController.text = "";
                     TextFieldUtils.loseTextFieldFocus();
                   },
                   //onDismissed: (dismissed) => deleteChat(chats[index], context),
@@ -76,7 +82,8 @@ class BuildChatItems extends StatelessWidget {
                       title: localizationInstance.delete,
                       body: localizationInstance.deleteChatHint,
                       onSubmit: () async {
-                        final deleted = await deleteChat(chats[index], context);
+                        final deleted =
+                            await widget.deleteChat(chats[index], context);
                         if (deleted) {
                           Navigator.of(context).pop();
                         }
@@ -88,9 +95,9 @@ class BuildChatItems extends StatelessWidget {
                   highlightValue: state.searchValue,
                   index: index,
                   chat: chats[index],
-                  contentPadding: contentPadding,
+                  contentPadding: widget.contentPadding,
                   searchMessage: searchMessage,
-                  chatDatabaseCubit: chatDatabaseCubit,
+                  chatDatabaseCubit: widget.chatDatabaseCubit,
                   messagesWithUser: messagesWithUser,
                 );
               }

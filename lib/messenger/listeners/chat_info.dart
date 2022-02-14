@@ -31,9 +31,23 @@ class ChatInfoListener extends MessageListener {
 
     try {
       final mapPayload = message.payload! as JsonPayload;
-      ChatInfoUpdatePayload data = ChatInfoUpdatePayload.fromJson(mapPayload.json);
+      ChatInfoUpdatePayload data =
+          ChatInfoUpdatePayload.fromJson(mapPayload.json);
       var chat = data.chat.toChatTable();
-      chatDatabaseCubit.db.updateChatById(chat.id, chat);
+
+      logger.finest('''
+
+      UPDATING CHAT INFO
+      NATS MESSAGE SEQUENCE ${message.sequence}
+      CHAT INFO $chat
+
+      ''');
+      chatDatabaseCubit.db.updateFieldsOfChatById(
+        id: chat.id,
+        name: chat.name,
+        description: chat.description,
+        avatarUrl: chat.avatar,
+      );
     } on NoSuchMethodError {
       return;
     }
