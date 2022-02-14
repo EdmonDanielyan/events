@@ -105,6 +105,15 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
         logger.severe("Sql migration error. Please, reinstall the app.", _e);
       });
 
+  Future updateChatTime(String chatId, DateTime date) =>
+      (update(chatTableSchema)..where((tbl) => tbl.id.equals(chatId)))
+          .write(
+        ChatTableSchemaCompanion(updatedAt: Value(date)),
+      )
+          .catchError((_e) {
+        logger.severe("Sql migration error. Please, reinstall the app.", _e);
+      });
+
   Future<void> updateFieldsOfChatById({
     required String id,
     required String name,
@@ -149,6 +158,17 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   Future<MessageTable?> selectMessageById(String id) =>
       (select(messageTableSchema)..where((tbl) => tbl.id.equals(id)))
           .getSingleOrNull();
+  Future<List<MessageTable>?> getLastMessages(String chatId, int limit) =>
+      (select(messageTableSchema)
+            ..where(
+              (tbl) => tbl.chatId.equals(chatId),
+            )
+            ..orderBy([
+              (t) =>
+                  OrderingTerm(expression: t.sequence, mode: OrderingMode.desc),
+            ])
+            ..limit(limit))
+          .get();
 
   Future<MessageTable?> selectMessageByChatIdInOrder(
           String id, OrderingMode orderingMode) =>

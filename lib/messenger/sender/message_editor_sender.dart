@@ -27,7 +27,8 @@ class MessageEditorSender {
     bool result = true;
     if (makeRequest) {
       final chatId = messages.last.chatId;
-      var chat = await chatFunctions.chatDatabaseCubit.db.selectChatById(chatId);
+      var chat =
+          await chatFunctions.chatDatabaseCubit.db.selectChatById(chatId);
       var sent = false;
       if (chat != null) {
         sent = await natsProvider.sendSystemMessageToChannel(
@@ -39,11 +40,10 @@ class MessageEditorSender {
             edited: edited,
           ).toMap(),
         );
-
       }
       if (!edited) {
         if (sent) {
-          chatFunctions.deleteMessages(messages);
+          chatFunctions.deleteMessages(messages, setPrevious: true);
         } else {
           SimpleCustomSnackbar(
             context: context,
@@ -53,7 +53,7 @@ class MessageEditorSender {
         }
       }
     } else {
-      await chatFunctions.deleteMessages(messages);
+      await chatFunctions.deleteMessages(messages, setPrevious: true);
     }
 
     return result;

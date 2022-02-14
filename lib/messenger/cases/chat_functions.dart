@@ -31,11 +31,27 @@ class ChatFunctions {
     }
   }
 
-  Future<void> deleteMessages(List<MessageTable> messages) async {
+  Future<void> setPreviousMsgToFirst(String chatId) async {
+    final messages = await chatDatabaseCubit.db.getLastMessages(chatId, 1);
+
+    if (messages != null &&
+        messages.isNotEmpty &&
+        messages.first.timestamp != null) {
+      await chatDatabaseCubit.db
+          .updateChatTime(chatId, messages.first.timestamp!);
+    }
+  }
+
+  Future<void> deleteMessages(List<MessageTable> messages,
+      {bool setPrevious = false}) async {
     if (messages.isNotEmpty) {
       for (final message in messages) {
         if (await chatDatabaseCubit.db.selectMessageById(message.id) != null) {
-          chatDatabaseCubit.db.deleteMessageById(message.id);
+          await chatDatabaseCubit.db.deleteMessageById(message.id);
+
+          if (setPrevious) {
+            setPreviousMsgToFirst(message.chatId);
+          }
         }
       }
     }

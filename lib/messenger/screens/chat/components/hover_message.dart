@@ -14,7 +14,6 @@ import 'package:ink_mobile/messenger/models/select_menu.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/messenger/screens/chat/entities/chat_screen_params.dart';
 import 'package:ink_mobile/setup.dart';
-
 import '../chat_screen.dart';
 
 class HoverMessage extends StatelessWidget {
@@ -39,10 +38,12 @@ class HoverMessage extends StatelessWidget {
 
   MessageTable get message => messageWithUser.message!;
 
-  void _onDelete(BuildContext context) {
+  Future<void> _onDelete(
+    BuildContext context,
+  ) async {
     if (sl<Messenger>().isConnected) {
-      sl<Messenger>()
-          .messageEditorSender
+      final messenger = sl<Messenger>();
+      await messenger.messageEditorSender
           .sendDeleteMessages([message], context);
     }
   }

@@ -56,7 +56,7 @@ class MessageDeletedListener extends MessageListener {
           }
           chatFunctions.editMessages(myMessages);
         } else {
-          chatFunctions.deleteMessages(myMessages);
+          chatFunctions.deleteMessages(myMessages, setPrevious: true);
         }
       }
     } on NoSuchMethodError {
