@@ -7,7 +7,6 @@ import 'package:ink_mobile/messenger/models/chat/nats/payloads/chat_payload.dart
 import 'package:ink_mobile/messenger/models/chat/nats/payloads/left_joined.dart';
 import 'package:ink_mobile/messenger/models/chat/nats/payloads/user_payload.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
-import 'package:ink_mobile/models/jwt_payload.dart';
 
 import '../cases/user_functions.dart';
 import 'chat_saver.dart';

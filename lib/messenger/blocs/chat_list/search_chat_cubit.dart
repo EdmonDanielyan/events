@@ -4,15 +4,48 @@ import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat_list/search_chat_state.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat_list_view.dart';
+import 'package:collection/collection.dart';
+import 'package:ink_mobile/messenger/models/chat_with_message.dart';
+import 'package:ink_mobile/messenger/providers/messenger.dart';
 
 @injectable
 class SearchChatCubit extends Cubit<SearchChatState> {
   SearchChatCubit() : super(SearchChatState(chats: [], searchChats: []));
 
   Set<MessageTable>? searchMessage;
+  Set<ChatWithMessage>? _chatWithMessageList;
 
-  Future<void> emitChats(List<ChatTable> chats, {bool sort = true}) async {
+  void addChatWithMessage(ChatTable chat, MessageTable message) {
+    if (_chatWithMessageList != null) {
+      _chatWithMessageList!
+          .removeWhere((element) => element.chat.id == chat.id);
+      _chatWithMessageList!.add(ChatWithMessage(chat: chat, message: message));
+    }
+  }
+
+  Future<void> _setChatWithMessages(
+      List<ChatTable> chats, Messenger messenger) async {
+    for (final chat in chats) {
+      final msg = await messenger.chatDatabaseCubit.db
+          .selectMessageByChatIdInSeqOrder(chat.id);
+
+      if (msg != null && msg.timestamp != null) {
+        if (chat.updatedAt.isBefore(msg.timestamp!)) {
+          await messenger.chatFunctions
+              .setChatToFirst(chat, updatedAt: msg.timestamp);
+        }
+        addChatWithMessage(chat, msg);
+      }
+    }
+  }
+
+  Future<void> emitChats(List<ChatTable> chats,
+      {bool sort = true, Messenger? messenger}) async {
     if (sort) {
+      if (_chatWithMessageList == null && messenger != null) {
+        _chatWithMessageList = {};
+        await _setChatWithMessages(chats, messenger);
+      }
       chats.sort((a, b) {
         DateTime compareA = a.updatedAt;
         DateTime compareB = b.updatedAt;

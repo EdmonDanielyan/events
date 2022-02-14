@@ -170,8 +170,6 @@ class ChatListListener extends MessageListener {
     final List<ChatTable> chatsToInsert = [];
 
     for (final chat in chats) {
-      print("CHAT LIST");
-      print("${chat.name} - ${chat.updatedAt}");
       _getChatIds.add(chat.id);
       chatsToInsert.add(chat);
       var channel = chat.channel;

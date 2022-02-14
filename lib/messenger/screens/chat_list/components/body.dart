@@ -93,7 +93,8 @@ class _BodyState extends State<Body> {
                           final items = snapshot.data ?? [];
                           if (items.isNotEmpty) {
                             _streamDebouncer = Debouncer(milliseconds: 300);
-                            _chatListCubit.emitChats(items);
+                            _chatListCubit.emitChats(items,
+                                messenger: messenger);
 
                             _debouncer.run(() {
                               _buildChats = _chatsBuilder();

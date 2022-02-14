@@ -1,13 +1,25 @@
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 
 class ChatWithMessage {
-  final ChatTable? chat;
+  final ChatTable chat;
   final MessageTable? message;
-
-  const ChatWithMessage({
+  ChatWithMessage({
     required this.chat,
-    required this.message,
+    this.message,
   });
+
+  ChatWithMessage copyWith({
+    ChatTable? chat,
+    MessageTable? message,
+  }) {
+    return ChatWithMessage(
+      chat: chat ?? this.chat,
+      message: message ?? this.message,
+    );
+  }
+
+  @override
+  String toString() => 'ChatWithMessage(chat: $chat, message: $message)';
 
   @override
   bool operator ==(Object other) {

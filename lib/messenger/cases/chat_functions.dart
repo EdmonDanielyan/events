@@ -12,14 +12,14 @@ class ChatFunctions {
 
   const ChatFunctions(this.chatDatabaseCubit, this.messenger);
 
-  void setChatToFirst(ChatTable chat, {DateTime? updatedAt}) {
-    DateTime update = updatedAt ?? updatedAt ?? DateTime.now();
+  Future<void> setChatToFirst(ChatTable chat, {DateTime? updatedAt}) async {
+    DateTime update = updatedAt ?? DateTime.now();
 
     if (chat.updatedAt.isAfter(update)) {
       return;
     }
 
-    chatDatabaseCubit.db.updateChatById(
+    await chatDatabaseCubit.db.updateChatById(
       chat.id,
       chat.copyWith(updatedAt: update),
     );
