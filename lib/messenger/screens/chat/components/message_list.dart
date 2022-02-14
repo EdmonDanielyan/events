@@ -49,7 +49,7 @@ class MessageList extends StatefulWidget {
 class _MessageListState extends State<MessageList> with MessageMixins {
   ScrollController get scrollController => widget.scrollController;
 
-  Debouncer _streamDebouncer = Debouncer(milliseconds: 300);
+  Debouncer _streamDebouncer = Debouncer(milliseconds: 0);
 
   final int _fixedLimit = 20;
 
@@ -81,6 +81,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
   }
 
   void _messagesLoaded() {
+    _streamDebouncer = Debouncer(milliseconds: 300);
     if (widget.messagesLoaded != null) {
       widget.messagesLoaded!();
     }

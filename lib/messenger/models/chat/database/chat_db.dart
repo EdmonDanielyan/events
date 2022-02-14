@@ -61,7 +61,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   }
 
   Stream<List<ChatTable>> watchAllChats() {
-    final _debouncer = Debouncer(milliseconds: 300);
+    final _debouncer = Debouncer(milliseconds: 100);
     return (select(chatTableSchema)
           ..orderBy([
             (t) =>
