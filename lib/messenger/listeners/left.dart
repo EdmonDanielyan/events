@@ -57,7 +57,7 @@ class ChatLeftListener extends MessageListener {
 
       if (users.isNotEmpty && chat != null) {
         if (chat.isGroup()) {
-          await setMessage(users, chat, message);
+          await setMessage(users, chat, message, payload.initiatorId);
         }
         final me = await _deleteIfItsMe(users, chat, senderId);
 
@@ -115,11 +115,12 @@ class ChatLeftListener extends MessageListener {
     return false;
   }
 
-  Future<void> setMessage(
-      List<UserTable> users, ChatTable chat, NatsMessage message) async {
+  Future<void> setMessage(List<UserTable> users, ChatTable chat,
+      NatsMessage message, int initiatorId) async {
     for (final user in users) {
       final generateMessage = GetIt.I<SendMessage>().joinedLeftMessage(
           id: "${message.id}_${user.id}",
+          initiatorId: initiatorId,
           chatId: chat.id,
           userName: user.name,
           type: StoredMessageType.USER_LEFT,

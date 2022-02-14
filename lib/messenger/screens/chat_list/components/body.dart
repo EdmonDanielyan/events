@@ -12,6 +12,7 @@ import 'package:ink_mobile/messenger/screens/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/build_items.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/search_bar.dart';
 import 'package:ink_mobile/models/debouncer.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 
 import '../../../../setup.dart';
 
@@ -36,7 +37,10 @@ class _BodyState extends State<Body> {
       if (chat.isGroup()) {
         messenger.chatFunctions.deleteAllChatMessages(chat.id);
         messenger.chatFunctions.deleteChat(chat.id);
-        messenger.chatEventsSender.sendLeftMessage(chat);
+        messenger.chatEventsSender.sendLeftMessage(
+          chat,
+          initiatorId: JwtPayload.myId,
+        );
       } else {
         messenger.chatFunctions.clearSingleChat(chat);
       }

@@ -1,4 +1,4 @@
-
+import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'user_payload.dart';
@@ -9,11 +9,14 @@ part 'left_joined.g.dart';
 class LeftJoinedPayload {
   final String chatId;
   final List<UserPayload> users;
+  final int initiatorId;
 
   LeftJoinedPayload({
     required this.chatId,
     required this.users,
+    required this.initiatorId,
   });
-  factory LeftJoinedPayload.fromJson(Map<String, dynamic> json) => _$LeftJoinedPayloadFromJson(json);
+  factory LeftJoinedPayload.fromJson(Map<String, dynamic> json) =>
+      _$LeftJoinedPayloadFromJson(json);
   Map<String, dynamic> toJson() => _$LeftJoinedPayloadToJson(this);
 }

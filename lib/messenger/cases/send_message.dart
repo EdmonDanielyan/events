@@ -90,7 +90,8 @@ class SendMessage with Loggable {
   }
 
   MessageTable? joinedLeftMessage(
-      {required String chatId,
+      {required int initiatorId,
+      required String chatId,
       required String userName,
       required StoredMessageType type,
       required DateTime timestampUtc,
@@ -100,9 +101,12 @@ class SendMessage with Loggable {
     bool isJoined = type == StoredMessageType.USER_JOINED;
     bool isLeft = type == StoredMessageType.USER_LEFT;
     if (isJoined || isLeft) {
-      String action = isJoined
-          ? localizationInstance.joinedChat
-          : localizationInstance.leftChat;
+      final string = localizationInstance;
+      String action = isJoined ? string.joinedChat : string.leftChat;
+
+      if (initiatorId != userId && isLeft) {
+        action = string.removedByAdmin;
+      }
 
       final text = "$userName $action";
 

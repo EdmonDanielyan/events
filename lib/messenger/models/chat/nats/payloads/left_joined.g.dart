@@ -12,10 +12,12 @@ LeftJoinedPayload _$LeftJoinedPayloadFromJson(Map<String, dynamic> json) =>
       users: (json['users'] as List<dynamic>)
           .map((e) => UserPayload.fromJson(e as Map<String, dynamic>))
           .toList(),
+      initiatorId: json['initiator_id'] as int,
     );
 
 Map<String, dynamic> _$LeftJoinedPayloadToJson(LeftJoinedPayload instance) =>
     <String, dynamic>{
       'chat_id': instance.chatId,
       'users': instance.users.map((e) => e.toJson()).toList(),
+      'initiator_id': instance.initiatorId,
     };

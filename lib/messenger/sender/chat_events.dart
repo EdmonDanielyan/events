@@ -7,6 +7,7 @@ import 'package:ink_mobile/messenger/models/chat/nats/payloads/chat_payload.dart
 import 'package:ink_mobile/messenger/models/chat/nats/payloads/left_joined.dart';
 import 'package:ink_mobile/messenger/models/chat/nats/payloads/user_payload.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 
 import '../cases/user_functions.dart';
 import 'chat_saver.dart';
@@ -42,8 +43,8 @@ class ChatEventsSender {
     return send;
   }
 
-  Future<bool> sendUserChatJoinedMessage(
-      ChatTable chat, List<UserTable> users) async {
+  Future<bool> sendUserChatJoinedMessage(ChatTable chat, List<UserTable> users,
+      {required int initiatorId}) async {
     bool send = await natsProvider.sendJsonMessageToChannel(
       chat.channel,
       MessageType.UserJoined,
@@ -53,6 +54,7 @@ class ChatEventsSender {
                 (u) => UserPayload(id: u.id, name: u.name, avatar: u.avatar))
             .toList(),
         chatId: chat.id,
+        initiatorId: initiatorId,
       ).toJson(),
     );
     chatSaver.saveChats(newChat: null);
@@ -61,6 +63,7 @@ class ChatEventsSender {
 
   Future<void> sendLeftMessage(
     ChatTable chat, {
+    required int initiatorId,
     List<UserTable>? users,
     bool unsubFromChat = true,
   }) async {
@@ -74,6 +77,7 @@ class ChatEventsSender {
                 (e) => UserPayload(id: e.id, name: e.name, avatar: e.avatar))
             .toList(),
         chatId: chat.id,
+        initiatorId: initiatorId,
       ).toJson(),
     );
     if (unsubFromChat) {

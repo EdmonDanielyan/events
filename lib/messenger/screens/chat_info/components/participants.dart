@@ -40,7 +40,8 @@ class ChatInfoParticipants extends StatelessWidget {
       await messenger.chatEventsSender.sendLeftMessage(
         chat,
         unsubFromChat: false,
-        users: [user]
+        users: [user],
+        initiatorId: JwtPayload.myId,
       );
 
       Navigator.of(context).pop();
@@ -93,6 +94,7 @@ class ChatInfoParticipants extends StatelessWidget {
       await messenger.chatEventsSender.sendUserChatJoinedMessage(
         chat,
         selectedUsers,
+        initiatorId: JwtPayload.myId,
       );
     }
     Navigator.of(context).pop();

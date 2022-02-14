@@ -56,7 +56,7 @@ class ChatJoinedListener extends MessageListener {
         await userFunctions.insertMultipleParticipants(
             ChatUserViewModel.toParticipants(users, chat));
         if (chat.isGroup()) {
-          await setMessage(users, chat, message);
+          await setMessage(users, chat, message, payload.initiatorId);
         }
         await chatSaver.saveChats(newChat: null);
       }
@@ -65,17 +65,19 @@ class ChatJoinedListener extends MessageListener {
     }
   }
 
-  Future<void> setMessage(
-      List<UserTable> users, ChatTable chat, NatsMessage message) async {
+  Future<void> setMessage(List<UserTable> users, ChatTable chat,
+      NatsMessage message, int initiatorId) async {
     for (final user in users) {
       final generateMessage = GetIt.I<SendMessage>().joinedLeftMessage(
-          id: "${message.id}_${user.id}",
-          chatId: chat.id,
-          userName: user.name,
-          type: StoredMessageType.USER_JOINED,
-          timestampUtc: message.timestamp,
-          userId: user.id,
-          sequence: message.sequence.toInt());
+        id: "${message.id}_${user.id}",
+        chatId: chat.id,
+        userName: user.name,
+        type: StoredMessageType.USER_JOINED,
+        timestampUtc: message.timestamp,
+        userId: user.id,
+        sequence: message.sequence.toInt(),
+        initiatorId: initiatorId,
+      );
 
       if (generateMessage != null) {
         await GetIt.I<SendMessage>().addMessage(chat, generateMessage);

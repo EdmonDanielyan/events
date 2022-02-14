@@ -5,6 +5,7 @@ import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/messenger/screens/chat_info/entities/design_entities.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/setup.dart';
 
 import '../../../../components/alert/alert_cancel.dart';
@@ -28,7 +29,8 @@ class ChatInfoBottomBtns extends StatelessWidget {
 
   Future<void> _deleteChat(BuildContext context) async {
     if (messenger.isConnected) {
-      messenger.chatEventsSender.sendLeftMessage(chat);
+      messenger.chatEventsSender
+          .sendLeftMessage(chat, initiatorId: JwtPayload.myId);
 
       _clearMessages();
       messenger.chatFunctions.deleteChat(chat.id);
