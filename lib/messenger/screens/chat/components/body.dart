@@ -19,16 +19,12 @@ import 'package:ink_mobile/setup.dart';
 
 class ChatBody extends StatefulWidget {
   final ScrollController controller;
-
-
   final ChatScreenParams chatScreenParams;
-
   final SelectableCubit<MessageWithUser> selectableCubit;
-
   final Messenger messenger;
 
-  const ChatBody(this.controller, this.messenger,
-      this.chatScreenParams, this.selectableCubit,
+  const ChatBody(this.controller, this.messenger, this.chatScreenParams,
+      this.selectableCubit,
       {Key? key})
       : super(key: key);
 
@@ -133,8 +129,8 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
 
   Widget get messageBar =>
       _messageBar ??
-      (_messageBar = MessageBottomBar(
-          widget.messenger.chatDatabaseCubit, widget.messenger.chatCubit, widget.controller));
+      (_messageBar = MessageBottomBar(widget.messenger.chatDatabaseCubit,
+          widget.messenger.chatCubit, widget.controller));
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +181,8 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
             color: Theme.of(context).primaryColor,
           ),
           child: ChatSearchTextfield(
-            onFieldSubmitted: (val) => widget.messenger.chatCubit.emitSearchValue(val),
+            onFieldSubmitted: (val) =>
+                widget.messenger.chatCubit.emitSearchValue(val),
             onUp: () => widget.messenger.chatCubit.upSearch(),
             onDown: () => widget.messenger.chatCubit.downSearch(),
             onClose: () {

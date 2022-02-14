@@ -182,9 +182,19 @@ class _ChatListTileState extends State<ChatListTile> {
 
     final highlightValue = widget.highlightValue.trim();
 
+    final _message = widget.searchMessage ?? lastMessage!;
+    String msg = _message.message;
+
+    if (!widget.chat.isGroup()) {
+      if (_message.type == StoredMessageType.USER_JOINED ||
+          _message.type == StoredMessageType.USER_LEFT) {
+        msg = "";
+      }
+    }
+
     return ChatMessage(
       displayName: _getDisplayName(),
-      message: widget.searchMessage?.message ?? lastMessage!.message,
+      message: msg,
       highlightValue: highlightValue,
     );
   }
