@@ -77,20 +77,24 @@ class Messenger with Loggable {
   Future<void> _configureNatsProvider() async {
     logger.finest("_configureNatsProvider");
     natsProvider.onConnected = () async {
-      logger.info("onConnected");
-      await natsProvider.auth(
-          login: sl.get(instanceName: "messengerAuthLogin"),
-          password: sl.get(instanceName: "messengerAuthPassword"));
-      textSender.redeliverMessages();
-      await _onConnected();
+      natsConnect();
     };
 
     natsProvider.onDisconnected = () async {
       logger.info("onDisconnected");
-      _softDispose();
+      softDispose();
     };
 
     natsProvider.onUnacknowledged = (subscription, message, onMessage) async {};
+  }
+
+  Future<void> natsConnect() async {
+    logger.info("onConnected");
+    await natsProvider.auth(
+        login: sl.get(instanceName: "messengerAuthLogin"),
+        password: sl.get(instanceName: "messengerAuthPassword"));
+    textSender.redeliverMessages();
+    await _onConnected();
   }
 
   Future<void> _onConnected() async {
@@ -102,7 +106,7 @@ class Messenger with Loggable {
     onlineSender.sendUserOnlinePing();
   }
 
-  Future<void> _softDispose() async {
+  Future<void> softDispose() async {
     logger.finest('_softDispose');
     registry.unsubscribeFromAll(includePush: false);
     onlineSender.stopSending();

@@ -15,7 +15,6 @@ import 'package:ink_mobile/models/debouncer.dart';
 import 'package:moor/moor.dart';
 import 'package:sqflite_sqlcipher/sqflite.dart';
 
-import 'model/chat_with_message.dart';
 import 'model/participant_with_user.dart';
 
 part 'chat_db.g.dart';
@@ -70,31 +69,6 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           ]))
         .watch()
         .transform(StreamTransformer.fromHandlers(handleData: (data, sink) {
-      _debouncer.run(() {
-        sink.add(data);
-      });
-    }));
-  }
-
-  Stream<List<ChatWithMessage>> watchAllChatsWithMessagesJoin() {
-    final sel = (select(chatTableSchema)).join([
-      leftOuterJoin(messageTableSchema,
-          messageTableSchema.chatId.equalsExp(chatTableSchema.id))
-    ]);
-
-    sel.orderBy([OrderingTerm.desc(messageTableSchema.timestamp)]);
-    sel.groupBy([chatTableSchema.id]);
-
-    final _debouncer = Debouncer(milliseconds: 300);
-
-    return sel.watch().map((rows) {
-      return rows.map((row) {
-        return ChatWithMessage(
-          message: row.readTableOrNull(messageTableSchema),
-          chat: row.readTableOrNull(chatTableSchema),
-        );
-      }).toList();
-    }).transform(StreamTransformer.fromHandlers(handleData: (data, sink) {
       _debouncer.run(() {
         sink.add(data);
       });
@@ -277,7 +251,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           : OrderingTerm.desc(messageTableSchema.sequence),
     ]);
 
-    Debouncer _debouncer = Debouncer(milliseconds: 300);
+    Debouncer _debouncer = Debouncer(milliseconds: 150);
 
     if (limit != null) {
       sel..limit(limit);
@@ -479,7 +453,10 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   Future<void> deleteDatabaseFiles() async {
     String path = await getDatabasesPath();
     final regExp = RegExp(r'.*[.]sqlite');
-    Directory(path).list().where((file) => regExp.hasMatch(file.path)).forEach((file) {
+    Directory(path)
+        .list()
+        .where((file) => regExp.hasMatch(file.path))
+        .forEach((file) {
       logger.finest("Delete file: ${file.path}");
       file.deleteSync();
     });

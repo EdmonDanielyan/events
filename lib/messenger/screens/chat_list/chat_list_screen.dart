@@ -10,6 +10,7 @@ import 'package:ink_mobile/messenger/blocs/chat_person_list/chat_person_list_cub
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/new_chat_btn.dart';
 
+import '../../providers/messenger.dart';
 import 'components/body.dart';
 import 'components/loading.dart';
 
@@ -17,6 +18,7 @@ class ChatListScreen extends StatefulWidget {
   static ChatListScreenState of(BuildContext context) =>
       context.findAncestorStateOfType<ChatListScreenState>()!;
 
+  final Messenger messenger;
   final ChatDatabaseCubit chatDatabaseCubit;
   final SearchChatCubit searchChatCubit;
   final SelectableCubit<UserTable> selectableCubit;
@@ -24,6 +26,7 @@ class ChatListScreen extends StatefulWidget {
 
   const ChatListScreen({
     Key? key,
+    required this.messenger,
     required this.searchChatCubit,
     required this.chatDatabaseCubit,
     required this.selectableCubit,
@@ -35,10 +38,35 @@ class ChatListScreen extends StatefulWidget {
 }
 
 class ChatListScreenState extends State<ChatListScreen>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
   ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
   SelectableCubit<UserTable> get selectableCubit => widget.selectableCubit;
   SearchChatCubit get chatListCubit => widget.searchChatCubit;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.paused) {
+      widget.messenger.dispose();
+    }
+
+    if (state == AppLifecycleState.resumed) {
+      widget.messenger.natsProvider.load();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

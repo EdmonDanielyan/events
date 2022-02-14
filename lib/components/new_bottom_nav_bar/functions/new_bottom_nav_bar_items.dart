@@ -24,6 +24,7 @@ import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat_list/search_chat_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/screens/main/main_screen.dart';
 import 'package:ink_mobile/screens/search/search_screen.dart';
@@ -81,6 +82,7 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
     chatDatabaseCubit: sl<ChatDatabaseCubit>(),
     selectableCubit: SelectableCubit<UserTable>(),
     chatPersonListCubit: sl<ChatPersonListCubit>(),
+    messenger: sl<Messenger>(),
   );
 
   void onTap(BuildContext context, Function onChanged, int index) {

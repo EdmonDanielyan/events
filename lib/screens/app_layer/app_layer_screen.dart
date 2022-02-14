@@ -16,20 +16,6 @@ class AppLayerScreen extends StatefulWidget {
 class _AppLayerScreenState extends State<AppLayerScreen>
     with NewBottomNavBarMixin, Loggable {
   @override
-  void initState() {
-    super.initState();
-
-    // sl<PushNotificationManager>().initialChat.then((chat) {
-    //   if (chat != null) {
-    //     logger.finest("Scheduling to open chat: ${chat.id}");
-    //     SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
-    //       OpenChat(sl(), chat)();
-    //     });
-    //   }
-    // });
-  }
-
-  @override
   Widget build(BuildContext context) {
     List<Widget> _screens = getScreens();
 
