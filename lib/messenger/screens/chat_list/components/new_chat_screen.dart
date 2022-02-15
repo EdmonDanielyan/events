@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
+import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.dart';
 import 'package:ink_mobile/components/loader/error_loading_widget.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
@@ -13,8 +14,6 @@ import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/new_chat_person_container.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/entities/new_chat_screen_params.dart';
 import 'package:ink_mobile/screens/search/components/search_field.dart';
-
-import '../../../../components/custom_circle_avatar.dart';
 
 class NewChatScreen extends StatefulWidget {
   final NewChatScreenParams newChatScreenParams;
@@ -132,7 +131,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
                                     (index) {
                                       return Container(
                                         margin: const EdgeInsets.all(5.0),
-                                        child: CustomCircleAvatar(
+                                        child: CachedCircleAvatar(
                                           avatarHeight: 40,
                                           avatarWidth: 40,
                                           url: _users[index].avatar,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
-import 'package:ink_mobile/components/changable_avatar.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -110,10 +109,6 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
         ),
       ),
     );
-  }
-
-  Widget avatarWidget() {
-    return ChangableAvatar(url: _chat.avatar);
   }
 
   Widget textfieldWidget({

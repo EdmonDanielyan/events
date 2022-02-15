@@ -71,18 +71,12 @@ class SendMessage with Loggable {
 
   Future<String> addMessage(ChatTable chat, MessageTable message,
       {bool setChatToFirst = true}) async {
-    final msg = await chatDatabaseCubit.db.selectMessageById(message.id);
-    if (msg == null) {
-      await chatDatabaseCubit.db.insertMessage(message);
-      if (setChatToFirst) {
-        try {
-          final newChat = await chatDatabaseCubit.db.selectChatById(chat.id);
-          if (newChat != null) {
-            chatFunctions.setChatToFirst(newChat, updatedAt: message.timestamp);
-          }
-        } catch (e, stack) {
-          logger.severe("addMessage error", e, stack);
-        }
+    await chatDatabaseCubit.db.insertMessage(message);
+    if (setChatToFirst) {
+      try {
+        chatFunctions.setChatToFirst(chat, updatedAt: message.timestamp);
+      } catch (e, stack) {
+        logger.severe("addMessage error", e, stack);
       }
     }
 

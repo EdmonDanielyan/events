@@ -22,40 +22,41 @@ class LockApp with Loggable {
 
   Future<bool> authenticate() async {
     try {
-      if (await canCheckBiometrics()) {
-        bool didAuthenticate = await _localAuth.authenticate(
-          localizedReason: localizationInstance.biometricReason,
+      bool canCheckBios = await canCheckBiometrics();
+
+      if (canCheckBios) {
+        return await _localAuth.authenticate(
+          localizedReason:
+              canCheckBios ? localizationInstance.biometricReason : "",
           iOSAuthStrings: _iosStrings(),
+          biometricOnly: false,
+          sensitiveTransaction: false,
           androidAuthStrings: _androidStrings(
               biometricHint: localizationInstance.biometricHint),
         );
-
-        return didAuthenticate;
-      } else {
-        bool didAuthenticate = await _localAuth.authenticate(
-          localizedReason: "",
-          iOSAuthStrings: _iosStrings(),
-          androidAuthStrings: _androidStrings(biometricHint: null),
-        );
-
-        return didAuthenticate;
       }
-    } on PlatformException catch (e, s) {
+
+      logger.severe("BIOMETRICS NOT AVAILABLE");
+
+      return true;
+    } on PlatformException catch (e, _) {
+      logger.severe("ERROR during authenticate", e, _);
       if (e.code == auth_error.notAvailable) {
         return true;
       }
 
-      if (e.code == "auth_in_progress") {
-        await Future.delayed(Duration(milliseconds: 100));
-      }
-      logger.severe("ERROR during authenticate", e, s);
+      return true;
+    } catch (_e) {
+      return true;
     }
-
-    return false;
   }
 
   Future<bool> stopAuthentification() async {
-    return await _localAuth.stopAuthentication();
+    try {
+      return await _localAuth.stopAuthentication();
+    } catch (_) {
+      return true;
+    }
   }
 
   IOSAuthMessages _iosStrings() {

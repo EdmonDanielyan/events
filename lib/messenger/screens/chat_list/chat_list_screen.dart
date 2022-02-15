@@ -86,10 +86,7 @@ class ChatListScreenState extends State<ChatListScreen>
             previous.loadingChats != current.loadingChats,
         builder: (context, state) {
           if (state.loadingChats) {
-            return ChatListLoadingComponent(
-              chatDatabaseCubit: chatDatabaseCubit,
-              length: chatDatabaseCubit.currentLoadingChatsCounter,
-            );
+            return ChatListLoadingComponent(length: 8);
           }
           return const Body();
         },

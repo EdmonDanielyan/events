@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ink_mobile/components/custom_circle_avatar.dart';
+import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/components/highlight_text.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/online/online_bloc.dart';
@@ -90,10 +90,10 @@ class _ParticipantCardState extends State<ParticipantCard> {
   Widget _avatarWidget() {
     return BlocBuilder<OnlineBloc, OnlineBlocState>(
       bloc: messenger.onlineBloc,
-      builder: (context, state) => CustomCircleAvatar(
+      builder: (context, state) => CachedCircleAvatar(
         avatarHeight: widget.avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
         avatarWidth: widget.avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
-        url: widget.overrideAvatar ?? widget.user?.avatar,
+        url: widget.overrideAvatar ?? widget.user?.avatar ?? "",
         indicator: state.isOnline(widget.user?.id),
         indicatorSize: 8.0,
         name: widget.avatarName ?? (widget.user?.name ?? ""),

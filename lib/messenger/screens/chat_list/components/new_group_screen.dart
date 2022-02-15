@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
-import 'package:ink_mobile/components/custom_circle_avatar.dart';
+import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
@@ -123,7 +123,7 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
           children: List.generate(
             users.length,
             (index) => Container(
-              child: CustomCircleAvatar(
+              child: CachedCircleAvatar(
                 url: users[index].avatar,
                 name: users[index].name,
               ),

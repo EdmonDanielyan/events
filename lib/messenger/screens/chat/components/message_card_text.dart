@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/components/custom_circle_avatar.dart';
+import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/components/linkify_text.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/extensions/message_table.dart';
@@ -197,7 +197,7 @@ class MessageCardText extends StatelessWidget {
           child: GestureDetector(
             onTap: () => Navigator.of(context).pushNamed("/personal",
                 arguments: {'id': user.id, HIDE_BOTTOM_NAV_BAR_CODE: true}),
-            child: CustomCircleAvatar(
+            child: CachedCircleAvatar(
               url: user.avatar,
               name: user.name,
             ),

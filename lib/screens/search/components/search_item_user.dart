@@ -1,6 +1,6 @@
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/components/custom_circle_avatar.dart';
+import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 
 class SearchItemUser extends StatelessWidget {
   final int id;
@@ -30,7 +30,7 @@ class SearchItemUser extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              child: CustomCircleAvatar(
+              child: CachedCircleAvatar(
                 url: avatar,
               ),
             ),

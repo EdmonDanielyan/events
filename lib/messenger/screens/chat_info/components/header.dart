@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ink_mobile/components/custom_circle_avatar.dart';
+import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
@@ -63,7 +63,7 @@ class ChatInfoHeader extends StatelessWidget {
                   ? CrossAxisAlignment.start
                   : CrossAxisAlignment.center,
               children: [
-                CustomCircleAvatar(
+                CachedCircleAvatar(
                   url: newChat.avatar,
                   name: newChat.name,
                 ),

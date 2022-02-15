@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/components/custom_circle_avatar.dart';
+import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_divider.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_message.dart';
@@ -78,7 +78,7 @@ class _ChatListTileSchimmerState extends State<ChatListTileShimmer> {
                   SizedBox(
                     height: 0.0,
                     child: Opacity(
-                        child: CustomCircleAvatar(url: ""), opacity: 0.0),
+                        child: CachedCircleAvatar(url: ""), opacity: 0.0),
                   ),
                   SizedBox(width: widget.leadingGap),
                   Expanded(child: ChatDivider())
@@ -95,7 +95,7 @@ class _ChatListTileSchimmerState extends State<ChatListTileShimmer> {
     return Shimmer.fromColors(
       baseColor: Colors.grey.withOpacity(0.5),
       highlightColor: Colors.grey.withOpacity(0.2),
-      child: CustomCircleAvatar(
+      child: CachedCircleAvatar(
         url: "",
         name: "",
       ),

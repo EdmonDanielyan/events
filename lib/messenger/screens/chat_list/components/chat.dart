@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/components/custom_circle_avatar.dart';
+import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
+import 'package:ink_mobile/components/dismissible/custom_dismissible.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/messenger/blocs/online/online_bloc.dart';
-import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 import 'package:ink_mobile/messenger/models/chat_user.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
+import 'package:ink_mobile/messenger/screens/chat_list/components/chat_body.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_date.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_divider.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_message.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_message_trailing.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_name.dart';
-import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/setup.dart';
+
+import 'avatar.dart';
 
 class ChatListTile extends StatefulWidget {
   final String highlightValue;
@@ -64,156 +63,96 @@ class _ChatListTileState extends State<ChatListTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Dismissible(
-        background: const SizedBox(),
-        direction: DismissDirection.endToStart,
-        secondaryBackground: Icon(Icons.delete, color: Colors.red),
-        confirmDismiss: widget.confirmDismiss,
-        resizeDuration: null,
-        onDismissed: widget.onDismissed,
-        key: UniqueKey(),
-        child: _chatContainer(),
-      ),
-    );
-  }
-
-  Widget _chatContainer() {
-    return InkWell(
-      onTap: widget.onTap,
-      child: Container(
-        padding: widget.contentPadding,
-        margin: EdgeInsets.only(bottom: 7.0, top: 7.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _avatarWidget(),
-                SizedBox(width: widget.leadingGap),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ChatName(
-                              name: widget.chat.name,
-                              highlightValue: widget.highlightValue,
-                            ),
-                          ),
-                          SizedBox(width: 2.0),
-                          if (hasMessage) ...[
-                            ChatDate(
-                              chatDate:
-                                  lastMessage?.timestamp ?? DateTime.now(),
-                            ),
-                          ],
-                        ],
-                      ),
-                      const SizedBox(height: 5.0),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          if (hasMessage) ...[
+    return CustomDismissible(
+      confirmDismiss: widget.confirmDismiss,
+      onDismissed: widget.onDismissed,
+      child: InkWell(
+        onTap: widget.onTap,
+        child: Container(
+          padding: widget.contentPadding,
+          margin: EdgeInsets.only(bottom: 7.0, top: 7.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ChatListAvatar(
+                      onlineBloc: messenger.onlineBloc, chat: widget.chat),
+                  SizedBox(width: widget.leadingGap),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
                             Expanded(
-                              child: _displayBody(),
+                              child: ChatName(
+                                name: widget.chat.name,
+                                highlightValue: widget.highlightValue,
+                              ),
                             ),
-                            if (widget.messagesWithUser.length > 0) ...[
-                              ChatMessageTrailing(
-                                  showUnread:
-                                      widget.chat.unreadCounterOn ?? true,
-                                  messagesWithUser: widget.messagesWithUser),
+                            SizedBox(width: 2.0),
+                            if (hasMessage) ...[
+                              ChatDate(
+                                chatDate:
+                                    lastMessage?.timestamp ?? DateTime.now(),
+                              ),
                             ],
                           ],
-                          if (!hasMessage) ...[
-                            Expanded(
-                              child: _displayEmpty(),
-                            ),
+                        ),
+                        const SizedBox(height: 5.0),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            if (hasMessage) ...[
+                              Expanded(
+                                child: ChatListBody(
+                                  chat: widget.chat,
+                                  lastMessage: lastMessage,
+                                  searchMessage: widget.searchMessage,
+                                  lastUser: lastUser,
+                                  highlightValue: widget.highlightValue,
+                                ),
+                              ),
+                              if (widget.messagesWithUser.length > 0) ...[
+                                ChatMessageTrailing(
+                                    showUnread:
+                                        widget.chat.unreadCounterOn ?? true,
+                                    messagesWithUser: widget.messagesWithUser),
+                              ],
+                            ],
+                            if (!hasMessage) ...[
+                              Expanded(
+                                child: ChatMessage(
+                                    message: localizationInstance.noMessages),
+                              ),
+                            ],
                           ],
-                        ],
-                      ),
-                      const SizedBox(height: 10.0)
-                    ],
+                        ),
+                        const SizedBox(height: 10.0)
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  height: 0.0,
-                  child: Opacity(
-                      child: CustomCircleAvatar(url: widget.chat.avatar),
-                      opacity: 0.0),
-                ),
-                SizedBox(width: widget.leadingGap),
-                const Expanded(child: ChatDivider())
-              ],
-            ),
-          ],
+                ],
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    height: 0.0,
+                    child: Opacity(
+                        child: CachedCircleAvatar(url: widget.chat.avatar),
+                        opacity: 0.0),
+                  ),
+                  SizedBox(width: widget.leadingGap),
+                  const Expanded(child: ChatDivider())
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
-  }
-
-  Widget _avatarWidget() {
-    if (oppositeUserId != null) {
-      return BlocBuilder<OnlineBloc, OnlineBlocState>(
-          bloc: messenger.onlineBloc,
-          builder: (context, state) => CustomCircleAvatar(
-                url: widget.chat.avatar,
-                indicator: state.isOnline(oppositeUserId),
-                name: widget.chat.name,
-              ));
-    }
-
-    return CustomCircleAvatar(
-      url: widget.chat.avatar,
-      name: widget.chat.name,
-    );
-  }
-
-  Widget _displayBody() {
-    if (lastMessage == null) return const SizedBox();
-
-    final highlightValue = widget.highlightValue.trim();
-
-    final _message = widget.searchMessage ?? lastMessage!;
-    String msg = _message.message;
-
-    if (!widget.chat.isGroup()) {
-      if (_message.type == StoredMessageType.USER_JOINED ||
-          _message.type == StoredMessageType.USER_LEFT) {
-        msg = "";
-      }
-    }
-
-    return ChatMessage(
-      displayName: _getDisplayName(),
-      message: msg,
-      highlightValue: highlightValue,
-    );
-  }
-
-  Widget _displayEmpty() {
-    return ChatMessage(message: localizationInstance.noMessages);
-  }
-
-  String? _getDisplayName() {
-    if (lastMessage == null) return "";
-
-    if (lastMessage!.type == StoredMessageType.TEXT) {
-      if (widget.chat.isGroup() && lastUser != null) {
-        return lastUser!.id == JwtPayload.myId
-            ? localizationInstance.you
-            : lastUser!.name;
-      }
-    }
-
-    return null;
   }
 }
