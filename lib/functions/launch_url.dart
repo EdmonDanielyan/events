@@ -19,5 +19,5 @@ Future<void> launchUrl(String url, {bool formatUrl = true}) async {
         : showErrorDialog('Не удалось перейти по внешней ссылке');
   } on PlatformException {
     //Unsupported message codecs links
-  }
+  } catch (_) {}
 }

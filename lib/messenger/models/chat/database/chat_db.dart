@@ -272,6 +272,17 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
             ]))
           .get();
 
+  Future<List<MessageTable>> getErrorMessages(int userId,
+          {OrderingMode orderingMode = OrderingMode.asc}) =>
+      (select(messageTableSchema)
+            ..where((tbl) =>
+                tbl.userId.equals(userId) &
+                (tbl.sentStatus.equals(MessageSentStatus.ERROR.index)))
+            ..orderBy([
+              (t) => OrderingTerm(expression: t.sequence, mode: orderingMode),
+            ]))
+          .get();
+
   Stream<List<MessageWithUser>> watchChatMessages(
     String chatId, {
     OrderingMode orderMode = OrderingMode.asc,

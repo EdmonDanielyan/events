@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/ink_icons.dart';
@@ -67,9 +68,9 @@ class _CommentState extends State<Comment> {
                         Navigator.pushNamed(context, '/personal',
                             arguments: {'id': widget.authorId});
                       },
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundImage: getAvatarImage(),
+                      child: CachedCircleAvatar(
+                        url: widget.avatar ?? "",
+                        name: widget.name ?? "",
                       ),
                     ),
                   )),
@@ -202,15 +203,5 @@ class _CommentState extends State<Comment> {
         });
       }
     });
-  }
-
-  ImageProvider getAvatarImage() {
-    if (widget.avatar == null) {
-      return AssetImage(DEFAULT_AVATAR);
-    } else {
-      return NetworkImage(
-        widget.avatar!,
-      );
-    }
   }
 }

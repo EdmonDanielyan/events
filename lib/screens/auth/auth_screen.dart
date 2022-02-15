@@ -4,6 +4,9 @@ import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_ba
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/screens/auth/components/body.dart';
 
+import '../../messenger/providers/messenger.dart';
+import '../../setup.dart';
+
 class AuthScreen extends StatefulWidget {
   static AuthScreenState of(BuildContext context) =>
       context.findAncestorStateOfType<AuthScreenState>()!;
@@ -24,18 +27,12 @@ class AuthScreen extends StatefulWidget {
 
 class AuthScreenState extends State<AuthScreen> {
   AuthCubit get authCubit => widget.authCubit;
-  // ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
   NewBottomNavBarCubit get newBottomNavBarCubit => widget.newBottomNavBarCubit;
-
-  // void _cleanDatabase() async {
-  //   await chatDatabaseCubit.db.deleteEverything();
-  // }
-
   @override
   void initState() {
     super.initState();
 
-    // _cleanDatabase();
+    sl<Messenger>().init();
   }
 
   @override

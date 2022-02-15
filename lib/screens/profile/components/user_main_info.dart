@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/constants/aseets.dart';
 
 class UserMainInfo extends StatelessWidget {
@@ -44,15 +45,17 @@ class UserMainInfo extends StatelessWidget {
               children: [
                 Container(
                   child: Container(
-                    width: 160.0,
-                    height: 160.0,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(80.0),
                         color: Colors.grey.withOpacity(0.2)),
                     padding: EdgeInsets.all(5),
                     child: Container(
-                        child: CircleAvatar(
-                            radius: 70.0, backgroundImage: getAvatarImage())),
+                      child: CachedCircleAvatar(
+                        avatarWidth: 160.0,
+                        avatarHeight: 160.0,
+                        url: pathToAvatar ?? "",
+                      ),
+                    ),
                   ),
                   margin: EdgeInsets.only(top: 57.0, bottom: 24.0),
                 ),
@@ -114,14 +117,6 @@ class UserMainInfo extends StatelessWidget {
               )));
     } else {
       return Container();
-    }
-  }
-
-  ImageProvider getAvatarImage() {
-    if (pathToAvatar == null) {
-      return AssetImage(DEFAULT_AVATAR);
-    } else {
-      return NetworkImage(pathToAvatar!);
     }
   }
 }

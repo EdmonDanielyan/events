@@ -51,7 +51,9 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
       final sendMessage = sl<SendMessage>();
       final message = await sendMessage.save(currentChat, saveEntities);
       if (sl<Messenger>().isConnected) {
-        await sl<Messenger>().textSender.redeliverMessages();
+        await sl<Messenger>()
+            .textSender
+            .redeliverMessages(onlyErrorMessages: true);
         await sl<Messenger>().textSender.sendMessage(currentChat, message);
       }
 
