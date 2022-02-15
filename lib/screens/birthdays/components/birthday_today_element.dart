@@ -8,6 +8,9 @@ import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat_user.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
+import 'package:ink_mobile/screens/birthdays/components/birthday_avatar.dart';
+import 'package:ink_mobile/screens/birthdays/components/birthday_body.dart';
 import 'package:ink_mobile/setup.dart';
 
 import '../../../setup.dart';
@@ -23,9 +26,17 @@ class BirthdayTodayElement extends StatelessWidget {
 
   Future<void> _congratulate(BuildContext context) async {
     if (_messenger.isConnected) {
-      ChatTable newChat = await _messenger.chatCreation.createDialogChat(
+      ChatTable? chat = await _messenger.chatCreation.isSingleChatExists(
           ChatUserViewModel.birthdayDataToUserTable(birthday));
-      OpenChat(chatDatabaseCubit, newChat).call();
+
+      if (chat != null) {
+        OpenChat(chatDatabaseCubit, chat).call();
+      } else {
+        ChatTable newChat = await _messenger.chatCreation.createDialogChat(
+            ChatUserViewModel.birthdayDataToUserTable(birthday));
+        Navigator.of(context).pop();
+        OpenChat(chatDatabaseCubit, newChat).call();
+      }
     }
   }
 
@@ -34,29 +45,7 @@ class BirthdayTodayElement extends StatelessWidget {
     return Container(
       child: Row(
         children: [
-          Expanded(
-            flex: 3,
-            child: Container(
-              alignment: Alignment.topCenter,
-              margin: EdgeInsets.only(left: 15, top: 8, bottom: 8, right: 10),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    '/personal',
-                    arguments: {'id': birthday.id},
-                  );
-                },
-                child: CircleAvatar(
-                  radius: 35,
-                  backgroundImage: birthday.pathToAvatar != null
-                      ? NetworkImage(birthday.pathToAvatar!)
-                      : AssetImage('assets/images/avatars/avatar_default.png')
-                          as ImageProvider,
-                ),
-              ),
-            ),
-          ),
+          BirthdayAvatar(birthday: birthday),
           Expanded(
             flex: 8,
             child: Column(
@@ -75,37 +64,18 @@ class BirthdayTodayElement extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
-                Container(
-                  alignment: Alignment.bottomLeft,
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: birthday.city,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: '. ',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: birthday.workPosition,
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                BirthdayBody(birthday: birthday),
               ],
             ),
           ),
-          _congratulateWidget(context),
+          if (birthday.id != JwtPayload.myId) ...[
+            _congratulateWidget(context),
+          ],
         ],
       ),
     );
