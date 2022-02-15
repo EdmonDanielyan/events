@@ -153,17 +153,22 @@ class NatsProvider {
   }) async {
     if (!_channelSubscriptions.containsKey(channel)) {
       _logger.finest("subscribeToChannel: $channel");
-      var subscription = await _stan.subscribe(
-        subject: channel,
-        maxInFlight: maxInFlight,
-        ackWaitSeconds: ackWaitSeconds,
-        startPosition: startPosition,
-        startSequence: startSequence,
-      );
+      try {
+        var subscription = await _stan.subscribe(
+          subject: channel,
+          maxInFlight: maxInFlight,
+          ackWaitSeconds: ackWaitSeconds,
+          startPosition: startPosition,
+          startSequence: startSequence,
+        );
 
-      _listenBySubscription(channel, subscription);
-      _channelSubscriptions[channel] = subscription;
-      _channelCallbacks[channel] = onMessageFuture;
+        _listenBySubscription(channel, subscription);
+        _channelSubscriptions[channel] = subscription;
+        _channelCallbacks[channel] = onMessageFuture;
+      } catch (_e) {
+        //FOR NOT CONNECTED THROW
+
+      }
     } else {
       throw SubscriptionAlreadyExistException(message: 'channel: $channel');
     }
@@ -297,13 +302,18 @@ class NatsProvider {
     return message;
   }
 
-  Future<Subscription> listenChatList(String channel,
+  Future<Subscription?> listenChatList(String channel,
       {Int64 startSequence = Int64.ZERO}) async {
-    var _subscriptionToPublicChannel = await _stan.subscribe(
-      subject: channel,
-      startPosition: StartPosition.LastReceived,
-    );
-    return _subscriptionToPublicChannel;
+    try {
+      var _subscriptionToPublicChannel = await _stan.subscribe(
+        subject: channel,
+        startPosition: StartPosition.LastReceived,
+      );
+      return _subscriptionToPublicChannel;
+    } catch (_e) {
+      //FOR NOT CONNECTED THROW
+      return null;
+    }
   }
 
   Future<void> _listenBySubscription(

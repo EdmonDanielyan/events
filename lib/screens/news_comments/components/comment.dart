@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
-import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/ink_icons.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';

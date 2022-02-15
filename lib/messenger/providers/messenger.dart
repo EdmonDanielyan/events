@@ -20,7 +20,6 @@ import 'package:ink_mobile/messenger/sender/message_editor_sender.dart';
 import 'package:ink_mobile/messenger/sender/online_sender.dart';
 import 'package:ink_mobile/messenger/sender/text_sender.dart';
 import 'package:ink_mobile/messenger/sender/user_reaction_sender.dart';
-import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/models/token.dart';
 
 import '../../setup.dart';

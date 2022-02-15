@@ -15,6 +15,7 @@ class AuthHandler with Loggable {
   AuthHandler(this.bootCubit);
 
   Future<void> authChallenge({bool pass = false}) async {
+    print("AUTH CHALLENGE");
     if (pass) {
       await bootCubit.load();
       return;

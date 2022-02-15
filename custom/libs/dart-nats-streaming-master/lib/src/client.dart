@@ -202,7 +202,7 @@ class NatsStreamingClient {
 
     if (natsClient.status == nats.Status.connected) {
       clientId = '$clientIdPrefix-${Uuid().v4()}';
-      _logger.finest(() =>'NATS connect request with clientId: $clientId');
+      _logger.finest(() => 'NATS connect request with clientId: $clientId');
 
       ConnectRequest connectRequest = ConnectRequest()
         ..clientID = clientId

@@ -35,6 +35,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
               path: "chat_db_$userId.sqlite",
               password: localDatabasePassword,
               logStatements: false //kDebugMode,
+
               ),
         );
 
@@ -515,7 +516,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
-  int get schemaVersion => 41;
+  int get schemaVersion => 42;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

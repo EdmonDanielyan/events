@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
-import 'package:ink_mobile/constants/aseets.dart';
 
 class UserMainInfo extends StatelessWidget {
   final String? userName;
