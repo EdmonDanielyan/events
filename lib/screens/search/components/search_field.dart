@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/constants/aseets.dart';
 
@@ -42,38 +45,75 @@ class _SearchFieldState extends State<SearchField> {
       elevation: 2.0,
       borderRadius: BorderRadius.circular(50.0),
       shadowColor: Colors.grey,
-      child: TextFormField(
-        focusNode: _textFieldFocus,
-        onChanged: widget.onChanged,
-        decoration: InputDecoration(
-          filled: true,
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(50.0),
-          ),
-          suffixIconConstraints: BoxConstraints(minHeight: 20, minWidth: 20),
-          suffixIcon: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: SvgPicture.asset(
-              SEARCH_ICON,
-              color: Colors.grey[700],
-              width: 20,
-              height: 20,
+      child: Platform.isIOS
+          ? Container(
+              padding: const EdgeInsets.only(
+                left: 11.0,
+                right: 28.0,
+                top: 5.0,
+                bottom: 5.0,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: NativeTextInput(
+                      onChanged: widget.onChanged,
+                      textCapitalization: TextCapitalization.sentences,
+                      focusNode: _textFieldFocus,
+                      placeholder: _hintText ?? widget.hint,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
+                        color: Colors.transparent,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10.0),
+                  SvgPicture.asset(
+                    SEARCH_ICON,
+                    color: Colors.grey[700],
+                    width: 20,
+                    height: 20,
+                  ),
+                ],
+              ),
+            )
+          : TextFormField(
+              focusNode: _textFieldFocus,
+              onChanged: widget.onChanged,
+              decoration: InputDecoration(
+                filled: true,
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+                suffixIconConstraints:
+                    BoxConstraints(minHeight: 20, minWidth: 20),
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: SvgPicture.asset(
+                    SEARCH_ICON,
+                    color: Colors.grey[700],
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+                fillColor: _fillColor,
+                hintText: _hintText ?? widget.hint,
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  borderSide: BorderSide(color: Colors.grey, width: 15.0),
+                ),
+              ),
             ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(50.0),
-          ),
-          fillColor: _fillColor,
-          hintText: _hintText ?? widget.hint,
-          contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(50)),
-            borderSide: BorderSide(color: Colors.grey, width: 15.0),
-          ),
-        ),
-      ),
     );
   }
 }

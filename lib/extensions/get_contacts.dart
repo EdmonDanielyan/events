@@ -8,6 +8,10 @@ extension GetContactsExt on Response<GetContacts> {
   List<UserTable> mapResponse({List<int>? hideIds, String searchValue = ""}) {
     List<UserTable> users = [];
 
+    if (this.data == null) {
+      return users;
+    }
+
     List items = this.data?.data.asMap['contacts'] ?? [];
 
     for (final item in items) {

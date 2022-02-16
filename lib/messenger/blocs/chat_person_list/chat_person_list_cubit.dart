@@ -48,6 +48,7 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
       emitUsers(items: users);
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
+
       emitError(error.msg);
     } on Exception catch (_) {
       emitError(localizationInstance.errorOccurred);
@@ -58,7 +59,9 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
   void setSearchValue(String value, {bool checkCondition = true}) {
     value = value.trim();
     emit(state.copyWith(searchValue: value));
-    if (!checkCondition || value.length >= 3) {
+
+    if (!checkCondition ||
+        (value.length >= 3 || state.type == ChatPersonListEnums.ERROR)) {
       _debouncerInputChange.run(() {
         loadUsers();
       });

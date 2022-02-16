@@ -72,6 +72,10 @@ class _BodyState extends State<Body> {
           divider(),
           ChatInfoDataSection(chat: widget.chat),
           divider(),
+          const SizedBox(height: 25.0),
+          divider(),
+          ChatInfoBottomBtns(chat: widget.chat),
+          divider(),
           SizedBox(height: 25.0),
           if (isGroup) ...[
             sectionTitleWidget(_strings.participants),
@@ -83,9 +87,6 @@ class _BodyState extends State<Body> {
             divider(),
             SizedBox(height: 25.0),
           ],
-          divider(),
-          ChatInfoBottomBtns(chat: widget.chat),
-          divider(),
         ],
       ),
     );

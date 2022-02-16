@@ -44,33 +44,36 @@ class BirthdayTodayElement extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           BirthdayAvatar(birthday: birthday),
           Expanded(
-            flex: 8,
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.topLeft,
-                  margin: EdgeInsets.only(bottom: 5),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/personal',
-                          arguments: {'id': birthday.id});
-                    },
-                    child: Text(
-                      birthday.name ?? '',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.topLeft,
+                    margin: EdgeInsets.only(bottom: 5),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/personal',
+                            arguments: {'id': birthday.id});
+                      },
+                      child: Text(
+                        birthday.name ?? '',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ),
-                BirthdayBody(birthday: birthday),
-              ],
+                  BirthdayBody(birthday: birthday),
+                ],
+              ),
             ),
           ),
           if (birthday.id != JwtPayload.myId) ...[
@@ -93,7 +96,7 @@ class BirthdayTodayElement extends StatelessWidget {
             const SizedBox(height: 12),
             SizedBox(
               width: 40.0,
-              height: 30.0,
+              height: 50.0,
               child: SvgPicture.asset(GIFT_ICON_SVG, color: Colors.white),
             ),
             const SizedBox(height: 3.0),
