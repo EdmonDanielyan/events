@@ -17,8 +17,12 @@ import '../../../setup.dart';
 
 class BirthdayTodayElement extends StatelessWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
+  final int index;
   const BirthdayTodayElement(
-      {Key? key, required this.birthday, required this.chatDatabaseCubit})
+      {Key? key,
+      required this.index,
+      required this.birthday,
+      required this.chatDatabaseCubit})
       : super(key: key);
 
   final BirthdayData birthday;
@@ -42,45 +46,48 @@ class BirthdayTodayElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          BirthdayAvatar(birthday: birthday),
-          Expanded(
-            child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.topLeft,
-                    margin: EdgeInsets.only(bottom: 5),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/personal',
-                            arguments: {'id': birthday.id});
-                      },
-                      child: Text(
-                        birthday.name ?? '',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+    return Container(
+      padding: index == 0 ? const EdgeInsets.symmetric(vertical: 3.0) : null,
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            BirthdayAvatar(birthday: birthday),
+            Expanded(
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.topLeft,
+                      margin: EdgeInsets.only(bottom: 5),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/personal',
+                              arguments: {'id': birthday.id});
+                        },
+                        child: Text(
+                          birthday.name ?? '',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
-                  BirthdayBody(birthday: birthday),
-                ],
+                    BirthdayBody(birthday: birthday),
+                  ],
+                ),
               ),
             ),
-          ),
-          if (birthday.id != JwtPayload.myId) ...[
-            _congratulateWidget(context),
+            if (birthday.id != JwtPayload.myId) ...[
+              _congratulateWidget(context),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
