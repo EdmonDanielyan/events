@@ -129,6 +129,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
         onChanged: onChanged,
         initialValue: initalValue,
         validator: validator,
+        textCapitalization: TextCapitalization.sentences,
         autovalidateMode: AutovalidateMode.disabled,
         decoration: InputDecoration(
           border: InputBorder.none,

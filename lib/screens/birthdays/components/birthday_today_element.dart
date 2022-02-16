@@ -42,13 +42,14 @@ class BirthdayTodayElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return IntrinsicHeight(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           BirthdayAvatar(birthday: birthday),
           Expanded(
-            child: Padding(
+            child: Container(
+              color: Colors.white,
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
@@ -92,11 +93,12 @@ class BirthdayTodayElement extends StatelessWidget {
         margin: const EdgeInsets.only(right: 1.0),
         color: Theme.of(context).primaryColor,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 12),
             SizedBox(
               width: 40.0,
-              height: 50.0,
+              height: 35.0,
               child: SvgPicture.asset(GIFT_ICON_SVG, color: Colors.white),
             ),
             const SizedBox(height: 3.0),

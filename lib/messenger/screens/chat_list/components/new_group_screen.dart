@@ -97,6 +97,7 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
   Widget _textfieldWidget() {
     return _containerWrapper(
       child: TextFormField(
+        textCapitalization: TextCapitalization.sentences,
         onChanged: (val) {
           setState(() {
             chatName = val;

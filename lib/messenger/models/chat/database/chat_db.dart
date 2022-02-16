@@ -333,7 +333,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           ..where((tbl) =>
               tbl.chatId.equals(chatId) & (tbl.message.contains("http")))
           ..orderBy([
-            (t) => OrderingTerm(expression: t.timestamp, mode: OrderingMode.asc)
+            (t) => OrderingTerm(expression: t.sequence, mode: OrderingMode.desc)
           ]))
         .join([
           leftOuterJoin(userTableSchema,
