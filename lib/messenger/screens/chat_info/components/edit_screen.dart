@@ -31,6 +31,11 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
 
   final messenger = sl<Messenger>();
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Future<void> onSave(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       ChatTable chat = ChatInfoEditEntitiesFunctions.copyChat(entities, _chat);
@@ -38,7 +43,7 @@ class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
       if (messenger.isConnected) {
         bool sent = await messenger.chatEventsSender.sendNewChatInfo(chat);
         if (sent) {
-          messenger.chatFunctions.updateChat(chat);
+          messenger.chatFunctions.updateChat(chat, setSelectedChat: true);
         } else {
           SimpleCustomSnackbar(
             context: context,
