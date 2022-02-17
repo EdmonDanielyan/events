@@ -273,6 +273,19 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
             ]))
           .get();
 
+  Future<MessageTable?> getLastUnsentMsg(String chatId) =>
+      (select(messageTableSchema)
+            ..where((tbl) =>
+                tbl.chatId.equals(chatId) &
+                (tbl.sentStatus.equals(MessageSentStatus.ERROR.index) |
+                    tbl.sentStatus.equals(MessageSentStatus.SENDING.index)))
+            ..orderBy([
+              (t) =>
+                  OrderingTerm(expression: t.sequence, mode: OrderingMode.desc),
+            ])
+            ..limit(1))
+          .getSingleOrNull();
+
   Future<List<MessageTable>> getErrorMessages(int userId,
           {OrderingMode orderingMode = OrderingMode.asc}) =>
       (select(messageTableSchema)
