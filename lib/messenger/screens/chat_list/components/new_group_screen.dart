@@ -4,6 +4,7 @@ import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
+import 'package:ink_mobile/components/textfields/native_field.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
@@ -96,19 +97,14 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
 
   Widget _textfieldWidget() {
     return _containerWrapper(
-      child: TextFormField(
-        textCapitalization: TextCapitalization.sentences,
+      child: NativeTextfield(
         onChanged: (val) {
           setState(() {
             chatName = val;
           });
         },
-        decoration: InputDecoration(
-          hintText: _strings.groupName,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-        ),
+        hint: _strings.groupName,
+        borderRadius: BorderRadius.circular(25.0),
       ),
     );
   }
