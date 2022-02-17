@@ -34,8 +34,18 @@ class Body extends StatelessWidget {
   }
 
   void _updateWatchedCounter(NewsItemData item) {
-    newsBlockCubit.updateItem(item);
-    newsListCubit.updateItem(item);
+    final itemFromList = newsListCubit.getItem(item);
+    final itemFromBlock = newsBlockCubit.getItem(item);
+
+    if (itemFromList != null) {
+      newsListCubit.updateItem(
+          itemFromList.copyWith(viewCount: (itemFromList.viewCount ?? -1) + 1));
+    }
+
+    if (itemFromBlock != null) {
+      newsBlockCubit.updateItem(itemFromBlock.copyWith(
+          viewCount: (itemFromBlock.viewCount ?? -1) + 1));
+    }
   }
 
   @override

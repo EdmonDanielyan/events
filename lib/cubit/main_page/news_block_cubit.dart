@@ -53,6 +53,18 @@ class NewsBlockCubit extends Cubit<NewsBlockState> {
     }
   }
 
+  NewsItemData? getItem(NewsItemData newItem) {
+    if (state.data != null) {
+      for (final item in state.data!) {
+        if (item.id == newItem.id) {
+          return item;
+        }
+      }
+    }
+
+    return null;
+  }
+
   void emitSuccess(List<NewsItemData> items) {
     emitState(type: NewsBlockStateType.LOADED, data: items);
   }
