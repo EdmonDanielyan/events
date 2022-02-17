@@ -239,7 +239,7 @@ class NatsStreamingClient {
         _logger.severe('Error during connect request', e);
 
         try {
-          await natsClient.close();
+          unawaited(natsClient.close());
         } catch (e) {
           _logger.severe('Error during clean and close', e);
         }
@@ -269,13 +269,15 @@ class NatsStreamingClient {
 
   Future<void> _wssConnect() async {
     try {
-      await natsClient.connect(
-        uri!,
-        connectOption: connectOption,
-        timeout: timeout,
-        retry: retryReconnect,
-        retryInterval: retryInterval,
-      );
+      await natsClient
+          .connect(
+            uri!,
+            connectOption: connectOption,
+            timeout: timeout,
+            retry: retryReconnect,
+            retryInterval: retryInterval,
+          )
+          .timeout(const Duration(seconds: 2));
     } catch (e, s) {
       _logger.severe('Connecting Error', e, s);
     }
@@ -298,7 +300,7 @@ class NatsStreamingClient {
       _logger.severe('Failed during call onDisconnect', e, s);
     }
     try {
-      await natsClient.close();
+      unawaited(natsClient.close());
     } catch (e, s) {
       _logger.severe('Failed during close nats client', e, s);
     }
