@@ -18,6 +18,8 @@ import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';
 
+import '../constants/nats_constants.dart';
+
 const SYSTEM = 'system';
 const DOMAIN = 'ink.messaging';
 const PROTOCOL = 'v1';
@@ -200,7 +202,10 @@ class NatsProvider {
     var connectResult = await _stan.connectUri(Uri.parse(natsWssUrl),
         certificate: certificate,
         clusterID: natsCluster,
-        pingMaxAttempts: 3,
+        timeoutSeconds: NATS_TIMEOUT_SEC,
+        pingIntervalSeconds: NATS_PING_INTERVAL_SEC,
+        pingMaxAttempts: NATS_PING_MAX_ATTEMPTS,
+        retryIntervalSeconds: NATS_RETRY_INTERVAL_SEC,
         clientIdPrefix: "$userId-$deviceVirtualId",
         retryReconnect: true,
         connectOption:

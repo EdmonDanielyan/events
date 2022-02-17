@@ -54,8 +54,8 @@ class NatsStreamingClient {
   // ####################################################
 
   late nats.Client natsClient;
-  final String connectionID = Uuid().v4();
-  String _clientIdPrefix = Uuid().v4();
+  late String connectionID;
+  late String _clientIdPrefix;
   bool _connected = false;
   ConnectResponse? _connectResponse;
   Function? _onConnect;
@@ -202,6 +202,7 @@ class NatsStreamingClient {
 
     if (natsClient.status == nats.Status.connected) {
       clientId = '$clientIdPrefix-${Uuid().v4()}';
+      connectionID = Uuid().v4();
       _logger.finest(() => 'NATS connect request with clientId: $clientId');
 
       ConnectRequest connectRequest = ConnectRequest()
