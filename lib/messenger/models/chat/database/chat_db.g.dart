@@ -402,9 +402,10 @@ class ChatTableSchemaCompanion extends UpdateCompanion<ChatTable> {
 
 class $ChatTableSchemaTable extends ChatTableSchema
     with TableInfo<$ChatTableSchemaTable, ChatTable> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $ChatTableSchemaTable(this._db, [this._alias]);
+  $ChatTableSchemaTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -584,13 +585,13 @@ class $ChatTableSchemaTable extends ChatTableSchema
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   ChatTable map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return ChatTable.fromData(data, _db,
+    return ChatTable.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   $ChatTableSchemaTable createAlias(String alias) {
-    return $ChatTableSchemaTable(_db, alias);
+    return $ChatTableSchemaTable(attachedDatabase, alias);
   }
 }
 
@@ -1000,9 +1001,10 @@ class MessageTableSchemaCompanion extends UpdateCompanion<MessageTable> {
 
 class $MessageTableSchemaTable extends MessageTableSchema
     with TableInfo<$MessageTableSchemaTable, MessageTable> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $MessageTableSchemaTable(this._db, [this._alias]);
+  $MessageTableSchemaTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -1162,13 +1164,13 @@ class $MessageTableSchemaTable extends MessageTableSchema
   Set<GeneratedColumn> get $primaryKey => {id, chatId};
   @override
   MessageTable map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return MessageTable.fromData(data, _db,
+    return MessageTable.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   $MessageTableSchemaTable createAlias(String alias) {
-    return $MessageTableSchemaTable(_db, alias);
+    return $MessageTableSchemaTable(attachedDatabase, alias);
   }
 
   static TypeConverter<MessageSentStatus, int> $converter0 =
@@ -1322,9 +1324,10 @@ class UserTableSchemaCompanion extends UpdateCompanion<UserTable> {
 
 class $UserTableSchemaTable extends UserTableSchema
     with TableInfo<$UserTableSchemaTable, UserTable> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $UserTableSchemaTable(this._db, [this._alias]);
+  $UserTableSchemaTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
@@ -1376,13 +1379,13 @@ class $UserTableSchemaTable extends UserTableSchema
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   UserTable map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return UserTable.fromData(data, _db,
+    return UserTable.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   $UserTableSchemaTable createAlias(String alias) {
-    return $UserTableSchemaTable(_db, alias);
+    return $UserTableSchemaTable(attachedDatabase, alias);
   }
 }
 
@@ -1534,9 +1537,10 @@ class ParticipantTableSchemaCompanion
 
 class $ParticipantTableSchemaTable extends ParticipantTableSchema
     with TableInfo<$ParticipantTableSchemaTable, ParticipantTable> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $ParticipantTableSchemaTable(this._db, [this._alias]);
+  $ParticipantTableSchemaTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _chatIdMeta = const VerificationMeta('chatId');
   @override
   late final GeneratedColumn<String?> chatId = GeneratedColumn<String?>(
@@ -1589,13 +1593,13 @@ class $ParticipantTableSchemaTable extends ParticipantTableSchema
   Set<GeneratedColumn> get $primaryKey => {chatId, userId};
   @override
   ParticipantTable map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return ParticipantTable.fromData(data, _db,
+    return ParticipantTable.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   $ParticipantTableSchemaTable createAlias(String alias) {
-    return $ParticipantTableSchemaTable(_db, alias);
+    return $ParticipantTableSchemaTable(attachedDatabase, alias);
   }
 }
 
@@ -1721,9 +1725,10 @@ class ChannelTableSchemaCompanion extends UpdateCompanion<ChannelTable> {
 
 class $ChannelTableSchemaTable extends ChannelTableSchema
     with TableInfo<$ChannelTableSchemaTable, ChannelTable> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $ChannelTableSchemaTable(this._db, [this._alias]);
+  $ChannelTableSchemaTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -1763,13 +1768,13 @@ class $ChannelTableSchemaTable extends ChannelTableSchema
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   ChannelTable map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return ChannelTable.fromData(data, _db,
+    return ChannelTable.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   $ChannelTableSchemaTable createAlias(String alias) {
-    return $ChannelTableSchemaTable(_db, alias);
+    return $ChannelTableSchemaTable(attachedDatabase, alias);
   }
 }
 
