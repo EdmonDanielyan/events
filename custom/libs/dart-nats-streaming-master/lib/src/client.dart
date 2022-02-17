@@ -75,6 +75,8 @@ class NatsStreamingClient {
   int failPings = 0;
   int pingInterval = 10;
   int timeout = 5;
+  int maxSubscribeAttempts = 1;
+
   nats.ConnectOption? connectOption;
   String clusterID = 'default';
 
@@ -104,6 +106,7 @@ class NatsStreamingClient {
     String? clusterID,
     int? pingIntervalSeconds,
     int? pingMaxAttempts,
+    int? maxSubscribeAttempts,
     List<int>? certificate,
   }) {
     this.uri = uri;
@@ -132,7 +135,8 @@ class NatsStreamingClient {
           clientIdPrefix: clientIdPrefix,
           clusterID: clusterID,
           pingInterval: pingIntervalSeconds,
-          pingMaxAttempts: pingMaxAttempts);
+          pingMaxAttempts: pingMaxAttempts,
+          maxSubscribeAttempts: maxSubscribeAttempts);
     }
   }
 
@@ -147,6 +151,7 @@ class NatsStreamingClient {
     String? clusterID,
     int? pingInterval,
     int? pingMaxAttempts,
+    int? maxSubscribeAttempts,
   }) async {
     this.host = host;
     this.port = port;
@@ -161,6 +166,10 @@ class NatsStreamingClient {
 
     if (pingMaxAttempts != null) {
       this.pingMaxAttempts = pingMaxAttempts;
+    }
+
+    if (maxSubscribeAttempts != null) {
+      this.maxSubscribeAttempts = maxSubscribeAttempts;
     }
 
     if (connectOption != null) {
@@ -514,7 +523,7 @@ class NatsStreamingClient {
       subscriptionRequest.startTimeDelta = startTimeDelta;
     }
 
-    for (int i = 1; i <= 10; i++) {
+    for (int i = 0; i < maxSubscribeAttempts; i++) {
       var tryToSubscribeResponse = await tryToSubscribe(subscriptionRequest);
       if (tryToSubscribeResponse != null &&
           !_subscriptionInboxes.contains(tryToSubscribeResponse.ackInbox)) {

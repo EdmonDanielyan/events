@@ -208,6 +208,7 @@ class NatsProvider {
         retryIntervalSeconds: NATS_RETRY_INTERVAL_SEC,
         clientIdPrefix: "$userId-$deviceVirtualId",
         retryReconnect: true,
+        maxSubscribeAttempts: MAX_SUBSCRIBE_ATTEMPTS,
         connectOption:
             nats.ConnectOption(tlsRequired: true, auth_token: natsToken));
     return connectResult;
