@@ -276,10 +276,10 @@ class NatsStreamingClient {
     _pingTimer?.cancel();
     retryReconnect = false;
     failPings = 0;
-    await _disconnect();
+    await disconnect();
   }
 
-  Future<void> _disconnect() async {
+  Future<void> disconnect() async {
     _logger.finest('_disconnect');
     try {
       if (_onDisconnect != null) {
@@ -315,14 +315,14 @@ class NatsStreamingClient {
       if (retryReconnect) {
         await _reconnect();
       } else {
-        await _disconnect();
+        await disconnect();
       }
     }
   }
 
   Future<void> _reconnect() async {
     _logger.finest('_reconnect');
-    if (connected) await _disconnect();
+    if (connected) await disconnect();
     await Future.delayed(Duration(seconds: retryInterval), () => {});
     _logger.finest('_reconnect: after waiting retryInterval');
     await _connect();
