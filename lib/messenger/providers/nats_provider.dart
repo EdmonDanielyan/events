@@ -278,7 +278,7 @@ class NatsProvider {
       bytes: message.toBytes(),
       guid: message.id,
       onDeliveryFail: (msg, d) {
-        _stan.disconnect();
+        //_stan.disconnect();
       },
     );
   }

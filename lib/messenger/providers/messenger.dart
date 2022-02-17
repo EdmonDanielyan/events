@@ -88,11 +88,15 @@ class Messenger with Loggable {
 
     natsProvider.onDisconnected = () async {
       logger.info("onDisconnected");
+      _onDisconnect();
       softDispose();
-      _showPopup(false);
     };
 
     natsProvider.onUnacknowledged = (subscription, message, onMessage) async {};
+  }
+
+  void _onDisconnect() {
+    _showPopup(false);
   }
 
   Future<void> natsConnect() async {

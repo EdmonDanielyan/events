@@ -276,10 +276,10 @@ class NatsStreamingClient {
     _pingTimer?.cancel();
     retryReconnect = false;
     failPings = 0;
-    await disconnect();
+    await _disconnect();
   }
 
-  Future<void> disconnect() async {
+  Future<void> _disconnect() async {
     _logger.finest('_disconnect');
     try {
       if (_onDisconnect != null) {
@@ -300,6 +300,7 @@ class NatsStreamingClient {
 
   Future<void> _heartbeat() async {
     _logger.finest('_heartbeat');
+
     bool p = await pingWithTimeout();
     if (p) {
       failPings = 0;
@@ -315,14 +316,14 @@ class NatsStreamingClient {
       if (retryReconnect) {
         await _reconnect();
       } else {
-        await disconnect();
+        await _disconnect();
       }
     }
   }
 
   Future<void> _reconnect() async {
     _logger.finest('_reconnect');
-    if (connected) await disconnect();
+    if (connected) await _disconnect();
     await Future.delayed(Duration(seconds: retryInterval), () => {});
     _logger.finest('_reconnect: after waiting retryInterval');
     await _connect();
