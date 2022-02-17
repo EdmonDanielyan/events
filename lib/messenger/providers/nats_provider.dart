@@ -274,7 +274,13 @@ class NatsProvider {
 
   Future<bool> _sendMessage(String channel, NatsMessage message) async {
     return await _stan.pubBytes(
-        subject: channel, bytes: message.toBytes(), guid: message.id);
+      subject: channel,
+      bytes: message.toBytes(),
+      guid: message.id,
+      onDeliveryFail: (msg, d) {
+        _stan.disconnect();
+      },
+    );
   }
 
   String getPrivateUserChatIdList() => authResponse.data.chatListChannel;

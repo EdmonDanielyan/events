@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/app.dart';
+import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/chat/chat_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/online/online_bloc.dart';
@@ -86,6 +89,7 @@ class Messenger with Loggable {
     natsProvider.onDisconnected = () async {
       logger.info("onDisconnected");
       softDispose();
+      _showPopup(false);
     };
 
     natsProvider.onUnacknowledged = (subscription, message, onMessage) async {};
@@ -98,6 +102,20 @@ class Messenger with Loggable {
         password: sl.get(instanceName: "messengerAuthPassword"));
     textSender.redeliverMessages();
     await _onConnected();
+    _showPopup(true);
+  }
+
+  void _showPopup(bool connected) {
+    final context = App.getContext;
+    if (context != null) {
+      if (connected) {
+        SuccessCustomSnackbar(
+            context: context, txt: localizationInstance.connectedToServer);
+      } else {
+        SimpleCustomSnackbar(
+            context: context, txt: localizationInstance.disconnectedFromServer);
+      }
+    }
   }
 
   Future<void> _onConnected() async {
