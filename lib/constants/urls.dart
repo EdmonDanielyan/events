@@ -66,11 +66,11 @@ abstract class UrlsConfigProd {
 
   @prod
   @Named("apiUrl")
-  String get apiUrl => "https://portal.irkutskoil.ru/api/v1";
+  String get apiUrl => "https://test.ink.vpool.qsoft.ru/api/v1";
 
   @prod
   @Named("apiCertificatePath")
-  String get apiCertificatePath => "assets/certs/_.irkutskoil.ru.pem";
+  String get apiCertificatePath => "assets/certs/test.ink.vpool.qsoft.ru.pem";
 }
 
 @module
