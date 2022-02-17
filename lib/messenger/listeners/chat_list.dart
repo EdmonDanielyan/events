@@ -63,13 +63,11 @@ class ChatListListener extends MessageListener {
       }
 
       if (dataMessage != null) {
-        if (natsProvider.acknowledge(sub, dataMessage)) {
-          NatsMessage message = natsProvider.parseMessage(dataMessage);
-          await onMessage(channel, message);
-          //todo: рано отписываемся по идеи надо прочитать самую валидную для этого клиента запись и потом отписаться
-          sub.subscription.close();
-        }
+        NatsMessage message = natsProvider.parseMessage(dataMessage);
+        await onMessage(channel, message);
+        //todo: рано отписываемся по идеи надо прочитать самую валидную для этого клиента запись и потом отписаться
       }
+      sub.subscription.close();
     } on SubscriptionAlreadyExistException {
     } catch (_e) {}
   }
