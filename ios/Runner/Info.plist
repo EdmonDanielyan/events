@@ -70,5 +70,7 @@
 		<false/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSLocalNetworkUsageDescription</key>
+		<string>Text</string>
 	</dict>
 </plist>

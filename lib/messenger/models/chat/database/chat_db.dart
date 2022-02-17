@@ -35,6 +35,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
               path: "chat_db_$userId.sqlite",
               password: localDatabasePassword,
               logStatements: false //kDebugMode,
+
               ),
         );
 
@@ -272,6 +273,17 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
             ]))
           .get();
 
+  Future<List<MessageTable>> getErrorMessages(int userId,
+          {OrderingMode orderingMode = OrderingMode.asc}) =>
+      (select(messageTableSchema)
+            ..where((tbl) =>
+                tbl.userId.equals(userId) &
+                (tbl.sentStatus.equals(MessageSentStatus.ERROR.index)))
+            ..orderBy([
+              (t) => OrderingTerm(expression: t.sequence, mode: orderingMode),
+            ]))
+          .get();
+
   Stream<List<MessageWithUser>> watchChatMessages(
     String chatId, {
     OrderingMode orderMode = OrderingMode.asc,
@@ -321,7 +333,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           ..where((tbl) =>
               tbl.chatId.equals(chatId) & (tbl.message.contains("http")))
           ..orderBy([
-            (t) => OrderingTerm(expression: t.timestamp, mode: OrderingMode.asc)
+            (t) => OrderingTerm(expression: t.sequence, mode: OrderingMode.desc)
           ]))
         .join([
           leftOuterJoin(userTableSchema,
@@ -504,7 +516,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   //USED TO AVOID APP CRASH AFTER CHANGING DB
   @override
-  int get schemaVersion => 41;
+  int get schemaVersion => 42;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

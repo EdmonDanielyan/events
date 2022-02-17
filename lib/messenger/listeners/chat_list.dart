@@ -50,6 +50,7 @@ class ChatListListener extends MessageListener {
     try {
       final channel = natsProvider.getPrivateUserChatIdList();
       final sub = await natsProvider.listenChatList(channel);
+      if (sub == null) return;
       DataMessage? dataMessage;
       try {
         //todo: возможно то что лежит в стриме первым это плохая запись или совсем старая, нельзя на это полагаться

@@ -216,13 +216,13 @@ abstract class TokenDataInjectorModule {
 
 @lazySingleton
 class TokenDataHolder with Loggable {
-  late String _userId;
+  String _userId = "";
 
-  late String _deviceVirtualId;
+  String _deviceVirtualId = "";
 
-  late String _natsToken;
+  String _natsToken = "";
 
-  late String _localDatabasePassword;
+  String _localDatabasePassword = "";
 
   String get userId => _userId;
 

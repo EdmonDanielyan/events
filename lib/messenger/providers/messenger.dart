@@ -49,29 +49,32 @@ class Messenger with Loggable {
   bool get isConnected => natsProvider.isConnected;
 
   Future<void> init() async {
-    logger.finest("init");
-    await sl<TokenDataHolder>().update();
-    this.natsProvider = sl();
-    if (this.natsProvider.isDisposed) {
-      throw "Using disposable NATS Provider is prohibited";
+    String? refreshToken = await Token.getRefresh();
+    if (refreshToken != null) {
+      logger.finest("init");
+      await sl<TokenDataHolder>().update();
+      this.natsProvider = sl();
+      if (this.natsProvider.isDisposed) {
+        throw "Using disposable NATS Provider is prohibited";
+      }
+      this.chatDatabaseCubit = sl();
+      this.chatCubit = sl();
+      this.userFunctions = sl();
+      this.messageEditorSender = sl();
+      this.userReactionSender = sl();
+      this.chatSaver = sl();
+      this.chatFunctions = sl();
+      this.inviteSender = sl();
+      this.chatEventsSender = sl();
+      this.textSender = sl();
+      this.registry = sl();
+      this.chatCreation = sl();
+      this.onlineSender = sl();
+      this.onlineBloc = sl();
+      this.pushNotificationManager = sl<PushNotificationManager>();
+      _configureNatsProvider();
+      await natsProvider.load();
     }
-    this.chatDatabaseCubit = sl();
-    this.chatCubit = sl();
-    this.userFunctions = sl();
-    this.messageEditorSender = sl();
-    this.userReactionSender = sl();
-    this.chatSaver = sl();
-    this.chatFunctions = sl();
-    this.inviteSender = sl();
-    this.chatEventsSender = sl();
-    this.textSender = sl();
-    this.registry = sl();
-    this.chatCreation = sl();
-    this.onlineSender = sl();
-    this.onlineBloc = sl();
-    this.pushNotificationManager = sl<PushNotificationManager>();
-    _configureNatsProvider();
-    await natsProvider.load();
   }
 
   Future<void> _configureNatsProvider() async {

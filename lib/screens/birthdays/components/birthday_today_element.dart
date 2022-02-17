@@ -8,14 +8,21 @@ import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat_user.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
+import 'package:ink_mobile/screens/birthdays/components/birthday_avatar.dart';
+import 'package:ink_mobile/screens/birthdays/components/birthday_body.dart';
 import 'package:ink_mobile/setup.dart';
 
 import '../../../setup.dart';
 
 class BirthdayTodayElement extends StatelessWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
+  final int index;
   const BirthdayTodayElement(
-      {Key? key, required this.birthday, required this.chatDatabaseCubit})
+      {Key? key,
+      required this.index,
+      required this.birthday,
+      required this.chatDatabaseCubit})
       : super(key: key);
 
   final BirthdayData birthday;
@@ -23,90 +30,64 @@ class BirthdayTodayElement extends StatelessWidget {
 
   Future<void> _congratulate(BuildContext context) async {
     if (_messenger.isConnected) {
-      ChatTable newChat = await _messenger.chatCreation.createDialogChat(
+      ChatTable? chat = await _messenger.chatCreation.isSingleChatExists(
           ChatUserViewModel.birthdayDataToUserTable(birthday));
-      OpenChat(chatDatabaseCubit, newChat).call();
+
+      if (chat != null) {
+        OpenChat(chatDatabaseCubit, chat).call();
+      } else {
+        ChatTable newChat = await _messenger.chatCreation.createDialogChat(
+            ChatUserViewModel.birthdayDataToUserTable(birthday));
+        Navigator.of(context).pop();
+        OpenChat(chatDatabaseCubit, newChat).call();
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Row(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Container(
-              alignment: Alignment.topCenter,
-              margin: EdgeInsets.only(left: 15, top: 8, bottom: 8, right: 10),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    '/personal',
-                    arguments: {'id': birthday.id},
-                  );
-                },
-                child: CircleAvatar(
-                  radius: 35,
-                  backgroundImage: birthday.pathToAvatar != null
-                      ? NetworkImage(birthday.pathToAvatar!)
-                      : AssetImage('assets/images/avatars/avatar_default.png')
-                          as ImageProvider,
+      padding: index == 0 ? const EdgeInsets.symmetric(vertical: 3.0) : null,
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            BirthdayAvatar(birthday: birthday),
+            Expanded(
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.topLeft,
+                      margin: EdgeInsets.only(bottom: 5),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/personal',
+                              arguments: {'id': birthday.id});
+                        },
+                        child: Text(
+                          birthday.name ?? '',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                    BirthdayBody(birthday: birthday),
+                  ],
                 ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 8,
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.topLeft,
-                  margin: EdgeInsets.only(bottom: 5),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/personal',
-                          arguments: {'id': birthday.id});
-                    },
-                    child: Text(
-                      birthday.name ?? '',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.bottomLeft,
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: birthday.city,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: '. ',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: birthday.workPosition,
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          _congratulateWidget(context),
-        ],
+            if (birthday.id != JwtPayload.myId) ...[
+              _congratulateWidget(context),
+            ],
+          ],
+        ),
       ),
     );
   }
@@ -119,11 +100,12 @@ class BirthdayTodayElement extends StatelessWidget {
         margin: const EdgeInsets.only(right: 1.0),
         color: Theme.of(context).primaryColor,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 12),
             SizedBox(
               width: 40.0,
-              height: 30.0,
+              height: 35.0,
               child: SvgPicture.asset(GIFT_ICON_SVG, color: Colors.white),
             ),
             const SizedBox(height: 3.0),

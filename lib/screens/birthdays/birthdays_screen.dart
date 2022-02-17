@@ -190,16 +190,20 @@ class BirthdaysScreen extends StatelessWidget {
       BuildContext context, List<BirthdayData>? birthdaysData) {
     List<Widget> birthdays = [];
 
+    int i = 0;
+
     birthdaysData?.forEach((birthday) {
       birthdays.add(BirthdayTodayElement(
         birthday: birthday,
         chatDatabaseCubit: chatDatabaseCubit,
+        index: i,
       ));
 
       birthdays.add(Divider(
         thickness: 1,
         height: 4,
       ));
+      i++;
     });
 
     if (birthdays.length > 0) birthdays.removeLast();

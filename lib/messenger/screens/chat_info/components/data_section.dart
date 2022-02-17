@@ -33,10 +33,10 @@ class ChatInfoDataSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // linksButton(context),
-          // SizedBox(height: 5.0),
-          // divider(),
-          // SizedBox(height: 5.0),
+          linksButton(context),
+          SizedBox(height: 5.0),
+          divider(),
+          SizedBox(height: 5.0),
           notificationBtnWidget(),
           divider(),
           unreadCounterBtnWidget(),

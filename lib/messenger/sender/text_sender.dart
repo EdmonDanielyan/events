@@ -61,12 +61,14 @@ class TextSender with Loggable {
         );
   }
 
-  Future<void> redeliverMessages({int? userId}) async {
+  Future<void> redeliverMessages(
+      {int? userId, bool onlyErrorMessages = false}) async {
     userId = userId ?? JwtPayload.myId;
     logger.finest(() => 'redeliverMessages: $userId');
 
-    final unsentMessages =
-        await db.getUnsentMessages(userId, orderingMode: OrderingMode.asc);
+    final unsentMessages = onlyErrorMessages
+        ? await db.getErrorMessages(userId, orderingMode: OrderingMode.asc)
+        : await db.getUnsentMessages(userId, orderingMode: OrderingMode.asc);
 
     Map<String, ChatTable> chats = {};
 
