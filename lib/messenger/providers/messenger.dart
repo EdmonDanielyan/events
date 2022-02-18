@@ -23,6 +23,7 @@ import 'package:ink_mobile/messenger/sender/message_editor_sender.dart';
 import 'package:ink_mobile/messenger/sender/online_sender.dart';
 import 'package:ink_mobile/messenger/sender/text_sender.dart';
 import 'package:ink_mobile/messenger/sender/user_reaction_sender.dart';
+import 'package:ink_mobile/models/debouncer.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/providers/version_provider.dart';
@@ -118,11 +119,16 @@ class Messenger with Loggable {
   }
 
   void _onDisconnect() {
-    _showPopup(false);
+    _popupDebouncer.run(() {
+      _showPopup(false);
+    });
   }
+
+  Debouncer _popupDebouncer = Debouncer(milliseconds: 500);
 
   Future<void> natsConnect() async {
     logger.info("onConnected");
+
     await natsProvider.auth(
         login: sl.get(instanceName: "messengerAuthLogin"),
         password: sl.get(instanceName: "messengerAuthPassword"));
@@ -130,7 +136,9 @@ class Messenger with Loggable {
     await _versionMigration();
     textSender.redeliverMessages();
     await _onConnected();
-    _showPopup(true);
+    _popupDebouncer.run(() {
+      _showPopup(true);
+    });
   }
 
   void _showPopup(bool connected) {
