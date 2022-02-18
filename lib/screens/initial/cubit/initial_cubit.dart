@@ -49,7 +49,6 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
     try {
       if (await securityChecker.checkApplication()) {
         await init();
-
         emitState(type: InitialStateType.LOAD_MAIN);
       } else {
         emitError(localizationInstance.applicationSecurityFailed);

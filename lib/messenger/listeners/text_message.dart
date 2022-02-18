@@ -85,7 +85,7 @@ class TextMessageListener extends MessageListener {
         }
 
         await GetIt.I<SendMessage>().addMessage(chat, newMessage);
-        await userFunctions.insertUser(fields.user);
+        chatDatabaseCubit.db.insertUserOrUpdate(fields.user);
       }
     } on NoSuchMethodError {
       return;

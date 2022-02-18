@@ -39,7 +39,9 @@ class AuthHandler with Loggable {
   Future<bool> authenticate() async {
     final lockApp = sl.get<LockApp>();
     await lockApp.stopAuthentification().timeout(const Duration(seconds: 3));
+
     final auth = await lockApp.authenticate();
+
     if (auth) {
       await lockApp.stopAuthentification();
     }

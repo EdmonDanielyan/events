@@ -24,6 +24,8 @@ import 'package:ink_mobile/messenger/sender/online_sender.dart';
 import 'package:ink_mobile/messenger/sender/text_sender.dart';
 import 'package:ink_mobile/messenger/sender/user_reaction_sender.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/providers/package_info.dart';
+import 'package:ink_mobile/providers/version_provider.dart';
 
 import '../../setup.dart';
 
@@ -51,6 +53,25 @@ class Messenger with Loggable {
 
   bool get isConnected => natsProvider.isConnected;
 
+  Future<void> _versionMigration() async {
+    final versionProvider = VersionProvider(sl<PackageInfoProvider>());
+    final currentVersion = versionProvider.currentVersion;
+    final storedVersion = await versionProvider.storedVersion;
+    if (storedVersion == null || currentVersion != storedVersion) {
+      logger.finest(''' 
+      DELETING EVERYTHING WITH VERSION MIGRATION TO $currentVersion
+      ''');
+      try {
+        await chatDatabaseCubit.db.deleteEverything();
+        await versionProvider.setToStore(versionProvider.currentVersion);
+      } catch (_e) {
+        //FOR POTENTIAL DB SCHEMA ERRORS
+        logger.warning(
+            "DB SCHEME ERROR ${_e.toString()} WHILE DOING VERSION MIGRATION $currentVersion");
+      }
+    }
+  }
+
   Future<void> init() async {
     String? refreshToken = await Token.getRefresh();
     if (refreshToken != null) {
@@ -76,6 +97,7 @@ class Messenger with Loggable {
       this.onlineBloc = sl();
       this.pushNotificationManager = sl<PushNotificationManager>();
       _configureNatsProvider();
+
       await natsProvider.load();
     }
   }
@@ -104,6 +126,8 @@ class Messenger with Loggable {
     await natsProvider.auth(
         login: sl.get(instanceName: "messengerAuthLogin"),
         password: sl.get(instanceName: "messengerAuthPassword"));
+
+    await _versionMigration();
     textSender.redeliverMessages();
     await _onConnected();
     _showPopup(true);
