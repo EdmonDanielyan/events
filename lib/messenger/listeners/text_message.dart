@@ -7,13 +7,13 @@ import 'package:ink_mobile/messenger/cases/user_functions.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 import 'package:ink_mobile/messenger/models/chat/nats/message.dart';
-import 'package:ink_mobile/messenger/models/chat_list_view.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/providers/notifications/notifications.dart';
 import 'package:ink_mobile/messenger/sender/invite_sender.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 
 import '../cases/chat_functions.dart';
 import 'channels_registry.dart';
@@ -77,15 +77,16 @@ class TextMessageListener extends MessageListener {
         ChatTable? myChat =
             await chatDatabaseCubit.db.selectChatById(fields.chat.id);
 
-        var chat = fields.chat;
+        if (myChat != null) {
+          if (!myChat.isGroup() &&
+              fields.user.id != JwtPayload.myId &&
+              myChat.name != fields.user.name) {
+            myChat = myChat.copyWith(name: fields.user.name);
+          }
 
-        if (fields.user.id != JwtPayload.myId) {
-          chat = myChat ??
-              ChatListView.changeChatForParticipant(fields.chat, [fields.user]);
+          await GetIt.I<SendMessage>().addMessage(myChat, newMessage);
+          chatDatabaseCubit.db.insertUserOrUpdate(fields.user);
         }
-
-        await GetIt.I<SendMessage>().addMessage(chat, newMessage);
-        chatDatabaseCubit.db.insertUserOrUpdate(fields.user);
       }
     } on NoSuchMethodError {
       return;

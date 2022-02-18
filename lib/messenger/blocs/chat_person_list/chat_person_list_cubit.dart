@@ -38,8 +38,7 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
       final response = await sl<ContactsNetworkRequest>(param1: searchValue)(
           pageNumber: pageNumber);
 
-      List<UserTable> users =
-          response.mapResponse(hideIds: hideIds, searchValue: searchValue);
+      List<UserTable> users = response.mapResponse(hideIds: hideIds);
 
       if (searchValue.isEmpty && users.isEmpty) {
         pageNumber++;

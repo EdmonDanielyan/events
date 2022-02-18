@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/components/dismissible/custom_dismissible.dart';
@@ -5,7 +7,6 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/messenger/models/chat_user.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_body.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_date.dart';
@@ -57,9 +58,6 @@ class _ChatListTileState extends State<ChatListTile> {
   UserTable? get lastUser => widget.messagesWithUser.last.user;
 
   final Messenger messenger = sl<Messenger>();
-
-  int? get oppositeUserId =>
-      ChatUserViewModel.getOppositeUserIdFromChat(widget.chat);
 
   @override
   Widget build(BuildContext context) {

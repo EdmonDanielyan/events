@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/screens/chat_info/components/participant_card.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/entities/new_chat_screen_params.dart';
+import 'package:ink_mobile/extensions/user_table.dart';
 
 class NewChatPersonContainer extends StatelessWidget {
   final UserTable user;
@@ -34,6 +35,7 @@ class NewChatPersonContainer extends StatelessWidget {
                   ? () => newChatScreenParams.onUserTap!(context, user)
                   : null,
               child: ParticipantCard(
+                overrideTitle: user.shortenName(searchValue: highlightTxt),
                 highlightTxt: highlightTxt,
                 user: user,
                 horizontalPadding: 0.0,

@@ -5,7 +5,7 @@ import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:main_api_client/model/get_contacts.dart';
 
 extension GetContactsExt on Response<GetContacts> {
-  List<UserTable> mapResponse({List<int>? hideIds, String searchValue = ""}) {
+  List<UserTable> mapResponse({List<int>? hideIds}) {
     List<UserTable> users = [];
 
     if (this.data == null) {
@@ -17,12 +17,6 @@ extension GetContactsExt on Response<GetContacts> {
     for (final item in items) {
       String lastName = item['last_name'];
       String name = item['name'];
-
-      if (searchValue.isNotEmpty) {
-        if (name.contains(searchValue) && lastName.isNotEmpty) {
-          lastName = "${lastName[0]}.";
-        }
-      }
 
       UserTable user = UserTable(
         id: item['id'],
