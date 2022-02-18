@@ -261,6 +261,28 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
             ..limit(1))
           .getSingleOrNull();
 
+  Future<MessageWithUser?> searchMessageWithUserByTextAndChatId(
+      String query, String chatId) async {
+    final msg = await (select(messageTableSchema)
+          ..where((tbl) =>
+              tbl.messageToLower.contains(query) & tbl.chatId.equals(chatId))
+          ..orderBy([
+            (t) => OrderingTerm(expression: t.sequence, mode: OrderingMode.desc)
+          ])
+          ..limit(1))
+        .join([
+      leftOuterJoin(userTableSchema,
+          userTableSchema.id.equalsExp(messageTableSchema.userId))
+    ]).getSingleOrNull();
+
+    return msg != null
+        ? MessageWithUser(
+            message: msg.readTableOrNull(messageTableSchema),
+            user: msg.readTableOrNull(userTableSchema),
+          )
+        : null;
+  }
+
   Future<List<MessageTable>> getUnsentMessages(int userId,
           {OrderingMode orderingMode = OrderingMode.asc}) =>
       (select(messageTableSchema)

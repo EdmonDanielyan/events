@@ -6,12 +6,12 @@ extension UserExt on UserTable {
     final splitName = name.split(" ");
     if (searchValue.isNotEmpty && splitName.length >= 2) {
       var lastName = splitName[0];
-      var otherName = splitName[1];
-      if (otherName.contains(searchValue) && lastName.isNotEmpty) {
+      var otherName = name.substring(lastName.length);
+      if (otherName.toString().contains(searchValue) && lastName.isNotEmpty) {
         lastName = "${lastName[0]}.";
       }
 
-      name = "$lastName $otherName".trim();
+      name = "${lastName.trim()} ${otherName.trim()}".trim();
     }
 
     return name;

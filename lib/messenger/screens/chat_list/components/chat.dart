@@ -26,7 +26,7 @@ class ChatListTile extends StatefulWidget {
   final double leadingGap;
   final List<MessageWithUser> messagesWithUser;
   final ChatDatabaseCubit chatDatabaseCubit;
-  final MessageTable? searchMessage;
+  final MessageWithUser? searchMessage;
   final void Function()? onTap;
   final void Function(DismissDirection)? onDismissed;
   final Future<bool?> Function(DismissDirection)? confirmDismiss;
@@ -110,7 +110,8 @@ class _ChatListTileState extends State<ChatListTile> {
                                   chat: widget.chat,
                                   lastMessage: lastMessage,
                                   searchMessage: widget.searchMessage,
-                                  lastUser: lastUser,
+                                  lastUser:
+                                      widget.searchMessage?.user ?? lastUser,
                                   highlightValue: widget.highlightValue,
                                 ),
                               ),

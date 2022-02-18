@@ -109,11 +109,15 @@ class TextSender with Loggable {
 
   Future<void> _sendHoldMessages() async {
     if (_holdChatMessages.isNotEmpty) {
-      for (final chatMessage in _holdChatMessages) {
-        await sendMessage(chatMessage.chat, chatMessage.message!);
+      try {
+        for (final chatMessage in _holdChatMessages) {
+          await sendMessage(chatMessage.chat, chatMessage.message!);
+        }
+      } catch (e) {
+        logger.warning(() => "error sending hold messages ${e.toString()}");
+      } finally {
+        _holdChatMessages.clear();
       }
-
-      _holdChatMessages.clear();
     }
   }
 

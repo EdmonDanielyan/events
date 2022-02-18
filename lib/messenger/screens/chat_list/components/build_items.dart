@@ -58,11 +58,11 @@ class _BuildChatItemsState extends State<BuildChatItems> {
                   return const SizedBox();
                 }
 
-                MessageTable? searchMessage;
+                MessageWithUser? searchMessage;
 
                 if (widget.searchChatCubit.searchMessage != null) {
                   widget.searchChatCubit.searchMessage!.forEach((element) {
-                    if (element.chatId == chats[index].id) {
+                    if (element.message?.chatId == chats[index].id) {
                       searchMessage = element;
                     }
                   });
