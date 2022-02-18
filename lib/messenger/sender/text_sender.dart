@@ -6,6 +6,7 @@ import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/schema/db_enum.dart';
 import 'package:ink_mobile/messenger/models/chat/nats/message.dart';
 import 'package:ink_mobile/messenger/models/chat/nats/texting.dart';
+import 'package:ink_mobile/messenger/models/chat_with_message.dart';
 import 'package:ink_mobile/messenger/models/texting.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
@@ -25,8 +26,17 @@ class TextSender with Loggable {
   TextSender(this.natsProvider, this.userFunctions, this.chatFunctions, this.db,
       this.registry);
 
+  List<ChatWithMessage> _holdChatMessages = [];
+  bool _redeliveryBusy = false;
+
   /// Publicise message to chat
-  Future<bool> sendMessage(ChatTable chat, MessageTable message) async {
+  Future<void> sendMessage(ChatTable chat, MessageTable message,
+      {bool redelivery = false}) async {
+    if (!redelivery && _redeliveryBusy) {
+      _holdChatMessages.add(ChatWithMessage(chat: chat, message: message));
+      return;
+    }
+
     bool success = await _sendTxtMessage(chat, message);
 
     logger.finest(() => '''
@@ -38,8 +48,6 @@ class TextSender with Loggable {
     if (!success) {
       await chatFunctions.updateMessageStatus(message, MessageSentStatus.ERROR);
     }
-
-    return success;
   }
 
   Future<bool> _sendTxtMessage(
@@ -73,6 +81,7 @@ class TextSender with Loggable {
     Map<String, ChatTable> chats = {};
 
     if (unsentMessages.isNotEmpty) {
+      _redeliveryBusy = true;
       for (final message in unsentMessages) {
         logger.finest(() => '''
         REDELEVIRING MESSAGE: $message
@@ -90,9 +99,21 @@ class TextSender with Loggable {
           logger.fine(() =>
               'SENDING TO CHAT ${chats[message.chatId]!.name} - ${message.message}');
 
-          await sendMessage(chats[message.chatId]!, message);
+          await sendMessage(chats[message.chatId]!, message, redelivery: true);
         }
       }
+      _redeliveryBusy = false;
+      _sendHoldMessages();
+    }
+  }
+
+  Future<void> _sendHoldMessages() async {
+    if (_holdChatMessages.isNotEmpty) {
+      for (final chatMessage in _holdChatMessages) {
+        await sendMessage(chatMessage.chat, chatMessage.message!);
+      }
+
+      _holdChatMessages.clear();
     }
   }
 
