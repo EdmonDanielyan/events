@@ -31,7 +31,7 @@ class _BodyState extends State<Body> {
   late SearchChatCubit _chatListCubit;
   final TextEditingController _searchController = TextEditingController();
   final Messenger messenger = sl<Messenger>();
-  final Debouncer _debouncer = Debouncer(milliseconds: 3000);
+  int _chatsLoaded = 0;
 
   Future<bool> _deleteChat(ChatTable chat, BuildContext context) async {
     bool removed = false;
@@ -53,14 +53,17 @@ class _BodyState extends State<Body> {
     return removed;
   }
 
-  Widget? _buildChats;
-
-  Debouncer _streamDebouncer = Debouncer(milliseconds: 0);
+  Debouncer _streamDebouncer = Debouncer(milliseconds: 300);
 
   void _handleStream(List<ChatTable> data, EventSink<List<ChatTable>> sink) {
-    _streamDebouncer.run(() {
+    _chatsLoaded++;
+    if (_chatsLoaded < 2) {
       sink.add(data);
-    });
+    } else {
+      _streamDebouncer.run(() {
+        sink.add(data);
+      });
+    }
   }
 
   @override
@@ -92,19 +95,16 @@ class _BodyState extends State<Body> {
                         if (snapshot.hasData) {
                           final items = snapshot.data ?? [];
                           if (items.isNotEmpty) {
-                            _streamDebouncer = Debouncer(milliseconds: 300);
                             _chatListCubit.emitChats(items,
                                 messenger: messenger);
 
-                            _debouncer.run(() {
-                              _buildChats = _chatsBuilder();
-                            });
-
-                            if (_buildChats == null) {
-                              _buildChats = _chatsBuilder();
-                            }
-
-                            return _buildChats!;
+                            return BuildChatItems(
+                              chatDatabaseCubit: _chatDatabaseCubit,
+                              searchChatCubit: _chatListCubit,
+                              contentPadding: _contentPadding,
+                              deleteChat: _deleteChat,
+                              searchController: _searchController,
+                            );
                           } else {
                             return Center(
                               child: ErrorLoadingWidget(
@@ -123,16 +123,6 @@ class _BodyState extends State<Body> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _chatsBuilder() {
-    return BuildChatItems(
-      chatDatabaseCubit: _chatDatabaseCubit,
-      searchChatCubit: _chatListCubit,
-      contentPadding: _contentPadding,
-      deleteChat: _deleteChat,
-      searchController: _searchController,
     );
   }
 }

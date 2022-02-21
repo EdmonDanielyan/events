@@ -124,8 +124,6 @@ class Messenger with Loggable {
         startSequence: message.sequence,
         startPosition: subscription.subscriptionRequest.startPosition,
       );
-      print(subscription.subject);
-      print("UNACKNOWLEDGED");
     };
   }
 
