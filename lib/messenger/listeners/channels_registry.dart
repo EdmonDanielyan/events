@@ -108,7 +108,7 @@ class ChannelsRegistry with Loggable {
     final exists = await channelFunctions.channelExists(inviteUserChannel);
 
     if (!exists) {
-      await _subscribeToChannel(inviteUserChannel, pushSubscription: false);
+      await subscribeToChannel(inviteUserChannel, pushSubscription: false);
     }
   }
 
@@ -119,7 +119,7 @@ class ChannelsRegistry with Loggable {
 
     if (channels.isNotEmpty) {
       for (final channel in channels) {
-        await _subscribeToChannel(
+        await subscribeToChannel(
           channel.id,
           startSequence: getSequence(channel.sequence),
         );
@@ -141,18 +141,17 @@ class ChannelsRegistry with Loggable {
     return listener.onMessage(channel, message);
   }
 
-  Future<void> _subscribeToChannel(String channel,
+  Future<void> subscribeToChannel(String channel,
       {pushSubscription = true,
       startSequence = Int64.ZERO,
       startPosition = StartPosition.SequenceStart,
       maxInFlight = MAX_IN_FLIGHTS}) async {
-    logger.fine(() => "_subscribeToChannel: $channel, $startSequence");
+    logger.fine(() => "subscribeToChannel: $channel, $startSequence");
 
     if (!natsProvider.isConnected) {
       logger.warning("nats is not connected");
       return;
     }
-
     if (!isListening(channel)) {
       var chatId = channel.split(".").last;
       //We ignore await here to speed up channel enumeration
@@ -166,6 +165,7 @@ class ChannelsRegistry with Loggable {
           pushNotificationManager.unsubscribeFromTopic(channel);
         }
       }
+
       try {
         await natsProvider.subscribeToChannel(channel, onChannelMessage,
             ackWaitSeconds: ACK_WAITS_SECONDS,
@@ -179,16 +179,19 @@ class ChannelsRegistry with Loggable {
     }
   }
 
-  Future<void> unSubscribeFromChannel(String channel) async {
+  Future<void> unSubscribeFromChannel(String channel,
+      {bool deleteFromDatabase = true}) async {
     logger.finest(() => "unSubscribeFromChannel: $channel");
-    natsProvider.unsubscribeFromChannel(channel);
+    await natsProvider.unsubscribeFromChannel(channel);
     if (isListening(channel)) {
       subscribedChannels.remove(channel);
     }
     if (channel.contains("Text")) {
-      pushNotificationManager.unsubscribeFromTopic(channel);
+      await pushNotificationManager.unsubscribeFromTopic(channel);
     }
-    channelFunctions.deleteChannel(channel);
+    if (deleteFromDatabase) {
+      await channelFunctions.deleteChannel(channel);
+    }
   }
 
   Future<void> subscribeOnChatChannels(String channel) async {
@@ -208,10 +211,10 @@ class ChannelsRegistry with Loggable {
       final channelTable = await channelFunctions.saveByChannelName(chatChannel,
           sequence: sequence);
       if (channelTable != null) {
-        await _subscribeToChannel(channelTable.id, startSequence: sequence);
+        await subscribeToChannel(channelTable.id, startSequence: sequence);
       }
     } else {
-      await _subscribeToChannel(channelExists.id,
+      await subscribeToChannel(channelExists.id,
           startSequence: getSequence(channelExists.sequence));
     }
   }

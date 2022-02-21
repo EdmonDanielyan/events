@@ -599,6 +599,9 @@ class NatsStreamingClient {
 
     if (subscription.redeliveryCounter >= LIMIT_REDELIVERY || !ackSendSuccess) {
       _handleAckErrors(subscription, dataMessage, ackSendSuccess);
+      if (unacknowledgedMessageHandler != null) {
+        unacknowledgedMessageHandler(subscription, dataMessage);
+      }
       return false;
     }
 

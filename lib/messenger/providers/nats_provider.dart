@@ -154,7 +154,7 @@ class NatsProvider {
     startPosition = StartPosition.SequenceStart,
   }) async {
     if (!_channelSubscriptions.containsKey(channel)) {
-      _logger.finest("subscribeToChannel: $channel");
+      _logger.finest("[NATS PROVIDER] subscribeToChannel: $channel");
       try {
         var subscription = await _stan.subscribe(
           subject: channel,
@@ -168,6 +168,7 @@ class NatsProvider {
         _channelSubscriptions[channel] = subscription;
         _channelCallbacks[channel] = onMessageFuture;
       } catch (_e) {
+        _logger.warning("[NATS PROVIDER] ERROR subscribeToChannel: $_e");
         //FOR NOT CONNECTED THROW
 
       }
