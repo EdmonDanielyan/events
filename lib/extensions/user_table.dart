@@ -7,7 +7,8 @@ extension UserExt on UserTable {
     if (searchValue.isNotEmpty && splitName.length >= 2) {
       var lastName = splitName[0];
       var otherName = name.substring(lastName.length);
-      if (otherName.toString().contains(searchValue) && lastName.isNotEmpty) {
+      if (otherName.toLowerCase().contains(searchValue.toLowerCase()) &&
+          lastName.isNotEmpty) {
         lastName = "${lastName[0]}.";
       }
 

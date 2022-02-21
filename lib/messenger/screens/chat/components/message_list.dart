@@ -50,10 +50,9 @@ class _MessageListState extends State<MessageList> with MessageMixins {
   ScrollController get scrollController => widget.scrollController;
 
   Debouncer _streamDebouncer = Debouncer(milliseconds: 0);
-
   final int _fixedLimit = 20;
-
   late int _limit;
+  int _messagesLoadedCounter = 0;
 
   void _handleData(
     List<MessageWithUser> data,
@@ -62,9 +61,13 @@ class _MessageListState extends State<MessageList> with MessageMixins {
     if (data.isNotEmpty && data.first.message?.userId == JwtPayload.myId) {
       sink.add(data);
     } else {
-      _streamDebouncer.run(() {
+      if (_messagesLoadedCounter < 1) {
         sink.add(data);
-      });
+      } else {
+        _streamDebouncer.run(() {
+          sink.add(data);
+        });
+      }
     }
   }
 
@@ -81,6 +84,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
   }
 
   void _messagesLoaded() {
+    _messagesLoadedCounter++;
     _streamDebouncer = Debouncer(milliseconds: 300);
     if (widget.messagesLoaded != null) {
       widget.messagesLoaded!();
