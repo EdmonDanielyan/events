@@ -70,6 +70,18 @@ class ChannelsRegistry with Loggable {
     };
   }
 
+  Future<void> onUnackMessages(
+      Subscription subscription, DataMessage message) async {
+    final channel = subscription.subject;
+    await unSubscribeFromChannel(channel, deleteFromDatabase: false);
+    await _subscribeToChannel(
+      subscription.subject,
+      pushSubscription: false,
+      startSequence: message.sequence,
+      startPosition: subscription.subscriptionRequest.startPosition,
+    );
+  }
+
   Future<void> saveChannel(NatsMessage message) async {
     final payload = message.payload;
     if (payload is Payload && !notStorableTypes.contains(payload.type)) {
@@ -108,7 +120,7 @@ class ChannelsRegistry with Loggable {
     final exists = await channelFunctions.channelExists(inviteUserChannel);
 
     if (!exists) {
-      await subscribeToChannel(inviteUserChannel, pushSubscription: false);
+      await _subscribeToChannel(inviteUserChannel, pushSubscription: false);
     }
   }
 
@@ -119,7 +131,7 @@ class ChannelsRegistry with Loggable {
 
     if (channels.isNotEmpty) {
       for (final channel in channels) {
-        await subscribeToChannel(
+        await _subscribeToChannel(
           channel.id,
           startSequence: getSequence(channel.sequence),
         );
@@ -141,7 +153,7 @@ class ChannelsRegistry with Loggable {
     return listener.onMessage(channel, message);
   }
 
-  Future<void> subscribeToChannel(String channel,
+  Future<void> _subscribeToChannel(String channel,
       {pushSubscription = true,
       startSequence = Int64.ZERO,
       startPosition = StartPosition.SequenceStart,
@@ -211,10 +223,10 @@ class ChannelsRegistry with Loggable {
       final channelTable = await channelFunctions.saveByChannelName(chatChannel,
           sequence: sequence);
       if (channelTable != null) {
-        await subscribeToChannel(channelTable.id, startSequence: sequence);
+        await _subscribeToChannel(channelTable.id, startSequence: sequence);
       }
     } else {
-      await subscribeToChannel(channelExists.id,
+      await _subscribeToChannel(channelExists.id,
           startSequence: getSequence(channelExists.sequence));
     }
   }

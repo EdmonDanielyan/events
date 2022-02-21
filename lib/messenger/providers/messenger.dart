@@ -116,14 +116,7 @@ class Messenger with Loggable {
     };
 
     natsProvider.onUnacknowledged = (subscription, message, onMessage) async {
-      final channel = subscription.subject;
-      await registry.unSubscribeFromChannel(channel, deleteFromDatabase: false);
-      await registry.subscribeToChannel(
-        subscription.subject,
-        pushSubscription: false,
-        startSequence: message.sequence,
-        startPosition: subscription.subscriptionRequest.startPosition,
-      );
+      registry.onUnackMessages(subscription, message);
     };
   }
 
