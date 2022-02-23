@@ -90,11 +90,14 @@ class MessageListView {
 
   static int unreadMessagesByMessages(List<MessageTable> items) =>
       items.fold(0, (previousValue, element) {
-        return !element.read &&
-                notIgnoringHoverTypes.contains(element.type) &&
-                !element.isByMe()
-            ? previousValue + 1
-            : previousValue + 0;
+        final isUnread = !element.read &&
+            notIgnoringHoverTypes.contains(element.type) &&
+            !element.isByMe();
+        if (isUnread) {
+          print(element);
+        }
+
+        return isUnread ? previousValue + 1 : previousValue + 0;
       });
 
   static List<MessageTable> messageWithUsersToMessage(

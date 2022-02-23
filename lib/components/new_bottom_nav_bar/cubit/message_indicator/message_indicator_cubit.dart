@@ -20,7 +20,8 @@ class MessageIndicatorCubit extends Cubit<int> {
       final newMessages = await _filter(event);
       int unreadMessages =
           MessageListView.unreadMessagesByMessages(newMessages);
-
+      print(")unreadMessages");
+      print(unreadMessages);
       if (!chatDatabaseCubit.state.loadingChats) {
         emitCounter(unreadMessages);
       } else {
@@ -35,12 +36,19 @@ class MessageIndicatorCubit extends Cubit<int> {
   Future<List<MessageTable>> _filter(List<MessageTable> messages) async {
     final chats = await chatDatabaseCubit.db.getAllChats();
     Set<String> disabledChats = {};
+    Set<String> chatIds = {};
 
     if (chats.isNotEmpty) {
-      for (final chat in chats)
+      for (final chat in chats) {
+        chatIds.add(chat.id);
         if (!(chat.unreadCounterOn ?? true)) disabledChats.add(chat.id);
+      }
     }
-    messages.removeWhere((element) => disabledChats.contains(element.chatId));
+    messages.removeWhere(
+      (element) =>
+          disabledChats.contains(element.chatId) ||
+          !chatIds.contains(element.chatId),
+    );
     return messages;
   }
 
