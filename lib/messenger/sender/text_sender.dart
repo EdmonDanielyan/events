@@ -47,6 +47,9 @@ class TextSender with Loggable {
 
     if (!success) {
       await chatFunctions.updateMessageStatus(message, MessageSentStatus.ERROR);
+    } else {
+      message.copyWith(timestamp: DateTime.now().add(Duration(milliseconds: natsProvider.correlationTimeMilliSec)));
+      await chatFunctions.updateMessageStatus(message, MessageSentStatus.SENT);
     }
   }
 
@@ -84,7 +87,7 @@ class TextSender with Loggable {
       _redeliveryBusy = true;
       for (final message in unsentMessages) {
         logger.finest(() => '''
-        REDELEVIRING MESSAGE: $message
+        REDELIVERING MESSAGE: $message
         ''');
 
         if (!chats.containsKey(message.chatId)) {

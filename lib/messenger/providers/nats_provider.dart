@@ -35,8 +35,9 @@ const DELETE_ACTION = 'delete';
 @lazySingleton
 class NatsProvider {
   static final _logger = Logger('NatsProvider');
-
   late NatsStreamingClient _stan;
+  late int correlationTimeMilliSec;
+
   final String natsWssUrl;
   final String natsCluster;
   final Uint8List certificate;
@@ -229,6 +230,8 @@ class NatsProvider {
           jsonEncode(AuthRequest(login: login, password: password).toJson()),
           timeout: Duration(seconds: timeoutInSeconds));
       authResponse = AuthResponse.fromJson(jsonDecode(response.string));
+      correlationTimeMilliSec = DateTime.now().millisecondsSinceEpoch - authResponse.data.timestamp;
+      _logger.finest(() => "auth correlationTimeMilliSec: ${correlationTimeMilliSec}");
       _logger.finest(() => "auth response: ${authResponse.toJson()}");
     } catch (e, s) {
       _logger.severe("Auth error", e, s);
