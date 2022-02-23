@@ -20,8 +20,7 @@ class MessageIndicatorCubit extends Cubit<int> {
       final newMessages = await _filter(event);
       int unreadMessages =
           MessageListView.unreadMessagesByMessages(newMessages);
-      print(")unreadMessages");
-      print(unreadMessages);
+
       if (!chatDatabaseCubit.state.loadingChats) {
         emitCounter(unreadMessages);
       } else {

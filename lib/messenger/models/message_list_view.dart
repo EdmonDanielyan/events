@@ -93,9 +93,6 @@ class MessageListView {
         final isUnread = !element.read &&
             notIgnoringHoverTypes.contains(element.type) &&
             !element.isByMe();
-        if (isUnread) {
-          print(element);
-        }
 
         return isUnread ? previousValue + 1 : previousValue + 0;
       });
