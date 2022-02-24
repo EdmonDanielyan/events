@@ -19,7 +19,7 @@ final sl = GetIt.instance;
 const unitTest = Environment("unitTest");
 //todo: Раскомментировать на релизе
 // const defaultScope = Environment.prod;
-const defaultScope = Environment.test;
+const defaultScope = Environment.prod;
 
 late String currentEnv;
 
