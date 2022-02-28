@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/messenger/blocs/chat/chat_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat/chat_state.dart';
@@ -31,7 +32,7 @@ class MessageBottomBar extends StatefulWidget {
   _MessageBottomBarState createState() => _MessageBottomBarState();
 }
 
-class _MessageBottomBarState extends State<MessageBottomBar> {
+class _MessageBottomBarState extends State<MessageBottomBar> with Loggable {
   final ChatEntities entities = ChatEntities();
   final FocusNode textfieldFocus = FocusNode();
   final TextEditingController _messageTextEditingController =
@@ -44,9 +45,11 @@ class _MessageBottomBarState extends State<MessageBottomBar> {
   ChatTable? get getChat => widget.chatDatabaseCubit.selectedChat;
 
   Future<void> onSend() async {
+
     final currentChat = getChat?.copyWith();
     if (entities.text.isNotEmpty && currentChat != null) {
       final saveEntities = entities.copyWith();
+      logger.finest(() => "onSend: $saveEntities");
       clearForm();
       final sendMessage = sl<SendMessage>();
       final message = await sendMessage.save(currentChat, saveEntities);

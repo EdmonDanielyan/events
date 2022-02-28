@@ -80,6 +80,7 @@ class ChatListListener extends MessageListener {
 
     try {
       ChatListPayload fields = ChatListPayload.fromMap(mapPayload.fields);
+      logger.finest(()=> "ChatList: ${fields.toJson()}");
 
       var chats = _filterChats(fields.chats);
       final users = fields.users;
@@ -169,9 +170,15 @@ class ChatListListener extends MessageListener {
     final List<ChatTable> chatsToInsert = [];
 
     for (final chat in chats) {
-      _getChatIds.add(chat.id);
-      chatsToInsert.add(chat);
-      var channel = chat.channel;
+      var _processChat = chat;
+
+      // Chat renaming if it is dialog type
+      if (!_processChat.isGroup()) {
+        _processChat = await chatCreation.adjustChatParameters(chat);
+      }
+      _getChatIds.add(_processChat.id);
+      chatsToInsert.add(_processChat);
+      var channel = _processChat.channel;
       await registry.subscribeOnChatChannelsIfNotExists(channel,
           sequence: chat.lastMessageSeq != null
               ? Int64.parseInt(((chat.lastMessageSeq ?? -1) + 1).toString())

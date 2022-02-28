@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_state.dart';
@@ -40,13 +41,14 @@ class ChatListScreen extends StatefulWidget {
 }
 
 class ChatListScreenState extends State<ChatListScreen>
-    with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
+    with AutomaticKeepAliveClientMixin, WidgetsBindingObserver, Loggable {
   ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
   SelectableCubit<UserTable> get selectableCubit => widget.selectableCubit;
   SearchChatCubit get chatListCubit => widget.searchChatCubit;
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    logger.finest(() => "app lifecycle changed to: $state");
     super.didChangeAppLifecycleState(state);
 
     if (state == AppLifecycleState.paused && Platform.isIOS) {

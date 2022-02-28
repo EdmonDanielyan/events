@@ -64,6 +64,7 @@ class ChatSaver with Loggable {
     required List<ChannelTable> channels,
   }) async {
     await _chatListDebouncer.run(() async {
+      if (!natsProvider.isConnected) return;
       final chatListFields = ChatListPayload(
         chats: chats.toSet().toList(),
         users: users.toSet().toList(),
