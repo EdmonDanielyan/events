@@ -13,7 +13,6 @@ import 'package:ink_mobile/messenger/providers/notifications/notifications.dart'
 import 'package:ink_mobile/messenger/sender/invite_sender.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 
 import '../cases/chat_functions.dart';
 import 'channels_registry.dart';
@@ -78,12 +77,7 @@ class TextMessageListener extends MessageListener {
             await chatDatabaseCubit.db.selectChatById(fields.chat.id);
 
         if (myChat != null) {
-          if (!myChat.isGroup() &&
-              fields.user.id != JwtPayload.myId &&
-              myChat.name != fields.user.name) {
-            myChat = myChat.copyWith(name: fields.user.name);
-          }
-
+          myChat = await chatDatabaseCubit.db.adjustChatParameters(myChat);
           await GetIt.I<SendMessage>().addMessage(myChat, newMessage);
           chatDatabaseCubit.db.insertUserOrUpdate(fields.user);
         }

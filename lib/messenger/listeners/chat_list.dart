@@ -174,7 +174,7 @@ class ChatListListener extends MessageListener {
 
       // Chat renaming if it is dialog type
       if (!_processChat.isGroup()) {
-        _processChat = await chatCreation.adjustChatParameters(chat);
+        _processChat = await chatDatabaseCubit.db.adjustChatParameters(chat);
       }
       _getChatIds.add(_processChat.id);
       chatsToInsert.add(_processChat);

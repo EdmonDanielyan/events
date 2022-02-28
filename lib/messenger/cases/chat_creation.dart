@@ -86,7 +86,7 @@ class ChatCreation with Loggable {
       );
     } else {
       logger.finest('createFromInvite: dialog');
-      newChat = await adjustChatParameters(chat);
+      newChat = await chatDatabaseCubit.db.adjustChatParameters(chat);
       await chatDatabaseCubit.db.insertChat(newChat);
     }
 
@@ -191,16 +191,5 @@ class ChatCreation with Loggable {
     await chatDatabaseCubit.db.insertMultipleChats(chats);
   }
 
-  Future<ChatTable> adjustChatParameters(ChatTable chat) async {
-    logger.finest("adjustChatParameters");
-    if (chat.isGroup()) return chat;
 
-    int oppositeId = chat.ownerId == JwtPayload.myId ? chat.participantId! : chat.ownerId;
-    var oppositeUser = await chatDatabaseCubit.db.selectUserById(oppositeId);
-    var chatName = oppositeUser!.name;
-    var avatar = oppositeUser.avatar;
-    var result = chat.copyWith(ownerId: JwtPayload.myId, avatar: avatar, name: chatName, participantId: oppositeId);
-    logger.finest(()=>"adjustChatParameters result: $result");
-    return result;
-  }
 }

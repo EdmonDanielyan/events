@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:encrypted_moor/encrypted_moor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
+import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/messenger/models/chat/database/schema/channel_schema.dart';
 import 'package:ink_mobile/messenger/models/chat/database/schema/chat_table_schema.dart';
@@ -12,6 +13,7 @@ import 'package:ink_mobile/messenger/models/chat/database/schema/message_table_s
 import 'package:ink_mobile/messenger/models/chat/database/schema/participant_table_schema.dart';
 import 'package:ink_mobile/messenger/models/chat/database/schema/user_table_schema.dart';
 import 'package:ink_mobile/models/debouncer.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:moor/moor.dart';
 import 'package:sqflite_sqlcipher/sqflite.dart';
 
@@ -204,6 +206,19 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   Future<int> updateMessageById(String id, MessageTable message) =>
       (update(messageTableSchema)..where((tbl) => tbl.id.equals(id)))
           .write(message);
+
+  Future<ChatTable> adjustChatParameters(ChatTable chat) async {
+    logger.finest("adjustChatParameters");
+    if (chat.isGroup()) return chat;
+
+    int oppositeId = chat.ownerId == JwtPayload.myId ? chat.participantId! : chat.ownerId;
+    var oppositeUser = await selectUserById(oppositeId);
+    var chatName = oppositeUser!.name;
+    var avatar = oppositeUser.avatar;
+    var result = chat.copyWith(ownerId: JwtPayload.myId, avatar: avatar, name: chatName, participantId: oppositeId);
+    logger.finest(()=>"adjustChatParameters result: $result");
+    return result;
+  }
 
   Future<void> updateMessagesReadStatus(
       MessageTable message, int exceptUserId, bool read) async {
