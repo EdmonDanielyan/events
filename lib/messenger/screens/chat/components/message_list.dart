@@ -6,6 +6,7 @@ import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/functions/message_mixins.dart';
 import 'package:ink_mobile/messenger/blocs/chat/chat_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat/chat_state.dart';
+import 'package:ink_mobile/messenger/constants/messenger_const.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
 import 'package:ink_mobile/messenger/models/texting.dart';
@@ -50,7 +51,6 @@ class _MessageListState extends State<MessageList> with MessageMixins {
   ScrollController get scrollController => widget.scrollController;
 
   Debouncer _streamDebouncer = Debouncer(milliseconds: 0);
-  final int _fixedLimit = 20;
   late int _limit;
   int _messagesLoadedCounter = 0;
 
@@ -96,7 +96,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
   @override
   void initState() {
     super.initState();
-    _limit = _fixedLimit;
+    _limit = MESSAGES_PER_PAGE_LIMIT;
     scrollController.addListener(() {
       _listenToScroll();
     });
@@ -110,7 +110,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
           MessageList.messagesWithUser != null &&
           MessageList.messagesWithUser!.length >= _limit) {
         setState(() {
-          _limit = _limit + _fixedLimit;
+          _limit = _limit + MESSAGES_PER_PAGE_LIMIT;
         });
       }
     }

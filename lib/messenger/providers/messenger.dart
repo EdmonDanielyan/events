@@ -121,9 +121,11 @@ class Messenger with Loggable {
   }
 
   void _onDisconnect() {
-    _popupDebouncer.run(() {
-      _showPopup(false);
-    });
+    if (!natsProvider.isDisposed) {
+      _popupDebouncer.run(() {
+        _showPopup(false);
+      });
+    }
   }
 
   Debouncer _popupDebouncer = Debouncer(milliseconds: 500);

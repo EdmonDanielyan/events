@@ -174,7 +174,7 @@ class NatsProvider {
 
       }
     } else {
-      throw SubscriptionAlreadyExistException(message: 'channel: $channel');
+      _logger.warning("Subscription for $channel is already exists");
     }
   }
 
@@ -323,6 +323,8 @@ class NatsProvider {
     try {
       var _subscriptionToPublicChannel = await _stan.subscribe(
         subject: channel,
+        maxInFlight: 1,
+        ackWaitSeconds: ACK_WAITS_SECONDS,
         startPosition: StartPosition.LastReceived,
       );
       return _subscriptionToPublicChannel;

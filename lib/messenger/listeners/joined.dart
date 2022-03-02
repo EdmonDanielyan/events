@@ -13,6 +13,7 @@ import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/sender/chat_saver.dart';
 import 'package:ink_mobile/messenger/sender/invite_sender.dart';
+import 'package:ink_mobile/models/debouncer.dart';
 
 import '../cases/user_functions.dart';
 import 'channels_registry.dart';
@@ -36,52 +37,60 @@ class ChatJoinedListener extends MessageListener {
       this.chatFunctions)
       : super(natsProvider, registry);
 
-  Future<void> onMessage(String channel, NatsMessage message) async {
-    super.onMessage(channel, message);
+  List<NatsMessage> _buffer = [];
+  final _debouncer = Debouncer(milliseconds: 100);
+
+  Future<void> onMessage(String channel, NatsMessage _message) async {
+    super.onMessage(channel, _message);
     if (!registry.isListening(channel)) {
       return;
     }
 
-    try {
-      final mapPayload = message.payload! as JsonPayload;
-      LeftJoinedPayload payload = LeftJoinedPayload.fromJson(mapPayload.json);
+    _buffer.add(_message);
+    _debouncer.run(() async {
+      final _currentBuffer = _buffer;
+      _buffer = [];
+      List<UserTable> _users = [];
+      List<ParticipantTable> _participants = [];
+      List<MessageTable> _messages = [];
 
-      final users =
-          payload.users.map<UserTable>((e) => e.toUserTable()).toList();
-      final chatId = payload.chatId;
-      var chat = await chatDatabaseCubit.db.selectChatById(chatId);
+      for (var message in _currentBuffer) {
+        final mapPayload = message.payload! as JsonPayload;
+        LeftJoinedPayload payload = LeftJoinedPayload.fromJson(mapPayload.json);
 
-      if (users.isNotEmpty && chat != null) {
-        await userFunctions.insertMultipleUsers(users);
-        await userFunctions.insertMultipleParticipants(
-            ChatUserViewModel.toParticipants(users, chat));
-        if (chat.isGroup()) {
-          await setMessage(users, chat, message, payload.initiatorId);
+        var _chatUsers =
+            payload.users.map<UserTable>((e) => e.toUserTable()).toList();
+        _users.addAll(_chatUsers);
+
+        var _chat = await chatDatabaseCubit.db.selectChatById(payload.chatId);
+        if (_chat != null) {
+          _participants
+              .addAll(ChatUserViewModel.toParticipants(_chatUsers, _chat));
+          if (_chat.isGroup()) {
+            for (final user in _chatUsers) {
+              var generatedMessage = GetIt.I<SendMessage>().joinedLeftMessage(
+                id: "${message.id}_${user.id}",
+                chatId: _chat.id,
+                userName: user.name,
+                type: StoredMessageType.USER_JOINED,
+                timestampUtc: message.timestamp,
+                userId: user.id,
+                sequence: message.sequence.toInt(),
+                initiatorId: payload.initiatorId,
+              );
+
+              if (generatedMessage != null) {
+                _messages.add(generatedMessage);
+              }
+            }
+          }
         }
-        await chatSaver.saveChats(newChat: null);
       }
-    } on NoSuchMethodError {
-      return;
-    }
-  }
 
-  Future<void> setMessage(List<UserTable> users, ChatTable chat,
-      NatsMessage message, int initiatorId) async {
-    for (final user in users) {
-      final generateMessage = GetIt.I<SendMessage>().joinedLeftMessage(
-        id: "${message.id}_${user.id}",
-        chatId: chat.id,
-        userName: user.name,
-        type: StoredMessageType.USER_JOINED,
-        timestampUtc: message.timestamp,
-        userId: user.id,
-        sequence: message.sequence.toInt(),
-        initiatorId: initiatorId,
-      );
-
-      if (generateMessage != null) {
-        await GetIt.I<SendMessage>().addMessage(chat, generateMessage);
-      }
-    }
+      await userFunctions.insertMultipleUsers(_users);
+      await userFunctions.insertMultipleParticipants(_participants);
+      await chatDatabaseCubit.db.insertMultipleMessages(_messages);
+      await chatSaver.saveChats(newChat: null);
+    });
   }
 }

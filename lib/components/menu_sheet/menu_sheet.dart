@@ -177,6 +177,7 @@ class _ExitAlertDialogState extends State<ExitAlertDialog> {
       if (_deleteCheckbox) {
         await messenger.chatDatabaseCubit.db.deleteEverything();
       }
+      await messenger.chatDatabaseCubit.db.close();
     } catch (e, s) {
       MenuSheet.logger.severe("Error during sing off", e, s);
     }

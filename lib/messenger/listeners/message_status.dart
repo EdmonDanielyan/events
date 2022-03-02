@@ -7,6 +7,8 @@ import 'package:ink_mobile/messenger/models/chat/nats/message_status.dart';
 import 'package:ink_mobile/messenger/models/message_list_view.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
+import 'package:ink_mobile/models/debouncer.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 
 @Named("UserReacted")
 @Injectable(as: MessageListener)
@@ -17,38 +19,35 @@ class MessageStatusListener extends MessageListener {
       NatsProvider natsProvider, ChannelsRegistry registry, this.chatFunctions)
       : super(natsProvider, registry);
 
-  Future<void> onMessage(String channel, NatsMessage message) async {
-    super.onMessage(channel, message);
+  List<NatsMessage> _buffer = [];
+  final _debouncer = Debouncer(milliseconds: 100);
+
+  Future<void> onMessage(String channel, NatsMessage _message) async {
+    super.onMessage(channel, _message);
     if (!isListeningToChannel(channel)) {
       return;
     }
 
-    try {
-      final mapPayload = message.payload! as SystemPayload;
-      ChatMessageStatusFields fields =
-          ChatMessageStatusFields.fromMap(mapPayload.fields);
+    _buffer.add(_message);
 
-      List<MessageTable> messages = fields.messages;
-      final notReadMessages = MessageListView.notReadMessages(messages);
+    _debouncer.run(() async {
+      final _currentBuffer = _buffer;
+      _buffer = [];
+      List<String> allNotReadChats = [];
+      for (var message in _currentBuffer) {
+        final mapPayload = message.payload! as SystemPayload;
+        ChatMessageStatusFields fields =
+            ChatMessageStatusFields.fromMap(mapPayload.fields);
 
-      if (notReadMessages.isNotEmpty) {
-        if (registry.chatDatabaseCubit.state.loadingChats) {
-          Future.delayed(Duration(seconds: 3), () {
-            onMessage(channel, message);
-          });
-          return;
-        }
+        List<MessageTable> messages = fields.messages;
+        final notReadMessages = MessageListView.notReadMessages(messages);
 
-        final chat = await registry.chatDatabaseCubit.db
-            .selectChatById(notReadMessages.last.chatId);
-
-        if (chat != null) {
-          chatFunctions.messagesToRead(notReadMessages.last,
-              onlyIfMyMessages: true);
+        if (notReadMessages.isNotEmpty) {
+          allNotReadChats.add(messages.last.chatId);
         }
       }
-    } on NoSuchMethodError {
-      return;
-    }
+      await registry.chatDatabaseCubit.db
+          .updateMessageListReadStatus(allNotReadChats, JwtPayload.myId);
+    });
   }
 }

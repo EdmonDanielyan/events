@@ -41,10 +41,20 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
               ),
         );
 
+  Map<String, ChatTable> chatCache = {};
+  Map<String, MessageTable> messageCache = {};
+
   //CHATS
-  Future<ChatTable?> selectChatById(String chatId) =>
-      (select(chatTableSchema)..where((tbl) => tbl.id.equals(chatId)))
-          .getSingleOrNull();
+  Future<ChatTable?> selectChatById(String chatId) async {
+    ChatTable? chat = chatCache[chatId];
+    if (chat == null) {
+      chat = (await (select(chatTableSchema)..where((tbl) => tbl.id.equals(chatId)))
+          .getSingleOrNull());
+      if (chat != null) chatCache[chatId] = chat;
+    }
+
+    return chat;
+  }
 
   Future<ChatTable?> selectChatByParticipantId(int participantId) =>
       (select(chatTableSchema)
@@ -88,10 +98,13 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
       (select(chatTableSchema)..where((tbl) => tbl.id.equals(id)))
           .watchSingle();
 
-  Future<int> insertChat(ChatTable chat) =>
-      into(chatTableSchema).insert(chat, mode: InsertMode.insertOrReplace);
+  Future<int> insertChat(ChatTable chat) {
+    chatCache[chat.id] = chat;
+    return into(chatTableSchema).insert(chat, mode: InsertMode.insertOrReplace);
+  }
 
   Future<void> insertMultipleChats(List<ChatTable> chats) async {
+    chats.forEach((element) => chatCache[element.id] = element);
     await batch((batch) {
       batch.insertAll(
         chatTableSchema,
@@ -101,21 +114,25 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
     });
   }
 
-  Future updateChatById(String id, ChatTable chat) =>
-      (update(chatTableSchema)..where((tbl) => tbl.id.equals(id)))
+  Future updateChatById(String id, ChatTable chat) {
+    chatCache.remove(id);
+    return (update(chatTableSchema)..where((tbl) => tbl.id.equals(id)))
           .write(chat)
           .catchError((_e) {
         logger.severe("Sql migration error. Please, reinstall the app.", _e);
       });
+  }
 
-  Future updateChatTime(String chatId, DateTime date) =>
-      (update(chatTableSchema)..where((tbl) => tbl.id.equals(chatId)))
+  Future updateChatTime(String chatId, DateTime date) {
+    chatCache.remove(chatId);
+    return (update(chatTableSchema)..where((tbl) => tbl.id.equals(chatId)))
           .write(
         ChatTableSchemaCompanion(updatedAt: Value(date)),
       )
           .catchError((_e) {
         logger.severe("Sql migration error. Please, reinstall the app.", _e);
       });
+  }
 
   Future<void> updateFieldsOfChatById({
     required String id,
@@ -123,6 +140,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
     required String description,
     required String avatarUrl,
   }) async {
+    chatCache.remove(id);
     (update(chatTableSchema)..where((tbl) => tbl.id.equals(id))).write(
       ChatTableSchemaCompanion(
           name: Value(name),
@@ -131,10 +149,15 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
     );
   }
 
-  Future deleteChat(ChatTable chat) => delete(chatTableSchema).delete(chat);
+  Future deleteChat(ChatTable chat) {
+    chatCache.remove(chat.id);
+    return delete(chatTableSchema).delete(chat);
+  }
 
-  Future deleteChatById(String id) =>
-      (delete(chatTableSchema)..where((tbl) => tbl.id.equals(id))).go();
+  Future deleteChatById(String id) {
+    chatCache.remove(id);
+    return (delete(chatTableSchema)..where((tbl) => tbl.id.equals(id))).go();
+  }
 
   //MESSAGES
   Stream<List<MessageTable>> watchAllMessages() {
@@ -161,6 +184,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   Future<MessageTable?> selectMessageById(String id) =>
       (select(messageTableSchema)..where((tbl) => tbl.id.equals(id)))
           .getSingleOrNull();
+
   Future<List<MessageTable>?> getLastMessages(String chatId, int limit) =>
       (select(messageTableSchema)
             ..where(
@@ -225,6 +249,18 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
     (update(messageTableSchema)
           ..where((tbl) =>
               tbl.chatId.equals(message.chatId) &
+              tbl.userId.equals(exceptUserId).not() &
+              tbl.read.equals(false)))
+        .write(
+      MessageTableSchemaCompanion(read: Value(true)),
+    );
+  }
+
+  Future<void> updateMessageListReadStatus(
+      List<String> chats, int exceptUserId) async {
+    (update(messageTableSchema)
+          ..where((tbl) =>
+              tbl.chatId.isIn(chats) &
               tbl.userId.equals(exceptUserId).not() &
               tbl.read.equals(false)))
         .write(
@@ -545,6 +581,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   }
 
   Future<void> deleteEverything() {
+    chatCache.clear();
     return transaction(() async {
       for (final table in allTables) {
         await delete(table).go();
@@ -553,6 +590,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   }
 
   Future<void> deleteDatabaseFiles() async {
+    await close();
     String path = await getDatabasesPath();
     final regExp = RegExp(r'.*[.]sqlite');
     Directory(path)
