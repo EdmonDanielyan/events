@@ -257,11 +257,10 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   }
 
   Future<void> updateMessageListReadStatus(
-      List<String> chats, int exceptUserId) async {
+      List<String> chats) async {
     (update(messageTableSchema)
           ..where((tbl) =>
               tbl.chatId.isIn(chats) &
-              tbl.userId.equals(exceptUserId).not() &
               tbl.read.equals(false)))
         .write(
       MessageTableSchemaCompanion(read: Value(true)),

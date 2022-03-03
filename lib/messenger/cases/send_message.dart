@@ -89,6 +89,7 @@ class SendMessage with Loggable {
   Future<void> addMessages(List<MessageTable> messages,
       {bool setChatToFirst = true}) async {
     await chatDatabaseCubit.db.insertMultipleMessages(messages);
+
   }
 
   MessageTable? joinedLeftMessage(

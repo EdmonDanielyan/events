@@ -8,7 +8,6 @@ import 'package:ink_mobile/messenger/models/message_list_view.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/models/debouncer.dart';
-import 'package:ink_mobile/models/jwt_payload.dart';
 
 @Named("UserReacted")
 @Injectable(as: MessageListener)
@@ -47,7 +46,7 @@ class MessageStatusListener extends MessageListener {
         }
       }
       await registry.chatDatabaseCubit.db
-          .updateMessageListReadStatus(allNotReadChats, JwtPayload.myId);
+          .updateMessageListReadStatus(allNotReadChats);
     });
   }
 }
