@@ -20,7 +20,7 @@ class ChatNotification {
 
     final selectedChat = chatDatabaseCubit.selectedChat;
 
-    if (myChat != null && !myChat!.notificationsOn!) {
+    if (myChat != null && !(myChat?.notificationsOn ?? true)) {
       showNotification = false;
     }
 
