@@ -1,18 +1,12 @@
 import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
-import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/messenger/cases/open_chat.dart';
-import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/push_notification_model.dart';
 import 'package:ink_mobile/messenger/providers/notifications/notifications.dart';
-import 'package:ink_mobile/models/token.dart';
-import 'package:ink_mobile/setup.dart';
 
-import '../../../providers/secure_storage.dart';
-
+// import 'package:ink_mobile/models/token.dart';
+// import 'package:ink_mobile/setup.dart';
 
 ///
 /// Background isolate for FCM. Usage in [PushNotificationManager.load] to configure FCM plugin
@@ -84,79 +78,80 @@ class PushNotificationManager with Loggable {
   //   }
   // }
 
-  bool _isMyMessage(String userId) {
-    return sl<TokenDataHolder>().userId == userId;
-  }
+  // bool _isMyMessage(String userId) {
+  //   return sl<TokenDataHolder>().userId == userId;
+  // }
 
-  Future<void> showNotificationIfNeeded(RemoteMessage message) async {
-    logger.finest('showNotificationIfNeeded');
-    final data = ChatPushNotificationModel.fromRemoteMessage(message);
-
-    if (data != null && !_isMyMessage(data.userId.toString())) {
-      var _chat = await _getChatById(data.chatId);
-      bool isChatOpened =
-          sl<ChatDatabaseCubit>().getSelectedChatId == _chat?.id;
-      if (_chat != null && !isChatOpened) {
-        var localNotificationsProvider = sl<LocalNotificationsProvider>();
-        localNotificationsProvider.showNotification(
-          data.title,
-          data.body,
-          payload: _chat.id,
-          id: _chat.id.hashCode,
-          onSelect: (_) {
-            OpenChat(sl(), _chat)();
-          },
-        );
-      }
-    }
-  }
-
-  Future<ChatTable?> get initialChat async {
-    logger.finest('initialChat');
-    var message = await FirebaseMessaging.instance.getInitialMessage();
-    logger.finest('Remote initial message: $message');
-    if (message != null) {
-      return _getChatFromRemote(message);
-    } else {
-      var openChatId = await sl<SecureStorage>().read("open_chat_id");
-      logger.finest("openChatId: $openChatId");
-      if (openChatId != null && openChatId.isNotEmpty) {
-        await sl<SecureStorage>().write(key: "open_chat_id", value: "");
-        return _getChatById(openChatId);
-      }
-    }
-    return null;
-  }
-
-  Future<ChatTable?> _getChatFromRemote(RemoteMessage message) async {
-    logger.finest("_getChatFromRemote");
-    try {
-      final data = ChatPushNotificationModel.fromRemoteMessage(message);
-      if (data == null) {
-        throw "error";
-      }
-      return _getChatById(data.chatId);
-    } catch (_) {
-      return null;
-    }
-  }
-
-  Future<ChatTable?> _getChatById(chatId) async {
-    logger.finest("_getChatById chatId: $chatId");
-    if (chatId != null) {
-      var databaseCubit = sl<ChatDatabaseCubit>();
-      var chatTable = await databaseCubit.db.selectChatById(chatId);
-      logger.finest(() => "found chat: $chatTable");
-      return chatTable;
-    }
-    return null;
-  }
-
+  // Future<void> showNotificationIfNeeded(RemoteMessage message) async {
+  //   logger.finest('showNotificationIfNeeded');
+  //   final data = ChatPushNotificationModel.fromRemoteMessage(message);
+  //
+  //   if (data != null && !_isMyMessage(data.userId.toString())) {
+  //     var _chat = await _getChatById(data.chatId);
+  //     bool isChatOpened =
+  //         sl<ChatDatabaseCubit>().getSelectedChatId == _chat?.id;
+  //     if (_chat != null && !isChatOpened) {
+  //       var localNotificationsProvider = sl<LocalNotificationsProvider>();
+  //       localNotificationsProvider.showNotification(
+  //         data.title,
+  //         data.body,
+  //         payload: _chat.id,
+  //         id: _chat.id.hashCode,
+  //         onSelect: (_) {
+  //           OpenChat(sl(), _chat)();
+  //         },
+  //       );
+  //     }
+  //   }
+  // }
+  //
+  // Future<ChatTable?> get initialChat async {
+  //   logger.finest('initialChat');
+  //   var message = await FirebaseMessaging.instance.getInitialMessage();
+  //   logger.finest('Remote initial message: $message');
+  //   if (message != null) {
+  //     return _getChatFromRemote(message);
+  //   } else {
+  //     var openChatId = await sl<SecureStorage>().read("open_chat_id");
+  //     logger.finest("openChatId: $openChatId");
+  //     if (openChatId != null && openChatId.isNotEmpty) {
+  //       await sl<SecureStorage>().write(key: "open_chat_id", value: "");
+  //       return _getChatById(openChatId);
+  //     }
+  //   }
+  //   return null;
+  // }
+  //
+  // Future<ChatTable?> _getChatFromRemote(RemoteMessage message) async {
+  //   logger.finest("_getChatFromRemote");
+  //   try {
+  //     final data = ChatPushNotificationModel.fromRemoteMessage(message);
+  //     if (data == null) {
+  //       throw "error";
+  //     }
+  //     return _getChatById(data.chatId);
+  //   } catch (_) {
+  //     return null;
+  //   }
+  // }
+  //
+  // Future<ChatTable?> _getChatById(chatId) async {
+  //   logger.finest("_getChatById chatId: $chatId");
+  //   if (chatId != null) {
+  //     var databaseCubit = sl<ChatDatabaseCubit>();
+  //     var chatTable = await databaseCubit.db.selectChatById(chatId);
+  //     logger.finest(() => "found chat: $chatTable");
+  //     return chatTable;
+  //   }
+  //   return null;
+  // }
+  //
   Future subscribeToTopic(String topic) async {
     logger.finest(() => "subscribeToTopic: $topic");
     //await FirebaseMessaging.instance.subscribeToTopic(topic);
   }
 
+  //
   Future unsubscribeFromTopic(String topic) async {
     logger.finest(() => "unsubscribeFromTopic: $topic");
     try {

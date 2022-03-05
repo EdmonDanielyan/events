@@ -91,8 +91,8 @@ class ChannelsRegistry with Loggable {
 
   Future<void> init() async {
     logger.finest('init');
-    await Future.delayed(Duration(seconds: 1));
-    listeners.clear();
+    // await Future.delayed(Duration(seconds: 1));
+    listeners = {};
     MessageType.values.forEach((messageType) {
       var messageListenerToSearch = describeEnum(messageType);
       logger.fine(() =>
@@ -246,7 +246,8 @@ class ChannelsRegistry with Loggable {
 
   void unsubscribeFromAll({required bool includePush}) {
     logger.finest("unsubscribeFromAll");
-    subscribedChannels.forEach((channel) {
+    var _temp = subscribedChannels;
+    _temp.forEach((channel) {
       natsProvider.unsubscribeFromChannel(channel);
       if (includePush) {
         pushNotificationManager.unsubscribeFromTopic(channel);

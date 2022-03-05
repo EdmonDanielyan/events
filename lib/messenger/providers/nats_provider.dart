@@ -88,8 +88,7 @@ class NatsProvider {
   /// Please don't use object after dispose please check [isDisposed]
   ///
   Future<void> dispose() async {
-    userChatIdList.clear();
-    publicChatIdList.clear();
+    clear();
     await _stan.manualDisconnect();
     isDisposed = true;
   }
@@ -120,6 +119,7 @@ class NatsProvider {
   /// Send system message which contains [fields] to [channel] by [type]
   Future<bool> sendSystemMessageToChannel(
       String channel, MessageType type, Map<String, String> fields) async {
+    _logger.finest("sendSystemMessageToChannel");
     NatsMessage message = NatsMessage(
       from: userId,
       to: channel,
@@ -180,13 +180,17 @@ class NatsProvider {
 
   /// Unsubscribe from [channel] using [startSequence] if needed
   Future<void> unsubscribeFromChannel(String channel) async {
-    _stan.unsubscribeByChannel(channel);
+    _logger.finest("unsubscribeFromChannel: $channel");
+    var channelSubscription = _channelSubscriptions[channel];
 
-    if (_channelSubscriptions.containsKey(channel)) {
-      _channelSubscriptions[channel]?.subscription.close();
+    try {
+      if (channelSubscription != null) {
+        // _stan.unsubscribeBySid(channelSubscription.subscription.sid);
+        _channelSubscriptions[channel]?.subscription.close();
+      }
+    } catch (_) {
+    } finally {
       _channelSubscriptions.remove(channel);
-    }
-    if (_channelCallbacks.containsKey(channel)) {
       _channelCallbacks.remove(channel);
     }
 
@@ -230,8 +234,10 @@ class NatsProvider {
           jsonEncode(AuthRequest(login: login, password: password).toJson()),
           timeout: Duration(seconds: timeoutInSeconds));
       authResponse = AuthResponse.fromJson(jsonDecode(response.string));
-      correlationTimeMilliSec = DateTime.now().millisecondsSinceEpoch - authResponse.data.timestamp;
-      _logger.finest(() => "auth correlationTimeMilliSec: ${correlationTimeMilliSec}");
+      correlationTimeMilliSec =
+          DateTime.now().millisecondsSinceEpoch - authResponse.data.timestamp;
+      _logger.finest(
+          () => "auth correlationTimeMilliSec: $correlationTimeMilliSec");
       _logger.finest(() => "auth response: ${authResponse.toJson()}");
     } catch (e, s) {
       _logger.severe("Auth error", e, s);
@@ -382,6 +388,8 @@ class NatsProvider {
   final Set<String> publicChatIdList = {};
   final Map<String, Subscription?> _channelSubscriptions = {};
 
+  Map<String, Subscription?> get channelSubscriptions => _channelSubscriptions;
+
   Future<void> Function(String, NatsMessage) onMessage =
       (channel, message) async {
     _logger.info(message);
@@ -408,5 +416,12 @@ class NatsProvider {
     NatsMessage message = NatsMessage(from: userId, to: channel);
     message.setEmptyPayload();
     return _sendMessage(channel, message);
+  }
+
+  void clear() {
+    userChatIdList.clear();
+    publicChatIdList.clear();
+    channelSubscriptions.clear();
+    _channelCallbacks.clear();
   }
 }

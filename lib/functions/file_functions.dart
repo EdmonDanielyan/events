@@ -17,7 +17,7 @@ class FileFunctions {
   }
 
   Future<File?> cropImage(File image) async {
-    return await ImageCropper.cropImage(
+    return await ImageCropper().cropImage(
       sourcePath: image.path,
       aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
       cropStyle: CropStyle.circle,

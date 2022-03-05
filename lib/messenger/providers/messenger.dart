@@ -138,11 +138,11 @@ class Messenger with Loggable {
         password: sl.get(instanceName: "messengerAuthPassword"));
 
     await _versionMigration();
-    textSender.redeliverMessages();
     await _onConnected();
     _popupDebouncer.run(() {
       _showPopup(true);
     });
+    textSender.redeliverMessages();
   }
 
   void _showPopup(bool connected) {
@@ -170,11 +170,14 @@ class Messenger with Loggable {
   Future<void> softDispose() async {
     logger.finest('_softDispose');
     registry.unsubscribeFromAll(includePush: false);
+    natsProvider.clear();
+    chatDatabaseCubit.db.clearCache();
     onlineSender.stopSending();
   }
 
   Future<void> dispose() async {
     logger.finest('dispose');
+    chatDatabaseCubit.db.clearCache();
     registry.unsubscribeFromAll(includePush: true);
     onlineSender.stopSending();
     await natsProvider.dispose();

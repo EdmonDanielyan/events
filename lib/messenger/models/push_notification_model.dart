@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 
 class ChatPushNotificationModel {
   final int userId;
@@ -90,11 +90,11 @@ class ChatPushNotificationModel {
     return userId.hashCode ^ title.hashCode ^ body.hashCode ^ chatId.hashCode;
   }
 
-  static ChatPushNotificationModel? fromRemoteMessage(RemoteMessage message) {
-    try {
-      return ChatPushNotificationModel.fromMap(message.data);
-    } catch (err) {
-      return null;
-    }
-  }
+  // static ChatPushNotificationModel? fromRemoteMessage(RemoteMessage message) {
+  //   try {
+  //     return ChatPushNotificationModel.fromMap(message.data);
+  //   } catch (err) {
+  //     return null;
+  //   }
+  // }
 }

@@ -15,7 +15,7 @@ import 'package:moor/moor.dart';
 import '../cases/chat_functions.dart';
 import '../cases/user_functions.dart';
 
-@injectable
+@lazySingleton
 class TextSender with Loggable {
   final NatsProvider natsProvider;
   final UserFunctions userFunctions;
@@ -46,7 +46,7 @@ class TextSender with Loggable {
     ''');
 
     if (!success) {
-      await chatFunctions.updateMessageStatus(message, MessageSentStatus.ERROR);
+      await chatFunctions.updateMessageStatus(message, MessageSentStatus.SENDING);
     }
   }
 
@@ -55,8 +55,7 @@ class TextSender with Loggable {
     MessageTable message, {
     UserTable? user,
   }) async {
-    final ping = await natsProvider.ping();
-    return ping &&
+    return natsProvider.isConnected &&
         await natsProvider.sendSystemMessageToChannel(
           chat.channel,
           MessageType.Text,
@@ -82,41 +81,45 @@ class TextSender with Loggable {
 
     if (unsentMessages.isNotEmpty) {
       _redeliveryBusy = true;
-      for (final message in unsentMessages) {
-        logger.finest(() => '''
-        REDELIVERING MESSAGE: $message
-        ''');
+      try {
+        for (final message in unsentMessages) {
+                logger.finest(() => '''
+                REDELIVERING MESSAGE: $message
+                ''');
 
-        if (!chats.containsKey(message.chatId)) {
-          final chat = await db.selectChatById(message.chatId);
+                if (!chats.containsKey(message.chatId)) {
+                  final chat = await db.selectChatById(message.chatId);
 
-          if (chat != null) {
-            chats[message.chatId] = chat;
-          }
-        }
+                  if (chat != null) {
+                    chats[message.chatId] = chat;
+                  }
+                }
 
-        if (chats.containsKey(message.chatId)) {
-          logger.fine(() =>
-              'SENDING TO CHAT ${chats[message.chatId]!.name} - ${message.message}');
+                if (chats.containsKey(message.chatId)) {
+                  logger.fine(() =>
+                      'SENDING TO CHAT ${chats[message.chatId]!.name} - ${message.message}');
 
-          await sendMessage(chats[message.chatId]!, message, redelivery: true);
-        }
+                  await sendMessage(chats[message.chatId]!, message, redelivery: true);
+                }
+              }
+      } finally {
+        _redeliveryBusy = false;
       }
-      _redeliveryBusy = false;
-      _sendHoldMessages();
+      await _sendHoldMessages();
     }
   }
 
   Future<void> _sendHoldMessages() async {
+    var _sendBuffer = _holdChatMessages;
     if (_holdChatMessages.isNotEmpty) {
       try {
-        for (final chatMessage in _holdChatMessages) {
+        for (final chatMessage in _sendBuffer) {
           await sendMessage(chatMessage.chat, chatMessage.message!);
         }
       } catch (e) {
         logger.warning(() => "error sending hold messages ${e.toString()}");
       } finally {
-        _holdChatMessages.clear();
+        _holdChatMessages = [];
       }
     }
   }

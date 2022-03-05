@@ -480,12 +480,8 @@ class NatsStreamingClient {
     });
   }
 
-  void unsubscribeByChannel(String channel) {
-    // natsClient.unSubscribeBySubject(channel);
-  }
-
   void unsubscribeBySid(int sid) {
-    //natsClient.unSubBySid(sid);
+    natsClient.unSubById(sid);
   }
 
   final Set<String> _subscriptionInboxes = {};

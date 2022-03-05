@@ -609,4 +609,9 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   MigrationStrategy get migration => MigrationStrategy(
         onUpgrade: (migrator, from, to) async {},
       );
+
+  void clearCache() {
+    messageCache = {};
+    chatCache = {};
+  }
 }
