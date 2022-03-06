@@ -139,7 +139,7 @@ class ChannelsRegistry with Loggable {
   }
 
   Int64 getSequence(int sequence) {
-    return Int64.fromInts(0, sequence == 0 ? sequence : sequence);
+    return Int64.fromInts(0, sequence == 0 ? sequence : sequence + 1);
   }
 
   Future<void> onChannelMessage(String channel, NatsMessage message) async {
