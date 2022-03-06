@@ -55,7 +55,6 @@ class ChannelsRegistry with Loggable {
   });
 
   String lastChannelStr = "";
-  Set<String> subscribedChannels = {};
 
   Set<MessageType> notStorableTypes = {
     MessageType.Online,
@@ -91,7 +90,7 @@ class ChannelsRegistry with Loggable {
 
   Future<void> init() async {
     logger.finest('init');
-    // await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 1));
     listeners = {};
     MessageType.values.forEach((messageType) {
       var messageListenerToSearch = describeEnum(messageType);
@@ -140,7 +139,7 @@ class ChannelsRegistry with Loggable {
   }
 
   Int64 getSequence(int sequence) {
-    return Int64.fromInts(0, sequence == 0 ? sequence : sequence + 1);
+    return Int64.fromInts(0, sequence == 0 ? sequence : sequence);
   }
 
   Future<void> onChannelMessage(String channel, NatsMessage message) async {
@@ -158,7 +157,7 @@ class ChannelsRegistry with Loggable {
       startSequence = Int64.ZERO,
       startPosition = StartPosition.SequenceStart,
       maxInFlight = MAX_IN_FLIGHTS}) async {
-    logger.fine(() => "subscribeToChannel: $channel, $startSequence");
+    logger.fine(() => "subscribeToChannel. channel: $channel, startSequence: $startSequence");
 
     if (!natsProvider.isConnected) {
       logger.warning("nats is not connected");
@@ -184,10 +183,12 @@ class ChannelsRegistry with Loggable {
             startPosition: startPosition,
             maxInFlight: maxInFlight,
             startSequence: startSequence);
-        subscribedChannels.add(channel);
       } catch (_e, stacktrace) {
         logger.severe("Unexpected error", _e, stacktrace);
       }
+    } else
+    {
+      logger.warning("Already listening");
     }
   }
 
@@ -195,9 +196,6 @@ class ChannelsRegistry with Loggable {
       {bool deleteFromDatabase = true}) async {
     logger.finest(() => "unSubscribeFromChannel: $channel");
     await natsProvider.unsubscribeFromChannel(channel);
-    if (isListening(channel)) {
-      subscribedChannels.remove(channel);
-    }
     if (channel.contains("Text")) {
       await pushNotificationManager.unsubscribeFromTopic(channel);
     }
@@ -216,7 +214,7 @@ class ChannelsRegistry with Loggable {
 
   Future<void> subscribeOnChatChannelsIfNotExists(String chatChannel,
       {Int64 sequence = Int64.ZERO}) async {
-    logger.finest(() => "subscribeOnChatChannelsIfNotExists: $chatChannel");
+    logger.finest(() => "subscribeOnChatChannelsIfNotExists. channel: $chatChannel, sequence: $sequence");
 
     final channelExists = await channelFunctions.getChannel(chatChannel);
     if (channelExists == null) {
@@ -236,23 +234,16 @@ class ChannelsRegistry with Loggable {
     await unSubscribeFromChannel(chatChannel);
   }
 
-  bool isListening(String channel) => subscribedChannels.contains(channel);
+  bool isListening(String channel) => natsProvider.channelSubscriptions.containsKey(channel);
 
-  void addToListeningChannels(String channel) {
-    if (!subscribedChannels.contains(channel)) {
-      subscribedChannels.add(channel);
-    }
-  }
-
-  void unsubscribeFromAll({required bool includePush}) {
+  Future<void> unsubscribeFromAll({required bool includePush}) async {
     logger.finest("unsubscribeFromAll");
-    var _temp = subscribedChannels;
-    _temp.forEach((channel) {
-      natsProvider.unsubscribeFromChannel(channel);
+    var channels = natsProvider.channelSubscriptions.keys.toList();
+    channels.forEach((channel) async {
+      await natsProvider.unsubscribeFromChannel(channel);
       if (includePush) {
         pushNotificationManager.unsubscribeFromTopic(channel);
       }
     });
-    subscribedChannels = {};
   }
 }

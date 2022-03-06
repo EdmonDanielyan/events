@@ -63,16 +63,20 @@ class NatsProvider {
   });
 
   Future<bool> load() async {
-    this._stan = NatsStreamingClient();
-    _stan.onConnect(function: () {
+    _initStan();
+    return await _connect();
+  }
+
+  void _initStan() {
+    _stan = NatsStreamingClient();
+    _stan.onConnect = () {
       onConnected();
       _connected();
-    });
-    _stan.onDisconnect(function: () {
+    };
+    _stan.onDisconnect = () {
       onDisconnected();
       _disconnected();
-    });
-    return await _connect();
+    };
   }
 
   void _connected() {
@@ -170,8 +174,6 @@ class NatsProvider {
         _channelCallbacks[channel] = onMessageFuture;
       } catch (_e) {
         _logger.warning("[NATS PROVIDER] ERROR subscribeToChannel: $_e");
-        //FOR NOT CONNECTED THROW
-
       }
     } else {
       _logger.warning("Subscription for $channel is already exists");
@@ -185,8 +187,7 @@ class NatsProvider {
 
     try {
       if (channelSubscription != null) {
-        // _stan.unsubscribeBySid(channelSubscription.subscription.sid);
-        _channelSubscriptions[channel]?.subscription.close();
+        _channelSubscriptions[channel]?.subscription.unSub();
       }
     } catch (_) {
     } finally {
@@ -204,7 +205,7 @@ class NatsProvider {
     _logger.finest(() =>
         "url: $natsWssUrl, cluster: $natsCluster, userId: $userId, natsToken: $natsToken");
     _logger.finest(() => "certificate data length: ${certificate.length}");
-
+    clear();
     var connectResult = await _stan.connectUri(Uri.parse(natsWssUrl),
         certificate: certificate,
         clusterID: natsCluster,
@@ -384,8 +385,6 @@ class NatsProvider {
     }
   }
 
-  final Set<String> userChatIdList = {};
-  final Set<String> publicChatIdList = {};
   final Map<String, Subscription?> _channelSubscriptions = {};
 
   Map<String, Subscription?> get channelSubscriptions => _channelSubscriptions;
@@ -419,8 +418,6 @@ class NatsProvider {
   }
 
   void clear() {
-    userChatIdList.clear();
-    publicChatIdList.clear();
     channelSubscriptions.clear();
     _channelCallbacks.clear();
   }

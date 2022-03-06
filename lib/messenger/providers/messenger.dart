@@ -106,7 +106,7 @@ class Messenger with Loggable {
   Future<void> _configureNatsProvider() async {
     logger.finest("_configureNatsProvider");
     natsProvider.onConnected = () async {
-      natsConnect();
+      messengerConnect();
     };
 
     natsProvider.onDisconnected = () async {
@@ -130,22 +130,27 @@ class Messenger with Loggable {
 
   Debouncer _popupDebouncer = Debouncer(milliseconds: 500);
 
-  Future<void> natsConnect() async {
-    logger.info("onConnected");
+  Future<void> messengerConnect() async {
+    logger.finest("messengerConnect start");
 
     await natsProvider.auth(
         login: sl.get(instanceName: "messengerAuthLogin"),
         password: sl.get(instanceName: "messengerAuthPassword"));
 
     await _versionMigration();
-    await _onConnected();
+    registry.listenToAllMessages();
+    await userFunctions.addMe();
+    await registry.init();
+    onlineSender.sendUserOnlinePing();
     _popupDebouncer.run(() {
       _showPopup(true);
     });
-    textSender.redeliverMessages();
+    await textSender.redeliverMessages();
+    logger.finest("messengerConnect end");
   }
 
   void _showPopup(bool connected) {
+    return;
     final context = App.getContext;
     if (context != null) {
       if (connected) {
@@ -158,14 +163,6 @@ class Messenger with Loggable {
     }
   }
 
-  Future<void> _onConnected() async {
-    //await Future.delayed(Duration(seconds: 1));
-    logger.finest('_onConnected');
-    registry.listenToAllMessages();
-    await userFunctions.addMe();
-    await registry.init();
-    onlineSender.sendUserOnlinePing();
-  }
 
   Future<void> softDispose() async {
     logger.finest('_softDispose');

@@ -246,7 +246,7 @@ class NatsStreamingClient {
         _connected = false;
       }
       if (_connected && _onConnect != null) {
-        _onConnect!();
+        await _onConnect!();
       }
     }
     return _connected;
@@ -294,19 +294,21 @@ class NatsStreamingClient {
     _logger.finest('_disconnect');
     try {
       if (_onDisconnect != null) {
-        _onDisconnect!();
+        await _onDisconnect!();
       }
     } catch (e, s) {
       _logger.severe('Failed during call onDisconnect', e, s);
     }
-    try {
-      unawaited(natsClient.close());
-    } catch (e, s) {
-      _logger.severe('Failed during close nats client', e, s);
-    }
+    finally {
+      try {
+        unawaited(natsClient.close());
+      } catch (e, s) {
+        _logger.severe('Failed during close nats client', e, s);
+      }
 
-    _logger.finest('_disconnect finished: NATS STATUS: ${natsClient.status}');
-    _connected = false;
+      _logger.finest('_disconnect finished: NATS STATUS: ${natsClient.status}');
+      _connected = false;
+    }
   }
 
   Future<void> _heartbeat() async {
@@ -334,7 +336,7 @@ class NatsStreamingClient {
 
   Future<void> _reconnect() async {
     _logger.finest('_reconnect');
-    if (connected) await _disconnect();
+    await _disconnect();
     await Future.delayed(Duration(seconds: retryInterval), () => {});
     _logger.finest('_reconnect: after waiting retryInterval');
     await _connect();
@@ -351,12 +353,12 @@ class NatsStreamingClient {
     }
   }
 
-  void onDisconnect({required Function function}) {
-    _onDisconnect = function;
+  set onDisconnect(Function value) {
+    _onDisconnect = value;
   }
 
-  void onConnect({required Function function}) {
-    _onConnect = function;
+  set onConnect(Function value) {
+    _onConnect = value;
   }
 
   Future<bool> ping() async {

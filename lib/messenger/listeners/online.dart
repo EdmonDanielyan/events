@@ -36,7 +36,6 @@ class UserOnlineListener extends MessageListener {
         ackWaitSeconds: ACK_WAITS_SECONDS,
         // maxInFlight: 100,
         startSequence: Int64.ZERO, startPosition: StartPosition.NewOnly);
-    registry.addToListeningChannels(channel);
   }
 
   Future<void> onMessage(String channel, NatsMessage message) async {

@@ -67,7 +67,7 @@ class ChatListListener extends MessageListener {
         await onMessage(channel, message);
         //todo: рано отписываемся по идеи надо прочитать самую валидную для этого клиента запись и потом отписаться
       }
-      sub.subscription.close();
+      sub.subscription.unSub();
     } on SubscriptionAlreadyExistException {
     } catch (_e) {}
   }
