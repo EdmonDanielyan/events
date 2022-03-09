@@ -6,6 +6,7 @@ import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/components/textfields/native_field.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
+import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/cases/open_chat.dart';
@@ -26,7 +27,7 @@ class NewGroupScreen extends StatefulWidget {
   _NewGroupScreenState createState() => _NewGroupScreenState();
 }
 
-class _NewGroupScreenState extends State<NewGroupScreen> {
+class _NewGroupScreenState extends State<NewGroupScreen> with Loggable {
   late AppLocalizations _strings;
   final double horizontalPadding = 20;
   List<UserTable> users = [];
@@ -44,11 +45,20 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
   Future<void> _onCreate(BuildContext context) async {
     _setSubmitLoading(true);
     if (messenger.isConnected) {
-      ChatTable newChat = await messenger.chatCreation
-          .createGroupThroughNats(name: chatName, users: users);
+      try {
+        ChatTable newChat = await messenger.chatCreation
+                  .createGroupThroughNats(name: chatName, users: users);
 
-      Navigator.of(context).popUntil((route) => route.isFirst);
-      await OpenChat(widget.chatDatabaseCubit, newChat).call();
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        await OpenChat(widget.chatDatabaseCubit, newChat).call();
+      } catch (e, s) {
+        logger.severe("Error during create chat", e, s);
+        SimpleCustomSnackbar(
+          context: context,
+          txt: _strings.noConnectionError,
+          duration: const Duration(seconds: 2),
+        );
+      }
     } else {
       SimpleCustomSnackbar(
         context: context,

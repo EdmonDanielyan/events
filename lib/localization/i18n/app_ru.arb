@@ -137,7 +137,7 @@
 	"newsIdea": "ИНК-Идея",
 	"noBirthdaysSoon": "Сегодня и ближайшие 3 дня нет дней рождения",
 	"noCommentsNewsSection": "К данной новости еще нет комментариев",
-	"noConnectionError": "Отсутствует подключение к интернету",
+	"noConnectionError": "Отсутствует подключение к серверу",
 	"noMessages": "Нет сообщения",
 	"noStaffMovements": "Кадровые перемещения отсутствуют",
 	"notRequired": "(не обязательно)",
