@@ -8,6 +8,7 @@ import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/cases/channel_functions.dart';
 import 'package:ink_mobile/messenger/cases/user_functions.dart';
+import 'package:ink_mobile/messenger/constants/nats_constants.dart';
 import 'package:ink_mobile/messenger/extensions/chat_table.dart';
 import 'package:ink_mobile/messenger/listeners/message_listener.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
@@ -57,7 +58,7 @@ class ChatListListener extends MessageListener {
         // Если произошел косяк в локальной базе то последнее сообщение в чат листе битое
         // нужно перечитать весь стрим этого канала и только тогда пристпать к парсингу
         dataMessage =
-            await sub.stream.first.timeout(const Duration(seconds: 3));
+            await sub.stream.first.timeout(const Duration(seconds: NATS_TIMEOUT_SEC));
       } on TimeoutException {
         logger.severe('timeout during read ChatList channel');
       }
