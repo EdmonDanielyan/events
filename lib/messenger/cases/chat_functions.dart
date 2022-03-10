@@ -19,8 +19,7 @@ class ChatFunctions {
       return;
     }
 
-    await chatDatabaseCubit.db.updateChatById(
-      chat.id,
+    await chatDatabaseCubit.db.updateChat(
       chat.copyWith(updatedAt: update),
     );
   }
@@ -33,12 +32,13 @@ class ChatFunctions {
 
   Future<void> setPreviousMsgToFirst(String chatId) async {
     final messages = await chatDatabaseCubit.db.getLastMessages(chatId, 1);
+    var chat = await chatDatabaseCubit.db.selectChatById(chatId);
 
-    if (messages != null &&
+    if (chat != null &&
+        messages != null &&
         messages.isNotEmpty &&
         messages.first.timestamp != null) {
-      await chatDatabaseCubit.db
-          .updateChatTime(chatId, messages.first.timestamp!);
+      await chatDatabaseCubit.db.updateChat(chat.copyWith(updatedAt: messages.first.timestamp!));
     }
   }
 
@@ -69,7 +69,7 @@ class ChatFunctions {
     if (setSelectedChat) {
       chatDatabaseCubit.setSelectedChat(chat);
     }
-    chatDatabaseCubit.db.updateChatById(chat.id, chat);
+    chatDatabaseCubit.db.updateChat(chat);
     var topic = chat.channel;
     if (chat.notificationsOn ?? true) {
       messenger.pushNotificationManager.subscribeToTopic(topic);

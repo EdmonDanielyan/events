@@ -124,16 +124,17 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
     });
   }
 
-  Future updateChatById(String id, ChatTable chat) {
-    chatCache[id] = chat;
-    return (update(chatTableSchema)..where((tbl) => tbl.id.equals(id)))
-          .write(chat)
+  Future<void> updateChat(ChatTable chat) async {
+    var adjustedChat = await adjustChatParameters(chat);
+    chatCache[chat.id] = adjustedChat;
+    await (update(chatTableSchema)..where((tbl) => tbl.id.equals(chat.id)))
+          .write(adjustedChat)
           .catchError((_e) {
         logger.severe("Sql migration error. Please, reinstall the app.", _e);
       });
   }
 
-  Future updateChatTime(String chatId, DateTime date) {
+  Future<void> updateChatTime(String chatId, DateTime date) {
     chatCache.remove(chatId);
     return (update(chatTableSchema)..where((tbl) => tbl.id.equals(chatId)))
           .write(
@@ -142,21 +143,6 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           .catchError((_e) {
         logger.severe("Sql migration error. Please, reinstall the app.", _e);
       });
-  }
-
-  Future<void> updateFieldsOfChatById({
-    required String id,
-    required String name,
-    required String description,
-    required String avatarUrl,
-  }) async {
-    chatCache.remove(id);
-    (update(chatTableSchema)..where((tbl) => tbl.id.equals(id))).write(
-      ChatTableSchemaCompanion(
-          name: Value(name),
-          description: Value(description),
-          avatar: Value(avatarUrl)),
-    );
   }
 
   Future deleteChat(ChatTable chat) {

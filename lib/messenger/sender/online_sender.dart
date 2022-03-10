@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/extensions/nats_extension.dart';
+import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
+import 'package:ink_mobile/setup.dart';
 
 import '../cases/user_functions.dart';
 
@@ -36,6 +38,7 @@ class OnlineSender with Loggable {
   }
 
   void _sendOnline(int userId) {
+    print("!!!!!!!!! ${sl<Messenger>().chatDatabaseCubit.db.chatCache}");
     if (natsProvider.isConnected) {
       logger.finest("sendOnline");
       final channel = natsProvider.getOnlineChannel();
