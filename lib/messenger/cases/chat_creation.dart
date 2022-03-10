@@ -64,7 +64,7 @@ class ChatCreation with Loggable {
     }
   }
 
-  Future<ChatTable> createFromInvite(
+  Future<void> createFromInvite(
       ChatTable chat, UserTable whoInvites) async {
     logger.finest('createFromInvite');
     late ChatTable? newChat;
@@ -86,11 +86,8 @@ class ChatCreation with Loggable {
       );
     } else {
       logger.finest('createFromInvite: dialog');
-      newChat = await chatDatabaseCubit.db.adjustChatParameters(chat);
-      await chatDatabaseCubit.db.insertChat(newChat);
+      await chatDatabaseCubit.db.insertChat(chat);
     }
-
-    return newChat;
   }
 
   Future<ChatTable> _createSingleChat(UserTable user,

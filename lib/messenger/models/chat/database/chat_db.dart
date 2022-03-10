@@ -42,6 +42,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
         );
 
   Map<String, ChatTable> chatCache = {};
+  Map<int, UserTable> userCache = {};
   Map<String, MessageTable> messageCache = {};
 
   //CHATS
@@ -98,24 +99,33 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
       (select(chatTableSchema)..where((tbl) => tbl.id.equals(id)))
           .watchSingle();
 
-  Future<int> insertChat(ChatTable chat) {
-    chatCache[chat.id] = chat;
-    return into(chatTableSchema).insert(chat, mode: InsertMode.insertOrReplace);
+  Future<int> insertChat(ChatTable chat) async {
+    var adjustedChat = await adjustChatParameters(chat);
+    chatCache[chat.id] = adjustedChat;
+    return into(chatTableSchema).insert(adjustedChat, mode: InsertMode.insertOrReplace);
   }
 
   Future<void> insertMultipleChats(List<ChatTable> chats) async {
-    chats.forEach((element) => chatCache[element.id] = element);
+    List<ChatTable> _chats = [];
+
+    for (var c in chats) {
+      var adjustedChat = await adjustChatParameters(c);
+      _chats.add(adjustedChat);
+      chatCache[c.id] = adjustedChat;
+    }
+
+    _chats.forEach((element) => chatCache[element.id] = element);
     await batch((batch) {
       batch.insertAll(
         chatTableSchema,
-        chats.map((e) => e.toCompanion(true)).toList(),
+        _chats.map((e) => e.toCompanion(true)).toList(),
         mode: InsertMode.insertOrReplace,
       );
     });
   }
 
   Future updateChatById(String id, ChatTable chat) {
-    chatCache.remove(id);
+    chatCache[id] = chat;
     return (update(chatTableSchema)..where((tbl) => tbl.id.equals(id)))
           .write(chat)
           .catchError((_e) {
@@ -466,30 +476,44 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   //USER
   Future<List<UserTable>> getAllUsers() => select(userTableSchema).get();
 
-  Future<int> insertUserOrUpdate(UserTable user) => into(userTableSchema)
+  Future<int> insertUserOrUpdate(UserTable user) {
+    userCache[user.id] = user;
+    return into(userTableSchema)
           .insert(user, mode: InsertMode.insertOrReplace)
           .onError((error, stackTrace) {
         logger.warning("ERROR INSERTING USER ${error.toString()}");
 
         return Future.value(0);
       });
+  }
 
   Future<void> insertMultipleUsers(List<UserTable> users) async {
     await batch((batch) {
       batch.insertAll(
         userTableSchema,
-        users.map((e) => e.toCompanion(true)).toList(),
+        users.map((e) {
+          userCache[e.id] = e;
+          return e.toCompanion(true);
+        }).toList(),
         mode: InsertMode.insertOrReplace,
       );
     });
   }
 
-  Future<int> updateUser(int id, UserTable user) =>
-      (update(userTableSchema)..where((tbl) => tbl.id.equals(id))).write(user);
+  Future<int> updateUser(int id, UserTable user) {
+    userCache[id] = user;
+    return (update(userTableSchema)..where((tbl) => tbl.id.equals(id))).write(user);
+  }
 
-  Future<UserTable?> selectUserById(int id) =>
-      (select(userTableSchema)..where((tbl) => tbl.id.equals(id)))
-          .getSingleOrNull();
+  Future<UserTable?> selectUserById(int id) async {
+    UserTable? user = userCache[id];
+    if (user == null) {
+      user = await (select(userTableSchema)..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+    }
+
+    if (user != null) userCache[id] = user;
+    return user;
+  }
 
   Future<int> countMessagesByTypeChatUser(
       String chatId, int userId, StoredMessageType type) async {
@@ -580,7 +604,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   }
 
   Future<void> deleteEverything() {
-    chatCache.clear();
+    clearCache();
     return transaction(() async {
       for (final table in allTables) {
         await delete(table).go();
@@ -589,6 +613,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   }
 
   Future<void> deleteDatabaseFiles() async {
+    clearCache();
     await close();
     String path = await getDatabasesPath();
     final regExp = RegExp(r'.*[.]sqlite');
@@ -607,11 +632,13 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-        onUpgrade: (migrator, from, to) async {},
+        onUpgrade: (migrator, from, to) async {
+        },
       );
 
   void clearCache() {
     messageCache = {};
     chatCache = {};
+    userCache = {};
   }
 }
