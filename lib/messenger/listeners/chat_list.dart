@@ -187,7 +187,7 @@ class ChatListListener extends MessageListener {
               : Int64.ZERO);
     }
     if (!await _chatsStored(chats)) {
-      await chatCreation.insertMultipleChats(chatsToInsert);
+      await chatDatabaseCubit.db.insertMultipleChats(chats);
     }
   }
 

@@ -21,7 +21,7 @@ class ChatCreation with Loggable {
   String get generateGroupId => "${JwtPayload.myId}-${Uuid().v4()}";
 
   Future<ChatTable> createDialogChat(UserTable user) async {
-    logger.finest('createChatThroughNats');
+    logger.finest('createDialogChat');
     List<UserTable> users = [user, userFunctions.me];
 
     final chat = await _createSingleChat(
@@ -93,6 +93,7 @@ class ChatCreation with Loggable {
   Future<ChatTable> _createSingleChat(UserTable user,
       {String? name, String? avatar}) async {
     var users = [user, userFunctions.me];
+    await UserFunctions(chatDatabaseCubit).insertMultipleUsers(users);
 
     var chat = await chatDatabaseCubit.db.selectChatByParticipantId(user.id);
 
@@ -106,7 +107,6 @@ class ChatCreation with Loggable {
 
       await chatDatabaseCubit.db.insertChat(chat);
     }
-    await UserFunctions(chatDatabaseCubit).insertMultipleUsers(users);
 
     return chat;
   }
@@ -119,10 +119,9 @@ class ChatCreation with Loggable {
   }) async {
     var newChat = chat ?? await _makeChat(name, avatar);
 
-    await chatDatabaseCubit.db.insertChat(newChat);
-
     final userFunctions = UserFunctions(chatDatabaseCubit);
     await userFunctions.insertMultipleUsers(users);
+    await chatDatabaseCubit.db.insertChat(newChat);
     await userFunctions.insertMultipleParticipants(
         ChatUserViewModel.toParticipants(users, newChat));
 
@@ -185,7 +184,6 @@ class ChatCreation with Loggable {
   }
 
   Future<void> insertMultipleChats(List<ChatTable> chats) async {
-    await chatDatabaseCubit.db.insertMultipleChats(chats);
   }
 
 
