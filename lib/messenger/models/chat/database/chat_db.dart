@@ -162,7 +162,10 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
         .watch()
         .transform(StreamTransformer.fromHandlers(handleData: (data, sink) {
       _debouncer.run(() {
-        sink.add(data);
+        try {
+          sink.add(data);
+        } catch (ignore) {
+        }
       });
     }));
   }
@@ -601,6 +604,7 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
   Future<void> deleteDatabaseFiles() async {
     clearCache();
     await close();
+
     String path = await getDatabasesPath();
     final regExp = RegExp(r'.*[.]sqlite');
     Directory(path)

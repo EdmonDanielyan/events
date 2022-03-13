@@ -67,7 +67,6 @@ class ChatCreation with Loggable {
   Future<void> createFromInvite(
       ChatTable chat, UserTable whoInvites) async {
     logger.finest('createFromInvite');
-    late ChatTable? newChat;
 
     chatDatabaseCubit.db.insertUserOrUpdate(whoInvites);
     chatDatabaseCubit.db.insertParticipantOrUpdate(ParticipantTable(
@@ -78,7 +77,7 @@ class ChatCreation with Loggable {
     if (chat.isGroup()) {
       logger.finest('createFromInvite: group');
 
-      newChat = await createGroup(
+      await createGroup(
         name: chat.name,
         avatar: chat.avatar,
         users: [],
