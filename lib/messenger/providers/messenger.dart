@@ -29,6 +29,7 @@ import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/providers/version_provider.dart';
 
 import '../../setup.dart';
+import '../constants/nats_constants.dart';
 
 @lazySingleton
 class Messenger with Loggable {
@@ -51,6 +52,8 @@ class Messenger with Loggable {
   late ChatListListener chatListListener;
   late ChatCubit chatCubit;
   late PushNotificationManager pushNotificationManager;
+  int disconnectCounter = 0;
+  DateTime lastDisconnect = DateTime(0);
 
   bool get isConnected => natsProvider.isConnected;
 
@@ -122,13 +125,19 @@ class Messenger with Loggable {
 
   void _onDisconnect() {
     if (!natsProvider.isDisposed) {
-      _popupDebouncer.run(() {
-        _showPopup(false);
+      disconnectCounter++;
+      if (disconnectCounter > SHOW_ALERT_WHEN_DISCONNECT_COUNT_GREATER_THEN) {
+        disconnectCounter = 0;
+        _showRestrictedAlert();
+      }
+
+      _disconnectCleaner.run(() {
+        disconnectCounter = 0;
       });
     }
   }
 
-  Debouncer _popupDebouncer = Debouncer(milliseconds: 500);
+  Debouncer _disconnectCleaner = Debouncer(milliseconds: 1000*60);
 
   Future<void> messengerConnect() async {
     logger.finest("messengerConnect start");
@@ -142,24 +151,16 @@ class Messenger with Loggable {
     await userFunctions.addMe();
     await registry.init();
     onlineSender.sendUserOnlinePing();
-    _popupDebouncer.run(() {
-      _showPopup(true);
-    });
     await textSender.redeliverMessages();
     logger.finest("messengerConnect end");
   }
 
-  void _showPopup(bool connected) {
-    return;
+  void _showRestrictedAlert() {
     final context = App.getContext;
     if (context != null) {
-      if (connected) {
-        SuccessCustomSnackbar(
-            context: context, txt: localizationInstance.connectedToServer);
-      } else {
         SimpleCustomSnackbar(
-            context: context, txt: localizationInstance.disconnectedFromServer);
-      }
+          duration: Duration(seconds: 3),
+            context: context, txt: localizationInstance.messenger_in_limited_mode);
     }
   }
 
@@ -174,6 +175,7 @@ class Messenger with Loggable {
 
   Future<void> dispose() async {
     logger.finest('dispose');
+    disconnectCounter = 0;
     chatDatabaseCubit.db.clearCache();
     registry.unsubscribeFromAll(includePush: true);
     onlineSender.stopSending();

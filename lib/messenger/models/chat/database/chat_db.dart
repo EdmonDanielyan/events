@@ -575,12 +575,15 @@ class ChatDatabase extends _$ChatDatabase with Loggable {
           .getSingleOrNull();
 
   Stream<List<ParticipantWithUser>> watchParticipants(String chatId) {
-    return (select(participantTableSchema)
-          ..where((tbl) => tbl.chatId.equals(chatId)))
+    var query = select(participantTableSchema)
         .join([
           leftOuterJoin(userTableSchema,
               userTableSchema.id.equalsExp(participantTableSchema.userId))
-        ])
+        ]);
+    query.where(participantTableSchema.chatId.equals(chatId));
+    query.orderBy([OrderingTerm.asc(userTableSchema.name)]);
+
+    return query
         .watch()
         .map((rows) {
           return rows.map((row) {
