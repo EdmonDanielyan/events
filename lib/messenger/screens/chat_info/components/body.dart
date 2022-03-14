@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/extensions/list_participant_with_user.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/extensions/chat_table.dart';
@@ -32,6 +33,9 @@ class _BodyState extends State<Body> {
         .watchParticipants(widget.chat.id)
         .listen((event) {
       if (this.mounted) {
+        event.sort(
+            (a, b) => event.sortByNameAndRole(a, b, widget.chat.ownerId));
+
         setState(() {
           participants = event;
         });

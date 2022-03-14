@@ -2,13 +2,12 @@ import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/database/model/participant_with_user.dart';
 
 extension ListParticipantWithUserExt on List<ParticipantWithUser> {
-  int sortByAdmind(ParticipantWithUser a, ParticipantWithUser b,
-      {int? ownerId}) {
-    if (ownerId != null) {
-      return a.participant!.userId == ownerId ? -1 : 1;
-    }
-
-    return a.participant!.admin ? -1 : 1;
+  int sortByNameAndRole(ParticipantWithUser a, ParticipantWithUser b, int owner) {
+    var prefA = a.participant!.admin || a.user?.id == owner ? "1" : "";
+    var prefB = b.participant!.admin || b.user?.id == owner ? "1" : "";
+    var nameA =  prefA + (a.user?.name ?? "").toLowerCase().replaceAll("ё", "е");
+    var nameB = prefB  + (b.user?.name ?? "").toLowerCase().replaceAll("ё", "е");
+    return nameA.compareTo(nameB);
   }
 
   List<int> getUserIds() {
