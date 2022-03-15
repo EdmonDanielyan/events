@@ -363,7 +363,7 @@ class NatsStreamingClient {
 
   Future<bool> ping() async {
     _logger.finest('ping');
-    if (natsClient.status != nats.Status.connected) {
+    if (natsClient.status != nats.Status.connected || _connectResponse == null) {
       return false;
     }
     Ping ping = Ping()..connID = connectionIDAscii;
