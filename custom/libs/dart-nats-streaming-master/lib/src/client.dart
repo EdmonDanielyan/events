@@ -276,8 +276,7 @@ class NatsStreamingClient {
             timeout: timeout,
             retry: retryReconnect,
             retryInterval: retryInterval,
-          )
-          .timeout(const Duration(seconds: 2));
+          );
     } catch (e, s) {
       _logger.severe('Connecting Error', e, s);
     }
@@ -313,6 +312,10 @@ class NatsStreamingClient {
 
   Future<void> _heartbeat() async {
     _logger.finest('_heartbeat');
+    if ([nats.Status.connecting, nats.Status.reconnecting].contains(natsClient.status)){
+      _logger.finest('_heartbeat: connecting is in progress. Skip ping process');
+      return;
+    }
 
     bool p = await pingWithTimeout();
     if (p) {
