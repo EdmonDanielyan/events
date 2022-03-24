@@ -13,10 +13,11 @@ class MessageMixins {
     return false;
   }
 
-  void bottomGapScroll(ScrollController controller) {
+  void bottomGapScroll(ScrollController controller,
+      {Duration duration = const Duration(microseconds: 400)}) {
     if (controller.hasClients) {
       if (isInBottom(controller, gap: 20))
-        ScrollBottom(controller).scrollSmooth();
+        ScrollBottom(controller).scrollSmooth(duration: duration);
     }
   }
 }

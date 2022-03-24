@@ -66,6 +66,7 @@ class _MessageTextfieldState extends State<MessageTextfield> {
                     onChanged: widget.onChanged,
                     minLines: 1,
                     maxLines: 3,
+                    placeholder: _hintText ?? _originalHint,
                     textCapitalization: TextCapitalization.sentences,
                     focusNode: widget.focusNode,
                     decoration: BoxDecoration(

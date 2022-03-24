@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/highlight_text.dart';
+import 'package:ink_mobile/functions/emojify.dart';
 import 'package:substring_highlight/substring_highlight.dart';
 
 class ChatMessage extends StatelessWidget {
@@ -33,7 +34,7 @@ class ChatMessage extends StatelessWidget {
           SizedBox(height: 3.0),
         ],
         SubstringHighlight(
-          text: message,
+          text: Emojify(message).replaceUnsupported,
           maxLines: 2,
           term: highlightValue,
           textStyle: TextStyle(

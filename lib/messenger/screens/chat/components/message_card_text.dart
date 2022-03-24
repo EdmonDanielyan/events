@@ -5,6 +5,7 @@ import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/components/linkify_text.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/extensions/message_table.dart';
+import 'package:ink_mobile/functions/emojify.dart';
 import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/cases/send_message.dart';
@@ -178,13 +179,13 @@ class MessageCardText extends StatelessWidget {
     if (isStrPicture(msg)) {
       return MessageCardPicture(url: msg);
     }
-
+    String txt = messageStr != null ? messageStr! : msg;
     return Flexible(
       child: LinkifyText(
-        text: messageStr != null ? messageStr! : msg,
+        text: Emojify(txt).replaceUnsupported,
         style: TextStyle(
           color: textColor(),
-          fontSize: 16.0,
+          fontSize: 17.5,
         ),
         linkStyle: TextStyle(color: textColor()),
       ),

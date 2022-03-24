@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/components/picker/emoji_picker.dart';
+import 'package:ink_mobile/core/cubit/bool_cubit/bool_cubit.dart';
+import 'package:ink_mobile/core/cubit/bool_cubit/bool_state.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
+import 'package:ink_mobile/functions/message_mixins.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/messenger/blocs/chat/chat_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat/chat_state.dart';
@@ -32,7 +36,8 @@ class MessageBottomBar extends StatefulWidget {
   _MessageBottomBarState createState() => _MessageBottomBarState();
 }
 
-class _MessageBottomBarState extends State<MessageBottomBar> with Loggable {
+class _MessageBottomBarState extends State<MessageBottomBar>
+    with Loggable, MessageMixins {
   final ChatEntities entities = ChatEntities();
   final FocusNode textfieldFocus = FocusNode();
   final TextEditingController _messageTextEditingController =
@@ -40,12 +45,13 @@ class _MessageBottomBarState extends State<MessageBottomBar> with Loggable {
   final _formKey = GlobalKey<FormState>();
   final _padding = 7.0;
 
+  final emojiShown = BoolCubit(false);
+
   _MessageBottomBarState();
 
   ChatTable? get getChat => widget.chatDatabaseCubit.selectedChat;
 
   Future<void> onSend() async {
-
     final currentChat = getChat?.copyWith();
     if (entities.text.isNotEmpty && currentChat != null) {
       final saveEntities = entities.copyWith();
@@ -83,6 +89,16 @@ class _MessageBottomBarState extends State<MessageBottomBar> with Loggable {
         widget.chatCubit.emitEditMessage(null);
       }
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    textfieldFocus.addListener(() {
+      if (textfieldFocus.hasFocus) {
+        emojiShown.setNew(false);
+      }
+    });
   }
 
   void clearForm() {
@@ -124,6 +140,22 @@ class _MessageBottomBarState extends State<MessageBottomBar> with Loggable {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  const SizedBox(width: 3.0),
+                  InkWell(
+                    child: Icon(
+                      Icons.emoji_emotions,
+                      size: 30.0,
+                    ),
+                    onTap: () async {
+                      if (!emojiShown.enabled) {
+                        textfieldFocus.unfocus();
+                        await Future.delayed(Duration(milliseconds: 250));
+                      }
+
+                      emojiShown.setNew(!emojiShown.enabled);
+                    },
+                  ),
+                  const SizedBox(width: 8.0),
                   Expanded(
                     child: MessageTextfield(
                       textEditingController: _messageTextEditingController,
@@ -134,6 +166,34 @@ class _MessageBottomBarState extends State<MessageBottomBar> with Loggable {
                   SizedBox(width: 8.0),
                   _btnWidget(),
                 ],
+              ),
+              BlocConsumer<BoolCubit, BoolState>(
+                bloc: emojiShown,
+                listener: (context, state) => bottomGapScroll(
+                  widget.scrollController,
+                  duration: const Duration(milliseconds: 700),
+                ),
+                builder: (context, state) {
+                  return Visibility(
+                    visible: state.enable,
+                    child: WillPopScope(
+                      onWillPop: () async {
+                        emojiShown.setNew(false);
+                        return Future.value(false);
+                      },
+                      child: SizedBox(
+                        height: 350,
+                        child: CustomEmojiPicker(
+                          onEmojiSelected: (category, emoji) {
+                            _messageTextEditingController.text =
+                                "${_messageTextEditingController.text} ${emoji.emoji}";
+                            entities.text = _messageTextEditingController.text;
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
