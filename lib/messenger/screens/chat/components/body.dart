@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:ink_mobile/core/cubit/bool_cubit/bool_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/functions/message_mixins.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
@@ -21,12 +22,17 @@ class ChatBody extends StatefulWidget {
   final ScrollController controller;
   final ChatScreenParams chatScreenParams;
   final SelectableCubit<MessageWithUser> selectableCubit;
+  final BoolCubit emojiShown;
   final Messenger messenger;
 
-  const ChatBody(this.controller, this.messenger, this.chatScreenParams,
-      this.selectableCubit,
-      {Key? key})
-      : super(key: key);
+  const ChatBody(
+    this.controller,
+    this.messenger,
+    this.chatScreenParams,
+    this.selectableCubit, {
+    Key? key,
+    required this.emojiShown,
+  }) : super(key: key);
 
   @override
   ChatBodyState createState() => ChatBodyState();
@@ -129,8 +135,12 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
 
   Widget get messageBar =>
       _messageBar ??
-      (_messageBar = MessageBottomBar(widget.messenger.chatDatabaseCubit,
-          widget.messenger.chatCubit, widget.controller));
+      (_messageBar = MessageBottomBar(
+        widget.messenger.chatDatabaseCubit,
+        widget.messenger.chatCubit,
+        widget.controller,
+        emojiShown: widget.emojiShown,
+      ));
 
   @override
   Widget build(BuildContext context) {
@@ -147,16 +157,25 @@ class ChatBodyState extends State<ChatBody> with MessageMixins {
           },
         ),
         Expanded(
-          child: SingleChildScrollView(
-            controller: controller,
-            physics: BouncingScrollPhysics(),
-            child: MessageList(
-              messagesLoaded: _onMessagesLoaded,
-              scrollSafe: _scrollSafe,
-              scrollController: controller,
-              messenger: widget.messenger,
-              selectableCubit: widget.selectableCubit,
-              chatScreenParams: widget.chatScreenParams,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              if (widget.emojiShown.enabled) {
+                widget.emojiShown.setNew(false);
+              }
+            },
+            child: SingleChildScrollView(
+              controller: controller,
+              physics: BouncingScrollPhysics(),
+              child: MessageList(
+                messagesLoaded: _onMessagesLoaded,
+                scrollSafe: _scrollSafe,
+                scrollController: controller,
+                messenger: widget.messenger,
+                selectableCubit: widget.selectableCubit,
+                chatScreenParams: widget.chatScreenParams,
+                emojiShown: widget.emojiShown,
+              ),
             ),
           ),
         ),

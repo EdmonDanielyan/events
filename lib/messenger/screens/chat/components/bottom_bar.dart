@@ -1,3 +1,4 @@
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/picker/emoji_picker.dart';
@@ -22,15 +23,18 @@ import 'package:ink_mobile/setup.dart';
 
 class MessageBottomBar extends StatefulWidget {
   final ScrollController scrollController;
-
+  final BoolCubit emojiShown;
   final ChatDatabaseCubit chatDatabaseCubit;
 
   final ChatCubit chatCubit;
 
   const MessageBottomBar(
-      this.chatDatabaseCubit, this.chatCubit, this.scrollController,
-      {Key? key})
-      : super(key: key);
+    this.chatDatabaseCubit,
+    this.chatCubit,
+    this.scrollController, {
+    Key? key,
+    required this.emojiShown,
+  }) : super(key: key);
 
   @override
   _MessageBottomBarState createState() => _MessageBottomBarState();
@@ -44,8 +48,6 @@ class _MessageBottomBarState extends State<MessageBottomBar>
       TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _padding = 7.0;
-
-  final emojiShown = BoolCubit(false);
 
   _MessageBottomBarState();
 
@@ -96,7 +98,7 @@ class _MessageBottomBarState extends State<MessageBottomBar>
     super.initState();
     textfieldFocus.addListener(() {
       if (textfieldFocus.hasFocus) {
-        emojiShown.setNew(false);
+        widget.emojiShown.setNew(false);
       }
     });
   }
@@ -109,6 +111,20 @@ class _MessageBottomBarState extends State<MessageBottomBar>
 
   void _onMessaging(String val) {
     entities.text = val.trim();
+  }
+
+  void _onEmojiSelected(Category category, Emoji emoji) {
+    String newTxt = "${entities.text} ${emoji.emoji}".trim();
+
+    _messageTextEditingController.text = newTxt;
+    entities.text = newTxt;
+  }
+
+  void _deleteLastLetter() {
+    String newTxt = entities.text.characters.skipLast(1).string.trim();
+
+    _messageTextEditingController.text = newTxt;
+    entities.text = newTxt;
   }
 
   @override
@@ -147,12 +163,12 @@ class _MessageBottomBarState extends State<MessageBottomBar>
                       size: 30.0,
                     ),
                     onTap: () async {
-                      if (!emojiShown.enabled) {
+                      if (!widget.emojiShown.enabled) {
                         textfieldFocus.unfocus();
-                        await Future.delayed(Duration(milliseconds: 250));
+                        await Future.delayed(Duration(milliseconds: 300));
                       }
 
-                      emojiShown.setNew(!emojiShown.enabled);
+                      widget.emojiShown.setNew(!widget.emojiShown.enabled);
                     },
                   ),
                   const SizedBox(width: 8.0),
@@ -168,7 +184,7 @@ class _MessageBottomBarState extends State<MessageBottomBar>
                 ],
               ),
               BlocConsumer<BoolCubit, BoolState>(
-                bloc: emojiShown,
+                bloc: widget.emojiShown,
                 listener: (context, state) => bottomGapScroll(
                   widget.scrollController,
                   duration: const Duration(milliseconds: 700),
@@ -178,17 +194,14 @@ class _MessageBottomBarState extends State<MessageBottomBar>
                     visible: state.enable,
                     child: WillPopScope(
                       onWillPop: () async {
-                        emojiShown.setNew(false);
+                        widget.emojiShown.setNew(false);
                         return Future.value(false);
                       },
                       child: SizedBox(
                         height: 350,
                         child: CustomEmojiPicker(
-                          onEmojiSelected: (category, emoji) {
-                            _messageTextEditingController.text =
-                                "${_messageTextEditingController.text} ${emoji.emoji}";
-                            entities.text = _messageTextEditingController.text;
-                          },
+                          onEmojiSelected: _onEmojiSelected,
+                          onBackspacePressed: _deleteLastLetter,
                         ),
                       ),
                     ),

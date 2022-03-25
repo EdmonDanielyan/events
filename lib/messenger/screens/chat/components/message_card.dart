@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/selectable_widget.dart';
+import 'package:ink_mobile/core/cubit/bool_cubit/bool_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_state.dart';
 import 'package:ink_mobile/extensions/message_table.dart';
@@ -26,7 +27,7 @@ class MessageCard extends StatelessWidget {
   final ChatDatabaseCubit chatDatabaseCubit;
   final ChatCubit chatCubit;
   final SelectableCubit<MessageWithUser> selectableCubit;
-
+  final BoolCubit emojiShown;
   final ChatScreenParams chatScreenParams;
 
   MessageCard({
@@ -37,6 +38,7 @@ class MessageCard extends StatelessWidget {
     required this.chatCubit,
     required this.selectableCubit,
     required this.chatScreenParams,
+    required this.emojiShown,
   }) : super(key: key);
 
   MessageTable get message => messageWithUser.message!;
@@ -59,6 +61,7 @@ class MessageCard extends StatelessWidget {
               selected: selectableCubit.isItemExists(messageWithUser),
               onSwitch: _onSwitchSelected,
               child: HoverMessage(
+                emojiShown: emojiShown,
                 index: index,
                 messageWithUser: messageWithUser,
                 ignore: !MessageListView.notIgnoringHoverTypes

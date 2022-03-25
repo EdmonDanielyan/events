@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
+import 'package:ink_mobile/core/cubit/bool_cubit/bool_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_state.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
@@ -55,6 +56,8 @@ class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   final GlobalKey<ChatBodyState> _chatBodyStateKey = GlobalKey<ChatBodyState>();
 
   ScrollController controller = ScrollController();
+
+  final emojiShown = BoolCubit(false);
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -113,6 +116,7 @@ class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             widget.chatScreenParams,
             widget.selectableCubit,
             key: _chatBodyStateKey,
+            emojiShown: emojiShown,
           ),
           floatingActionButton: BlocConsumer<ChatCubit, ChatCubitState>(
             bloc: widget.messenger.chatCubit,

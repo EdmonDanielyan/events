@@ -6,6 +6,7 @@ class PopupMenuContainer<T> extends StatefulWidget {
   final Widget child;
   final bool blurBackground;
   final List<PopupMenuEntry<T>> items;
+  final void Function()? onTap;
   final void Function(T) onItemSelected;
 
   PopupMenuContainer(
@@ -13,6 +14,7 @@ class PopupMenuContainer<T> extends StatefulWidget {
       this.blurBackground = false,
       required this.items,
       required this.onItemSelected,
+      this.onTap,
       Key? key})
       : super(key: key);
 
@@ -107,9 +109,7 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
         _tapDownPosition = details.globalPosition;
       },
       onLongPress: onTap,
-      onTap: () {
-        TextFieldUtils.loseTextFieldFocus();
-      },
+      onTap: widget.onTap,
       child: widget.child,
     );
   }

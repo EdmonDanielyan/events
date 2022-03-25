@@ -4,7 +4,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/components/alert/alert_cancel.dart';
 import 'package:ink_mobile/components/popup/popup_menu_container.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
+import 'package:ink_mobile/core/cubit/bool_cubit/bool_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
+import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/blocs/chat/chat_cubit.dart';
 import 'package:ink_mobile/messenger/cases/send_message.dart';
@@ -22,6 +24,7 @@ class HoverMessage extends StatelessWidget {
   final Widget child;
   final bool ignore;
   final ChatScreenParams chatScreenParams;
+  final BoolCubit emojiShown;
   const HoverMessage({
     Key? key,
     required this.index,
@@ -30,6 +33,7 @@ class HoverMessage extends StatelessWidget {
     this.ignore = false,
     required this.chatScreenParams,
     required this.chatCubit,
+    required this.emojiShown,
   }) : super(key: key);
 
   static late AppLocalizations _strings;
@@ -86,6 +90,10 @@ class HoverMessage extends StatelessWidget {
     return PopupMenuContainer<String>(
       blurBackground: true,
       child: child,
+      onTap: () {
+        TextFieldUtils.loseTextFieldFocus();
+        emojiShown.setNew(false);
+      },
       items: SelectMessageMenuList(message)
           .getStandartList()
           .map((e) => menuItem(e))

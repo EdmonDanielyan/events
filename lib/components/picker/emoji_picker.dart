@@ -5,13 +5,16 @@ import 'package:flutter/material.dart';
 
 class CustomEmojiPicker extends StatelessWidget {
   final void Function(Category, Emoji) onEmojiSelected;
-  const CustomEmojiPicker({Key? key, required this.onEmojiSelected})
+  final void Function()? onBackspacePressed;
+  const CustomEmojiPicker(
+      {Key? key, required this.onEmojiSelected, this.onBackspacePressed})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return EmojiPicker(
       onEmojiSelected: onEmojiSelected,
+      onBackspacePressed: onBackspacePressed,
       config: Config(
           columns: 7,
           emojiSizeMax: 32 * (Platform.isIOS ? 1.30 : 1.0),

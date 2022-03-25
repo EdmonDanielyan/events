@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/core/cubit/bool_cubit/bool_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/functions/message_mixins.dart';
 import 'package:ink_mobile/messenger/blocs/chat/chat_cubit.dart';
@@ -28,7 +29,7 @@ class MessageList extends StatefulWidget {
   final ScrollController scrollController;
   final ChatScreenParams chatScreenParams;
   final SelectableCubit<MessageWithUser> selectableCubit;
-
+  final BoolCubit emojiShown;
   final Messenger messenger;
 
   const MessageList({
@@ -39,6 +40,7 @@ class MessageList extends StatefulWidget {
     required this.scrollController,
     required this.chatScreenParams,
     required this.selectableCubit,
+    required this.emojiShown,
   }) : super(key: key);
 
   static List<MessageWithUser>? messagesWithUser;
@@ -181,6 +183,7 @@ class _MessageListState extends State<MessageList> with MessageMixins {
           chatCubit: widget.messenger.chatCubit,
           selectableCubit: widget.selectableCubit,
           chatScreenParams: widget.chatScreenParams,
+          emojiShown: widget.emojiShown,
         ),
       ],
     );
