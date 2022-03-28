@@ -183,10 +183,7 @@ class MessageCardText extends StatelessWidget {
     return Flexible(
       child: LinkifyText(
         text: Emojify(txt).replaceUnsupported,
-        style: TextStyle(
-          color: textColor(),
-          fontSize: 17.5,
-        ),
+        style: TextStyle(color: textColor(), fontSize: 17.5),
         linkStyle: TextStyle(color: textColor()),
       ),
     );
