@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/core/cubit/bool_cubit/bool_cubit.dart';
 import 'package:ink_mobile/core/cubit/bool_cubit/bool_state.dart';
@@ -53,11 +54,18 @@ class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
   Future<void> _showBiometrics() async {
     if (await lockApp.canCheckBiometrics()) {
       _canCheckBiometrics.setNew(true);
-      final success = await lockApp.authenticate();
 
-      if (success) {
-        await lockApp.stopAuthentification();
-        _success();
+      try {
+        final success = await lockApp.authenticate(throwError: true);
+
+        if (success) {
+          await lockApp.stopAuthentification();
+          _success();
+        }
+      } on PlatformException {
+        _canCheckBiometrics.setNew(false);
+      } catch (e) {
+        logger.warning("Error _showBiometrics $e");
       }
     }
   }

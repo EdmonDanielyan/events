@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/local_pin_provider.dart';
+import 'package:ink_mobile/routes/pass_data_routes.dart';
 import 'package:ink_mobile/screens/check_pin_code/check_pin_code_screen.dart';
 import 'package:ink_mobile/screens/initial/component/loader.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_cubit.dart';
@@ -21,17 +22,22 @@ class InitPage extends StatefulWidget with Loggable {
 
 class _InitPageState extends State<InitPage> {
   final _pinProvider = LocalPinProvider();
+  bool hasPin = false;
 
   Future<bool> _checkPin() async {
     final token = await Token.getJwt();
 
-    final hasPin = token != null && await _pinProvider.isPinAvailable();
+    hasPin = token != null && await _pinProvider.isPinAvailable();
 
     if (!hasPin) {
-      widget.cubit.load();
+      await widget.cubit.load();
     }
 
     return hasPin;
+  }
+
+  Future<void> _goToHome(BuildContext context) async {
+    Navigator.pushNamedAndRemoveUntil(context, '/app_layer', (route) => false);
   }
 
   @override
@@ -40,8 +46,11 @@ class _InitPageState extends State<InitPage> {
       bloc: widget.cubit,
       listener: (context, state) async {
         if (state.type == InitialStateType.LOAD_MAIN) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, '/app_layer', (route) => false);
+          if (!hasPin) {
+            PassDataRoutes.setPin(context, onComplete: _goToHome);
+          } else {
+            _goToHome(context);
+          }
         }
         if (state.type == InitialStateType.LOAD_WELCOME) {
           Navigator.popAndPushNamed(context, '/welcome');

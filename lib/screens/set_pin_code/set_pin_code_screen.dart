@@ -7,7 +7,8 @@ import 'package:ink_mobile/providers/local_pin_provider.dart';
 import 'components/pin_code_field.dart';
 
 class SetPinCodeScreen extends StatefulWidget {
-  const SetPinCodeScreen({Key? key}) : super(key: key);
+  final void Function(BuildContext context)? onComplete;
+  const SetPinCodeScreen({Key? key, this.onComplete}) : super(key: key);
 
   @override
   State<SetPinCodeScreen> createState() => _SetPinCodeScreenState();
@@ -23,13 +24,19 @@ class _SetPinCodeScreenState extends State<SetPinCodeScreen> {
 
   void _onComplete1() {
     _stageCubit.setNew(2);
-    _controller.text = "";
+    _controller.clear();
+    _pinCode2 = "";
   }
 
-  void _onComplete2() {
+  void _onComplete2(BuildContext context) {
     if (_pinCode2 == _pinCode1) {
       _localPinProvider.setPin(_pinCode2);
-      Navigator.of(context).pop();
+
+      if (widget.onComplete != null) {
+        widget.onComplete!(context);
+      } else {
+        Navigator.of(context).pop();
+      }
     }
   }
 
@@ -90,7 +97,7 @@ class _SetPinCodeScreenState extends State<SetPinCodeScreen> {
                       }
                     },
                     onCompleted: (pin) =>
-                        state == 2 ? _onComplete2() : _onComplete1(),
+                        state == 2 ? _onComplete2(context) : _onComplete1(),
                   ),
                 ),
                 const SizedBox(height: 10.0),
@@ -98,8 +105,9 @@ class _SetPinCodeScreenState extends State<SetPinCodeScreen> {
                   TextButton(
                     child: Text(_strings.clear),
                     onPressed: () {
+                      _controller.clear();
+                      _pinCode1 = "";
                       _stageCubit.setNew(1);
-                      _controller.text = "";
                     },
                   )
                 ],

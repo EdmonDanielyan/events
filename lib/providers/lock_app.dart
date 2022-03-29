@@ -20,7 +20,7 @@ class LockApp with Loggable {
     await authenticate();
   }
 
-  Future<bool> authenticate() async {
+  Future<bool> authenticate({bool throwError = false}) async {
     try {
       bool canCheckBios = await canCheckBiometrics();
 
@@ -29,11 +29,16 @@ class LockApp with Loggable {
       return biosOnly;
     } on PlatformException catch (e, _) {
       logger.severe("ERROR during authenticate", e, _);
+
+      if (throwError) {
+        throw PlatformException(code: e.code);
+      }
+
       if (e.code == auth_error.notAvailable) {
         return true;
       }
 
-      return true;
+      return false;
     } catch (_e) {
       return true;
     }
