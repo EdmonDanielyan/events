@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/constants/auth.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
@@ -14,28 +12,23 @@ class AuthHandler with Loggable {
 
   AuthHandler(this.bootCubit);
 
-  Future<void> authChallenge(
-      {bool pass = false, void Function()? unsuccessCallback}) async {
+  Future<bool> authChallenge({bool pass = false}) async {
     if (pass) {
       await bootCubit.load();
-      return;
+      return true;
     }
 
-    for (var i = 0; i < LOCAL_AUTH_MAX_ATTEMPTS - 1; i++) {
-      logger.severe("Attempting authenticate $i");
+    logger.severe("Attempting authenticate");
+    for (int i = 0; i < LOCAL_AUTH_MAX_ATTEMPTS; i++) {
       if (await authenticate()) {
         await bootCubit.load();
-        return;
+        return true;
       }
     }
 
-    if (unsuccessCallback != null) {
-      unsuccessCallback();
-    } else {
-      logger.severe(() =>
-          "$LOCAL_AUTH_MAX_ATTEMPTS attempts of auth failed. Exit application");
-      exit(0);
-    }
+    logger.severe(() => "Auth failed");
+
+    return false;
   }
 
   Future<void> byPassChallenge() async {
@@ -44,7 +37,6 @@ class AuthHandler with Loggable {
 
   Future<bool> authenticate() async {
     final lockApp = sl.get<LockApp>();
-    await lockApp.stopAuthentification().timeout(const Duration(seconds: 3));
 
     final auth = await lockApp.authenticate();
 

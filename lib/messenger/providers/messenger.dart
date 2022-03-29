@@ -137,7 +137,7 @@ class Messenger with Loggable {
     }
   }
 
-  Debouncer _disconnectCleaner = Debouncer(milliseconds: 1000*60);
+  Debouncer _disconnectCleaner = Debouncer(milliseconds: 1000 * 60);
 
   Future<void> messengerConnect() async {
     logger.finest("messengerConnect start");
@@ -158,12 +158,12 @@ class Messenger with Loggable {
   void _showRestrictedAlert() {
     final context = App.getContext;
     if (context != null) {
-        SimpleCustomSnackbar(
+      SimpleCustomSnackbar(
           duration: Duration(seconds: 3),
-            context: context, txt: localizationInstance.messenger_in_limited_mode);
+          context: context,
+          txt: localizationInstance.messenger_in_limited_mode);
     }
   }
-
 
   Future<void> softDispose() async {
     logger.finest('_softDispose');

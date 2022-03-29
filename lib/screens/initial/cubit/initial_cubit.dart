@@ -8,10 +8,8 @@ import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/certificate_reader.dart';
-import 'package:ink_mobile/providers/lock_app.dart';
 import 'package:ink_mobile/providers/security_checker.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_state.dart';
-import 'package:ink_mobile/setup.dart';
 
 @injectable
 class InitialCubit extends Cubit<InitialState> with Loggable {
@@ -36,23 +34,13 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
     }
   }
 
-  Future<void> init() async {
+  Future<bool> init() async {
     await certificateReader.read();
     await readRefreshToken();
     await updateToken();
+    await authHandler.bootCubit.load();
 
-    await authHandler.authChallenge(
-      unsuccessCallback: () async {
-        try {
-          final lockApp = sl.get<LockApp>();
-          lockApp.stopAuthentification();
-        } catch (e) {
-          logger.severe(() => "error stoppign localAuth");
-        }
-        await Token.deleteTokens();
-        emitWelcome();
-      },
-    );
+    return true;
   }
 
   Future<void> load() async {
@@ -62,6 +50,7 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
     try {
       if (await securityChecker.checkApplication()) {
         await init();
+
         emitState(type: InitialStateType.LOAD_MAIN);
       } else {
         emitError(localizationInstance.applicationSecurityFailed);

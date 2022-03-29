@@ -59,6 +59,7 @@ Future<void> setup({
       await sl<PushNotificationManager>().load();
 
       await sl<Messenger>().init();
+
       return true;
     };
   await sl<PackageInfoProvider>().load();

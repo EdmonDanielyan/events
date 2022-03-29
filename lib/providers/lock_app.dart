@@ -24,21 +24,9 @@ class LockApp with Loggable {
     try {
       bool canCheckBios = await canCheckBiometrics();
 
-      if (canCheckBios) {
-        return await _localAuth.authenticate(
-          localizedReason:
-              canCheckBios ? localizationInstance.biometricReason : "",
-          iOSAuthStrings: _iosStrings(),
-          biometricOnly: false,
-          sensitiveTransaction: false,
-          androidAuthStrings: _androidStrings(
-              biometricHint: localizationInstance.biometricHint),
-        );
-      }
+      final biosOnly = await _authRequest(canCheckBios);
 
-      logger.severe("BIOMETRICS NOT AVAILABLE");
-
-      return true;
+      return biosOnly;
     } on PlatformException catch (e, _) {
       logger.severe("ERROR during authenticate", e, _);
       if (e.code == auth_error.notAvailable) {
@@ -49,6 +37,17 @@ class LockApp with Loggable {
     } catch (_e) {
       return true;
     }
+  }
+
+  Future<bool> _authRequest(bool canCheckBios) async {
+    return await _localAuth.authenticate(
+      localizedReason: canCheckBios ? localizationInstance.biometricReason : "",
+      iOSAuthStrings: _iosStrings(),
+      biometricOnly: true,
+      sensitiveTransaction: false,
+      androidAuthStrings:
+          _androidStrings(biometricHint: localizationInstance.biometricHint),
+    );
   }
 
   Future<bool> stopAuthentification() async {

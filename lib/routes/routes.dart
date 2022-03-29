@@ -43,6 +43,7 @@ import 'package:ink_mobile/screens/open_university/open_university_screen.dart';
 import 'package:ink_mobile/screens/personnel_movements/personnel_movements_screen.dart';
 import 'package:ink_mobile/screens/profile/profile_screen.dart';
 import 'package:ink_mobile/screens/service_list/service_list_screen.dart';
+import 'package:ink_mobile/screens/set_pin_code/set_pin_code_screen.dart';
 import 'package:ink_mobile/screens/social_package/content/accident_insurance.dart';
 import 'package:ink_mobile/screens/social_package/content/children_rest.dart';
 import 'package:ink_mobile/screens/social_package/content/christmas_gifts.dart';
@@ -59,12 +60,12 @@ import '../cubit/main_page/announcements_list_cubit.dart';
 class MainRoutes {
   static Map<String, Widget Function(BuildContext)> routes = {
     '/init': (BuildContext context) => InitPage(
-          cubit: sl()..load(),
+          cubit: sl(),
         ),
     '/app_layer': (BuildContext context) => AppLayerScreen(
           newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
         ),
-    '/config': (BuildContext context)  => ConfigScreen(
+    '/config': (BuildContext context) => ConfigScreen(
           packageInfoProvider: sl<PackageInfoProvider>(),
           env: currentEnv,
         ),
@@ -168,7 +169,8 @@ class MainRoutes {
 
       return _pageNotFound();
     },
-    '/test': (BuildContext context) => TestScreen()
+    '/test': (BuildContext context) => TestScreen(),
+    '/set_pin': (BuildContext context) => SetPinCodeScreen(),
   };
 
   static Widget _pageNotFound() => PageNotFoundScreen();

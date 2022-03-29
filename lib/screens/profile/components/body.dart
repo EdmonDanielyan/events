@@ -11,6 +11,7 @@ import 'package:ink_mobile/screens/profile/components/basic_information.dart';
 import 'package:ink_mobile/screens/profile/components/contacts.dart';
 import 'package:ink_mobile/screens/profile/components/header.dart';
 import 'package:ink_mobile/screens/profile/components/other_user_page_header.dart';
+import 'package:ink_mobile/screens/profile/components/security.dart';
 
 import '../profile_screen.dart';
 import 'diagnostics.dart';
@@ -82,7 +83,8 @@ class Body extends StatelessWidget {
             children: [
               Contacts(contacts: user.contacts),
               BasicInformation(info: user.basicInformation),
-              Diagnostics(logFile: logFile)
+              Diagnostics(logFile: logFile),
+              ProfileSecuritySection()
             ],
           ),
         )
