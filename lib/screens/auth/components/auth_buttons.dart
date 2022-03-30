@@ -6,24 +6,52 @@ import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/cubit/auth/auth_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/providers/local_pin_provider.dart';
+import 'package:ink_mobile/routes/pass_data_routes.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
 import 'package:ink_mobile/screens/auth/components/sign_in_instructions.dart';
 import 'package:logging/logging.dart';
 
-class AuthButtons extends StatelessWidget {
-  static final logger = Logger('AuthButtons');
+class AuthButtons extends StatefulWidget {
   final GlobalKey<FormState> formKey;
 
   const AuthButtons({Key? key, required this.formKey}) : super(key: key);
+
+  @override
+  State<AuthButtons> createState() => _AuthButtonsState();
+}
+
+class _AuthButtonsState extends State<AuthButtons> {
+  static final logger = Logger('AuthButtons');
   static late AuthCubit authCubit;
   static late NewBottomNavBarCubit _bottomNavBar;
+  bool hasPin = false;
+
+  Future<void> _goToHome(BuildContext context) async {
+    Navigator.pushNamedAndRemoveUntil(context, '/app_layer', (route) => false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkPin();
+  }
+
+  Future<bool> _checkPin() async {
+    hasPin = await LocalPinProvider().isPinAvailable();
+
+    return hasPin;
+  }
 
   void onSubmit(BuildContext context) {
     authCubit.auth().then((success) {
       if (success) {
         _bottomNavBar.setOnMainPage();
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/app_layer', (route) => false);
+        if (!hasPin) {
+          PassDataRoutes.setPin(context, onComplete: _goToHome);
+        } else {
+          _goToHome(context);
+        }
       }
     }).onError((FormatException e, s) {
       logger.severe('Error during auth', e, s);
@@ -96,8 +124,8 @@ class AuthButtons extends StatelessWidget {
             ),
             child: TextButton(
               onPressed: () {
-                logger.finest(formKey.currentState);
-                if (formKey.currentState!.validate()) onSubmit(context);
+                logger.finest(widget.formKey.currentState);
+                if (widget.formKey.currentState!.validate()) onSubmit(context);
               },
               child: Text(
                 localizationInstance.enter,
