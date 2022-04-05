@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+enum NavBarItems { home, search, messages, services }
+
 @singleton
 class NewBottomNavBarCubit extends Cubit<int> {
   final PageController pageController = PageController();
@@ -14,5 +16,10 @@ class NewBottomNavBarCubit extends Cubit<int> {
 
   void setOnMainPage() {
     onPageChanged(0);
+  }
+
+  void goToPage(NavBarItems item) {
+    pageController.jumpToPage(item.index);
+    emit(item.index);
   }
 }
