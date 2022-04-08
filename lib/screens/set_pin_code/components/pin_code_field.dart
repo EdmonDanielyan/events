@@ -36,6 +36,7 @@ class PinCodeTextField extends StatelessWidget {
       validator: validator,
       onChanged: onChanged,
       onCompleted: onCompleted,
+      obscureText: true,
     );
   }
 }

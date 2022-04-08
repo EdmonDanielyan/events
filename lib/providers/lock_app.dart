@@ -34,7 +34,9 @@ class LockApp with Loggable {
         throw PlatformException(code: e.code);
       }
 
-      if (e.code == auth_error.notAvailable) {
+      if (e.code == auth_error.notAvailable ||
+          e.code == auth_error.notEnrolled ||
+          e.code == auth_error.passcodeNotSet) {
         return true;
       }
 
