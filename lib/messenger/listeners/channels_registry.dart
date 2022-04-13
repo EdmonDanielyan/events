@@ -13,6 +13,7 @@ import 'package:ink_mobile/messenger/listeners/joined.dart';
 import 'package:ink_mobile/messenger/listeners/online.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
+import 'package:ink_mobile/messenger/providers/chat_import/chat_import.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/providers/notifications/push_notification_manager.dart';
 
@@ -89,6 +90,8 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> init() async {
+    await ChatImport(chatDatabaseCubit.db).export();
+
     logger.finest('init');
     await Future.delayed(Duration(seconds: 1));
     listeners = {};
@@ -157,7 +160,8 @@ class ChannelsRegistry with Loggable {
       startSequence = Int64.ZERO,
       startPosition = StartPosition.SequenceStart,
       maxInFlight = MAX_IN_FLIGHTS}) async {
-    logger.fine(() => "subscribeToChannel. channel: $channel, startSequence: $startSequence");
+    logger.fine(() =>
+        "subscribeToChannel. channel: $channel, startSequence: $startSequence");
 
     if (!natsProvider.isConnected) {
       logger.warning("nats is not connected");
@@ -186,8 +190,7 @@ class ChannelsRegistry with Loggable {
       } catch (_e, stacktrace) {
         logger.severe("Unexpected error", _e, stacktrace);
       }
-    } else
-    {
+    } else {
       logger.warning("Already listening");
     }
   }
@@ -214,7 +217,8 @@ class ChannelsRegistry with Loggable {
 
   Future<void> subscribeOnChatChannelsIfNotExists(String chatChannel,
       {Int64 sequence = Int64.ZERO}) async {
-    logger.finest(() => "subscribeOnChatChannelsIfNotExists. channel: $chatChannel, sequence: $sequence");
+    logger.finest(() =>
+        "subscribeOnChatChannelsIfNotExists. channel: $chatChannel, sequence: $sequence");
 
     final channelExists = await channelFunctions.getChannel(chatChannel);
     if (channelExists == null) {
@@ -234,7 +238,8 @@ class ChannelsRegistry with Loggable {
     await unSubscribeFromChannel(chatChannel);
   }
 
-  bool isListening(String channel) => natsProvider.channelSubscriptions.containsKey(channel);
+  bool isListening(String channel) =>
+      natsProvider.channelSubscriptions.containsKey(channel);
 
   Future<void> unsubscribeFromAll({required bool includePush}) async {
     logger.finest("unsubscribeFromAll");
