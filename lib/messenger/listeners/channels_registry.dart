@@ -14,6 +14,7 @@ import 'package:ink_mobile/messenger/listeners/online.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/chat_import/chat_import.dart';
+import 'package:ink_mobile/messenger/providers/chat_import/chat_import_storage.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/messenger/providers/notifications/push_notification_manager.dart';
 
@@ -90,9 +91,11 @@ class ChannelsRegistry with Loggable {
   }
 
   Future<void> init() async {
-    await ChatImport(chatDatabaseCubit.db).export();
-
     logger.finest('init');
+    final chatImport =
+        ChatImport(chatDatabaseCubit.db, sl<ChatImportStorage>());
+
+    await chatImport.import();
     await Future.delayed(Duration(seconds: 1));
     listeners = {};
     MessageType.values.forEach((messageType) {
@@ -112,7 +115,7 @@ class ChannelsRegistry with Loggable {
     await onlineListener.subscribeOnline();
     await chatListListener.subscribe(userFunctions.me.id.toString());
     await subscribeToInvitations();
-
+    await chatImport.export();
     chatDatabaseCubit.setLoadingChats(false);
     logger.finest('init is finished');
   }

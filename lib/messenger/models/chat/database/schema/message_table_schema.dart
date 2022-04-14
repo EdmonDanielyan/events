@@ -50,4 +50,22 @@ class MessageTableSchema extends Table {
       'messageToLower': serializer.toJson<String?>(message.messageToLower),
     };
   }
+
+  static MessageTable fromJson(Map<String, dynamic> json) {
+    final serializer = moorRuntimeOptions.defaultSerializer;
+    return MessageTable(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<int>(json['userId']),
+      chatId: serializer.fromJson<String>(json['chatId']),
+      message: serializer.fromJson<String>(json['message']),
+      repliedMessageId: serializer.fromJson<String?>(json['repliedMessageId']),
+      sentStatus: MessageSentStatus.values[json['sentStatus']],
+      actionsStatus: MessageActions.values[json['actionsStatus']],
+      read: serializer.fromJson<bool>(json['read']),
+      type: StoredMessageType.values[json['type']],
+      timestamp: serializer.fromJson<DateTime?>(json['timestamp']),
+      sequence: serializer.fromJson<int?>(json['sequence']),
+      messageToLower: serializer.fromJson<String?>(json['messageToLower']),
+    );
+  }
 }

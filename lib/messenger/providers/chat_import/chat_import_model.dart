@@ -60,7 +60,7 @@ class ChatImportModel {
       chats:
           List<ChatTable>.from(map['chats']?.map((x) => ChatTable.fromJson(x))),
       messages: List<MessageTable>.from(
-          map['messages']?.map((x) => MessageTable.fromJson(x))),
+          map['messages']?.map((x) => MessageTableSchema.fromJson(x))),
       channels: List<ChannelTable>.from(
           map['channels']?.map((x) => ChannelTable.fromJson(x))),
       participants: List<ParticipantTable>.from(
