@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:ink_mobile/providers/lock_app.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_cubit.dart';
 import 'package:ink_mobile/screens/set_pin_code/components/pin_code_field.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:local_auth/local_auth.dart';
 
 class CheckPinCodeScreen extends StatefulWidget {
   final AuthHandler authHandler;
@@ -33,6 +35,8 @@ class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
   final BoolCubit _loadingCubit = BoolCubit(false);
   final BoolCubit _canCheckBiometrics = BoolCubit(false);
   final List<String> tries = [];
+  List<BiometricType> availableBios = [];
+  final BoolCubit _unlockingViaBio = BoolCubit(false);
 
   @override
   void initState() {
@@ -53,6 +57,8 @@ class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
 
   Future<void> _showBiometrics() async {
     if (await lockApp.canCheckBiometrics()) {
+      _unlockingViaBio.setNew(true);
+      availableBios = await lockApp.getAvailableBiometrics();
       _canCheckBiometrics.setNew(true);
 
       try {
@@ -67,6 +73,8 @@ class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
       } catch (e) {
         logger.warning("Error _showBiometrics $e");
       }
+
+      _unlockingViaBio.setNew(false);
     }
   }
 
@@ -93,55 +101,67 @@ class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
     return Scaffold(
       body: Center(
         child: BlocBuilder<BoolCubit, BoolState>(
-          bloc: _loadingCubit,
-          builder: (context, state) {
-            if (state.enable) {
-              return CircularProgressIndicator();
-            }
+            bloc: _unlockingViaBio,
+            builder: (context, state) {
+              if (state.enable) {
+                return const SizedBox();
+              }
 
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 20.0),
-                  Text(
-                    _strings.authenticationRequired,
-                    style: const TextStyle(
-                      fontSize: 22.0,
-                    ),
-                  ),
-                  const SizedBox(height: 40.0),
-                  Center(
-                    child: PinCodeTextField(
-                      onCompleted: (str) => _onCompleted(str, context),
-                      validator: (str) {
-                        if (str != _myPin) {
-                          return _strings.incorrectPinCode;
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 30.0),
-                  BlocBuilder<BoolCubit, BoolState>(
-                    bloc: _canCheckBiometrics,
-                    builder: (context, state) {
-                      if (state.enable) {
-                        return IconButton(
-                          onPressed: _showBiometrics,
-                          icon: Icon(Icons.fingerprint,
-                              color: Theme.of(context).primaryColor),
-                          iconSize: 40.0,
-                        );
-                      }
+              return BlocBuilder<BoolCubit, BoolState>(
+                bloc: _loadingCubit,
+                builder: (context, state) {
+                  if (state.enable) {
+                    return CircularProgressIndicator();
+                  }
 
-                      return const SizedBox();
-                    },
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 20.0),
+                        Text(
+                          _strings.authenticationRequired,
+                          style: const TextStyle(
+                            fontSize: 22.0,
+                          ),
+                        ),
+                        const SizedBox(height: 40.0),
+                        Center(
+                          child: PinCodeTextField(
+                            onCompleted: (str) => _onCompleted(str, context),
+                            validator: (str) {
+                              if (str != _myPin) {
+                                return _strings.incorrectPinCode;
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 30.0),
+                        BlocBuilder<BoolCubit, BoolState>(
+                          bloc: _canCheckBiometrics,
+                          builder: (context, state) {
+                            if (state.enable) {
+                              return IconButton(
+                                onPressed: _showBiometrics,
+                                icon: Icon(
+                                  availableBios.contains(BiometricType.face)
+                                      ? CupertinoIcons.lock_circle
+                                      : Icons.fingerprint,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                iconSize: 40.0,
+                              );
+                            }
+
+                            return const SizedBox();
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }),
       ),
     );
   }

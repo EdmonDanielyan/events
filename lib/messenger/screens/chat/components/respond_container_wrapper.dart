@@ -37,6 +37,7 @@ class RespondContainerWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: crossAxisAlignment,
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (message.repliedMessageId != null && selectedMessage() != null) ...[
           RespondMessageContainer(

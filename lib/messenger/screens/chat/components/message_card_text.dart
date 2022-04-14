@@ -150,25 +150,34 @@ class MessageCardText extends StatelessWidget {
       message: message!,
       textColor: textColor(),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: message?.repliedMessageId != null
+            ? MainAxisSize.max
+            : MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: message != null && message!.isByMe()
+            ? MainAxisAlignment.spaceBetween
+            : MainAxisAlignment.start,
         children: [
           _showMessage(),
-          if (message?.actionsStatus == MessageActions.EDITED) ...[
-            const SizedBox(width: 7.0),
-            MessageEditedCard(
-              brightness: byMe ? Brightness.dark : Brightness.light,
-            ),
-          ],
-          const SizedBox(width: 5.0),
-          if (message?.sentStatus != MessageSentStatus.SENDING &&
-              message?.sentStatus != MessageSentStatus.ERROR) ...[
-            _dateWidget(),
-          ],
-          if (byMe) ...[
-            const SizedBox(width: 4.0),
-            _statusWidget(),
-          ],
+          Row(
+            children: [
+              if (message?.actionsStatus == MessageActions.EDITED) ...[
+                const SizedBox(width: 7.0),
+                MessageEditedCard(
+                  brightness: byMe ? Brightness.dark : Brightness.light,
+                ),
+              ],
+              const SizedBox(width: 5.0),
+              if (message?.sentStatus != MessageSentStatus.SENDING &&
+                  message?.sentStatus != MessageSentStatus.ERROR) ...[
+                _dateWidget(),
+              ],
+              if (byMe) ...[
+                const SizedBox(width: 4.0),
+                _statusWidget(),
+              ],
+            ],
+          ),
         ],
       ),
     );

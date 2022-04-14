@@ -16,6 +16,10 @@ class LockApp with Loggable {
   Future<bool> canCheckBiometrics() async =>
       await _localAuth.canCheckBiometrics;
 
+  Future<List<BiometricType>> getAvailableBiometrics() async {
+    return _localAuth.getAvailableBiometrics();
+  }
+
   Future<void> init() async {
     await authenticate();
   }

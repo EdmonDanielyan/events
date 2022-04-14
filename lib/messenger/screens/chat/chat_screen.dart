@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
-import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
 import 'package:ink_mobile/core/cubit/bool_cubit/bool_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectable/selectable_state.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/messenger/blocs/chat/chat_cubit.dart';
+import 'package:ink_mobile/messenger/blocs/chat/chat_opened.dart';
 import 'package:ink_mobile/messenger/blocs/chat/chat_state.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_state.dart';
@@ -28,7 +28,7 @@ import 'entities/chat_screen_params.dart';
 
 class ChatScreen extends StatefulWidget {
   final Messenger messenger;
-
+  final ChatOpenedCubit chatOpenedCubit;
   static ChatScreenState of(BuildContext context) =>
       context.findAncestorStateOfType<ChatScreenState>()!;
 
@@ -42,6 +42,7 @@ class ChatScreen extends StatefulWidget {
     required this.messenger,
     required this.selectableCubit,
     required this.chatFunctions,
+    required this.chatOpenedCubit,
   }) : super(key: key);
 
   @override
@@ -77,7 +78,7 @@ class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
-    sl<NewBottomNavBarCubit>().goToPage(NavBarItems.messages);
+    widget.chatOpenedCubit.set(true);
   }
 
   void _setMessagesToRead() {
@@ -96,6 +97,7 @@ class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     super.dispose();
     widget.messenger.chatCubit.emitEditMessage(null);
     widget.messenger.chatCubit.emitSelectedMessageId(null);
+    widget.chatOpenedCubit.set(false);
   }
 
   @override

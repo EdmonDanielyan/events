@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
+import 'package:ink_mobile/messenger/blocs/chat/chat_opened.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/cases/open_chat.dart';
 import 'package:ink_mobile/messenger/cases/send_message.dart';
@@ -101,7 +102,9 @@ class TextMessageListener extends MessageListener with Profileable {
             final openedChat = chatDatabaseCubit.getSelectedChatId;
 
             if (openedChat != chat.id) {
-              OpenChat(sl(), chat, goToFirstScreen: true)();
+              OpenChat(sl(), chat,
+                  goToFirstScreen:
+                      sl<ChatOpenedCubit>().state.enable ? true : false)();
             }
           },
         );

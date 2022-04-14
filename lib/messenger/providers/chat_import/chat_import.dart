@@ -18,18 +18,21 @@ class ChatImport {
   const ChatImport(this.database, this.storage);
 
   Future<void> import() async {
-    final chats = await database.getAllChats();
-    if (chats.isEmpty) {
-      final body = await DownloadArchiveService().call();
-      if (body != null) {
-        final file = await extractZipFile(body);
+    final logger = Logger("import");
+    try {
+      final chats = await database.getAllChats();
 
-        if (file != null) {
-          final content = await file.readAsString();
+      if (chats.isEmpty) {
+        final body = await DownloadArchiveService()
+            .call()
+            .timeout(Duration(seconds: 5), onTimeout: () => null);
+        if (body != null) {
+          final file = await extractZipFile(body);
 
-          if (content.isNotEmpty) {
-            try {
-              final logger = Logger("export");
+          if (file != null) {
+            final content = await file.readAsString();
+
+            if (content.isNotEmpty) {
               final ChatImportModel model = ChatImportModel.fromJson(content);
 
               logger.fine("IMPORTING FILES");
@@ -48,27 +51,33 @@ class ChatImport {
                               CHANNELS ${model.channels.length}
               
               ''');
-            } catch (_) {}
+            }
           }
         }
       }
+    } catch (e) {
+      logger.warning("Error importing $e");
     }
   }
 
   Future<void> export() async {
-    if (!await storage.isAvailable()) {
-      final logger = Logger("export");
-      logger.fine("EXPORT IS NOT AVAILABLE");
-      return;
-    }
+    final logger = Logger("export");
+    try {
+      if (!await storage.isAvailable()) {
+        logger.fine("EXPORT IS NOT AVAILABLE");
+        return;
+      }
 
-    final model = await getModel();
-    final file = await createTxt(model);
-    final zipFile = await createZip(file);
+      final model = await getModel();
+      final file = await createTxt(model);
+      final zipFile = await createZip(file);
 
-    if (zipFile != null) {
-      await uploadFile(zipFile, model);
-      await storage.setDate();
+      if (zipFile != null) {
+        await uploadFile(zipFile, model);
+        await storage.setDate();
+      }
+    } catch (e) {
+      logger.fine("ERROR WHILE EXPORTING $e");
     }
   }
 
@@ -82,34 +91,26 @@ class ChatImport {
   }
 
   Future<File?> createZip(File file) async {
-    Directory? appDocDirectory = await getExternalStorageDirectory();
+    Directory? appDocDirectory = await getApplicationDocumentsDirectory();
 
-    if (appDocDirectory != null) {
-      var encoder = ZipFileEncoder();
-      final zipPath = appDocDirectory.path + "/" + '${JwtPayload.myId}.zip';
-      encoder.create(zipPath);
-      encoder.addFile(file);
-      encoder.close();
+    var encoder = ZipFileEncoder();
+    final zipPath = appDocDirectory.path + "/" + '${JwtPayload.myId}.zip';
+    encoder.create(zipPath);
+    encoder.addFile(file);
+    encoder.close();
 
-      final zipFile = File(zipPath);
+    final zipFile = File(zipPath);
 
-      return zipFile;
-    }
-
-    return null;
+    return zipFile;
   }
 
   Future<File?> extractZipFile(List<int> data) async {
-    Directory? appDocDirectory = await getExternalStorageDirectory();
-    if (appDocDirectory != null) {
-      final zipPath = appDocDirectory.path + "/" + 'out.zip';
-      final zipFile = ZipDecoder().decodeBytes(data);
-      extractArchiveToDisk(zipFile, zipPath);
+    Directory? appDocDirectory = await getApplicationDocumentsDirectory();
+    final zipPath = appDocDirectory.path + "/" + 'out.zip';
+    final zipFile = ZipDecoder().decodeBytes(data);
+    extractArchiveToDisk(zipFile, zipPath);
 
-      return File('$zipPath/${JwtPayload.myId}.txt');
-    }
-
-    return null;
+    return File('$zipPath/${JwtPayload.myId}.txt');
   }
 
   Future<void> uploadFile(File zipFile, ChatImportModel model) async {
@@ -126,7 +127,9 @@ class ChatImport {
     logger.finest(size);
 
     if (model.chats.length > 0 && model.messages.length > 0) {
-      await UploadArchiveService(zipFile).call();
+      await UploadArchiveService(zipFile)
+          .call()
+          .timeout(Duration(seconds: 3), onTimeout: () => null);
     }
   }
 

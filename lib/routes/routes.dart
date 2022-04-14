@@ -13,6 +13,7 @@ import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart';
+import 'package:ink_mobile/messenger/blocs/chat/chat_opened.dart';
 import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/messenger/blocs/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
@@ -138,6 +139,7 @@ class MainRoutes {
           chatScreenParams: args,
           messenger: sl<Messenger>(),
           selectableCubit: SelectableCubit<MessageWithUser>(),
+          chatOpenedCubit: sl<ChatOpenedCubit>(),
           chatFunctions: sl(),
         );
       }

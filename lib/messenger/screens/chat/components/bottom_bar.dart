@@ -157,21 +157,21 @@ class _MessageBottomBarState extends State<MessageBottomBar>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(width: 3.0),
-                  InkWell(
-                    child: Icon(
-                      Icons.emoji_emotions,
-                      size: 30.0,
-                    ),
-                    onTap: () async {
-                      if (!widget.emojiShown.enabled) {
-                        textfieldFocus.unfocus();
-                        await Future.delayed(Duration(milliseconds: 300));
-                      }
+                  // InkWell(
+                  //   child: Icon(
+                  //     Icons.emoji_emotions,
+                  //     size: 30.0,
+                  //   ),
+                  //   onTap: () async {
+                  //     if (!widget.emojiShown.enabled) {
+                  //       textfieldFocus.unfocus();
+                  //       await Future.delayed(Duration(milliseconds: 300));
+                  //     }
 
-                      widget.emojiShown.setNew(!widget.emojiShown.enabled);
-                    },
-                  ),
-                  const SizedBox(width: 8.0),
+                  //     widget.emojiShown.setNew(!widget.emojiShown.enabled);
+                  //   },
+                  // ),
+                  // const SizedBox(width: 8.0),
                   Expanded(
                     child: MessageTextfield(
                       textEditingController: _messageTextEditingController,
