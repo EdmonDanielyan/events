@@ -22,6 +22,7 @@ class ChatName extends StatelessWidget {
         color: Colors.black,
         fontFamily: "Noto",
       ),
+      strutStyle: StrutStyle(forceStrutHeight: true),
       textStyleHighlight: const TextStyle(color: Colors.blue),
       overflow: TextOverflow.ellipsis,
     );

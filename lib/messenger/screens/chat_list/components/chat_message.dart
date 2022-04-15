@@ -42,6 +42,7 @@ class ChatMessage extends StatelessWidget {
             color: Colors.grey[700],
             fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
           ),
+          strutStyle: StrutStyle(forceStrutHeight: true),
           textStyleHighlight: const TextStyle(color: Colors.blue),
           overflow: TextOverflow.ellipsis,
         ),

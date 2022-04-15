@@ -77,7 +77,8 @@ dependencies:
     firebase_messaging: ^11.2.5
     uuid: ^3.0.6
     json_annotation: ^4.4.0
-    substring_highlight: ^1.0.33
+    substring_highlight:
+        path: "./custom/libs/substring_highlight-master"
     flutter_native_text_input: ^2.1.1
     cached_network_image: ^3.2.0
     emoji_picker_flutter: ^1.1.2
