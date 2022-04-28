@@ -117,7 +117,7 @@ class ChatImport {
     final size = await getFileSize(zipFile.path, 2);
 
     final logger = Logger("export");
-    logger.finest('''
+    logger.finest(''' EXPORTING DATA
       CHATS ${model.chats.length}
       MESSAGES ${model.messages.length}
       USERS ${model.users.length}
