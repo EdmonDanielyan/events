@@ -62,6 +62,8 @@ class ChannelsRegistry with Loggable {
     MessageType.Online,
     MessageType.ChatList
   };
+  ChatImport get getChatImport =>
+      ChatImport(chatDatabaseCubit.db, sl<ChatImportStorage>());
 
   String get inviteUserChannel => natsProvider.getInviteUserToJoinChatChannel();
 
@@ -90,12 +92,13 @@ class ChannelsRegistry with Loggable {
     }
   }
 
+  Future<void> exportChats({bool pass = false}) async {
+    await getChatImport.export(pass: pass);
+  }
+
   Future<void> init() async {
     logger.finest('init');
-    final chatImport =
-        ChatImport(chatDatabaseCubit.db, sl<ChatImportStorage>());
-
-    await chatImport.import();
+    await getChatImport.import();
     await Future.delayed(Duration(seconds: 1));
     listeners = {};
     MessageType.values.forEach((messageType) {
@@ -115,7 +118,7 @@ class ChannelsRegistry with Loggable {
     await onlineListener.subscribeOnline();
     await chatListListener.subscribe(userFunctions.me.id.toString());
     await subscribeToInvitations();
-    chatImport.export();
+    exportChats();
     chatDatabaseCubit.setLoadingChats(false);
     logger.finest('init is finished');
   }

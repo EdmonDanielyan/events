@@ -60,10 +60,10 @@ class ChatImport {
     }
   }
 
-  Future<void> export() async {
+  Future<void> export({bool pass = false}) async {
     final logger = Logger("export");
     try {
-      if (!await storage.isAvailable()) {
+      if (!pass && !await storage.isAvailable()) {
         logger.fine("EXPORT IS NOT AVAILABLE");
         return;
       }

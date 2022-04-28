@@ -5,6 +5,7 @@ import 'package:ink_mobile/messenger/constants/api.dart';
 
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/adapter.dart';
 
 part 'rest_client.g.dart';
 
@@ -35,6 +36,13 @@ class MessengerApi {
     if (useTokenInterceptor) {
       dio.interceptors.add(TokenInterceptor(passError: passError));
     }
+
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
 
     return dio;
   }

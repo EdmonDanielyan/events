@@ -59,13 +59,13 @@ class ChatCreation with Loggable {
         initiatorId: JwtPayload.myId,
       );
       await messenger.chatSaver.saveChats(newChat: null);
+      messenger.registry.exportChats(pass: true);
     } else {
       logger.warning('Messenger is not ok. Check network');
     }
   }
 
-  Future<void> createFromInvite(
-      ChatTable chat, UserTable whoInvites) async {
+  Future<void> createFromInvite(ChatTable chat, UserTable whoInvites) async {
     logger.finest('createFromInvite');
 
     chatDatabaseCubit.db.insertUserOrUpdate(whoInvites);
@@ -182,8 +182,5 @@ class ChatCreation with Loggable {
     );
   }
 
-  Future<void> insertMultipleChats(List<ChatTable> chats) async {
-  }
-
-
+  Future<void> insertMultipleChats(List<ChatTable> chats) async {}
 }

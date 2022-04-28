@@ -38,7 +38,8 @@ class ChatFunctions {
         messages != null &&
         messages.isNotEmpty &&
         messages.first.timestamp != null) {
-      await chatDatabaseCubit.db.updateChat(chat.copyWith(updatedAt: messages.first.timestamp!));
+      await chatDatabaseCubit.db
+          .updateChat(chat.copyWith(updatedAt: messages.first.timestamp!));
     }
   }
 
@@ -61,8 +62,9 @@ class ChatFunctions {
     chatDatabaseCubit.db.deleteMessagesByChatId(chatId);
   }
 
-  void deleteChat(String chatId) {
-    chatDatabaseCubit.db.deleteChatById(chatId);
+  Future<void> deleteChat(String chatId) async {
+    await chatDatabaseCubit.db.deleteChatById(chatId);
+    messenger.registry.exportChats(pass: true);
   }
 
   void updateChat(ChatTable chat, {bool setSelectedChat = false}) {
