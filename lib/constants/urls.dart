@@ -39,7 +39,8 @@ abstract class UrlsConfigDev {
 
   @dev
   @Named("natsCertificatePath")
-  String get natsCertificatePath => "assets/certs/messenger-dev.jetrabbits.com.pem";
+  String get natsCertificatePath =>
+      "assets/certs/messenger-dev.jetrabbits.com.pem";
 
   @dev
   @Named("apiUrl")
@@ -58,7 +59,7 @@ abstract class UrlsConfigProd {
 
   @prod
   @Named("natsCluster")
-  String get natsCluster => "ink";
+  String get natsCluster => "test-cluster";
 
   @prod
   @Named("natsCertificatePath")

@@ -1,3 +1,3 @@
 class MessengerApiConstants {
-  static const String baseUrl = "http://192.168.0.77:3009/api/v1";
+  static const String baseUrl = "https://messenger.irkutskoil.ru:3009/api/v1";
 }
