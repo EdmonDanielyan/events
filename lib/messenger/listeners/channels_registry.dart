@@ -115,7 +115,7 @@ class ChannelsRegistry with Loggable {
     await onlineListener.subscribeOnline();
     await chatListListener.subscribe(userFunctions.me.id.toString());
     await subscribeToInvitations();
-    await chatImport.export();
+    chatImport.export();
     chatDatabaseCubit.setLoadingChats(false);
     logger.finest('init is finished');
   }
