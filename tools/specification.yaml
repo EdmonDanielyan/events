@@ -1,2955 +1,2966 @@
 openapi: 3.0.1
 info:
-  description: API для мобильного приложения
-  version: 1.0.0
-  title: QSOFT Mobile API
+    description: API для мобильного приложения
+    version: 1.0.0
+    title: QSOFT Mobile API
 servers:
-  - url: https://test.ink.vpool.qsoft.ru/api/v1
+    - url: https://portal-test.irkutskoil.ru/api/v1/
 
 tags:
-  - name: Auth
-    description: Авторизация/Регистрация
-  - name: Contacts
-    description: Метод для работы с поиском контактов
-  - name: Announcements
-    description: Методы для работы с объявлениями
-  - name: User
-    description: Методы для работы с пользователями
-  - name: Search
-    description: Поиск
+    - name: Auth
+      description: Авторизация/Регистрация
+    - name: Contacts
+      description: Метод для работы с поиском контактов
+    - name: Announcements
+      description: Методы для работы с объявлениями
+    - name: User
+      description: Методы для работы с пользователями
+    - name: Search
+      description: Поиск
 
 paths:
-  /auth/login:
-    post:
-      tags:
-        - Auth
-      summary: Авторизация
-      operationId: auth
-      requestBody:
-        description: Информация для авторизации
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/authParams"
-      responses:
-        200:
-          description: Пользователь успешно авторизован
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/authSuccess"
-        400:
-          description: Не верный логин/пароль пользователя
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/badAuthParams"
-        404:
-          description: Пользователь не найден
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/userNotFound"
-  /auth/refresh:
-    post:
-      tags:
-        - Auth
-      summary: Продление JWT токена по refresh token
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/refreshTokenParams"
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/authSuccess"
-  /auth/register:
-    post:
-      tags:
-        - Auth
-      summary: Регистрация
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/registerParams"
-      responses:
-        '200':
-          description: Регистрация прошла успешно. Отправлена Смс.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/registerSuccess"
-        '400':
-          description: |
-            Неправильная длина табельного номера или номера телефона
-            или такой пользователь уже зарегестрирован
-            или не все параметры заданы
-            или данный логин подразумевает использование авторизации через ActiveDirectory
-            или на ваш телефонны номер уже отправлена смс
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/bad_request"
-        '403':
-          description: Пользователь находится в стоп листе, доступ запрещен
-            или такой пользователь уже зарегестрирован на портале
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/forbidden"
-        '404':
-          description: Сотрудник не найден.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/not_found"
-        '500':
-          description: Техническая ошибка на сервере
-            или ошибка подключения модуля
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/server_error"
-  /auth/register/confirm:
-    post:
-      tags:
-        - Auth
-      summary: Подтверждение регистрации по коду из SMS
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/registerConfirmParams"
-      responses:
-        '200':
-          description: Регистрация прошла успешно. Отправлено sms.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/registerConfirmSuccess"
-  /contacts:
-    get:
-      tags:
-        - Contacts
-      summary: Получение контактов
-      description: Получение контактов (пользователей) в поиске мессенджера по введенной строке. Совпадение проверяется по ФИО без учета ошибок.
-      operationId: getContacts
-      parameters:
-        - name: search
-          in: query
-          description: Строка, введенная пользователем для поиска
-          required: false
-          schema:
-            type: string
-            default: ''
-        - name: page_number
-          in: query
-          description: Номер страницы для пагинации
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            default: 1
-        - name: count_on_page
-          in: query
-          description: Количество элементов на странице
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 50
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getContacts"
-        404:
-          description: Пользователи с заданными параметрами отсутствуют
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/contactsNotFound"
-      security:
-        - bearerAuth: []
-  /news:
-    get:
-      tags:
-        - News
-      summary: Получение списка новостей
-      description: Получение списка новостей по убыванию даты с пагинацией
-      operationId: getNews
-      parameters:
-        - name: filter
-          in: query
-          description: фильтр для выдачи определенной группы новостей, допустимые значения news, news-idea, volunteer_news, information_sport, information_ms, literacy
-          schema:
-            type: string
-            enum: [news, news-idea, volunteer_news, information_sport, information_ms, literacy, stable_development, error]
-            nullable: true
-        - name: page_number
-          in: query
-          description: Номер страницы для пагинации
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-        - name: count_on_page
-          in: query
-          description: Количество элементов на странице
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 200
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getNews"
-        404:
-          description: По введенным данным не найдено ни одной новости
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/newsNotFound"
-      security:
-        - bearerAuth: []
-  /news/{id}:
-    get:
-      tags:
-        - News
-      summary: Получение информации о новости по ID
-      parameters:
-        - name: id
-          in: path
-          description: ID новости
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getNewsById"
-        404:
-          description: По введенным данным не найдено ни одной новости
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/newsNotFound"
-      security:
-        - bearerAuth: []
-  /news/comments/{id}:
-    get:
-      tags:
-        - News
-      summary: Получение комментариев к новости по ID
-      parameters:
-        - name: id
-          in: path
-          description: ID новости
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getCommentsById"
-        404:
-          description: По введенным данным не найдено ни одной новости
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/commentsNotFound"
-      security:
-        - bearerAuth: []
-  /news/postcomment:
-    post:
-      tags:
-        - News
-      summary: Создание нового комментария
-      requestBody:
-        description: Информация для создания комментария
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/postComment"
-      responses:
-        200:
-          description: Успешное добавление комментария
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/postCommentSuccess"
-        400:
-          description: Ошибка, не были переданы обязательные параметры
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/postCommentParamsFail"
-      security:
-        - bearerAuth: []
-  /news/like/{id}:
-    get:
-      tags:
-        - News
-      summary: Поблагодарить новость
-      parameters:
-        - name: id
-          in: path
-          description: id новости
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/newsLikeSuccess"
-      security:
-        - bearerAuth: []
-  /news/comments/like/{id}:
-    get:
-      tags:
-        - News
-      summary: Поблагодарить комментарий
-      parameters:
-        - name: id
-          in: path
-          description: id комментария
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/commentLikeSuccess"
-      security:
-        - bearerAuth: []
-  /announcements:
-    get:
-      tags:
-        - Announcements
-      summary: Получение списка событий
-      description: Получение списка событий по убыванию даты создания с пагинацией
-      operationId: getAnnouncements
-      parameters:
-        - name: page_number
-          in: query
-          description: Номер страницы для пагинации
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-        - name: count_on_page
-          in: query
-          description: Количество элементов на странице
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 200
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getAnnouncements"
-        404:
-          description: По введенным данным не найдено ни одного объявления
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/announcementsNotFound"
-      security:
-        - bearerAuth: []
-  /announcements/{id}:
-    get:
-      tags:
-        - Announcements
-      summary: Получить информацию об объявлении по ID
-      description: Получить информацию о конкретном объявлении по ID
-      operationId: getAnnouncementById
-      parameters:
-        - name: id
-          in: path
-          description: ID объявления
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getAnnouncementById"
-        400:
-          description: Некорректный ID
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/badId"
-        404:
-          description: Объявления не найдены
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/announcementsNotFound"
-      security:
-        - bearerAuth: []
-  /user:
-    get:
-      tags:
-        - User
-      summary: Получение информации о текущем пользователе
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getUserSuccess"
-      security:
-        - bearerAuth: []
-  /keys:
-    get:
-      tags:
-        - User
-      summary: Получение ключей шифрования текущего пользователя
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getKeysSuccess"
-      security:
-        - bearerAuth: []
-  /keys/{id}:
-    get:
-      tags:
-        - User
-      summary: Получение публичного ключа другого пользователя
-      parameters:
-        - name: id
-          in: path
-          description: ID пользователя
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getPubKeySuccess"
-        404:
-          description: Пользователь не найден
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getUserFail"
-      security:
-        - bearerAuth: []
-  /user/caninquire:
-    get:
-      tags:
-        - User
-      summary: Метод для получения информации может ли пользователь оставлять заявки на справки
-      responses:
-        200:
-          description: Успешное выполнение запроса
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/canInquire"
-      security:
-        - bearerAuth: []
-  /user/getreferenceautofill:
-    get:
-      tags:
-        - User
-      summary: Автозаполняемые поля для формы справок
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/referenceAutoFill"
-      security:
-        - bearerAuth: []
+    /auth/login:
+        post:
+            tags:
+                - Auth
+            summary: Авторизация
+            operationId: auth
+            requestBody:
+                description: Информация для авторизации
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/authParams"
+            responses:
+                200:
+                    description: Пользователь успешно авторизован
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/authSuccess"
+                400:
+                    description: Не верный логин/пароль пользователя
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/badAuthParams"
+                404:
+                    description: Пользователь не найден
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/userNotFound"
+    /auth/refresh:
+        post:
+            tags:
+                - Auth
+            summary: Продление JWT токена по refresh token
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/refreshTokenParams"
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/authSuccess"
+    /auth/register:
+        post:
+            tags:
+                - Auth
+            summary: Регистрация
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/registerParams"
+            responses:
+                "200":
+                    description: Регистрация прошла успешно. Отправлена Смс.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/registerSuccess"
+                "400":
+                    description: |
+                        Неправильная длина табельного номера или номера телефона
+                        или такой пользователь уже зарегестрирован
+                        или не все параметры заданы
+                        или данный логин подразумевает использование авторизации через ActiveDirectory
+                        или на ваш телефонны номер уже отправлена смс
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/bad_request"
+                "403":
+                    description:
+                        Пользователь находится в стоп листе, доступ запрещен
+                        или такой пользователь уже зарегестрирован на портале
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/forbidden"
+                "404":
+                    description: Сотрудник не найден.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/not_found"
+                "500":
+                    description: Техническая ошибка на сервере
+                        или ошибка подключения модуля
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/server_error"
+    /auth/register/confirm:
+        post:
+            tags:
+                - Auth
+            summary: Подтверждение регистрации по коду из SMS
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/registerConfirmParams"
+            responses:
+                "200":
+                    description: Регистрация прошла успешно. Отправлено sms.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/registerConfirmSuccess"
+    /contacts:
+        get:
+            tags:
+                - Contacts
+            summary: Получение контактов
+            description: Получение контактов (пользователей) в поиске мессенджера по введенной строке. Совпадение проверяется по ФИО без учета ошибок.
+            operationId: getContacts
+            parameters:
+                - name: search
+                  in: query
+                  description: Строка, введенная пользователем для поиска
+                  required: false
+                  schema:
+                      type: string
+                      default: ""
+                - name: page_number
+                  in: query
+                  description: Номер страницы для пагинации
+                  required: false
+                  schema:
+                      type: integer
+                      minimum: 1
+                      default: 1
+                - name: count_on_page
+                  in: query
+                  description: Количество элементов на странице
+                  required: false
+                  schema:
+                      type: integer
+                      minimum: 1
+                      maximum: 100
+                      default: 50
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getContacts"
+                404:
+                    description: Пользователи с заданными параметрами отсутствуют
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/contactsNotFound"
+            security:
+                - bearerAuth: []
+    /news:
+        get:
+            tags:
+                - News
+            summary: Получение списка новостей
+            description: Получение списка новостей по убыванию даты с пагинацией
+            operationId: getNews
+            parameters:
+                - name: filter
+                  in: query
+                  description: фильтр для выдачи определенной группы новостей, допустимые значения news, news-idea, volunteer_news, information_sport, information_ms, literacy
+                  schema:
+                      type: string
+                      enum:
+                          [
+                              news,
+                              news-idea,
+                              volunteer_news,
+                              information_sport,
+                              information_ms,
+                              literacy,
+                              stable_development,
+                              error,
+                          ]
+                      nullable: true
+                - name: page_number
+                  in: query
+                  description: Номер страницы для пагинации
+                  required: false
+                  schema:
+                      type: integer
+                      minimum: 1
+                - name: count_on_page
+                  in: query
+                  description: Количество элементов на странице
+                  required: false
+                  schema:
+                      type: integer
+                      minimum: 1
+                      maximum: 200
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getNews"
+                404:
+                    description: По введенным данным не найдено ни одной новости
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/newsNotFound"
+            security:
+                - bearerAuth: []
+    /news/{id}:
+        get:
+            tags:
+                - News
+            summary: Получение информации о новости по ID
+            parameters:
+                - name: id
+                  in: path
+                  description: ID новости
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getNewsById"
+                404:
+                    description: По введенным данным не найдено ни одной новости
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/newsNotFound"
+            security:
+                - bearerAuth: []
+    /news/comments/{id}:
+        get:
+            tags:
+                - News
+            summary: Получение комментариев к новости по ID
+            parameters:
+                - name: id
+                  in: path
+                  description: ID новости
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getCommentsById"
+                404:
+                    description: По введенным данным не найдено ни одной новости
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/commentsNotFound"
+            security:
+                - bearerAuth: []
+    /news/postcomment:
+        post:
+            tags:
+                - News
+            summary: Создание нового комментария
+            requestBody:
+                description: Информация для создания комментария
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/postComment"
+            responses:
+                200:
+                    description: Успешное добавление комментария
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/postCommentSuccess"
+                400:
+                    description: Ошибка, не были переданы обязательные параметры
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/postCommentParamsFail"
+            security:
+                - bearerAuth: []
+    /news/like/{id}:
+        get:
+            tags:
+                - News
+            summary: Поблагодарить новость
+            parameters:
+                - name: id
+                  in: path
+                  description: id новости
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/newsLikeSuccess"
+            security:
+                - bearerAuth: []
+    /news/comments/like/{id}:
+        get:
+            tags:
+                - News
+            summary: Поблагодарить комментарий
+            parameters:
+                - name: id
+                  in: path
+                  description: id комментария
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/commentLikeSuccess"
+            security:
+                - bearerAuth: []
+    /announcements:
+        get:
+            tags:
+                - Announcements
+            summary: Получение списка событий
+            description: Получение списка событий по убыванию даты создания с пагинацией
+            operationId: getAnnouncements
+            parameters:
+                - name: page_number
+                  in: query
+                  description: Номер страницы для пагинации
+                  required: false
+                  schema:
+                      type: integer
+                      minimum: 1
+                - name: count_on_page
+                  in: query
+                  description: Количество элементов на странице
+                  required: false
+                  schema:
+                      type: integer
+                      minimum: 1
+                      maximum: 200
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getAnnouncements"
+                404:
+                    description: По введенным данным не найдено ни одного объявления
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/announcementsNotFound"
+            security:
+                - bearerAuth: []
+    /announcements/{id}:
+        get:
+            tags:
+                - Announcements
+            summary: Получить информацию об объявлении по ID
+            description: Получить информацию о конкретном объявлении по ID
+            operationId: getAnnouncementById
+            parameters:
+                - name: id
+                  in: path
+                  description: ID объявления
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getAnnouncementById"
+                400:
+                    description: Некорректный ID
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/badId"
+                404:
+                    description: Объявления не найдены
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/announcementsNotFound"
+            security:
+                - bearerAuth: []
+    /user:
+        get:
+            tags:
+                - User
+            summary: Получение информации о текущем пользователе
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getUserSuccess"
+            security:
+                - bearerAuth: []
+    /keys:
+        get:
+            tags:
+                - User
+            summary: Получение ключей шифрования текущего пользователя
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getKeysSuccess"
+            security:
+                - bearerAuth: []
+    /keys/{id}:
+        get:
+            tags:
+                - User
+            summary: Получение публичного ключа другого пользователя
+            parameters:
+                - name: id
+                  in: path
+                  description: ID пользователя
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getPubKeySuccess"
+                404:
+                    description: Пользователь не найден
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getUserFail"
+            security:
+                - bearerAuth: []
+    /user/caninquire:
+        get:
+            tags:
+                - User
+            summary: Метод для получения информации может ли пользователь оставлять заявки на справки
+            responses:
+                200:
+                    description: Успешное выполнение запроса
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/canInquire"
+            security:
+                - bearerAuth: []
+    /user/getreferenceautofill:
+        get:
+            tags:
+                - User
+            summary: Автозаполняемые поля для формы справок
+            responses:
+                200:
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/referenceAutoFill"
+            security:
+                - bearerAuth: []
 
-  /user/{id}:
-    get:
-      tags:
-        - User
-      summary: Получение информации о пользователе по ID
-      parameters:
-        - name: id
-          in: path
-          description: ID пользователя
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getUserSuccess"
-        404:
-          description: Пользователь не найден
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getUserFail"
-      security:
-        - bearerAuth: []
-  /user/movements:
-    get:
-      tags:
-        - User
-      summary: Получение информации о кадровых перемещениях текущего пользователя
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/movementsSuccess"
-        404:
-          description: Кадровых перемещений не найдено
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/movementsFail"
-      security:
-        - bearerAuth: []
-  /search:
-    get:
-      tags:
-        - Search
-      summary: Метод поиска по сотрудниками, объявлениям, событиям, новостям
-      parameters:
-        - name: "query"
-          in: "query"
-          description: поисковый запрос
-          schema:
-            type: string
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getSearchSuccess"
-        404:
-          description: Пустой запрос для поиска
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/emptySearch"
-      security:
-        - bearerAuth: []
-  /thank/{id}:
-    get:
-      tags:
-        - Thank
-      summary: Поблагодарить
-      parameters:
-        - name: id
-          in: path
-          description: ID user to thank
-          schema:
-            type: integer
-            format: int64
-          required: true
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/thankById"
-        400:
-          description: Ошибка, уже благодарили данного пользователя
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/alreadyThanked"
-        403:
-          description: Ошибка, нельзя благодарить самого себя
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/thankSelf"
-      security:
-        - bearerAuth: []
-  /events:
-    get:
-      tags:
-        - Events
-      summary: Метод получения событий
-      description: Получить информацию о событиях
-      operationId: getEvents
-      parameters:
-        - name: page_number
-          in: query
-          description: Номер страницы для пагинации
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-        - name: count_on_page
-          in: query
-          description: Количество элементов на странице
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 200
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getEvents"
-        404:
-          description: По введенным данным не найдено ни одного события
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/eventsNotFound"
-      security:
-        - bearerAuth: []
-  /events/{id}:
-    get:
-      tags:
-        - Events
-      summary: Получить информацию о событии по ID
-      description: Получить информацию о конкретном событии по ID
-      operationId: getEventById
-      parameters:
-        - name: id
-          in: path
-          description: ID события
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getEventById"
-        400:
-          description: Не корректный ID
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/badId"
-        404:
-          description: Пользователь не найден
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/eventsNotFound"
-      security:
-        - bearerAuth: []
-  /events/addeventmember/{id}:
-    get:
-      tags:
-        - Events
-      summary: Добавить текущего пользователя как участника события
-      parameters:
-        - name: id
-          in: path
-          description: ID события
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/addEventMember"
-        400:
-          description: Текущий пользователь уже является участником события
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/alreadyEventMember"
-      security:
-        - bearerAuth: []
-  /user/birthday:
-    get:
-      tags:
-        - User
-      responses:
-        200:
-          description: Успешное выполнение
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/birthdaysSuccess"
-        404:
-          description: По введенным данным не найдено ни одного объявления
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/birthdaysNotFound"
-      security:
-        - bearerAuth: []
-  /user/orderreference:
-    post:
-      tags:
-        - User
-      summary: Метод для заказа справок
-      requestBody:
-        description: Данные для заказа справки
-        content:
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/orderReference"
-      responses:
-        200:
-          description: Успешное оформление заявки
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/orderReferenceSuccess"
-        400:
-          description: Отсутствуют обязательные параметры
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/orderReferenceFail"
-      security:
-        - bearerAuth: []
-  /user/orderdms:
-    post:
-      tags:
-        - User
-      summary: Метод для заказа ДМС
-      requestBody:
-        description: Данные для заказа полиса
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/orderDMS"
-      responses:
-        200:
-          description: Успешное оформление заявки
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/orderDMSSuccess"
-        400:
-          description: Отсутствует один или несколько обязательных параметров
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/orderDMSFail"
-      security:
-        - bearerAuth: []
-  /publications:
-    get:
-      tags:
-        - Publications
-      summary: ИНК-Знание - Публикации
-      parameters:
-        - name: page_number
-          in: query
-          description: Номер страницы для пагинации
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-        - name: count_on_page
-          in: query
-          description: Количество элементов на странице
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 200
-      responses:
-        200:
-          description: Запрос успешно выполнен
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getPublications"
-      security:
-        - bearerAuth: []
-  /user/transpontorderform:
-    get:
-      tags:
-        - User
-      summary: Возвращает вспомогательные данные для формы заказа транспорта
-      responses:
-        200:
-          description: Запрос успешно выполнен
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getTransportOrderForm"
-      security:
-        - bearerAuth: []
-  /user/referenceorderform:
-    get:
-      tags:
-        - User
-      summary: Возвращает вспомогательные данные для формы заказа транспорта
-      responses:
-        200:
-          description: Запрос успешно выполнен
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/getReferenceOrderForm"
-      security:
-        - bearerAuth: []
-  /user/getfeedbacktags:
-    get:
-      tags:
-        - User
-      summary: Возвращает тэги для формы обратной связи
-      responses:
-        200:
-          description: Список тегов
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/feedbackTagsList"
-      security:
-        - bearerAuth: []
-  /user/getquestions:
-    get:
-      tags:
-        - User
-      summary: Возвращает вопросы (обратная связь)
-      parameters:
-        - name: page_number
-          in: query
-          description: Номер страницы для пагинации
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-        - name: count_on_page
-          in: query
-          description: Количество элементов на странице
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 200
-      responses:
-        200:
-          description: Список вопросов и ответов
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/questionsList"
-      security:
-        - bearerAuth: []
-  /user/sendfeedback:
-    post:
-      tags:
-        - User
-      summary: Метод для отправки обратной связи (вопроса руководству)
-      requestBody:
-        description: Данные для вопроса
-        content:
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/sendFeedback"
-      responses:
-        200:
-          description: Успешное оформление заявки
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/sendFeedbackSuccess"
-        400:
-          description: Отсутствуют обязательные параметры
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/sendFeedbackFail"
-      security:
-        - bearerAuth: []
-  /user/ordertransport:
-    post:
-      tags:
-        - User
-      summary: Метод для заказа транспорта
-      requestBody:
-        description: Данные для заказа транспорта
-        content:
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/orderTransport"
-      responses:
-        200:
-          description: Успешное оформление заявки
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/orderTransportSuccess"
-        400:
-          description: Отсутствуют обязательные параметры
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/orderTransportFail"
-      security:
-        - bearerAuth: []
+    /user/{id}:
+        get:
+            tags:
+                - User
+            summary: Получение информации о пользователе по ID
+            parameters:
+                - name: id
+                  in: path
+                  description: ID пользователя
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getUserSuccess"
+                404:
+                    description: Пользователь не найден
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getUserFail"
+            security:
+                - bearerAuth: []
+    /user/movements:
+        get:
+            tags:
+                - User
+            summary: Получение информации о кадровых перемещениях текущего пользователя
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/movementsSuccess"
+                404:
+                    description: Кадровых перемещений не найдено
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/movementsFail"
+            security:
+                - bearerAuth: []
+    /search:
+        get:
+            tags:
+                - Search
+            summary: Метод поиска по сотрудниками, объявлениям, событиям, новостям
+            parameters:
+                - name: "query"
+                  in: "query"
+                  description: поисковый запрос
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getSearchSuccess"
+                404:
+                    description: Пустой запрос для поиска
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/emptySearch"
+            security:
+                - bearerAuth: []
+    /thank/{id}:
+        get:
+            tags:
+                - Thank
+            summary: Поблагодарить
+            parameters:
+                - name: id
+                  in: path
+                  description: ID user to thank
+                  schema:
+                      type: integer
+                      format: int64
+                  required: true
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/thankById"
+                400:
+                    description: Ошибка, уже благодарили данного пользователя
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/alreadyThanked"
+                403:
+                    description: Ошибка, нельзя благодарить самого себя
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/thankSelf"
+            security:
+                - bearerAuth: []
+    /events:
+        get:
+            tags:
+                - Events
+            summary: Метод получения событий
+            description: Получить информацию о событиях
+            operationId: getEvents
+            parameters:
+                - name: page_number
+                  in: query
+                  description: Номер страницы для пагинации
+                  required: false
+                  schema:
+                      type: integer
+                      minimum: 1
+                - name: count_on_page
+                  in: query
+                  description: Количество элементов на странице
+                  required: false
+                  schema:
+                      type: integer
+                      minimum: 1
+                      maximum: 200
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getEvents"
+                404:
+                    description: По введенным данным не найдено ни одного события
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/eventsNotFound"
+            security:
+                - bearerAuth: []
+    /events/{id}:
+        get:
+            tags:
+                - Events
+            summary: Получить информацию о событии по ID
+            description: Получить информацию о конкретном событии по ID
+            operationId: getEventById
+            parameters:
+                - name: id
+                  in: path
+                  description: ID события
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getEventById"
+                400:
+                    description: Не корректный ID
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/badId"
+                404:
+                    description: Пользователь не найден
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/eventsNotFound"
+            security:
+                - bearerAuth: []
+    /events/addeventmember/{id}:
+        get:
+            tags:
+                - Events
+            summary: Добавить текущего пользователя как участника события
+            parameters:
+                - name: id
+                  in: path
+                  description: ID события
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/addEventMember"
+                400:
+                    description: Текущий пользователь уже является участником события
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/alreadyEventMember"
+            security:
+                - bearerAuth: []
+    /user/birthday:
+        get:
+            tags:
+                - User
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/birthdaysSuccess"
+                404:
+                    description: По введенным данным не найдено ни одного объявления
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/birthdaysNotFound"
+            security:
+                - bearerAuth: []
+    /user/orderreference:
+        post:
+            tags:
+                - User
+            summary: Метод для заказа справок
+            requestBody:
+                description: Данные для заказа справки
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: "#/components/schemas/orderReference"
+            responses:
+                200:
+                    description: Успешное оформление заявки
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/orderReferenceSuccess"
+                400:
+                    description: Отсутствуют обязательные параметры
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/orderReferenceFail"
+            security:
+                - bearerAuth: []
+    /user/orderdms:
+        post:
+            tags:
+                - User
+            summary: Метод для заказа ДМС
+            requestBody:
+                description: Данные для заказа полиса
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/orderDMS"
+            responses:
+                200:
+                    description: Успешное оформление заявки
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/orderDMSSuccess"
+                400:
+                    description: Отсутствует один или несколько обязательных параметров
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/orderDMSFail"
+            security:
+                - bearerAuth: []
+    /publications:
+        get:
+            tags:
+                - Publications
+            summary: ИНК-Знание - Публикации
+            parameters:
+                - name: page_number
+                  in: query
+                  description: Номер страницы для пагинации
+                  required: false
+                  schema:
+                      type: integer
+                      minimum: 1
+                - name: count_on_page
+                  in: query
+                  description: Количество элементов на странице
+                  required: false
+                  schema:
+                      type: integer
+                      minimum: 1
+                      maximum: 200
+            responses:
+                200:
+                    description: Запрос успешно выполнен
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getPublications"
+            security:
+                - bearerAuth: []
+    /user/transpontorderform:
+        get:
+            tags:
+                - User
+            summary: Возвращает вспомогательные данные для формы заказа транспорта
+            responses:
+                200:
+                    description: Запрос успешно выполнен
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getTransportOrderForm"
+            security:
+                - bearerAuth: []
+    /user/referenceorderform:
+        get:
+            tags:
+                - User
+            summary: Возвращает вспомогательные данные для формы заказа транспорта
+            responses:
+                200:
+                    description: Запрос успешно выполнен
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getReferenceOrderForm"
+            security:
+                - bearerAuth: []
+    /user/getfeedbacktags:
+        get:
+            tags:
+                - User
+            summary: Возвращает тэги для формы обратной связи
+            responses:
+                200:
+                    description: Список тегов
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/feedbackTagsList"
+            security:
+                - bearerAuth: []
+    /user/getquestions:
+        get:
+            tags:
+                - User
+            summary: Возвращает вопросы (обратная связь)
+            parameters:
+                - name: page_number
+                  in: query
+                  description: Номер страницы для пагинации
+                  required: false
+                  schema:
+                      type: integer
+                      minimum: 1
+                - name: count_on_page
+                  in: query
+                  description: Количество элементов на странице
+                  required: false
+                  schema:
+                      type: integer
+                      minimum: 1
+                      maximum: 200
+            responses:
+                200:
+                    description: Список вопросов и ответов
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/questionsList"
+            security:
+                - bearerAuth: []
+    /user/sendfeedback:
+        post:
+            tags:
+                - User
+            summary: Метод для отправки обратной связи (вопроса руководству)
+            requestBody:
+                description: Данные для вопроса
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: "#/components/schemas/sendFeedback"
+            responses:
+                200:
+                    description: Успешное оформление заявки
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/sendFeedbackSuccess"
+                400:
+                    description: Отсутствуют обязательные параметры
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/sendFeedbackFail"
+            security:
+                - bearerAuth: []
+    /user/ordertransport:
+        post:
+            tags:
+                - User
+            summary: Метод для заказа транспорта
+            requestBody:
+                description: Данные для заказа транспорта
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: "#/components/schemas/orderTransport"
+            responses:
+                200:
+                    description: Успешное оформление заявки
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/orderTransportSuccess"
+                400:
+                    description: Отсутствуют обязательные параметры
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/orderTransportFail"
+            security:
+                - bearerAuth: []
 components:
-  schemas:
-    registerParams:
-      type: object
-      properties:
-        firstName:
-          type: string
-          example: Зюз
-        lastName:
-          type: string
-          example: Зюзин
-        secondName:
-          type: string
-          example: Зюзович
-        password:
-          type: string
-          example: pass123456
-        tabelNumber:
-          type: integer
-          format: int32
-          example: 12345678
-        phone:
-          type: string
-          example: 70001234567
-        birthday:
-          type: string
-          example: 27.04.1999
-      required:
-        - firstName
-        - lastName
-        - secondName
-        - password
-        - tabelNumber
-        - phone
-        - birthday
-    registerSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        status:
-          type: integer
-          default: 200
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              default: "sms отправлена"
-    movementsSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: "#/components/schemas/movementsObject"
-    movementsObject:
-      type: object
-      properties:
-        period:
-          type: string
-          example: 30.12.2020
-          nullable: true
-        position:
-          type: string
-          example: Бухгалтер
-          nullable: true
-        department:
-          type: string
-          example: Бухгалтерия
-          nullable: true
-        organization:
-          type: string
-          example: Рога и копыта
-          nullable: true
-        operation:
-          type: string
-          example: Принят
-          nullable: true
-        pnum:
-          type: string
-          example: '0123-4567'
-          nullable: true
-      required:
-        - period
-        - position
-        - department
-        - organization
-        - operation
-        - pnum
-    movementsFail:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      properties:
-        title:
-          type: string
-          example: Кадровые перемещения не найдены
-        detail:
-          type: string
-          example: Для текущего пользователя не найдено ни одного кадрового перемещения
-        status:
-          type: integer
-          example: 404
-        code:
-          type: string
-          example: QMA-33
-      required:
-        - title
-        - detail
-        - status
-        - code
-    getKeysSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        status:
-          type: integer
-          default: 200
-        data:
-          type: object
-          properties:
-            private_key:
-              type: string
-              example: "-----BEGINPRIVATEKEY-----MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANt0NJYx1fwFFKYeIGkyZn7CXdZJfYd1pu96pE7xL72NxzuWSe+wRW2u+vG2qJmMsFd2bbCT1xrMitln1RNN+jLPrp3MeeX8FyEcrijSKGLLw2TF6rpkMhmMlmVWz65Re9kjXGyzbrcNDo0WEEESRnSUSwE2yIL3eBZOEITknkpzAgMBAAECgYEAnMMq2WtqHygF8xAsONk+7Cet3mgK2pvJjuI9wwJ5Bt/jRQZ7dFOnlM1dBxNi5qTgRuobOvqwur0IJnsMc0jNgvEGOwyeWwDxStWXP9BTil2yOjbneihiaphoC8UyOLIqb28+V918sO7q8rIMcHqi9MXv5/h9r2WdH1DRdy5EhRECQQD9QmHn5/K3Keqo92o+APsyCFquD0pIZAnYSbs1f+QXhSX+r+UGLbg3AWunaqlBWOcxmT/vRNKm5BMxZqWgr6PrAkEA3dQrj0zZWQQBhOlKoANG79ZTr2+CVHFZ8X9fF6Nj8dG5n/87gmEN0k5esw4Rb9ijns861S80Hy9zLMIQZPI5mQJBANgIqDuKQCC+QM2hP59kduJW/gM8R8E4lK1LN8aLMaZejeqTYGnE1j8Vlx9YfMihbZWBhGg17Psv0q9xQBexu8ECQAkissSNCqpy0skxfmRGnkZEUl/4PKrTnDuo3jawAO61j2p6bW36J0KQ/a9sFeXAS0TADhE3h3L9VkXynBA8NYkCQAFLuEMnz5YY4cs0FuCjQTQY9AGMX2i30LI23JjCiO1z/ZhIUU+3gMl8wpudlue2g6fUggsOFHifDKE2cx4PZeQ=-----ENDPRIVATEKEY-----"
-            public_key:
-              type: string
-              example: "-----BEGINPUBLICKEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbdDSWMdX8BRSmHiBpMmZ+wl3WSX2HdabveqRO8S+9jcc7lknvsEVtrvrxtqiZjLBXdm2wk9cazIrZZ9UTTfoyz66dzHnl/BchHK4o0ihiy8Nkxeq6ZDIZjJZlVs+uUXvZI1xss263DQ6NFhBBEkZ0lEsBNsiC93gWThCE5J5KcwIDAQAB-----ENDPUBLICKEY-----"
-    getPubKeySuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        status:
-          type: integer
-          default: 200
-        data:
-          type: object
-          properties:
-            public_key:
-              type: string
-              example: "-----BEGINPUBLICKEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbdDSWMdX8BRSmHiBpMmZ+wl3WSX2HdabveqRO8S+9jcc7lknvsEVtrvrxtqiZjLBXdm2wk9cazIrZZ9UTTfoyz66dzHnl/BchHK4o0ihiy8Nkxeq6ZDIZjJZlVs+uUXvZI1xss263DQ6NFhBBEkZ0lEsBNsiC93gWThCE5J5KcwIDAQAB-----ENDPUBLICKEY-----"
-    getUserSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        status:
-          type: integer
-          default: 200
-        data:
-          type: object
-          properties:
-            id:
-              type: integer
-              example: 1
-            avatar:
-              type: string
-              example: https://example.com/upload/user_avatar/1.png
-              nullable: true
-              format: uri
-            name:
-              type: string
-              example: Константин
-              minLength: 1
-              maxLength: 255
-            last_name:
-              type: string
-              example: Константинопольский
-              minLength: 1
-              maxLength: 255
-            second_name:
-              type: string
-              example: Константинович
-              nullable: true
-              minLength: 1
-              maxLength: 255
-            work_position:
-              type: string
-              example: Очень важная должность
-              nullable: true
-              minLength: 1
-              maxLength: 255
-            barrels:
-              type: object
-              properties:
-                tankers:
-                  type: integer
-                  example: 0
-                  format: int32
-                reservoir:
-                  type: integer
-                  example: 5
-                  format: int32
-                barrels:
-                  type: integer
-                  example: 10
-                  format: int32
-              required:
-                - tankers
-                - reservoir
-                - barrels
-            awards:
-              type: object
-              properties:
-                gold_tanker:
-                  type: boolean
-                  example: true
-                gold_tanker_2019:
-                  type: boolean
-                  example: false
-                team:
-                  type: boolean
-                  example: false
-              required:
-                - gold_tanker
-                - gold_tanker_2019
-                - team
-            contacts:
-              type: object
-              properties:
-                work_phone:
-                  type: string
-                  example: 79999999999
-                  nullable: true
-                  minLength: 1
-                  maxLength: 255
-                work_mobile_phone:
-                  type: string
-                  example: 79999999999
-                  nullable: true
-                  minLength: 1
-                  maxLength: 255
-                mobile_phone:
-                  type: string
-                  example: 79999999999
-                  nullable: true
-                  minLength: 1
-                  maxLength: 255
-                email:
-                  type: string
-                  example: test@example.com
-                  nullable: true
-                  format: email
-              required:
-                - work_phone
-                - work_mobile_phone
-                - mobile_phone
-                - email
-            basic_information:
-              type: object
-              properties:
-                organization:
-                  type: string
-                  example: Организация
-                  nullable: true
-                  minLength: 1
-                  maxLength: 255
-                address:
-                  type: string
-                  example: Г. Иркутск ул. Ленина 1
-                  nullable: true
-                  minLength: 1
-                  maxLength: 255
-                office:
-                  type: string
-                  example: Б 12
-                  nullable: true
-                  minLength: 1
-                  maxLength: 255
+    schemas:
+        registerParams:
+            type: object
+            properties:
+                firstName:
+                    type: string
+                    example: Зюз
+                lastName:
+                    type: string
+                    example: Зюзин
+                secondName:
+                    type: string
+                    example: Зюзович
+                password:
+                    type: string
+                    example: pass123456
+                tabelNumber:
+                    type: integer
+                    format: int32
+                    example: 12345678
+                phone:
+                    type: string
+                    example: 70001234567
                 birthday:
-                  type: string
-                  example: 30 января
-                  nullable: true
-              required:
-                - organization
-                - address
-                - office
+                    type: string
+                    example: 27.04.1999
+            required:
+                - firstName
+                - lastName
+                - secondName
+                - password
+                - tabelNumber
+                - phone
                 - birthday
-          required:
-            - id
-            - avatar
-            - name
-            - last_name
-            - second_name
-            - work_position
-            - barrels
-            - awards
-            - contacts
-            - basic_information
-    getUserFail:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      properties:
-        title:
-          type: string
-          example: "Пользователь не найден"
-        detail:
-          type: string
-          example: "Пользователь с указанным ID не найден"
-        status:
-          type: integer
-          example: 404
-        code:
-          type: string
-          example: "QMA-15"
-    canInquire:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      properties:
-        data:
-          type: boolean
-          example: true
-    orderReferenceSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      properties:
-        data:
-          type: string
-          example: "Ваша заявка на справку <название_справки> принята."
-    orderReferenceFail:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Отсутствует один или несколько обязательных параметров
-        detail:
-          type: string
-          example: Отсутствует как минимум одно обязательное поле формы
-        status:
-          type: integer
-          default: 400
-        code:
-          type: string
-          default: "QMA-1"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    orderDMSFail:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Отсутствует один или несколько обязательных параметров
-        detail:
-          type: string
-          example: Отсутствует как минимум одно обязательное поле формы
-        status:
-          type: integer
-          default: 400
-        code:
-          type: string
-          default: "QMA-1"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    registerConfirmParams:
-      type: object
-      properties:
-        phone:
-          type: string
-          example: 79999999999
-          description: Номер телефона пользователя указанный при регистрации
-        code:
-          type: integer
-          example: 9999999
-          description: Код подтверждения
-      required:
-        - login
-        - password
-    registerConfirmSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        status:
-          type: integer
-          default: 200
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              default: "Информация с логином и паролем для входа отправлена в sms"
-    authParams:
-      type: object
-      properties:
-        login:
-          type: string
-          description: Логин пользователя
-        password:
-          type: string
-          description: Пароль пользователя
-      required:
-        - login
-        - password
-    refreshTokenParams:
-      type: object
-      properties:
-        token:
-          type: string
-      required:
-        - token
-    authSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            user_id:
-              type: integer
-              format: int32
-              example: 1
-            token:
-              type: string
-              format: byte
-              example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTk2MDI4NzksImlzcyI6InAxLmluay52cG9vbCIsImV4cCI6MTYxOTYwMzc3OSwidXNlcklkIjoxfQ.EQs565h1VBepgEIVKaqxDZO3xUIucxkg7-hj8YQVElQ
-            refresh_token:
-              type: string
-              format: byte
-              example: MS5yOVpqNUE1S3JVbjdWYzFwRzJsUzE1UWk2cFNwM0luMVNrTjZ5QjdOMXFWMGFxUzU0Q2l4SjA4SHYzZVlDeDI4bU5tUzU2dFU2eEdnNEVkUzc0S2JpSDd0WThzWTd1MUFhVDgxeFYyalNHbTFZZTMyUnVGazFhWDFaMXpPdDJUdA==
-            uid:
-              type: string
-              example: "1e297d66-8ade-4127-a893-9d83fea5e824"
-          required:
-            - user_id
-            - token
-            - refresh_token
-      required:
-        - data
-    badId:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Не корректный ID
-        detail:
-          type: string
-          example: Не корректный ID
-        status:
-          type: integer
-          default: 400
-        code:
-          type: string
-          default: "QMA-4"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    getPublications:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            next:
-              type: string
-              example: "https://example.com/api/v1/Users/?search=str&page_number=3&count_on_page=2"
-              format: uri
-              nullable: true
-            prev:
-              type: string
-              example: "https://example.com/api/v1/Users/?search=str&page_number=1&count_on_page=2"
-              format: uri
-              nullable: true
-            total_count:
-              type: integer
-              example: 6
-              format: int32
-            publications:
-              type: array
-              items:
-                $ref: "#/components/schemas/publicationsProperty"
-          required:
-            - publications
-            - total_count
-    publicationsProperty:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1
-          format: int32
-        title:
-          type: string
-          example: "Вебинар \"Актуальный деловой стиль\""
-          minLength: 1
-          maxLength: 255
-        date_create:
-          type: string
-          nullable: true
-          format: date-time
-          example: "2021-03-24T17:52:38Z"
-          default: null
-        votes:
-          type: integer
-          format: int32
-          nullable: true
-          example: 123
-          default: null
-    getNews:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            next:
-              type: string
-              example: "https://example.com/api/v1/Users/?search=str&page_number=3&count_on_page=2"
-              format: uri
-              nullable: true
-            prev:
-              type: string
-              example: "https://example.com/api/v1/Users/?search=str&page_number=1&count_on_page=2"
-              format: uri
-              nullable: true
-            total_count:
-              type: integer
-              example: 6
-              format: int32
-            news:
-              type: array
-              items:
-                $ref: "#/components/schemas/newsProperty"
-          required:
-            - news
-            - total_count
-      required:
-        - data
-    newsProperty:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1
-          format: int32
-        title:
-          type: string
-          example: "Сотрудники ИНК помогли семьям с паллиативными детьми"
-          minLength: 1
-          maxLength: 255
-        date_create:
-          type: string
-          nullable: true
-          format: date-time
-          example: "2021-03-24T17:52:38Z"
-          default: null
-        view_count:
-          type: integer
-          format: int32
-          nullable: true
-          example: 123
-          default: null
-        comment_count:
-          type: integer
-          format: int32
-          nullable: true
-          example: 123
-          default: null
-        like_count:
-          type: integer
-          format: int32
-          nullable: true
-          example: 123
-          default: null
-        preview_picture:
-          type: string
-          nullable: true
-          format: uri
-          example: "http://example.com/upload/picture_name.jpg"
-          default: null
-        liked:
-          type: boolean
-          example: false
-      required:
-        - id
-        - login
-        - last_name
-        - name
-        - second_name
-        - photo
-        - is_mobile_user
-    newsPropertyById:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1
-          format: int32
-        title:
-          type: string
-          example: "Сотрудники ИНК помогли семьям с паллиативными детьми"
-          minLength: 1
-          maxLength: 255
-        date_create:
-          type: string
-          nullable: true
-          format: date-time
-          example: "2021-03-24T17:52:38Z"
-          default: null
-        comment_count:
-          type: integer
-          format: int32
-          nullable: true
-          example: 123
-          default: null
-        view_count:
-          type: integer
-          format: int32
-          nullable: true
-          example: 123
-          default: null
-        like_count:
-          type: integer
-          format: int32
-          nullable: true
-          example: 123
-          default: null
-        detail_text:
-          type: string
-          example: "Текст новости"
-        image_links:
-          type: array
-          items:
-            type: string
-            nullable: true
-            format: uri
-            example: "http://example.com/upload/picture_name.jpg"
-            default: null
-        video_links:
-          type: array
-          items:
-            type: string
-            nullable: true
-            format: uri
-            example: "http://example.com/upload/video.mp4"
-            default: null
-        liked:
-          type: boolean
-          example: false
-      required:
-        - id
-        - login
-        - last_name
-        - name
-        - second_name
-        - photo
-        - is_mobile_user
-    newsNotFound:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Новости не найдены
-        detail:
-          type: string
-          example: По введенным данным не найдено ни одной новости
-        status:
-          type: integer
-          default: 404
-        code:
-          type: string
-          default: "QMA-20"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    getNewsById:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          $ref: "#/components/schemas/newsPropertyById"
-      required:
-        - data
-    newsLikeSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      properties:
-        data:
-          type: string
-          example: "Успешно поблагодарили"
-    getAnnouncements:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            next:
-              type: string
-              example: "https://example.com/api/v1/announcements/?page_number=3&count_on_page=2"
-              format: uri
-            prev:
-              type: string
-              example: "https://example.com/api/v1/announcements/?page_number=1&count_on_page=2"
-              format: uri
-            total_count:
-              type: integer
-              example: 6
-              format: int32
-            announcements:
-              type: array
-              items:
-                $ref: "#/components/schemas/announcementsProperty"
-          required:
-            - announcements
-            - total_count
-      required:
-        - data
-    getCommentsById:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          type: array
-          items:
+        registerSuccess:
             allOf:
-              - $ref: '#/components/schemas/commentParent'
-    comment:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: "123"
-        date_create:
-          type: string
-          example: "2021-03-24T17:52:38Z"
-          format: date-time
-        author_id:
-          example: "123"
-          type: integer
-        post_id:
-          type: integer
-          example: "123"
-        post_text:
-          type: string
-          example: "Какой-то текст"
-        user_name:
-          type: string
-          nullable: true
-          example: "Имя и отчество"
-        user_last_name:
-          type: string
-          nullable: true
-          example: "Фамилия"
-        likes:
-          type: integer
-          example: "11"
-        liked_by_user:
-          type: boolean
-          example: false
-        avatar:
-          type: string
-          nullable: true
-          example: "http://example.com/upload/uf/83b/T_Q_5bZLc8.jpg"
-      required:
-        - id
-        - date_create
-        - post_id
-        - parent_id
-        - author_id
-        - post_text
-        - user_name
-        - user_last_name
-    commentParent:
-      allOf:
-        - $ref: '#/components/schemas/comment'
-      properties:
-        children:
-          type: array
-          items:
-            $ref: '#/components/schemas/comment'
-    commentsNotFound:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Комментарии не найдены
-        detail:
-          type: string
-          example: По введенным данным не найдено ни одного комментария
-        status:
-          type: integer
-          default: 404
-        code:
-          type: string
-          default: "QMA-29"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    postComment:
-      type: object
-      properties:
-        news_id:
-          type: integer
-        parent_id:
-          type: integer
-        text:
-          type: string
-      required:
-        - news_id
-        - text
-        - parent_id
-    postCommentSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            newCommentId:
-              type: integer
-    postCommentParamsFail:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Отсутствует один или несколько обязательных параметров
-        detail:
-          type: string
-          example: Отсутствует как минимум одно обязательное поле формы
-        status:
-          type: integer
-          default: 400
-        code:
-          type: string
-          default: "QMA-1"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    commentLikeSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      properties:
-        data:
-          type: string
-          example: "Успешно поблагодарили"
-    announcementsProperty:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1
-          format: int32
-        title:
-          type: string
-          example: "annTitle"
-        date_create:
-          type: string
-          nullable: true
-          format: date-time
-          example: "2021-03-24T17:52:38Z"
-          default: null
-        view_count:
-          type: integer
-          nullable: true
-          example: 123
-          default: null
-      required:
-        - id
-        - title
-        - date_create
-        - view_count
-    getAnnouncementById:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          $ref: "#/components/schemas/announcementProperty"
-      required:
-        - data
-    contactsNotFound:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Совпадения отсутствуют
-        detail:
-          type: string
-          example: По введенным данным пользователи не найдены
-        status:
-          type: integer
-          default: 404
-        code:
-          type: string
-          default: "QMA-1"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    getEvents:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            next:
-              type: string
-              example: "https://example.com/api/v1/events/?page_number=3&count_on_page=2"
-              format: uri
-              nullable: true
-            prev:
-              type: string
-              example: "https://example.com/api/v1/events/?page_number=1&count_on_page=2"
-              format: uri
-              nullable: true
-            total_count:
-              type: integer
-              example: 6
-              format: int32
-              nullable: false
-            events:
-              type: array
-              items:
-                $ref: "#/components/schemas/eventsProperty"
-          required:
-            - announcements
-            - total_count
-      required:
-        - data
-    eventsProperty:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1
-          format: int32
-        title:
-          type: string
-          example: "eventTitle"
-        date_create:
-          type: string
-          nullable: true
-          format: date-time
-          example: "2021-03-24T17:52:38Z"
-          default: null
-        date_start:
-          type: string
-          nullable: true
-          format: date-time
-          example: "2021-03-24T17:52:38Z"
-          default: null
-        date_finish:
-          type: string
-          nullable: true
-          format: date-time
-          example: "2021-03-24T17:52:38Z"
-          default: null
-        place:
-          type: string
-          example: "eventPlace"
-          nullable: true
-        view_count:
-          type: integer
-          nullable: true
-          example: 123
-          default: null
-        preview_picture:
-          type: string
-          nullable: true
-          format: uri
-          example: "http://example.com/upload/picture_name.jpg"
-          default: null
-      required:
-        - id
-        - title
-        - date_create
-        - view_count
-    getEventById:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          $ref: "#/components/schemas/eventProperty"
-      required:
-        - data
-    eventsNotFound:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: События не найдены
-        detail:
-          type: string
-          example: По введенным данным не найдено ни одного события
-        status:
-          type: integer
-          default: 404
-        code:
-          type: string
-          default: "QMA-25"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    eventProperty:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1
-          format: int32
-        title:
-          type: string
-          example: "eventTitle"
-        date_create:
-          type: string
-          nullable: true
-          format: date-time
-          example: "2021-03-24T17:52:38Z"
-          default: null
-        date_start:
-          type: string
-          nullable: true
-          format: date-time
-          example: "2021-03-24T17:52:38Z"
-          default: null
-        date_finish:
-          type: string
-          nullable: true
-          format: date-time
-          example: "2021-03-24T17:52:38Z"
-          default: null
-        place:
-          type: string
-          example: "eventPlace"
-          nullable: true
-        view_count:
-          type: integer
-          nullable: true
-          example: 123
-          default: null
-        detail_text:
-          type: string
-          nullable: true
-          example: 'Описание события'
-          default: null
-        detail_picture:
-          type: string
-          nullable: true
-          example: "http://example.com/upload/iblock/56d/detail_picture.jpg"
-          default: null
-        is_member:
-          type: boolean
-          example: false
-          default: false
-      required:
-        - id
-        - title
-        - date_create
-        - view_count
-        - detail_text
-        - detail_picture
-    addEventMember:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          type: string
-          default: Пользователь успешно добавлен
-    alreadyEventMember:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Текущий пользователь уже учавствует в этом событии
-        detail:
-          type: string
-          example: Текущий пользователь уже учавствует в этом событии
-        status:
-          type: integer
-          default: 400
-        code:
-          type: string
-          default: "QMA-34"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    userNotFound:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Пользователь не найден
-        detail:
-          type: string
-          example: Пользователь не найден
-        status:
-          type: integer
-          default: 404
-        code:
-          type: string
-          default: "QMA-1"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    announcementsNotFound:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Объявления не найдены
-        detail:
-          type: string
-          example: По введенным данным не найдено ни одного объявления
-        status:
-          type: integer
-          default: 404
-        code:
-          type: string
-          default: "QMA-25"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    announcementProperty:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1
-          format: int32
-        title:
-          type: string
-          example: "annTitle"
-        date_create:
-          type: string
-          nullable: true
-          format: date-time
-          example: "2021-03-24T17:52:38Z"
-          default: null
-        view_count:
-          type: integer
-          nullable: true
-          example: 123
-          default: null
-        detail_text:
-          type: string
-          nullable: true
-          example: 'Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления'
-          default: null
-      required:
-        - id
-        - title
-        - date_create
-        - view_count
-        - detail_text
-    badAuthParams:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Указан не верный пароль
-        detail:
-          type: string
-          example: Не верный пароль
-        status:
-          type: integer
-          default: 400
-        code:
-          type: string
-          default: "QMA-2"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    getContacts:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            next:
-              type: string
-              example: "https://example.com/api/v1/Users/?search=str&page_number=3&count_on_page=2"
-              format: uri
-              nullable: true
-            prev:
-              type: string
-              example: "https://example.com/api/v1/Users/?search=str&page_number=1&count_on_page=2"
-              format: uri
-              nullable: true
-            total_count:
-              type: integer
-              example: 6
-              format: int32
-            contacts:
-              type: array
-              items:
-                $ref: "#/components/schemas/contactsProperty"
-          required:
-            - contacts
-            - total_count
-      required:
-        - data
-    contactsProperty:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1
-          format: int32
-        last_name:
-          type: string
-          example: "Константинопольский"
-        name:
-          type: string
-          nullable: true
-          example: "Константин"
-          default: null
-        second_name:
-          type: string
-          nullable: true
-          example: "Константинович"
-          default: null
-        photo:
-          type: string
-          nullable: true
-          example: "http://example.com/upload/picture_name.jpg"
-          default: null
-        is_mobile_user:
-          type: boolean
-          nullable: false
-          example: true
-          default: false
-      required:
-        - id
-        - login
-        - last_name
-        - name
-        - second_name
-        - photo
-        - is_mobile_user
-    RequiredSuccess:
-      type: object
-      properties:
-        success:
-          type: boolean
-          default: true
-        host:
-          type: string
-          default: "https://example.com"
-          format: hostname
-        version:
-          type: string
-          default: 1.0.0
-          format: version
-          minLength: 5
-          maxLength: 11
-        returned:
-          type: string
-          default: "2021-02-15T15:55:42+0800"
-          format: date-time
-        status:
-          type: integer
-          format: int32
-          default: 200
-      required:
-        - success
-        - host
-        - version
-        - returned
-        - status
-    RequiredError:
-      type: object
-      properties:
-        success:
-          type: boolean
-          default: false
-        host:
-          type: string
-          default: "https://example.com"
-          format: hostname
-        version:
-          type: string
-          example: 1.0.0
-          format: version
-          minLength: 5
-          maxLength: 11
-        returned:
-          type: string
-          example: "2021-02-15T15:55:42+0800"
-          format: date-time
-        type:
-          type: string
-          default: about:blank
-          example: "https://example.com/api-error/{method}-{resource}-{status}-{code}"
-          format: uri
-        instance:
-          type: string
-          example: "https://example.com/api/v1/{resource}/{id}/?{getParams}"
-          format: uri
-      required:
-        - success
-        - host
-        - version
-        - returned
-        - type
-        - instance
-    bad_request:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        status:
-          type: integer
-          default: 400
-        code:
-          type: string
-          default: "QMA-#"
-    forbidden:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        status:
-          type: integer
-          default: 403
-        code:
-          type: string
-          default: "QMA-#"
-    not_found:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        status:
-          type: integer
-          default: 404
-        code:
-          type: string
-          default: "QMA-#"
-    server_error:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        status:
-          type: integer
-          default: 500
-        code:
-          type: string
-          default: "QMA-#"
-    getSearchSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        status:
-          type: integer
-          default: 200
-        data:
-          type: object
-          properties:
-            news:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                status:
                     type: integer
-                    example: 23741
-                  title:
+                    default: 200
+                data:
+                    type: object
+                    properties:
+                        message:
+                            type: string
+                            default: "sms отправлена"
+        movementsSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/movementsObject"
+        movementsObject:
+            type: object
+            properties:
+                period:
                     type: string
-                    example: "Иркутские офисы ИНК оснастили аптечками первой помощи"
-            events:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
+                    example: 30.12.2020
+                    nullable: true
+                position:
+                    type: string
+                    example: Бухгалтер
+                    nullable: true
+                department:
+                    type: string
+                    example: Бухгалтерия
+                    nullable: true
+                organization:
+                    type: string
+                    example: Рога и копыта
+                    nullable: true
+                operation:
+                    type: string
+                    example: Принят
+                    nullable: true
+                pnum:
+                    type: string
+                    example: "0123-4567"
+                    nullable: true
+            required:
+                - period
+                - position
+                - department
+                - organization
+                - operation
+                - pnum
+        movementsFail:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            properties:
+                title:
+                    type: string
+                    example: Кадровые перемещения не найдены
+                detail:
+                    type: string
+                    example: Для текущего пользователя не найдено ни одного кадрового перемещения
+                status:
                     type: integer
-                    example: 45905
-                  title:
+                    example: 404
+                code:
                     type: string
-                    example: "Обучение детей навыкам оказания первой помощи"
-            announcement:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
+                    example: QMA-33
+            required:
+                - title
+                - detail
+                - status
+                - code
+        getKeysSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                status:
                     type: integer
-                    example: 117791
-                  title:
+                    default: 200
+                data:
+                    type: object
+                    properties:
+                        private_key:
+                            type: string
+                            example: "-----BEGINPRIVATEKEY-----MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANt0NJYx1fwFFKYeIGkyZn7CXdZJfYd1pu96pE7xL72NxzuWSe+wRW2u+vG2qJmMsFd2bbCT1xrMitln1RNN+jLPrp3MeeX8FyEcrijSKGLLw2TF6rpkMhmMlmVWz65Re9kjXGyzbrcNDo0WEEESRnSUSwE2yIL3eBZOEITknkpzAgMBAAECgYEAnMMq2WtqHygF8xAsONk+7Cet3mgK2pvJjuI9wwJ5Bt/jRQZ7dFOnlM1dBxNi5qTgRuobOvqwur0IJnsMc0jNgvEGOwyeWwDxStWXP9BTil2yOjbneihiaphoC8UyOLIqb28+V918sO7q8rIMcHqi9MXv5/h9r2WdH1DRdy5EhRECQQD9QmHn5/K3Keqo92o+APsyCFquD0pIZAnYSbs1f+QXhSX+r+UGLbg3AWunaqlBWOcxmT/vRNKm5BMxZqWgr6PrAkEA3dQrj0zZWQQBhOlKoANG79ZTr2+CVHFZ8X9fF6Nj8dG5n/87gmEN0k5esw4Rb9ijns861S80Hy9zLMIQZPI5mQJBANgIqDuKQCC+QM2hP59kduJW/gM8R8E4lK1LN8aLMaZejeqTYGnE1j8Vlx9YfMihbZWBhGg17Psv0q9xQBexu8ECQAkissSNCqpy0skxfmRGnkZEUl/4PKrTnDuo3jawAO61j2p6bW36J0KQ/a9sFeXAS0TADhE3h3L9VkXynBA8NYkCQAFLuEMnz5YY4cs0FuCjQTQY9AGMX2i30LI23JjCiO1z/ZhIUU+3gMl8wpudlue2g6fUggsOFHifDKE2cx4PZeQ=-----ENDPRIVATEKEY-----"
+                        public_key:
+                            type: string
+                            example: "-----BEGINPUBLICKEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbdDSWMdX8BRSmHiBpMmZ+wl3WSX2HdabveqRO8S+9jcc7lknvsEVtrvrxtqiZjLBXdm2wk9cazIrZZ9UTTfoyz66dzHnl/BchHK4o0ihiy8Nkxeq6ZDIZjJZlVs+uUXvZI1xss263DQ6NFhBBEkZ0lEsBNsiC93gWThCE5J5KcwIDAQAB-----ENDPUBLICKEY-----"
+        getPubKeySuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                status:
+                    type: integer
+                    default: 200
+                data:
+                    type: object
+                    properties:
+                        public_key:
+                            type: string
+                            example: "-----BEGINPUBLICKEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbdDSWMdX8BRSmHiBpMmZ+wl3WSX2HdabveqRO8S+9jcc7lknvsEVtrvrxtqiZjLBXdm2wk9cazIrZZ9UTTfoyz66dzHnl/BchHK4o0ihiy8Nkxeq6ZDIZjJZlVs+uUXvZI1xss263DQ6NFhBBEkZ0lEsBNsiC93gWThCE5J5KcwIDAQAB-----ENDPUBLICKEY-----"
+        getUserSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                status:
+                    type: integer
+                    default: 200
+                data:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            example: 1
+                        avatar:
+                            type: string
+                            example: https://example.com/upload/user_avatar/1.png
+                            nullable: true
+                            format: uri
+                        name:
+                            type: string
+                            example: Константин
+                            minLength: 1
+                            maxLength: 255
+                        last_name:
+                            type: string
+                            example: Константинопольский
+                            minLength: 1
+                            maxLength: 255
+                        second_name:
+                            type: string
+                            example: Константинович
+                            nullable: true
+                            minLength: 1
+                            maxLength: 255
+                        work_position:
+                            type: string
+                            example: Очень важная должность
+                            nullable: true
+                            minLength: 1
+                            maxLength: 255
+                        barrels:
+                            type: object
+                            properties:
+                                tankers:
+                                    type: integer
+                                    example: 0
+                                    format: int32
+                                reservoir:
+                                    type: integer
+                                    example: 5
+                                    format: int32
+                                barrels:
+                                    type: integer
+                                    example: 10
+                                    format: int32
+                            required:
+                                - tankers
+                                - reservoir
+                                - barrels
+                        awards:
+                            type: object
+                            properties:
+                                gold_tanker:
+                                    type: boolean
+                                    example: true
+                                gold_tanker_2019:
+                                    type: boolean
+                                    example: false
+                                team:
+                                    type: boolean
+                                    example: false
+                            required:
+                                - gold_tanker
+                                - gold_tanker_2019
+                                - team
+                        contacts:
+                            type: object
+                            properties:
+                                work_phone:
+                                    type: string
+                                    example: 79999999999
+                                    nullable: true
+                                    minLength: 1
+                                    maxLength: 255
+                                work_mobile_phone:
+                                    type: string
+                                    example: 79999999999
+                                    nullable: true
+                                    minLength: 1
+                                    maxLength: 255
+                                mobile_phone:
+                                    type: string
+                                    example: 79999999999
+                                    nullable: true
+                                    minLength: 1
+                                    maxLength: 255
+                                email:
+                                    type: string
+                                    example: test@example.com
+                                    nullable: true
+                                    format: email
+                            required:
+                                - work_phone
+                                - work_mobile_phone
+                                - mobile_phone
+                                - email
+                        basic_information:
+                            type: object
+                            properties:
+                                organization:
+                                    type: string
+                                    example: Организация
+                                    nullable: true
+                                    minLength: 1
+                                    maxLength: 255
+                                address:
+                                    type: string
+                                    example: Г. Иркутск ул. Ленина 1
+                                    nullable: true
+                                    minLength: 1
+                                    maxLength: 255
+                                office:
+                                    type: string
+                                    example: Б 12
+                                    nullable: true
+                                    minLength: 1
+                                    maxLength: 255
+                                birthday:
+                                    type: string
+                                    example: 30 января
+                                    nullable: true
+                            required:
+                                - organization
+                                - address
+                                - office
+                                - birthday
+                    required:
+                        - id
+                        - avatar
+                        - name
+                        - last_name
+                        - second_name
+                        - work_position
+                        - barrels
+                        - awards
+                        - contacts
+                        - basic_information
+        getUserFail:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            properties:
+                title:
                     type: string
-                    example: "Благотворительная акция в помощь фонду \"Оберег\""
-            users:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
+                    example: "Пользователь не найден"
+                detail:
+                    type: string
+                    example: "Пользователь с указанным ID не найден"
+                status:
+                    type: integer
+                    example: 404
+                code:
+                    type: string
+                    example: "QMA-15"
+        canInquire:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            properties:
+                data:
+                    type: boolean
+                    example: true
+        orderReferenceSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            properties:
+                data:
+                    type: string
+                    example: "Ваша заявка на справку <название_справки> принята."
+        orderReferenceFail:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Отсутствует один или несколько обязательных параметров
+                detail:
+                    type: string
+                    example: Отсутствует как минимум одно обязательное поле формы
+                status:
+                    type: integer
+                    default: 400
+                code:
+                    type: string
+                    default: "QMA-1"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        orderDMSFail:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Отсутствует один или несколько обязательных параметров
+                detail:
+                    type: string
+                    example: Отсутствует как минимум одно обязательное поле формы
+                status:
+                    type: integer
+                    default: 400
+                code:
+                    type: string
+                    default: "QMA-1"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        registerConfirmParams:
+            type: object
+            properties:
+                phone:
+                    type: string
+                    example: 79999999999
+                    description: Номер телефона пользователя указанный при регистрации
+                code:
+                    type: integer
+                    example: 9999999
+                    description: Код подтверждения
+            required:
+                - login
+                - password
+        registerConfirmSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                status:
+                    type: integer
+                    default: 200
+                data:
+                    type: object
+                    properties:
+                        message:
+                            type: string
+                            default: "Информация с логином и паролем для входа отправлена в sms"
+        authParams:
+            type: object
+            properties:
+                login:
+                    type: string
+                    description: Логин пользователя
+                password:
+                    type: string
+                    description: Пароль пользователя
+            required:
+                - login
+                - password
+        refreshTokenParams:
+            type: object
+            properties:
+                token:
+                    type: string
+            required:
+                - token
+        authSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    type: object
+                    properties:
+                        user_id:
+                            type: integer
+                            format: int32
+                            example: 1
+                        token:
+                            type: string
+                            format: byte
+                            example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTk2MDI4NzksImlzcyI6InAxLmluay52cG9vbCIsImV4cCI6MTYxOTYwMzc3OSwidXNlcklkIjoxfQ.EQs565h1VBepgEIVKaqxDZO3xUIucxkg7-hj8YQVElQ
+                        refresh_token:
+                            type: string
+                            format: byte
+                            example: MS5yOVpqNUE1S3JVbjdWYzFwRzJsUzE1UWk2cFNwM0luMVNrTjZ5QjdOMXFWMGFxUzU0Q2l4SjA4SHYzZVlDeDI4bU5tUzU2dFU2eEdnNEVkUzc0S2JpSDd0WThzWTd1MUFhVDgxeFYyalNHbTFZZTMyUnVGazFhWDFaMXpPdDJUdA==
+                        uid:
+                            type: string
+                            example: "1e297d66-8ade-4127-a893-9d83fea5e824"
+                    required:
+                        - user_id
+                        - token
+                        - refresh_token
+            required:
+                - data
+        badId:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Не корректный ID
+                detail:
+                    type: string
+                    example: Не корректный ID
+                status:
+                    type: integer
+                    default: 400
+                code:
+                    type: string
+                    default: "QMA-4"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        getPublications:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    type: object
+                    properties:
+                        next:
+                            type: string
+                            example: "https://example.com/api/v1/Users/?search=str&page_number=3&count_on_page=2"
+                            format: uri
+                            nullable: true
+                        prev:
+                            type: string
+                            example: "https://example.com/api/v1/Users/?search=str&page_number=1&count_on_page=2"
+                            format: uri
+                            nullable: true
+                        total_count:
+                            type: integer
+                            example: 6
+                            format: int32
+                        publications:
+                            type: array
+                            items:
+                                $ref: "#/components/schemas/publicationsProperty"
+                    required:
+                        - publications
+                        - total_count
+        publicationsProperty:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    example: 1
+                    format: int32
+                title:
+                    type: string
+                    example: 'Вебинар "Актуальный деловой стиль"'
+                    minLength: 1
+                    maxLength: 255
+                date_create:
+                    type: string
+                    nullable: true
+                    format: date-time
+                    example: "2021-03-24T17:52:38Z"
+                    default: null
+                votes:
+                    type: integer
+                    format: int32
+                    nullable: true
+                    example: 123
+                    default: null
+        getNews:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    type: object
+                    properties:
+                        next:
+                            type: string
+                            example: "https://example.com/api/v1/Users/?search=str&page_number=3&count_on_page=2"
+                            format: uri
+                            nullable: true
+                        prev:
+                            type: string
+                            example: "https://example.com/api/v1/Users/?search=str&page_number=1&count_on_page=2"
+                            format: uri
+                            nullable: true
+                        total_count:
+                            type: integer
+                            example: 6
+                            format: int32
+                        news:
+                            type: array
+                            items:
+                                $ref: "#/components/schemas/newsProperty"
+                    required:
+                        - news
+                        - total_count
+            required:
+                - data
+        newsProperty:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    example: 1
+                    format: int32
+                title:
+                    type: string
+                    example: "Сотрудники ИНК помогли семьям с паллиативными детьми"
+                    minLength: 1
+                    maxLength: 255
+                date_create:
+                    type: string
+                    nullable: true
+                    format: date-time
+                    example: "2021-03-24T17:52:38Z"
+                    default: null
+                view_count:
+                    type: integer
+                    format: int32
+                    nullable: true
+                    example: 123
+                    default: null
+                comment_count:
+                    type: integer
+                    format: int32
+                    nullable: true
+                    example: 123
+                    default: null
+                like_count:
+                    type: integer
+                    format: int32
+                    nullable: true
+                    example: 123
+                    default: null
+                preview_picture:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: "http://example.com/upload/picture_name.jpg"
+                    default: null
+                liked:
+                    type: boolean
+                    example: false
+            required:
+                - id
+                - login
+                - last_name
+                - name
+                - second_name
+                - photo
+                - is_mobile_user
+        newsPropertyById:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    example: 1
+                    format: int32
+                title:
+                    type: string
+                    example: "Сотрудники ИНК помогли семьям с паллиативными детьми"
+                    minLength: 1
+                    maxLength: 255
+                date_create:
+                    type: string
+                    nullable: true
+                    format: date-time
+                    example: "2021-03-24T17:52:38Z"
+                    default: null
+                comment_count:
+                    type: integer
+                    format: int32
+                    nullable: true
+                    example: 123
+                    default: null
+                view_count:
+                    type: integer
+                    format: int32
+                    nullable: true
+                    example: 123
+                    default: null
+                like_count:
+                    type: integer
+                    format: int32
+                    nullable: true
+                    example: 123
+                    default: null
+                detail_text:
+                    type: string
+                    example: "Текст новости"
+                image_links:
+                    type: array
+                    items:
+                        type: string
+                        nullable: true
+                        format: uri
+                        example: "http://example.com/upload/picture_name.jpg"
+                        default: null
+                video_links:
+                    type: array
+                    items:
+                        type: string
+                        nullable: true
+                        format: uri
+                        example: "http://example.com/upload/video.mp4"
+                        default: null
+                liked:
+                    type: boolean
+                    example: false
+            required:
+                - id
+                - login
+                - last_name
+                - name
+                - second_name
+                - photo
+                - is_mobile_user
+        newsNotFound:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Новости не найдены
+                detail:
+                    type: string
+                    example: По введенным данным не найдено ни одной новости
+                status:
+                    type: integer
+                    default: 404
+                code:
+                    type: string
+                    default: "QMA-20"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        getNewsById:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    $ref: "#/components/schemas/newsPropertyById"
+            required:
+                - data
+        newsLikeSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            properties:
+                data:
+                    type: string
+                    example: "Успешно поблагодарили"
+        getAnnouncements:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    type: object
+                    properties:
+                        next:
+                            type: string
+                            example: "https://example.com/api/v1/announcements/?page_number=3&count_on_page=2"
+                            format: uri
+                        prev:
+                            type: string
+                            example: "https://example.com/api/v1/announcements/?page_number=1&count_on_page=2"
+                            format: uri
+                        total_count:
+                            type: integer
+                            example: 6
+                            format: int32
+                        announcements:
+                            type: array
+                            items:
+                                $ref: "#/components/schemas/announcementsProperty"
+                    required:
+                        - announcements
+                        - total_count
+            required:
+                - data
+        getCommentsById:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        allOf:
+                            - $ref: "#/components/schemas/commentParent"
+        comment:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    example: "123"
+                date_create:
+                    type: string
+                    example: "2021-03-24T17:52:38Z"
+                    format: date-time
+                author_id:
+                    example: "123"
+                    type: integer
+                post_id:
+                    type: integer
+                    example: "123"
+                post_text:
+                    type: string
+                    example: "Какой-то текст"
+                user_name:
+                    type: string
+                    nullable: true
+                    example: "Имя и отчество"
+                user_last_name:
+                    type: string
+                    nullable: true
+                    example: "Фамилия"
+                likes:
+                    type: integer
+                    example: "11"
+                liked_by_user:
+                    type: boolean
+                    example: false
+                avatar:
+                    type: string
+                    nullable: true
+                    example: "http://example.com/upload/uf/83b/T_Q_5bZLc8.jpg"
+            required:
+                - id
+                - date_create
+                - post_id
+                - parent_id
+                - author_id
+                - post_text
+                - user_name
+                - user_last_name
+        commentParent:
+            allOf:
+                - $ref: "#/components/schemas/comment"
+            properties:
+                children:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/comment"
+        commentsNotFound:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Комментарии не найдены
+                detail:
+                    type: string
+                    example: По введенным данным не найдено ни одного комментария
+                status:
+                    type: integer
+                    default: 404
+                code:
+                    type: string
+                    default: "QMA-29"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        postComment:
+            type: object
+            properties:
+                news_id:
+                    type: integer
+                parent_id:
+                    type: integer
+                text:
+                    type: string
+            required:
+                - news_id
+                - text
+                - parent_id
+        postCommentSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    type: object
+                    properties:
+                        newCommentId:
+                            type: integer
+        postCommentParamsFail:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Отсутствует один или несколько обязательных параметров
+                detail:
+                    type: string
+                    example: Отсутствует как минимум одно обязательное поле формы
+                status:
+                    type: integer
+                    default: 400
+                code:
+                    type: string
+                    default: "QMA-1"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        commentLikeSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            properties:
+                data:
+                    type: string
+                    example: "Успешно поблагодарили"
+        announcementsProperty:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    example: 1
+                    format: int32
+                title:
+                    type: string
+                    example: "annTitle"
+                date_create:
+                    type: string
+                    nullable: true
+                    format: date-time
+                    example: "2021-03-24T17:52:38Z"
+                    default: null
+                view_count:
+                    type: integer
+                    nullable: true
+                    example: 123
+                    default: null
+            required:
+                - id
+                - title
+                - date_create
+                - view_count
+        getAnnouncementById:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    $ref: "#/components/schemas/announcementProperty"
+            required:
+                - data
+        contactsNotFound:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Совпадения отсутствуют
+                detail:
+                    type: string
+                    example: По введенным данным пользователи не найдены
+                status:
+                    type: integer
+                    default: 404
+                code:
+                    type: string
+                    default: "QMA-1"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        getEvents:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    type: object
+                    properties:
+                        next:
+                            type: string
+                            example: "https://example.com/api/v1/events/?page_number=3&count_on_page=2"
+                            format: uri
+                            nullable: true
+                        prev:
+                            type: string
+                            example: "https://example.com/api/v1/events/?page_number=1&count_on_page=2"
+                            format: uri
+                            nullable: true
+                        total_count:
+                            type: integer
+                            example: 6
+                            format: int32
+                            nullable: false
+                        events:
+                            type: array
+                            items:
+                                $ref: "#/components/schemas/eventsProperty"
+                    required:
+                        - announcements
+                        - total_count
+            required:
+                - data
+        eventsProperty:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    example: 1
+                    format: int32
+                title:
+                    type: string
+                    example: "eventTitle"
+                date_create:
+                    type: string
+                    nullable: true
+                    format: date-time
+                    example: "2021-03-24T17:52:38Z"
+                    default: null
+                date_start:
+                    type: string
+                    nullable: true
+                    format: date-time
+                    example: "2021-03-24T17:52:38Z"
+                    default: null
+                date_finish:
+                    type: string
+                    nullable: true
+                    format: date-time
+                    example: "2021-03-24T17:52:38Z"
+                    default: null
+                place:
+                    type: string
+                    example: "eventPlace"
+                    nullable: true
+                view_count:
+                    type: integer
+                    nullable: true
+                    example: 123
+                    default: null
+                preview_picture:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: "http://example.com/upload/picture_name.jpg"
+                    default: null
+            required:
+                - id
+                - title
+                - date_create
+                - view_count
+        getEventById:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    $ref: "#/components/schemas/eventProperty"
+            required:
+                - data
+        eventsNotFound:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: События не найдены
+                detail:
+                    type: string
+                    example: По введенным данным не найдено ни одного события
+                status:
+                    type: integer
+                    default: 404
+                code:
+                    type: string
+                    default: "QMA-25"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        eventProperty:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    example: 1
+                    format: int32
+                title:
+                    type: string
+                    example: "eventTitle"
+                date_create:
+                    type: string
+                    nullable: true
+                    format: date-time
+                    example: "2021-03-24T17:52:38Z"
+                    default: null
+                date_start:
+                    type: string
+                    nullable: true
+                    format: date-time
+                    example: "2021-03-24T17:52:38Z"
+                    default: null
+                date_finish:
+                    type: string
+                    nullable: true
+                    format: date-time
+                    example: "2021-03-24T17:52:38Z"
+                    default: null
+                place:
+                    type: string
+                    example: "eventPlace"
+                    nullable: true
+                view_count:
+                    type: integer
+                    nullable: true
+                    example: 123
+                    default: null
+                detail_text:
+                    type: string
+                    nullable: true
+                    example: "Описание события"
+                    default: null
+                detail_picture:
+                    type: string
+                    nullable: true
+                    example: "http://example.com/upload/iblock/56d/detail_picture.jpg"
+                    default: null
+                is_member:
+                    type: boolean
+                    example: false
+                    default: false
+            required:
+                - id
+                - title
+                - date_create
+                - view_count
+                - detail_text
+                - detail_picture
+        addEventMember:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    type: string
+                    default: Пользователь успешно добавлен
+        alreadyEventMember:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Текущий пользователь уже учавствует в этом событии
+                detail:
+                    type: string
+                    example: Текущий пользователь уже учавствует в этом событии
+                status:
+                    type: integer
+                    default: 400
+                code:
+                    type: string
+                    default: "QMA-34"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        userNotFound:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Пользователь не найден
+                detail:
+                    type: string
+                    example: Пользователь не найден
+                status:
+                    type: integer
+                    default: 404
+                code:
+                    type: string
+                    default: "QMA-1"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        announcementsNotFound:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Объявления не найдены
+                detail:
+                    type: string
+                    example: По введенным данным не найдено ни одного объявления
+                status:
+                    type: integer
+                    default: 404
+                code:
+                    type: string
+                    default: "QMA-25"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        announcementProperty:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    example: 1
+                    format: int32
+                title:
+                    type: string
+                    example: "annTitle"
+                date_create:
+                    type: string
+                    nullable: true
+                    format: date-time
+                    example: "2021-03-24T17:52:38Z"
+                    default: null
+                view_count:
+                    type: integer
+                    nullable: true
+                    example: 123
+                    default: null
+                detail_text:
+                    type: string
+                    nullable: true
+                    example: "Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления"
+                    default: null
+            required:
+                - id
+                - title
+                - date_create
+                - view_count
+                - detail_text
+        badAuthParams:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Указан не верный пароль
+                detail:
+                    type: string
+                    example: Не верный пароль
+                status:
+                    type: integer
+                    default: 400
+                code:
+                    type: string
+                    default: "QMA-2"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        getContacts:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    type: object
+                    properties:
+                        next:
+                            type: string
+                            example: "https://example.com/api/v1/Users/?search=str&page_number=3&count_on_page=2"
+                            format: uri
+                            nullable: true
+                        prev:
+                            type: string
+                            example: "https://example.com/api/v1/Users/?search=str&page_number=1&count_on_page=2"
+                            format: uri
+                            nullable: true
+                        total_count:
+                            type: integer
+                            example: 6
+                            format: int32
+                        contacts:
+                            type: array
+                            items:
+                                $ref: "#/components/schemas/contactsProperty"
+                    required:
+                        - contacts
+                        - total_count
+            required:
+                - data
+        contactsProperty:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    example: 1
+                    format: int32
+                last_name:
+                    type: string
+                    example: "Константинопольский"
+                name:
+                    type: string
+                    nullable: true
+                    example: "Константин"
+                    default: null
+                second_name:
+                    type: string
+                    nullable: true
+                    example: "Константинович"
+                    default: null
+                photo:
+                    type: string
+                    nullable: true
+                    example: "http://example.com/upload/picture_name.jpg"
+                    default: null
+                is_mobile_user:
+                    type: boolean
+                    nullable: false
+                    example: true
+                    default: false
+            required:
+                - id
+                - login
+                - last_name
+                - name
+                - second_name
+                - photo
+                - is_mobile_user
+        RequiredSuccess:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    default: true
+                host:
+                    type: string
+                    default: "https://example.com"
+                    format: hostname
+                version:
+                    type: string
+                    default: 1.0.0
+                    format: version
+                    minLength: 5
+                    maxLength: 11
+                returned:
+                    type: string
+                    default: "2021-02-15T15:55:42+0800"
+                    format: date-time
+                status:
+                    type: integer
+                    format: int32
+                    default: 200
+            required:
+                - success
+                - host
+                - version
+                - returned
+                - status
+        RequiredError:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    default: false
+                host:
+                    type: string
+                    default: "https://example.com"
+                    format: hostname
+                version:
+                    type: string
+                    example: 1.0.0
+                    format: version
+                    minLength: 5
+                    maxLength: 11
+                returned:
+                    type: string
+                    example: "2021-02-15T15:55:42+0800"
+                    format: date-time
+                type:
+                    type: string
+                    default: about:blank
+                    example: "https://example.com/api-error/{method}-{resource}-{status}-{code}"
+                    format: uri
+                instance:
+                    type: string
+                    example: "https://example.com/api/v1/{resource}/{id}/?{getParams}"
+                    format: uri
+            required:
+                - success
+                - host
+                - version
+                - returned
+                - type
+                - instance
+        bad_request:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                status:
+                    type: integer
+                    default: 400
+                code:
+                    type: string
+                    default: "QMA-#"
+        forbidden:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                status:
+                    type: integer
+                    default: 403
+                code:
+                    type: string
+                    default: "QMA-#"
+        not_found:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                status:
+                    type: integer
+                    default: 404
+                code:
+                    type: string
+                    default: "QMA-#"
+        server_error:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                status:
+                    type: integer
+                    default: 500
+                code:
+                    type: string
+                    default: "QMA-#"
+        getSearchSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                status:
+                    type: integer
+                    default: 200
+                data:
+                    type: object
+                    properties:
+                        news:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                        example: 23741
+                                    title:
+                                        type: string
+                                        example: "Иркутские офисы ИНК оснастили аптечками первой помощи"
+                        events:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                        example: 45905
+                                    title:
+                                        type: string
+                                        example: "Обучение детей навыкам оказания первой помощи"
+                        announcement:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                        example: 117791
+                                    title:
+                                        type: string
+                                        example: 'Благотворительная акция в помощь фонду "Оберег"'
+                        users:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                        example: 1234
+                                    name:
+                                        type: string
+                                        nullable: true
+                                        minLength: 1
+                                        maxLength: 255
+                                        example: "Анна Владимировна"
+                                    lastname:
+                                        type: string
+                                        nullable: true
+                                        minLength: 1
+                                        maxLength: 255
+                                        example: "Иванова"
+                                    work_position:
+                                        type: string
+                                        nullable: true
+                                        minLength: 1
+                                        maxLength: 255
+                                        example: "Бухгалтер"
+                                    avatar:
+                                        type: string
+                                        nullable: true
+                                        minLength: 1
+                                        maxLength: 255
+                                        example: "http://example.com/upload/uf/68b/user_3.png"
+                        query:
+                            type: string
+                            nullable: true
+                            minLength: 1
+                            maxLength: 255
+                            example: "ваш поисковый запрос"
+                    nullable: true
+        emptySearch:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    example: "Пустой запрос для поиска"
+                detail:
+                    type: string
+                    example: "В поисковый метод был передан пустой запрос"
+                status:
+                    type: integer
+                    example: 404
+                code:
+                    type: string
+                    example: "QMA-21"
+        thankById:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            properties:
+                data:
+                    type: string
+                    example: "Успешно поблагодарен"
+        alreadyThanked:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            properties:
+                title:
+                    type: string
+                    example: "Уже поблагодарили"
+                detail:
+                    type: string
+                    example: "Этот пользователь уже был Вами поблагодарен"
+                status:
+                    type: integer
+                    example: 400
+                code:
+                    type: string
+                    example: "QMA-23"
+        thankSelf:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            properties:
+                title:
+                    type: string
+                    example: "Нельзя благодарить самого себя"
+                detail:
+                    type: string
+                    example: "Нельзя благодарить самого себя (Id благодарящего и Id благодаримого имеют одинаковое значение)"
+                status:
+                    type: integer
+                    example: 403
+                code:
+                    type: string
+                    example: "QMA-23"
+        birthdaysSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            properties:
+                data:
+                    $ref: "#/components/schemas/birthdaysSuccessData"
+        birthdaysSuccessData:
+            type: object
+            properties:
+                others:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/userProperties"
+                today:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/userProperties"
+        referenceAutoFill:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            properties:
+                data:
+                    $ref: "#/components/schemas/AutoFillForm"
+        userProperties:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    example: 12345
+                name:
+                    type: string
+                    example: "Иван Иванович"
+                    nullable: true
+                second_name:
+                    type: string
+                    example: null
+                    nullable: true
+                last_name:
+                    type: string
+                    example: "Иванов"
+                    nullable: true
+                work_position:
+                    type: string
+                    example: "Важная должность"
+                    nullable: true
+                work_city:
+                    type: string
+                    example: "Город работы"
+                    nullable: true
+                birthday:
+                    type: string
+                    format: date-time
+                    example: "1961-02-16T00:00:00Z"
+                    nullable: true
+                birthday_string:
+                    type: string
+                    example: "16 июня"
+                    nullable: true
+                avatar:
+                    type: string
+                    example: "https://example.com/upload/user_avatar/1.png"
+                    nullable: true
+            required:
+                - id
+                - name
+                - second_name
+                - last_name
+                - work_position
+                - work_city
+                - birthday
+                - avatar
+        birthdaysNotFound:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Дни рождения не найдены
+                detail:
+                    type: string
+                    example: Не найдено ни одного дня рождения (по умолчанию поиск был за сегодня, завтра и послезавтра)
+                status:
+                    type: integer
+                    default: 404
+                code:
+                    type: string
+                    default: "QMA-32"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        AutoFillForm:
+            type: object
+            properties:
+                fio:
+                    type: string
+                    example: "Иванов Иван Иванович"
+                    nullable: true
+                position:
+                    type: string
+                    example: "Администратор"
+                    nullable: true
+                department:
+                    type: string
+                    example: "Технический департамент"
+                    nullable: true
+                email:
+                    type: string
+                    example: "example@example.com"
+                    nullable: true
+        orderDMS:
+            type: object
+            properties:
+                dms_type:
+                    type: string
+                    example: "policy OR letter"
+                last_name:
+                    type: string
+                    example: "Иванов"
+                first_name:
+                    type: string
+                    example: "Иван"
+                second_name:
+                    type: string
+                    example: "Иванович"
+                birthday:
+                    type: string
+                    example: "01.01.1969"
+                work_position:
+                    type: string
+                    example: "Слесарь ЭВМ"
+                phone:
+                    type: string
+                    example: "+71231234567"
+                email:
+                    type: string
+                    example: "test@test.com"
+                additional_information:
+                    type: string
+                    example: "Дополнительная информация"
+                dental_select:
+                    type: boolean
+                    example: false
+                spec_select:
+                    type: boolean
+                    example: false
+                lab_select:
+                    type: boolean
+                    example: false
+                other_select:
+                    type: boolean
+                    example: false
+                spec_text:
+                    type: string
+                    example: "Уточнение специалист"
+                lab_text:
+                    type: string
+                    example: "Уточнение лаборатория"
+                other_text:
+                    type: string
+                    example: "Уточнение другое"
+                clinic:
+                    type: string
+                    example: "Клиника"
+                city:
+                    type: string
+                    example: "Город"
+                address:
+                    type: string
+                    example: "Адрес"
+                money:
+                    type: string
+                    example: "10000000"
+                date:
+                    type: string
+                    example: "01.01.2000"
+                date_to:
+                    type: string
+                    example: "01.01.2000"
+            required:
+                - dms_type
+                - last_name
+                - first_name
+                - second_name
+                - birthday
+                - work_position
+                - phone
+                - email
+        orderDMSSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            properties:
+                data:
+                    type: string
+                    example: "Ваша заявка <1234567> принята."
+        orderReference:
+            type: object
+            properties:
+                reference_type:
+                    type: string
+                    example: "employment_record"
+                    default: employment_center, visa, sick_leave, income_2ndfl, income, child_allowance, child_allowance_1.5_years, FIFO, work_at_company, average_earnings, payroll_account, funds_withholding, labor_activity, employment_record
+                phone:
+                    type: string
+                    default: "+71231234567"
+                way:
+                    type: string
+                    example: "POST"
+                    default: BUH, SECURITY_UK, OK_IRK, OK_UK, INKTKRS, POST
+                postal_code:
+                    type: string
+                    example: "654321"
+                address:
+                    type: string
+                    example: "г. Иркутск, ул. Ленина, 12"
+                period:
+                    type: string
+                    example: "c 01.01.2019 до 05.06.2020"
+                destination:
+                    type: string
+                    example: "Очень важную организацию"
+                num:
+                    type: integer
+                    example: 1
+                child:
+                    type: string
+                    example: "ФИО ребенка"
+                date_start:
+                    type: string
+                    example: "01.01.2020"
+                date_end:
+                    type: string
+                    example: "01.05.2020"
+                files[]:
+                    type: array
+                    items:
+                        type: string
+                        format: binary
+            required:
+                - reference_type
+                - phone
+                - way
+        questionsList:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/questionsListData"
+        questionsListData:
+            type: object
+            properties:
+                id:
                     type: integer
                     example: 1234
-                  name:
+                date:
                     type: string
-                    nullable: true
-                    minLength: 1
-                    maxLength: 255
-                    example: "Анна Владимировна"
-                  lastname:
+                    example: "16.06.2021 07:55:12"
+                responsible:
                     type: string
-                    nullable: true
-                    minLength: 1
-                    maxLength: 255
-                    example: "Иванова"
-                  work_position:
+                    example: "Служба информационных технологий и телекоммуникаций"
+                tags:
                     type: string
-                    nullable: true
-                    minLength: 1
-                    maxLength: 255
-                    example: "Бухгалтер"
-                  avatar:
+                    example: "Информационные технологии, Билеты"
+                question:
                     type: string
-                    nullable: true
-                    minLength: 1
-                    maxLength: 255
-                    example: "http://example.com/upload/uf/68b/user_3.png"
-            query:
-              type: string
-              nullable: true
-              minLength: 1
-              maxLength: 255
-              example: "ваш поисковый запрос"
-          nullable: true
-    emptySearch:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          example: "Пустой запрос для поиска"
-        detail:
-          type: string
-          example: "В поисковый метод был передан пустой запрос"
-        status:
-          type: integer
-          example: 404
-        code:
-          type: string
-          example: "QMA-21"
-    thankById:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      properties:
-        data:
-          type: string
-          example: "Успешно поблагодарен"
-    alreadyThanked:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      properties:
-        title:
-          type: string
-          example: "Уже поблагодарили"
-        detail:
-          type: string
-          example: "Этот пользователь уже был Вами поблагодарен"
-        status:
-          type: integer
-          example: 400
-        code:
-          type: string
-          example: "QMA-23"
-    thankSelf:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      properties:
-        title:
-          type: string
-          example: "Нельзя благодарить самого себя"
-        detail:
-          type: string
-          example: "Нельзя благодарить самого себя (Id благодарящего и Id благодаримого имеют одинаковое значение)"
-        status:
-          type: integer
-          example: 403
-        code:
-          type: string
-          example: "QMA-23"
-    birthdaysSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      properties:
-        data:
-          $ref: "#/components/schemas/birthdaysSuccessData"
-    birthdaysSuccessData:
-      type: object
-      properties:
-        others:
-          type: array
-          items:
-            $ref: "#/components/schemas/userProperties"
-        today:
-          type: array
-          items:
-            $ref: "#/components/schemas/userProperties"
-    referenceAutoFill:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      properties:
-        data:
-          $ref: "#/components/schemas/AutoFillForm"
-    userProperties:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 12345
-        name:
-          type: string
-          example: "Иван Иванович"
-          nullable: true
-        second_name:
-          type: string
-          example: null
-          nullable: true
-        last_name:
-          type: string
-          example: "Иванов"
-          nullable: true
-        work_position:
-          type: string
-          example: "Важная должность"
-          nullable: true
-        work_city:
-          type: string
-          example: "Город работы"
-          nullable: true
-        birthday:
-          type: string
-          format: date-time
-          example: "1961-02-16T00:00:00Z"
-          nullable: true
-        birthday_string:
-          type: string
-          example: "16 июня"
-          nullable: true
-        avatar:
-          type: string
-          example: "https://example.com/upload/user_avatar/1.png"
-          nullable: true
-      required:
-        - id
-        - name
-        - second_name
-        - last_name
-        - work_position
-        - work_city
-        - birthday
-        - avatar
-    birthdaysNotFound:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Дни рождения не найдены
-        detail:
-          type: string
-          example: Не найдено ни одного дня рождения (по умолчанию поиск был за сегодня, завтра и послезавтра)
-        status:
-          type: integer
-          default: 404
-        code:
-          type: string
-          default: "QMA-32"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    AutoFillForm:
-      type: object
-      properties:
-        fio:
-          type: string
-          example: "Иванов Иван Иванович"
-          nullable: true
-        position:
-          type: string
-          example: "Администратор"
-          nullable: true
-        department:
-          type: string
-          example: "Технический департамент"
-          nullable: true
-        email:
-          type: string
-          example: 'example@example.com'
-          nullable: true
-    orderDMS:
-      type: object
-      properties:
-        dms_type:
-          type: string
-          example: "policy OR letter"
-        last_name:
-          type: string
-          example: 'Иванов'
-        first_name:
-          type: string
-          example: 'Иван'
-        second_name:
-          type: string
-          example: 'Иванович'
-        birthday:
-          type: string
-          example: '01.01.1969'
-        work_position:
-          type: string
-          example: 'Слесарь ЭВМ'
-        phone:
-          type: string
-          example: '+71231234567'
-        email:
-          type: string
-          example: 'test@test.com'
-        additional_information:
-          type: string
-          example: 'Дополнительная информация'
-        dental_select:
-          type: boolean
-          example: false
-        spec_select:
-          type: boolean
-          example: false
-        lab_select:
-          type: boolean
-          example: false
-        other_select:
-          type: boolean
-          example: false
-        spec_text:
-          type: string
-          example: 'Уточнение специалист'
-        lab_text:
-          type: string
-          example: 'Уточнение лаборатория'
-        other_text:
-          type: string
-          example: 'Уточнение другое'
-        clinic:
-          type: string
-          example: 'Клиника'
-        city:
-          type: string
-          example: 'Город'
-        address:
-          type: string
-          example: 'Адрес'
-        money:
-          type: string
-          example: '10000000'
-        date:
-          type: string
-          example: '01.01.2000'
-        date_to:
-          type: string
-          example: '01.01.2000'
-      required:
-        - dms_type
-        - last_name
-        - first_name
-        - second_name
-        - birthday
-        - work_position
-        - phone
-        - email
-    orderDMSSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      properties:
-        data:
-          type: string
-          example: "Ваша заявка <1234567> принята."
-    orderReference:
-      type: object
-      properties:
-        reference_type:
-          type: string
-          example: "employment_record"
-          default: employment_center, visa, sick_leave, income_2ndfl, income, child_allowance, child_allowance_1.5_years, FIFO, work_at_company, average_earnings, payroll_account, funds_withholding, labor_activity, employment_record
-        phone:
-          type: string
-          default: "+71231234567"
-        way:
-          type: string
-          example: "POST"
-          default: BUH, SECURITY_UK, OK_IRK, OK_UK, INKTKRS, POST
-        postal_code:
-          type: string
-          example: "654321"
-        address:
-          type: string
-          example: "г. Иркутск, ул. Ленина, 12"
-        period:
-          type: string
-          example: "c 01.01.2019 до 05.06.2020"
-        destination:
-          type: string
-          example: "Очень важную организацию"
-        num:
-          type: integer
-          example: 1
-        child:
-          type: string
-          example: "ФИО ребенка"
-        date_start:
-          type: string
-          example: "01.01.2020"
-        date_end:
-          type: string
-          example: "01.05.2020"
-        files[]:
-          type: array
-          items:
-            type: string
-            format: binary
-      required:
-        - reference_type
-        - phone
-        - way
-    questionsList:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      properties:
-        data:
-          type: array
-          items:
-            $ref: "#/components/schemas/questionsListData"
-    questionsListData:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1234
-        date:
-          type: string
-          example: "16.06.2021 07:55:12"
-        responsible:
-          type: string
-          example: "Служба информационных технологий и телекоммуникаций"
-        tags:
-          type: string
-          example: "Информационные технологии, Билеты"
-        question:
-          type: string
-          example: "Вопросный вопрос"
-        answer:
-          type: string
-          example: "Ответный ответ"
-        total_count:
-          type: integer
-          example: 5
-        next:
-          type: string
-          example: "http://example.com/api/v1/user/getquestions?page_number=3&count_on_page=2"
-        prev:
-          type: string
-          example: "http://example.com/api/v1/user/getquestions?page_number=1&count_on_page=2"
-    feedbackTagsList:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      properties:
-        data:
-          type: array
-          items:
-            $ref: "#/components/schemas/feedbackForm"
-    feedbackForm:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 'charter'
-        title:
-          type: string
-          example: "Чартер"
-    sendFeedbackSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      properties:
-        data:
-          type: string
-          example: "Ваш вопрос успешно отправлен."
-    sendFeedback:
-      type: object
-      properties:
-        fio:
-          type: string
-          example: "Иванов Иван Иванович"
-        contacts:
-          type: string
-          example: "test@test.com"
-        question:
-          type: string
-          example: "Вы продоете рыбов?"
-        tags:
-          type: string
-          example: "Риски, COVID-19"
-        files[]:
-          type: array
-          items:
-            type: string
-            format: binary
-      required:
-        - tags
-        - question
-    sendFeedbackFail:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Отсутствует один или несколько обязательных параметров
-        detail:
-          type: string
-          example: Отсутствует как минимум одно обязательное поле формы
-        status:
-          type: integer
-          default: 400
-        code:
-          type: string
-          default: "QMA-1"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    orderTransport:
-      type: object
-      properties:
-        fio:
-          type: string
-          example: "Иванов Иван Иванович"
-        phone:
-          type: string
-          example: "+79991234567"
-        status:
-          type: integer
-          example: 121
-        date:
-          type: string
-          example: "27.07.2021"
-        time:
-          type: string
-          example: "12:00"
-        place:
-          type: string
-          example: "Место подачи"
-        how_long:
-          type: string
-          example: "4.0"
-        passengers:
-          type: string
-          example: "5"
-        route:
-          type: string
-          example: "Список пунктов маршрута"
-        files[]:
-          type: array
-          items:
-            type: string
-            format: binary
-      required:
-        - fio
-        - phone
-        - status
-        - date
-        - time
-        - place
-        - how_long
-        - passengers
-        - route
-    orderTransportSuccess:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      properties:
-        data:
-          type: string
-          example: "Ваша заявка на транспорт <1234567> принята."
-    orderTransportFail:
-      allOf:
-        - $ref: "#/components/schemas/RequiredError"
-      type: object
-      properties:
-        title:
-          type: string
-          default: Отсутствует один или несколько обязательных параметров
-        detail:
-          type: string
-          example: Отсутствует как минимум одно обязательное поле формы
-        status:
-          type: integer
-          default: 400
-        code:
-          type: string
-          default: "QMA-1"
-      required:
-        - title
-        - detail
-        - status
-        - code
-    getReferenceOrderForm:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            name:
-              type: string
-              example: 'Иванов Иван Иванович'
-            position:
-              type: string
-              example: "Название должности"
-            department:
-              type: string
-              example: "Название отдела"
-    getTransportOrderForm:
-      allOf:
-        - $ref: "#/components/schemas/RequiredSuccess"
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: "#/components/schemas/transportForm"
-    transportForm:
-      type: object
-      properties:
-        ID:
-          type: integer
-          example: 121
-        title:
-          type: string
-          example: "Срочно"
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+                    example: "Вопросный вопрос"
+                answer:
+                    type: string
+                    example: "Ответный ответ"
+                total_count:
+                    type: integer
+                    example: 5
+                next:
+                    type: string
+                    example: "http://example.com/api/v1/user/getquestions?page_number=3&count_on_page=2"
+                prev:
+                    type: string
+                    example: "http://example.com/api/v1/user/getquestions?page_number=1&count_on_page=2"
+        feedbackTagsList:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/feedbackForm"
+        feedbackForm:
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: "charter"
+                title:
+                    type: string
+                    example: "Чартер"
+        sendFeedbackSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            properties:
+                data:
+                    type: string
+                    example: "Ваш вопрос успешно отправлен."
+        sendFeedback:
+            type: object
+            properties:
+                fio:
+                    type: string
+                    example: "Иванов Иван Иванович"
+                contacts:
+                    type: string
+                    example: "test@test.com"
+                question:
+                    type: string
+                    example: "Вы продоете рыбов?"
+                tags:
+                    type: string
+                    example: "Риски, COVID-19"
+                files[]:
+                    type: array
+                    items:
+                        type: string
+                        format: binary
+            required:
+                - tags
+                - question
+        sendFeedbackFail:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Отсутствует один или несколько обязательных параметров
+                detail:
+                    type: string
+                    example: Отсутствует как минимум одно обязательное поле формы
+                status:
+                    type: integer
+                    default: 400
+                code:
+                    type: string
+                    default: "QMA-1"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        orderTransport:
+            type: object
+            properties:
+                fio:
+                    type: string
+                    example: "Иванов Иван Иванович"
+                phone:
+                    type: string
+                    example: "+79991234567"
+                status:
+                    type: integer
+                    example: 121
+                date:
+                    type: string
+                    example: "27.07.2021"
+                time:
+                    type: string
+                    example: "12:00"
+                place:
+                    type: string
+                    example: "Место подачи"
+                how_long:
+                    type: string
+                    example: "4.0"
+                passengers:
+                    type: string
+                    example: "5"
+                route:
+                    type: string
+                    example: "Список пунктов маршрута"
+                files[]:
+                    type: array
+                    items:
+                        type: string
+                        format: binary
+            required:
+                - fio
+                - phone
+                - status
+                - date
+                - time
+                - place
+                - how_long
+                - passengers
+                - route
+        orderTransportSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            properties:
+                data:
+                    type: string
+                    example: "Ваша заявка на транспорт <1234567> принята."
+        orderTransportFail:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Отсутствует один или несколько обязательных параметров
+                detail:
+                    type: string
+                    example: Отсутствует как минимум одно обязательное поле формы
+                status:
+                    type: integer
+                    default: 400
+                code:
+                    type: string
+                    default: "QMA-1"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        getReferenceOrderForm:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    type: object
+                    properties:
+                        name:
+                            type: string
+                            example: "Иванов Иван Иванович"
+                        position:
+                            type: string
+                            example: "Название должности"
+                        department:
+                            type: string
+                            example: "Название отдела"
+        getTransportOrderForm:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/transportForm"
+        transportForm:
+            type: object
+            properties:
+                ID:
+                    type: integer
+                    example: 121
+                title:
+                    type: string
+                    example: "Срочно"
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT

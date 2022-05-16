@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +21,8 @@ import 'package:logging/logging.dart';
 void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
+    HttpOverrides.global = MyHttpOverrides();
+
     await setup(scope: await readEnv());
     runApp(InkMobile());
   }, (Object error, StackTrace stack) {
@@ -65,5 +68,14 @@ class InkMobile extends StatelessWidget {
         darkTheme: LightTheme().getThemeData(),
       ),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
