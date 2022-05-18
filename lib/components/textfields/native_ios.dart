@@ -63,6 +63,7 @@ class NativeIosTextfield extends StatelessWidget {
         onChanged: onChanged,
         placeholder: hint,
         style: style,
+        maxLines: maxLines,
         placeholderColor: hintStyle?.color,
         onSubmitted: (str) {
           if (onFieldSubmitted != null && str != null) {

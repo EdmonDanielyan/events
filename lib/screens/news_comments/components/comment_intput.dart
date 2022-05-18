@@ -7,7 +7,6 @@ import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../../core/formatters/uppercase_formatter.dart';
 import '../../../extensions/list_news_item_data.dart';
 
 class NewsCommentInput extends StatelessWidget {
@@ -54,18 +53,16 @@ class NewsCommentInput extends StatelessWidget {
                   onChanged: _onChanged,
                   controller: newsCommentsCubit.commentInputController,
                   keyboardType: TextInputType.multiline,
-                  inputFormatters: [
-                    UpperCaseTextFormatter(),
-                  ],
                   filled: true,
                   isDense: true,
                   iosPadding: const EdgeInsets.symmetric(
-                      vertical: 3.0, horizontal: 13.0),
+                      vertical: 3.0, horizontal: 10.0),
                   contentPadding: const EdgeInsets.symmetric(
                       vertical: 12.0, horizontal: 13.0),
                   fillColor: Colors.white,
                   hint: _strings.writeCommentHint,
                   borderRadius: BorderRadius.circular(30),
+                  useMarginIos: false,
                 ),
               ),
             ),

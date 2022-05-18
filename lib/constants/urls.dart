@@ -31,20 +31,19 @@ abstract class UrlsConfigTest {
 abstract class UrlsConfigDev {
   @dev
   @Named("natsWssUrl")
-  String get natsWssUrl => "wss://messenger-dev.jetrabbits.com";
+  String get natsWssUrl => "wss://messenger.irkutskoil.ru:442";
 
   @dev
   @Named("natsCluster")
-  String get natsCluster => "ink";
+  String get natsCluster => "test-cluster";
 
   @dev
   @Named("natsCertificatePath")
-  String get natsCertificatePath =>
-      "assets/certs/messenger-dev.jetrabbits.com.pem";
+  String get natsCertificatePath => "assets/certs/_.irkutskoil.ru.pem";
 
   @dev
   @Named("apiUrl")
-  String get apiUrl => "https://portal-test.irkutskoil.ru/api/v1/";
+  String get apiUrl => "https://test.ink.vpool.qsoft.ru/api/v1";
 
   @dev
   @Named("apiCertificatePath")

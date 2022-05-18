@@ -143,8 +143,9 @@ class Messenger with Loggable {
     logger.finest("messengerConnect start");
 
     await natsProvider.auth(
-        login: sl.get(instanceName: "messengerAuthLogin"),
-        password: sl.get(instanceName: "messengerAuthPassword"));
+      login: sl.get(instanceName: "messengerAuthLogin"),
+      password: sl.get(instanceName: "messengerAuthPassword"),
+    );
 
     await _versionMigration();
     registry.listenToAllMessages();
