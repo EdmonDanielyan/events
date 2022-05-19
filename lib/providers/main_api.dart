@@ -24,7 +24,7 @@ class MainApiProvider extends MainApiClient {
       @Named("apiCertificate") this.certificate)
       : super(basePathOverride: apiUrl) {
     dio.options.connectTimeout = API_CONNECT_TIMEOUT_MS;
-    dio.interceptors.add(logInterceptor);
+
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         _sslPinnedHttpClient;
   }
