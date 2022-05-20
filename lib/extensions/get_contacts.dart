@@ -15,8 +15,8 @@ extension GetContactsExt on Response<GetContacts> {
     List items = this.data?.data.asMap['contacts'] ?? [];
 
     for (final item in items) {
-      String lastName = item['last_name'];
-      String name = item['name'];
+      String lastName = item['last_name'] ?? "";
+      String name = item['name'] ?? "";
 
       UserTable user = UserTable(
         id: item['id'],
