@@ -4,10 +4,10 @@ import 'package:ink_mobile/messenger/listeners/channels_registry.dart';
 import 'package:ink_mobile/messenger/listeners/message_listener.dart';
 import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
 import 'package:ink_mobile/messenger/models/chat/nats/message_status.dart';
-import 'package:ink_mobile/messenger/models/message_list_view.dart';
 import 'package:ink_mobile/messenger/models/nats_message.dart';
 import 'package:ink_mobile/messenger/providers/nats_provider.dart';
 import 'package:ink_mobile/models/debouncer.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 
 @Named("UserReacted")
 @Injectable(as: MessageListener)
@@ -39,7 +39,11 @@ class MessageStatusListener extends MessageListener {
             ChatMessageStatusFields.fromMap(mapPayload.fields);
 
         List<MessageTable> messages = fields.messages;
-        final notReadMessages = MessageListView.notReadMessages(messages);
+        final notReadMessages = messages
+            .where(
+              (element) => !element.read && element.userId == JwtPayload.myId,
+            )
+            .toList();
 
         if (notReadMessages.isNotEmpty) {
           allNotReadChats.add(messages.last.chatId);
