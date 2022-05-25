@@ -31,6 +31,25 @@ class MainApiProvider extends MainApiClient {
 }
 
 @lazySingleton
+class MainApiExLogProvider extends MainApiClient {
+  final Uint8List certificate;
+
+  HttpClient? _sslPinnedHttpClient(HttpClient client) {
+    SecurityContext securityContext = SecurityContext();
+    securityContext.setTrustedCertificatesBytes(certificate);
+    return HttpClient(context: securityContext);
+  }
+
+  MainApiExLogProvider(LogInterceptor logInterceptor,
+      @Named("apiUrl") String apiUrl, @Named("apiCertificate") this.certificate)
+      : super(basePathOverride: apiUrl) {
+    dio.options.connectTimeout = API_CONNECT_TIMEOUT_MS;
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        _sslPinnedHttpClient;
+  }
+}
+
+@lazySingleton
 class LogInterceptor extends Interceptor with Loggable {
   @override
   void onRequest(options, handler) {

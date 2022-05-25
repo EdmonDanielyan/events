@@ -20,13 +20,11 @@ class AuthNetworkRequest extends AuthRequestDependency {
 
   @override
   Future<Response<AuthSuccess>> call() async {
-    AuthApi auth = sl<MainApiProvider>().getAuthApi();
-    final response = await auth
-        .auth(
-          authParams:
-              CustomAuthParamsBuilder(login: login!, password: password!)
-                  .build(),
-        );
+    AuthApi auth = sl<MainApiExLogProvider>().getAuthApi();
+    final response = await auth.auth(
+      authParams:
+          CustomAuthParamsBuilder(login: login!, password: password!).build(),
+    );
     return response;
   }
 }

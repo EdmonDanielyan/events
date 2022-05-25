@@ -85,16 +85,16 @@ import 'messenger/cases/chat_functions.dart' as _i90;
 import 'messenger/cases/send_message.dart' as _i94;
 import 'messenger/cases/user_functions.dart' as _i95;
 import 'messenger/listeners/channels_registry.dart' as _i98;
-import 'messenger/listeners/chat_info.dart' as _i109;
-import 'messenger/listeners/chat_list.dart' as _i108;
-import 'messenger/listeners/delete_message.dart' as _i104;
-import 'messenger/listeners/invitation.dart' as _i107;
-import 'messenger/listeners/joined.dart' as _i106;
-import 'messenger/listeners/left.dart' as _i113;
+import 'messenger/listeners/chat_info.dart' as _i113;
+import 'messenger/listeners/chat_list.dart' as _i106;
+import 'messenger/listeners/delete_message.dart' as _i107;
+import 'messenger/listeners/invitation.dart' as _i110;
+import 'messenger/listeners/joined.dart' as _i104;
+import 'messenger/listeners/left.dart' as _i108;
 import 'messenger/listeners/message_listener.dart' as _i103;
-import 'messenger/listeners/message_status.dart' as _i112;
+import 'messenger/listeners/message_status.dart' as _i109;
 import 'messenger/listeners/online.dart' as _i105;
-import 'messenger/listeners/text_message.dart' as _i110;
+import 'messenger/listeners/text_message.dart' as _i112;
 import 'messenger/listeners/texting.dart' as _i111;
 import 'messenger/models/chat/database/chat_db.dart' as _i88;
 import 'messenger/providers/chat_import/chat_import_storage.dart' as _i17;
@@ -131,8 +131,8 @@ import 'screens/medical_insurance/components/form/entities.dart' as _i78;
 import 'screens/open_university/cubit/open_university_cubit.dart' as _i56;
 
 const String _unitTest = 'unitTest';
-const String _prod = 'prod';
 const String _dev = 'dev';
+const String _prod = 'prod';
 const String _test = 'test';
 // ignore_for_file: unnecessary_lambdas
 // ignore_for_file: lines_longer_than_80_chars
@@ -142,11 +142,11 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   final gh = _i2.GetItHelper(get, environment, environmentFilter);
   final tokenDataInjectorModule = _$TokenDataInjectorModule();
   final urlsConfigUnitTest = _$UrlsConfigUnitTest();
-  final urlsConfigProd = _$UrlsConfigProd();
   final urlsConfigDev = _$UrlsConfigDev();
-  final urlsConfigTest = _$UrlsConfigTest();
-  final testLogFilePathInjector = _$TestLogFilePathInjector();
+  final urlsConfigProd = _$UrlsConfigProd();
   final logFilePathInjector = _$LogFilePathInjector();
+  final testLogFilePathInjector = _$TestLogFilePathInjector();
+  final urlsConfigTest = _$UrlsConfigTest();
   final certificateInjector = _$CertificateInjector();
   gh.factory<_i3.AnnouncementCubit>(() => _i3.AnnouncementCubit());
   gh.factoryParam<_i4.AnnouncementsDetailNetworkRequest, int?, dynamic>(
@@ -268,64 +268,64 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
           _i80.SendReferenceFormNetworkRequest(entities: entities));
   gh.singleton<_i82.StaffMovementsNetworkRequest>(
       _i82.StaffMovementsNetworkRequest());
-  gh.factory<String>(() => tokenDataInjectorModule.localDatabasePassword,
-      instanceName: 'localDatabasePassword');
   gh.factory<String>(() => tokenDataInjectorModule.deviceVirtualId,
       instanceName: 'deviceVirtualId');
-  gh.factory<String>(() => tokenDataInjectorModule.natsToken,
-      instanceName: 'natsToken');
-  gh.factory<String>(() => tokenDataInjectorModule.messengerAuthPassword,
-      instanceName: 'messengerAuthPassword');
-  gh.factory<String>(() => tokenDataInjectorModule.userId,
-      instanceName: 'userId');
-  gh.factory<String>(() => urlsConfigUnitTest.apiCertificatePath,
-      instanceName: 'apiCertificatePath', registerFor: {_unitTest});
+  gh.factory<String>(() => tokenDataInjectorModule.localDatabasePassword,
+      instanceName: 'localDatabasePassword');
   gh.factory<String>(() => urlsConfigUnitTest.apiUrl,
       instanceName: 'apiUrl', registerFor: {_unitTest});
-  gh.factory<String>(() => urlsConfigUnitTest.natsCertificatePath,
-      instanceName: 'natsCertificatePath', registerFor: {_unitTest});
-  gh.factory<String>(() => urlsConfigUnitTest.natsCluster,
-      instanceName: 'natsCluster', registerFor: {_unitTest});
-  gh.factory<String>(() => urlsConfigUnitTest.natsWssUrl,
-      instanceName: 'natsWssUrl', registerFor: {_unitTest});
-  gh.factory<String>(() => urlsConfigProd.apiCertificatePath,
-      instanceName: 'apiCertificatePath', registerFor: {_prod});
-  gh.factory<String>(() => urlsConfigProd.apiUrl,
-      instanceName: 'apiUrl', registerFor: {_prod});
-  gh.factory<String>(() => urlsConfigProd.natsCertificatePath,
-      instanceName: 'natsCertificatePath', registerFor: {_prod});
-  gh.factory<String>(() => tokenDataInjectorModule.messengerAuthLogin,
-      instanceName: 'messengerAuthLogin');
-  gh.factory<String>(() => urlsConfigProd.natsCluster,
-      instanceName: 'natsCluster', registerFor: {_prod});
-  gh.factory<String>(() => urlsConfigProd.natsWssUrl,
-      instanceName: 'natsWssUrl', registerFor: {_prod});
-  gh.factory<String>(() => urlsConfigDev.apiCertificatePath,
-      instanceName: 'apiCertificatePath', registerFor: {_dev});
+  gh.factory<String>(() => urlsConfigUnitTest.apiCertificatePath,
+      instanceName: 'apiCertificatePath', registerFor: {_unitTest});
   gh.factory<String>(() => urlsConfigDev.natsCertificatePath,
       instanceName: 'natsCertificatePath', registerFor: {_dev});
-  gh.factory<String>(() => urlsConfigDev.natsCluster,
-      instanceName: 'natsCluster', registerFor: {_dev});
+  gh.factory<String>(() => urlsConfigProd.natsWssUrl,
+      instanceName: 'natsWssUrl', registerFor: {_prod});
+  gh.factory<String>(() => urlsConfigProd.natsCluster,
+      instanceName: 'natsCluster', registerFor: {_prod});
+  gh.factory<String>(() => urlsConfigProd.natsCertificatePath,
+      instanceName: 'natsCertificatePath', registerFor: {_prod});
+  gh.factory<String>(() => urlsConfigProd.apiUrl,
+      instanceName: 'apiUrl', registerFor: {_prod});
   gh.factory<String>(() => urlsConfigDev.natsWssUrl,
       instanceName: 'natsWssUrl', registerFor: {_dev});
-  gh.factory<String>(() => urlsConfigTest.apiCertificatePath,
-      instanceName: 'apiCertificatePath', registerFor: {_test});
-  gh.factory<String>(() => urlsConfigTest.apiUrl,
-      instanceName: 'apiUrl', registerFor: {_test});
-  gh.factory<String>(() => urlsConfigTest.natsCertificatePath,
-      instanceName: 'natsCertificatePath', registerFor: {_test});
-  gh.factory<String>(() => urlsConfigTest.natsCluster,
-      instanceName: 'natsCluster', registerFor: {_test});
-  gh.factory<String>(() => urlsConfigTest.natsWssUrl,
-      instanceName: 'natsWssUrl', registerFor: {_test});
-  gh.factory<String>(() => testLogFilePathInjector.logFile,
-      instanceName: 'logFile', registerFor: {_unitTest});
+  gh.factory<String>(() => urlsConfigDev.natsCluster,
+      instanceName: 'natsCluster', registerFor: {_dev});
+  gh.factory<String>(() => urlsConfigProd.apiCertificatePath,
+      instanceName: 'apiCertificatePath', registerFor: {_prod});
+  gh.factory<String>(() => urlsConfigUnitTest.natsWssUrl,
+      instanceName: 'natsWssUrl', registerFor: {_unitTest});
+  gh.factory<String>(() => urlsConfigDev.apiUrl,
+      instanceName: 'apiUrl', registerFor: {_dev});
+  gh.factory<String>(() => tokenDataInjectorModule.messengerAuthLogin,
+      instanceName: 'messengerAuthLogin');
+  gh.factory<String>(() => tokenDataInjectorModule.userId,
+      instanceName: 'userId');
   await gh.factoryAsync<String>(() => logFilePathInjector.logFile,
       instanceName: 'logFile',
       registerFor: {_test, _prod, _dev},
       preResolve: true);
-  gh.factory<String>(() => urlsConfigDev.apiUrl,
-      instanceName: 'apiUrl', registerFor: {_dev});
+  gh.factory<String>(() => testLogFilePathInjector.logFile,
+      instanceName: 'logFile', registerFor: {_unitTest});
+  gh.factory<String>(() => urlsConfigUnitTest.natsCertificatePath,
+      instanceName: 'natsCertificatePath', registerFor: {_unitTest});
+  gh.factory<String>(() => tokenDataInjectorModule.messengerAuthPassword,
+      instanceName: 'messengerAuthPassword');
+  gh.factory<String>(() => tokenDataInjectorModule.natsToken,
+      instanceName: 'natsToken');
+  gh.factory<String>(() => urlsConfigTest.natsWssUrl,
+      instanceName: 'natsWssUrl', registerFor: {_test});
+  gh.factory<String>(() => urlsConfigTest.natsCluster,
+      instanceName: 'natsCluster', registerFor: {_test});
+  gh.factory<String>(() => urlsConfigTest.natsCertificatePath,
+      instanceName: 'natsCertificatePath', registerFor: {_test});
+  gh.factory<String>(() => urlsConfigTest.apiUrl,
+      instanceName: 'apiUrl', registerFor: {_test});
+  gh.factory<String>(() => urlsConfigTest.apiCertificatePath,
+      instanceName: 'apiCertificatePath', registerFor: {_test});
+  gh.factory<String>(() => urlsConfigUnitTest.natsCluster,
+      instanceName: 'natsCluster', registerFor: {_unitTest});
+  gh.factory<String>(() => urlsConfigDev.apiCertificatePath,
+      instanceName: 'apiCertificatePath', registerFor: {_dev});
   gh.singleton<_i83.TagsListCubit>(_i83.TagsListCubit());
   gh.singleton<_i84.TagsListNetworkRequest>(_i84.TagsListNetworkRequest());
   gh.lazySingleton<_i85.TokenDataHolder>(() => _i85.TokenDataHolder());
@@ -347,6 +347,10 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       get<_i70.SecurityChecker>(),
       get<_i15.CertificateReader>(),
       get<_i87.AuthHandler>()));
+  gh.lazySingleton<_i37.MainApiExLogProvider>(() => _i37.MainApiExLogProvider(
+      get<_i37.LogInterceptor>(),
+      get<String>(instanceName: 'apiUrl'),
+      get<_i86.Uint8List>(instanceName: 'apiCertificate')));
   gh.lazySingleton<_i37.MainApiProvider>(() => _i37.MainApiProvider(
       get<_i37.LogInterceptor>(),
       get<String>(instanceName: 'apiUrl'),
@@ -392,25 +396,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       get<_i90.ChatFunctions>(),
       get<_i88.ChatDatabase>()));
   gh.factory<_i103.MessageListener>(
-      () => _i104.MessageDeletedListener(
-          get<_i93.NatsProvider>(),
-          get<_i89.ChatDatabaseCubit>(),
-          get<_i98.ChannelsRegistry>(),
-          get<_i90.ChatFunctions>(),
-          get<_i101.InviteSender>(),
-          get<_i88.ChatDatabase>(),
-          get<_i100.ChatSaver>()),
-      instanceName: 'RemoveMessage');
-  gh.factory<_i103.MessageListener>(
-      () => _i105.UserOnlineListener(
-          get<_i93.NatsProvider>(),
-          get<_i98.ChannelsRegistry>(),
-          get<_i41.Messenger>(),
-          get<_i95.UserFunctions>(),
-          get<_i89.ChatDatabaseCubit>()),
-      instanceName: 'Online');
-  gh.factory<_i103.MessageListener>(
-      () => _i106.ChatJoinedListener(
+      () => _i104.ChatJoinedListener(
           get<_i93.NatsProvider>(),
           get<_i98.ChannelsRegistry>(),
           get<_i95.UserFunctions>(),
@@ -420,15 +406,15 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
           get<_i90.ChatFunctions>()),
       instanceName: 'UserJoined');
   gh.factory<_i103.MessageListener>(
-      () => _i107.ChatInvitationListener(
+      () => _i105.UserOnlineListener(
           get<_i93.NatsProvider>(),
           get<_i98.ChannelsRegistry>(),
-          get<_i100.ChatSaver>(),
-          get<_i101.InviteSender>(),
+          get<_i41.Messenger>(),
+          get<_i95.UserFunctions>(),
           get<_i89.ChatDatabaseCubit>()),
-      instanceName: 'InviteUserToJoinChat');
+      instanceName: 'Online');
   gh.factory<_i103.MessageListener>(
-      () => _i108.ChatListListener(
+      () => _i106.ChatListListener(
           get<_i93.NatsProvider>(),
           get<_i98.ChannelsRegistry>(),
           get<_i89.ChatDatabaseCubit>(),
@@ -438,35 +424,17 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
           get<_i99.ChatCreation>()),
       instanceName: 'ChatList');
   gh.factory<_i103.MessageListener>(
-      () => _i109.ChatInfoListener(
+      () => _i107.MessageDeletedListener(
           get<_i93.NatsProvider>(),
-          get<_i98.ChannelsRegistry>(),
-          get<_i95.UserFunctions>(),
           get<_i89.ChatDatabaseCubit>(),
-          get<_i101.InviteSender>()),
-      instanceName: 'UpdateChatInfo');
-  gh.factory<_i103.MessageListener>(
-      () => _i110.TextMessageListener(
-          get<_i93.NatsProvider>(),
           get<_i98.ChannelsRegistry>(),
-          get<_i95.UserFunctions>(),
-          get<_i89.ChatDatabaseCubit>(),
+          get<_i90.ChatFunctions>(),
           get<_i101.InviteSender>(),
-          get<_i90.ChatFunctions>()),
-      instanceName: 'Text');
+          get<_i88.ChatDatabase>(),
+          get<_i100.ChatSaver>()),
+      instanceName: 'RemoveMessage');
   gh.factory<_i103.MessageListener>(
-      () => _i111.MessageTextingListener(
-          get<_i93.NatsProvider>(),
-          get<_i98.ChannelsRegistry>(),
-          get<_i89.ChatDatabaseCubit>(),
-          get<_i16.ChatCubit>()),
-      instanceName: 'Texting');
-  gh.factory<_i103.MessageListener>(
-      () => _i112.MessageStatusListener(get<_i93.NatsProvider>(),
-          get<_i98.ChannelsRegistry>(), get<_i90.ChatFunctions>()),
-      instanceName: 'UserReacted');
-  gh.factory<_i103.MessageListener>(
-      () => _i113.ChatLeftListener(
+      () => _i108.ChatLeftListener(
           get<_i93.NatsProvider>(),
           get<_i98.ChannelsRegistry>(),
           get<_i101.InviteSender>(),
@@ -475,6 +443,42 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
           get<_i89.ChatDatabaseCubit>(),
           get<_i90.ChatFunctions>()),
       instanceName: 'UserLeftChat');
+  gh.factory<_i103.MessageListener>(
+      () => _i109.MessageStatusListener(get<_i93.NatsProvider>(),
+          get<_i98.ChannelsRegistry>(), get<_i90.ChatFunctions>()),
+      instanceName: 'UserReacted');
+  gh.factory<_i103.MessageListener>(
+      () => _i110.ChatInvitationListener(
+          get<_i93.NatsProvider>(),
+          get<_i98.ChannelsRegistry>(),
+          get<_i100.ChatSaver>(),
+          get<_i101.InviteSender>(),
+          get<_i89.ChatDatabaseCubit>()),
+      instanceName: 'InviteUserToJoinChat');
+  gh.factory<_i103.MessageListener>(
+      () => _i111.MessageTextingListener(
+          get<_i93.NatsProvider>(),
+          get<_i98.ChannelsRegistry>(),
+          get<_i89.ChatDatabaseCubit>(),
+          get<_i16.ChatCubit>()),
+      instanceName: 'Texting');
+  gh.factory<_i103.MessageListener>(
+      () => _i112.TextMessageListener(
+          get<_i93.NatsProvider>(),
+          get<_i98.ChannelsRegistry>(),
+          get<_i95.UserFunctions>(),
+          get<_i89.ChatDatabaseCubit>(),
+          get<_i101.InviteSender>(),
+          get<_i90.ChatFunctions>()),
+      instanceName: 'Text');
+  gh.factory<_i103.MessageListener>(
+      () => _i113.ChatInfoListener(
+          get<_i93.NatsProvider>(),
+          get<_i98.ChannelsRegistry>(),
+          get<_i95.UserFunctions>(),
+          get<_i89.ChatDatabaseCubit>(),
+          get<_i101.InviteSender>()),
+      instanceName: 'UpdateChatInfo');
   gh.lazySingleton<_i114.OnlineSender>(() =>
       _i114.OnlineSender(get<_i93.NatsProvider>(), get<_i95.UserFunctions>()));
   gh.lazySingleton<_i115.TextSender>(() => _i115.TextSender(
@@ -495,14 +499,14 @@ class _$TokenDataInjectorModule extends _i85.TokenDataInjectorModule {}
 
 class _$UrlsConfigUnitTest extends _i117.UrlsConfigUnitTest {}
 
-class _$UrlsConfigProd extends _i117.UrlsConfigProd {}
-
 class _$UrlsConfigDev extends _i117.UrlsConfigDev {}
 
-class _$UrlsConfigTest extends _i117.UrlsConfigTest {}
+class _$UrlsConfigProd extends _i117.UrlsConfigProd {}
+
+class _$LogFilePathInjector extends _i118.LogFilePathInjector {}
 
 class _$TestLogFilePathInjector extends _i118.TestLogFilePathInjector {}
 
-class _$LogFilePathInjector extends _i118.LogFilePathInjector {}
+class _$UrlsConfigTest extends _i117.UrlsConfigTest {}
 
 class _$CertificateInjector extends _i15.CertificateInjector {}
