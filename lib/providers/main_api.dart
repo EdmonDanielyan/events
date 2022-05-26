@@ -44,6 +44,7 @@ class MainApiExLogProvider extends MainApiClient {
       @Named("apiUrl") String apiUrl, @Named("apiCertificate") this.certificate)
       : super(basePathOverride: apiUrl) {
     dio.options.connectTimeout = API_CONNECT_TIMEOUT_MS;
+    dio.interceptors.add(LogInterceptor2());
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         _sslPinnedHttpClient;
   }
@@ -86,6 +87,23 @@ class LogInterceptor extends Interceptor with Loggable {
         Request Headers: ${err.requestOptions.headers}
         """;
     logger.severe(_error, err, err.stackTrace);
+    super.onError(err, handler);
+  }
+}
+
+class LogInterceptor2 extends Interceptor with Loggable {
+  @override
+  void onRequest(options, handler) {
+    super.onRequest(options, handler);
+  }
+
+  @override
+  void onResponse(response, handler) {
+    super.onResponse(response, handler);
+  }
+
+  @override
+  void onError(err, handler) {
     super.onError(err, handler);
   }
 }
