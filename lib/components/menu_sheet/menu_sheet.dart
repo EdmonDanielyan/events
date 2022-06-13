@@ -3,6 +3,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet_item.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
+import 'package:ink_mobile/messenger/providers/messenger.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:logging/logging.dart';
 
@@ -123,7 +126,6 @@ class ExitAlertDialog extends StatefulWidget {
 }
 
 class _ExitAlertDialogState extends State<ExitAlertDialog> {
-  bool _deleteCheckbox = false;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -133,18 +135,6 @@ class _ExitAlertDialogState extends State<ExitAlertDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(localizationInstance.signOffAlertBody),
-          CheckboxListTile(
-            contentPadding: const EdgeInsets.all(0),
-            value: _deleteCheckbox,
-            title: Text(localizationInstance.deleteData),
-            onChanged: (check) {
-              if (check != null) {
-                setState(() {
-                  _deleteCheckbox = check;
-                });
-              }
-            },
-          )
         ],
       ),
       actions: [
@@ -167,7 +157,10 @@ class _ExitAlertDialogState extends State<ExitAlertDialog> {
   }
 
   Future<void> _exit(BuildContext context) async {
-    await setup();
+    getIt<MessengerProvider>().dispose();
+    getIt<CachedChatsCubit>().clean();
+    Token.deleteTokens();
+
     Navigator.pushNamedAndRemoveUntil(context, '/init', (route) => true);
   }
 }
