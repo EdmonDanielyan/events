@@ -21,7 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<bool> auth() async {
     emitState(type: AuthStateType.LOADING);
     try {
-      final response = await sl<AuthNetworkRequest>(
+      final response = await getIt<AuthNetworkRequest>(
           param1: login.trim(), param2: password.trim())();
       return await response.handleResponse();
     } on TimeoutException catch (_) {

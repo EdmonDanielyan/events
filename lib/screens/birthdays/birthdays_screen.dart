@@ -7,16 +7,13 @@ import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart
 import 'package:ink_mobile/cubit/birthdays/birthdays_cubit.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_other_days_element.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_today_element.dart';
 
 class BirthdaysScreen extends StatelessWidget {
   final BirthdaysCubit birthdaysCubit;
-  final ChatDatabaseCubit chatDatabaseCubit;
-  const BirthdaysScreen(
-      {Key? key, required this.birthdaysCubit, required this.chatDatabaseCubit})
+  const BirthdaysScreen({Key? key, required this.birthdaysCubit})
       : super(key: key);
 
   @override
@@ -195,7 +192,6 @@ class BirthdaysScreen extends StatelessWidget {
     birthdaysData?.forEach((birthday) {
       birthdays.add(BirthdayTodayElement(
         birthday: birthday,
-        chatDatabaseCubit: chatDatabaseCubit,
         index: i,
       ));
 

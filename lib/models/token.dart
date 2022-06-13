@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
+import 'package:ink_mobile/messenger/providers/app_token.dart';
 import 'package:ink_mobile/models/converter.dart';
 import 'package:ink_mobile/providers/device_info.dart';
 import 'package:ink_mobile/providers/main_api.dart';
@@ -46,7 +47,7 @@ abstract class Token {
   }
 
   static Future<void> deleteTokens() async {
-    await sl<SecureStorage>().deleteAll();
+    await getIt<SecureStorage>().deleteAll();
   }
 
   static Future<bool> isJwtExpired() async {
@@ -74,7 +75,7 @@ abstract class Token {
   }
 
   static Future<void> _setNewTokens() async {
-    AuthApi auth = sl<MainApiProvider>().getAuthApi();
+    AuthApi auth = getIt<MainApiProvider>().getAuthApi();
 
     RefreshTokenParamsBuilder refreshParamsBuilder =
         RefreshTokenParamsBuilder();
@@ -123,11 +124,12 @@ abstract class Token {
   }
 
   static Future<String?> _getTokenByType(TokenType type) async {
-    return await sl<SecureStorage>().read(type.key);
+    return await getIt<SecureStorage>().read(type.key);
   }
 
   static Future<void> setJwt(String value) async {
     await Token._setTokenByType(TokenTypes.jwt, value);
+    getIt<AppTokenProvider>().setToken(value);
   }
 
   static Future<void> setRefresh(String value) async {
@@ -135,12 +137,12 @@ abstract class Token {
   }
 
   static Future<void> _setTokenByType(TokenType type, String value) async {
-    await sl<SecureStorage>().write(key: type.key, value: value);
+    await getIt<SecureStorage>().write(key: type.key, value: value);
   }
 
   static Future<void> setDeviceVirtualIdIfEmpty() async {
-    if (!await sl<SecureStorage>().containsKey(DeviceTypes.virtualId.key)) {
-      await sl<SecureStorage>()
+    if (!await getIt<SecureStorage>().containsKey(DeviceTypes.virtualId.key)) {
+      await getIt<SecureStorage>()
           .write(key: DeviceTypes.virtualId.key, value: Uuid().v4());
     }
   }
@@ -151,12 +153,12 @@ abstract class Token {
 
   static Future<void> setNatsToken() async {
     JwtPayload? payload = await Token.getJwtPayloadObject();
-    await sl<SecureStorage>()
+    await getIt<SecureStorage>()
         .write(key: NatsTypes.natsToken.key, value: payload!.natsToken);
   }
 
   static Future<String?> getNatsToken() async {
-    return await sl<SecureStorage>().read(NatsTypes.natsToken.key);
+    return await getIt<SecureStorage>().read(NatsTypes.natsToken.key);
   }
 
   static setLocalDbToken(String dbLocalToken) async {

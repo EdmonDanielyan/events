@@ -15,7 +15,7 @@ class GetAutofill {
   Future<void> load() async {
     try {
       await Token.setNewTokensIfExpired();
-      final response = await sl<GetAutofillNetworkRequest>()();
+      final response = await getIt<GetAutofillNetworkRequest>()();
       autofill = response.mapResponse();
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();

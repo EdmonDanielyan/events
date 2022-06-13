@@ -24,7 +24,7 @@ extension AuthSuccessExt on Response<AuthSuccess> {
       await Token.setNatsToken();
       await Token.setDeviceVirtualIdIfEmpty();
 
-      await sl<AuthHandler>().authChallenge(pass: true);
+      await getIt<AuthHandler>().authChallenge(pass: true);
       return true;
     } else {
       return false;

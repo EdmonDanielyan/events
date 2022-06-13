@@ -12,7 +12,7 @@ class GetAutofillNetworkRequest extends GetAutofillRequestDependency {
   GetAutofillNetworkRequest();
 
   @override
-  Future<Response<ReferenceAutoFill>> call() async => await sl
+  Future<Response<ReferenceAutoFill>> call() async => await getIt
       .get<MainApiProvider>()
       .getUserApi()
       .userGetreferenceautofillGet();

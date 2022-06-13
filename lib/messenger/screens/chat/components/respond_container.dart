@@ -1,85 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ink_mobile/extensions/message_table.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
+import 'package:ink_mobile/messenger/components/text/google_style.dart';
+import 'package:ink_mobile/messenger/model/message.dart';
 
-class RespondMessageContainer extends StatelessWidget {
-  final void Function()? onCancel;
-  final MessageWithUser selectedMessage;
-  final double horizontalPadding;
-  final Color? txtColor;
-  final Color? bgColor;
-  const RespondMessageContainer({
-    Key? key,
-    this.horizontalPadding = 7.0,
-    this.onCancel,
-    this.txtColor,
-    this.bgColor,
-    required this.selectedMessage,
-  }) : super(key: key);
-
-  static late AppLocalizations _strings;
+class RespondContainer extends StatelessWidget {
+  final bool isByMe;
+  final Message message;
+  const RespondContainer(
+      {Key? key, required this.isByMe, required this.message})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _strings = localizationInstance;
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 5.0),
       decoration: BoxDecoration(
-        color: bgColor ?? Colors.grey[200],
-        borderRadius: BorderRadius.circular(10),
+        color: isByMe
+            ? Colors.black.withOpacity(0.3)
+            : Colors.grey[600]!.withOpacity(0.2),
+        borderRadius: const BorderRadius.all(Radius.circular(5.0)),
       ),
-      padding: EdgeInsets.all(horizontalPadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: _titleWidget(),
-              ),
-              if (onCancel != null) ...[
-                _cancelWidget(),
-              ],
-            ],
-          ),
-          SizedBox(height: 2.0),
-          _textWidget(),
-        ],
-      ),
-    );
-  }
-
-  Widget _titleWidget() {
-    bool isByMe = selectedMessage.message!.isByMe();
-    return Text(
-      isByMe ? _strings.you : selectedMessage.user!.name,
-      style: TextStyle(
-        color: isByMe ? Colors.green : Colors.purple[200],
-        fontSize: 12.5,
-      ),
-    );
-  }
-
-  Widget _cancelWidget() {
-    return InkWell(
-      onTap: onCancel,
-      child: Icon(
-        Icons.cancel,
-        size: 19,
-      ),
-    );
-  }
-
-  Widget _textWidget() {
-    return Text(
-      selectedMessage.message!.message,
-      maxLines: 3,
-      overflow: TextOverflow.ellipsis,
-      style: TextStyle(
-        fontSize: 12.0,
-        color: txtColor ?? Colors.black,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 2.0),
+            GoogleText(
+              message.owner.name,
+              color: isByMe ? Colors.purple[300] : Colors.purple,
+              fontSize: 13.0,
+            ),
+            const SizedBox(height: 3.0),
+            GoogleText(
+              message.body,
+              color: isByMe ? Colors.white : Colors.black,
+              fontSize: 13.0,
+            ),
+            const SizedBox(height: 3.0),
+          ],
+        ),
       ),
     );
   }

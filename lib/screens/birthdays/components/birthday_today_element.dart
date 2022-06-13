@@ -2,46 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/messenger/cases/open_chat.dart';
-import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat_user.dart';
-import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_avatar.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_body.dart';
-import 'package:ink_mobile/setup.dart';
-
-import '../../../setup.dart';
 
 class BirthdayTodayElement extends StatelessWidget {
-  final ChatDatabaseCubit chatDatabaseCubit;
   final int index;
-  const BirthdayTodayElement(
-      {Key? key,
-      required this.index,
-      required this.birthday,
-      required this.chatDatabaseCubit})
-      : super(key: key);
+  const BirthdayTodayElement({
+    Key? key,
+    required this.index,
+    required this.birthday,
+  }) : super(key: key);
 
   final BirthdayData birthday;
-  static final Messenger _messenger = sl<Messenger>();
 
   Future<void> _congratulate(BuildContext context) async {
-    if (_messenger.isConnected) {
-      ChatTable? chat = await _messenger.chatCreation.isSingleChatExists(
-          ChatUserViewModel.birthdayDataToUserTable(birthday));
+    // if (_messenger.isConnected) {
+    //   ChatTable? chat = await _messenger.chatCreation.isSingleChatExists(
+    //       ChatUserViewModel.birthdayDataToUserTable(birthday));
 
-      if (chat != null) {
-        OpenChat(chatDatabaseCubit, chat).call();
-      } else {
-        ChatTable newChat = await _messenger.chatCreation.createDialogChat(
-            ChatUserViewModel.birthdayDataToUserTable(birthday));
-        Navigator.of(context).pop();
-        OpenChat(chatDatabaseCubit, newChat).call();
-      }
-    }
+    //   if (chat != null) {
+    //     OpenChat(chatDatabaseCubit, chat).call();
+    //   } else {
+    //     ChatTable newChat = await _messenger.chatCreation.createDialogChat(
+    //         ChatUserViewModel.birthdayDataToUserTable(birthday));
+    //     Navigator.of(context).pop();
+    //     OpenChat(chatDatabaseCubit, newChat).call();
+    //   }
+    // }
   }
 
   @override

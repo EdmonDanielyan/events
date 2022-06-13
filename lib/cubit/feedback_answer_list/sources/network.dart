@@ -19,7 +19,7 @@ class FeedbackAnswerListNetworkRequest
 
   @override
   Future<Response<QuestionsList>> call() async {
-    UserApi newsApi = sl<MainApiProvider>().getUserApi();
+    UserApi newsApi = getIt<MainApiProvider>().getUserApi();
     return await newsApi.userGetquestionsGet(
         pageNumber: pagination!.pageNumber,
         countOnPage: pagination!.countOnPage);

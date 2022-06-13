@@ -21,7 +21,7 @@ class AnnouncementCubit extends Cubit<AnnouncementsDetailState> {
   Future<void> fetch(int announcementId) async {
     try {
       await Token.setNewTokensIfExpired();
-      final _makeRequest = await sl<AnnouncementsDetailNetworkRequest>(
+      final _makeRequest = await getIt<AnnouncementsDetailNetworkRequest>(
           param1: announcementId)();
       emitSuccess(_makeRequest.mapResponse());
     } on DioError catch (e) {

@@ -18,7 +18,7 @@ class EventsDetailNetworkRequest extends EventsDetailRequestDependency {
 
   @override
   Future<Response<GetEventById>> call() async {
-    EventsApi eventApi = sl<MainApiProvider>().getEventsApi();
+    EventsApi eventApi = getIt<MainApiProvider>().getEventsApi();
     return await eventApi.getEventById(eventId);
   }
 }

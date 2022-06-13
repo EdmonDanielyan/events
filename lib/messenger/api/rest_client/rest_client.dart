@@ -1,28 +1,75 @@
-import 'dart:io';
-
+import 'package:ink_mobile/messenger/api/interceptors/log_interceptor.dart';
 import 'package:ink_mobile/messenger/api/interceptors/token_interceptor.dart';
-import 'package:ink_mobile/messenger/constants/api.dart';
-
+import 'package:ink_mobile/messenger/api/rest_client/chat/create/request.dart';
+import 'package:ink_mobile/messenger/api/rest_client/chat/create/response.dart';
+import 'package:ink_mobile/messenger/api/rest_client/chat/invite/response.dart';
+import 'package:ink_mobile/messenger/api/rest_client/message/delete/request.dart';
+import 'package:ink_mobile/messenger/api/rest_client/message/get/response.dart';
+import 'package:ink_mobile/messenger/api/rest_client/message/update/request.dart';
+import 'package:ink_mobile/messenger/api/rest_client/message/update/response.dart';
+import 'package:ink_mobile/messenger/cubits/cached/base_url/base_url_cubit.dart';
+import 'package:ink_mobile/setup.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/adapter.dart';
+
+import 'chat/get/response.dart';
+import 'chat/get_list/response.dart';
+import 'chat/invite/request.dart';
+import 'chat/remove_participant/request.dart';
+import 'chat/remove_participant/response.dart';
+import 'chat/update/request.dart';
+import 'chat/update/response.dart';
+import 'message/delete/response.dart';
+import 'message/read/response.dart';
+import 'message/send/request.dart';
+import 'message/send/response.dart';
 
 part 'rest_client.g.dart';
 
-@RestApi(baseUrl: MessengerApiConstants.baseUrl)
+@RestApi(baseUrl: "")
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 
-  @POST("/archive/upload")
-  Future<void> uploadArchive(@Part() File file);
+  @POST("/chats/create")
+  Future<CreateChatResponse> createChat(@Body() CreateChatRequest request);
+  @PUT("/chats/{id}")
+  Future<UpdateChatResponse> updateChat(
+      @Path() int id, @Body() UpdateChatRequest request);
+  @POST("/chats/invite")
+  Future<InviteChatResponse> chatInvite(@Body() InviteChatRequest request);
+  @POST("/chats/kick")
+  Future<RemoveParticipantResponse> kickUser(
+      @Body() RemoveParticipantRequest request);
+  @GET("/chats")
+  Future<GetChatsResponse> getChats(
+      @Query("offset") int offset, @Query("count") int count);
+
+  @GET("/chats/list")
+  Future<GetChatListResponse> getChatList();
+
+  @POST("/messages/send")
+  Future<SendMessageResponse> sendMessage(@Body() SendMessageRequest request);
+  @PUT("/messages/{id}")
+  Future<UpdateMessageResponse> updateMessage(
+      @Path() int id, @Body() UpdateMessageRequest request);
+  @POST("/messages/delete")
+  Future<DeleteMessagesResponse> deleteMessages(
+      @Body() DeleteMessagesRequest request);
+  @GET("/messages/{chatId}")
+  Future<GetMessagesResponse> getMessages(
+    @Path() int chatId,
+    @Query("offset") int offset,
+    @Query("count") int count,
+  );
+  @POST("/messages/read/{messageId}")
+  Future<ReadMessagesResponse> readMessage(@Path() int messageId);
 }
 
-class MessengerApi {
+class MainApi {
   final bool useTokenInterceptor;
-  final bool passError;
-  const MessengerApi({this.useTokenInterceptor = true, this.passError = true});
+  const MainApi({this.useTokenInterceptor = true});
 
-  Dio get dioClient {
+  RestClient get client {
     final dio = Dio(
       BaseOptions(
         headers: {
@@ -33,29 +80,13 @@ class MessengerApi {
         },
       ),
     );
+
     if (useTokenInterceptor) {
-      dio.interceptors.add(TokenInterceptor(passError: passError));
+      dio.interceptors.add(TokenInterceptor());
     }
 
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      return client;
-    };
+    dio.interceptors.add(CustomLogInterceptor());
 
-    return dio;
-  }
-
-  RestClient get client {
-    return RestClient(dioClient);
-  }
-
-  Future<Response<List<int>>> downloadArchive() async {
-    final url = MessengerApiConstants.baseUrl + "/archive/download";
-    return await dioClient.get<List<int>>(url,
-        options: Options(responseType: ResponseType.bytes));
-    // return await dioClient.download(
-    //     url, '');
+    return RestClient(dio, baseUrl: getIt<BaseUrlCubit>().url);
   }
 }

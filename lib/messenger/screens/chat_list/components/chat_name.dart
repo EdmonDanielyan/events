@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:substring_highlight/substring_highlight.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:ink_mobile/messenger/components/highlight_text/highlight_text.dart';
 
 class ChatName extends StatelessWidget {
   final String name;
   final String highlightValue;
-  const ChatName({
-    Key? key,
-    required this.name,
-    this.highlightValue = "",
-  }) : super(key: key);
+  const ChatName(this.name, {Key? key, this.highlightValue = ""})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +14,12 @@ class ChatName extends StatelessWidget {
       text: name,
       maxLines: 1,
       term: highlightValue,
-      textStyle: TextStyle(
-        fontSize: 15.0,
+      textStyle: GoogleFonts.roboto(
         fontWeight: FontWeight.bold,
+        fontSize: 15.0,
         color: Colors.black,
-        fontFamily: "Noto",
       ),
-      strutStyle: StrutStyle(forceStrutHeight: true),
+      strutStyle: const StrutStyle(forceStrutHeight: true),
       textStyleHighlight: const TextStyle(color: Colors.blue),
       overflow: TextOverflow.ellipsis,
     );

@@ -32,7 +32,7 @@ class SendReferenceFormCubit extends Cubit<BtnCubitState> {
           deliveryItem: deliveryItem);
 
       final res =
-          await sl<SendReferenceFormNetworkRequest>(param1: formEntities)();
+          await getIt<SendReferenceFormNetworkRequest>(param1: formEntities)();
       res.data!.success
           ? emitSuccess(res.data!.data)
           : emitError(res.data!.data);

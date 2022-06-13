@@ -16,7 +16,7 @@ class StaffMovementsNetworkRequest extends StaffMovementsRequestDependency {
 
   @override
   Future<Response<MovementsSuccess>> call() async {
-    UserApi userApi = sl<MainApiProvider>().getUserApi();
+    UserApi userApi = getIt<MainApiProvider>().getUserApi();
     return await userApi.userMovementsGet().timeout(Duration(seconds: 4));
   }
 }

@@ -15,7 +15,7 @@ class BirthdaysNetworkRequest extends BirthdaysRequestDependency {
 
   @override
   Future<Response<BirthdaysSuccess>> call() async {
-    UserApi userApi = sl<MainApiProvider>().getUserApi();
+    UserApi userApi = getIt<MainApiProvider>().getUserApi();
     return await userApi.userBirthdayGet().timeout(Duration(seconds: 4));
   }
 }

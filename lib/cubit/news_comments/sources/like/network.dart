@@ -12,7 +12,7 @@ class NewsCommentsLikeNetworkRequest extends NewsCommentsLikeRequestDependency {
 
   @override
   Future<void> call() async {
-    await sl
+    await getIt
         .get<MainApiProvider>()
         .getNewsApi()
         .newsCommentsLikeIdGet(commentId);

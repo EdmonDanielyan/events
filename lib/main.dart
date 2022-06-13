@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:ink_mobile/app.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
@@ -17,27 +20,40 @@ import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/themes/light.dart';
 import 'package:logging/logging.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() async {
-  runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    HttpOverrides.global = MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+  final storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getTemporaryDirectory(),
+  );
 
-    await setup(scope: await readEnv());
-    runApp(InkMobile());
-  }, (Object error, StackTrace stack) {
-    if (error is CustomException) {
-      ErrorCatcher catcher = ErrorCatcher.getInstance();
-      catcher.onError(error, stack);
-    } else {
-      Logger('general').severe('Unexpected error', error, stack);
-      showErrorDialog(ErrorMessages.UNKNOWN_ERROR_MESSAGE);
-    }
-  });
+  HydratedBlocOverrides.runZoned(
+    () async {
+      runZonedGuarded(() async {
+        HttpOverrides.global = MyHttpOverrides();
+
+        await setup(scope: await readEnv());
+
+        runApp(InkMobile());
+      }, (Object error, StackTrace stack) {
+        if (error is CustomException) {
+          ErrorCatcher catcher = ErrorCatcher.getInstance();
+          catcher.onError(error, stack);
+        } else {
+          Logger('general').severe('Unexpected error', error, stack);
+          showErrorDialog(ErrorMessages.UNKNOWN_ERROR_MESSAGE);
+        }
+      });
+    },
+    storage: storage,
+  );
 }
 
 class InkMobile extends StatelessWidget {
-  InkMobile({Key? key}) : super(key: key);
+  const InkMobile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +82,7 @@ class InkMobile extends StatelessWidget {
         routes: MainRoutes.routes,
         theme: LightTheme().getThemeData(),
         darkTheme: LightTheme().getThemeData(),
+        builder: EasyLoading.init(),
       ),
     );
   }

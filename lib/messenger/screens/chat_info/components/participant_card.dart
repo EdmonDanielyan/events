@@ -1,131 +1,98 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
-import 'package:ink_mobile/components/highlight_text.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/blocs/online/online_bloc.dart';
-import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/providers/messenger.dart';
-import 'package:ink_mobile/messenger/screens/chat_info/entities/design_entities.dart';
-import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/messenger/components/cached_avatar/cached_avatar.dart';
+import 'package:ink_mobile/messenger/components/text/google_style.dart';
+import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
+import 'package:ink_mobile/messenger/model/user.dart';
+import 'package:ink_mobile/messenger/screens/chat_list/components/online_builder.dart';
 
-class ParticipantCard extends StatefulWidget {
-  final String trailingLable;
-  final UserTable? user;
-  final double? horizontalPadding;
-  final double? titleGap;
-  final double? avatarSize;
-  final String highlightTxt;
-  final String? overrideTitle;
-  final String? overrideAvatar;
-  final bool indicatorIsOn;
-  final bool indicatorReadOnly;
-  final String? avatarName;
+import 'divider.dart';
 
+class ParticipantCard extends StatelessWidget {
+  final User user;
+  final String trailing;
+  final Widget? trailingWidget;
+  final Widget? divider;
+  final Widget? avatarWidget;
+  final Widget? title;
+  final EdgeInsetsGeometry? padding;
+  final OnlineCubit? onlineCubit;
+  final CachedChatsCubit cachedChatsCubit;
   const ParticipantCard({
     Key? key,
     required this.user,
-    this.highlightTxt = "",
-    this.horizontalPadding,
-    this.titleGap,
-    this.avatarSize,
-    this.overrideTitle,
-    this.overrideAvatar,
-    this.trailingLable = "",
-    this.indicatorIsOn = true,
-    this.indicatorReadOnly = false,
-    this.avatarName,
+    this.trailing = "",
+    this.divider,
+    this.trailingWidget,
+    this.avatarWidget,
+    this.title,
+    this.padding,
+    this.onlineCubit,
+    required this.cachedChatsCubit,
   }) : super(key: key);
 
   @override
-  State<ParticipantCard> createState() => _ParticipantCardState();
-}
-
-class _ParticipantCardState extends State<ParticipantCard> {
-  final messenger = sl<Messenger>();
-
-  late AppLocalizations _strings;
-
-  @override
   Widget build(BuildContext context) {
-    _strings = localizationInstance;
     return Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: widget.horizontalPadding ??
-              ChatInfoDesignEntities.horizontalPadding),
+      padding: padding ??
+          const EdgeInsets.only(
+            top: 4.0,
+            bottom: 4.0,
+          ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _avatarWidget(),
           SizedBox(
-              width: widget.titleGap ?? ChatInfoDesignEntities.titleGap - 7),
+            width: 35.0,
+            height: 35,
+            child: avatarWidget ??
+                OnlineBuilder(
+                  onlineCubit ?? OnlineCubit(),
+                  userId: user.id,
+                  builder: (context, onlineState, onlineUser) {
+                    return CachedCircleAvatar(
+                      url: onlineUser?.avatarUrl ?? user.avatarUrl,
+                      name: onlineUser?.name ?? user.name,
+                      avatarHeight: 40,
+                      avatarWidth: 40,
+                      indicator: onlineUser != null,
+                      indicatorSize: 10.0,
+                    );
+                  },
+                  cachedChatsCubit: cachedChatsCubit,
+                ),
+          ),
+          const SizedBox(width: 20.0),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                nameWidget(context),
-                BlocBuilder<OnlineBloc, OnlineBlocState>(
-                    bloc: messenger.onlineBloc,
-                    builder: (context, state) => Text(
-                          state.isOnline(widget.user?.id)
-                              ? _strings.online
-                              : _strings.offline,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12.0,
+                Row(
+                  children: [
+                    Expanded(
+                      child: title ??
+                          GoogleText(
+                            user.name,
+                            color: const Color(0XFF1D2126),
+                            fontSize: 16.0,
                           ),
-                        ))
+                    ),
+                    trailingWidget ?? const SizedBox(),
+                    if (trailing.isNotEmpty) ...[
+                      const SizedBox(width: 10.0),
+                      GoogleText(
+                        trailing,
+                        color: const Color(0XFF757678),
+                        fontSize: 14.0,
+                      )
+                    ],
+                  ],
+                ),
+                divider ?? const SizedBox(height: 10.0),
+                divider ?? const ChatInfoDivider(),
               ],
             ),
           ),
-          if (widget.trailingLable.isNotEmpty) ...[
-            _trailingLableWidget(widget.trailingLable),
-          ],
+          const SizedBox(width: 10.0),
         ],
-      ),
-    );
-  }
-
-  Widget _avatarWidget() {
-    return BlocBuilder<OnlineBloc, OnlineBlocState>(
-      bloc: messenger.onlineBloc,
-      builder: (context, state) => CachedCircleAvatar(
-        avatarHeight: widget.avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
-        avatarWidth: widget.avatarSize ?? ChatInfoDesignEntities.iconSize + 7,
-        url: widget.overrideAvatar ?? widget.user?.avatar ?? "",
-        indicator: state.isOnline(widget.user?.id),
-        indicatorSize: 8.0,
-        name: widget.avatarName ?? (widget.user?.name ?? ""),
-      ),
-    );
-  }
-
-  bool getIndicator() {
-    // if (widget.indicatorReadOnly && widget.user != null) {
-    // }
-    return messenger.onlineBloc.state.isOnline(widget.user?.id);
-  }
-
-  Widget nameWidget(BuildContext context) {
-    return HighlightText(
-      txt: widget.overrideTitle ?? (widget.user?.name ?? ""),
-      highlightTxt: widget.highlightTxt,
-      textStyle: TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.bold,
-        fontSize: 14.0,
-        fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
-      ),
-    );
-  }
-
-  Widget _trailingLableWidget(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-        color: Colors.grey,
-        fontSize: 12.0,
       ),
     );
   }

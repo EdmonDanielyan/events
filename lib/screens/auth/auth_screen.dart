@@ -4,9 +4,6 @@ import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_ba
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/screens/auth/components/body.dart';
 
-import '../../messenger/providers/messenger.dart';
-import '../../setup.dart';
-
 class AuthScreen extends StatefulWidget {
   static AuthScreenState of(BuildContext context) =>
       context.findAncestorStateOfType<AuthScreenState>()!;
@@ -28,12 +25,6 @@ class AuthScreen extends StatefulWidget {
 class AuthScreenState extends State<AuthScreen> {
   AuthCubit get authCubit => widget.authCubit;
   NewBottomNavBarCubit get newBottomNavBarCubit => widget.newBottomNavBarCubit;
-  @override
-  void initState() {
-    super.initState();
-
-    sl<Messenger>().init();
-  }
 
   @override
   Widget build(BuildContext context) {

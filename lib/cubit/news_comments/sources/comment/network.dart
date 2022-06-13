@@ -19,7 +19,7 @@ class NewsCommentsAddNetworkRequest extends NewsCommentsAddRequestDependency {
 
   @override
   Future<Response<PostCommentSuccess>> call() async {
-    return await sl
+    return await getIt
         .get<MainApiProvider>()
         .getNewsApi()
         .newsPostcommentPost(

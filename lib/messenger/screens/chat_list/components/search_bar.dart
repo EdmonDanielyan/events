@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ink_mobile/constants/aseets.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/constants/svg_pictures.dart';
 
 class SearchBar extends StatefulWidget {
   final TextEditingController? controller;
@@ -19,31 +18,13 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
-  FocusNode _textFieldFocus = FocusNode();
-  String _originalHint = "${localizationInstance.find}...";
-  String? _hintText;
-
-  @override
-  void initState() {
-    _textFieldFocus.addListener(() {
-      if (_textFieldFocus.hasFocus) {
-        setState(() {
-          _hintText = "";
-        });
-      } else {
-        setState(() {
-          _hintText = _originalHint;
-        });
-      }
-    });
-    super.initState();
-  }
+  final String _originalHint = "Найти...";
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: widget.contentPadding,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
             color: Colors.grey,
@@ -63,8 +44,7 @@ class _SearchBarState extends State<SearchBar> {
                       onChanged: widget.onChanged,
                       maxLines: 1,
                       textCapitalization: TextCapitalization.sentences,
-                      focusNode: _textFieldFocus,
-                      placeholder: _hintText ?? _originalHint,
+                      placeholder: _originalHint,
                       placeholderColor: Colors.grey[700],
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0),
@@ -74,9 +54,11 @@ class _SearchBarState extends State<SearchBar> {
                   ),
                   const SizedBox(width: 10.0),
                   Container(
-                    padding: EdgeInsets.only(right: 10.0),
+                    padding: const EdgeInsets.only(right: 10.0),
                     child: SvgPicture.asset(
-                      SEARCH_ICON,
+                      SvgPictures.search,
+                      width: 20,
+                      height: 20,
                       color: Colors.grey[700],
                     ),
                   )
@@ -85,18 +67,22 @@ class _SearchBarState extends State<SearchBar> {
             )
           : TextField(
               controller: widget.controller,
-              focusNode: _textFieldFocus,
               onChanged: widget.onChanged,
               decoration: InputDecoration(
                 contentPadding: widget.contentPadding,
-                hintText: _hintText ?? _originalHint,
+                hintText: _originalHint,
                 hintStyle: TextStyle(color: Colors.grey[700]),
                 suffixIconConstraints:
-                    BoxConstraints(minHeight: 24, minWidth: 24),
+                    const BoxConstraints(minHeight: 24, minWidth: 24),
                 suffixIcon: Container(
-                    padding: EdgeInsets.only(right: 10.0),
-                    child:
-                        SvgPicture.asset(SEARCH_ICON, color: Colors.grey[700])),
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: SvgPicture.asset(
+                    SvgPictures.search,
+                    width: 20,
+                    height: 20,
+                    color: Colors.grey[700],
+                  ),
+                ),
                 border: InputBorder.none,
               ),
               maxLines: 1,

@@ -6,8 +6,9 @@ class ChatDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Divider(
-      color: Colors.grey[700],
-      height: 0,
+      height: 1.0,
+      thickness: 1,
+      color: Colors.grey[350],
     );
   }
 }

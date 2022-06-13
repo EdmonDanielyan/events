@@ -1,101 +1,188 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
-import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
-import 'package:ink_mobile/core/logging/loggable.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_state.dart';
-import 'package:ink_mobile/messenger/blocs/chat_list/search_chat_cubit.dart';
-import 'package:ink_mobile/messenger/blocs/chat_person_list/chat_person_list_cubit.dart';
-import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/screens/chat_list/components/new_chat_btn.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/cached/hidden_chats/hidden_chats_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/custom/search_list_cubit/search_list_cuibt.dart';
+import 'package:ink_mobile/messenger/cubits/custom/search_list_cubit/search_list_state.dart';
+import 'package:ink_mobile/messenger/functions/paginator.dart';
+import 'package:ink_mobile/messenger/handler/fetch/chats.dart';
 
-import '../../providers/messenger.dart';
-import 'components/body.dart';
-import 'components/loading.dart';
+import 'package:ink_mobile/messenger/model/chat.dart';
+import 'package:ink_mobile/messenger/screens/chat_list/components/chat_card_wrapper.dart';
+import 'package:ink_mobile/messenger/screens/chat_list/components/empty_chats.dart';
+import 'package:ink_mobile/messenger/screens/chat_list/components/search_bar.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class ChatListScreen extends StatefulWidget {
-  static ChatListScreenState of(BuildContext context) =>
-      context.findAncestorStateOfType<ChatListScreenState>()!;
+import 'components/builder.dart';
+import 'components/hidden_chats_builder.dart';
 
-  final Messenger messenger;
-  final ChatDatabaseCubit chatDatabaseCubit;
-  final SearchChatCubit searchChatCubit;
-  final SelectableCubit<UserTable> selectableCubit;
-  final ChatPersonListCubit chatPersonListCubit;
-
-  const ChatListScreen({
+class ChatList extends StatefulWidget {
+  final CachedChatsCubit cubit;
+  final void Function(Chat)? onDismissed;
+  final void Function(Chat)? onTap;
+  final bool showSearch;
+  final CachedUsersCubit cachedUsersCubit;
+  const ChatList({
     Key? key,
-    required this.messenger,
-    required this.searchChatCubit,
-    required this.chatDatabaseCubit,
-    required this.selectableCubit,
-    required this.chatPersonListCubit,
+    required this.cubit,
+    this.onDismissed,
+    this.onTap,
+    this.showSearch = true,
+    required this.cachedUsersCubit,
   }) : super(key: key);
 
   @override
-  ChatListScreenState createState() => ChatListScreenState();
+  _ChatListState createState() => _ChatListState();
 }
 
-class ChatListScreenState extends State<ChatListScreen>
-    with AutomaticKeepAliveClientMixin, WidgetsBindingObserver, Loggable {
-  ChatDatabaseCubit get chatDatabaseCubit => widget.chatDatabaseCubit;
-  SelectableCubit<UserTable> get selectableCubit => widget.selectableCubit;
-  SearchChatCubit get chatListCubit => widget.searchChatCubit;
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    logger.finest(() => "app lifecycle changed to: $state");
-    super.didChangeAppLifecycleState(state);
-
-    if (state == AppLifecycleState.paused && Platform.isIOS) {
-      widget.messenger.dispose();
-    }
-
-    if (state == AppLifecycleState.resumed && Platform.isIOS) {
-      widget.messenger.natsProvider.load();
-    }
-  }
+class _ChatListState extends State<ChatList> {
+  CachedChatsCubit get cubit => widget.cubit;
+  final searchCubit = SearchListCubit<Chat>();
+  final onlineCubit = getIt<OnlineCubit>();
+  final _paginator = Paginator(limit: 10, page: 15);
+  final _controller = ItemScrollController();
+  final itemPositionsListener = ItemPositionsListener.create();
+  final hiddenchatsCubit = getIt<HiddenChatsCubit>();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+
+    Future.delayed(Duration.zero, () {
+      _addListener();
+    });
   }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
-    super.dispose();
+  void _addListener() {
+    itemPositionsListener.itemPositions.addListener(() {
+      final items = itemPositionsListener.itemPositions.value.toList();
+
+      if (items.isNotEmpty) {
+        final getFirstIndex = items.last.index + 1;
+
+        if (_paginator.page == getFirstIndex) {
+          _loadOnBottomScroll();
+        }
+      }
+    });
+  }
+
+  Future<void> _loadOnBottomScroll() async {
+    if (!_paginator.block) {
+      _paginator.block = true;
+      EasyLoading.show();
+      await FetchChats(
+        offset: _paginator.page,
+        count: _paginator.limit,
+        successCallback: (chats) {
+          _paginator.block = false;
+          _paginator.page = _paginator.page + _paginator.limit;
+          if (chats.length < _paginator.limit) {
+            _paginator.block = true;
+          }
+        },
+      ).call();
+      EasyLoading.dismiss();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.showSearch) ...[
+          const SizedBox(height: 5.0),
+          ChatsBuilder(
+            cachedChatsCubit: cubit,
+            builder: (context, chatsState) {
+              if (chatsState.chats.isEmpty) {
+                return const SizedBox();
+              }
 
-    return Scaffold(
-      appBar: InkAppBarWithText(
-        leading: const SizedBox(),
-        title: localizationInstance.messages,
-        actions: [const NewChatBtn()],
-      ),
-      body: BlocBuilder<ChatDatabaseCubit, ChatDatabaseCubitState>(
-        bloc: chatDatabaseCubit,
-        buildWhen: (previous, current) =>
-            previous.loadingChats != current.loadingChats,
-        builder: (context, state) {
-          if (state.loadingChats) {
-            return ChatListLoadingComponent(length: 8);
-          }
-          return const Body();
-        },
-      ),
+              return SearchBar(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 7.0),
+                onChanged: (str) {
+                  final items = cubit.searchChats(str);
+
+                  searchCubit.setItems(str, items);
+                },
+              );
+            },
+          ),
+        ],
+        Expanded(
+          child: BlocBuilder<SearchListCubit<Chat>, SearchListState<Chat>>(
+            bloc: searchCubit,
+            builder: (context, searchState) {
+              return HiddenChatsBuilder(
+                cubit: hiddenchatsCubit,
+                builder: (context, hiddenChatsState) {
+                  return ChatsBuilder(
+                    cachedChatsCubit: cubit,
+                    builder: (context, state) {
+                      bool isSearchNotEmpty =
+                          searchState.value.trim().isNotEmpty;
+                      List<Chat> _chats = isSearchNotEmpty
+                          ? hiddenchatsCubit.filterChats(searchState.items)
+                          : hiddenchatsCubit.filterChats(state.chats);
+
+                      if (_chats.isEmpty) {
+                        return EmptyChats(
+                            title: isSearchNotEmpty
+                                ? "Ничего не найдено"
+                                : "Список пустой");
+                      }
+
+                      _chats.sort((a, b) {
+                        final aM = a.messages.isNotEmpty
+                            ? a.messages.last.createdAt
+                            : a.createdAt;
+                        final bM = b.messages.isNotEmpty
+                            ? b.messages.last.createdAt
+                            : b.createdAt;
+
+                        return bM.compareTo(aM);
+                      });
+
+                      return ScrollablePositionedList.builder(
+                        itemCount: _chats.length,
+                        itemScrollController: _controller,
+                        itemPositionsListener: itemPositionsListener,
+                        itemBuilder: (context, index) {
+                          final _currentChat = _chats[index];
+
+                          return ChatCardWrapper(
+                            notReadMsgs:
+                                cubit.notReadMsgsOfChat(_currentChat.id),
+                            highlightValue: searchState.value,
+                            cachedChatsCubit: cubit,
+                            chat: _currentChat,
+                            onDismissed: widget.onDismissed != null
+                                ? (_) {
+                                    widget.onDismissed!(_currentChat);
+                                  }
+                                : null,
+                            onTap: widget.onTap != null
+                                ? () => widget.onTap!(_currentChat)
+                                : null,
+                            onlineCubit: onlineCubit,
+                            cachedUsersCubit: widget.cachedUsersCubit,
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

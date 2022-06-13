@@ -27,7 +27,7 @@ class MainAnnouncementsListCubit extends Cubit<AnnouncementsListState> {
       if (announcementsList == null) {
         await Token.setNewTokensIfExpired();
         final response =
-            await sl<AnnouncementsListNetworkRequest>(param1: pagination)();
+            await getIt<AnnouncementsListNetworkRequest>(param1: pagination)();
         final mapResponse = response.mapResponse(pagination);
         emitSuccess(mapResponse.items);
       } else {

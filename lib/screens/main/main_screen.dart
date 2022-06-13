@@ -5,7 +5,11 @@ import 'package:ink_mobile/cubit/main_page/events_and_announcements_block_cubit.
 import 'package:ink_mobile/cubit/main_page/events_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/main_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
+import 'package:ink_mobile/messenger/constants/urls.dart';
+import 'package:ink_mobile/messenger/providers/messenger.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/screens/main/components/body.dart';
+import 'package:ink_mobile/setup.dart';
 
 class MainScreen extends StatefulWidget {
   static MainScreenState of(BuildContext context) =>
@@ -39,6 +43,13 @@ class MainScreenState extends State<MainScreen>
   MainEventsListCubit get mainEventsListCubit => widget.mainEventsListCubit;
   MainPageCubit get mainPageCubit => widget.mainPageCubit;
   NewsBlockCubit get newsBlockCubit => widget.newsBlockCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    getIt<MessengerProvider>()
+        .init(Urls.messengerUrl, JwtPayload.myId, apiUrl: Urls.baseUrls.first);
+  }
 
   @override
   Widget build(BuildContext context) {

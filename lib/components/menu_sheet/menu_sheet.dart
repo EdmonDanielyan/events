@@ -3,8 +3,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet_item.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/providers/messenger.dart';
-import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:logging/logging.dart';
 
@@ -169,18 +167,6 @@ class _ExitAlertDialogState extends State<ExitAlertDialog> {
   }
 
   Future<void> _exit(BuildContext context) async {
-    try {
-      var messenger = sl<Messenger>();
-      await messenger.dispose();
-      await Token.deleteTokens();
-
-      if (_deleteCheckbox) {
-        await messenger.chatDatabaseCubit.db.deleteEverything();
-      }
-      await messenger.chatDatabaseCubit.db.close();
-    } catch (e, s) {
-      MenuSheet.logger.severe("Error during sing off", e, s);
-    }
     await setup();
     Navigator.pushNamedAndRemoveUntil(context, '/init', (route) => true);
   }

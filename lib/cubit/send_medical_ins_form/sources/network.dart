@@ -29,7 +29,7 @@ class SendMedicalInsFormNetworkRequest
     Selectfield? other = MedicalServicesList.getElementFromListById(
         entities!.services, MedicalServicesList.otherId);
 
-    final response = await sl
+    final response = await getIt
         .get<MainApiProvider>()
         .getUserApi()
         .userOrderdmsPost(

@@ -1,36 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/messenger/cases/open_chat.dart';
-import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/providers/messenger.dart';
-
-import '../../../setup.dart';
-import '../profile_screen.dart';
+import 'package:ink_mobile/messenger/model/user.dart';
 
 class WriteBtn extends StatelessWidget {
-  final UserTable user;
+  final User user;
   const WriteBtn({Key? key, required this.user}) : super(key: key);
-  static late ChatDatabaseCubit _chatDatabaseCubit;
-  static final Messenger _messenger = sl<Messenger>();
 
   Future<void> _write(BuildContext context) async {
-    if (_messenger.isConnected) {
-      ChatTable? chat = await _messenger.chatCreation.isSingleChatExists(user);
+    // if (_messenger.isConnected) {
+    //   ChatTable? chat = await _messenger.chatCreation.isSingleChatExists(user);
 
-      if (chat != null) {
-        OpenChat(_chatDatabaseCubit, chat).call();
-      } else {
-        ChatTable newChat =
-            await _messenger.chatCreation.createDialogChat(user);
-        OpenChat(_chatDatabaseCubit, newChat).call();
-      }
-    }
+    //   if (chat != null) {
+    //     OpenChat(_chatDatabaseCubit, chat).call();
+    //   } else {
+    //     ChatTable newChat =
+    //         await _messenger.chatCreation.createDialogChat(user);
+    //     OpenChat(_chatDatabaseCubit, newChat).call();
+    //   }
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
-    _chatDatabaseCubit = ProfileScreen.of(context).chatDatabaseCubit;
     return Positioned(
       bottom: -20,
       left: 0,

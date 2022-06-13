@@ -23,7 +23,7 @@ class PersonnelMovementsCubit extends Cubit<PersonnelMovementsState> {
   Future<void> load() async {
     try {
       await Token.setNewTokensIfExpired();
-      final response = await sl<StaffMovementsNetworkRequest>()();
+      final response = await getIt<StaffMovementsNetworkRequest>()();
       emitSuccess(response.mapResponse());
     } on DioError catch (e) {
       final _errorHandler = DioErrorHandler(e: e);

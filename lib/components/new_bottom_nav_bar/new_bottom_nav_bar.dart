@@ -16,7 +16,7 @@ class NewBottomNavBar extends StatefulWidget {
 
 class _NewBottomNavBarState extends State<NewBottomNavBar>
     with NewBottomNavBarMixin {
-  final NewBottomNavBarCubit _cubit = sl<NewBottomNavBarCubit>();
+  final NewBottomNavBarCubit _cubit = getIt<NewBottomNavBarCubit>();
 
   late final List<BottomNavigationBarItem> navBarItems;
 

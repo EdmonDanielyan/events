@@ -26,7 +26,7 @@ class SearchCubit extends Cubit<SearchState> {
       try {
         await Token.setNewTokensIfExpired();
 
-        final response = await sl<SearchNetworkRequest>(param1: query)();
+        final response = await getIt<SearchNetworkRequest>(param1: query)();
         SearchModel? searchModel = response.mapResponse();
 
         if (searchModel == null) {

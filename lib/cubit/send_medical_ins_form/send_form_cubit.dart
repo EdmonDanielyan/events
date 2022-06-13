@@ -21,7 +21,7 @@ class SendMedicalInsFormCubit extends Cubit<BtnCubitState> {
     try {
       await Token.setNewTokensIfExpired();
       final res =
-          await sl<SendMedicalInsFormNetworkRequest>(param1: entities)();
+          await getIt<SendMedicalInsFormNetworkRequest>(param1: entities)();
 
       res.data!.success
           ? emitSuccess(res.data!.data)

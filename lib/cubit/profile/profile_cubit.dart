@@ -22,7 +22,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     try {
       await Token.setNewTokensIfExpired();
       final response =
-          await sl<ProfileFetchNetworkRequest>(param1: userId)();
+          await getIt<ProfileFetchNetworkRequest>(param1: userId)();
       UserProfileData userData = response.mapResponse();
 
       JwtPayload? authUser = await Token.getJwtPayloadObject();
@@ -50,7 +50,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         ),
       ));
       await Token.setNewTokensIfExpired();
-      sl<ProfileThankNetworkRequest>(param1: userId)();
+      getIt<ProfileThankNetworkRequest>(param1: userId)();
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);

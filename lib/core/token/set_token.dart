@@ -7,6 +7,6 @@ class SetOauthToken {
   SetOauthToken({required this.token});
 
   void setBearer() {
-    sl<MainApiProvider>().setOAuthToken("bearerAuth", token);
+    getIt<MainApiProvider>().setOAuthToken("bearerAuth", token);
   }
 }

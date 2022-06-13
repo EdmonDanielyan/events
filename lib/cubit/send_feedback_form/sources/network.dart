@@ -19,7 +19,7 @@ class SendFeedbackFormNetworkRequest extends SendFeedbackFormDependency {
 
   @override
   Future<bool> call() async {
-    Response<SendFeedbackSuccess> response = await sl
+    Response<SendFeedbackSuccess> response = await getIt
         .get<MainApiProvider>()
         .getUserApi()
         .userSendfeedbackPost(

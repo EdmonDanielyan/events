@@ -1,55 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/extensions/message_table.dart';
-import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/messenger/screens/chat/components/respond_container.dart';
+import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
+import 'package:ink_mobile/messenger/model/message.dart';
 
-import 'message_list.dart';
+import 'respond_container.dart';
 
-class RespondContainerWrapper extends StatelessWidget {
+class MessageRespondWrapper extends StatefulWidget {
   final Widget child;
-  final MessageTable message;
-  final Color? textColor;
-  const RespondContainerWrapper({
+  final Message message;
+  final CachedChatsCubit cachedChatsCubit;
+  const MessageRespondWrapper({
     Key? key,
     required this.child,
     required this.message,
-    this.textColor,
+    required this.cachedChatsCubit,
   }) : super(key: key);
 
-  bool get byMe => message.isByMe();
+  @override
+  State<MessageRespondWrapper> createState() => _MessageRespondWrapperState();
+}
 
-  Color get myTxtColor => byMe ? Colors.white : Colors.black;
+class _MessageRespondWrapperState extends State<MessageRespondWrapper> {
+  Message? get respondedMessage => widget.message.responseTo;
 
-  Color get bgColorDarker => byMe ? Color(0XFF3e8b64) : Colors.grey.shade300;
-
-  CrossAxisAlignment get crossAxisAlignment =>
-      byMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
-
-  MessageWithUser? selectedMessage() {
-    if (message.repliedMessageId == null) return null;
-
-    return MessageWithUserListView.getByMessageId(
-        message.repliedMessageId!, MessageList.messagesWithUser!);
-  }
+  bool get isByMe => widget.message.isByMe(widget.cachedChatsCubit.myId);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: crossAxisAlignment,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (message.repliedMessageId != null && selectedMessage() != null) ...[
-          RespondMessageContainer(
-            selectedMessage: selectedMessage()!,
-            bgColor: bgColorDarker,
-            txtColor:
-                textColor?.withOpacity(0.8) ?? myTxtColor.withOpacity(0.8),
+    if (respondedMessage != null) {
+      return Column(
+        crossAxisAlignment:
+            isByMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          RespondContainer(
+            isByMe: isByMe,
+            message: respondedMessage!,
           ),
-          SizedBox(height: 5.0),
+          const SizedBox(height: 2.0),
+          widget.child,
+          const SizedBox(height: 7.0),
         ],
-        child,
-      ],
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 9.0),
+      child: widget.child,
     );
   }
 }

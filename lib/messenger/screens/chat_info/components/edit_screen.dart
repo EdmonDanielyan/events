@@ -1,153 +1,94 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ink_mobile/components/bottom_sheet.dart';
-import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
-import 'package:ink_mobile/functions/files.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/messenger/extensions/chat_table.dart';
-import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/providers/messenger.dart';
-import 'package:ink_mobile/messenger/screens/chat_info/entities/edit_entities.dart';
-import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/messenger/components/bottom_sheet/bottom_sheet.dart';
+import 'package:ink_mobile/messenger/functions/parse_url.dart';
+import 'package:ink_mobile/messenger/handler/senders/update_chat_sender_handler.dart';
+import 'package:ink_mobile/messenger/model/chat.dart';
 
-class ChatInfoEditScreen extends StatefulWidget {
-  final ChatDatabaseCubit chatDatabaseCubit;
-  const ChatInfoEditScreen({Key? key, required this.chatDatabaseCubit})
+import 'divider.dart';
+import 'edit_textfield.dart';
+
+class ChatEditScreen extends StatefulWidget {
+  final Chat chat;
+  final int myId;
+  const ChatEditScreen({Key? key, required this.chat, required this.myId})
       : super(key: key);
 
   @override
-  _ChatInfoEditScreenState createState() => _ChatInfoEditScreenState();
+  _ChatEditScreenState createState() => _ChatEditScreenState();
 }
 
-class _ChatInfoEditScreenState extends State<ChatInfoEditScreen> {
-  ChatTable get _chat => widget.chatDatabaseCubit.selectedChat!;
-  bool get isGroup => _chat.isGroup();
-
-  double _horizontalPadding = 20.0;
-  late ChatInfoEditEntities entities;
-  final _formKey = GlobalKey<FormState>();
-  late AppLocalizations _strings;
-
-  final messenger = sl<Messenger>();
+class _ChatEditScreenState extends State<ChatEditScreen> {
+  final formKey = GlobalKey<FormState>();
+  final avatarController = TextEditingController();
+  final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    avatarController.text = widget.chat.avatarUrl;
+    nameController.text = widget.chat.name;
+    descriptionController.text = widget.chat.description;
   }
 
-  Future<void> onSave(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
-      ChatTable chat = ChatInfoEditEntitiesFunctions.copyChat(entities, _chat);
+  Future<void> _onSubmit(BuildContext context) async {
+    if (formKey.currentState!.validate()) {
+      final newChat = widget.chat.copyWith(
+        name: nameController.text,
+        description: descriptionController.text,
+        avatarUrl: avatarController.text,
+      );
 
-      if (messenger.isConnected) {
-        bool sent = await messenger.chatEventsSender.sendNewChatInfo(chat);
-        if (sent) {
-          messenger.chatFunctions.updateChat(chat, setSelectedChat: true);
-        } else {
-          SimpleCustomSnackbar(
-            context: context,
-            txt: _strings.noConnectionError,
-            duration: const Duration(seconds: 2),
-          );
-        }
-      }
+      await UpdateChatSenderHandler(newChat, widget.myId).call();
+
       Navigator.of(context).pop();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _strings = localizationInstance;
-
-    entities = ChatInfoEditEntities(
-      avatarUrl: _chat.avatar,
-      name: _chat.name,
-      description: _chat.description,
-    );
     return SafeArea(
       child: CustomBottomSheetChild(
-        title: _strings.edit,
-        onSubmit: () => onSave(context),
-        cancelBtnTxt: _strings.cancel,
-        submitBtnTxt: _strings.ready,
-        horizontalPadding: _horizontalPadding,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              textfieldWidget(
-                initalValue: _chat.avatar,
-                hint: _strings.avatarUrl,
-                onChanged: (val) => entities.avatarUrl = val,
-                validator: (val) {
-                  if (val!.isEmpty) {
-                    return null;
-                  }
-                  return !isStrPicture(val) ? _strings.incorrectPicture : null;
-                },
+        title: "Редактировать",
+        onSubmit: _onSubmit,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  ChatEditTextField(
+                    hintText: "Ссылка на аватар",
+                    controller: avatarController,
+                    validator: (str) {
+                      if (str!.isEmpty) {
+                        return null;
+                      }
+                      return !ParseUrl(str).isStrPicture()
+                          ? "Неправильная ссылка"
+                          : null;
+                    },
+                  ),
+                  const ChatInfoDivider(),
+                  ChatEditTextField(
+                    hintText: "Название",
+                    controller: nameController,
+                    validator: (val) => val!.isEmpty ? "Заполните поле" : null,
+                  ),
+                  const ChatInfoDivider(),
+                  ChatEditTextField(
+                    hintText: "Описание",
+                    controller: descriptionController,
+                  ),
+                  const ChatInfoDivider(),
+                  const SizedBox(height: 20.0),
+                ],
               ),
-              //avatarWidget(),
-              const SizedBox(height: 5.0),
-              divider(),
-              textfieldWidget(
-                initalValue: _chat.name,
-                hint: _strings.groupName,
-                fontWeight: FontWeight.bold,
-                onChanged: (val) => entities.name = val,
-                validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
-              ),
-              const SizedBox(height: 5.0),
-              divider(),
-              // if (isGroup) ...[
-              //   textfieldWidget(
-              //     initalValue: _chat.description,
-              //     hint: _strings.description,
-              //     onChanged: (val) => entities.description = val,
-              //   ),
-              //   divider(),
-              // ],
-              SizedBox(height: 50),
-            ],
+            ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget textfieldWidget({
-    required String initalValue,
-    String hint = "",
-    FontWeight fontWeight = FontWeight.normal,
-    void Function(String)? onChanged,
-    String? Function(String?)? validator,
-  }) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: _horizontalPadding),
-      child: TextFormField(
-        onChanged: onChanged,
-        initialValue: initalValue,
-        validator: validator,
-        textCapitalization: TextCapitalization.sentences,
-        autovalidateMode: AutovalidateMode.disabled,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: hint,
-        ),
-        style: TextStyle(
-          fontSize: 14.0,
-          fontWeight: fontWeight,
-          color: Colors.black,
-        ),
-      ),
-    );
-  }
-
-  Widget divider() {
-    return Divider(
-      height: 3.0,
-      color: Colors.grey,
     );
   }
 }

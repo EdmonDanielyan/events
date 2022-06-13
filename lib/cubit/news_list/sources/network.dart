@@ -24,7 +24,7 @@ class NewsListNetworkRequest extends NewsListRequestDependency {
 
   @override
   Future<Response<GetNews>> call() async {
-    NewsApi newsApi = sl<MainApiProvider>().getNewsApi();
+    NewsApi newsApi = getIt<MainApiProvider>().getNewsApi();
     return await newsApi.getNews(
       countOnPage: pagination!.countOnPage,
       pageNumber: pagination!.pageNumber,

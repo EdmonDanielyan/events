@@ -21,7 +21,7 @@ class SendManagementFormCubit extends Cubit<BtnCubitState> {
     try {
       await Token.setNewTokensIfExpired();
       final bool res =
-          await sl<SendFeedbackFormNetworkRequest>(param1: entities)();
+          await getIt<SendFeedbackFormNetworkRequest>(param1: entities)();
 
       res
           ? emitSuccess(localizationInstance.feedbackSuccessfullySent)

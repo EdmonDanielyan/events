@@ -29,7 +29,7 @@ class CheckPinCodeScreen extends StatefulWidget {
 }
 
 class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
-  final lockApp = sl.get<LockApp>();
+  final lockApp = getIt.get<LockApp>();
   final LocalPinProvider _localPinProvider = LocalPinProvider();
   String _myPin = "";
   final BoolCubit _loadingCubit = BoolCubit(false);

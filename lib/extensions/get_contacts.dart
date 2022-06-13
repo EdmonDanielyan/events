@@ -1,12 +1,12 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
 
 import 'package:dio/dio.dart';
-import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
+import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:main_api_client/model/get_contacts.dart';
 
 extension GetContactsExt on Response<GetContacts> {
-  List<UserTable> mapResponse({List<int>? hideIds}) {
-    List<UserTable> users = [];
+  List<User> mapResponse({List<int>? hideIds}) {
+    List<User> users = [];
 
     if (this.data == null) {
       return users;
@@ -18,10 +18,10 @@ extension GetContactsExt on Response<GetContacts> {
       String lastName = item['last_name'] ?? "";
       String name = item['name'] ?? "";
 
-      UserTable user = UserTable(
+      User user = User(
         id: item['id'],
         name: "$lastName $name".trim(),
-        avatar: item["photo"] ?? "",
+        avatarUrl: item["photo"] ?? "",
       );
 
       if (hideIds != null && hideIds.contains(user.id)) continue;

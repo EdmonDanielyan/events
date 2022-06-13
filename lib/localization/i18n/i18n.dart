@@ -12,7 +12,8 @@ class I18n {
 }
 
 void setupI18n(GetIt getIt) {
-  getIt.registerFactory<AppLocalizations>(() => AppLocalizations.of(App.materialKey!.currentContext!)!);
+  getIt.registerFactory<AppLocalizations>(
+      () => AppLocalizations.of(App.materialKey!.currentContext!)!);
 }
 
-AppLocalizations get localizationInstance => sl<AppLocalizations>();
+AppLocalizations get localizationInstance => getIt<AppLocalizations>();

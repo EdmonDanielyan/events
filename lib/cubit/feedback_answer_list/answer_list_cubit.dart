@@ -27,8 +27,8 @@ class FeedbackAnswerListCubit extends Cubit<FeedbackAnswerListCubitState> {
     try {
       if (pagination.next) {
         await Token.setNewTokensIfExpired();
-        final response = await sl<FeedbackAnswerListNetworkRequest>(
-            param1: pagination)();
+        final response =
+            await getIt<FeedbackAnswerListNetworkRequest>(param1: pagination)();
         pagination = response.mapResponse(pagination);
         emitSuccess(pagination.items);
       }

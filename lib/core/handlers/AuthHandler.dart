@@ -36,7 +36,7 @@ class AuthHandler with Loggable {
   }
 
   Future<bool> authenticate() async {
-    final lockApp = sl.get<LockApp>();
+    final lockApp = getIt.get<LockApp>();
 
     final auth = await lockApp.authenticate();
 

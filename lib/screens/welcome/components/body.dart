@@ -32,7 +32,7 @@ class _BodyState extends State<Body> {
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     setState(() {
                       tapCount++;
                       if (tapCount > 5) {
@@ -132,10 +132,16 @@ class _BodyState extends State<Body> {
                     Center(
                       child: Text(
                         widget.packageInfo.version,
-                        style: TextStyle(color: Colors.grey[400], fontSize: 13.0),
+                        style:
+                            TextStyle(color: Colors.grey[400], fontSize: 13.0),
                       ),
                     ),
-                    Align(alignment: Alignment.centerRight, child: IconButton(onPressed: () => sendErrorLog(sl(instanceName: "logFile")), icon: Icon(Icons.bug_report)))
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                            onPressed: () =>
+                                sendErrorLog(getIt(instanceName: "logFile")),
+                            icon: Icon(Icons.bug_report)))
                   ],
                 ),
               ],

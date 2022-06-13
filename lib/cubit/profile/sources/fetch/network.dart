@@ -16,7 +16,7 @@ class ProfileFetchNetworkRequest extends ProfileFetchRequestDependency {
 
   @override
   Future<Response<GetUserSuccess>> call() async {
-    UserApi user = sl<MainApiProvider>().getUserApi();
+    UserApi user = getIt<MainApiProvider>().getUserApi();
     Response<GetUserSuccess> response;
     if (id == null) {
       response = await user.userGet();

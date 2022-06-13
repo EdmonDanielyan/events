@@ -21,7 +21,7 @@ class EventsListNetworkRequest extends EventListRequestDependency {
 
   @override
   Future<Response<GetEvents>> call() async {
-    EventsApi eventsApi = sl<MainApiProvider>().getEventsApi();
+    EventsApi eventsApi = getIt<MainApiProvider>().getEventsApi();
     return await eventsApi.getEvents(
         countOnPage: pagination!.countOnPage,
         pageNumber: pagination!.pageNumber);

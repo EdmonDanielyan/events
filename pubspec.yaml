@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.85+97
+version: 1.1.86+98
 
 environment:
     sdk: ">=2.14.0 <3.0.0"
@@ -53,18 +53,11 @@ dependencies:
     messagepack: ^0.2.1
     # dart_nats_streaming:
     #     git: https://github.com/JetRabbits/dart-nats-streaming.git
-    dart_nats_streaming:
-        path: "./custom/libs/dart-nats-streaming-master"
     injectable:
     flutter_linkify: ^5.0.2
     flutter_keyboard_visibility: ^5.2.0
     image_picker: ^0.8.4+10
-    moor: ^4.6.1+1
     transparent_image: ^2.0.0
-    encrypted_moor:
-        git:
-            url: https://github.com/simolus3/moor.git
-            path: extras/encryption
     flutter_local_notifications: ^9.3.3
     archive:
     share_plus:
@@ -77,14 +70,20 @@ dependencies:
     firebase_messaging: ^11.2.5
     uuid: ^3.0.6
     json_annotation: ^4.4.0
-    substring_highlight:
-        path: "./custom/libs/substring_highlight-master"
     flutter_native_text_input: ^2.1.1
     cached_network_image: ^3.2.0
     emoji_picker_flutter: ^1.1.2
     flutter_emoji: ^2.4.0
     pinput: ^2.2.5
     retrofit: ^3.0.1+1
+    google_fonts: ^3.0.1
+    hydrated_bloc: ^8.1.0
+    socket_io_client: ^1.0.2
+    scrollable_positioned_list: ^0.2.3
+    logger: ^1.1.0
+    flutter_logs: ^2.1.5
+    flutter_easyloading: ^3.0.3
+    equatable: ^2.0.3
 
 dev_dependencies:
     flutter_test:
@@ -121,6 +120,7 @@ flutter:
         - assets/certs/
         - assets/images/
         - assets/images/avatars/
+        - assets/svg/
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware.

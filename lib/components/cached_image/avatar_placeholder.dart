@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/messenger/models/chat_user.dart';
+import 'package:ink_mobile/messenger/functions/fancy_text.dart';
 
 class AvatarPlaceholder extends StatelessWidget {
   final String text;
@@ -19,7 +19,7 @@ class AvatarPlaceholder extends StatelessWidget {
       child: textEmpty
           ? null
           : Text(
-              ChatUserViewModel.cutName(text).toUpperCase(),
+              FancyText(text).cutName().toUpperCase(),
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: "Noto",

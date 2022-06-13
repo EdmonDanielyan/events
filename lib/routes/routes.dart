@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
-import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart';
 import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_cubit.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
@@ -13,18 +12,6 @@ import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart';
-import 'package:ink_mobile/messenger/blocs/chat/chat_opened.dart';
-import 'package:ink_mobile/messenger/blocs/chat_db/chat_table_cubit.dart';
-import 'package:ink_mobile/messenger/blocs/chat_person_list/chat_person_list_cubit.dart';
-import 'package:ink_mobile/messenger/models/chat/database/chat_db.dart';
-import 'package:ink_mobile/messenger/models/chat/database/model/message_with_user.dart';
-import 'package:ink_mobile/messenger/models/person_list_params.dart';
-import 'package:ink_mobile/messenger/providers/messenger.dart';
-import 'package:ink_mobile/messenger/screens/chat/chat_screen.dart';
-import 'package:ink_mobile/messenger/screens/chat/entities/chat_screen_params.dart';
-import 'package:ink_mobile/messenger/screens/chat_info/chat_info_screen.dart';
-import 'package:ink_mobile/messenger/screens/chat_list/components/new_group_screen.dart';
-import 'package:ink_mobile/messenger/screens/person_list/person_list_screen.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/screens/announcements_detail/announcements_detail_screen.dart';
 import 'package:ink_mobile/screens/announcements_list/announcements_list_screen.dart';
@@ -61,57 +48,55 @@ import '../cubit/main_page/announcements_list_cubit.dart';
 class MainRoutes {
   static Map<String, Widget Function(BuildContext)> routes = {
     '/init': (BuildContext context) => InitPage(
-          cubit: sl(),
+          cubit: getIt(),
         ),
     '/app_layer': (BuildContext context) => AppLayerScreen(
-          newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
+          newBottomNavBarCubit: getIt<NewBottomNavBarCubit>(),
         ),
     '/config': (BuildContext context) => ConfigScreen(
-          packageInfoProvider: sl<PackageInfoProvider>(),
+          packageInfoProvider: getIt<PackageInfoProvider>(),
           env: currentEnv,
         ),
     '/welcome': (BuildContext context) => WelcomeScreen(
-          packageInfoProvider: sl<PackageInfoProvider>(),
+          packageInfoProvider: getIt<PackageInfoProvider>(),
         ),
     '/auth': (BuildContext context) => AuthScreen(
-          authCubit: sl<AuthCubit>(),
-          newBottomNavBarCubit: sl<NewBottomNavBarCubit>(),
-          // chatDatabaseCubit: sl<ChatDatabaseCubit>(),
+          authCubit: getIt<AuthCubit>(),
+          newBottomNavBarCubit: getIt<NewBottomNavBarCubit>(),
+          // chatDatabaseCubit: getIt<ChatDatabaseCubit>(),
         ),
     '/personal': (BuildContext context) => ProfileScreen(
-        profileCubit: sl(),
-        chatDatabaseCubit: sl<ChatDatabaseCubit>(),
-        logFile: sl(instanceName: "logFile")),
+        profileCubit: getIt(), logFile: getIt(instanceName: "logFile")),
     '/news_detail': (BuildContext context) => NewsDetailScreen(
-          newsDetailCubit: sl<NewsDetailCubit>(),
-          newsBlockCubit: sl<NewsBlockCubit>(),
-          newsListCubit: sl<NewsListCubit>(),
+          newsDetailCubit: getIt<NewsDetailCubit>(),
+          newsBlockCubit: getIt<NewsBlockCubit>(),
+          newsListCubit: getIt<NewsListCubit>(),
         ),
     '/news_comment': (BuildContext context) => NewsCommentScreen(
-          newsCommentsCubit: sl<NewsCommentsCubit>(),
-          newsBlockCubit: sl<NewsBlockCubit>(),
+          newsCommentsCubit: getIt<NewsCommentsCubit>(),
+          newsBlockCubit: getIt<NewsBlockCubit>(),
         ),
     '/announcement_detail': (BuildContext context) => AnnouncementsDetailScreen(
-          announcementCubit: sl<AnnouncementCubit>(),
-          mainAnnouncementsListCubit: sl<MainAnnouncementsListCubit>(),
-          announcementsListCubit: sl<AnnouncementsListCubit>(),
+          announcementCubit: getIt<AnnouncementCubit>(),
+          mainAnnouncementsListCubit: getIt<MainAnnouncementsListCubit>(),
+          announcementsListCubit: getIt<AnnouncementsListCubit>(),
         ),
     '/404': (BuildContext context) => PageNotFoundScreen(),
     '/event_detail': (BuildContext context) => EventDetailScreen(
-          eventDetailCubit: sl<EventDetailCubit>(),
+          eventDetailCubit: getIt<EventDetailCubit>(),
         ),
     '/events_list': (BuildContext context) => EventsListScreen(
-          eventsListCubit: sl<EventsListCubit>(),
+          eventsListCubit: getIt<EventsListCubit>(),
         ),
     '/news_list': (BuildContext context) => NewsListScreen(
-          newsListCubit: sl<NewsListCubit>(),
+          newsListCubit: getIt<NewsListCubit>(),
         ),
     '/announcements_list': (BuildContext context) => AnnouncementsListScreen(
-          announcementsListCubit: sl<AnnouncementsListCubit>(),
+          announcementsListCubit: getIt<AnnouncementsListCubit>(),
         ),
     '/services': (BuildContext context) => ServiceListScreen(),
     '/personnel_movements': (BuildContext context) => PersonnelMovementsScreen(
-          personnelMovementsCubit: sl<PersonnelMovementsCubit>(),
+          personnelMovementsCubit: getIt<PersonnelMovementsCubit>(),
         ),
     '/social_package': (BuildContext context) => SocialPackageScreen(),
     '/voluntary_medical_insurance': (BuildContext context) =>
@@ -123,57 +108,15 @@ class MainRoutes {
     '/recreational_activities': (BuildContext context) =>
         RecreationalActivities(),
     '/birthdays': (BuildContext context) => BirthdaysScreen(
-          birthdaysCubit: sl<BirthdaysCubit>(),
-          chatDatabaseCubit: sl<ChatDatabaseCubit>(),
+          birthdaysCubit: getIt<BirthdaysCubit>(),
         ),
     '/open_university': (BuildContext context) => OpenUniversityScreen(
-          eventsListCubit: sl<EventsListCubit>(),
-          learningMaterialsListCubit: sl<LearningMaterialsListCubit>(),
-          newsListCubit: sl<NewsListCubit>(),
-          openUniversityCubit: sl<OpenUniversityCubit>(),
+          eventsListCubit: getIt<EventsListCubit>(),
+          learningMaterialsListCubit: getIt<LearningMaterialsListCubit>(),
+          newsListCubit: getIt<NewsListCubit>(),
+          openUniversityCubit: getIt<OpenUniversityCubit>(),
         ),
-    '/message': (BuildContext context) {
-      final args = ModalRoute.of(context)?.settings.arguments;
-      if (args is ChatScreenParams) {
-        return ChatScreen(
-          chatScreenParams: args,
-          messenger: sl<Messenger>(),
-          selectableCubit: SelectableCubit<MessageWithUser>(),
-          chatOpenedCubit: sl<ChatOpenedCubit>(),
-          chatFunctions: sl(),
-        );
-      }
-      return _pageNotFound();
-    },
-    '/chat_info': (BuildContext context) => ChatInfoScreen(
-          chatDatabaseCubit: sl<ChatDatabaseCubit>(),
-          selectableCubit: SelectableCubit<UserTable>(),
-          chatPersonListCubit: sl.get<ChatPersonListCubit>(),
-        ),
-    '/new_group': (BuildContext context) {
-      final args = ModalRoute.of(context)?.settings.arguments;
-      if (args is SelectableCubit<UserTable>) {
-        return NewGroupScreen(
-          chatDatabaseCubit: sl<ChatDatabaseCubit>(),
-          selectableCubit: args,
-        );
-      }
-      return _pageNotFound();
-    },
-    '/message_person_list': (BuildContext context) {
-      final args = ModalRoute.of(context)?.settings.arguments;
-      if (args is PersonListParams) {
-        return PersonListScreen(
-          params: args,
-          chatDatabaseCubit: sl<ChatDatabaseCubit>(),
-        );
-      }
-
-      return _pageNotFound();
-    },
     '/test': (BuildContext context) => TestScreen(),
     '/set_pin': (BuildContext context) => SetPinCodeScreen(),
   };
-
-  static Widget _pageNotFound() => PageNotFoundScreen();
 }

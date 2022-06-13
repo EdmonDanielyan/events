@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/send_log.dart';
-import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_cubit.dart';
 import 'package:ink_mobile/screens/welcome/components/background.dart';
@@ -91,7 +90,7 @@ class _BodyState extends State<Body> {
                           alignment: Alignment.centerRight,
                           child: IconButton(
                               onPressed: () =>
-                                  sendErrorLog(sl(instanceName: "logFile")),
+                                  sendErrorLog(getIt(instanceName: "logFile")),
                               icon: Icon(Icons.bug_report)))
                     ],
                   ),
@@ -110,11 +109,11 @@ class _BodyState extends State<Body> {
         environment = value;
       });
       try {
-        await sl<Messenger>().chatDatabaseCubit.db.deleteDatabaseFiles();
+        //await getIt<Messenger>().chatDatabaseCubit.db.deleteDatabaseFiles();
       } catch (e) {}
       writeEnv(value);
       await setup(scope: value);
-      await sl<InitialCubit>().init();
+      await getIt<InitialCubit>().init();
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Вы сменили окружение на $value")));
     }
