@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
+import 'package:ink_mobile/messenger/handler/create_chat.dart';
+import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_avatar.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_body.dart';
+import 'package:ink_mobile/setup.dart';
 
 class BirthdayTodayElement extends StatelessWidget {
   final int index;
@@ -18,19 +24,19 @@ class BirthdayTodayElement extends StatelessWidget {
   final BirthdayData birthday;
 
   Future<void> _congratulate(BuildContext context) async {
-    // if (_messenger.isConnected) {
-    //   ChatTable? chat = await _messenger.chatCreation.isSingleChatExists(
-    //       ChatUserViewModel.birthdayDataToUserTable(birthday));
-
-    //   if (chat != null) {
-    //     OpenChat(chatDatabaseCubit, chat).call();
-    //   } else {
-    //     ChatTable newChat = await _messenger.chatCreation.createDialogChat(
-    //         ChatUserViewModel.birthdayDataToUserTable(birthday));
-    //     Navigator.of(context).pop();
-    //     OpenChat(chatDatabaseCubit, newChat).call();
-    //   }
-    // }
+    CreateChatHandler(
+      [
+        User(
+          id: birthday.id,
+          name: "${birthday.name ?? ""}".trim(),
+          avatarUrl: birthday.pathToAvatar ?? "",
+        )
+      ],
+      context,
+      chatsCubit: getIt<CachedChatsCubit>(),
+      onlineCubit: getIt<OnlineCubit>(),
+      cachedUsersCubit: getIt<CachedUsersCubit>(),
+    ).call();
   }
 
   @override
