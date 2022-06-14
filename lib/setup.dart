@@ -39,7 +39,6 @@ void writeEnv(String value) async {
 Future<void> setup({
   scope = defaultScope,
 }) async {
-  await getIt.reset();
   await $initGetIt(getIt, environment: scope);
   setupI18n(getIt);
 
