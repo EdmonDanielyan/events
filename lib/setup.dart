@@ -51,10 +51,10 @@ Future<void> setup({
     FlutterError.dumpErrorToConsole(details);
   };
 
+  await getIt<LocalNotificationsProvider>().load();
+
   getIt<BootCubit>()
     ..onStart = () async {
-      await getIt<LocalNotificationsProvider>().load();
-
       return true;
     };
   await getIt<PackageInfoProvider>().load();
