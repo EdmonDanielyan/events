@@ -1,5 +1,5 @@
 class Urls {
-  static String messengerUrl = "ws://192.168.0.104:442";
+  static String messengerUrl = "wss://ink.vpool.qsoft.ru";
 
-  static Set<String> baseUrls = {"https://p3.viren.ru/api/v1"};
+  static Set<String> baseUrls = {"https://ink.vpool.qsoft.ru/api/v1"};
 }

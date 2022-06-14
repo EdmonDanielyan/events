@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/messenger/providers/app_token.dart';
+import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
 
 class TokenInterceptor implements Interceptor {
@@ -11,6 +12,7 @@ class TokenInterceptor implements Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
+    await Token.setNewTokensIfExpired();
     final tokenProvider = getIt<AppTokenProvider>();
     await tokenProvider.setCurrentToken();
     options.headers.addAll(
