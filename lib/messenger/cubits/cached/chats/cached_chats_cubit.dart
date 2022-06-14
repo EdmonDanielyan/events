@@ -26,6 +26,15 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
     _updateChats(chats.toSet().toList());
   }
 
+  void fixChats() {
+    for (final chat in chats) {
+      if (chat.isSingle && chat.ownerId == 0) {
+        updateChatById(
+            chat.copyWith(ownerId: chat.getFirstNotMyId(myId)), chat.id);
+      }
+    }
+  }
+
   Chat? getChatById(int id) {
     return chats.firstWhereOrNull((element) => element.id == id);
   }
@@ -346,6 +355,12 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
       addMessagesToChatById(newMessages, chatId, after: false);
       updateMessagesByChatId(updateMessages, chatId);
     }
+  }
+
+  List<Chat> notExistsingChats(List<int> chatIds) {
+    List<Chat> chats = [];
+
+    return chats;
   }
 
   @override

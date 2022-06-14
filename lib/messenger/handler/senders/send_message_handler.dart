@@ -37,7 +37,7 @@ class SendMessageHandler {
             if (chat.isSingle) {
               DirectMessageSender(DirectMessageSenderModel(
                 messages: [newMsg],
-                toUser: chat.getFirstNotOwnerId(),
+                toUser: chat.getFirstNotMyId(chatsCubit.myId),
                 token: token,
               )).call();
             } else {

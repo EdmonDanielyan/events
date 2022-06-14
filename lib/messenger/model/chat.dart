@@ -128,9 +128,9 @@ class Chat extends Equatable {
     }
   }
 
-  int getFirstNotOwnerId() {
+  int getFirstNotMyId(int myId) {
     final participant =
-        participants.firstWhereOrNull((element) => element.id != ownerId);
+        participants.firstWhereOrNull((element) => element.id != myId);
 
     return participant?.id ?? 0;
   }

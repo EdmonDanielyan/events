@@ -85,7 +85,8 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                   child: chat.isSingle
                       ? CachedUserBuilder(
                           cachedUsersCubit: widget.cachedUsersCubit,
-                          userId: chat.getFirstNotOwnerId(),
+                          userId: chat
+                              .getFirstNotMyId(widget.cachedChatsCubit.myId),
                           builder: (context, state, user) {
                             return ChatInfoTop(
                               url: user?.avatarUrl ?? chat.avatarUrl,
@@ -131,16 +132,18 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                       ? () => widget.onClean!(context, chat)
                       : null,
                 ),
-                const ChatInfoDivider(),
-                ChatInfoBtn(
-                  title: "Покинуть чат",
-                  color: const Color(0XFFD75F50),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: _horizontalPadding),
-                  onPressed: widget.onDelete != null
-                      ? () => widget.onDelete!(context, chat)
-                      : null,
-                ),
+                if (chat.isGroup) ...[
+                  const ChatInfoDivider(),
+                  ChatInfoBtn(
+                    title: "Покинуть чат",
+                    color: const Color(0XFFD75F50),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: _horizontalPadding),
+                    onPressed: widget.onDelete != null
+                        ? () => widget.onDelete!(context, chat)
+                        : null,
+                  ),
+                ],
                 const ChatInfoDivider(),
                 const SizedBox(height: 20.0),
                 if (chat.isGroup) ...[

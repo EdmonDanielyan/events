@@ -126,12 +126,6 @@ class MessageApi extends Equatable {
       readBy.add(myId);
     }
 
-    print('''
-
-    USERID $userId
-
-    ''');
-
     return Message(
       id: id,
       body: message,

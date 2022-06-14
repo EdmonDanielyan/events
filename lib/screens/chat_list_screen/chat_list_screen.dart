@@ -52,7 +52,6 @@ class _ChatListScreenState extends State<ChatListScreen>
   @override
   void initState() {
     super.initState();
-
     chatPersonListCubit.addListener(_newUsers);
     chatPersonListCubit.init();
     chatUsersPickerCubit.addListenerToTyping(_onType);

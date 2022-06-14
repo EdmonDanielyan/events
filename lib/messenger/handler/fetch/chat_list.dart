@@ -8,6 +8,7 @@ class FetchChatList {
 
   Future<void> call() async {
     final mProvider = getIt<MessengerProvider>();
+
     await GetChatListService(
       successCallback: (chats, token) {
         if (successCallback != null) {

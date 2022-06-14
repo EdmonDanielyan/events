@@ -65,7 +65,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                       if (chat != null && chat.isSingle) ...[
                         CachedUserBuilder(
                           cachedUsersCubit: cachedUsersCubit,
-                          userId: chat.getFirstNotOwnerId(),
+                          userId: chat.getFirstNotMyId(cachedChatsCubit.myId),
                           builder: (context, state, user) {
                             return GoogleText(
                               user?.name ?? "",
@@ -75,7 +75,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                         ),
                         OnlineBuilder(
                           onlineCubit,
-                          userId: chat.getFirstNotOwnerId(),
+                          userId: chat.getFirstNotMyId(cachedChatsCubit.myId),
                           builder: (context, onlineState, user) {
                             return GoogleText(
                               user != null ? "В сети" : "Не в сети",

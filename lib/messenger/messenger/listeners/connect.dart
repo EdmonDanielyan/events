@@ -22,6 +22,9 @@ class ConnectListener extends Listener {
       const FetchChats().call();
     }
 
+    chatsCubit.fixChats();
+    chatsCubit.toSet();
+
     emitTrigger(data);
   }
 

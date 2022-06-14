@@ -331,7 +331,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
                                       if (chat.isSingle) {
                                         final oppositeUserId =
-                                            chat.getFirstNotOwnerId();
+                                            chat.getFirstNotMyId(
+                                                widget.cachedChatsCubit.myId);
 
                                         if (oppositeUserId ==
                                             _currentMessage.owner.id) {

@@ -42,7 +42,7 @@ class ChatCard extends StatelessWidget {
         if (chat.isSingle) ...[
           OnlineBuilder(
             onlineCubit,
-            userId: chat.getFirstNotOwnerId(),
+            userId: chat.getFirstNotMyId(cachedChatsCubit.myId),
             builder: (context, onlineState, user) {
               return CachedCircleAvatar(
                 url: chatAvatar ?? chat.avatarUrl,
