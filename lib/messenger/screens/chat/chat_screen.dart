@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/messenger/components/grouped_list/grouped_list.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/hidden_messages/hidden_messages_cubit.dart';
@@ -147,10 +148,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    super.dispose();
     if (selectedChat != null) {
       widget.cachedChatsCubit.clearSelectedOf(selectedChat!.id);
     }
+    super.dispose();
+
     WidgetsBinding.instance!.removeObserver(this);
   }
 
@@ -194,6 +196,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   void _onRespond(Message message) {
+    final user = widget.cachedUsersCubit.getUser(message.owner.id);
+    if (user != null) {
+      message = message.copyWith(owner: user);
+    }
+
     respondingMessage.set(message);
     Future.delayed(const Duration(milliseconds: 50), () {
       focusNode.requestFocus();
@@ -315,6 +322,26 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                       searchMessagesCubit
                                           .isSelected(_currentMessage),
                                   cachedUsersCubit: widget.cachedUsersCubit,
+                                  onGoTo: (context) {
+                                    Future.delayed(Duration(milliseconds: 200),
+                                        () {
+                                      Map<String, dynamic> args = {
+                                        'id': _currentMessage.owner.id
+                                      };
+
+                                      if (chat.isSingle) {
+                                        final oppositeUserId =
+                                            chat.getFirstNotOwnerId();
+
+                                        if (oppositeUserId ==
+                                            _currentMessage.owner.id) {
+                                          args[HIDE_WRITE_BTN] = true;
+                                        }
+                                      }
+                                      Navigator.pushNamed(context, "/personal",
+                                          arguments: args);
+                                    });
+                                  },
                                 );
                               },
                             );
@@ -343,6 +370,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                 focusNode: focusNode,
                 onMessageEdit: widget.onMessageEdit,
                 respondingMessage: respondingMessage,
+                cachedUsersCubit: widget.cachedUsersCubit,
               );
             },
           ),

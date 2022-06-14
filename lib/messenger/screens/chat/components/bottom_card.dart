@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/message_cubit.dart';
 import 'package:ink_mobile/messenger/functions/create_message.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
@@ -20,6 +21,7 @@ class MessageBottomCard extends StatefulWidget {
   final FocusNode focusNode;
   final void Function(Message, Chat) onMessageEdit;
   final MessageCubit respondingMessage;
+  final CachedUsersCubit cachedUsersCubit;
   const MessageBottomCard({
     Key? key,
     required this.textEditingController,
@@ -30,6 +32,7 @@ class MessageBottomCard extends StatefulWidget {
     required this.focusNode,
     required this.onMessageEdit,
     required this.respondingMessage,
+    required this.cachedUsersCubit,
   }) : super(key: key);
 
   @override
@@ -88,7 +91,8 @@ class _MessageBottomCardState extends State<MessageBottomCard> {
           children: [
             EditingMessageContainer(editingMessage: widget.editingMessage),
             RespondingMessageContainer(
-                respondingMessage: widget.respondingMessage),
+              respondingMessage: widget.respondingMessage,
+            ),
             Row(
               children: [
                 Expanded(

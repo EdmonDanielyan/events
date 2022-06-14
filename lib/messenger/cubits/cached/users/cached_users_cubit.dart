@@ -9,6 +9,12 @@ class CachedUsersCubit extends HydratedCubit<CachedUsersState> {
 
   List<User> get users => state.users;
 
+  User? getUser(int userId) {
+    final index = users.indexWhere((element) => element.id == userId);
+
+    return index >= 0 ? users[index] : null;
+  }
+
   bool exists(int userId) {
     return users.indexWhere((element) => element.id == userId) >= 0;
   }

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
-import 'package:ink_mobile/messenger/model/message.dart';
 
 class RespondContainer extends StatelessWidget {
   final bool isByMe;
-  final Message message;
-  const RespondContainer(
-      {Key? key, required this.isByMe, required this.message})
-      : super(key: key);
+  final String body;
+  final String name;
+  const RespondContainer({
+    Key? key,
+    required this.isByMe,
+    required this.body,
+    required this.name,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +29,13 @@ class RespondContainer extends StatelessWidget {
           children: [
             const SizedBox(height: 2.0),
             GoogleText(
-              message.owner.name,
+              name,
               color: isByMe ? Colors.purple[300] : Colors.purple,
               fontSize: 13.0,
             ),
             const SizedBox(height: 3.0),
             GoogleText(
-              message.body,
+              body,
               color: isByMe ? Colors.white : Colors.black,
               fontSize: 13.0,
             ),

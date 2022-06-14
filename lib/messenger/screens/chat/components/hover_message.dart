@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../../components/popup/popup_menu_container.dart';
+import 'package:ink_mobile/messenger/components/popup/popup_menu_container.dart';
 import '../../../../components/snackbar/custom_snackbar.dart';
 import '../../../components/popup/menu_item.dart';
 import '../../../model/message.dart';
 
+const _goTo = "_goTo";
 const _respond = "_respond";
 const _copy = "copy";
 const _delete = "delete";
@@ -19,6 +20,7 @@ class HoverMessageCard extends StatelessWidget {
   final void Function(BuildContext)? onEdit;
   final void Function()? onLongPress;
   final void Function(BuildContext)? onRespond;
+  final void Function(BuildContext)? onGoTo;
   const HoverMessageCard(
     this.message, {
     Key? key,
@@ -28,7 +30,14 @@ class HoverMessageCard extends StatelessWidget {
     this.onEdit,
     this.onLongPress,
     this.onRespond,
+    this.onGoTo,
   }) : super(key: key);
+
+  void _onGoTo(BuildContext context) {
+    if (onGoTo != null) {
+      onGoTo!(context);
+    }
+  }
 
   void _onCopy(BuildContext context) {
     Clipboard.setData(ClipboardData(text: message.body));
@@ -59,6 +68,18 @@ class HoverMessageCard extends StatelessWidget {
       blurBackground: true,
       child: child,
       items: [
+        if (onGoTo != null) ...[
+          PopupMenuItem(
+            value: _goTo,
+            child: MenuItem(
+              value: "Перейти",
+              icon: Icon(
+                CupertinoIcons.profile_circled,
+                size: iconSize,
+              ),
+            ),
+          ),
+        ],
         PopupMenuItem(
           value: _respond,
           child: MenuItem(
@@ -105,7 +126,9 @@ class HoverMessageCard extends StatelessWidget {
         ],
       ],
       onItemSelected: (value) async {
-        if (value == _respond) {
+        if (value == _goTo) {
+          _onGoTo(context);
+        } else if (value == _respond) {
           _onRespond(context);
         } else if (value == _copy) {
           _onCopy(context);

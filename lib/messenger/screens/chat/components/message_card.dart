@@ -25,6 +25,7 @@ class MessageCard extends StatelessWidget {
   final bool searchSelected;
   final void Function(BuildContext)? onRespond;
   final CachedUsersCubit cachedUsersCubit;
+  final void Function(BuildContext)? onGoTo;
   const MessageCard({
     Key? key,
     required this.message,
@@ -37,6 +38,7 @@ class MessageCard extends StatelessWidget {
     this.searchSelected = false,
     this.onRespond,
     required this.cachedUsersCubit,
+    this.onGoTo,
   }) : super(key: key);
 
   bool get isByMe => message.isByMe(cachedChatsCubit.myId);
@@ -54,6 +56,7 @@ class MessageCard extends StatelessWidget {
           onDelete: onDelete,
           onEdit: cachedChatsCubit.myId == message.owner.id ? onEdit : null,
           onRespond: onRespond,
+          onGoTo: cachedChatsCubit.myId != message.owner.id ? onGoTo : null,
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 9.0),
@@ -96,6 +99,7 @@ class MessageCard extends StatelessWidget {
                       child: MessageRespondWrapper(
                         message: message,
                         cachedChatsCubit: cachedChatsCubit,
+                        cachedUsersCubit: cachedUsersCubit,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 9.0),
                           child: Column(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/other_user_votes_bar.dart';
@@ -13,6 +14,14 @@ class OtherUserPageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool showWriteBtn = true;
+    Map? arg = ModalRoute.of(context)!.settings.arguments as Map?;
+
+    if (arg != null && arg.isNotEmpty) {
+      if (arg.containsKey(HIDE_WRITE_BTN)) {
+        showWriteBtn = false;
+      }
+    }
     return Container(
       padding: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
@@ -39,13 +48,15 @@ class OtherUserPageHeader extends StatelessWidget {
                 ),
               ),
             ),
-            WriteBtn(
-              user: User(
-                id: user.id,
-                name: "${user.name ?? ""} ${user.lastName ?? ""}".trim(),
-                avatarUrl: user.pathToAvatar ?? "",
+            if (showWriteBtn) ...[
+              WriteBtn(
+                user: User(
+                  id: user.id,
+                  name: "${user.name ?? ""} ${user.lastName ?? ""}".trim(),
+                  avatarUrl: user.pathToAvatar ?? "",
+                ),
               ),
-            ),
+            ],
           ]),
           Container(
             margin: EdgeInsets.only(top: 30, bottom: 20, left: 20, right: 20),

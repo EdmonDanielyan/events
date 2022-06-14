@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/alert/alert_cancel.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/components/bottom_sheet/bottom_sheet.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/hidden_messages/hidden_messages_cubit.dart';
@@ -53,9 +55,16 @@ class ChatInfoOpener {
   }
 
   void _onChatDelete(BuildContext context, Chat chat) {
-    RemoveParticipantHandler(chat, cachedChatsCubit.myId, [cachedChatsCubit.me])
-        .call();
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    CustomAlertCancel(
+      context,
+      title: localizationInstance.delete,
+      body: localizationInstance.deleteChatHint,
+      onSubmit: () async {
+        RemoveParticipantHandler(
+            chat, cachedChatsCubit.myId, [cachedChatsCubit.me]).call();
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      },
+    ).call();
   }
 
   void _onAddUser(BuildContext context, Chat chat) {

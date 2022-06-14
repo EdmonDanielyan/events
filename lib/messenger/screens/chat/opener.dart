@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/alert/alert_cancel.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
@@ -61,8 +63,25 @@ class ChatScreenOpener {
 
   void _onMessageDelete(
       BuildContext context, List<Message> messages, Chat chat) {
-    DeleteMessagesSenderHandler(messages, cachedChatsCubit.myId, chat.id)
-        .call();
+    if (messages.length == 1) {
+      Future.delayed(Duration(milliseconds: 200), () {
+        CustomAlertCancel(
+          context,
+          title: localizationInstance.delete,
+          body: localizationInstance.messageDeleteHint,
+          submitTxt: localizationInstance.delete,
+          onSubmit: () {
+            Navigator.of(context).pop();
+            DeleteMessagesSenderHandler(
+                    messages, cachedChatsCubit.myId, chat.id)
+                .call();
+          },
+        ).call();
+      });
+    } else {
+      DeleteMessagesSenderHandler(messages, cachedChatsCubit.myId, chat.id)
+          .call();
+    }
   }
 
   void _onMessageEdit(Message message, Chat chat) {

@@ -25,6 +25,13 @@ class ProfileScreen extends StatefulWidget {
 class ProfileScreenState extends State<ProfileScreen> {
   ProfileCubit get profileCubit => widget.profileCubit;
 
+  bool showWriteBtn = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

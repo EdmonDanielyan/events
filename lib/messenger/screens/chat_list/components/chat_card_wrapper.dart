@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/alert/alert_cancel.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/components/dismissible/custom_dismissible.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
@@ -36,7 +38,21 @@ class ChatCardWrapper extends StatelessWidget {
       onTap: onTap,
       child: CustomDismissible(
         uniqueKey: UniqueKey(),
-        confirmDismiss: confirmDismiss,
+        confirmDismiss: (direction) async {
+          CustomAlertCancel(
+            context,
+            title: localizationInstance.delete,
+            body: localizationInstance.deleteChatHint,
+            onSubmit: () async {
+              if (onDismissed != null) {
+                onDismissed!(direction);
+              }
+              Navigator.of(context).pop();
+            },
+          ).call();
+
+          return false;
+        },
         onDismissed: onDismissed,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
