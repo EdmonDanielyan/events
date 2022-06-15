@@ -63,9 +63,6 @@ class ChatCardWrapper extends StatelessWidget {
                   cachedUsersCubit: cachedUsersCubit,
                   userId: chat.getFirstNotMyId(cachedChatsCubit.myId),
                   builder: (context, state, user) {
-                    print(user?.name);
-                    print(chat);
-                    print("------");
                     return ChatCard(
                       chat: chat,
                       onlineCubit: onlineCubit,

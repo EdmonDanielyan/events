@@ -11,27 +11,15 @@ class UserPickerRadio extends StatefulWidget {
 }
 
 class _UserPickerRadioState extends State<UserPickerRadio> {
-  bool enabled = false;
-
-  @override
-  void initState() {
-    super.initState();
-    enabled = widget.enabled;
-  }
-
   void _onTap() {
-    setState(() {
-      enabled = !enabled;
-    });
-
     if (widget.onTap != null) {
-      widget.onTap!(enabled);
+      widget.onTap!(!widget.enabled);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (enabled) {
+    if (widget.enabled) {
       return InkWell(
         child: Icon(
           Icons.check_circle,

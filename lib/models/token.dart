@@ -3,9 +3,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
+
 import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/messenger/providers/app_token.dart';
+import 'package:ink_mobile/messenger/providers/logger.dart' as customLogger;
 import 'package:ink_mobile/models/converter.dart';
 import 'package:ink_mobile/providers/device_info.dart';
 import 'package:ink_mobile/providers/main_api.dart';
@@ -75,30 +77,34 @@ abstract class Token {
   }
 
   static Future<void> _setNewTokens() async {
-    AuthApi auth = getIt<MainApiProvider>().getAuthApi();
+    try {
+      AuthApi auth = getIt<MainApiProvider>().getAuthApi();
 
-    RefreshTokenParamsBuilder refreshParamsBuilder =
-        RefreshTokenParamsBuilder();
-    String? refreshToken = await Token.getRefresh();
+      RefreshTokenParamsBuilder refreshParamsBuilder =
+          RefreshTokenParamsBuilder();
+      String? refreshToken = await Token.getRefresh();
 
-    if (refreshToken != null) {
-      refreshParamsBuilder.token = refreshToken;
-      RefreshTokenParams refreshParams = refreshParamsBuilder.build();
+      if (refreshToken != null) {
+        refreshParamsBuilder.token = refreshToken;
+        RefreshTokenParams refreshParams = refreshParamsBuilder.build();
 
-      final _response =
-          await auth.authRefreshPost(refreshTokenParams: refreshParams);
+        final _response =
+            await auth.authRefreshPost(refreshTokenParams: refreshParams);
 
-      final refreshDataMap = _response.data?.data.asMap;
-      if (refreshDataMap != null) {
-        String newRefresh = refreshDataMap['refresh_token'];
-        String newJwt = refreshDataMap['token'];
+        final refreshDataMap = _response.data?.data.asMap;
+        if (refreshDataMap != null) {
+          String newRefresh = refreshDataMap['refresh_token'];
+          String newJwt = refreshDataMap['token'];
 
-        SetOauthToken(token: newJwt).setBearer();
-        await Token.setJwt(newJwt);
-        await Token.setRefresh(newRefresh);
+          SetOauthToken(token: newJwt).setBearer();
+          await Token.setJwt(newJwt);
+          await Token.setRefresh(newRefresh);
+        }
+      } else {
+        throw InvalidRefreshTokenException();
       }
-    } else {
-      throw InvalidRefreshTokenException();
+    } catch (e) {
+      customLogger.logger.e("ERROR UPDATING TOKEn $e");
     }
   }
 

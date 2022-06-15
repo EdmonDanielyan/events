@@ -15,8 +15,10 @@ class FetchPartcipants {
   Future<void> call() async {
     if (users.isNotEmpty) {
       final cachedUsers = getIt<CachedUsersCubit>();
+      final passedADay =
+          cachedUsers.passedTimeAfterLastCache(Duration(days: 1));
       for (final user in users) {
-        if (!cachedUsers.exists(user.id)) {
+        if (!cachedUsers.exists(user.id) || passedADay) {
           await cacheUser(user.id, cachedUsers);
         }
       }
@@ -32,10 +34,9 @@ class FetchPartcipants {
 
       final user = User(
         id: userId,
-        name: "${userData.name ?? ""} ${userData.lastName ?? ""}".trim(),
+        name: "${userData.lastName ?? ""} ${userData.name ?? ""}".trim(),
         avatarUrl: userData.pathToAvatar ?? "",
       );
-      print("ADDING PARTICIPANT $user");
 
       cubit.addUsers([user]);
     } catch (_e) {

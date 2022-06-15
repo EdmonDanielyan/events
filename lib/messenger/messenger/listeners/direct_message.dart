@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/messenger/constants/events.dart';
 import 'package:ink_mobile/messenger/cubits/cached/hidden_chats/hidden_chats_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/functions/create_opposite_chat.dart';
 import 'package:ink_mobile/messenger/functions/show_notification.dart';
 import 'package:ink_mobile/messenger/handler/fetch/participant.dart';
@@ -45,6 +46,7 @@ class DirectMessageListener extends Listener {
     final chat = chatsCubit.singleChatExists([oppositeUser, me]);
 
     if (chat != null) {
+      getIt<CachedUsersCubit>().updateUserById(oppositeUser, oppositeUser.id);
       chatsCubit.updateChatById(
         chat.copyWith(
           id: chatId,

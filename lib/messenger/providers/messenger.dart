@@ -53,6 +53,7 @@ class MessengerProvider {
         name: JwtPayload.myName,
         avatarUrl: JwtPayload.myAvatar,
       );
+
       cachedChatsCubit.updateMe(user);
 
       getIt<BaseUrlCubit>().setNewUrl(apiUrl);

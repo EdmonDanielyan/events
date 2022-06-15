@@ -41,10 +41,6 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
     keyboardSubscription =
         keyboardVisibilityController.onChange.listen((bool visible) {
       isKeyboardVisible = visible;
-
-      if (!visible && isMenuShown) {
-        closeBluredBg();
-      }
     });
   }
 
@@ -100,6 +96,12 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
   }
 
   void onTap(BuildContext context) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    if (isKeyboardVisible) {
+      await Future.delayed(Duration(milliseconds: 500));
+    }
+
     final RenderBox overlay =
         Overlay.of(context)!.context.findRenderObject()! as RenderBox;
 
@@ -114,11 +116,6 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
 
     if (widget.blurBackground) {
       pushEntry(context);
-    }
-
-    if (FocusScope.of(context).hasFocus && isKeyboardVisible) {
-      Future.delayed(const Duration(milliseconds: 50))
-          .whenComplete(() => FocusScope.of(context).requestFocus());
     }
 
     await showMenu<T>(
@@ -137,7 +134,7 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTapDown: (TapDownDetails details) {
         _tapDownPosition = details.globalPosition;
       },

@@ -10,12 +10,14 @@ class UserPickerCard extends StatelessWidget {
   final void Function(User, bool) onSelect;
   final OnlineCubit onlineCubit;
   final CachedChatsCubit cachedChatsCubit;
+  final bool enabled;
   const UserPickerCard(
     this.user, {
     Key? key,
     required this.onSelect,
     required this.onlineCubit,
     required this.cachedChatsCubit,
+    required this.enabled,
   }) : super(key: key);
 
   @override
@@ -26,7 +28,7 @@ class UserPickerCard extends StatelessWidget {
       child: ParticipantCard(
         user: user,
         trailingWidget: UserPickerRadio(
-          enabled: false,
+          enabled: enabled,
           onTap: (enabled) => onSelect(user, enabled),
         ),
         onlineCubit: onlineCubit,

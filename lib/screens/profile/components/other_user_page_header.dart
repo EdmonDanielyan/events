@@ -52,7 +52,7 @@ class OtherUserPageHeader extends StatelessWidget {
               WriteBtn(
                 user: User(
                   id: user.id,
-                  name: "${user.name ?? ""} ${user.lastName ?? ""}".trim(),
+                  name: "${user.lastName ?? ""} ${user.name ?? ""}".trim(),
                   avatarUrl: user.pathToAvatar ?? "",
                 ),
               ),

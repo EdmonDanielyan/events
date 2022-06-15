@@ -131,11 +131,19 @@ class _UsersPickerScreenState extends State<UsersPickerScreen> {
                                 controller:
                                     ScrollController(keepScrollOffset: false),
                                 itemBuilder: (context, index) {
-                                  return UserPickerCard(
-                                    users[index],
-                                    onSelect: _onSelect,
-                                    onlineCubit: widget.onlineCubit,
-                                    cachedChatsCubit: widget.cachedChatsCubit,
+                                  return BlocBuilder<UsersCubit, List<User>>(
+                                    bloc: selectedUsers,
+                                    builder: (context, usersState) {
+                                      return UserPickerCard(
+                                        users[index],
+                                        enabled:
+                                            usersState.contains(users[index]),
+                                        onSelect: _onSelect,
+                                        onlineCubit: widget.onlineCubit,
+                                        cachedChatsCubit:
+                                            widget.cachedChatsCubit,
+                                      );
+                                    },
                                   );
                                 },
                               );

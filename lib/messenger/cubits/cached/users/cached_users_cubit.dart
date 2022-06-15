@@ -5,9 +5,16 @@ import 'package:ink_mobile/messenger/model/user.dart';
 
 @singleton
 class CachedUsersCubit extends HydratedCubit<CachedUsersState> {
-  CachedUsersCubit() : super(const CachedUsersState(users: []));
+  CachedUsersCubit()
+      : super(
+          CachedUsersState(
+            users: [],
+            lastCached: DateTime(2000, 9, 7),
+          ),
+        );
 
   List<User> get users => state.users;
+  DateTime get lastCached => state.lastCached;
 
   User? getUser(int userId) {
     final index = users.indexWhere((element) => element.id == userId);
@@ -24,6 +31,26 @@ class CachedUsersCubit extends HydratedCubit<CachedUsersState> {
       ..addAll(newUsers)
       ..toSet().toList();
     emit(state.copyWith(users: _newUsers));
+  }
+
+  bool passedTimeAfterLastCache(Duration duration) {
+    return lastCached.isAfter(DateTime.now().subtract(duration));
+  }
+
+  void updateUserById(User user, int userId) {
+    if (users.isNotEmpty) {
+      List<User> newUsers = [];
+
+      for (final storedUser in users) {
+        if (storedUser.id == userId) {
+          newUsers.add(user);
+        } else {
+          newUsers.add(storedUser);
+        }
+      }
+
+      emit(state.copyWith(users: newUsers));
+    }
   }
 
   @override

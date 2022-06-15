@@ -64,11 +64,10 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
   void setSearchValue(String value, {bool checkCondition = true}) {
     value = value.trim();
     emit(state.copyWith(searchValue: value));
-    if (!checkCondition || value.length >= 3) {
-      _debouncerInputChange.run(() {
-        loadUsers();
-      });
-    }
+
+    _debouncerInputChange.run(() {
+      loadUsers();
+    });
   }
 
   void emitLoading() {
