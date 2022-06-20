@@ -5,12 +5,12 @@ import 'package:ink_mobile/messenger/components/selectable/selectable.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
-import 'package:ink_mobile/messenger/screens/chat/components/edited.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/hover_message.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/respond_container_wrapper.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/cached_user_builder.dart';
-import 'package:ink_mobile/messenger/screens/chat_list/components/message_tick.dart';
 
+import '../../chat_list/components/message_tick.dart';
+import 'edited.dart';
 import 'message_body.dart';
 import 'message_date.dart';
 
@@ -104,13 +104,14 @@ class MessageCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 9.0),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: isByMe
-                                ? CrossAxisAlignment.end
-                                : CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               MessageBody(
                                 message.body,
                                 isByMe: isByMe,
+                                width: message.responseTo != null
+                                    ? double.maxFinite
+                                    : null,
                               ),
                               const SizedBox(height: 5.0),
                               Row(

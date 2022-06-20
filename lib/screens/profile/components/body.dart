@@ -4,6 +4,8 @@ import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
+import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
+import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/awards.dart';
 import 'package:ink_mobile/screens/profile/components/background.dart';
@@ -12,6 +14,7 @@ import 'package:ink_mobile/screens/profile/components/contacts.dart';
 import 'package:ink_mobile/screens/profile/components/header.dart';
 import 'package:ink_mobile/screens/profile/components/other_user_page_header.dart';
 import 'package:ink_mobile/screens/profile/components/security.dart';
+import 'package:ink_mobile/setup.dart';
 
 import '../profile_screen.dart';
 import 'diagnostics.dart';
@@ -28,7 +31,16 @@ class Body extends StatelessWidget {
       },
       color: Colors.green,
       displacement: 20,
-      child: BlocBuilder<ProfileCubit, ProfileState>(
+      child: BlocConsumer<ProfileCubit, ProfileState>(
+        listener: (context, state) {
+          if (state.data != null) {
+            final user = User(
+                id: state.data!.id,
+                name: state.data!.name ?? "",
+                avatarUrl: state.data!.pathToAvatar ?? "");
+            getIt<CachedUsersCubit>().updateUserById(user, user.id);
+          }
+        },
         bloc: userCubit,
         builder: (context, state) {
           switch (state.type) {

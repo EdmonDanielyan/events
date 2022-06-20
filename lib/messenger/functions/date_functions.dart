@@ -43,6 +43,13 @@ class DateFunctions {
 
   String hourMinute() => DateFormat("HH:mm").format(passedDate.toLocal());
 
+  String minutesHoursDayMonthYearHuman() {
+    if (isToday()) {
+      return hourMinute();
+    }
+    return dayMonthYear() + " " + hourMinute();
+  }
+
   String displayDate() {
     if (isToday()) {
       return hourMinute();

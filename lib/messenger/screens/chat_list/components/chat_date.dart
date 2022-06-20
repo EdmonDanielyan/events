@@ -9,7 +9,7 @@ class ChatDate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GoogleText(
-      DateFunctions(dateTime).hourMinute(),
+      DateFunctions(dateTime).minutesHoursDayMonthYearHuman(),
       fontSize: 11.0,
       color: const Color(0XFF757678),
       fontWeight: FontWeight.w300,

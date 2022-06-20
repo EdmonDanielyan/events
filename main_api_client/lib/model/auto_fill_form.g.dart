@@ -49,6 +49,20 @@ class _$AutoFillFormSerializer implements StructuredSerializer<AutoFillForm> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.birthday;
+    if (value != null) {
+      result
+        ..add('birthday')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.personalPhone;
+    if (value != null) {
+      result
+        ..add('personalPhone')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -79,6 +93,14 @@ class _$AutoFillFormSerializer implements StructuredSerializer<AutoFillForm> {
           result.email = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'birthday':
+          result.birthday = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'personalPhone':
+          result.personalPhone = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -95,11 +117,21 @@ class _$AutoFillForm extends AutoFillForm {
   final String department;
   @override
   final String email;
+  @override
+  final String birthday;
+  @override
+  final String personalPhone;
 
   factory _$AutoFillForm([void Function(AutoFillFormBuilder) updates]) =>
       (new AutoFillFormBuilder()..update(updates)).build();
 
-  _$AutoFillForm._({this.fio, this.position, this.department, this.email})
+  _$AutoFillForm._(
+      {this.fio,
+      this.position,
+      this.department,
+      this.email,
+      this.birthday,
+      this.personalPhone})
       : super._();
 
   @override
@@ -116,14 +148,21 @@ class _$AutoFillForm extends AutoFillForm {
         fio == other.fio &&
         position == other.position &&
         department == other.department &&
-        email == other.email;
+        email == other.email &&
+        birthday == other.birthday &&
+        personalPhone == other.personalPhone;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, fio.hashCode), position.hashCode), department.hashCode),
-        email.hashCode));
+        $jc(
+            $jc(
+                $jc($jc($jc(0, fio.hashCode), position.hashCode),
+                    department.hashCode),
+                email.hashCode),
+            birthday.hashCode),
+        personalPhone.hashCode));
   }
 
   @override
@@ -132,7 +171,9 @@ class _$AutoFillForm extends AutoFillForm {
           ..add('fio', fio)
           ..add('position', position)
           ..add('department', department)
-          ..add('email', email))
+          ..add('email', email)
+          ..add('birthday', birthday)
+          ..add('personalPhone', personalPhone))
         .toString();
   }
 }
@@ -157,6 +198,15 @@ class AutoFillFormBuilder
   String get email => _$this._email;
   set email(String email) => _$this._email = email;
 
+  String _birthday;
+  String get birthday => _$this._birthday;
+  set birthday(String birthday) => _$this._birthday = birthday;
+
+  String _personalPhone;
+  String get personalPhone => _$this._personalPhone;
+  set personalPhone(String personalPhone) =>
+      _$this._personalPhone = personalPhone;
+
   AutoFillFormBuilder() {
     AutoFillForm._initializeBuilder(this);
   }
@@ -168,6 +218,8 @@ class AutoFillFormBuilder
       _position = $v.position;
       _department = $v.department;
       _email = $v.email;
+      _birthday = $v.birthday;
+      _personalPhone = $v.personalPhone;
       _$v = null;
     }
     return this;
@@ -188,7 +240,12 @@ class AutoFillFormBuilder
   _$AutoFillForm build() {
     final _$result = _$v ??
         new _$AutoFillForm._(
-            fio: fio, position: position, department: department, email: email);
+            fio: fio,
+            position: position,
+            department: department,
+            email: email,
+            birthday: birthday,
+            personalPhone: personalPhone);
     replace(_$result);
     return _$result;
   }

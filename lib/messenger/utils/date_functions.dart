@@ -32,6 +32,12 @@ class DateFunctions {
     return formatter.format(passedDate);
   }
 
+  String dayMonthNumbers() {
+    DateFormat formatter = new DateFormat.yMd();
+
+    return formatter.format(passedDate).replaceAll("/", ".");
+  }
+
   String dayMonthYearHuman() {
     if (isToday()) return localizationInstance.today;
     if (isYesterday()) return localizationInstance.yesterday;
@@ -40,7 +46,6 @@ class DateFunctions {
   }
 
   String hourMinute() => DateFormat("HH:mm").format(passedDate.toLocal());
-
 
   String displayDate() {
     if (isToday())

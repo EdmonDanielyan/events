@@ -213,7 +213,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   }
 
   Widget contactPhoneWidget() {
-    MaskTextInputFormatter mask = TextFieldMasks().phone;
+    MaskTextInputFormatter mask = TextFieldMasks().phone();
     return ServiceTextField(
       hint: "+7 (ххх) xxx-xx-xx",
       validator: (val) => val!.length < 17 ? _strings.fillTheField : null,

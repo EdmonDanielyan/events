@@ -24,32 +24,32 @@ import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final storage = await HydratedStorage.build(
-    storageDirectory: kIsWeb
-        ? HydratedStorage.webStorageDirectory
-        : await getTemporaryDirectory(),
-  );
 
-  HydratedBlocOverrides.runZoned(
-    () async {
-      runZonedGuarded(() async {
-        HttpOverrides.global = MyHttpOverrides();
+  runZonedGuarded(() async {
+    HttpOverrides.global = MyHttpOverrides();
+    final storage = await HydratedStorage.build(
+      storageDirectory: kIsWeb
+          ? HydratedStorage.webStorageDirectory
+          : await getTemporaryDirectory(),
+    );
 
+    HydratedBlocOverrides.runZoned(
+      () async {
         await setup(scope: await readEnv());
 
         runApp(InkMobile());
-      }, (Object error, StackTrace stack) {
-        if (error is CustomException) {
-          ErrorCatcher catcher = ErrorCatcher.getInstance();
-          catcher.onError(error, stack);
-        } else {
-          Logger('general').severe('Unexpected error', error, stack);
-          showErrorDialog(ErrorMessages.UNKNOWN_ERROR_MESSAGE);
-        }
-      });
-    },
-    storage: storage,
-  );
+      },
+      storage: storage,
+    );
+  }, (Object error, StackTrace stack) {
+    if (error is CustomException) {
+      ErrorCatcher catcher = ErrorCatcher.getInstance();
+      catcher.onError(error, stack);
+    } else {
+      Logger('general').severe('Unexpected error', error, stack);
+      showErrorDialog(ErrorMessages.UNKNOWN_ERROR_MESSAGE);
+    }
+  });
 }
 
 class InkMobile extends StatelessWidget {

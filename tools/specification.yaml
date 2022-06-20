@@ -2611,6 +2611,14 @@ components:
                     type: string
                     example: "example@example.com"
                     nullable: true
+                birthday:
+                    type: string
+                    example: "1995-02-15T00:00:00Z"
+                    nullable: true
+                personalPhone:
+                    type: string
+                    example: "+75557778899"
+                    nullable: true
         orderDMS:
             type: object
             properties:

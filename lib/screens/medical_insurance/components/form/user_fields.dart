@@ -6,6 +6,7 @@ import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/cubit/autofill/get_autofill.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/messenger/utils/date_functions.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'entities.dart';
@@ -26,6 +27,8 @@ class _MedicalInsuranceFormUserFieldsState
   TextEditingController fioController = TextEditingController();
   TextEditingController positionController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController birthdayController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   GetAutofill getAutofill = GetAutofill();
 
   Future<void> loadData() async {
@@ -36,6 +39,22 @@ class _MedicalInsuranceFormUserFieldsState
     widget.entities.position = getAutofill.autofill.position;
     emailController.text = getAutofill.autofill.email;
     widget.entities.email = getAutofill.autofill.email;
+
+    if (getAutofill.autofill.birthday.isNotEmpty) {
+      final birthday = DateTime.tryParse(getAutofill.autofill.birthday);
+
+      if (birthday != null) {
+        final date = DateFunctions(passedDate: birthday).dayMonthNumbers();
+        widget.entities.birthDate = date;
+        birthdayController.text = date;
+      }
+    }
+    if (getAutofill.autofill.phone.isNotEmpty) {
+      final phone =
+          TextFieldMasks().phone().maskText(getAutofill.autofill.phone);
+      widget.entities.phone = phone;
+      phoneController.text = phone;
+    }
   }
 
   @override
@@ -69,7 +88,7 @@ class _MedicalInsuranceFormUserFieldsState
       hint: _strings.fullnameHint,
       requiredIcon: true,
       validator: (val) =>
-          val!.split(" ").length < 3 ? _strings.fillTheField : null,
+          val!.split(" ").length < 2 ? _strings.fillTheField : null,
       autocorrect: false,
       inputFormatters: [InputFormatters().lettersOnly],
       onChanged: (val) => widget.entities.fio = val,
@@ -80,9 +99,9 @@ class _MedicalInsuranceFormUserFieldsState
     MaskTextInputFormatter mask = TextFieldMasks().date;
     return ServiceTextField(
       hint: _strings.birthDate,
+      controller: birthdayController,
       requiredIcon: true,
-      validator: (val) =>
-          !mask.isFill() || val!.isEmpty ? _strings.fillTheField : null,
+      validator: (val) => val!.length <= 8 ? _strings.fillTheField : null,
       onChanged: (val) => widget.entities.birthDate = val,
       keyboardType: TextInputType.datetime,
       inputFormatters: [mask],
@@ -101,9 +120,11 @@ class _MedicalInsuranceFormUserFieldsState
   }
 
   Widget _mobilePhoneWidget() {
-    MaskTextInputFormatter mask = TextFieldMasks().phone;
+    MaskTextInputFormatter mask =
+        TextFieldMasks().phone(initialText: widget.entities.phone);
     return ServiceTextField(
       hint: "+7 (ххх) xxx-xx-xx",
+      controller: phoneController,
       requiredIcon: true,
       validator: (val) => val!.length < 17 ? _strings.fillTheField : null,
       onChanged: (val) => widget.entities.phone = val,

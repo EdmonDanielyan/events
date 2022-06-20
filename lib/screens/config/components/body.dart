@@ -112,7 +112,6 @@ class _BodyState extends State<Body> {
         //await getIt<Messenger>().chatDatabaseCubit.db.deleteDatabaseFiles();
       } catch (e) {}
       writeEnv(value);
-      await setup(scope: value);
       await getIt<InitialCubit>().init();
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Вы сменили окружение на $value")));

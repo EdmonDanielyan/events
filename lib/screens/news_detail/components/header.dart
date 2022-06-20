@@ -20,9 +20,48 @@ class Header extends StatefulWidget {
 }
 
 class _HeaderState extends State<Header> {
+  List<Widget> videoWidgets = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.videoLinks != null && widget.videoLinks!.isNotEmpty) {
+      for (final link in widget.videoLinks!) {
+        if (link.isNotEmpty) {
+          final flManager = FlickManager(
+            videoPlayerController: VideoPlayerController.network(link),
+            autoPlay: false,
+          );
+          flickManager.add(flManager);
+          videoWidgets.add(Container(
+            child: FlickVideoPlayer(
+              flickManager: flManager,
+            ),
+          ));
+        }
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _stopAllVideos();
+
+    super.dispose();
+  }
+
+  void _stopAllVideos() {
+    if (flickManager.isNotEmpty) {
+      for (final video in flickManager) {
+        video.dispose();
+      }
+    }
+  }
+
   int _sliderIndex = 0;
 
-  List<VideoPlayerController> _videoControllers = [];
+  List<FlickManager> flickManager = [];
 
   void setSliderIndex(int index) {
     _sliderIndex = index;
@@ -31,8 +70,7 @@ class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     List<Widget> images = getImagesContainer(widget.imageLinks);
-    List<Widget> videos = getVideoContainer(widget.videoLinks);
-    List<Widget> slider = videos;
+    List<Widget> slider = videoWidgets;
     slider.addAll(images);
 
     return Stack(
@@ -41,8 +79,6 @@ class _HeaderState extends State<Header> {
             height: 300,
             child: PageView(
               onPageChanged: (index) {
-                _stopAllVideos();
-
                 setState(() {
                   setSliderIndex(index);
                 });
@@ -125,46 +161,5 @@ class _HeaderState extends State<Header> {
     }
 
     return imagesContainer;
-  }
-
-  List<Widget> getVideoContainer(List<String>? video) {
-    List<Widget> videoContainer = [];
-
-    if (video != null) {
-      FlickManager flickManager;
-
-      video.forEach((linkVideo) {
-        VideoPlayerController _controller =
-            VideoPlayerController.network(linkVideo);
-
-        _videoControllers.add(_controller);
-
-        flickManager = FlickManager(
-          videoPlayerController: _controller,
-          autoPlay: false,
-        );
-
-        videoContainer.add(Container(
-          child: FlickVideoPlayer(
-            flickManager: flickManager,
-          ),
-        ));
-      });
-    }
-
-    return videoContainer;
-  }
-
-  @override
-  void dispose() {
-    _stopAllVideos();
-
-    super.dispose();
-  }
-
-  void _stopAllVideos() {
-    _videoControllers.forEach((_controller) {
-      _controller.pause();
-    });
   }
 }

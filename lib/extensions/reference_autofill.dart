@@ -11,6 +11,8 @@ extension ReferenceAutoFillExt on Response<ReferenceAutoFill> {
       position: this.data?.data.position ?? '',
       department: this.data?.data.department ?? '',
       email: this.data?.data.email ?? '',
+      birthday: this.data?.data.birthday ?? "",
+      phone: this.data?.data.personalPhone ?? "",
     );
   }
 }
