@@ -9,13 +9,25 @@ import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/news_list/components/news_list_element.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   final NewsListCubit cubit;
-  static late AppLocalizations _strings;
-
-  final ScrollController _controller = ScrollController();
 
   Body({Key? key, required this.cubit}) : super(key: key);
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final ScrollController _controller = ScrollController();
+  static late AppLocalizations _strings;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.cubit.pagination.clear();
+    widget.cubit.emitState(type: NewsListStateType.LOADING);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,23 +36,23 @@ class Body extends StatelessWidget {
 
     return RefreshIndicator(
         onRefresh: () async {
-          cubit.refresh();
+          widget.cubit.refresh();
         },
         color: Colors.green,
         displacement: 20,
         child: BlocBuilder<NewsListCubit, NewsListState>(
-            bloc: cubit,
+            bloc: widget.cubit,
             builder: (context, state) {
               Map? arg = ModalRoute.of(context)!.settings.arguments as Map?;
 
               if (arg != null && arg.isNotEmpty) {
-                cubit.filter = arg['filter'];
+                widget.cubit.filter = arg['filter'];
               }
 
               switch (state.type) {
                 case (NewsListStateType.LOADING):
                   {
-                    cubit.fetch();
+                    widget.cubit.fetch();
                     return _getLoadingStateWidget();
                   }
 
@@ -62,7 +74,7 @@ class Body extends StatelessWidget {
   }
 
   Future<void> _onScroll() async {
-    await cubit.onScroll(_controller);
+    await widget.cubit.onScroll(_controller);
   }
 
   List<Widget> _getNewsWidgetList(List<NewsItemData> newsList) {
@@ -113,7 +125,7 @@ class Body extends StatelessWidget {
 
   Widget _getErrorStateWidget(BuildContext context, NewsListState state) {
     return ErrorRefreshButton(
-      onTap: cubit.refresh,
+      onTap: widget.cubit.refresh,
       text: state.errorMessage!,
     );
   }
