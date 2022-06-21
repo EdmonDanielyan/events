@@ -89,7 +89,7 @@ class MainRoutes {
           eventsListCubit: getIt<EventsListCubit>(),
         ),
     '/news_list': (BuildContext context) => NewsListScreen(
-          newsListCubit: NewsListCubit(),
+          newsListCubit: getIt<NewsListCubit>(),
         ),
     '/announcements_list': (BuildContext context) => AnnouncementsListScreen(
           announcementsListCubit: getIt<AnnouncementsListCubit>(),
