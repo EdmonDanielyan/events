@@ -8,14 +8,14 @@ Future<void> launchUrl(String url, {bool formatUrl = true}) async {
       final separate = url.split(":");
       if (separate.length == 2) {
         url = Uri(scheme: separate[0], path: separate[1]).toString();
-        launch(url.toString());
+        launchUrl(url.toString());
       }
     }
 
     String newUrl = formatUrl ? Uri.encodeFull(url) : url;
 
-    await canLaunch(newUrl)
-        ? await launch(newUrl)
+    await canLaunchUrl(Uri.parse(newUrl))
+        ? await launchUrl(newUrl)
         : showErrorDialog('Не удалось перейти по внешней ссылке');
   } on PlatformException {
     //Unsupported message codecs links

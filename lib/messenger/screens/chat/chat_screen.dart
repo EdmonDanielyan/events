@@ -92,7 +92,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     if (widget.cachedChatsCubit.selectedChats.isNotEmpty) {
       final messages = widget.cachedChatsCubit.selectedChats.last.messages;
@@ -153,7 +153,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     }
     super.dispose();
 
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   void _onSelected(bool selected, Message message) {

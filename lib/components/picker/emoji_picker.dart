@@ -32,8 +32,6 @@ class CustomEmojiPicker extends StatelessWidget {
           enableSkinTones: true,
           showRecentsTab: true,
           recentsLimit: 28,
-          noRecentsText: "Нет недавных",
-          noRecentsStyle: const TextStyle(fontSize: 20, color: Colors.black26),
           tabIndicatorAnimDuration: kTabScrollDuration,
           categoryIcons: const CategoryIcons(),
           buttonMode: ButtonMode.CUPERTINO),

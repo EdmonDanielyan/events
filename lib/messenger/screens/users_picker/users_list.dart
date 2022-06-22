@@ -19,7 +19,7 @@ class _UsersPickerListState extends State<UsersPickerList> {
       width: double.infinity,
       height: 60,
       child: Scrollbar(
-        isAlwaysShown: true,
+        thumbVisibility: true,
         controller: controller,
         child: ListView.builder(
           itemCount: widget.users.length,

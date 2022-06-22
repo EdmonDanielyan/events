@@ -172,7 +172,6 @@ class NumberSelectFormField extends FormField<String> {
                             readOnly: readOnly,
                             showCursor: showCursor,
                             obscureText: false,
-                            maxLengthEnforced: maxLengthEnforced,
                             maxLengthEnforcement: maxLengthEnforcement,
                             maxLines: 1,
                             minLines: 1,

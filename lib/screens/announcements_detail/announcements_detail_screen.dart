@@ -67,7 +67,7 @@ class AnnouncementsDetailScreen extends StatelessWidget {
 
             case AnnouncementsDetailStateType.NOT_FOUND:
               {
-                SchedulerBinding.instance?.addPostFrameCallback((_) {
+                SchedulerBinding.instance.addPostFrameCallback((_) {
                   Navigator.popAndPushNamed(context, '/404');
                 });
 

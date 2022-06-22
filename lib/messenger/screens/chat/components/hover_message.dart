@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ink_mobile/messenger/components/popup/popup_menu_container.dart';
 import '../../../../components/snackbar/custom_snackbar.dart';
-import '../../../components/popup/menu_item.dart';
+import '../../../components/popup/menu_item.dart' as my;
 import '../../../model/message.dart';
 
 const _goTo = "_goTo";
@@ -71,7 +71,7 @@ class HoverMessageCard extends StatelessWidget {
         if (onGoTo != null) ...[
           PopupMenuItem(
             value: _goTo,
-            child: MenuItem(
+            child: my.MenuItem(
               value: "Перейти",
               icon: Icon(
                 CupertinoIcons.profile_circled,
@@ -82,7 +82,7 @@ class HoverMessageCard extends StatelessWidget {
         ],
         PopupMenuItem(
           value: _respond,
-          child: MenuItem(
+          child: my.MenuItem(
             value: "Ответить",
             icon: Icon(
               CupertinoIcons.arrowshape_turn_up_left_fill,
@@ -92,7 +92,7 @@ class HoverMessageCard extends StatelessWidget {
         ),
         PopupMenuItem(
           value: _copy,
-          child: MenuItem(
+          child: my.MenuItem(
             value: "Копировать",
             icon: Icon(
               Icons.file_copy,
@@ -103,7 +103,7 @@ class HoverMessageCard extends StatelessWidget {
         if (onDelete != null) ...[
           PopupMenuItem(
             value: _delete,
-            child: MenuItem(
+            child: my.MenuItem(
               value: "Удалить",
               icon: Icon(
                 Icons.delete,
@@ -115,7 +115,7 @@ class HoverMessageCard extends StatelessWidget {
         if (onEdit != null) ...[
           PopupMenuItem(
             value: _edit,
-            child: MenuItem(
+            child: my.MenuItem(
               value: "Редактировать",
               icon: Icon(
                 CupertinoIcons.pencil,
