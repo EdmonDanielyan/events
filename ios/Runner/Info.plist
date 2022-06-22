@@ -72,5 +72,7 @@
 		<false/>
 		<key>NSLocalNetworkUsageDescription</key>
 		<string>Text</string>
-	</dict>
+		<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+</dict>
 </plist>
