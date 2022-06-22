@@ -43,7 +43,7 @@ class MainApiClient {
       BaseOptions options = new BaseOptions(
         baseUrl: basePathOverride ?? basePath,
         connectTimeout: 5000,
-        receiveTimeout: 3000,
+        receiveTimeout: 15000,
       );
       this.dio = new Dio(options);
     }
