@@ -61,7 +61,7 @@ abstract class Token {
       int curDateTimestamp =
           (curDateTime.millisecondsSinceEpoch.toInt() / 1000).ceil();
 
-      return curDateTimestamp > payload.expirationTime - 5;
+      return curDateTimestamp > payload.expirationTime - 30;
     }
 
     return true;

@@ -19,16 +19,12 @@ class NewsCommentsAddNetworkRequest extends NewsCommentsAddRequestDependency {
 
   @override
   Future<Response<PostCommentSuccess>> call() async {
-    return await getIt
-        .get<MainApiProvider>()
-        .getNewsApi()
-        .newsPostcommentPost(
+    return await getIt.get<MainApiProvider>().getNewsApi().newsPostcommentPost(
           postComment: CustomCommentParamsBuilder(
                   id: comment!.id,
                   answerId: comment!.answerId,
                   text: comment!.text)
               .build(),
-        )
-        .timeout(Duration(seconds: 4));
+        );
   }
 }

@@ -33,7 +33,7 @@ class DateFunctions {
   }
 
   String dayMonthNumbers() {
-    DateFormat formatter = new DateFormat.yMd();
+    DateFormat formatter = DateFormat('dd.MM.yyyy');
 
     return formatter.format(passedDate).replaceAll("/", ".");
   }

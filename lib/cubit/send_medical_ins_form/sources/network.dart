@@ -29,34 +29,31 @@ class SendMedicalInsFormNetworkRequest
     Selectfield? other = MedicalServicesList.getElementFromListById(
         entities!.services, MedicalServicesList.otherId);
 
-    final response = await getIt
-        .get<MainApiProvider>()
-        .getUserApi()
-        .userOrderdmsPost(
-          orderDMS: CustomDMSParamsBuilder(
-            type: entities!.type,
-            name: entities!.fio,
-            birthday: entities!.birthDate,
-            position: entities!.position,
-            phone: entities!.phone,
-            email: entities!.email,
-            additionalInformation: entities!.additionalText,
-            dentalSelect: dentist != null,
-            specSelect: specialist != null,
-            labSelect: labResearch != null,
-            otherSelect: other != null,
-            specText: specialist != null ? specialist.description : "",
-            labText: labResearch != null ? labResearch.description : "",
-            otherText: other != null ? other.description : "",
-            hospitalName: entities!.hospitalName,
-            city: entities!.city,
-            address: entities!.address,
-            price: entities!.price,
-            dateStart: entities!.dateStart,
-            dateTo: entities!.guaranteeLetterDate,
-          ).build(),
-        )
-        .timeout(Duration(seconds: 10));
+    final response =
+        await getIt.get<MainApiProvider>().getUserApi().userOrderdmsPost(
+              orderDMS: CustomDMSParamsBuilder(
+                type: entities!.type,
+                name: entities!.fio,
+                birthday: entities!.birthDate,
+                position: entities!.position,
+                phone: entities!.phone,
+                email: entities!.email,
+                additionalInformation: entities!.additionalText,
+                dentalSelect: dentist != null,
+                specSelect: specialist != null,
+                labSelect: labResearch != null,
+                otherSelect: other != null,
+                specText: specialist != null ? specialist.description : "",
+                labText: labResearch != null ? labResearch.description : "",
+                otherText: other != null ? other.description : "",
+                hospitalName: entities!.hospitalName,
+                city: entities!.city,
+                address: entities!.address,
+                price: entities!.price,
+                dateStart: entities!.dateStart,
+                dateTo: entities!.guaranteeLetterDate,
+              ).build(),
+            );
     return response;
   }
 }

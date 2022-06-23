@@ -4,6 +4,7 @@ import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_state.dart';
+import 'package:ink_mobile/functions/plural.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/news_comments/components/comment.dart';
@@ -62,6 +63,7 @@ class _BodyState extends State<Body> {
               case NewsCommentStateType.LOADED:
                 {
                   List<Widget> items = _buildComments(state.data!);
+                  final commentsCount = state.data!.commentCount;
                   return Container(
                     decoration: BoxDecoration(color: Colors.white),
                     padding: EdgeInsets.only(
@@ -73,7 +75,7 @@ class _BodyState extends State<Body> {
                           margin:
                               EdgeInsets.only(top: 20, left: 10, bottom: 15),
                           child: Text(
-                            _getCommentsTitle(state.data!.commentCount),
+                            "$commentsCount ${Plural(commentsCount).declense(_strings.oneCommentNoun.toUpperCase(), _strings.multipleCommentsNoun.toUpperCase(), _strings.lotOfCommentsNoun.toUpperCase())}",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w500),
                           ),
@@ -129,7 +131,6 @@ class _BodyState extends State<Body> {
       );
 
       comment.children?.forEach((childrenComment) {
-
         String? name = childrenComment.authorName;
         String? lastName = childrenComment.authorLastName;
 
@@ -140,7 +141,9 @@ class _BodyState extends State<Body> {
               id: childrenComment.id,
               authorId: childrenComment.authorId,
               avatar: childrenComment.pathToAvatar,
-              name: name != null && lastName != null ? lastName + " " + name : name,
+              name: name != null && lastName != null
+                  ? lastName + " " + name
+                  : name,
               text: childrenComment.comment,
               barrelChecked: childrenComment.barrelsChecked,
               barrelsCount: childrenComment.barrels,
@@ -153,18 +156,5 @@ class _BodyState extends State<Body> {
     });
 
     return comments;
-  }
-
-  String _getCommentsTitle(int commentCount) {
-    String title;
-    if (commentCount == 1) {
-      title = " ${_strings.oneCommentNoun.toUpperCase()}";
-    } else if (commentCount > 1 && commentCount <= 4) {
-      title = " ${_strings.multipleCommentsNoun.toUpperCase()}";
-    } else {
-      title = " ${_strings.lotOfCommentsNoun.toUpperCase()}";
-    }
-
-    return commentCount.toString() + title;
   }
 }

@@ -19,26 +19,24 @@ class SendReferenceFormNetworkRequest
       : assert(entities != null);
 
   @override
-  Future<Response<OrderReferenceSuccess>> call() async => await getIt
-      .get<MainApiProvider>()
-      .getUserApi()
-      .userOrderreferencePost(
-        entities!.referencesItem.referencesType,
-        entities!.entities.phone,
-        entities!.deliveryItem.deliveryType,
-        postalCode: entities!.entities.postCode,
-        address: entities!.entities.address,
-        period: entities!.entities.period,
-        destination: entities!.entities.toProvideIn,
-        filesLeftSquareBracketRightSquareBracket:
-            entities!.entities.files.length > 0
-                ? getFilesAsMultipart(entities!.entities.files)
-                : null,
-        num_: entities!.entities.quantity,
-        child: entities!.entities.fioChildren,
-        dateStart:
-            DateFormat('dd.MM.yyyy').format(entities!.entities.periodFrom),
-        dateEnd: DateFormat('dd.MM.yyyy').format(entities!.entities.periodTo),
-      )
-      .timeout(Duration(seconds: 10));
+  Future<Response<OrderReferenceSuccess>> call() async =>
+      await getIt.get<MainApiProvider>().getUserApi().userOrderreferencePost(
+            entities!.referencesItem.referencesType,
+            entities!.entities.phone,
+            entities!.deliveryItem.deliveryType,
+            postalCode: entities!.entities.postCode,
+            address: entities!.entities.address,
+            period: entities!.entities.period,
+            destination: entities!.entities.toProvideIn,
+            filesLeftSquareBracketRightSquareBracket:
+                entities!.entities.files.length > 0
+                    ? getFilesAsMultipart(entities!.entities.files)
+                    : null,
+            num_: entities!.entities.quantity,
+            child: entities!.entities.fioChildren,
+            dateStart:
+                DateFormat('dd.MM.yyyy').format(entities!.entities.periodFrom),
+            dateEnd:
+                DateFormat('dd.MM.yyyy').format(entities!.entities.periodTo),
+          );
 }

@@ -19,12 +19,10 @@ class ContactsNetworkRequest extends ContactsRequestDependency {
   @override
   Future<Response<GetContacts>> call() async {
     ContactsApi contactsApi = getIt<MainApiProvider>().getContactsApi();
-    final response = await contactsApi
-        .getContacts(
-            search: query!.length < 3 ? null : query,
-            pageNumber: 1,
-            countOnPage: 70)
-        .timeout(Duration(seconds: 4));
+    final response = await contactsApi.getContacts(
+        search: query!.length < 3 ? null : query,
+        pageNumber: 1,
+        countOnPage: 70);
     return response;
   }
 }
