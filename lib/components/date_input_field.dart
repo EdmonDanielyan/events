@@ -31,6 +31,7 @@ class _DateInputFieldState extends State<DateInputField> {
             validator: widget.validator,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             keyboardType: TextInputType.datetime,
+            textCapitalization: TextCapitalization.sentences,
             decoration: InputDecoration(
               labelText: widget.title,
               border: OutlineInputBorder(

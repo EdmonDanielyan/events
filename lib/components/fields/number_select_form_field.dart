@@ -173,6 +173,7 @@ class NumberSelectFormField extends FormField<String> {
                             showCursor: showCursor,
                             obscureText: false,
                             maxLengthEnforcement: maxLengthEnforcement,
+                            textCapitalization: TextCapitalization.sentences,
                             maxLines: 1,
                             minLines: 1,
                             expands: expands,

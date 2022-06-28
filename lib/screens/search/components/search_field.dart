@@ -83,6 +83,7 @@ class _SearchFieldState extends State<SearchField> {
           : TextFormField(
               focusNode: _textFieldFocus,
               onChanged: widget.onChanged,
+              textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
                 filled: true,
                 enabledBorder: OutlineInputBorder(

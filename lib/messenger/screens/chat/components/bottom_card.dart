@@ -7,6 +7,7 @@ import 'package:ink_mobile/messenger/functions/create_message.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/textfield.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'editing_message_container.dart';
 import 'responding_message_container.dart';
@@ -22,6 +23,7 @@ class MessageBottomCard extends StatefulWidget {
   final void Function(Message, Chat) onMessageEdit;
   final MessageCubit respondingMessage;
   final CachedUsersCubit cachedUsersCubit;
+  final ItemScrollController scrollController;
   const MessageBottomCard({
     Key? key,
     required this.textEditingController,
@@ -33,6 +35,7 @@ class MessageBottomCard extends StatefulWidget {
     required this.onMessageEdit,
     required this.respondingMessage,
     required this.cachedUsersCubit,
+    required this.scrollController,
   }) : super(key: key);
 
   @override
@@ -54,6 +57,8 @@ class _MessageBottomCardState extends State<MessageBottomCard> {
 
     if (msg.body.isNotEmpty && selectedChats.isNotEmpty) {
       widget.onMessageSend(msg, selectedChats.last);
+      widget.scrollController
+          .scrollTo(index: 0, duration: const Duration(milliseconds: 300));
     }
 
     if (isResponse) {

@@ -38,7 +38,7 @@ class FetchPartcipants {
         avatarUrl: userData.pathToAvatar ?? "",
       );
 
-      cubit.addUsers([user]);
+      cubit.removeAndAddUser(user, userId);
     } catch (_e) {
       logger.e(_e.toString());
     }

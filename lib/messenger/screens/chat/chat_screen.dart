@@ -372,6 +372,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                 onMessageEdit: widget.onMessageEdit,
                 respondingMessage: respondingMessage,
                 cachedUsersCubit: widget.cachedUsersCubit,
+                scrollController: itemScrollController,
               );
             },
           ),

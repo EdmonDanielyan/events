@@ -44,6 +44,7 @@ class ServiceTextField extends StatelessWidget {
       validator: validator,
       autovalidateMode: autovalidateMode,
       initialValue: initialValue,
+      textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         hintText: hint,
         suffixIcon: requiredIcon ? const RequiredTextfieldIcon() : null,

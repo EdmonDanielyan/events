@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:ink_mobile/functions/errors.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart' as urlLaucnher;
 
 Future<void> launchUrl(String url, {bool formatUrl = true}) async {
   try {
@@ -14,8 +14,9 @@ Future<void> launchUrl(String url, {bool formatUrl = true}) async {
 
     String newUrl = formatUrl ? Uri.encodeFull(url) : url;
 
-    await canLaunchUrl(Uri.parse(newUrl))
-        ? await launchUrl(newUrl)
+    await urlLaucnher.canLaunchUrl(Uri.parse(newUrl))
+        ? await urlLaucnher.launchUrl(Uri.parse(newUrl),
+            mode: urlLaucnher.LaunchMode.externalApplication)
         : showErrorDialog('Не удалось перейти по внешней ссылке');
   } on PlatformException {
     //Unsupported message codecs links
