@@ -90,26 +90,28 @@ class NewsCommentInput extends StatelessWidget {
   }
 
   Future<void> _onMessageSend(BuildContext context, int id) async {
-    final getItem = newsBlockCubit.state.data.getItem(id);
-    if (getItem != null) {
-      final newItem =
-          getItem.copyWith(commentCount: (getItem.commentCount ?? 0) + 1);
-      newsBlockCubit.updateItem(newItem);
-    }
-
-    await newsCommentsCubit.addComment(id).onError((error, stackTrace) {
-      String errorMessage;
-
-      if (error is NoConnectionException) {
-        errorMessage = _strings.noConnectionError;
-      } else {
-        errorMessage = _strings.commentSendingError;
+    if (newsCommentsCubit.commentInputController.text.trim().isNotEmpty) {
+      final getItem = newsBlockCubit.state.data.getItem(id);
+      if (getItem != null) {
+        final newItem =
+            getItem.copyWith(commentCount: (getItem.commentCount ?? 0) + 1);
+        newsBlockCubit.updateItem(newItem);
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(errorMessage),
-        duration: Duration(seconds: 1),
-      ));
-    });
+      await newsCommentsCubit.addComment(id).onError((error, stackTrace) {
+        String errorMessage;
+
+        if (error is NoConnectionException) {
+          errorMessage = _strings.noConnectionError;
+        } else {
+          errorMessage = _strings.commentSendingError;
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(errorMessage),
+          duration: Duration(seconds: 1),
+        ));
+      });
+    }
   }
 }

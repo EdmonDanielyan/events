@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter_logs/flutter_logs.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:logging/logging.dart' as logging;
 
 class CustomLogger {
+  static final _globalLogger = logging.Logger('Messenger');
   final logger = Logger();
 
   bool get logEnabled => true;
@@ -23,6 +25,7 @@ class CustomLogger {
       return;
     }
     logger.e(error, null, stackTrace);
+    _globalLogger.warning(error.toString(), error, stackTrace);
     FlutterLogs.logError(
       className ?? "",
       methodName ?? "",
@@ -39,6 +42,7 @@ class CustomLogger {
     if (!logEnabled) {
       return;
     }
+    _globalLogger.warning(error.toString(), error, stackTrace);
     logger.i(error, null, stackTrace);
     FlutterLogs.logInfo(
       className ?? "",

@@ -47,8 +47,10 @@ class MainScreenState extends State<MainScreen>
   @override
   void initState() {
     super.initState();
+
+    // TODO REMOVE LAST TO FIRST
     getIt<MessengerProvider>()
-        .init(Urls.messengerUrl, JwtPayload.myId, apiUrl: Urls.baseUrls.first);
+        .init(Urls.messengerUrl, JwtPayload.myId, apiUrl: Urls.baseUrls.last);
   }
 
   @override

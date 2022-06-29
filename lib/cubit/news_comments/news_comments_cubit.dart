@@ -51,9 +51,12 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
 
   Future<void> addComment(int newsId) async {
     try {
+      final commentStr = commentInputController.text;
+      commentInputController.text = "";
       await Token.setNewTokensIfExpired();
-      final comment = NewCommentEntities(
-          id: newsId, answerId: answerId, text: commentInputController.text);
+      final comment =
+          NewCommentEntities(id: newsId, answerId: answerId, text: commentStr);
+
       await getIt<NewsCommentsAddNetworkRequest>(param1: comment)();
       clear();
       emitState(type: NewsCommentStateType.LOADING);
