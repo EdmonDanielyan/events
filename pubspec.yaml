@@ -35,16 +35,16 @@ dependencies:
         path: "./main_api_client"
     flutter_bloc:
     path_provider:
-    easy_rich_text:
-    flutter_secure_storage:
-    smooth_page_indicator:
+    easy_rich_text: ^1.0.4
+    flutter_secure_storage: ^5.0.2
+    smooth_page_indicator: ^1.0.0+2
     intl: ">=0.17.0 <1.0.0"
     flick_video_player: ">=0.3.1"
     flutter_launcher_icons: ">=0.8.0 <1.0.0"
     shimmer: ">=2.0.0 <3.0.0"
     modal_bottom_sheet: ^2.0.0
-    device_info_plus:
-    package_info_plus:
+    device_info_plus: ^4.0.0
+    package_info_plus: ^1.4.2
     multi_select_flutter:
         path: "./custom/libs/multi_select"
     file_picker: ^4.1.1
@@ -54,21 +54,21 @@ dependencies:
     injectable:
     flutter_linkify: ^5.0.2
     flutter_keyboard_visibility: ^5.2.0
-    image_picker: ^0.8.4+10
     transparent_image: ^2.0.0
     flutter_local_notifications: ^9.3.3
-    archive:
-    share_plus:
-    logging:
+    archive: ^3.3.0
+    share_plus: ^4.0.10
+    logging: ^1.0.2
     local_auth: ^1.1.11
     remove_emoji: ^0.0.6
-    safe_device:
+    safe_device: ^1.1.1
     keyboard_dismisser: ^2.0.1
     easy_debounce: ^2.0.2+1
     firebase_messaging: ^11.2.5
     uuid: ^3.0.6
     json_annotation: ^4.4.0
-    flutter_native_text_input: ^2.1.1
+    flutter_native_text_input:
+        path: "./custom/libs/native_text_input"
     cached_network_image: ^3.2.0
     emoji_picker_flutter: ^1.1.2
     flutter_emoji: ^2.4.0

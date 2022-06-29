@@ -5,7 +5,6 @@ import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/video_player/video_player.dart';
 import 'package:ink_mobile/constants/aseets.dart';
 import 'package:shimmer/shimmer.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -106,10 +105,11 @@ class _HeaderState extends State<Header> {
                 activeIndex: _sliderIndex,
                 count: slider.length,
                 effect: ScrollingDotsEffect(
-                    dotColor: Color(0xFFFFFFFF).withOpacity(0.5),
-                    dotWidth: 10,
-                    dotHeight: 10,
-                    activeDotColor: Colors.white),
+                  dotColor: Color(0xFFFFFFFF).withOpacity(0.5),
+                  dotWidth: 10,
+                  dotHeight: 10,
+                  activeDotColor: Colors.white,
+                ),
               ),
             ),
           ),
