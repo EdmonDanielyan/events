@@ -282,6 +282,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                         return SelectedMessagesBuilder(
                           selectedMessages,
                           builder: (context, selectedMessagesState) {
+                            if (messages.isEmpty) {
+                              return SizedBox();
+                            }
+
                             return GroupedList<Message, int>(
                               items: messages,
                               reverse: true,

@@ -55,6 +55,8 @@ class _MessageBottomCardState extends State<MessageBottomCard> {
 
     final selectedChats = widget.cachedChatsCubit.selectedChats;
 
+    widget.textEditingController.text = "";
+
     if (msg.body.isNotEmpty && selectedChats.isNotEmpty) {
       widget.onMessageSend(msg, selectedChats.last);
       widget.scrollController
@@ -64,8 +66,6 @@ class _MessageBottomCardState extends State<MessageBottomCard> {
     if (isResponse) {
       widget.respondingMessage.set(null);
     }
-
-    widget.textEditingController.text = "";
   }
 
   void _onEdit(Message message) {

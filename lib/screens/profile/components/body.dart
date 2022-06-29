@@ -36,7 +36,7 @@ class Body extends StatelessWidget {
           if (state.data != null) {
             final user = User(
                 id: state.data!.id,
-                name: state.data!.name ?? "",
+                name: "${state.data!.lastName ?? ""} ${state.data!.name ?? ""}",
                 avatarUrl: state.data!.pathToAvatar ?? "");
             getIt<CachedUsersCubit>().removeAndAddUser(user, user.id);
           }

@@ -47,9 +47,9 @@ class _GroupedListState<T, K> extends State<GroupedList<T, K>> {
       shrinkWrap: true,
       itemBuilder: (context, index) {
         final next = getNext(index);
-        final _currentGroup = widget.groupBy(widget.items[index]);
 
         if (next != null && widget.header != null) {
+          final _currentGroup = widget.groupBy(widget.items[index]);
           final _nextGroup = widget.groupBy(next);
 
           if (widget.reverse && _currentGroup != _nextGroup) {

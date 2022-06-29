@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
+import 'package:ink_mobile/functions/launch_url.dart';
 
 class Content extends StatefulWidget {
   final int viewCount;
@@ -45,9 +46,17 @@ class _ContentState extends State<Content> {
         children: [
           Html(
             data: widget.text,
+            onLinkTap: (
+              String? url,
+              RenderContext context,
+              Map<String, String> attributes,
+              _,
+            ) {
+              launchUrl(url!);
+            },
             style: {
               "a": Style(
-                  color: Colors.black, textDecoration: TextDecoration.none),
+                  color: Colors.blue, textDecoration: TextDecoration.none),
               "b": Style(fontWeight: FontWeight.normal)
             },
           ),
