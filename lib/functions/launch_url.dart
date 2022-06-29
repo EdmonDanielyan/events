@@ -9,6 +9,7 @@ Future<void> launchUrl(String url, {bool formatUrl = true}) async {
       if (separate.length == 2) {
         url = Uri(scheme: separate[0], path: separate[1]).toString();
         urlLaucnher.launchUrl(Uri.parse(url.toString()));
+        return;
       }
     }
 
