@@ -1,12 +1,12 @@
+import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/components/video_player/video_player.dart';
 import 'package:ink_mobile/constants/aseets.dart';
 import 'package:shimmer/shimmer.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:flick_video_player/flick_video_player.dart';
-import 'package:video_player/video_player.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class Header extends StatefulWidget {
@@ -21,6 +21,7 @@ class Header extends StatefulWidget {
 
 class _HeaderState extends State<Header> {
   List<Widget> videoWidgets = [];
+  List<BetterPlayerController> betterPlayerControllers = [];
 
   @override
   void initState() {
@@ -29,16 +30,19 @@ class _HeaderState extends State<Header> {
     if (widget.videoLinks != null && widget.videoLinks!.isNotEmpty) {
       for (final link in widget.videoLinks!) {
         if (link.isNotEmpty) {
-          final flManager = FlickManager(
-            videoPlayerController: VideoPlayerController.network(link),
-            autoPlay: false,
+          BetterPlayerDataSource betterPlayerDataSource =
+              BetterPlayerDataSource(
+            BetterPlayerDataSourceType.network,
+            link,
           );
-          flickManager.add(flManager);
-          videoWidgets.add(Container(
-            child: FlickVideoPlayer(
-              flickManager: flManager,
-            ),
-          ));
+          final _controller = BetterPlayerController(
+            BetterPlayerConfiguration(),
+            betterPlayerDataSource: betterPlayerDataSource,
+          );
+          betterPlayerControllers.add(_controller);
+          videoWidgets.add(
+            CustomVideoPlayer(controller: _controller),
+          );
         }
       }
     }
@@ -52,24 +56,22 @@ class _HeaderState extends State<Header> {
   }
 
   void _disposeAllVideos() {
-    if (flickManager.isNotEmpty) {
-      for (final video in flickManager) {
+    if (betterPlayerControllers.isNotEmpty) {
+      for (final video in betterPlayerControllers) {
         video.dispose();
       }
     }
   }
 
   void _stopAllVideos() {
-    if (flickManager.isNotEmpty) {
-      for (final video in flickManager) {
-        video.flickControlManager?.pause();
+    if (betterPlayerControllers.isNotEmpty) {
+      for (final video in betterPlayerControllers) {
+        video.pause();
       }
     }
   }
 
   int _sliderIndex = 0;
-
-  List<FlickManager> flickManager = [];
 
   void setSliderIndex(int index) {
     _sliderIndex = index;
@@ -84,17 +86,18 @@ class _HeaderState extends State<Header> {
     return Stack(
       children: [
         Container(
-            height: 300,
-            child: PageView(
-              onPageChanged: (index) {
-                setState(() {
-                  setSliderIndex(index);
-                });
-                _stopAllVideos();
-              },
-              scrollDirection: Axis.horizontal,
-              children: slider,
-            )),
+          height: 300,
+          child: PageView(
+            onPageChanged: (index) {
+              setState(() {
+                setSliderIndex(index);
+              });
+              _stopAllVideos();
+            },
+            scrollDirection: Axis.horizontal,
+            children: slider,
+          ),
+        ),
         if (slider.length > 1) ...[
           Positioned.fill(
             child: Align(

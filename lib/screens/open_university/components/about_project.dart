@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/open_university/components/about_project_contact_container.dart';
 
@@ -97,6 +98,19 @@ class AboutProject extends StatelessWidget {
  <br>
 <p>
 </p>''',
+              onLinkTap: (
+                String? url,
+                RenderContext context,
+                Map<String, String> attributes,
+                _,
+              ) {
+                launchUrl(url!);
+              },
+              style: {
+                "a": Style(
+                    color: Colors.blue, textDecoration: TextDecoration.none),
+                "b": Style(fontWeight: FontWeight.normal)
+              },
             ),
             Column(
               children: _getContactInfoWidgetList(),
@@ -107,9 +121,21 @@ class AboutProject extends StatelessWidget {
 
   List<AboutProjectItem> _getContactInfoItemList() {
     return [
-      AboutProjectItem(text: 'efimenko_tn@irkutskoil.ru', title: 'Email', type: AboutProjectType.URL, data: 'mailto:efimenko_tn@irkutskoil.ru'),
-      AboutProjectItem(text: '+7 (914) 001 71 22', title: 'Телефон', type: AboutProjectType.URL, data: 'tel:+79140017122'),
-      AboutProjectItem(text: '2028', title: 'Внутренний телефон', type: AboutProjectType.CLIPBOARD, data: '2028'),
+      AboutProjectItem(
+          text: 'efimenko_tn@irkutskoil.ru',
+          title: 'Email',
+          type: AboutProjectType.URL,
+          data: 'mailto:efimenko_tn@irkutskoil.ru'),
+      AboutProjectItem(
+          text: '+7 (914) 001 71 22',
+          title: 'Телефон',
+          type: AboutProjectType.URL,
+          data: 'tel:+79140017122'),
+      AboutProjectItem(
+          text: '2028',
+          title: 'Внутренний телефон',
+          type: AboutProjectType.CLIPBOARD,
+          data: '2028'),
     ];
   }
 
@@ -120,8 +146,12 @@ class AboutProject extends StatelessWidget {
     for (int i = 0; i < _items.length; i++) {
       _widgetList.add(Container(
         margin: EdgeInsets.only(bottom: 10),
-        child:
-            AboutProjectContact(title: _items[i].title, text: _items[i].text, type: _items[i].type, data: _items[i].data,),
+        child: AboutProjectContact(
+          title: _items[i].title,
+          text: _items[i].text,
+          type: _items[i].type,
+          data: _items[i].data,
+        ),
       ));
     }
 
@@ -129,7 +159,7 @@ class AboutProject extends StatelessWidget {
   }
 }
 
-enum AboutProjectType {CLIPBOARD, URL}
+enum AboutProjectType { CLIPBOARD, URL }
 
 class AboutProjectItem {
   final String? title;
@@ -137,5 +167,6 @@ class AboutProjectItem {
   final AboutProjectType type;
   final String data;
 
-  AboutProjectItem({required this.text, this.title, required this.type, required this.data});
+  AboutProjectItem(
+      {required this.text, this.title, required this.type, required this.data});
 }

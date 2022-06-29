@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
+import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/screens/announcements_detail/components/background.dart';
 import 'package:intl/intl.dart';
@@ -98,8 +99,23 @@ class _BodyState extends State<Body> {
           ),
           margin: EdgeInsets.only(top: 16.0, bottom: 11.0)),
       Container(
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          child: Html(data: widget.announcement.detailText ?? ''))
+        margin: EdgeInsets.symmetric(horizontal: 10),
+        child: Html(
+          data: widget.announcement.detailText ?? '',
+          onLinkTap: (
+            String? url,
+            RenderContext context,
+            Map<String, String> attributes,
+            _,
+          ) {
+            launchUrl(url!);
+          },
+          style: {
+            "a": Style(color: Colors.blue, textDecoration: TextDecoration.none),
+            "b": Style(fontWeight: FontWeight.normal)
+          },
+        ),
+      )
     ]));
   }
 }
