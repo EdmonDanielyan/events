@@ -33,8 +33,10 @@ import 'package:ink_mobile/screens/profile/profile_screen.dart';
 import 'package:ink_mobile/screens/service_list/service_list_screen.dart';
 import 'package:ink_mobile/screens/set_pin_code/set_pin_code_screen.dart';
 import 'package:ink_mobile/screens/social_package/content/accident_insurance.dart';
+import 'package:ink_mobile/screens/social_package/content/anniversary_bonus.dart';
 import 'package:ink_mobile/screens/social_package/content/children_rest.dart';
 import 'package:ink_mobile/screens/social_package/content/christmas_gifts.dart';
+import 'package:ink_mobile/screens/social_package/content/compensation_travel.dart';
 import 'package:ink_mobile/screens/social_package/content/financial_aid.dart';
 import 'package:ink_mobile/screens/social_package/content/recreational_activities.dart';
 import 'package:ink_mobile/screens/social_package/content/voluntary_medical_insurance.dart';
@@ -118,5 +120,7 @@ class MainRoutes {
         ),
     '/test': (BuildContext context) => TestScreen(),
     '/set_pin': (BuildContext context) => SetPinCodeScreen(),
+    '/anniversary_bonus': (BuildContext context) => AnniversaryBonus(),
+    '/compensation_travel': (BuildContext context) => CompensationTravel(),
   };
 }

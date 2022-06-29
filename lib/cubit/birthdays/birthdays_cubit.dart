@@ -25,6 +25,7 @@ class BirthdaysCubit extends Cubit<BirthdaysState> {
       emitSuccess(mapResponse.birthdaysToday, mapResponse.birthdaysOther);
     } on DioError catch (e) {
       final _errorHandler = DioErrorHandler(e: e);
+
       if (_errorHandler.isEmpty()) {
         emitEmpty();
         return;

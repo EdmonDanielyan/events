@@ -46,7 +46,7 @@ class DirectMessageListener extends Listener {
     final chat = chatsCubit.singleChatExists([oppositeUser, me]);
 
     if (chat != null) {
-      getIt<CachedUsersCubit>().updateUserById(oppositeUser, oppositeUser.id);
+      getIt<CachedUsersCubit>().removeAndAddUser(oppositeUser, oppositeUser.id);
       chatsCubit.updateChatById(
         chat.copyWith(
           id: chatId,

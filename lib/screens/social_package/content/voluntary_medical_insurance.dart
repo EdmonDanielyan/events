@@ -27,230 +27,136 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
                   launchUrl(url!);
                 },
                 data: '''
-                  <h1 align="center">Комплексное медицинское обслуживание</h1>
-                    <p>
-                     <span style="color: #40403b;">ООО «ИНК» в рамках системы ДМС сотрудничает со следующими страховыми компаниями: ООО СК «ВТБ Страхование», ПАО СК «Росгосстрах», АО «СОГАЗ» и СПАО «Ингосстрах». </span>
-                    </p>
-                    <p>
-                     <span style="color: #40403b;">Сотрудники, прошедшие испытательный срок, имеют возможность получить бесплатное медицинское обслуживание и консультации в частных и государственных медицинских учреждениях в следующих размерах: </span>
-                    </p>
-                    <p>
-                     <span style="color: #40403b;">- сотрудники категории А и В – по фактическим затратам; </span>
-                    </p>
-                    <p>
-                     <span style="color: #40403b;">- сотрудники категории С – до 30 000 рублей в календарный год; </span>
-                    </p>
-                    <p>
-                     <span style="color: #40403b;">- сотрудники категории D и E - до 20 000 рублей в календарный год. </span>
-                    </p>
-                    <p>
-                     <span style="color: #40403b;">Для получения медицинских услуг в рамках системы ДМС необходимо минимум за 2-3 дня до обращения в медучреждение написать заявление и направить его в группу по работе со страховыми компаниями. На основании Вашего заявления в лечебное учреждение будет направлено гарантийное письмо. Срок действия гарантийного письма составляет 1 месяц. </span>
-                    </p>
-                    <p>
-                     <span style="color: #40403b;">Сумму лимита можно использовать частями. </span>
-                    </p>
-                    <p>
-                     <b><span style="color: #40403b;">Как воспользоваться:</span></b><br><span style="color: #40403b;">Определить лимит - категории сотрудников, выбрать клинику (бланки заявлений, список санаториев, список лечебных учреждений размещены на корпоративном портале в разделе «Документы» -  </span><a style="color: #2b5e4a;" href="https://portal.irkutskoil.ru/documents/1163/">«Управление персоналом»</a><span style="color: #40403b;"> и на диске R (Общие документы/ДМС)), заполнить заявление. Оставить заявку на оформление или продление сроков гарантийного письма на ДМС можно:</span>
-                    </p>
-                    <p>
-                     <span style="color: #40403b;">&nbsp;</span>- через <b><a style="color: #2b5e4a;" href="https://portal.irkutskoil.ru/services/dms/">ИНК-Портал</a></b>
-                    </p>
-                    <p>
-                     <span style="color: #40403b;">- по электронной почте (</span><a style="color: #2b5e4a;" href="mailto:med@irkutskoil.ru">med@irkutskoil.ru</a><span style="color: #40403b;">),</span>
-                    </p>
-                    <p>
-                     <b><span style="color: #40403b;">К кому обратиться:</span></b><span style="color: #40403b;">&nbsp;</span>
-                    </p>
-                    <p>
-                     <span style="color: #40403b;">- ведущий специалист&nbsp;по работе со страховыми компаниями –&nbsp;Щеглова Елизавета Викторовна,&nbsp;тел. 1718,&nbsp;E-mail: </span><a style="color: #2b5e4a;" href="mailto:shcheglova_ev@irkutskoil.ru">shcheglova_ev@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-504, </span>
-                    </p>
-                    <p>
-                     <span style="color: #40403b;">- специалист по работе со страховыми компаниями – Николаева Ирина Ивановна, тел. 1421, </span><span style="color: #40403b;">E</span><span style="color: #40403b;">-</span><span style="color: #40403b;">mail</span><span style="color: #40403b;">: </span><a style="color: #2b5e4a;" href="mailto:nikolaeva_ii@irkutskoil.ru">nikolaeva_ii@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-504.</span>
-                    </p>
+<p style="background: white;">
+ <span style="color: #40403b;">ООО «ИНК» в рамках системы ДМС сотрудничает с страховой компанией: АО "СОГАЗ".</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Сотрудники, прошедшие испытательный срок, имеют возможность получить бесплатное медицинское обслуживание и консультации в частных и государственных медицинских учреждениях в следующих размерах:</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">- сотрудники категории А и В (высшие должностные лица, эксперты и руководители верхнего звена) – по фактическим затратам;</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">- сотрудники категории С (эксперты и руководители среднего звена) – до 30 000 рублей в календарный год;</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">- сотрудники категории D и E (эксперты и руководители нижнего звена, руководители, специалисты, служащие операционного звена, рабочие) – до 20 000 рублей в календарный год.</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Категорию должности можно уточнить в Положении о гарантиях и компенсациях.</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Для&nbsp;</span><b><span style="color: #7a0045;">получения медицинских услуг в рамках системы ДМС</span></b><span style="color: #40403b;">&nbsp;необходимо минимум за 2-3 дня до обращения в медучреждение написать заявление и направить его&nbsp;</span><a href="https://portal.irkutskoil.ru/services/dms/"><b><span style="color: #006654;">через ИНК-Портал</span></b></a><span style="color: #40403b;">&nbsp;либо в отдел медицинского страхования и договорной работы по электронной почте&nbsp;</span><a href="mailto:med@irkutskoil.ru"><span style="color: #006654;">med@irkutskoil.ru</span></a><span style="color: #40403b;">. В течение 1-3 рабочих дней с момента отправки заявления, направляется смс-сообщение на указанный в заявлении телефон о том, что гарантийное письмо направлено в медицинское учреждение.</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Срок действия гарантийного письма составляет 1 месяц.</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Сумму лимита можно использовать частями.</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Обращаем ваше внимание, что заявление на ДМС необходимо подавать заблаговременно, обработка заявления занимает 1-3 дня!&nbsp;&nbsp;</span>
+</p>
+ <span style="color: #40403b;">Фактические расходы по гарантийным письмам, известны через 2-3 месяца после окончания гарантийного письма.</span>&nbsp;&nbsp;<br>
+<p>
+ <a href="https://portal.irkutskoil.ru/services/dms/"><b><span style="color: #006654;">Отправить заявку на ДМС через портал</span></b></a><span style="color: #40403b;"> </span>
+</p>
+<p style="background: white;">
+ <b><span style="color: #7a0045;">По вопросам ДМС</span></b><span style="color: #40403b;">&nbsp;необходимо обращаться к начальнику отдела медицинского страхования и договорной работы&nbsp;</span><a href="https://portal.irkutskoil.ru/personal/?USER_ID=9073"><b><span style="color: #006654;">Щегловой Елизавете Викторовне</span></b></a><b><span style="color: #40403b;"> </span></b><span style="color: #40403b;">(тел.&nbsp;1718, каб. 203, БЦ «Альфа») или главному специалисту по работе со страховыми компаниями&nbsp;</span><a href="https://portal.irkutskoil.ru/personal/?USER_ID=15353"><b><span style="color: #006654;">Николаевой Ирине Ивановне</span></b></a><span style="color: #40403b;">&nbsp;(тел. 1421, каб. 203 БЦ «Альфа»).&nbsp;&nbsp;</span>
+</p>
+ <span style="color: #005951;"><b>Санаторно-курортное лечение и реабилитационно-восстановительное лечение (РВЛ)</b></span><br>
+ <br>
+ Чтобы воспользоваться санаторно-курортным лечением, вам необходимо заполнить заявление, указав наименование санатория, его адрес, даты проживания, категорию номера. Далее&nbsp;заявление передается на подпись непосредственному руководителю (ходатайствую, должность, ФИО, дата, подпись), а после отправляется/передается в Департамент охраны здоровья. Обращаем ваше внимание, что заявление на санаторно-курортное лечение необходимо подавать не позднее чем за 2 месяца (в пределах Иркутской области и г. Иркутска) и не позднее чем за 4-6 месяцев (за пределами Иркутской области и г. Иркутска) до предполагаемой даты начала лечения в санатории. Бронировать самостоятельно ничего не нужно.&nbsp;
+<p>
+	 Прием заявлений в санатории, расположенные в ином регионе нежели проживание сотрудника, только при предоставлении сертификата профилактической прививки от COVID-19, либо сертификат о перенесенном заболевании COVID-19 и с даты выздоровления прошло не более 6 месяцев.
+</p>
+<p>
+	 К заявлению обязательно необходимо приложить справку для получения путевки (форма № 070/у, оформляется у терапевта по месту жительства). Оригинал справки (форма № 070/у) отправляется/передается в Департамент охраны здоровья. Перед заездом в санаторий необходимо обратиться к терапевту и оформить санаторно-курортную карту (форма № 072/у) для прохождения лечения в санатории.
+</p>
+<p>
+	 Воспользоваться санаторно-курортным лечением (не просто отдых!) можно не ранее чем через 2 года, с момента фактического получения услуги, стаж работы в компании, более 2-х лет. Лимит на лечение 55 000 рублей. Длительность путевки на санаторно-курортное или реабилитационно-восстановительное лечение должна составлять 12 (Двенадцать) или более дней. Оплата за родственников производится за счет собственных средств.
+</p>
+<p>
+	 Заявления с подписью необходимо отправлять на адрес департамента охраны здоровья&nbsp;<a href="mailto:med@irkutskoil.ru">med@irkutskoil.ru</a>
+</p>
+<p>
+	 Бланки заявлений, список санаториев, список лечебных учреждений размещены на странице Департамента охраны здоровья на ИНК-Портале (на странице ниже)&nbsp;и на диске R.
+</p>
+<p>
+ <b><span style="color: #005951;">Список клиник</span></b><br>
+</p>
+ <span style="color: #006654;"><span style="color: #0000ff;"><a title="Список клиник и санаторно-курортных учреждений.xls" href="https://portal.irkutskoil.ru/upload/medialibrary/757/kd1gqadx521hz8sk1268i8fjexdkjyho/Spisok-klinik-i-sanatorno_kurortnykh-uchrezhdeniy.xls">Список клиник и санаторно-курортных учреждений</a></span></span><span style="color: #40403b;"><br>
+ <span style="color: #0000ff;"> </span><span style="color: #0000ff;"> </span><span style="color: #0000ff;"> </span></span><a href="https://portal.irkutskoil.ru/upload/medialibrary/6d9/Spisok-lechebnykh-uchrezhdenii_-Moskva.xlsx" title="Список лечебных учреждений_ Москва.xlsx"></a><a title="Список рекомендованных санаторно-курортных учреждений.xls" href="https://portal.irkutskoil.ru/upload/medialibrary/1fa/b2z0gapv9ak842k5u9buk6or7ohudssj/Spisok-rekomendovannykh-sanatorno_kurortnykh-uchrezhdeniy.xls"></a><a title="Список рекомендованных санаторно-курортных учреждений.xls" href="https://portal.irkutskoil.ru/upload/medialibrary/1fa/b2z0gapv9ak842k5u9buk6or7ohudssj/Spisok-rekomendovannykh-sanatorno_kurortnykh-uchrezhdeniy.xls">Список рекомендованных</a><a title="Список рекомендованных санаторно-курортных учреждений.xls" href="https://portal.irkutskoil.ru/upload/medialibrary/1fa/b2z0gapv9ak842k5u9buk6or7ohudssj/Spisok-rekomendovannykh-sanatorno_kurortnykh-uchrezhdeniy.xls"> </a><a title="Список рекомендованных санаторно-курортных учреждений.xls" href="https://portal.irkutskoil.ru/upload/medialibrary/1fa/b2z0gapv9ak842k5u9buk6or7ohudssj/Spisok-rekomendovannykh-sanatorno_kurortnykh-uchrezhdeniy.xls">санаторно-курортных учреждений</a><span style="color: #006654;"><a title="Список рекомендованных санаторно-курортных учреждений.xls" href="https://portal.irkutskoil.ru/upload/medialibrary/1fa/b2z0gapv9ak842k5u9buk6or7ohudssj/Spisok-rekomendovannykh-sanatorno_kurortnykh-uchrezhdeniy.xls"></a><a title="Список рекомендованных санаторно-курортных учреждений.xls" href="https://portal.irkutskoil.ru/upload/medialibrary/1fa/b2z0gapv9ak842k5u9buk6or7ohudssj/Spisok-rekomendovannykh-sanatorno_kurortnykh-uchrezhdeniy.xls"></a></span><a title="Список рекомендованных санаторно-курортных учреждений.xls" href="https://portal.irkutskoil.ru/upload/medialibrary/1fa/b2z0gapv9ak842k5u9buk6or7ohudssj/Spisok-rekomendovannykh-sanatorno_kurortnykh-uchrezhdeniy.xls"> </a><a title="Список рекомендованных санаторно-курортных учреждений.xls" href="https://portal.irkutskoil.ru/upload/medialibrary/1fa/b2z0gapv9ak842k5u9buk6or7ohudssj/Spisok-rekomendovannykh-sanatorno_kurortnykh-uchrezhdeniy.xls"> </a>
+<p>
+ <a title="Список рекомендованных санаторно-курортных учреждений.xls" href="https://portal.irkutskoil.ru/upload/medialibrary/1fa/b2z0gapv9ak842k5u9buk6or7ohudssj/Spisok-rekomendovannykh-sanatorno_kurortnykh-uchrezhdeniy.xls"> </a>
+</p>
+ <a title="Список рекомендованных санаторно-курортных учреждений.xls" href="https://portal.irkutskoil.ru/upload/medialibrary/1fa/b2z0gapv9ak842k5u9buk6or7ohudssj/Spisok-rekomendovannykh-sanatorno_kurortnykh-uchrezhdeniy.xls"> </a>
+<p>
+</p>
+<p>
+ <b><span style="color: #005951;">Телемедицина</span></b>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Телемедицина - это медицинская помощь в удобном формате, возможность обратиться к врачам онлайн, где бы вы ни находились.</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;"><a title="Программа Телемедицина.docx" href="https://portal.irkutskoil.ru/upload/medialibrary/447/h7qtsm2civwpsttuly158i4zj7uwjsfj/Programma-Telemeditsina.docx">Программа Телемедицина</a></span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;"> </span>
+</p>
+<p style="background: white;">
+ <b><span style="color: #006654;">Порядок проведения и график консультации:</span></b>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Телемедицинские консультации врачами-консультантами по: терапии, кардиологии, гастроэнтерологии, эндокринологии, неврологии, гинекологии, ЛОР-врача, офтальмологии, урологии, хирургии, дерматовенерологии, травматологии, ортопедии, онкологии, аллергическим заболеваниям, COVID-19, диетологии, психологии проводятся в онлайн-режиме, круглосуточно, других специалистов – по предварительной записи.</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Для получения медицинской помощи необходимо скачать на свое мобильное устройство приложение АО «СОГАЗ-Телемед» c AppStore или Google Play. Зарегистрироваться в мобильном приложении. </span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">В случае возникновения проблем с регистрацией и получением помощи в рамках программы необходимо обратиться в Федеральный контактный центр СОГАЗ по телефону горячей линии 8 (800) 333-0-888.</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;"> </span>
+</p>
+<p>
+ <span style="color: #006654;"><a title="Программа Телемедицина.docx" href="https://portal.irkutskoil.ru/upload/medialibrary/df5/xzht90d3yrgj2lsi4o6kuzew5uvxn9zi/Programma-Telemeditsina.docx">Программа Телемедицина</a></span>
+</p>
+<p>
+ <span style="color: #006654;"><a title="Памятка по Телемедицине.docx" href="https://portal.irkutskoil.ru/upload/medialibrary/8a4/7xwhbhit2mu9t2pzqx563nv5lyi5eelu/Pamyatka-po-Telemeditsine.docx">Памятка по телемедицине</a></span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Все сотрудники компании, трудоустроенные до 26 мая 2022 года, застрахованы от укуса клещом в АО «АльфаСтрахование» по программе «Альфа Клещ».</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Договор страхования действует с 05 марта 2022 г. по 04 марта 2023 г.</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Страховая сумма на 1 застрахованное лицо – 1 000 000 руб.</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Территория страхования – Российская Федерация.</span>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;">Период страхового покрытия – 24 часа в сутки.</span>
+</p>
+<p style="background: white;">
+ <b><span style="color: #40403b;">Документы&nbsp;</span></b>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;"><span style="color: #006654;"><a title="ПАМЯТКА ПРИ УКУСЕ КЛЕЩОМ.docx" href="https://portal.irkutskoil.ru/upload/medialibrary/42b/fw8dwgnjpr94oyupywasmd36vbmjeiwu/PAMYATKA-PRI-UKUSE-KLESHCHOM.docx">Памятка при укусе клещ</a><a title="ПАМЯТКА ПРИ УКУСЕ КЛЕЩОМ.docx" href="https://portal.irkutskoil.ru/upload/medialibrary/42b/fw8dwgnjpr94oyupywasmd36vbmjeiwu/PAMYATKA-PRI-UKUSE-KLESHCHOM.docx">а</a></span></span>
+</p>
+<p>
+</p>
+<p style="background: white;">
+ <span style="color: #40403b;"><span style="color: #006654;"><a title="Программа АльфаКлещ.doc" href="https://portal.irkutskoil.ru/upload/medialibrary/f16/mgvn4k4eb38kf9xjcpj4snx83381v36m/Programma-AlfaKleshch.doc">Приложение 1 Программа страхования</a></span></span>
+</p>
+<p>
+ <a href="https://portal.irkutskoil.ru/upload/medialibrary/d42/d428701873c4da4b101c075d5b54731c.pdf" title="Программа АльфаТелемед ВИП.pdf"></a>
+</p>
                 '''),
           ),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                    bottom: BorderSide(color: Color(0xFFE5E5E5)),
-                    top: BorderSide(color: Color(0xFFE5E5E5)))),
-            child: Html(
-                onLinkTap: (String? url, RenderContext context,
-                    Map<String, String> attributes, dom.Element? element) {
-                  launchUrl(url!);
-                },
-                data: '''
-                  <h1 align="center">Санаторно-курортное и реабилитационно-восстановительное лечение</h1>
-                    <p>
-                    <span style="color: #40403b;">Сотрудники, проработавшие в компании более 2 лет, имеют возможность пройти курс санаторно-курортного и реабилитационно-восстановительного лечения в оздоровительных учреждениях на территории Российской Федерации. </span>
-                    </p>
-                    <p>
-                    <span style="color: #40403b;">Воспользоваться данной льготой сотрудник может один раз в 2 года с момента фактического получения услуги. Лимит стоимости путевки составляет 55&nbsp;000 рублей. </span>
-                    </p>
-                    <p>
-                    <span style="color: #40403b;">Для получения направления необходимо минимум за 2 - 3 месяца до предполагаемой даты заезда в санаторий написать заявление, подписать ходатайство у непосредственного руководителя (ходатайствую, должность, ФИО, дата, подпись) и направить его в группу по работе со страховыми компаниями. </span>
-                    </p>
-                    <p>
-                    <span style="color: #40403b;">К заявлению обязательно необходимо приложить справку для получения путевки (форма № 070/у, оформляется у терапевта), а перед заездом в санаторий необходимо обратиться к терапевту и оформить санаторно-курортную карту. </span>
-                    </p>
-                    <p>
-                    <b><span style="color: #40403b;">Как воспользоваться:</span></b><span style="color: #40403b;"> выбрать санаторий, написать заявление (бланки заявлений, список санаториев, список лечебных учреждений размещены на корпоративном портале в разделе «Документы» - «Управление персоналом» (</span><a style="color: #2b5e4a;" href="https://portal.irkutskoil.ru/documents/1163/">https://portal.irkutskoil.ru/documents/1163/</a><span style="color: #40403b;">) и на диске R (Общие документы/ДМС)), подписать ходатайство у непосредственного руководителя (ходатайствую, должность, ФИО, дата, подпись), получить у терапевта справку для оформления&nbsp;путевки – формы № 070/у (передать оригинал в группу по работе со страховыми компаниями) и санаторно-курортную карту (взять с собой в санаторий). </span>
-                    </p>
-                    <p>
-                    <b><span style="color: #40403b;">К кому обратиться:</span></b><span style="color: #40403b;">&nbsp; </span>
-                    </p>
-                    <p>
-                    <span style="color: #40403b;">- ведущий специалист&nbsp;по работе со страховыми компаниями –&nbsp;Щеглова Елизавета Викторовна,&nbsp;тел. 1718,&nbsp;E-mail: </span><a style="color: #2b5e4a;"  href="mailto:shcheglova_ev@irkutskoil.ru">shcheglova_ev@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-504, </span>
-                    </p>
-                    <p>
-                    <span style="color: #40403b;">- специалист по работе со страховыми компаниями – Николаева Ирина Ивановна, тел. 1421, </span><span style="color: #40403b;">E</span><span style="color: #40403b;">-</span><span style="color: #40403b;">mail</span><span style="color: #40403b;">: </span><a style="color: #2b5e4a;"  href="mailto:nikolaeva_ii@irkutskoil.ru">nikolaeva_ii@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-504. </span>
-                    </p>
-                  '''),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                    bottom: BorderSide(color: Color(0xFFE5E5E5)),
-                    top: BorderSide(color: Color(0xFFE5E5E5)))),
-            child: Html(
-              onLinkTap: (String? url, RenderContext context,
-                  Map<String, String> attributes, dom.Element? element) {
-                launchUrl(url!);
-              },
-              data: '''
-                  <h1 align="center">Вакцинация</h1>
-                  <p>
-                  <span style="color: #40403b;">Ежегодно в компании проходит вакцинация сотрудников: </span>
-                  </p>
-                  <p>
-                  <span style="color: #40403b;">- в осенний период от гриппа (октябрь); </span>
-                  </p>
-                  <p>
-                  <span style="color: #40403b;">- в весенний период от клещевого энцефалита (март). </span>
-                  </p>
-                  <p>
-                  <span style="color: #40403b;">Сотрудники офиса г. Иркутск проходят вакцинацию в медицинском кабинете Б-505, дата и время вакцинации&nbsp;сообщается предварительно специалистом группы по работе со страховыми компаниями.</span>
-                  </p>
-                  <p>
-                  <span style="color: #40403b;">Сотрудники, работающие вахтовым методом, проходят вакцинацию в медицинских кабинетах на месторождениях Общества. </span>
-                  </p>
-                  <p>
-                  <b><span style="color: #40403b;">К кому обратиться: </span></b>
-                  </p>
-                  <p>
-                  <span style="color: #40403b;">- ведущий специалист по работе со страховыми компаниями – Щеглова Елизавета Викторовна, тел. 1718, E-mail: </span><a style="color: #2b5e4a;" href="mailto:shcheglova_ev@irkutskoil.ru">shcheglova_ev@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-504, </span>
-                  </p>
-                  <p>
-                  <span style="color: #40403b;">- специалист по работе со страховыми компаниями – Николаева Ирина Ивановна, тел. 1421, E-mail: </span><a style="color: #2b5e4a;" href="mailto:nikolaeva_ii@irkutskoil.ru">nikolaeva_ii@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-504. </span>
-                  </p>
-                  ''',
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                    bottom: BorderSide(color: Color(0xFFE5E5E5)),
-                    top: BorderSide(color: Color(0xFFE5E5E5)))),
-            child: Html(
-              onLinkTap: (String? url, RenderContext context,
-                  Map<String, String> attributes, dom.Element? element) {
-                launchUrl(url!);
-              },
-              data: '''
-                  <h1 align="center">Страхование сотрудников от несчастных случаев</h1>
-                  <p>
-                  Все сотрудники компании застрахованы от несчастных случаев в размере, определенном договором страхования от несчастных случаев (Договор 2020-2021 гг. с ПАО СК &nbsp;«Росгосстрах» № НСК81-Д-63809000-000081-20 от «14» марта 2020 г.)
-                  </p>
-                  <p>
-                  Договор страхования действуют с 15 марта&nbsp;2020 г. по 14&nbsp;марта 2021 г.
-                  </p>
-                  <p>
-                  Территория страхования — весь мир.
-                  </p>
-                  <p>
-                  Период страхового покрытия - 24 часа в сутки (круглосуточно).
-                  </p>
-                  <p>
-                  </p>
-                  <p>
-                  Страховая сумма на 1 застрахованное лицо –&nbsp;600&nbsp;000 рублей.&nbsp;&nbsp;
-                  </p>
-                  <p>
-                  <b><span style="color: #40403b;">Порядок действий при наступлении события, имеющего признаки страхового случая:</span></b>
-                  </p>
-                  <p>
-                  1.&nbsp;&nbsp;&nbsp; Ознакомиться с <a style="color: #2b5e4a;" href="https://portal.irkutskoil.ru/upload/medialibrary/4db/4db0bedbb0859cb4c8d9c9729035f30b.docx%20" title="Список документов.docx"><b><span style="color: #00736a;"><u>перечнем документов</u></span></b></a>, предоставляемых в ПАО СК «Росгосстрах» для принятия решения о страховой выплате;&nbsp;
-                  </p>
-                  <p>
-                  2.&nbsp;&nbsp;&nbsp; Заполнить <a style="color: #2b5e4a;" href="https://portal.irkutskoil.ru/upload/medialibrary/2cd/2cdf468ce2e738964dd227df2c54aa67.doc%20" title="Форма заявления на страховую выплату.doc"><b><span style="color: #00736a;"><u>заявление</u></span></b></a><b>&nbsp;</b> на&nbsp; страховую выплату;
-                  </p>
-                  <p>
-                  3.&nbsp;&nbsp;&nbsp; Собрать и передать пакет документов:
-                  </p>
-                  <p>
-                  -в центр урегулирования убытков по личному страхованию Иркутского филиала&nbsp; г. Иркутска, ул. Красногвардейская, 23
-                  </p>
-                  <p>
-                  Часы работы отдела урегулирования убытков филиала– пн.-пт. с 09.00 до 18.00, обед с 13:00 до 14:00, обед с 13.00 до 14.00 сб.- вс. - выходные.
-                  </p>
-                  <p>
-                  - отправить его почтой России в ближайший Филиал ПАО СК Росгосстрах в Иркутской области на адрес г. Иркутск, ул. Рабочего Штаба, 9.<br>
-                  <span style="color: #40403b;"><br>
-                  </span><b>Уточнить перечень документов, предоставляемых в страховую компанию для принятия решения о страховой выплате, Вы можете по телефонам:</b>
-                  </p>
-                  <p>
-                  - бесплатной горячей линии 8&nbsp;800&nbsp;200 51 11 (звонок бесплатный);
-                  </p>
-                  <p>
-                  </p>
-                  <p>
-                  - Филиал ПАО СК Росгосстрах в Иркутской области 8 (3952) 210-100
-                  </p>
-                  <p>
-                  <b><span style="color: #40403b;">К кому обратиться: </span></b>
-                  </p>
-                  <p>
-                  <span style="color: #40403b;">- ведущий специалист по работе со страховыми компаниями – Щеглова Елизавета Викторовна, тел. 1718, E-mail: </span><a style="color: #2b5e4a;" href="mailto:shcheglova_ev@irkutskoil.ru">shcheglova_ev@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-504, </span>
-                  </p>
-                  <p>
-                  <span style="color: #40403b;">- специалист по работе со страховыми компаниями – Николаева Ирина Ивановна, тел. 1421, E-mail: </span><a style="color: #2b5e4a;" href="mailto:nikolaeva_ii@irkutskoil.ru">nikolaeva_ii@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-504.</span>
-                  </p>
-                  ''',
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(top: BorderSide(color: Color(0xFFE5E5E5)))),
-            child: Html(
-              onLinkTap: (String? url, RenderContext context,
-                  Map<String, String> attributes, dom.Element? element) {
-                launchUrl(url!);
-              },
-              data: '''
-                  <h1 align="center">Корпоративный врач</h1>
-                  <p>
-                  <span style="color: #40403b;">В офисе г. Иркутск работает корпоративный врач – Карцева Оксана Владимировна, тел. медицинского кабинета 2119,</span> <span style="color: #40403b;">E-mail: </span><a style="color: #2b5e4a;" href="mailto:kartseva_ov@irkutskoil.ru">kartseva_ov@irkutskoil.ru</a><span style="color: #40403b;">, каб. Б-505.</span>
-                  </p>
-                  <p>
-                  <span style="color: #40403b;">Все сотрудники компании имеют возможность получить бесплатную консультацию врача. </span>
-                  </p>
-                  <p>
-                  <span style="color: #40403b;">Врач принимает в будние дни с 08:30 до 17:30.</span>
-                  </p>
-                  <p>
-                  &nbsp;
-                  </p>
-                  ''',
-            ),
-          )
         ],
       )),
       bottomNavigationBar: const NewBottomNavBar(),

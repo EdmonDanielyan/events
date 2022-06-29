@@ -55,7 +55,10 @@ class _AuthButtonsState extends State<AuthButtons> {
       }
     }).onError((FormatException e, s) {
       logger.severe('Error during auth', e, s);
-      SimpleCustomSnackbar(context: context, txt: e.message);
+      SimpleCustomSnackbar(
+          context: context,
+          txt: e.message,
+          duration: const Duration(seconds: 10));
     });
   }
 

@@ -16,6 +16,13 @@ class CachedUsersCubit extends HydratedCubit<CachedUsersState> {
   List<User> get users => state.users;
   DateTime get lastCached => state.lastCached;
 
+  void clean() {
+    emit(CachedUsersState(
+      users: [],
+      lastCached: DateTime(2000, 9, 7),
+    ));
+  }
+
   User? getUser(int userId) {
     final index = users.indexWhere((element) => element.id == userId);
 

@@ -68,18 +68,6 @@ class HoverMessageCard extends StatelessWidget {
       blurBackground: true,
       child: child,
       items: [
-        if (onGoTo != null) ...[
-          PopupMenuItem(
-            value: _goTo,
-            child: my.MenuItem(
-              value: "Перейти",
-              icon: Icon(
-                CupertinoIcons.profile_circled,
-                size: iconSize,
-              ),
-            ),
-          ),
-        ],
         PopupMenuItem(
           value: _respond,
           child: my.MenuItem(
@@ -90,6 +78,18 @@ class HoverMessageCard extends StatelessWidget {
             ),
           ),
         ),
+        if (onEdit != null) ...[
+          PopupMenuItem(
+            value: _edit,
+            child: my.MenuItem(
+              value: "Редактировать",
+              icon: Icon(
+                CupertinoIcons.pencil,
+                size: iconSize,
+              ),
+            ),
+          ),
+        ],
         PopupMenuItem(
           value: _copy,
           child: my.MenuItem(
@@ -112,13 +112,13 @@ class HoverMessageCard extends StatelessWidget {
             ),
           ),
         ],
-        if (onEdit != null) ...[
+        if (onGoTo != null) ...[
           PopupMenuItem(
-            value: _edit,
+            value: _goTo,
             child: my.MenuItem(
-              value: "Редактировать",
+              value: "Перейти",
               icon: Icon(
-                CupertinoIcons.pencil,
+                CupertinoIcons.profile_circled,
                 size: iconSize,
               ),
             ),

@@ -23,7 +23,18 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
   }
 
   void toSet() {
-    _updateChats(chats.toSet().toList());
+    if (chats.isNotEmpty) {
+      final _chatIds = Set<int>();
+      List<Chat> newChats = [];
+      for (final chat in chats) {
+        if (!_chatIds.contains(chat.id)) {
+          newChats.add(chat);
+        }
+        _chatIds.add(chat.id);
+      }
+
+      _updateChats(newChats);
+    }
   }
 
   void fixChats() {
@@ -75,6 +86,7 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
   void addChats(List<Chat> items) {
     final newChats = List<Chat>.from(chats)..addAll(items);
     emit(state.copyWith(chats: newChats));
+    toSet();
   }
 
   void removeChatById(int id) {

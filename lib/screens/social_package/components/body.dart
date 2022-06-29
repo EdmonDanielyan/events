@@ -26,8 +26,17 @@ class Body extends StatelessWidget {
       SocialPackageListItem(
           title: _strings.christmasGifts, link: '/christmas_gifts'),
       SocialPackageListItem(
-          title: _strings.recreationalActivities,
-          link: '/recreational_activities')
+        title: _strings.recreationalActivities,
+        link: '/recreational_activities',
+      ),
+      SocialPackageListItem(
+        title: "Премирование сотрудников",
+        link: '/anniversary_bonus',
+      ),
+      SocialPackageListItem(
+        title: "Компенсация проезда к месту отдыха",
+        link: '/compensation_travel',
+      ),
     ];
 
     return Column(
@@ -42,21 +51,22 @@ class Body extends StatelessWidget {
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
-        Container(
-            padding: EdgeInsets.symmetric(horizontal: _horizontalPadding),
-            color: Colors.white,
-            width: size.width,
-            height: 450,
-            child: ListView.separated(
-              separatorBuilder: (context, index) {
-                return Divider(color: Colors.grey);
-              },
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                return SocialPackageListElement(
-                    title: items[index].title, link: items[index].link);
-              },
-            ))
+        Expanded(
+          child: Container(
+              padding: EdgeInsets.symmetric(horizontal: _horizontalPadding),
+              color: Colors.white,
+              width: size.width,
+              child: ListView.separated(
+                separatorBuilder: (context, index) {
+                  return Divider(color: Colors.grey);
+                },
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  return SocialPackageListElement(
+                      title: items[index].title, link: items[index].link);
+                },
+              )),
+        )
       ],
     );
   }

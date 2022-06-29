@@ -46,15 +46,23 @@ class _HeaderState extends State<Header> {
 
   @override
   void dispose() {
-    _stopAllVideos();
+    _disposeAllVideos();
 
     super.dispose();
+  }
+
+  void _disposeAllVideos() {
+    if (flickManager.isNotEmpty) {
+      for (final video in flickManager) {
+        video.dispose();
+      }
+    }
   }
 
   void _stopAllVideos() {
     if (flickManager.isNotEmpty) {
       for (final video in flickManager) {
-        video.dispose();
+        video.flickControlManager?.pause();
       }
     }
   }
@@ -69,9 +77,9 @@ class _HeaderState extends State<Header> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> images = getImagesContainer(widget.imageLinks);
-    List<Widget> slider = videoWidgets;
-    slider.addAll(images);
+    List<Widget> slider = List<Widget>.from(videoWidgets)
+      ..addAll(getImagesContainer(widget.imageLinks))
+      ..toSet();
 
     return Stack(
       children: [
@@ -82,6 +90,7 @@ class _HeaderState extends State<Header> {
                 setState(() {
                   setSliderIndex(index);
                 });
+                _stopAllVideos();
               },
               scrollDirection: Axis.horizontal,
               children: slider,
@@ -103,18 +112,20 @@ class _HeaderState extends State<Header> {
           ),
         ],
         Positioned.fill(
-            child: Align(
-                alignment: AlignmentDirectional(-1.1, -0.7),
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: SvgPicture.asset(
-                    IconLinks.CLOSE_BUTTON_SVG_LINK,
-                    width: 40,
-                    height: 40,
-                  ),
-                ))),
+          child: Align(
+            alignment: AlignmentDirectional(-1.1, -0.7),
+            child: MaterialButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: SvgPicture.asset(
+                IconLinks.CLOSE_BUTTON_SVG_LINK,
+                width: 40,
+                height: 40,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

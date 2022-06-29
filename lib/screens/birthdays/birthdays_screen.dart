@@ -7,14 +7,39 @@ import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart
 import 'package:ink_mobile/cubit/birthdays/birthdays_cubit.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
+import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_other_days_element.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_today_element.dart';
+import 'package:ink_mobile/setup.dart';
 
 class BirthdaysScreen extends StatelessWidget {
   final BirthdaysCubit birthdaysCubit;
   const BirthdaysScreen({Key? key, required this.birthdaysCubit})
       : super(key: key);
+
+  void _setUsersToCache(BirthdaysState state) {
+    List<User> users = [];
+    if (state.birthdaysOther != null) {
+      final _others = _birthdaysToUsers(state.birthdaysOther!);
+      users.addAll(_others);
+    }
+
+    if (state.birthdaysToday != null) {
+      final _today = _birthdaysToUsers(state.birthdaysToday!);
+      users.addAll(_today);
+    }
+
+    getIt<CachedUsersCubit>().addUsers(users);
+  }
+
+  List<User> _birthdaysToUsers(List<BirthdayData> birthdays) {
+    return birthdays
+        .map((e) =>
+            User(id: e.id, name: e.name ?? "", avatarUrl: e.pathToAvatar ?? ""))
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +49,12 @@ class BirthdaysScreen extends StatelessWidget {
       appBar: InkAppBarWithText(
         title: _strings.birthdays,
       ),
-      body: BlocBuilder<BirthdaysCubit, BirthdaysState>(
+      body: BlocConsumer<BirthdaysCubit, BirthdaysState>(
+        listener: (context, state) {
+          if (state.type == BirthdaysStateType.LOADED) {
+            _setUsersToCache(state);
+          }
+        },
         bloc: birthdaysCubit,
         builder: (context, state) {
           switch (state.type) {

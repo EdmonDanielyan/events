@@ -38,7 +38,7 @@ class Body extends StatelessWidget {
                 id: state.data!.id,
                 name: state.data!.name ?? "",
                 avatarUrl: state.data!.pathToAvatar ?? "");
-            getIt<CachedUsersCubit>().updateUserById(user, user.id);
+            getIt<CachedUsersCubit>().removeAndAddUser(user, user.id);
           }
         },
         bloc: userCubit,

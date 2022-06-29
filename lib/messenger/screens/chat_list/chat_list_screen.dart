@@ -131,6 +131,8 @@ class _ChatListState extends State<ChatList> {
                           ? hiddenchatsCubit.filterChats(searchState.items)
                           : hiddenchatsCubit.filterChats(state.chats);
 
+                      _chats = _chats.toSet().toList();
+
                       if (_chats.isEmpty) {
                         return EmptyChats(
                             title: isSearchNotEmpty
