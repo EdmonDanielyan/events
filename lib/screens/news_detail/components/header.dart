@@ -35,7 +35,12 @@ class _HeaderState extends State<Header> {
             link,
           );
           final _controller = BetterPlayerController(
-            BetterPlayerConfiguration(),
+            BetterPlayerConfiguration(
+              controlsConfiguration: BetterPlayerControlsConfiguration(
+                playerTheme: BetterPlayerTheme.material,
+                enableSkips: false,
+              ),
+            ),
             betterPlayerDataSource: betterPlayerDataSource,
           );
           betterPlayerControllers.add(_controller);

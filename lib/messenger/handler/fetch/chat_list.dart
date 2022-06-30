@@ -1,4 +1,5 @@
 import 'package:ink_mobile/messenger/api/services/chat/get_list.dart';
+import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/setup.dart';
 
@@ -15,6 +16,9 @@ class FetchChatList {
           successCallback!(chats);
         }
         _subscribeToChats(mProvider, chats);
+        if (chats.isNotEmpty) {
+          getIt<CachedChatsCubit>().leaveOnlyChatsWithids(chats);
+        }
       },
     ).call();
   }

@@ -151,6 +151,8 @@ class _ChatListState extends State<ChatList> {
                         return bM.compareTo(aM);
                       });
 
+                      widget.cubit.setVisibleChats(_chats);
+
                       return ScrollablePositionedList.builder(
                         itemCount: _chats.length,
                         itemScrollController: _controller,
@@ -158,9 +160,11 @@ class _ChatListState extends State<ChatList> {
                         itemBuilder: (context, index) {
                           final _currentChat = _chats[index];
 
+                          final _notReadMsgs =
+                              cubit.notReadMsgsOfChat(_currentChat.id);
+
                           return ChatCardWrapper(
-                            notReadMsgs:
-                                cubit.notReadMsgsOfChat(_currentChat.id),
+                            notReadMsgs: _notReadMsgs,
                             highlightValue: searchState.value,
                             cachedChatsCubit: cubit,
                             chat: _currentChat,
