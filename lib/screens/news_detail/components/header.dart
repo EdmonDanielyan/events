@@ -1,4 +1,5 @@
 import 'package:better_player/better_player.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
@@ -6,7 +7,6 @@ import 'package:ink_mobile/components/video_player/video_player.dart';
 import 'package:ink_mobile/constants/aseets.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class Header extends StatefulWidget {
   final List<String>? imageLinks;
@@ -40,6 +40,7 @@ class _HeaderState extends State<Header> {
                 playerTheme: BetterPlayerTheme.material,
                 enableSkips: false,
               ),
+              fit: BoxFit.contain,
             ),
             betterPlayerDataSource: betterPlayerDataSource,
           );
@@ -146,28 +147,38 @@ class _HeaderState extends State<Header> {
       images.forEach((image) {
         imagesContainer.add(Stack(
           children: [
-            Shimmer.fromColors(
-              baseColor: Colors.grey,
-              highlightColor: Colors.grey.withOpacity(0.2),
-              child: Container(
-                  height: 300,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.black),
+            CachedNetworkImage(
+              imageUrl: image,
+              placeholder: (context, _) {
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey,
+                  highlightColor: Colors.grey.withOpacity(0.2),
+                  child: Container(
+                    height: 300,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.black,
+                  ),
+                );
+              },
+              imageBuilder: (context, imageProvider) {
+                return Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                );
+              },
+              errorWidget: (context, _, __) {
+                return Image.asset(
+                  DEFAULT_PREVIEW_PICTURE_LINK,
+                  fit: BoxFit.fitWidth,
+                  colorBlendMode: BlendMode.darken,
+                  color: Colors.black.withOpacity(0.15),
+                );
+              },
             ),
-            FadeInImage.memoryNetwork(
-                height: 300,
-                fit: BoxFit.fill,
-                fadeInDuration: Duration(milliseconds: 300),
-                placeholder: kTransparentImage,
-                image: image,
-                imageErrorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    DEFAULT_PREVIEW_PICTURE_LINK,
-                    fit: BoxFit.fill,
-                    colorBlendMode: BlendMode.darken,
-                    color: Colors.black.withOpacity(0.15),
-                  );
-                }),
           ],
         ));
       });
