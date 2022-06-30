@@ -91,6 +91,7 @@ class _HeaderState extends State<Header> {
       children: [
         Container(
           height: 300,
+          color: Colors.black,
           child: PageView(
             onPageChanged: (index) {
               setState(() {
