@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_logs/flutter_logs.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -9,7 +10,7 @@ class CustomLogger {
   static final _globalLogger = logging.Logger('Messenger');
   final logger = Logger();
 
-  bool get logEnabled => true;
+  bool get logEnabled => kDebugMode;
 
   CustomLogger() {
     _exportListener();

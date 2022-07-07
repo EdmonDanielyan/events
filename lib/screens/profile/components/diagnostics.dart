@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/core/logging/send_log.dart';
@@ -53,22 +54,25 @@ class _DiagnosticsState extends State<Diagnostics> {
                     onTap: () =>
                         launchUrl('https://portal.irkutskoil.ru/login/report/'),
                   )),
-              Container(
-                decoration: BoxDecoration(
+              if (kDebugMode) ...[
+                Container(
+                  decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border(
                       top: BorderSide(color: Colors.grey.shade400, width: 0.5),
                       bottom:
                           BorderSide(color: Colors.grey.shade400, width: 0.5),
-                    )),
-                width: size.width,
-                child: ListTile(
-                  title: Text("Информация о работе приложения"),
-                  subtitle: Text("Отправить разработчикам"),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () => sendErrorLog(widget.logFile),
+                    ),
+                  ),
+                  width: size.width,
+                  child: ListTile(
+                    title: Text("Информация о работе приложения"),
+                    subtitle: Text("Отправить разработчикам"),
+                    trailing: Icon(Icons.arrow_forward_ios),
+                    onTap: () => sendErrorLog(widget.logFile),
+                  ),
                 ),
-              ),
+              ],
             ],
           )
         ],

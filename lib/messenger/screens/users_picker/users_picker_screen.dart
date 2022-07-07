@@ -109,7 +109,10 @@ class _UsersPickerScreenState extends State<UsersPickerScreen> {
                               if (usersState.isNotEmpty) {
                                 return Padding(
                                   padding: const EdgeInsets.only(left: 15.0),
-                                  child: UsersPickerList(users: usersState),
+                                  child: UsersPickerList(
+                                    users: usersState,
+                                    onSelect: _onSelect,
+                                  ),
                                 );
                               }
 

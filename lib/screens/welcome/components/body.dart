@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/core/logging/send_log.dart';
@@ -136,12 +137,14 @@ class _BodyState extends State<Body> {
                             TextStyle(color: Colors.grey[400], fontSize: 13.0),
                       ),
                     ),
-                    Align(
-                        alignment: Alignment.centerRight,
-                        child: IconButton(
-                            onPressed: () =>
-                                sendErrorLog(getIt(instanceName: "logFile")),
-                            icon: Icon(Icons.bug_report)))
+                    if (kDebugMode) ...[
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: IconButton(
+                              onPressed: () =>
+                                  sendErrorLog(getIt(instanceName: "logFile")),
+                              icon: Icon(Icons.bug_report)))
+                    ],
                   ],
                 ),
               ],

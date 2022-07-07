@@ -22,17 +22,22 @@ class UserPickerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:
-          const EdgeInsets.only(top: 3.0, bottom: 3.0, left: 15.0, right: 5.0),
-      child: ParticipantCard(
-        user: user,
-        trailingWidget: UserPickerRadio(
-          enabled: enabled,
-          onTap: (enabled) => onSelect(user, enabled),
+    return InkWell(
+      onTap: () {
+        onSelect(user, !enabled);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(
+            top: 3.0, bottom: 3.0, left: 15.0, right: 5.0),
+        child: ParticipantCard(
+          user: user,
+          trailingWidget: UserPickerRadio(
+            enabled: enabled,
+            onTap: (enabled) => onSelect(user, enabled),
+          ),
+          onlineCubit: onlineCubit,
+          cachedChatsCubit: cachedChatsCubit,
         ),
-        onlineCubit: onlineCubit,
-        cachedChatsCubit: cachedChatsCubit,
       ),
     );
   }

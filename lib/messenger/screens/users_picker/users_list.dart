@@ -4,7 +4,9 @@ import '../../model/user.dart';
 
 class UsersPickerList extends StatefulWidget {
   final List<User> users;
-  const UsersPickerList({Key? key, required this.users}) : super(key: key);
+  final void Function(User, bool) onSelect;
+  const UsersPickerList({Key? key, required this.users, required this.onSelect})
+      : super(key: key);
 
   @override
   State<UsersPickerList> createState() => _UsersPickerListState();
@@ -29,11 +31,31 @@ class _UsersPickerListState extends State<UsersPickerList> {
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.only(right: 5.0),
-              child: CachedCircleAvatar(
-                url: widget.users[index].avatarUrl,
-                name: widget.users[index].name,
-                avatarHeight: 45,
-                avatarWidth: 45,
+              child: Stack(
+                children: [
+                  CachedCircleAvatar(
+                    url: widget.users[index].avatarUrl,
+                    name: widget.users[index].name,
+                    avatarHeight: 45,
+                    avatarWidth: 45,
+                  ),
+                  Positioned(
+                    child: InkWell(
+                      onTap: () {
+                        widget.onSelect(widget.users[index], false);
+                      },
+                      child: Container(
+                        color: Colors.red,
+                        child: Icon(
+                          Icons.close,
+                          size: 14.0,
+                        ),
+                      ),
+                    ),
+                    right: 0,
+                    bottom: 15,
+                  ),
+                ],
               ),
             );
           },

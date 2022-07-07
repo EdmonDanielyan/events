@@ -1,9 +1,14 @@
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
+import 'package:flutter/foundation.dart';
 import 'package:share_plus/share_plus.dart';
 
 Future<void> sendErrorLog(String filePath) async {
+  if (!kDebugMode) {
+    return;
+  }
+
   var _file = File(filePath);
   var fileName = filePath.split("/").last;
   var directory = _file.parent;
@@ -20,7 +25,9 @@ Future<void> sendErrorLog(String filePath) async {
   encoder.addFile(_file);
   encoder.close();
   if (zipFile.existsSync()) {
-    await
-      Share.shareFiles([zipPath], text: 'Send Application log',subject: zipFileName, mimeTypes: ['application/zip']);
+    await Share.shareFiles([zipPath],
+        text: 'Send Application log',
+        subject: zipFileName,
+        mimeTypes: ['application/zip']);
   }
 }

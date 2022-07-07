@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/cached_avatar/cached_avatar.dart';
 import 'package:ink_mobile/messenger/components/selectable/search_selected.dart';
 import 'package:ink_mobile/messenger/components/selectable/selectable.dart';
+import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
@@ -73,11 +74,14 @@ class MessageCard extends StatelessWidget {
                       cachedUsersCubit: cachedUsersCubit,
                       userId: message.owner.id,
                       builder: (context, state, user) {
-                        return CachedCircleAvatar(
-                          url: user?.avatarUrl ?? "",
-                          name: user?.name ?? "",
-                          avatarHeight: 45.0,
-                          avatarWidth: 45.0,
+                        return GestureDetector(
+                          onTap: onGoTo != null ? () => onGoTo!(context) : null,
+                          child: CachedCircleAvatar(
+                            url: user?.avatarUrl ?? "",
+                            name: user?.name ?? "",
+                            avatarHeight: 45.0,
+                            avatarWidth: 45.0,
+                          ),
                         );
                       },
                     ),
@@ -104,8 +108,30 @@ class MessageCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 9.0),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                            crossAxisAlignment: isByMe
+                                ? CrossAxisAlignment.end
+                                : CrossAxisAlignment.start,
                             children: [
+                              if (!isByMe) ...[
+                                CachedUserBuilder(
+                                  cachedUsersCubit: cachedUsersCubit,
+                                  userId: message.owner.id,
+                                  builder: (context, state, user) {
+                                    return GestureDetector(
+                                      onTap: onGoTo != null
+                                          ? () => onGoTo!(context)
+                                          : null,
+                                      child: GoogleText(
+                                        user?.name ?? "",
+                                        maxLines: 1,
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(height: 5.0),
+                              ],
                               MessageBody(
                                 message.body,
                                 isByMe: isByMe,
