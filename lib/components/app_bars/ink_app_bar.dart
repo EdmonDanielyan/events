@@ -77,7 +77,7 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
           icon: SvgPicture.asset('assets/images/personal_page_link.svg',
               width: 30),
           onPressed: () {
-            SchedulerBinding.instance?.addPostFrameCallback((_) {
+            SchedulerBinding.instance.addPostFrameCallback((_) {
               Navigator.pushNamed(context, '/personal');
             });
           },

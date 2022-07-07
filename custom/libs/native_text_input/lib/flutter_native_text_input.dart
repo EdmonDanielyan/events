@@ -610,7 +610,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
   static const Curve _caretAnimationCurve = Curves.fastOutSlowIn;
 
   void _scrollIntoView() {
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       context.findRenderObject()!.showOnScreen(
             duration: _caretAnimationDuration,
             curve: _caretAnimationCurve,
