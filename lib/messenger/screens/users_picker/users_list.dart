@@ -30,9 +30,9 @@ class _UsersPickerListState extends State<UsersPickerList> {
           controller: controller,
           itemBuilder: (context, index) {
             return Padding(
-              padding: const EdgeInsets.only(right: 15.0),
-              child: Stack(
-                clipBehavior: Clip.none,
+              padding: const EdgeInsets.only(right: 5.0, bottom: 5.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   CachedCircleAvatar(
                     url: widget.users[index].avatarUrl,
@@ -40,19 +40,15 @@ class _UsersPickerListState extends State<UsersPickerList> {
                     avatarHeight: 45,
                     avatarWidth: 45,
                   ),
-                  Positioned(
-                    child: InkWell(
-                      onTap: () {
-                        widget.onSelect(widget.users[index], false);
-                      },
-                      child: Icon(
-                        Icons.close,
-                        size: 16.0,
-                        color: Colors.black,
-                      ),
+                  InkWell(
+                    onTap: () {
+                      widget.onSelect(widget.users[index], false);
+                    },
+                    child: Icon(
+                      Icons.close,
+                      size: 18.0,
+                      color: Colors.black,
                     ),
-                    right: -10,
-                    bottom: 10,
                   ),
                 ],
               ),
