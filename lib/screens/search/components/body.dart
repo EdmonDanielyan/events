@@ -142,11 +142,8 @@ class Body extends StatelessWidget {
     if (usersFromState != null) {
       usersFromState.forEach((user) {
         users.add(SearchItemUser(
-          id: user.id,
-          fullName: user.fullName,
-          avatar: user.avatar,
+          user: user,
           query: SearchQuery.query,
-          route: '/personal',
         ));
       });
     }

@@ -39,10 +39,14 @@ class SearchModelListView {
     List<UsersSearchData> items = [];
 
     users?.forEach((user) {
-      items.add(UsersSearchData(
+      items.add(
+        UsersSearchData(
           id: user['id'],
           fullName: "${user['lastname'] ?? ""} ${user['name'] ?? ""}".trim(),
-          avatar: user["avatar"] ?? ""));
+          avatar: user["avatar"] ?? "",
+          workPosition: user["work_position"] ?? "",
+        ),
+      );
     });
 
     return items;

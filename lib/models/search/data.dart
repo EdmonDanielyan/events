@@ -26,7 +26,12 @@ class NewsSearchData extends TextSearchData {
 class UsersSearchData extends SearchData {
   String fullName;
   String avatar;
+  String workPosition;
 
-  UsersSearchData({required id, required this.fullName, required this.avatar})
-      : super(id: id);
+  UsersSearchData({
+    required id,
+    required this.fullName,
+    required this.avatar,
+    required this.workPosition,
+  }) : super(id: id);
 }
