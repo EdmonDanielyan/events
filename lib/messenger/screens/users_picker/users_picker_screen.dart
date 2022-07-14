@@ -51,6 +51,8 @@ class _UsersPickerScreenState extends State<UsersPickerScreen> {
 
     titleCubit = widget.titleCubit ?? StringCubit("");
     submitTxtCubit = widget.submitTxtCubit ?? StringCubit("");
+
+    chatUsersPickerCubit.onSearch("", widget.chat);
   }
 
   void _onSelect(User user, bool enabled) {

@@ -77,7 +77,6 @@ class _ChatListScreenState extends State<ChatListScreen>
         actions: [
           IconButton(
             onPressed: () {
-              chatPersonListCubit.init();
               createChat.setNew("");
               CustomBottomSheet(
                 context: context,

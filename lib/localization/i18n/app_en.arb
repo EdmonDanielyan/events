@@ -247,5 +247,6 @@
 	"setPinCode": "Set pin-code",
 	"newPinCode": "New pin-code",
 	"repeatPinCode": "Repeat pin-code",
-	"incorrectPinCode": "Incorrect pin-code"
+	"incorrectPinCode": "Incorrect pin-code",
+	"confPolicy": "Confidentiality policy"
 }

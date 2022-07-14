@@ -247,5 +247,6 @@
 	"setPinCode": "Установить пин-код",
 	"newPinCode": "Новый пин-код",
 	"repeatPinCode": "Введите еще раз",
-	"incorrectPinCode": "Неправильный пин-код"
+	"incorrectPinCode": "Неправильный пин-код",
+	"confPolicy": "Политика конфиденциальности"
 }

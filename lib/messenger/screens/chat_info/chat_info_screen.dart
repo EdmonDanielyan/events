@@ -28,6 +28,7 @@ class ChatInfoScreen extends StatefulWidget {
   final void Function(BuildContext, User, Chat)? onRemoveParticipant;
   final OnlineCubit onlineCubit;
   final CachedUsersCubit cachedUsersCubit;
+  final void Function(int, bool, BuildContext) openUser;
   const ChatInfoScreen({
     Key? key,
     required this.cachedChatsCubit,
@@ -37,6 +38,7 @@ class ChatInfoScreen extends StatefulWidget {
     this.onRemoveParticipant,
     required this.onlineCubit,
     required this.cachedUsersCubit,
+    required this.openUser,
   }) : super(key: key);
 
   @override
@@ -93,6 +95,10 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                               name: user?.name ?? chat.name,
                               description: chat.description,
                               subDescription: "",
+                              onTap: user != null
+                                  ? () =>
+                                      widget.openUser(user.id, true, context)
+                                  : null,
                             );
                           },
                         )
@@ -192,14 +198,20 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                                           }
                                         }
                                       : null,
-                                  child: ParticipantCard(
-                                    user: user ?? _currentUser,
-                                    trailing: isOwner ? "Создатель" : "",
-                                    divider: paricipants.length - 1 == index
-                                        ? const SizedBox()
-                                        : null,
-                                    onlineCubit: widget.onlineCubit,
-                                    cachedChatsCubit: widget.cachedChatsCubit,
+                                  child: GestureDetector(
+                                    onTap: () => widget.openUser(
+                                        (user ?? _currentUser).id,
+                                        false,
+                                        context),
+                                    child: ParticipantCard(
+                                      user: user ?? _currentUser,
+                                      trailing: isOwner ? "Создатель" : "",
+                                      divider: paricipants.length - 1 == index
+                                          ? const SizedBox()
+                                          : null,
+                                      onlineCubit: widget.onlineCubit,
+                                      cachedChatsCubit: widget.cachedChatsCubit,
+                                    ),
                                   ),
                                 );
                               },

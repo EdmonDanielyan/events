@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/constants/important_urls.dart';
 import 'package:ink_mobile/core/logging/send_log.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -101,18 +102,19 @@ class _BodyState extends State<Body> {
                               endIndent: 15,
                             ))),
                     TextButton(
-                        onPressed: () {
-                          launchUrl(
-                              'https://portal.irkutskoil.ru/login/?act=register');
-                        },
-                        child: Text(
-                          _strings.registration,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              decoration: TextDecoration.underline),
-                        )),
-                    // SignInInstructions(),
+                      onPressed: () {
+                        launchUrl(
+                            'https://portal.irkutskoil.ru/login/?act=register');
+                      },
+                      child: Text(
+                        _strings.registration,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
                     Expanded(
                         child: Container(
                             width: 100,
@@ -124,8 +126,12 @@ class _BodyState extends State<Body> {
                             ))),
                   ],
                 ),
-                Container(
-                  child: SignInInstructions(),
+                const SizedBox(height: 10.0),
+                SignInInstructions(),
+                const SizedBox(height: 20.0),
+                SignInInstructions(
+                  txt: _strings.confPolicy,
+                  link: ImportantUrls.policyConf,
                 ),
                 Stack(
                   alignment: AlignmentDirectional.center,

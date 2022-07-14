@@ -13,20 +13,7 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    // _clearFCM();
-  }
-
-  // void _clearFCM() {
-  //   try {
-  //     FirebaseMessaging.instance.deleteToken();
-  //   } catch (_e) {
-  //     NO INTERNET OR OTHER ERRORS
-    // }
-  // }
+  
 
   @override
   Widget build(BuildContext context) {

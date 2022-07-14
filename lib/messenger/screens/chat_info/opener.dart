@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/alert/alert_cancel.dart';
+import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/components/bottom_sheet/bottom_sheet.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
@@ -41,6 +42,7 @@ class ChatInfoOpener {
           onRemoveParticipant: _onRemoveUser,
           onlineCubit: onlineCubit,
           cachedUsersCubit: cachedUsersCubit,
+          openUser: _onOpenUserProfile,
         ),
       ),
     );
@@ -85,5 +87,14 @@ class ChatInfoOpener {
 
   void _onRemoveUser(BuildContext context, User user, Chat chat) {
     RemoveParticipantHandler(chat, cachedChatsCubit.myId, [user]).call();
+  }
+
+  void _onOpenUserProfile(int id, bool isSingle, BuildContext context) {
+    Map<String, dynamic> args = {'id': id};
+
+    if (isSingle) {
+      args[HIDE_WRITE_BTN] = true;
+    }
+    Navigator.pushNamed(context, "/personal", arguments: args);
   }
 }
