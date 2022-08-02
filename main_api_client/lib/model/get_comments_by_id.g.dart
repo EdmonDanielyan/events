@@ -127,7 +127,7 @@ class _$GetCommentsById extends GetCommentsById {
   final int status;
 
   factory _$GetCommentsById([void Function(GetCommentsByIdBuilder) updates]) =>
-      (new GetCommentsByIdBuilder()..update(updates)).build();
+      (new GetCommentsByIdBuilder()..update(updates))._build();
 
   _$GetCommentsById._(
       {this.data,
@@ -172,7 +172,7 @@ class _$GetCommentsById extends GetCommentsById {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('GetCommentsById')
+    return (newBuiltValueToStringHelper(r'GetCommentsById')
           ..add('data', data)
           ..add('success', success)
           ..add('host', host)
@@ -242,7 +242,9 @@ class GetCommentsByIdBuilder
   }
 
   @override
-  _$GetCommentsById build() {
+  GetCommentsById build() => _build();
+
+  _$GetCommentsById _build() {
     _$GetCommentsById _$result;
     try {
       _$result = _$v ??
@@ -260,7 +262,7 @@ class GetCommentsByIdBuilder
         _data?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'GetCommentsById', _$failedField, e.toString());
+            r'GetCommentsById', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -269,4 +271,4 @@ class GetCommentsByIdBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

@@ -102,7 +102,7 @@ class _$PublicationsProperty extends PublicationsProperty {
 
   factory _$PublicationsProperty(
           [void Function(PublicationsPropertyBuilder) updates]) =>
-      (new PublicationsPropertyBuilder()..update(updates)).build();
+      (new PublicationsPropertyBuilder()..update(updates))._build();
 
   _$PublicationsProperty._({this.id, this.title, this.dateCreate, this.votes})
       : super._();
@@ -135,7 +135,7 @@ class _$PublicationsProperty extends PublicationsProperty {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('PublicationsProperty')
+    return (newBuiltValueToStringHelper(r'PublicationsProperty')
           ..add('id', id)
           ..add('title', title)
           ..add('dateCreate', dateCreate)
@@ -192,7 +192,9 @@ class PublicationsPropertyBuilder
   }
 
   @override
-  _$PublicationsProperty build() {
+  PublicationsProperty build() => _build();
+
+  _$PublicationsProperty _build() {
     final _$result = _$v ??
         new _$PublicationsProperty._(
             id: id, title: title, dateCreate: dateCreate, votes: votes);
@@ -201,4 +203,4 @@ class PublicationsPropertyBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

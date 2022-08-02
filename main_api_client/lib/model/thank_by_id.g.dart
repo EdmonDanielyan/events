@@ -121,7 +121,7 @@ class _$ThankById extends ThankById {
   final int status;
 
   factory _$ThankById([void Function(ThankByIdBuilder) updates]) =>
-      (new ThankByIdBuilder()..update(updates)).build();
+      (new ThankByIdBuilder()..update(updates))._build();
 
   _$ThankById._(
       {this.data,
@@ -165,7 +165,7 @@ class _$ThankById extends ThankById {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('ThankById')
+    return (newBuiltValueToStringHelper(r'ThankById')
           ..add('data', data)
           ..add('success', success)
           ..add('host', host)
@@ -233,7 +233,9 @@ class ThankByIdBuilder implements Builder<ThankById, ThankByIdBuilder> {
   }
 
   @override
-  _$ThankById build() {
+  ThankById build() => _build();
+
+  _$ThankById _build() {
     final _$result = _$v ??
         new _$ThankById._(
             data: data,
@@ -247,4 +249,4 @@ class ThankByIdBuilder implements Builder<ThankById, ThankByIdBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

@@ -5,7 +5,7 @@
 import 'package:main_api_client/api.dart';
 ```
 
-All URIs are relative to *https://portal-test.irkutskoil.ru/api/v1*
+All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------

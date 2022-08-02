@@ -77,7 +77,7 @@ class _$RegisterConfirmParams extends RegisterConfirmParams {
 
   factory _$RegisterConfirmParams(
           [void Function(RegisterConfirmParamsBuilder) updates]) =>
-      (new RegisterConfirmParamsBuilder()..update(updates)).build();
+      (new RegisterConfirmParamsBuilder()..update(updates))._build();
 
   _$RegisterConfirmParams._({this.phone, this.code}) : super._();
 
@@ -105,7 +105,7 @@ class _$RegisterConfirmParams extends RegisterConfirmParams {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('RegisterConfirmParams')
+    return (newBuiltValueToStringHelper(r'RegisterConfirmParams')
           ..add('phone', phone)
           ..add('code', code))
         .toString();
@@ -150,7 +150,9 @@ class RegisterConfirmParamsBuilder
   }
 
   @override
-  _$RegisterConfirmParams build() {
+  RegisterConfirmParams build() => _build();
+
+  _$RegisterConfirmParams _build() {
     final _$result =
         _$v ?? new _$RegisterConfirmParams._(phone: phone, code: code);
     replace(_$result);
@@ -158,4 +160,4 @@ class RegisterConfirmParamsBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

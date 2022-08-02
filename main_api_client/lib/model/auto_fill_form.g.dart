@@ -123,7 +123,7 @@ class _$AutoFillForm extends AutoFillForm {
   final String personalPhone;
 
   factory _$AutoFillForm([void Function(AutoFillFormBuilder) updates]) =>
-      (new AutoFillFormBuilder()..update(updates)).build();
+      (new AutoFillFormBuilder()..update(updates))._build();
 
   _$AutoFillForm._(
       {this.fio,
@@ -167,7 +167,7 @@ class _$AutoFillForm extends AutoFillForm {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('AutoFillForm')
+    return (newBuiltValueToStringHelper(r'AutoFillForm')
           ..add('fio', fio)
           ..add('position', position)
           ..add('department', department)
@@ -237,7 +237,9 @@ class AutoFillFormBuilder
   }
 
   @override
-  _$AutoFillForm build() {
+  AutoFillForm build() => _build();
+
+  _$AutoFillForm _build() {
     final _$result = _$v ??
         new _$AutoFillForm._(
             fio: fio,
@@ -251,4 +253,4 @@ class AutoFillFormBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

@@ -20,7 +20,7 @@ abstract class UrlsConfigTest {
 
   @test
   @Named("apiUrl")
-  String get apiUrl => "https://portal-test.irkutskoil.ru/api/v1/";
+  String get apiUrl => "https://portal.irkutskoil.ru/api/v1/";
 
   @test
   @Named("apiCertificatePath")
@@ -66,7 +66,7 @@ abstract class UrlsConfigProd {
 
   @prod
   @Named("apiUrl")
-  String get apiUrl => "https://portal-test.irkutskoil.ru/api/v1/";
+  String get apiUrl => "https://portal.irkutskoil.ru/api/v1/";
 
   @prod
   @Named("apiCertificatePath")

@@ -54,7 +54,7 @@ try {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://portal-test.irkutskoil.ru/api/v1*
+All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------

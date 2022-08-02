@@ -32,7 +32,7 @@ final _defaultInterceptors = [
 class MainApiClient {
   Dio dio;
   Serializers serializers;
-  String basePath = 'https://portal-test.irkutskoil.ru/api/v1';
+  String basePath = 'https://portal.irkutskoil.ru/api/v1';
 
   MainApiClient(
       {this.dio,
@@ -43,7 +43,7 @@ class MainApiClient {
       BaseOptions options = new BaseOptions(
         baseUrl: basePathOverride ?? basePath,
         connectTimeout: 5000,
-        receiveTimeout: 15000,
+        receiveTimeout: 3000,
       );
       this.dio = new Dio(options);
     }

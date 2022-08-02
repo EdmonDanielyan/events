@@ -121,7 +121,7 @@ class _$GetNews extends GetNews {
   final int status;
 
   factory _$GetNews([void Function(GetNewsBuilder) updates]) =>
-      (new GetNewsBuilder()..update(updates)).build();
+      (new GetNewsBuilder()..update(updates))._build();
 
   _$GetNews._(
       {this.data,
@@ -165,7 +165,7 @@ class _$GetNews extends GetNews {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('GetNews')
+    return (newBuiltValueToStringHelper(r'GetNews')
           ..add('data', data)
           ..add('success', success)
           ..add('host', host)
@@ -233,7 +233,9 @@ class GetNewsBuilder implements Builder<GetNews, GetNewsBuilder> {
   }
 
   @override
-  _$GetNews build() {
+  GetNews build() => _build();
+
+  _$GetNews _build() {
     final _$result = _$v ??
         new _$GetNews._(
             data: data,
@@ -247,4 +249,4 @@ class GetNewsBuilder implements Builder<GetNews, GetNewsBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

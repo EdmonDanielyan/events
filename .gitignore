@@ -14,6 +14,7 @@ untranslated_messages.txt
 .buildlog/
 .history
 .svn/
+.mason/
 
 # IntelliJ related
 *.iml

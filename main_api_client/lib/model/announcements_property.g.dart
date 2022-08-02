@@ -102,7 +102,7 @@ class _$AnnouncementsProperty extends AnnouncementsProperty {
 
   factory _$AnnouncementsProperty(
           [void Function(AnnouncementsPropertyBuilder) updates]) =>
-      (new AnnouncementsPropertyBuilder()..update(updates)).build();
+      (new AnnouncementsPropertyBuilder()..update(updates))._build();
 
   _$AnnouncementsProperty._(
       {this.id, this.title, this.dateCreate, this.viewCount})
@@ -136,7 +136,7 @@ class _$AnnouncementsProperty extends AnnouncementsProperty {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('AnnouncementsProperty')
+    return (newBuiltValueToStringHelper(r'AnnouncementsProperty')
           ..add('id', id)
           ..add('title', title)
           ..add('dateCreate', dateCreate)
@@ -193,7 +193,9 @@ class AnnouncementsPropertyBuilder
   }
 
   @override
-  _$AnnouncementsProperty build() {
+  AnnouncementsProperty build() => _build();
+
+  _$AnnouncementsProperty _build() {
     final _$result = _$v ??
         new _$AnnouncementsProperty._(
             id: id, title: title, dateCreate: dateCreate, viewCount: viewCount);
@@ -202,4 +204,4 @@ class AnnouncementsPropertyBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

@@ -1,0 +1,8 @@
+# Register bricks which can be consumed via the Mason CLI.
+# https://github.com/felangel/mason
+bricks:
+  # Sample Brick
+  # Run `mason make hello` to try it out.
+  clean_code:
+      git:
+        url: https://github.com/ibra-bybuy/clean_architecute_brick.git

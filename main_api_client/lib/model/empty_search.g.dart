@@ -173,7 +173,7 @@ class _$EmptySearch extends EmptySearch {
   final String instance;
 
   factory _$EmptySearch([void Function(EmptySearchBuilder) updates]) =>
-      (new EmptySearchBuilder()..update(updates)).build();
+      (new EmptySearchBuilder()..update(updates))._build();
 
   _$EmptySearch._(
       {this.title,
@@ -235,7 +235,7 @@ class _$EmptySearch extends EmptySearch {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('EmptySearch')
+    return (newBuiltValueToStringHelper(r'EmptySearch')
           ..add('title', title)
           ..add('detail', detail)
           ..add('status', status)
@@ -327,7 +327,9 @@ class EmptySearchBuilder implements Builder<EmptySearch, EmptySearchBuilder> {
   }
 
   @override
-  _$EmptySearch build() {
+  EmptySearch build() => _build();
+
+  _$EmptySearch _build() {
     final _$result = _$v ??
         new _$EmptySearch._(
             title: title,
@@ -345,4 +347,4 @@ class EmptySearchBuilder implements Builder<EmptySearch, EmptySearchBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
