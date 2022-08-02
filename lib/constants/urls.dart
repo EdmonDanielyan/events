@@ -70,7 +70,7 @@ abstract class UrlsConfigProd {
 
   @prod
   @Named("apiCertificatePath")
-  String get apiCertificatePath => "assets/certs/test.ink.vpool.qsoft.ru.pem";
+  String get apiCertificatePath => "assets/certs/portal.irkutskoil.ru.pem";
 }
 
 @module
