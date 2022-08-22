@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../messenger/functions/size_config.dart';
+
 class ElevatedFullWidthButton extends StatelessWidget {
   final String title;
   final void Function() onTap;
-
   const ElevatedFullWidthButton(
       {Key? key, required this.title, required this.onTap})
       : super(key: key);
@@ -14,7 +15,7 @@ class ElevatedFullWidthButton extends StatelessWidget {
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3.0),
         width: size.width,
-        height: 50,
+        height: SizeConfig(context, 44.0).getProportionateScreenHeight,
         child: Container(
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
@@ -37,9 +38,11 @@ class ElevatedFullWidthButton extends StatelessWidget {
                 child: Text(
                   title,
                   style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0),
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize:
+                        SizeConfig(context, 18.0).getProportionateScreenHeight,
+                  ),
                 ),
               ),
               style: ButtonStyle(

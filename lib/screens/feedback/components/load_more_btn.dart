@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class LoadMoreBtn extends StatelessWidget {
   final void Function() onPressed;
   final String text;
@@ -34,9 +36,11 @@ class LoadMoreBtn extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold),
+                fontSize:
+                    SizeConfig(context, 16.0).getProportionateScreenHeight,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),

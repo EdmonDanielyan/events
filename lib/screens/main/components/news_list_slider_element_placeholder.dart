@@ -3,9 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class NewsListSliderElementPlaceholder extends StatelessWidget {
-  static const double ELEMENT_WIDTH = 276.0;
-  static const double ELEMENT_HEIGHT = 334.0;
   static const String DEFAULT_PREVIEW_PICTURE_LINK =
       'assets/images/default_news.jpg';
 
@@ -15,9 +15,11 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final elementWidth = MediaQuery.of(context).size.width * 0.8;
+
     return Container(
-        width: ELEMENT_WIDTH,
-        height: ELEMENT_HEIGHT,
+        width: elementWidth,
+        height: SizeConfig(context, 300).getProportionateScreenHeight,
         child: Container(
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
@@ -35,19 +37,23 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                 color: Colors.white,
               ),
               clipBehavior: Clip.hardEdge,
-              width: ELEMENT_WIDTH,
+              width: elementWidth,
               child: Column(children: [
                 Shimmer.fromColors(
                   baseColor: Colors.grey.withOpacity(0.5),
                   highlightColor: Colors.grey.withOpacity(0.2),
                   child: Container(
-                      height: 141, width: ELEMENT_WIDTH, color: Colors.black),
+                    height:
+                        SizeConfig(context, 110).getProportionateScreenHeight,
+                    width: elementWidth,
+                    color: Colors.black,
+                  ),
                 ),
                 Expanded(
                     child: Container(
                         margin: EdgeInsets.only(top: 18.0),
                         padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        width: ELEMENT_WIDTH,
+                        width: elementWidth,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

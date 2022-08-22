@@ -4,6 +4,7 @@ import 'package:ink_mobile/components/buttons/elevated_full_width_button.dart';
 import 'package:ink_mobile/cubit/main_page/events_and_announcements_block_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/events_and_announcements_block_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/main/components/announcements_list.dart';
 import 'package:ink_mobile/screens/main/components/events_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -79,11 +80,12 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
 
   Widget getNavigationRow(BuildContext context, String checked) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        height: 36,
-        child: Row(
-            children:
-                getNavRowItemList(context: context, checkedItem: checked)));
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      height: SizeConfig(context, 34).getProportionateScreenHeight,
+      child: Row(
+        children: getNavRowItemList(context: context, checkedItem: checked),
+      ),
+    );
   }
 
   List<NavRowButton> getNavRowButtons() {
@@ -151,7 +153,8 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
             child: Text(
               title,
               style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width * 0.07,
+                  fontSize:
+                      SizeConfig(context, 24).getProportionateScreenHeight,
                   fontWeight: fontWeight,
                   color: color),
             ),

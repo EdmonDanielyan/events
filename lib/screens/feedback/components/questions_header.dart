@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class QuestionsHeader extends StatelessWidget {
   final String text;
@@ -10,7 +11,10 @@ class QuestionsHeader extends StatelessWidget {
       padding: EdgeInsets.all(20.0),
       child: Text(
         text,
-        style: TextStyle(fontSize: 17.0, color: Colors.grey),
+        style: TextStyle(
+          fontSize: SizeConfig(context, 15.0).getProportionateScreenHeight,
+          color: Colors.grey,
+        ),
       ),
     );
   }

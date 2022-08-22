@@ -66,11 +66,15 @@ class Body extends StatelessWidget {
 
   Widget getLoadedStateWidget() {
     return Background(
-        child: Container(
-      child: Column(
-        children: [NewsBlock(), EventsAndAnnouncementsBlock()],
+      child: Container(
+        child: Column(
+          children: [
+            NewsBlock(),
+            EventsAndAnnouncementsBlock(),
+          ],
+        ),
       ),
-    ));
+    );
   }
 
   Widget getLoadingStateWidget(BuildContext context) {

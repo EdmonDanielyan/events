@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:shimmer/shimmer.dart';
 
 class EventsListElementPlaceholder extends StatelessWidget {
@@ -15,14 +16,17 @@ class EventsListElementPlaceholder extends StatelessWidget {
             Container(
               width: size.width,
               clipBehavior: Clip.hardEdge,
-              height: 200,
+              height: SizeConfig(context, 170).getProportionateScreenHeight,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Shimmer.fromColors(
                 baseColor: Colors.grey.withOpacity(0.5),
                 highlightColor: Colors.grey.withOpacity(0.2),
-                child: Container(height: 200, color: Colors.black),
+                child: Container(
+                    height:
+                        SizeConfig(context, 170).getProportionateScreenHeight,
+                    color: Colors.black),
               ),
             ),
             Container(

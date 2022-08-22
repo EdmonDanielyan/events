@@ -3,21 +3,19 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/feedback/components/select_file_dialog.dart';
 import 'package:path/path.dart';
 
 class PickFiles extends StatefulWidget {
   final String title;
-  final TextStyle titleStyle;
+  final TextStyle? titleStyle;
   final void Function(List<File>) onSuccesfullyPicked;
   const PickFiles({
     Key? key,
     required this.onSuccesfullyPicked,
     this.title = "Файлы",
-    this.titleStyle = const TextStyle(
-      fontSize: 17.0,
-      fontWeight: FontWeight.bold,
-    ),
+    this.titleStyle,
   }) : super(key: key);
 
   @override
@@ -72,7 +70,12 @@ class PickFilesState extends State<PickFiles> {
       children: [
         Text(
           widget.title,
-          style: widget.titleStyle,
+          style: widget.titleStyle ??
+              TextStyle(
+                fontSize:
+                    SizeConfig(context, 15.0).getProportionateScreenHeight,
+                fontWeight: FontWeight.bold,
+              ),
         ),
         SizedBox(height: 5.0),
         Column(
@@ -87,7 +90,7 @@ class PickFilesState extends State<PickFiles> {
                   SizedBox(width: 10.0),
                   Expanded(
                     child: _fileStatusWidget(
-                        hasElement(index) ? pickedFiles[index] : null),
+                        context, hasElement(index) ? pickedFiles[index] : null),
                   ),
                   if (hasElement(index)) ...[
                     _deleteItemWidget(index),
@@ -116,7 +119,12 @@ class PickFilesState extends State<PickFiles> {
             ),
           );
         },
-        child: Text("Выбрать файл"),
+        child: Text(
+          "Выбрать файл",
+          style: TextStyle(
+            fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
+          ),
+        ),
         style: ElevatedButton.styleFrom(
           primary: Theme.of(context).primaryColor,
           padding: const EdgeInsets.all(11.0),
@@ -125,10 +133,13 @@ class PickFilesState extends State<PickFiles> {
     );
   }
 
-  Widget _fileStatusWidget(File? file) {
+  Widget _fileStatusWidget(BuildContext context, File? file) {
     return Text(
       file == null ? noFilePicked : basename(file.path),
-      style: const TextStyle(color: Colors.grey),
+      style: TextStyle(
+        color: Colors.grey,
+        fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
+      ),
       maxLines: 1,
     );
   }

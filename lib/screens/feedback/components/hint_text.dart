@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class FeedbackHintText extends StatelessWidget {
   final String txt;
   const FeedbackHintText({Key? key, required this.txt}) : super(key: key);
@@ -9,7 +11,7 @@ class FeedbackHintText extends StatelessWidget {
     return Text(
       txt,
       style: TextStyle(
-        fontSize: 12.0,
+        fontSize: SizeConfig(context, 10.0).getProportionateScreenHeight,
         color: Colors.grey,
       ),
     );

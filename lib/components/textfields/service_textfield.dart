@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ink_mobile/components/textfields/required_icon.dart';
 
+import '../../messenger/functions/size_config.dart';
+
 class ServiceTextField extends StatelessWidget {
   final String hint;
   final TextEditingController? controller;
@@ -47,12 +49,21 @@ class ServiceTextField extends StatelessWidget {
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         hintText: hint,
+        hintStyle: TextStyle(
+          fontSize: SizeConfig(context, 15.0).getProportionateScreenHeight,
+        ),
+        errorStyle: TextStyle(
+          fontSize: SizeConfig(context, 15.0).getProportionateScreenHeight,
+        ),
         suffixIcon: requiredIcon ? const RequiredTextfieldIcon() : null,
         suffixIconConstraints: const BoxConstraints(maxHeight: double.infinity),
         border: const OutlineInputBorder(),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Theme.of(context).primaryColor),
         ),
+      ),
+      style: TextStyle(
+        fontSize: SizeConfig(context, 15.0).getProportionateScreenHeight,
       ),
     );
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/feedback/management_answer.dart';
 
+import '../../../../messenger/functions/size_config.dart';
+
 class AnswerWidget extends StatelessWidget {
   final int index;
   final ManagementAnswer item;
@@ -14,15 +16,15 @@ class AnswerWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _customListTile(_strings.topic, item.responsible),
-        _customListTile(_strings.question, item.question),
-        _customListTile(_strings.answer, item.answer),
+        _customListTile(context, _strings.topic, item.responsible),
+        _customListTile(context, _strings.question, item.question),
+        _customListTile(context, _strings.answer, item.answer),
         Divider(),
       ],
     );
   }
 
-  Widget _customListTile(String title, String subtitle) {
+  Widget _customListTile(BuildContext context, String title, String subtitle) {
     return Container(
       margin: EdgeInsets.symmetric(
         vertical: 10.0,
@@ -35,10 +37,16 @@ class AnswerWidget extends StatelessWidget {
             "$title:",
             style: TextStyle(
               fontWeight: FontWeight.bold,
+              fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
             ),
           ),
           SizedBox(height: 5.0),
-          Text(subtitle),
+          Text(
+            subtitle,
+            style: TextStyle(
+              fontSize: SizeConfig(context, 12.0).getProportionateScreenHeight,
+            ),
+          ),
         ],
       ),
     );

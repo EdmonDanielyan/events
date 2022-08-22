@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -101,6 +102,12 @@ class ServiceSelectFieldCubit extends StatelessWidget {
           validator: validator,
           decoration: InputDecoration(
             hintText: state.items.length < 1 ? hint : "",
+            hintStyle: TextStyle(
+              fontSize: SizeConfig(context, 14.0).getProportionateScreenHeight,
+            ),
+            errorStyle: TextStyle(
+              fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
+            ),
             border: OutlineInputBorder(),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Theme.of(context).primaryColor),
@@ -108,6 +115,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
             suffixIcon: Icon(
               Icons.keyboard_arrow_down,
               color: Colors.grey,
+              size: SizeConfig(context, 19.0).getProportionateScreenHeight,
             ),
           ),
         );
@@ -159,6 +167,8 @@ class ServiceSelectFieldCubit extends StatelessWidget {
         name.length > 10 ? name.substring(0, 10) + '...' : name,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+            fontSize: SizeConfig(context, 19.0).getProportionateScreenHeight),
       ),
     );
   }

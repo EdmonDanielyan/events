@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../messenger/functions/size_config.dart';
+
 class CustomBottomSheet {
   final BuildContext context;
   final Widget child;
@@ -85,6 +87,7 @@ class CustomBottomSheetChild extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: actionBtn(
+                    context: context,
                     ignoring: cancelBtnTxt.isEmpty,
                     txt: cancelBtnTxt,
                     onPressed: () => _onCancel(context),
@@ -94,6 +97,7 @@ class CustomBottomSheetChild extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: actionBtn(
+                    context: context,
                     ignoring: submitBtnTxt.isEmpty,
                     txt: submitBtnTxt,
                     onPressed: () => _onSubmit(context),
@@ -133,10 +137,12 @@ class CustomBottomSheetChild extends StatelessWidget {
     );
   }
 
-  Widget actionBtn(
-      {required String txt,
-      required void Function()? onPressed,
-      bool ignoring = false}) {
+  Widget actionBtn({
+    required BuildContext context,
+    required String txt,
+    required void Function()? onPressed,
+    bool ignoring = false,
+  }) {
     return IgnorePointer(
       ignoring: ignoring,
       child: TextButton(
@@ -145,7 +151,7 @@ class CustomBottomSheetChild extends StatelessWidget {
           txt,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 13.0,
+            fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
             color: Colors.blue,
           ),
         ),

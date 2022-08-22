@@ -3,6 +3,8 @@ import 'package:ink_mobile/components/filter_slider_element.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class NewsFilterSlider extends StatelessWidget {
   const NewsFilterSlider({Key? key}) : super(key: key);
 
@@ -12,7 +14,7 @@ class NewsFilterSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     _strings = localizationInstance;
     return Container(
-      height: 30,
+      height: SizeConfig(context, 28.0).getProportionateScreenHeight,
       margin: EdgeInsets.only(top: 8.0),
       child: Container(
         child: getFilterListView(context),
@@ -32,21 +34,26 @@ class NewsFilterSlider extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Container(
-              child: FilterSliderElement(
-            title: items[index].title,
-            onTap: () {
-              if (items[index].code == 'open_university') {
-                Navigator.pushNamed(context, '/open_university');
-              } else {
-                Navigator.pushNamed(context, '/news_list',
-                    arguments: {'filter': items[index].code});
-              }
-            },
-            isSelected: items[index].code == 'news',
-            selectedColor: Colors.white,
-            selectedTextStyle:
-                TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-          ));
+            child: FilterSliderElement(
+              title: items[index].title,
+              onTap: () {
+                if (items[index].code == 'open_university') {
+                  Navigator.pushNamed(context, '/open_university');
+                } else {
+                  Navigator.pushNamed(context, '/news_list',
+                      arguments: {'filter': items[index].code});
+                }
+              },
+              isSelected: items[index].code == 'news',
+              selectedColor: Colors.white,
+              selectedTextStyle: TextStyle(
+                fontSize:
+                    SizeConfig(context, 13.0).getProportionateScreenHeight,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+          );
         },
         separatorBuilder: (context, index) {
           return Container(margin: EdgeInsets.only(right: 10.0));

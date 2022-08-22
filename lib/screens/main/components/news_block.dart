@@ -4,6 +4,7 @@ import 'package:ink_mobile/components/page_indicator/custom_page_indicator.dart'
 import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/main/components/news_filter_slider.dart';
 import 'package:ink_mobile/screens/main/components/news_list_slider.dart';
@@ -31,8 +32,11 @@ class NewsBlock extends StatelessWidget {
                 children: [
                   Text(
                     _strings.news,
-                    style:
-                        TextStyle(fontWeight: FontWeight.w800, fontSize: 30.0),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: SizeConfig(context, 26.0)
+                          .getProportionateScreenHeight,
+                    ),
                   ),
                 ],
               ),
@@ -54,7 +58,7 @@ class NewsBlock extends StatelessWidget {
       case NewsBlockStateType.LOADING:
         {
           newsCubit.fetchNews();
-          return getLoadingStateWidget();
+          return getLoadingStateWidget(context);
         }
 
       case NewsBlockStateType.ERROR:
@@ -69,24 +73,27 @@ class NewsBlock extends StatelessWidget {
   Widget getLoadedStateWidget(List<NewsItemData> data) {
     return Container(
       child: Column(
-        children: [NewsFilterSlider(), NewsListSlider(newsList: data)],
+        children: [
+          NewsFilterSlider(),
+          NewsListSlider(newsList: data),
+        ],
       ),
     );
   }
 
-  Widget getLoadingStateWidget() {
+  Widget getLoadingStateWidget(BuildContext context) {
     final PageController _controllerOne = PageController();
 
     return Column(
       children: [
         NewsFilterSlider(),
         Container(
-          height: 390,
+          height: SizeConfig(context, 350).getProportionateScreenHeight,
           child: Column(
             children: [
               Container(
                 width: size.width,
-                height: 334,
+                height: SizeConfig(context, 300).getProportionateScreenHeight,
                 alignment: AlignmentDirectional.topStart,
                 margin: EdgeInsets.only(top: 20.0),
                 clipBehavior: Clip.none,

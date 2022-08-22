@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class SelectFileDialog extends StatefulWidget {
   final void Function() onGallery;
@@ -30,10 +31,10 @@ class _SelectFileDialogState extends State<SelectFileDialog> {
           children: [
             SizedBox(height: 20),
             iconTextWidget(
-              icon: const Icon(
+              icon: Icon(
                 Icons.image,
                 color: Colors.black,
-                size: 21.0,
+                size: SizeConfig(context, 19.0).getProportionateScreenHeight,
               ),
               text: _strings.picVidFromGallery,
               onTap: widget.onGallery,
@@ -43,7 +44,7 @@ class _SelectFileDialogState extends State<SelectFileDialog> {
               icon: Icon(
                 Icons.file_copy_sharp,
                 color: Colors.black,
-                size: 21.0,
+                size: SizeConfig(context, 19.0).getProportionateScreenHeight,
               ),
               text: _strings.allFiles,
               onTap: widget.onFiles,
@@ -74,9 +75,14 @@ class _SelectFileDialogState extends State<SelectFileDialog> {
               text,
               style: TextStyle(
                 color: Colors.black,
+                fontSize:
+                    SizeConfig(context, 13.0).getProportionateScreenHeight,
               ),
             )),
-            Icon(Icons.chevron_right),
+            Icon(
+              Icons.chevron_right,
+              size: SizeConfig(context, 20.0).getProportionateScreenHeight,
+            ),
           ],
         ),
       ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../messenger/functions/size_config.dart';
+
 class ServiceBtn extends StatelessWidget {
   final void Function()? onPressed;
   final String txt;
@@ -18,7 +20,7 @@ class ServiceBtn extends StatelessWidget {
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
-            fontSize: 18.0,
+            fontSize: SizeConfig(context, 16.0).getProportionateScreenHeight,
           ),
         ),
         style: TextButton.styleFrom(
