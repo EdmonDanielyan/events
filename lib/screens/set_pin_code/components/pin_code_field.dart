@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class PinCodeTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
@@ -27,7 +29,11 @@ class PinCodeTextField extends StatelessWidget {
               child: Center(
                 child: Text(
                   str ?? "",
-                  style: TextStyle(fontSize: 13.0, color: Colors.red),
+                  style: TextStyle(
+                    fontSize:
+                        SizeConfig(context, 11.0).getProportionateScreenHeight,
+                    color: Colors.red,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),

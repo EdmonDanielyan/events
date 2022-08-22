@@ -15,6 +15,8 @@ import 'package:ink_mobile/screens/set_pin_code/components/pin_code_field.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:local_auth/local_auth.dart';
 
+import '../../messenger/functions/size_config.dart';
+
 class CheckPinCodeScreen extends StatefulWidget {
   final AuthHandler authHandler;
   final InitialCubit initialCubit;
@@ -120,8 +122,9 @@ class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
                         const SizedBox(height: 20.0),
                         Text(
                           _strings.authenticationRequired,
-                          style: const TextStyle(
-                            fontSize: 22.0,
+                          style: TextStyle(
+                            fontSize: SizeConfig(context, 20.0)
+                                .getProportionateScreenHeight,
                           ),
                         ),
                         const SizedBox(height: 40.0),
@@ -149,7 +152,8 @@ class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
                                       : Icons.fingerprint,
                                   color: Theme.of(context).primaryColor,
                                 ),
-                                iconSize: 40.0,
+                                iconSize: SizeConfig(context, 35.0)
+                                    .getProportionateScreenHeight,
                               );
                             }
 
