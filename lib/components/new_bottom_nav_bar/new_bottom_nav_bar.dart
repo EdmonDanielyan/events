@@ -4,6 +4,7 @@ import 'package:ink_mobile/components/new_bottom_nav_bar/functions/new_bottom_na
 import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/setup.dart';
 
+import '../../messenger/functions/size_config.dart';
 import 'cubit/new_bottom_nav_bar_cubit.dart';
 
 class NewBottomNavBar extends StatefulWidget {
@@ -18,16 +19,15 @@ class _NewBottomNavBarState extends State<NewBottomNavBar>
     with NewBottomNavBarMixin {
   final NewBottomNavBarCubit _cubit = getIt<NewBottomNavBarCubit>();
 
-  late final List<BottomNavigationBarItem> navBarItems;
-
-  @override
-  void initState() {
-    super.initState();
-    navBarItems = getItems(showActive: widget.showActive);
-  }
+  List<BottomNavigationBarItem> navBarItems = [];
 
   @override
   Widget build(BuildContext context) {
+    navBarItems = getItems(
+      showActive: widget.showActive,
+      iconHeight: SizeConfig(context, 21.0).getProportionateScreenHeight,
+      activeIconHeight: SizeConfig(context, 21.0).getProportionateScreenHeight,
+    );
     return BlocBuilder<NewBottomNavBarCubit, int>(
       bloc: _cubit,
       builder: (BuildContext context, int currentIndex) {
@@ -36,7 +36,8 @@ class _NewBottomNavBarState extends State<NewBottomNavBar>
           selectedItemColor:
               widget.showActive ? Color(0xff12512a) : Colors.grey,
           unselectedItemColor: Colors.grey,
-          selectedFontSize: 12.0,
+          selectedFontSize:
+              SizeConfig(context, 10.0).getProportionateScreenHeight,
           iconSize: 30,
           type: BottomNavigationBarType.fixed,
           items: navBarItems,

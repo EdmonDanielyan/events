@@ -21,26 +21,43 @@ class NewBottomNavBarMixin {
     return items;
   }
 
-  List<BottomNavigationBarItem> getItems({bool showActive = true}) {
+  List<BottomNavigationBarItem> getItems({
+    bool showActive = true,
+    double iconHeight = 25.0,
+    double activeIconHeight = 25.0,
+  }) {
     List<BottomNavigationBarItem> items = [];
     navBottomNavBarItems.forEach((element) {
-      items.add(_buildNewBottomNavItem(element,
+      items.add(
+        _buildNewBottomNavItem(
+          element,
           showActive: showActive,
-          msgIndicator: element is MessagesBottomNavBarItem ? true : false));
+          msgIndicator: element is MessagesBottomNavBarItem ? true : false,
+          iconHeight: iconHeight,
+          activeIconHeight: activeIconHeight,
+        ),
+      );
     });
 
     return items;
   }
 
-  BottomNavigationBarItem _buildNewBottomNavItem(NavBottomNavBarItem item,
-      {bool showActive = true, bool msgIndicator = false}) {
+  BottomNavigationBarItem _buildNewBottomNavItem(
+    NavBottomNavBarItem item, {
+    bool showActive = true,
+    bool msgIndicator = false,
+    double iconHeight = 25.0,
+    double activeIconHeight = 25.0,
+  }) {
     return BottomNavigationBarItem(
       icon: Stack(
         children: [
           Container(
-            height: 25,
+            height: iconHeight,
+            margin: EdgeInsets.only(bottom: 4.0),
             child: SvgPicture.asset(
               item.icon,
+              height: iconHeight,
             ),
           ),
           if (msgIndicator) ...[
@@ -55,8 +72,13 @@ class NewBottomNavBarMixin {
           : Stack(
               children: [
                 Container(
-                  height: 25,
-                  child: SvgPicture.asset(item.icon, color: Color(0xff12512a)),
+                  height: activeIconHeight,
+                  margin: EdgeInsets.only(bottom: 4.0),
+                  child: SvgPicture.asset(
+                    item.icon,
+                    height: activeIconHeight,
+                    color: Color(0xff12512a),
+                  ),
                 ),
                 if (msgIndicator) ...[
                   NavBarIndicator(cachedChatsCubit: getIt<CachedChatsCubit>())
