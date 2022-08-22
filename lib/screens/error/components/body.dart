@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/error/components/background.dart';
 
 class Body extends StatelessWidget {
@@ -16,7 +17,8 @@ class Body extends StatelessWidget {
             Text(
               '404',
               style: TextStyle(
-                  fontSize: 150,
+                  fontSize:
+                      SizeConfig(context, 100).getProportionateScreenHeight,
                   fontWeight: FontWeight.w800,
                   color: Colors.white.withOpacity(0.5),
                   fontFamily: "Helvetica"),
@@ -25,7 +27,7 @@ class Body extends StatelessWidget {
             Text(
               localizationInstance.pageNotFound,
               style: TextStyle(
-                fontSize: 24,
+                fontSize: SizeConfig(context, 21).getProportionateScreenHeight,
                 color: Colors.white,
                 fontFamily: "Helvetica",
               ),
