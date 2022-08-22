@@ -18,25 +18,27 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
       body: SingleChildScrollView(
           child: Column(
         children: [
-         CustomLayoutBuilder(builder: (context, constraint, isTablet) {
-              return Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(bottom: BorderSide(color: Color(0xFFE5E5E5)))),
-                child: Html(
-                   style: isTablet
-                              ? {
-                                  "body": Style(
-                                    fontSize: FontSize(24.0),
-                                  ),
-                                "h3": Style(fontSize: FontSize(26.0),)
-                                }
-                              : {},
-                    onLinkTap: (String? url, RenderContext context,
-                        Map<String, String> attributes, dom.Element? element) {
-                      launchUrl(url!);
-                    },
-                    data: '''
+          CustomLayoutBuilder(builder: (context, constraint, isTablet) {
+            return Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(bottom: BorderSide(color: Color(0xFFE5E5E5)))),
+              child: Html(
+                  style: isTablet
+                      ? {
+                          "body": Style(
+                            fontSize: FontSize(24.0),
+                          ),
+                          "h3": Style(
+                            fontSize: FontSize(26.0),
+                          )
+                        }
+                      : {},
+                  onLinkTap: (String? url, RenderContext context,
+                      Map<String, String> attributes, dom.Element? element) {
+                    launchUrl(url!);
+                  },
+                  data: '''
 <p style="background: white;">
  <span style="color: #40403b;">ООО «ИНК» в рамках системы ДМС сотрудничает с страховой компанией: АО "СОГАЗ".</span>
 </p>
@@ -166,9 +168,8 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
  <a href="https://portal.irkutskoil.ru/upload/medialibrary/d42/d428701873c4da4b101c075d5b54731c.pdf" title="Программа АльфаТелемед ВИП.pdf"></a>
 </p>
                     '''),
-              );
-            }
-          ),
+            );
+          }),
         ],
       )),
       bottomNavigationBar: const NewBottomNavBar(),
