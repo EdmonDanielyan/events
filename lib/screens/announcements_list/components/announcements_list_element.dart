@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:intl/intl.dart';
 
@@ -38,7 +39,10 @@ class AnnouncementsListElement extends StatelessWidget {
                                     .format(announcement.dateCreate!)
                                 : '',
                             style: TextStyle(
-                                color: Theme.of(context).iconTheme.color),
+                              color: Theme.of(context).iconTheme.color,
+                              fontSize: SizeConfig(context, 12)
+                                  .getProportionateScreenHeight,
+                            ),
                             textAlign: TextAlign.start,
                           )),
                       Container(
@@ -48,7 +52,8 @@ class AnnouncementsListElement extends StatelessWidget {
                             announcement.title ?? '',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 20,
+                              fontSize: SizeConfig(context, 18)
+                                  .getProportionateScreenHeight,
                               fontWeight: FontWeight.bold,
                             ),
                             maxLines: 4,
@@ -59,18 +64,24 @@ class AnnouncementsListElement extends StatelessWidget {
                           margin: EdgeInsets.only(top: 24),
                           child: Row(mainAxisSize: MainAxisSize.max, children: [
                             Row(children: [
-                              SvgPicture.asset(IconLinks.VIEW_COUNT_SVG_LINK,
-                                  width: 16),
+                              SvgPicture.asset(
+                                IconLinks.VIEW_COUNT_SVG_LINK,
+                                width: SizeConfig(context, 13)
+                                    .getProportionateScreenHeight,
+                              ),
                               Container(
-                                  margin: EdgeInsets.only(left: 4),
-                                  child: Text(
-                                      announcement.viewCount != null
-                                          ? announcement.viewCount.toString()
-                                          : '0',
-                                      style: TextStyle(
-                                        color:
-                                            Theme.of(context).iconTheme.color,
-                                      )))
+                                margin: EdgeInsets.only(left: 4),
+                                child: Text(
+                                  announcement.viewCount != null
+                                      ? announcement.viewCount.toString()
+                                      : '0',
+                                  style: TextStyle(
+                                    color: Theme.of(context).iconTheme.color,
+                                    fontSize: SizeConfig(context, 11)
+                                        .getProportionateScreenHeight,
+                                  ),
+                                ),
+                              )
                             ])
                           ]))
                     ],

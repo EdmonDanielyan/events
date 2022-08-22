@@ -6,6 +6,7 @@ import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/screens/announcements_detail/components/background.dart';
 import 'package:intl/intl.dart';
@@ -46,65 +47,76 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return CustomLayoutBuilder(
-      builder: (constraints, context, isTablet) {
-        print(isTablet);
+      builder: (context, constraints, isTablet) {
         return Background(
           child: Column(
             children: [
               Padding(
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
                       child: SvgPicture.asset(
                         IconLinks.VIEW_COUNT_SVG_LINK,
                         semanticsLabel: 'View Count',
-                        width: 40,
-                        height: 40,
+                        width: isTablet ? 30 : null,
+                        height: isTablet ? 30 : null,
                       ),
-                      margin: EdgeInsets.only(right: 6.0),
+                      margin: EdgeInsets.only(right: 10.0),
                     ),
                     Container(
                         child: Text(
-                            widget.announcement.viewCount != null
-                                ? widget.announcement.viewCount.toString()
-                                : '',
-                            style: TextStyle(
-                                fontFamily: "Helvetica",
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey)),
+                          widget.announcement.viewCount != null
+                              ? widget.announcement.viewCount.toString()
+                              : '',
+                          style: TextStyle(
+                              fontFamily: "Helvetica",
+                              fontWeight: FontWeight.w500,
+                              color: Colors.grey,
+                              fontSize: SizeConfig(context, 14)
+                                  .getProportionateScreenHeight),
+                        ),
                         margin: EdgeInsets.only(right: 16.0)),
                     Text(
-                        widget.announcement.dateCreate != null
-                            ? DateFormat('dd.MM.yyyy')
-                                .format(widget.announcement.dateCreate!)
-                            : '',
-                        style: TextStyle(
-                          fontFamily: "Helvetica",
-                          color: Colors.grey[500],
-                          fontWeight: FontWeight.w200,
-                        )),
+                      widget.announcement.dateCreate != null
+                          ? DateFormat('dd.MM.yyyy')
+                              .format(widget.announcement.dateCreate!)
+                          : '',
+                      style: TextStyle(
+                        fontFamily: "Helvetica",
+                        color: Colors.grey[500],
+                        fontWeight: FontWeight.w200,
+                        fontSize: SizeConfig(context, 12)
+                            .getProportionateScreenHeight,
+                      ),
+                    ),
                   ],
                 ),
                 padding: EdgeInsets.only(left: 20.0, top: 17.0, bottom: 10.0),
               ),
               Container(
-                  child: Column(children: [
+                child: Column(
+                  children: [
                     Text(
                       widget.announcement.title ?? '',
                       style: TextStyle(
-                        fontSize: 26.0,
+                        fontSize: SizeConfig(context, 21)
+                            .getProportionateScreenHeight,
                         height: 1.3,
                         fontWeight: FontWeight.w900,
                         fontFamily: "Helvetica",
                       ),
                     )
-                  ]),
-                  margin: EdgeInsets.symmetric(horizontal: 20.0)),
+                  ],
+                ),
+                margin: EdgeInsets.symmetric(horizontal: 20.0),
+              ),
               Container(
-                  child: Divider(
-                    thickness: 2.0,
-                  ),
-                  margin: EdgeInsets.only(top: 16.0, bottom: 11.0)),
+                child: Divider(
+                  thickness: 2.0,
+                ),
+                margin: EdgeInsets.only(top: 16.0, bottom: 11.0),
+              ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 child: Html(
@@ -121,7 +133,13 @@ class _BodyState extends State<Body> {
                     "a": Style(
                         color: Colors.blue,
                         textDecoration: TextDecoration.none),
-                    "b": Style(fontWeight: FontWeight.normal)
+                    "b": Style(fontWeight: FontWeight.normal),
+                    "p": isTablet
+                        ? Style(
+                            fontSize: FontSize(SizeConfig(context, 13)
+                                .getProportionateScreenHeight),
+                          )
+                        : Style(),
                   },
                 ),
               )

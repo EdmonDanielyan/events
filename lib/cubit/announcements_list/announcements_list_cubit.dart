@@ -19,7 +19,7 @@ import 'package:ink_mobile/extensions/get_announcements.dart';
 @singleton
 class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
   Pagination<AnnouncementData> pagination =
-      Pagination<AnnouncementData>(countOnPage: 5);
+      Pagination<AnnouncementData>(countOnPage: 15);
   ScrollBottomToLoad scrollBottomToLoad = ScrollBottomToLoad();
 
   AnnouncementsListCubit()
@@ -29,6 +29,7 @@ class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
     try {
       if (pagination.next) {
         await Token.setNewTokensIfExpired();
+
         final response =
             await getIt<AnnouncementsListNetworkRequest>(param1: pagination)();
         pagination = response.mapResponse(pagination);
