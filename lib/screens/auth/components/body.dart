@@ -36,13 +36,14 @@ class _BodyState extends State<Body> {
                   ),
                   AuthForm(),
                   Expanded(
-                      child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      AuthHint(),
-                      AuthButtons(formKey: formKey),
-                    ],
-                  ))
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        AuthHint(),
+                        AuthButtons(formKey: formKey),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../messenger/functions/size_config.dart';
+
 abstract class CustomSnackbar {
   abstract BuildContext context;
   abstract String txt;
@@ -17,7 +19,12 @@ class SimpleCustomSnackbar extends CustomSnackbar {
   }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(txt),
+        content: Text(
+          txt,
+          style: TextStyle(
+            fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
+          ),
+        ),
         duration: duration,
       ),
     );

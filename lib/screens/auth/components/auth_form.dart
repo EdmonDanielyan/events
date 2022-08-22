@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
 
 import 'auth_password_field.dart';
@@ -19,9 +20,18 @@ class AuthForm extends StatelessWidget {
           TextFormField(
             decoration: InputDecoration(
               labelText: _strings.login,
+              labelStyle: TextStyle(
+                fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+              ),
               border: OutlineInputBorder(),
               fillColor: Colors.white,
               filled: true,
+              errorStyle: TextStyle(
+                fontSize: SizeConfig(context, 12).getProportionateScreenHeight,
+              ),
+            ),
+            style: TextStyle(
+              fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
             ),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (val) => val!.isEmpty ? _strings.fillTheField : null,

@@ -6,6 +6,7 @@ import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/cubit/auth/auth_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/providers/local_pin_provider.dart';
 import 'package:ink_mobile/routes/pass_data_routes.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
@@ -115,6 +116,7 @@ class _AuthButtonsState extends State<AuthButtons> {
           return CustomCircularProgressIndicator();
         } else {
           return Container(
+            width: double.infinity,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -133,22 +135,28 @@ class _AuthButtonsState extends State<AuthButtons> {
               child: Text(
                 localizationInstance.enter,
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 19,
-                    fontWeight: FontWeight.bold),
-              ),
-              style: ButtonStyle(
-                shadowColor:
-                    MaterialStateProperty.all<Color>(Color(0xFFFFFFFF)),
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
-                minimumSize: MaterialStateProperty.all<Size>(Size(335, 50)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
+                  color: Colors.black,
+                  fontSize:
+                      SizeConfig(context, 13.0).getProportionateScreenHeight,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
+              style: ButtonStyle(
+                  shadowColor:
+                      MaterialStateProperty.all<Color>(Color(0xFFFFFFFF)),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
+                  minimumSize: MaterialStateProperty.all<Size>(Size(335, 50)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                    ),
+                  ),
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry?>(
+                    EdgeInsets.symmetric(
+                        vertical: SizeConfig(context, 10.0)
+                            .getProportionateScreenHeight),
+                  )),
             ),
           );
         }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class AuthHint extends StatelessWidget {
   const AuthHint({Key? key}) : super(key: key);
 
@@ -16,7 +18,10 @@ class AuthHint extends StatelessWidget {
             opacity: 0.6,
             child: Text(
               localizationInstance.authHint,
-              style: TextStyle(fontSize: 12, color: Color(0xFF1D2126)),
+              style: TextStyle(
+                fontSize: SizeConfig(context, 10).getProportionateScreenHeight,
+                color: Color(0xFF1D2126),
+              ),
             ),
           ),
         ),

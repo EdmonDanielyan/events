@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class AuthPasswordField extends StatefulWidget {
   const AuthPasswordField({
     Key? key,
@@ -36,8 +38,17 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: _obscureText,
+      style: TextStyle(
+        fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+      ),
       decoration: InputDecoration(
         labelText: _strings.password,
+        labelStyle: TextStyle(
+          fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+        ),
+        errorStyle: TextStyle(
+          fontSize: SizeConfig(context, 12).getProportionateScreenHeight,
+        ),
         border: OutlineInputBorder(),
         fillColor: Colors.white,
         filled: true,
@@ -46,8 +57,8 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: SvgPicture.asset(
               _obscureText ? SHOW_TEXT_ICON_LINK : HIDE_TEXT_ICON_LINK,
-              width: 10,
-              height: 10,
+              width: SizeConfig(context, 8.0).getProportionateScreenHeight,
+              height: SizeConfig(context, 8.0).getProportionateScreenHeight,
             ),
           ),
           onTap: () {

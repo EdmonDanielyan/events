@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class SignInInstructions extends StatelessWidget {
   final Color txtColor;
   final String? txt;
@@ -29,7 +31,7 @@ class SignInInstructions extends StatelessWidget {
           txt ?? localizationInstance.signInInstructions,
           style: TextStyle(
             color: txtColor,
-            fontSize: 14,
+            fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
             decoration: TextDecoration.underline,
           ),
         ),

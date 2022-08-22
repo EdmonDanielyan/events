@@ -16,9 +16,10 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(
-      SizeConfig(context, MediaQuery.of(context).size.width).isTablet
-          ? 70
-          : kToolbarHeight);
+        SizeConfig(context, MediaQuery.of(context).size.width).isTablet
+            ? 70
+            : kToolbarHeight,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,7 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
               icon: Icon(
                 Icons.arrow_back_ios,
                 color: Colors.white,
+                size: SizeConfig(context, 20).getProportionateScreenHeight,
               ),
               onPressed: () => Navigator.of(context).maybePop(),
             );
