@@ -13,6 +13,8 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:intl/intl.dart';
 
+import '../../messenger/functions/size_config.dart';
+
 class EventDetailScreen extends StatelessWidget {
   static const String DEFAULT_PREVIEW_PICTURE_LINK =
       'assets/images/default_event.jpg';
@@ -74,7 +76,7 @@ class EventDetailScreen extends StatelessWidget {
               children: [
                 Container(
                   width: size.width,
-                  height: 250,
+                  height: SizeConfig(context, 220).getProportionateScreenHeight,
                   child: event.pictureLink == null
                       ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
                           fit: BoxFit.fitWidth)
@@ -89,15 +91,20 @@ class EventDetailScreen extends StatelessWidget {
                 ),
                 Positioned.fill(
                   child: Align(
-                    alignment: AlignmentDirectional(-1.1, -0.7),
-                    child: MaterialButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: SvgPicture.asset(
-                        IconLinks.CLOSE_BUTTON_SVG_LINK,
-                        width: 40,
-                        height: 40,
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: SvgPicture.asset(
+                          IconLinks.CLOSE_BUTTON_SVG_LINK,
+                          width: SizeConfig(context, 37)
+                              .getProportionateScreenHeight,
+                          height: SizeConfig(context, 37)
+                              .getProportionateScreenHeight,
+                        ),
                       ),
                     ),
                   ),
@@ -111,18 +118,24 @@ class EventDetailScreen extends StatelessWidget {
                     child: SvgPicture.asset(
                       IconLinks.VIEW_COUNT_SVG_LINK,
                       semanticsLabel: 'View Count',
+                      width: SizeConfig(context, 24.0)
+                          .getProportionateScreenHeight,
                     ),
                     margin: EdgeInsets.only(right: 6.0),
                   ),
                   Container(
                       child: Text(
-                          event.viewCount != null
-                              ? state.data!.viewCount.toString()
-                              : '0',
-                          style: TextStyle(
-                              fontFamily: "Helvetica",
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey)),
+                        event.viewCount != null
+                            ? state.data!.viewCount.toString()
+                            : '0',
+                        style: TextStyle(
+                          fontFamily: "Helvetica",
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey,
+                          fontSize: SizeConfig(context, 13.0)
+                              .getProportionateScreenHeight,
+                        ),
+                      ),
                       margin: EdgeInsets.only(right: 16.0)),
                   Text(
                       event.dateCreate != null
@@ -132,6 +145,8 @@ class EventDetailScreen extends StatelessWidget {
                         fontFamily: "Helvetica",
                         color: Colors.grey[500],
                         fontWeight: FontWeight.w200,
+                        fontSize: SizeConfig(context, 12.0)
+                            .getProportionateScreenHeight,
                       )),
                 ],
               ),
@@ -142,7 +157,11 @@ class EventDetailScreen extends StatelessWidget {
                 padding: EdgeInsets.only(left: 20, right: 50, bottom: 10),
                 child: Text(
                   event.title ?? '',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize:
+                        SizeConfig(context, 20.0).getProportionateScreenHeight,
+                    fontWeight: FontWeight.bold,
+                  ),
                 )),
             Divider(
               color: Color(0xFFE5E5E5),
@@ -163,7 +182,22 @@ class EventDetailScreen extends StatelessWidget {
                 style: {
                   "a": Style(
                       color: Colors.blue, textDecoration: TextDecoration.none),
-                  "b": Style(fontWeight: FontWeight.normal)
+                  "b": Style(
+                    fontWeight: FontWeight.normal,
+                    fontSize: FontSize(
+                      SizeConfig(context, 12.0).getProportionateScreenHeight,
+                    ),
+                  ),
+                  "p": Style(
+                    fontSize: FontSize(
+                      SizeConfig(context, 12.0).getProportionateScreenHeight,
+                    ),
+                  ),
+                  "li": Style(
+                    fontSize: FontSize(
+                      SizeConfig(context, 12.0).getProportionateScreenHeight,
+                    ),
+                  )
                 },
               ),
             ),
@@ -171,8 +205,15 @@ class EventDetailScreen extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 30, top: 20),
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: event.isMember!
-                  ? Text(_strings.nowParticipatingInTheEvent)
+                  ? Text(
+                      _strings.nowParticipatingInTheEvent,
+                      style: TextStyle(
+                        fontSize: SizeConfig(context, 12.0)
+                            .getProportionateScreenHeight,
+                      ),
+                    )
                   : Container(
+                      width: double.infinity,
                       decoration: BoxDecoration(
                           border:
                               Border.all(color: Color(0xFFE5E5E5), width: 2),
@@ -184,9 +225,11 @@ class EventDetailScreen extends StatelessWidget {
                         child: Text(
                           _strings.iWillParticipate,
                           style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 19,
-                              fontWeight: FontWeight.bold),
+                            color: Colors.black,
+                            fontSize: SizeConfig(context, 17.0)
+                                .getProportionateScreenHeight,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
