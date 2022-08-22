@@ -6,6 +6,9 @@ import 'package:ink_mobile/screens/initial/cubit/initial_cubit.dart';
 import 'package:ink_mobile/screens/welcome/components/background.dart';
 import 'package:ink_mobile/setup.dart';
 
+import '../../../messenger/functions/size_config.dart';
+import 'text.dart';
+
 class Body extends StatefulWidget {
   final PackageInfoProvider packageInfo;
 
@@ -42,7 +45,8 @@ class _BodyState extends State<Body> {
                   "Выберите окружение",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize:
+                        SizeConfig(context, 21.0).getProportionateScreenHeight,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontStyle: FontStyle.normal,
@@ -50,28 +54,29 @@ class _BodyState extends State<Body> {
                 ),
               )),
           RadioListTile<String>(
-              title: Text("Для разработчиков"),
-              subtitle: Text("Используйте данный тип окружения для разработки"),
+              title: ConfigText("Для разработчиков"),
+              subtitle:
+                  ConfigText("Используйте данный тип окружения для разработки"),
               value: Environment.dev,
               groupValue: environment,
               onChanged: _onChanged),
           RadioListTile<String>(
-              title: Text("Тестирование"),
-              subtitle: Text(
+              title: ConfigText("Тестирование"),
+              subtitle: ConfigText(
                   "Используйте данный тип окружения перед выходом в релиз и проведения тестирования"),
               value: Environment.test,
               groupValue: environment,
               onChanged: _onChanged),
           RadioListTile<String>(
-              title: Text("Продакшен окружение"),
-              subtitle: Text(
+              title: ConfigText("Продакшен окружение"),
+              subtitle: ConfigText(
                   "Внимание!!! Есть риски изменения данных на серверах заказчика. Не использовать при тестировании и разработки"),
               value: Environment.prod,
               groupValue: environment,
               onChanged: _onChanged),
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(bottom: 20),
+              margin: EdgeInsets.only(bottom: 20, right: 10.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -83,15 +88,24 @@ class _BodyState extends State<Body> {
                         child: Text(
                           widget.packageInfo.version,
                           style: TextStyle(
-                              color: Colors.grey[400], fontSize: 13.0),
+                            color: Colors.grey[400],
+                            fontSize: SizeConfig(context, 11.0)
+                                .getProportionateScreenHeight,
+                          ),
                         ),
                       ),
                       Align(
-                          alignment: Alignment.centerRight,
-                          child: IconButton(
-                              onPressed: () =>
-                                  sendErrorLog(getIt(instanceName: "logFile")),
-                              icon: Icon(Icons.bug_report)))
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          onPressed: () =>
+                              sendErrorLog(getIt(instanceName: "logFile")),
+                          icon: Icon(
+                            Icons.bug_report,
+                            size: SizeConfig(context, 24.0)
+                                .getProportionateScreenHeight,
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ],
