@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:intl/intl.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class EventsListElement extends StatelessWidget {
   final EventData event;
   static const String DEFAULT_PREVIEW_PICTURE_LINK =
@@ -26,7 +28,8 @@ class EventsListElement extends StatelessWidget {
             child: Column(children: [
               Container(
                   width: size.width,
-                  height: 191,
+                  height:
+                      SizeConfig(context, 175.0).getProportionateScreenHeight,
                   child: event.pictureLink == null
                       ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
                           fit: BoxFit.fitWidth)
@@ -44,7 +47,10 @@ class EventsListElement extends StatelessWidget {
                           child: Text(
                             _getEventTimeAndPlace(),
                             style: TextStyle(
-                                color: Theme.of(context).iconTheme.color),
+                              color: Theme.of(context).iconTheme.color,
+                              fontSize: SizeConfig(context, 13.0)
+                                  .getProportionateScreenHeight,
+                            ),
                             textAlign: TextAlign.start,
                           )),
                       Container(
@@ -54,7 +60,8 @@ class EventsListElement extends StatelessWidget {
                             event.title ?? '',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 20,
+                              fontSize: SizeConfig(context, 18.0)
+                                  .getProportionateScreenHeight,
                               fontWeight: FontWeight.bold,
                             ),
                             maxLines: 4,

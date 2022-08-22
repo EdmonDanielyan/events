@@ -8,6 +8,8 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/screens/events_list/components/events_list_element.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class Body extends StatelessWidget {
   final EventsListCubit cubit;
 
@@ -57,7 +59,11 @@ class Body extends StatelessWidget {
                 children: [
                   Text(
                     localizationInstance.events,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: SizeConfig(context, 21.0)
+                          .getProportionateScreenHeight,
+                    ),
                   )
                 ],
               ),
