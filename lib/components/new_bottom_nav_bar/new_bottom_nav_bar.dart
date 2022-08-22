@@ -38,6 +38,8 @@ class _NewBottomNavBarState extends State<NewBottomNavBar>
           unselectedItemColor: Colors.grey,
           selectedFontSize:
               SizeConfig(context, 10.0).getProportionateScreenHeight,
+          unselectedFontSize:
+              SizeConfig(context, 10.0).getProportionateScreenHeight,
           iconSize: 30,
           type: BottomNavigationBarType.fixed,
           items: navBarItems,

@@ -29,7 +29,7 @@ class AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: InkAppBar(),
+      appBar: InkAppBar(context),
       body: Container(
         child: SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),

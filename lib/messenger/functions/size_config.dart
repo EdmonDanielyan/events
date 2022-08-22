@@ -14,4 +14,6 @@ class SizeConfig {
     double screenWidth = MediaQuery.of(context).size.width;
     return (inputPx / 350.0) * screenWidth;
   }
+
+  bool get isTablet => inputPx > 700;
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../messenger/functions/size_config.dart';
+
 class CustomLayoutBuilder extends StatelessWidget {
   final Widget Function(
     BuildContext context,
@@ -16,11 +18,10 @@ class CustomLayoutBuilder extends StatelessWidget {
         context,
         constraints,
       ) {
-        bool isTablet = constraints.maxWidth > 700;
         return builder(
           context,
           constraints,
-          isTablet,
+          SizeConfig(context, constraints.maxWidth).isTablet,
         );
       },
     );
