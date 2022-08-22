@@ -6,11 +6,13 @@ class SignInInstructions extends StatelessWidget {
   final Color txtColor;
   final String? txt;
   final String? link;
+  final bool isTablet;
   const SignInInstructions({
     Key? key,
     this.txtColor = Colors.white,
     this.txt,
     this.link,
+    required this.isTablet,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class SignInInstructions extends StatelessWidget {
           txt ?? localizationInstance.signInInstructions,
           style: TextStyle(
             color: txtColor,
-            fontSize: 14,
+            fontSize: isTablet ? 18 : 14,
             decoration: TextDecoration.underline,
           ),
         ),
