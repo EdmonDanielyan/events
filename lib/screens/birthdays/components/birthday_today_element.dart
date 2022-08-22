@@ -5,6 +5,7 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/messenger/handler/create_chat.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
@@ -54,6 +55,7 @@ class BirthdayTodayElement extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
+                    const SizedBox(height: 5.0),
                     Container(
                       alignment: Alignment.topLeft,
                       margin: EdgeInsets.only(bottom: 5),
@@ -66,7 +68,8 @@ class BirthdayTodayElement extends StatelessWidget {
                           birthday.name ?? '',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: SizeConfig(context, 14.0)
+                                .getProportionateScreenHeight,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -99,8 +102,8 @@ class BirthdayTodayElement extends StatelessWidget {
           children: [
             const SizedBox(height: 12),
             SizedBox(
-              width: 40.0,
-              height: 35.0,
+              width: SizeConfig(context, 35).getProportionateScreenHeight,
+              height: SizeConfig(context, 32.0).getProportionateScreenHeight,
               child: SvgPicture.asset(GIFT_ICON_SVG, color: Colors.white),
             ),
             const SizedBox(height: 3.0),
@@ -108,7 +111,7 @@ class BirthdayTodayElement extends StatelessWidget {
               localizationInstance.congratulate,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 11.0,
+                fontSize: SizeConfig(context, 10).getProportionateScreenHeight,
               ),
             ),
             const SizedBox(height: 12),

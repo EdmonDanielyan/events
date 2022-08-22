@@ -13,7 +13,7 @@ class ChristmasGifts extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return Scaffold(
-      appBar: InkAppBarWithText(title: _strings.christmasGifts),
+      appBar: InkAppBarWithText(context, title: _strings.christmasGifts),
       body: SingleChildScrollView(
         child: Container(
           child: Html(

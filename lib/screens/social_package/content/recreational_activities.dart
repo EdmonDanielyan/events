@@ -13,7 +13,8 @@ class RecreationalActivities extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return Scaffold(
-      appBar: InkAppBarWithText(title: _strings.recreationalActivities),
+      appBar:
+          InkAppBarWithText(context, title: _strings.recreationalActivities),
       body: SingleChildScrollView(
         child: Container(
           child: Html(

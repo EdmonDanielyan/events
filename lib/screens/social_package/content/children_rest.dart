@@ -13,7 +13,7 @@ class ChildrenRest extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return Scaffold(
-      appBar: InkAppBarWithText(title: _strings.childrenRest),
+      appBar: InkAppBarWithText(context, title: _strings.childrenRest),
       body: SingleChildScrollView(
         child: Container(
           child: Html(

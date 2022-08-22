@@ -15,7 +15,7 @@ class EventsListScreen extends StatelessWidget {
     final _strings = localizationInstance;
 
     return Scaffold(
-      appBar: InkAppBarWithText(title: _strings.events),
+      appBar: InkAppBarWithText(context, title: _strings.events),
       body: Body(cubit: eventsListCubit),
       bottomNavigationBar: NewBottomNavBar(showActive: false),
     );

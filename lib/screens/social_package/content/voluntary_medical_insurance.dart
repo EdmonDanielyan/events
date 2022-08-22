@@ -13,7 +13,8 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return Scaffold(
-      appBar: InkAppBarWithText(title: _strings.voluntaryMedicalInsurance),
+      appBar:
+          InkAppBarWithText(context, title: _strings.voluntaryMedicalInsurance),
       body: SingleChildScrollView(
           child: Column(
         children: [

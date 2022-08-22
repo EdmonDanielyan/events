@@ -28,7 +28,10 @@ class AnnouncementsDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return Scaffold(
-      appBar: InkAppBarWithText(title: _strings.announcements),
+      appBar: InkAppBarWithText(
+        context,
+        title: _strings.announcements,
+      ),
       body: BlocBuilder<AnnouncementCubit, AnnouncementsDetailState>(
         bloc: announcementCubit,
         builder: (context, state) {

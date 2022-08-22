@@ -52,7 +52,8 @@ class FeedBackScreenState extends State<FeedBackScreen>
     super.build(context);
     final _strings = localizationInstance;
     return Scaffold(
-      appBar: widget.appBar ?? InkAppBarWithText(title: _strings.feedback),
+      appBar:
+          widget.appBar ?? InkAppBarWithText(context, title: _strings.feedback),
       body: Body(),
       bottomNavigationBar:
           widget.bottomNavigationBar ?? const NewBottomNavBar(),

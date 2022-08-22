@@ -17,7 +17,7 @@ class NewsCommentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return Scaffold(
-      appBar: InkAppBarWithText(title: _strings.comments),
+      appBar: InkAppBarWithText(context, title: _strings.comments),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

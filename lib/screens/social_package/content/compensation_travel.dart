@@ -11,7 +11,8 @@ class CompensationTravel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: InkAppBarWithText(title: "Компенсация проезда к месту отдыха"),
+      appBar: InkAppBarWithText(context,
+          title: "Компенсация проезда к месту отдыха"),
       body: SingleChildScrollView(
           child: Column(
         children: [

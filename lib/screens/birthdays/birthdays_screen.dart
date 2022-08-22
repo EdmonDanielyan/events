@@ -14,6 +14,9 @@ import 'package:ink_mobile/screens/birthdays/components/birthday_other_days_elem
 import 'package:ink_mobile/screens/birthdays/components/birthday_today_element.dart';
 import 'package:ink_mobile/setup.dart';
 
+import '../../messenger/functions/size_config.dart';
+import 'components/birthday_title.dart';
+
 class BirthdaysScreen extends StatelessWidget {
   final BirthdaysCubit birthdaysCubit;
   const BirthdaysScreen({Key? key, required this.birthdaysCubit})
@@ -47,6 +50,7 @@ class BirthdaysScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: InkAppBarWithText(
+        context,
         title: _strings.birthdays,
       ),
       body: BlocConsumer<BirthdaysCubit, BirthdaysState>(
@@ -60,7 +64,15 @@ class BirthdaysScreen extends StatelessWidget {
           switch (state.type) {
             case (BirthdaysStateType.EMPTY):
               {
-                return Center(child: Text(_strings.noBirthdaysSoon));
+                return Center(
+                  child: Text(
+                    _strings.noBirthdaysSoon,
+                    style: TextStyle(
+                      fontSize: SizeConfig(context, 12.0)
+                          .getProportionateScreenHeight,
+                    ),
+                  ),
+                );
               }
 
             case (BirthdaysStateType.LOADED):
@@ -86,12 +98,16 @@ class BirthdaysScreen extends StatelessWidget {
                           children: [
                             Expanded(
                                 flex: 8,
-                                child: Text(_strings.birthdays,
-                                    style: TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.bold))),
+                                child: Text(
+                                  _strings.birthdays,
+                                  style: TextStyle(
+                                    fontSize: SizeConfig(context, 24.0)
+                                        .getProportionateScreenHeight,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )),
                             Expanded(
-                              flex: 2,
+                              flex: 1,
                               child: Image.asset("assets/images/balloon.png"),
                             )
                           ],
@@ -105,16 +121,7 @@ class BirthdaysScreen extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    margin: EdgeInsets.only(left: 25),
-                                    child: Text(_strings.today.toUpperCase(),
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .iconTheme
-                                                .color,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                  ),
+                                  BirthdayTitle(_strings.today.toUpperCase()),
                                   Container(
                                     margin: EdgeInsets.only(top: 10),
                                     decoration: BoxDecoration(
@@ -149,17 +156,8 @@ class BirthdaysScreen extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    margin: EdgeInsets.only(left: 25),
-                                    child: Text(
-                                        _strings.inComingDays.toUpperCase(),
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .iconTheme
-                                                .color,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                  ),
+                                  BirthdayTitle(
+                                      _strings.inComingDays.toUpperCase()),
                                   Container(
                                     margin: EdgeInsets.only(top: 10),
                                     decoration: BoxDecoration(

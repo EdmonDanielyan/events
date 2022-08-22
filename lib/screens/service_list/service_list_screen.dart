@@ -19,7 +19,7 @@ class _ServiceListScreenState extends State<ServiceListScreen>
     final _strings = localizationInstance;
 
     return Scaffold(
-      appBar: InkAppBarWithText(title: _strings.services),
+      appBar: InkAppBarWithText(context, title: _strings.services),
       body: Body(),
       backgroundColor: Color(0xfff9f9f9),
     );

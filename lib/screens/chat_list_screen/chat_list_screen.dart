@@ -72,6 +72,7 @@ class _ChatListScreenState extends State<ChatListScreen>
     super.build(context);
     return Scaffold(
       appBar: InkAppBarWithText(
+        context,
         title: "Сообщения",
         leading: SizedBox(),
         actions: [

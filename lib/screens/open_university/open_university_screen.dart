@@ -25,7 +25,7 @@ class OpenUniversityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return Scaffold(
-      appBar: InkAppBarWithText(title: _strings.openUniversity),
+      appBar: InkAppBarWithText(context, title: _strings.openUniversity),
       body: Body(
         learningMaterialsListCubit: learningMaterialsListCubit,
         eventsListCubit: eventsListCubit,

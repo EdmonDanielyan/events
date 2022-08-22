@@ -29,7 +29,8 @@ class _ReferencesScreenState extends State<ReferencesScreen>
     final _strings = localizationInstance;
 
     return Scaffold(
-      appBar: widget.appBar ?? InkAppBarWithText(title: _strings.orderInquiry),
+      appBar: widget.appBar ??
+          InkAppBarWithText(context, title: _strings.orderInquiry),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

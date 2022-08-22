@@ -14,7 +14,7 @@ class NewsListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return Scaffold(
-      appBar: InkAppBarWithText(title: _strings.news),
+      appBar: InkAppBarWithText(context, title: _strings.news),
       body: Body(cubit: newsListCubit),
       bottomNavigationBar: NewBottomNavBar(showActive: false),
     );

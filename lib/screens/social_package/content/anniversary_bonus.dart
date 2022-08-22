@@ -11,7 +11,7 @@ class AnniversaryBonus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: InkAppBarWithText(title: "Премирование сотрудников"),
+      appBar: InkAppBarWithText(context, title: "Премирование сотрудников"),
       body: SingleChildScrollView(
           child: Column(
         children: [

@@ -58,9 +58,9 @@ class ServiceListPageViewerState extends State<ServiceListPageViewer> {
         controller: pageViewer.pageController,
         children: [
           ServiceListScreen(),
-          feedBackScreen(),
-          referencesScreen(),
-          medicalInsuranceScreen(),
+          feedBackScreen(context),
+          referencesScreen(context),
+          medicalInsuranceScreen(context),
         ],
         onPageChanged: (page) {
           TextFieldUtils.loseTextFieldFocus();
@@ -71,7 +71,7 @@ class ServiceListPageViewerState extends State<ServiceListPageViewer> {
     );
   }
 
-  Widget feedBackScreen() {
+  Widget feedBackScreen(BuildContext context) {
     return wrapWithWillPop(
       child: FeedBackScreen(
         sendManagementFormCubit: widget.sendManagementFormCubit,
@@ -79,34 +79,35 @@ class ServiceListPageViewerState extends State<ServiceListPageViewer> {
         tagsListCubit: widget.tagsListCubit,
         selectfieldCubit: widget.selectfieldCubitFeedback,
         scrollBottomLoadMoreCubit: widget.scrollBottomLoadMoreCubit,
-        appBar: appBar(_strings.feedback),
+        appBar: appBar(context, _strings.feedback),
         bottomNavigationBar: SizedBox(),
       ),
     );
   }
 
-  Widget referencesScreen() {
+  Widget referencesScreen(BuildContext context) {
     return wrapWithWillPop(
       child: ReferencesScreen(
-        appBar: appBar(_strings.orderInquiry),
+        appBar: appBar(context, _strings.orderInquiry),
         referencesPageCubit: widget.referencesPageCubit,
         sendReferenceFormCubit: widget.sendReferenceFormCubit,
       ),
     );
   }
 
-  Widget medicalInsuranceScreen() {
+  Widget medicalInsuranceScreen(BuildContext context) {
     return wrapWithWillPop(
       child: MedicalInsuranceScreen(
-        appBar: appBar(_strings.getMedicalInsurance),
+        appBar: appBar(context, _strings.getMedicalInsurance),
         sendMedicalInsFormCubit: widget.sendMedicalInsFormCubit,
         selectfieldCubit: widget.selectfieldCubitMedical,
       ),
     );
   }
 
-  PreferredSizeWidget appBar(String title) {
+  PreferredSizeWidget appBar(BuildContext context, String title) {
     return InkAppBarWithText(
+      context,
       title: title,
       leading: AppBarBackBtn(
         onPressed: () => jumpToMainPage(),

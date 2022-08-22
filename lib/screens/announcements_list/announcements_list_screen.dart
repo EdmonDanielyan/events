@@ -16,7 +16,7 @@ class AnnouncementsListScreen extends StatelessWidget {
     final _strings = localizationInstance;
 
     return Scaffold(
-      appBar: InkAppBarWithText(title: _strings.announcements),
+      appBar: InkAppBarWithText(context, title: _strings.announcements),
       body: Body(cubit: announcementsListCubit),
       bottomNavigationBar: NewBottomNavBar(showActive: false),
     );

@@ -13,7 +13,7 @@ class AccidentInsurance extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return Scaffold(
-      appBar: InkAppBarWithText(title: _strings.accidentInsurance),
+      appBar: InkAppBarWithText(context, title: _strings.accidentInsurance),
       body: SingleChildScrollView(
         child: Container(
           child: Html(

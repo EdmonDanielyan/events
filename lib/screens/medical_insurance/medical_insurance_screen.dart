@@ -33,7 +33,7 @@ class _MedicalInsuranceScreenState extends State<MedicalInsuranceScreen>
 
     return Scaffold(
       appBar: widget.appBar ??
-          InkAppBarWithText(title: _strings.getMedicalInsurance),
+          InkAppBarWithText(context, title: _strings.getMedicalInsurance),
       body: SingleChildScrollView(
         child: Container(
           child: Column(

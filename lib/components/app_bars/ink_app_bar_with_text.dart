@@ -3,13 +3,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/app_bars/back_btn.dart';
 
+import '../../messenger/functions/size_config.dart';
+
 class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
+  final BuildContext context;
   final String title;
   final Widget? titleWidget;
   final List<Widget>? actions;
   final Widget? leading;
-
-  InkAppBarWithText({
+  InkAppBarWithText(
+    this.context, {
     Key? key,
     required this.title,
     this.titleWidget,
@@ -18,7 +21,11 @@ class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
   }) : super(key: key);
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(
+        SizeConfig(context, MediaQuery.of(context).size.width).isTablet
+            ? 70
+            : kToolbarHeight,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +65,10 @@ class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
             child: Text(
               '$title',
               textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize:
+                    SizeConfig(context, 17.0).getProportionateScreenHeight,
+              ),
             ),
           ),
       centerTitle: true,
