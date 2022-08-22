@@ -5,8 +5,8 @@ import 'package:ink_mobile/screens/service_list/service_list_page_viewer.dart';
 
 class ServiceListElement extends StatelessWidget {
   final ServiceListItem item;
-
-  const ServiceListElement({Key? key, required this.item}) : super(key: key);
+  final bool isTablet;
+  const ServiceListElement({Key? key, required this.isTablet, required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class ServiceListElement extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 50,
+              width: isTablet ? 75 : 50,
               child: SvgPicture.asset(
                 item.svgPicturePath,
               ),
@@ -36,7 +36,7 @@ class ServiceListElement extends StatelessWidget {
               margin: EdgeInsets.only(left: 20),
               child: Text(
                 item.title,
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: isTablet ? 20 : 16),
               ),
             ),
             Expanded(
@@ -45,7 +45,7 @@ class ServiceListElement extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.arrow_forward_ios,
-                    size: 12,
+                    size: isTablet ?  16 : 12,
                     color: Theme.of(context).primaryColor,
                   )
                 ],
