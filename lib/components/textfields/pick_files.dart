@@ -9,10 +9,12 @@ import 'package:path/path.dart';
 class PickFiles extends StatefulWidget {
   final String title;
   final TextStyle titleStyle;
+  final bool isTablet;
   final void Function(List<File>) onSuccesfullyPicked;
   const PickFiles({
     Key? key,
     required this.onSuccesfullyPicked,
+    required this.isTablet,
     this.title = "Файлы",
     this.titleStyle = const TextStyle(
       fontSize: 17.0,
@@ -87,7 +89,9 @@ class PickFilesState extends State<PickFiles> {
                   SizedBox(width: 10.0),
                   Expanded(
                     child: _fileStatusWidget(
-                        hasElement(index) ? pickedFiles[index] : null),
+                      hasElement(index) ? pickedFiles[index] : null,
+                      widget.isTablet,
+                    ),
                   ),
                   if (hasElement(index)) ...[
                     _deleteItemWidget(index),
@@ -116,7 +120,10 @@ class PickFilesState extends State<PickFiles> {
             ),
           );
         },
-        child: Text("Выбрать файл"),
+        child: Text(
+          "Выбрать файл",
+          style: TextStyle(fontSize: widget.isTablet ? 18 : 14),
+        ),
         style: ElevatedButton.styleFrom(
           primary: Theme.of(context).primaryColor,
           padding: const EdgeInsets.all(11.0),
@@ -125,10 +132,10 @@ class PickFilesState extends State<PickFiles> {
     );
   }
 
-  Widget _fileStatusWidget(File? file) {
+  Widget _fileStatusWidget(File? file, bool isTablet) {
     return Text(
       file == null ? noFilePicked : basename(file.path),
-      style: const TextStyle(color: Colors.grey),
+      style:  TextStyle(color: Colors.grey, fontSize: isTablet ? 18 : 14),
       maxLines: 1,
     );
   }

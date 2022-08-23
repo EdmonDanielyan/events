@@ -4,7 +4,10 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class Head extends StatelessWidget {
   final EdgeInsetsGeometry sectionPadding;
-  const Head({Key? key, required this.sectionPadding}) : super(key: key);
+
+  final bool isTablet;
+  const Head({Key? key, required this.isTablet, required this.sectionPadding})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +43,7 @@ class Head extends StatelessWidget {
       child: Text(
         localizationInstance.medicalServiceSection,
         style: TextStyle(
+          fontSize: isTablet ? 18 : 14,
           color: Colors.green[900],
           decoration: TextDecoration.underline,
         ),
@@ -50,7 +54,7 @@ class Head extends StatelessWidget {
   Widget _infoWidget() {
     return Text(
       localizationInstance.medicalInsuranceFormInfo,
-      style: TextStyle(color: Colors.grey[700]),
+      style: TextStyle(color: Colors.grey[700],   fontSize: isTablet ? 18 : 14,),
     );
   }
 }

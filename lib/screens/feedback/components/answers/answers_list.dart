@@ -13,7 +13,9 @@ import '../../feedback_screen.dart';
 import 'answer_widget.dart';
 
 class ManagementFeedbackAnswersList extends StatelessWidget {
-  const ManagementFeedbackAnswersList({Key? key}) : super(key: key);
+  final bool isTablet;
+  const ManagementFeedbackAnswersList(this. isTablet, {Key? key})
+      : super(key: key);
   static late ScrollBottomLoadMoreCubit scrollBottomLoadMoreCubit;
 
   void loadMore(FeedbackAnswerListCubit answersCubit) {
@@ -76,8 +78,11 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
             shrinkWrap: true,
             controller: ScrollController(keepScrollOffset: false),
             itemCount: answers.length,
-            itemBuilder: (BuildContext context, int index) =>
-                AnswerWidget(index: index, item: answers[index]),
+            itemBuilder: (BuildContext context, int index) => AnswerWidget(
+              index: index,
+              item: answers[index],
+              isTablet: isTablet,
+            ),
           ),
           if (currentPage(cubit.pagination.pageNumber) == 1 &&
               cubit.pagination.next) ...[

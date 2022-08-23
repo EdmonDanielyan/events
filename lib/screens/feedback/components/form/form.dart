@@ -24,7 +24,8 @@ import '../../feedback_screen.dart';
 import 'entities.dart';
 
 class ManagementFeedbackForm extends StatefulWidget {
-  const ManagementFeedbackForm({Key? key}) : super(key: key);
+  final bool isTablet;
+  const ManagementFeedbackForm(this.isTablet, {Key? key}) : super(key: key);
 
   @override
   _ManagementFeedbackFormState createState() => _ManagementFeedbackFormState();
@@ -60,12 +61,14 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
             _selectAddresseesWidget(entities: entities),
             SizedBox(height: 20.0),
             ServiceTextField(
+              isTablet: widget.isTablet,
               hint: "${_strings.fullnameHint} ${_strings.notRequired}",
               onChanged: (val) => entities.name = val,
               inputFormatters: [InputFormatters().lettersOnly],
             ),
             SizedBox(height: 20.0),
             ServiceTextField(
+              isTablet: widget.isTablet,
               hint: "${_strings.email} ${_strings.notRequired}",
               validator: (val) => FieldValidator(_strings)
                   .emailValidator(val, canBeEmpty: true),
@@ -75,6 +78,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
             ),
             SizedBox(height: 20.0),
             ServiceTextField(
+                isTablet: widget.isTablet,
               requiredIcon: true,
               validator: _validator.questionValidator,
               hint: _strings.question,
@@ -82,10 +86,11 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
               onChanged: (val) => entities.question = val,
             ),
             SizedBox(height: 10.0),
-            FeedbackHintText(txt: _strings.feedbackFormHint),
+            FeedbackHintText(txt: _strings.feedbackFormHint, isTablet: widget.isTablet,),
             SizedBox(height: 20.0),
             PickFiles(
               key: _pickFilesKey,
+              isTablet: widget.isTablet,
               onSuccesfullyPicked: (List<File> files) => entities.files = files,
             ),
             SizedBox(height: 20.0),
@@ -111,6 +116,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
         return IgnorePointer(
           ignoring: state.data.length < 1,
           child: ServiceSelectFieldCubit(
+            isTablet: widget.isTablet,
             hint:
                 "${localizationInstance.topic} (${localizationInstance.markMultiple})",
             cubit: selectfieldCubit,

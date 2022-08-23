@@ -30,10 +30,12 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 class ReferencesForm extends StatefulWidget {
   final ReferencesPageCubit referencesPageCubit;
   final SendReferenceFormCubit sendReferenceFormCubit;
+  
+  final bool isTablet;
   const ReferencesForm({
     Key? key,
     required this.referencesPageCubit,
-    required this.sendReferenceFormCubit,
+    required this.sendReferenceFormCubit, required this. isTablet,
   }) : super(key: key);
 
   @override
@@ -55,6 +57,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   late ReferencesFormValidator validatorMixin;
 
   int stage = 1;
+  
 
   void setStage(int newStage) {
     if (stage != newStage) {
@@ -89,6 +92,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             InkDropDown(
+              isTablet: widget.isTablet,
               hint: _strings.choose,
               selectedIndex: entities.referencesType,
               items: referencesList.getListTitles(),
@@ -135,7 +139,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
               ],
               if (currentReferenceItem.fields.quantity) ...[
                 SizedBox(height: 20),
-                Text(_strings.countInstances),
+                Text(_strings.countInstances, style: TextStyle(fontSize: widget.isTablet ? 18 : 14),),
                 SizedBox(height: 15),
                 quantityWidget(),
               ],
@@ -170,6 +174,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget fioWidget() {
     return ServiceTextField(
+      isTablet: widget.isTablet,
       hint: _strings.fullnameHint,
       initialValue: widget.referencesPageCubit.autofill.fio,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
@@ -179,6 +184,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget positionWidget() {
     return ServiceTextField(
+          isTablet: widget.isTablet,
       hint: _strings.position,
       initialValue: widget.referencesPageCubit.autofill.position,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
@@ -188,6 +194,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget departmentWidget() {
     return ServiceTextField(
+          isTablet: widget.isTablet,
       hint: _strings.department,
       initialValue: widget.referencesPageCubit.autofill.department,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
@@ -197,6 +204,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget childsFioWidget() {
     return ServiceTextField(
+          isTablet: widget.isTablet,
       hint: _strings.childFullName,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.fioChildren = val,
@@ -205,16 +213,19 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget fileWidget() {
     return PickFiles(
-      key: _pickFilesKey,
-      title: _strings.childBirthCertificate,
-      titleStyle: TextStyle(fontSize: 16.0),
-      onSuccesfullyPicked: (List<File> files) => entities.files = files,
-    );
+          isTablet: widget.isTablet,
+          key: _pickFilesKey,
+          title: _strings.childBirthCertificate,
+          titleStyle: TextStyle(fontSize: 16.0),
+          onSuccesfullyPicked: (List<File> files) => entities.files = files,
+        );
+      
   }
 
   Widget contactPhoneWidget() {
     MaskTextInputFormatter mask = TextFieldMasks().phone();
     return ServiceTextField(
+          isTablet: widget.isTablet,
       hint: "+7 (ххх) xxx-xx-xx",
       validator: (val) => val!.length < 17 ? _strings.fillTheField : null,
       onChanged: (val) => entities.phone = val,
@@ -224,6 +235,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   }
 
   Widget deliveryMethodWidget() => InkDropDown(
+    isTablet: widget.isTablet,
         hint: _strings.deliveryMethod,
         items: deliveryList.getDeliveryItemsList(currentReferenceItem),
         selectedIndex: entities.deliveryType,
@@ -236,6 +248,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget deliveryAddressWidget() {
     return ServiceTextField(
+          isTablet: widget.isTablet,
       hint: _strings.address,
       validator: (val) => FieldValidator(_strings).addressValidator(val!),
       onChanged: (val) => entities.address = val,
@@ -246,6 +259,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget deliveryZipCodeWidget() {
     return ServiceTextField(
+          isTablet: widget.isTablet,
       hint: _strings.zipIndex,
       validator: (val) => FieldValidator(_strings).zipCodeValidator(val!),
       onChanged: (val) => entities.postCode = val,
@@ -283,6 +297,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget toProvideInWidget() {
     return ServiceTextField(
+          isTablet: widget.isTablet,
       hint: _strings.toSubmitFor,
       validator: (val) => val!.length < 2 ? _strings.fillTheField : null,
       onChanged: (val) => entities.toProvideIn = val,
@@ -291,6 +306,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget periodWidget() {
     return ServiceTextField(
+          isTablet: widget.isTablet,
       hint: _strings.period,
       validator: (val) => val!.length < 1 ? _strings.fillTheField : null,
       onChanged: (val) => entities.period = val,
@@ -318,8 +334,9 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget descriptionWidget() {
     return Text(
+      
       currentReferenceItem.description,
-      style: TextStyle(color: Colors.red),
+      style: TextStyle(color: Colors.red, fontSize: widget.isTablet ? 18 : 14),
     );
   }
 

@@ -15,8 +15,11 @@ import 'package:ink_mobile/setup.dart';
 
 class BirthdayTodayElement extends StatelessWidget {
   final int index;
+  
+  final bool isTablet;
   const BirthdayTodayElement({
     Key? key,
+    required this.isTablet,
     required this.index,
     required this.birthday,
   }) : super(key: key);
@@ -66,7 +69,7 @@ class BirthdayTodayElement extends StatelessWidget {
                           birthday.name ?? '',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize:  isTablet ? 20 : 16,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -107,8 +110,9 @@ class BirthdayTodayElement extends StatelessWidget {
             Text(
               localizationInstance.congratulate,
               style: TextStyle(
+                 fontSize: isTablet ? 16 : 11,
                 color: Colors.white,
-                fontSize: 11.0,
+              
               ),
             ),
             const SizedBox(height: 12),

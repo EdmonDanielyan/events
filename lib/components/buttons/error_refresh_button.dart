@@ -3,11 +3,14 @@ import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class ErrorRefreshButton extends StatelessWidget {
+  final bool isTablet;
+
   const ErrorRefreshButton(
       {Key? key,
       required this.onTap,
       this.buttonText = 'Обновить',
-      this.text = ErrorMessages.SIMPLE_ERROR_MESSAGE})
+      this.text = ErrorMessages.SIMPLE_ERROR_MESSAGE,
+      this.isTablet = false})
       : super(key: key);
 
   final Function onTap;
@@ -31,8 +34,9 @@ class ErrorRefreshButton extends StatelessWidget {
             onTap();
           },
           child: Text(
+            
             _strings.reload,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: isTablet ? 18 : 14),
           ),
         )
       ],

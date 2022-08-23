@@ -4,9 +4,11 @@ import 'package:ink_mobile/models/custom_tab.dart';
 class SwitchTabs extends StatelessWidget {
   final List<CustomSectionTab> tabs;
   final int activeIndex;
+  final bool isTablet;
   final void Function(int) onIndexChanged;
   const SwitchTabs(
       {Key? key,
+      required this.isTablet,
       required this.tabs,
       required this.activeIndex,
       required this.onIndexChanged})
@@ -40,7 +42,8 @@ class SwitchTabs extends StatelessWidget {
           maxLines: 2,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 13.5,
+            fontSize: isTablet ? 17.5  : 13.5,
+            fontWeight: isTablet ? FontWeight.bold : null,
             color: activeIndex == index
                 ? Colors.white
                 : Theme.of(context).primaryColor,

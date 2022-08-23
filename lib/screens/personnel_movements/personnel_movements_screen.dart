@@ -7,6 +7,8 @@ import 'package:ink_mobile/screens/personnel_movements/components/body.dart';
 
 class PersonnelMovementsScreen extends StatelessWidget {
   final PersonnelMovementsCubit personnelMovementsCubit;
+  
+  
   const PersonnelMovementsScreen(
       {Key? key, required this.personnelMovementsCubit})
       : super(key: key);
@@ -16,7 +18,7 @@ class PersonnelMovementsScreen extends StatelessWidget {
     final _strings = localizationInstance;
     return Scaffold(
       appBar: InkAppBarWithText(title: _strings.staffMovements),
-      body: Body(personnelMovementsCubit: personnelMovementsCubit),
+      body: Body(personnelMovementsCubit: personnelMovementsCubit,),
       bottomNavigationBar: const NewBottomNavBar(),
     );
   }

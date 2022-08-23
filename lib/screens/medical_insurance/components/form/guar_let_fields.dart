@@ -7,7 +7,9 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class MedicalInsuranceGuarLetFields extends StatelessWidget {
   final MedicalInsuranceFormEntities entities;
-  const MedicalInsuranceGuarLetFields({Key? key, required this.entities})
+  final bool isTablet;
+
+  const MedicalInsuranceGuarLetFields({Key? key, required this.entities, required this. isTablet})
       : super(key: key);
 
   @override
@@ -22,13 +24,14 @@ class MedicalInsuranceGuarLetFields extends StatelessWidget {
   }
 
   Widget _descriptionWidget() {
-    return Text(localizationInstance.extGuarantLetterDesc);
+    return Text(localizationInstance.extGuarantLetterDesc, style: TextStyle(fontSize: isTablet ? 18 : 14),);
   }
 
   Widget _dateWidget() {
     MaskTextInputFormatter mask = TextFieldMasks().date;
     final _strings = localizationInstance;
     return ServiceTextField(
+      isTablet: isTablet,
       hint: _strings.dateHint,
       requiredIcon: true,
       validator: (val) =>

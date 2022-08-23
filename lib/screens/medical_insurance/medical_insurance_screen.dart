@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
+import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/cubit/send_medical_ins_form/send_form_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -35,20 +36,23 @@ class _MedicalInsuranceScreenState extends State<MedicalInsuranceScreen>
       appBar: widget.appBar ??
           InkAppBarWithText(title: _strings.getMedicalInsurance),
       body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Head(sectionPadding: sectionPadding),
-              Divider(color: Colors.grey, height: 2.0),
-              SizedBox(height: 25.0),
-              MedicalInsuranceForm(
-                sectionPadding: sectionPadding,
-                sendMedicalInsFormCubit: widget.sendMedicalInsFormCubit,
-                selectfieldCubit: widget.selectfieldCubit,
-              ),
-            ],
-          ),
+        child: CustomLayoutBuilder(
+      builder: (context, constraints, isTablet) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Head(sectionPadding: sectionPadding, isTablet: isTablet),
+                Divider(color: Colors.grey, height: 2.0),
+                SizedBox(height: 25.0),
+                MedicalInsuranceForm(
+                  isTablet: isTablet,
+                  sectionPadding: sectionPadding,
+                  sendMedicalInsFormCubit: widget.sendMedicalInsFormCubit,
+                  selectfieldCubit: widget.selectfieldCubit,
+                ),
+              ],
+            );
+          }
         ),
       ),
     );

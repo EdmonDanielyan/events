@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
+import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
@@ -53,7 +54,11 @@ class FeedBackScreenState extends State<FeedBackScreen>
     final _strings = localizationInstance;
     return Scaffold(
       appBar: widget.appBar ?? InkAppBarWithText(title: _strings.feedback),
-      body: Body(),
+      body: CustomLayoutBuilder(
+      builder: (context, constraints, isTablet) {
+          return Body(isTablet);
+        }
+      ),
       bottomNavigationBar:
           widget.bottomNavigationBar ?? const NewBottomNavBar(),
     );

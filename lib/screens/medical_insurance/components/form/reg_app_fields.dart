@@ -16,8 +16,13 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 class MedicalInsuranceRegAppFields extends StatelessWidget {
   final MedicalInsuranceFormEntities entities;
   final SelectfieldCubit selectfieldCubit;
+  
+  final bool isTablet;
   const MedicalInsuranceRegAppFields(
-      {Key? key, required this.entities, required this.selectfieldCubit})
+      {Key? key,
+      required this.entities,
+      required this.selectfieldCubit,
+      required this. isTablet})
       : super(key: key);
   static late AppLocalizations _strings;
   static late MedicalServicesList _medicalServicesList;
@@ -49,11 +54,12 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
   }
 
   Widget _descriptionWidget() {
-    return Text(_strings.regAppForMedInsDesc);
+    return Text(_strings.regAppForMedInsDesc, style: TextStyle(fontSize: isTablet ? 18 : 14));
   }
 
   Widget _selectService(BuildContext context) {
     return ServiceSelectFieldCubit(
+      isTablet:isTablet,
       hint: _strings.chooseService,
       cubit: selectfieldCubit,
       subWidget: subWidget,
@@ -69,6 +75,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: ServiceTextField(
+          isTablet: isTablet,
           initialValue: item.description,
           hint: _strings.clarification,
           onChanged: (val) {
@@ -85,6 +92,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
 
   Widget _hospitalName() {
     return ServiceTextField(
+      isTablet: isTablet,
       hint: _strings.hospitalName,
       requiredIcon: true,
       validator: (val) => val!.length < 5 ? _strings.fillTheField : null,
@@ -95,6 +103,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
 
   Widget _city() {
     return ServiceTextField(
+      isTablet: isTablet,
       hint: _strings.city,
       requiredIcon: true,
       keyboardType: TextInputType.streetAddress,
@@ -105,6 +114,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
 
   Widget _address() {
     return ServiceTextField(
+      isTablet: isTablet,
       hint: _strings.address,
       requiredIcon: true,
       keyboardType: TextInputType.streetAddress,
@@ -115,6 +125,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
 
   Widget _price() {
     return ServiceTextField(
+      isTablet: isTablet,
       hint: _strings.medicalPrice,
       requiredIcon: true,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
@@ -127,6 +138,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
   Widget _dateStart() {
     MaskTextInputFormatter mask = TextFieldMasks().date;
     return ServiceTextField(
+      isTablet: isTablet,
       hint: _strings.medicalDateStart,
       requiredIcon: true,
       validator: (val) =>

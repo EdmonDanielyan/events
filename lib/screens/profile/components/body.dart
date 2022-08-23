@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
@@ -89,16 +90,18 @@ class Body extends StatelessWidget {
       child: Column(children: [
         PersonalPageHeader(user: user),
         Awards(awards: user.awards),
-        Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Contacts(contacts: user.contacts),
-              BasicInformation(info: user.basicInformation),
-              Diagnostics(logFile: logFile),
-              ProfileSecuritySection()
-            ],
-          ),
+        CustomLayoutBuilder(
+      builder: (context, constraints, isTablet) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Contacts(contacts: user.contacts, isTablet:isTablet),
+                BasicInformation(info: user.basicInformation, isTablet: isTablet),
+                Diagnostics(logFile: logFile, isTablet: isTablet),
+                ProfileSecuritySection(isTablet: isTablet)
+              ],
+            );
+          }
         )
       ]),
     )));
@@ -115,14 +118,16 @@ class Body extends StatelessWidget {
       child: Column(children: [
         OtherUserPageHeader(user: user),
         Awards(awards: user.awards),
-        Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Contacts(contacts: user.contacts),
-              BasicInformation(info: user.basicInformation)
-            ],
-          ),
+       CustomLayoutBuilder(
+      builder: (context, constraints, isTablet) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Contacts(contacts: user.contacts, isTablet: isTablet,),
+                BasicInformation(info: user.basicInformation, isTablet: isTablet,)
+              ],
+            );
+          }
         )
       ]),
     )));

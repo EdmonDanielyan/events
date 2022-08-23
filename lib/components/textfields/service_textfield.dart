@@ -15,8 +15,12 @@ class ServiceTextField extends StatelessWidget {
   final int maxLines;
   final AutovalidateMode autovalidateMode;
   final bool requiredIcon;
+  
+  final bool isTablet;
   const ServiceTextField({
+    
     Key? key,
+    this.isTablet = false,
     this.hint = "",
     this.controller,
     this.onChanged,
@@ -34,6 +38,7 @@ class ServiceTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: TextStyle(fontSize: isTablet ? 18 : 14),
       controller: controller,
       onChanged: onChanged,
       obscureText: obscureText,
@@ -46,6 +51,10 @@ class ServiceTextField extends StatelessWidget {
       initialValue: initialValue,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
+        helperStyle:  TextStyle(fontSize: isTablet ? 20 : 14) ,
+        labelStyle: TextStyle(fontSize: isTablet ? 20 : 14) ,
+        errorStyle:TextStyle(fontSize: isTablet ? 18 : 12) ,
+        hintStyle: TextStyle(fontSize: isTablet ? 20 : 14),
         hintText: hint,
         suffixIcon: requiredIcon ? const RequiredTextfieldIcon() : null,
         suffixIconConstraints: const BoxConstraints(maxHeight: double.infinity),

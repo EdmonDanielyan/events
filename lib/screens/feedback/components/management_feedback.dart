@@ -5,7 +5,8 @@ import 'package:ink_mobile/screens/feedback/components/form/form.dart';
 import 'package:ink_mobile/screens/feedback/components/questions_header.dart';
 
 class ManagementFeedback extends StatelessWidget {
-  const ManagementFeedback({Key? key}) : super(key: key);
+  final bool isTablet;
+  const ManagementFeedback(this. isTablet, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +14,11 @@ class ManagementFeedback extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ManagementFeedbackForm(),
+        ManagementFeedbackForm(isTablet),
         Divider(color: Colors.grey, height: 2.0),
-        QuestionsHeader(text: _strings.answersToQuestions),
+        QuestionsHeader(isTablet, text: _strings.answersToQuestions),
         Divider(color: Colors.grey, height: 2.0),
-        ManagementFeedbackAnswersList(),
+        ManagementFeedbackAnswersList(isTablet),
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/core/masks/input_formatters.dart';
 import 'package:ink_mobile/core/masks/textfield_masks.dart';
@@ -13,6 +14,7 @@ import 'entities.dart';
 
 class MedicalInsuranceFormUserFields extends StatefulWidget {
   final MedicalInsuranceFormEntities entities;
+  
   const MedicalInsuranceFormUserFields({Key? key, required this.entities})
       : super(key: key);
 
@@ -67,23 +69,28 @@ class _MedicalInsuranceFormUserFieldsState
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    return Column(
-      children: [
-        _fioWidget(),
-        SizedBox(height: 20),
-        _birthDate(),
-        SizedBox(height: 20),
-        _positionWidget(),
-        SizedBox(height: 20),
-        _mobilePhoneWidget(),
-        SizedBox(height: 20),
-        _emailWidget(),
-      ],
+    return CustomLayoutBuilder(
+      builder: (context, constraints, isTablet) {
+        return Column(
+          children: [
+            _fioWidget(isTablet),
+            SizedBox(height: 20),
+            _birthDate(isTablet),
+            SizedBox(height: 20),
+            _positionWidget(isTablet),
+            SizedBox(height: 20),
+            _mobilePhoneWidget(isTablet),
+            SizedBox(height: 20),
+            _emailWidget(isTablet),
+          ],
+        );
+      }
     );
   }
 
-  Widget _fioWidget() {
+  Widget _fioWidget(bool isTablet) {
     return ServiceTextField(
+      isTablet: isTablet,
       controller: fioController,
       hint: _strings.fullnameHint,
       requiredIcon: true,
@@ -95,9 +102,10 @@ class _MedicalInsuranceFormUserFieldsState
     );
   }
 
-  Widget _birthDate() {
+  Widget _birthDate(bool isTablet) {
     MaskTextInputFormatter mask = TextFieldMasks().date;
     return ServiceTextField(
+      isTablet: isTablet,
       hint: _strings.birthDate,
       controller: birthdayController,
       requiredIcon: true,
@@ -108,8 +116,9 @@ class _MedicalInsuranceFormUserFieldsState
     );
   }
 
-  Widget _positionWidget() {
+  Widget _positionWidget(bool isTablet) {
     return ServiceTextField(
+      isTablet: isTablet,
       controller: positionController,
       hint: _strings.position,
       requiredIcon: true,
@@ -119,10 +128,11 @@ class _MedicalInsuranceFormUserFieldsState
     );
   }
 
-  Widget _mobilePhoneWidget() {
+  Widget _mobilePhoneWidget(bool isTablet) {
     MaskTextInputFormatter mask =
         TextFieldMasks().phone(initialText: widget.entities.phone);
     return ServiceTextField(
+      isTablet: isTablet,
       hint: "+7 (ххх) xxx-xx-xx",
       controller: phoneController,
       requiredIcon: true,
@@ -133,8 +143,10 @@ class _MedicalInsuranceFormUserFieldsState
     );
   }
 
-  Widget _emailWidget() {
+  Widget _emailWidget(bool isTablet) {
+    
     return ServiceTextField(
+      isTablet: isTablet,
       controller: emailController,
       hint: _strings.email,
       requiredIcon: true,

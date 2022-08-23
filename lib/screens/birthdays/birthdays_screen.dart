@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_cubit.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_state.dart';
@@ -49,178 +50,185 @@ class BirthdaysScreen extends StatelessWidget {
       appBar: InkAppBarWithText(
         title: _strings.birthdays,
       ),
-      body: BlocConsumer<BirthdaysCubit, BirthdaysState>(
-        listener: (context, state) {
-          if (state.type == BirthdaysStateType.LOADED) {
-            _setUsersToCache(state);
-          }
-        },
-        bloc: birthdaysCubit,
-        builder: (context, state) {
-          switch (state.type) {
-            case (BirthdaysStateType.EMPTY):
-              {
-                return Center(child: Text(_strings.noBirthdaysSoon));
-              }
+      body: CustomLayoutBuilder(builder: (context, constraints, isTablet) {
+        return BlocConsumer<BirthdaysCubit, BirthdaysState>(
+          listener: (context, state) {
+            if (state.type == BirthdaysStateType.LOADED) {
+              _setUsersToCache(state);
+            }
+          },
+          bloc: birthdaysCubit,
+          builder: (context, state) {
+            switch (state.type) {
+              case (BirthdaysStateType.EMPTY):
+                {
+                  return Center(
+                      child: Text(
+                    _strings.noBirthdaysSoon,
+                    style: TextStyle(fontSize: isTablet ? 18 : 14),
+                  ));
+                }
 
-            case (BirthdaysStateType.LOADED):
-              {
-                List<Widget> bdaysToday =
-                    _getBirthdaysToday(context, state.birthdaysToday!);
-                List<Widget> bdaysOther =
-                    _getBirthdaysOther(context, state.birthdaysOther!);
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 25),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                            bottom:
-                                BorderSide(width: 1, color: Color(0xFFE5E5E5)),
+              case (BirthdaysStateType.LOADED):
+                {
+                  List<Widget> bdaysToday = _getBirthdaysToday(
+                      context, state.birthdaysToday!, isTablet);
+                  List<Widget> bdaysOther =
+                      _getBirthdaysOther(context, state.birthdaysOther!);
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 25),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border(
+                              bottom: BorderSide(
+                                  width: 1, color: Color(0xFFE5E5E5)),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  flex: 8,
+                                  child: Text(_strings.birthdays,
+                                      style: TextStyle(
+                                          fontSize: isTablet ? 32 : 28,
+                                          fontWeight: FontWeight.bold))),
+                              Expanded(
+                                flex: 2,
+                                child: Image.asset("assets/images/balloon.png"),
+                              )
+                            ],
                           ),
                         ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 8,
-                                child: Text(_strings.birthdays,
-                                    style: TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.bold))),
-                            Expanded(
-                              flex: 2,
-                              child: Image.asset("assets/images/balloon.png"),
-                            )
-                          ],
-                        ),
-                      ),
-                      /* Дни рождения сегодня*/
-                      state.birthdaysToday!.length > 0
-                          ? Container(
-                              alignment: Alignment.bottomLeft,
-                              margin: EdgeInsets.only(top: 25),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(left: 25),
-                                    child: Text(_strings.today.toUpperCase(),
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .iconTheme
-                                                .color,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border(
-                                          top: BorderSide(
-                                              width: 1,
-                                              color: Color(0xFFE5E5E5)),
-                                          bottom: BorderSide(
-                                              width: 1,
-                                              color: Color(0xFFE5E5E5)),
-                                        )),
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      controller: ScrollController(
-                                          keepScrollOffset: false),
-                                      itemCount: bdaysToday.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) =>
-                                              bdaysToday[index],
+                        /* Дни рождения сегодня*/
+                        state.birthdaysToday!.length > 0
+                            ? Container(
+                                alignment: Alignment.bottomLeft,
+                                margin: EdgeInsets.only(top: 25),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(left: 25),
+                                      child: Text(_strings.today.toUpperCase(),
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: isTablet ? 24 : 18)),
                                     ),
-                                  )
-                                ],
-                              ),
-                            )
-                          : Container(),
-                      /* Дни рождения в ближайшие дни*/
-                      state.birthdaysOther!.length > 0
-                          ? Container(
-                              alignment: Alignment.bottomLeft,
-                              margin: EdgeInsets.only(top: 25),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(left: 25),
-                                    child: Text(
-                                        _strings.inComingDays.toUpperCase(),
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .iconTheme
-                                                .color,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18)),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border(
-                                          top: BorderSide(
-                                              width: 1,
-                                              color: Color(0xFFE5E5E5)),
-                                          bottom: BorderSide(
-                                              width: 1,
-                                              color: Color(0xFFE5E5E5)),
-                                        )),
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      controller: ScrollController(
-                                          keepScrollOffset: false),
-                                      itemCount: bdaysOther.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) =>
-                                              bdaysOther[index],
+                                    Container(
+                                      margin: EdgeInsets.only(top: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border(
+                                            top: BorderSide(
+                                                width: 1,
+                                                color: Color(0xFFE5E5E5)),
+                                            bottom: BorderSide(
+                                                width: 1,
+                                                color: Color(0xFFE5E5E5)),
+                                          )),
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        controller: ScrollController(
+                                            keepScrollOffset: false),
+                                        itemCount: bdaysToday.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) =>
+                                                bdaysToday[index],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                        /* Дни рождения в ближайшие дни*/
+                        state.birthdaysOther!.length > 0
+                            ? Container(
+                                alignment: Alignment.bottomLeft,
+                                margin: EdgeInsets.only(top: 25),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(left: 25),
+                                      child: Text(
+                                          _strings.inComingDays.toUpperCase(),
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: isTablet ? 24 : 18)),
                                     ),
-                                  )
-                                ],
-                              ),
-                            )
-                          : Container(),
-                    ],
-                  ),
-                );
-              }
+                                    Container(
+                                      margin: EdgeInsets.only(top: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border(
+                                            top: BorderSide(
+                                                width: 1,
+                                                color: Color(0xFFE5E5E5)),
+                                            bottom: BorderSide(
+                                                width: 1,
+                                                color: Color(0xFFE5E5E5)),
+                                          )),
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        controller: ScrollController(
+                                            keepScrollOffset: false),
+                                        itemCount: bdaysOther.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) =>
+                                                bdaysOther[index],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                      ],
+                    ),
+                  );
+                }
 
-            case (BirthdaysStateType.LOADING):
-              {
-                birthdaysCubit.load();
-                return InkPageLoader();
-              }
+              case (BirthdaysStateType.LOADING):
+                {
+                  birthdaysCubit.load();
+                  return InkPageLoader();
+                }
 
-            case (BirthdaysStateType.ERROR):
-              {
-                return ErrorRefreshButton(
-                  onTap: birthdaysCubit.refresh,
-                  text: state.errorMessage!,
-                );
-              }
-          }
+              case (BirthdaysStateType.ERROR):
+                {
+                  return ErrorRefreshButton(
+                    onTap: birthdaysCubit.refresh,
+                    text: state.errorMessage!,
+                  );
+                }
+            }
 
-          return Container();
-        },
-      ),
+            return Container();
+          },
+        );
+      }),
       bottomNavigationBar: const NewBottomNavBar(),
     );
   }
 
   List<Widget> _getBirthdaysToday(
-      BuildContext context, List<BirthdayData>? birthdaysData) {
+      BuildContext context, List<BirthdayData>? birthdaysData, bool isTablet) {
     List<Widget> birthdays = [];
 
     int i = 0;
 
     birthdaysData?.forEach((birthday) {
       birthdays.add(BirthdayTodayElement(
+        isTablet: isTablet,
         birthday: birthday,
         index: i,
       ));

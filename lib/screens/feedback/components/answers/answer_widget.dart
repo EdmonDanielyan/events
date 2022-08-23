@@ -5,7 +5,9 @@ import 'package:ink_mobile/models/feedback/management_answer.dart';
 class AnswerWidget extends StatelessWidget {
   final int index;
   final ManagementAnswer item;
-  const AnswerWidget({Key? key, required this.index, required this.item})
+  final bool isTablet;
+  const AnswerWidget(
+      { required this.isTablet, Key? key, required this.index, required this.item})
       : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class AnswerWidget extends StatelessWidget {
           Text(
             "$title:",
             style: TextStyle(
+              fontSize: isTablet ? 18 : 14,
               fontWeight: FontWeight.bold,
             ),
           ),

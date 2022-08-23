@@ -21,11 +21,13 @@ class MedicalInsuranceForm extends StatefulWidget {
   final SendMedicalInsFormCubit sendMedicalInsFormCubit;
   final EdgeInsetsGeometry sectionPadding;
   final SelectfieldCubit selectfieldCubit;
+  final bool isTablet;
   const MedicalInsuranceForm({
     Key? key,
     required this.sectionPadding,
     required this.sendMedicalInsFormCubit,
     required this.selectfieldCubit,
+    required this.isTablet,
   }) : super(key: key);
 
   @override
@@ -37,7 +39,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
   final _formKey = GlobalKey<FormState>();
   CustomSectionSwitcher? tabsSwitcher;
 
-  void setTabsSwitcher() {
+  void setTabsSwitcher(bool isTablet) {
     setState(() {
       tabsSwitcher = CustomSectionSwitcher(tabs: [
         CustomSectionTab(
@@ -45,6 +47,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
           name: "policy",
           label: localizationInstance.regAppForMedIns,
           widget: MedicalInsuranceRegAppFields(
+            isTablet:isTablet,
             entities: entities,
             selectfieldCubit: widget.selectfieldCubit,
           ),
@@ -53,7 +56,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
           index: 1,
           name: "letter",
           label: localizationInstance.extGuarantLetter,
-          widget: MedicalInsuranceGuarLetFields(entities: entities),
+          widget: MedicalInsuranceGuarLetFields(entities: entities, isTablet: isTablet),
         ),
       ]);
     });
@@ -64,7 +67,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
     super.initState();
 
     Future.delayed(Duration.zero, () {
-      setTabsSwitcher();
+      setTabsSwitcher(widget.isTablet);
     });
   }
 
@@ -72,30 +75,29 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
   Widget build(BuildContext context) {
     return Container(
       child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            contentWrapper(
-              child: MedicalInsuranceFormUserFields(entities: entities),
-            ),
-            Divider(color: Colors.grey, height: 2.0),
-            SizedBox(height: 25.0),
-            contentWrapper(
-              child: Column(
-                children: [
-                  serviceSections(),
-                  SizedBox(height: 20),
-                  _additionalText(),
-                  SizedBox(height: 20),
-                  btnWidget(),
-                ],
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              contentWrapper(
+                child: MedicalInsuranceFormUserFields(entities: entities),
               ),
-            ),
-            SizedBox(height: 20),
-          ],
-        ),
-      ),
+              Divider(color: Colors.grey, height: 2.0),
+              SizedBox(height: 25.0),
+              contentWrapper(
+                child: Column(
+                  children: [
+                    serviceSections(widget.isTablet),
+                    SizedBox(height: 20),
+                    _additionalText(),
+                    SizedBox(height: 20),
+                    btnWidget(),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+            ],
+          )),
     );
   }
 
@@ -107,12 +109,13 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
     );
   }
 
-  Widget serviceSections() {
+  Widget serviceSections(bool isTablet) {
     if (tabsSwitcher != null) {
       entities.type = tabsSwitcher!.tabs[tabsSwitcher!.activeIndex].name;
       return Column(
         children: [
           SwitchTabs(
+            isTablet: isTablet,
             activeIndex: tabsSwitcher!.activeIndex,
             onIndexChanged: (index) {
               setState(() {
@@ -131,6 +134,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
 
   Widget _additionalText() {
     return ServiceTextField(
+      isTablet: widget.isTablet,
       hint: localizationInstance.medAdditionalText,
       onChanged: (val) => entities.additionalText = val,
       inputFormatters: [InputFormatters().lettersNumbersOnly],

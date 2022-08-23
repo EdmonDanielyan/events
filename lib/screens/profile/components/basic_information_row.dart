@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 class BasicInfoRow extends StatelessWidget {
   final String title;
   final String value;
-
-  const BasicInfoRow({Key? key, required this.title, required this.value})
+  final bool isTablet;
+  const BasicInfoRow(
+      {Key? key,
+      required this.title,
+      required this.value,
+      required this. isTablet})
       : super(key: key);
 
   @override
@@ -33,11 +37,11 @@ class BasicInfoRow extends StatelessWidget {
                   title,
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
-                      fontSize: 14),
+                      fontSize: isTablet ? 18 : 14),
                 ),
                 Text(
                   value,
-                  style: TextStyle(color: Color(0xFF1D2126), fontSize: 16),
+                  style: TextStyle(color: Color(0xFF1D2126), fontSize: isTablet ? 20 : 16),
                 )
               ],
             ),

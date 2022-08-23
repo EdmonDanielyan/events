@@ -15,6 +15,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
   final Widget Function(Selectfield, bool)? subWidget;
   final String? Function(String?)? validator;
   final void Function(List<Selectfield>) onChanged;
+  final bool isTablet;
   const ServiceSelectFieldCubit({
     Key? key,
     required this.cubit,
@@ -24,6 +25,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
     this.validator,
     required this.items,
     required this.onChanged,
+    required this. isTablet ,
   }) : super(key: key);
 
   Future<void> showModalOptions(BuildContext context) async {
@@ -59,7 +61,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
   }
 
   List<MultiSelectItem<Selectfield>> getList() {
-    return items.map((e) => MultiSelectItem(e, e.title)).toList();
+    return items.map((e) => MultiSelectItem(e, e.title,)).toList();
   }
 
   Widget _listSelectors(AppLocalizations strings) {
@@ -67,6 +69,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
       bloc: cubit,
       builder: (BuildContext context, state) {
         return MultiSelectDialog(
+          isTablet: isTablet,
           items: getList(),
           onConfirm: onConfirm,
           initialValue: state.items,
@@ -76,12 +79,13 @@ class ServiceSelectFieldCubit extends StatelessWidget {
           subWidget: subWidget,
           cancelText: Text(
             strings.back,
-            style: TextStyle(color: Colors.grey[600]),
+            style: TextStyle(color: Colors.grey[600], fontSize: isTablet ? 18 : 14),
           ),
           confirmText: Text(
             strings.select,
             style: TextStyle(
               color: Colors.green,
+              fontSize: isTablet ? 18 : 14
             ),
           ),
         );
@@ -97,9 +101,11 @@ class ServiceSelectFieldCubit extends StatelessWidget {
       },
       builder: (BuildContext context, state) {
         return TextFormField(
+          style: TextStyle( fontSize: isTablet ? 18 : 14),
           autovalidateMode: state.validateMode,
           validator: validator,
           decoration: InputDecoration(
+            labelStyle: TextStyle( fontSize: isTablet ? 18 : 14),
             hintText: state.items.length < 1 ? hint : "",
             border: OutlineInputBorder(),
             focusedBorder: OutlineInputBorder(
