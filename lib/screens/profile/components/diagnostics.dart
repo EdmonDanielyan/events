@@ -9,8 +9,9 @@ import 'section_title.dart';
 
 class Diagnostics extends StatefulWidget {
   final String logFile;
-
-  const Diagnostics({Key? key, required this.logFile}) : super(key: key);
+  final bool isTablet;
+  const Diagnostics({Key? key, required this.logFile, required this.isTablet})
+      : super(key: key);
 
   @override
   State<Diagnostics> createState() => _DiagnosticsState();
@@ -34,7 +35,10 @@ class _DiagnosticsState extends State<Diagnostics> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            child: SectionTitle(title: _strings.diagnostics),
+            child: SectionTitle(
+              title: _strings.diagnostics,
+              isTablet: widget.isTablet,
+            ),
           ),
           Column(
             children: [
@@ -49,7 +53,10 @@ class _DiagnosticsState extends State<Diagnostics> {
                       )),
                   width: size.width,
                   child: ListTile(
-                    title: Text("Обратиться в техподдержку"),
+                    title: Text(
+                      "Обратиться в техподдержку",
+                      style: TextStyle(fontSize: widget.isTablet ? 18 : 14),
+                    ),
                     trailing: Icon(Icons.arrow_forward_ios),
                     onTap: () =>
                         launchUrl('https://portal.irkutskoil.ru/login/report/'),
@@ -66,8 +73,14 @@ class _DiagnosticsState extends State<Diagnostics> {
                   ),
                   width: size.width,
                   child: ListTile(
-                    title: Text("Информация о работе приложения"),
-                    subtitle: Text("Отправить разработчикам"),
+                    title: Text(
+                      "Информация о работе приложения",
+                      style: TextStyle(fontSize: widget.isTablet ? 18 : 14),
+                    ),
+                    subtitle: Text(
+                      "Отправить разработчикам",
+                      style: TextStyle(fontSize: widget.isTablet ? 18 : 14),
+                    ),
                     trailing: Icon(Icons.arrow_forward_ios),
                     onTap: () => sendErrorLog(widget.logFile),
                   ),

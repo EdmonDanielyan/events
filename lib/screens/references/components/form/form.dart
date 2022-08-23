@@ -30,10 +30,13 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 class ReferencesForm extends StatefulWidget {
   final ReferencesPageCubit referencesPageCubit;
   final SendReferenceFormCubit sendReferenceFormCubit;
+
+  final bool isTablet;
   const ReferencesForm({
     Key? key,
     required this.referencesPageCubit,
     required this.sendReferenceFormCubit,
+    required this.isTablet,
   }) : super(key: key);
 
   @override
@@ -135,7 +138,10 @@ class _ReferencesFormState extends State<ReferencesForm> {
               ],
               if (currentReferenceItem.fields.quantity) ...[
                 SizedBox(height: 20),
-                Text(_strings.countInstances),
+                Text(
+                  _strings.countInstances,
+                  style: TextStyle(fontSize: widget.isTablet ? 18 : 14),
+                ),
                 SizedBox(height: 15),
                 quantityWidget(),
               ],
@@ -319,7 +325,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget descriptionWidget() {
     return Text(
       currentReferenceItem.description,
-      style: TextStyle(color: Colors.red),
+      style: TextStyle(color: Colors.red, fontSize: widget.isTablet ? 18 : 14),
     );
   }
 

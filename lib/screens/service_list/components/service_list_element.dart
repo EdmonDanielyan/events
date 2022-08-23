@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/service_list/components/service_list_item.dart';
 import 'package:ink_mobile/screens/service_list/service_list_page_viewer.dart';
 
 class ServiceListElement extends StatelessWidget {
   final ServiceListItem item;
-
   const ServiceListElement({Key? key, required this.item}) : super(key: key);
 
   @override
@@ -26,17 +26,17 @@ class ServiceListElement extends StatelessWidget {
         height: 60,
         child: Row(
           children: [
-            Container(
-              width: 50,
-              child: SvgPicture.asset(
-                item.svgPicturePath,
-              ),
+            SvgPicture.asset(
+              item.svgPicturePath,
+              width: SizeConfig(context, 40).getProportionateScreenHeight,
             ),
             Container(
               margin: EdgeInsets.only(left: 20),
               child: Text(
                 item.title,
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(
+                    fontSize:
+                        SizeConfig(context, 14).getProportionateScreenHeight),
               ),
             ),
             Expanded(
@@ -45,7 +45,7 @@ class ServiceListElement extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.arrow_forward_ios,
-                    size: 12,
+                    size: SizeConfig(context, 10).getProportionateScreenHeight,
                     color: Theme.of(context).primaryColor,
                   )
                 ],

@@ -9,19 +9,21 @@ import 'package:ink_mobile/screens/profile/components/section_title.dart';
 class Contacts extends StatelessWidget {
   static late AppLocalizations _strings;
   final UserContacts? contacts;
-  const Contacts({Key? key, required this.contacts}) : super(key: key);
+  final bool isTablet;
+  const Contacts({Key? key, required this.contacts, required this. isTablet})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
     if (contacts != null) {
-      return getContactsWidget(context);
+      return getContactsWidget(context, isTablet);
     } else {
       return Container();
     }
   }
 
-  getContactsWidget(BuildContext context) {
+  getContactsWidget(BuildContext context, bool isTablet) {
     if (contacts!.workPhone != null ||
         contacts!.mobilePhone != null ||
         contacts!.workMobilePhone != null ||
@@ -32,9 +34,12 @@ class Contacts extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              child: SectionTitle(title: _strings.contacts),
+              child: SectionTitle(
+                title: _strings.contacts,
+                isTablet: isTablet,
+              ),
             ),
-            Column(children: getContactWidgetRows(context))
+            Column(children: getContactWidgetRows(context, isTablet))
           ],
         ),
       );
@@ -43,12 +48,13 @@ class Contacts extends StatelessWidget {
     }
   }
 
-  List<Widget> getContactWidgetRows(BuildContext context) {
+  List<Widget> getContactWidgetRows(BuildContext context, bool isTablet) {
     List<Widget> contactRows = [];
 
     getRowsInfo(context).forEach((element) {
       if (element['value'] != null) {
         contactRows.add(ContactsRow(
+          isTablet: isTablet,
           title: element['title'],
           value: element['value'],
           icon: element['icon'],

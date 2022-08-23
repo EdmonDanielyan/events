@@ -5,11 +5,14 @@ import 'package:ink_mobile/models/movements_data.dart';
 class PersonnelMovement extends StatelessWidget {
   final PersonnelMovementLabel? label;
   final MovementsData movement;
+  
+  final bool isTablet;
 
   PersonnelMovement({
     required this.movement,
     Key? key,
     this.label,
+    required this.isTablet,
   }) : super(key: key);
 
   @override
@@ -41,6 +44,7 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.dateOfTakingPosition,
                           style: TextStyle(
+                             fontSize: isTablet ? 18 : 14,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -48,7 +52,7 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.period,
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: isTablet ? 22 : 18),
                   )
                 ],
               ),
@@ -73,6 +77,7 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.position,
                           style: TextStyle(
+                            fontSize: isTablet ? 18 : 14,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                         getLabel()
@@ -81,7 +86,7 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.position,
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle( fontSize: isTablet ? 24 : 18,),
                   )
                 ],
               ),
@@ -106,6 +111,7 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.department,
                           style: TextStyle(
+                            fontSize: isTablet ? 18 : 14,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -113,7 +119,7 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.department,
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: isTablet ? 22 : 18,),
                   )
                 ],
               ),
@@ -138,6 +144,7 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.company,
                           style: TextStyle(
+                            fontSize: isTablet ? 18 : 14,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -145,7 +152,7 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.organization,
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle( fontSize: isTablet ? 22 : 18,),
                   )
                 ],
               ),
@@ -170,6 +177,7 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.status,
                           style: TextStyle(
+                            fontSize: isTablet ? 18 : 14,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -177,7 +185,7 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.operation,
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: isTablet ? 22 : 18,),
                   )
                 ],
               ),
@@ -202,6 +210,7 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.staffNumber,
                           style: TextStyle(
+                            fontSize: isTablet ? 18 : 14,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -209,7 +218,7 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.pnum,
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: isTablet ? 22 : 18,),
                   )
                 ],
               ),
@@ -232,7 +241,7 @@ class PersonnelMovement extends StatelessWidget {
             child: Text(
               label!.title,
               style: TextStyle(
-                  fontSize: 10,
+                  fontSize:  isTablet ? 14 : 10,
                   color: label!.color,
                   fontWeight: FontWeight.bold),
             ),

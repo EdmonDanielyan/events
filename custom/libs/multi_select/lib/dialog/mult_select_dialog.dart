@@ -84,6 +84,8 @@ class MultiSelectDialog<V> extends StatefulWidget with MultiSelectActions<V> {
 
   final Widget Function(V, bool)? subWidget;
 
+  final bool isTablet;
+
   MultiSelectDialog({
     required this.items,
     required this.initialValue,
@@ -111,6 +113,7 @@ class MultiSelectDialog<V> extends StatefulWidget with MultiSelectActions<V> {
     this.searchTextStyle,
     this.selectedItemsTextStyle,
     this.checkColor,
+    this.isTablet = false,
   });
 
   @override
@@ -149,8 +152,11 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
             title: Text(
               item.label,
               style: _selectedValues.contains(item.value)
-                  ? widget.selectedItemsTextStyle
-                  : widget.itemsTextStyle,
+                  ? TextStyle.lerp(widget.selectedItemsTextStyle,
+                      TextStyle(fontSize: widget.isTablet ? 18 : 14), 2)
+                  :    TextStyle.lerp(widget.itemsTextStyle,
+                      TextStyle(fontSize: widget.isTablet ? 18 : 14), 2)
+
             ),
             controlAffinity: widget.controlAffinity,
             onChanged: (checked) {

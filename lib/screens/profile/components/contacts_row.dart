@@ -6,9 +6,11 @@ class ContactsRow extends StatelessWidget {
   final String title;
   final String value;
   final String type;
+  final bool isTablet;
 
   const ContactsRow(
       {Key? key,
+      required this.isTablet,
       required this.icon,
       required this.title,
       required this.value,
@@ -49,7 +51,7 @@ class ContactsRow extends StatelessWidget {
                         title,
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
-                            fontSize: 14),
+                            fontSize: isTablet ? 18 : 14),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -65,7 +67,7 @@ class ContactsRow extends StatelessWidget {
                               color: (type == 'call') || (type == 'email')
                                   ? Color(0xFF2B5E4A)
                                   : Color(0xFF1D2126),
-                              fontSize: 16),
+                              fontSize: isTablet ? 20 : 16),
                         ),
                       )
                     ],

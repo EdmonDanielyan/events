@@ -60,7 +60,12 @@ class ServiceSelectFieldCubit extends StatelessWidget {
   }
 
   List<MultiSelectItem<Selectfield>> getList() {
-    return items.map((e) => MultiSelectItem(e, e.title)).toList();
+    return items
+        .map((e) => MultiSelectItem(
+              e,
+              e.title,
+            ))
+        .toList();
   }
 
   Widget _listSelectors(BuildContext context, AppLocalizations strings) {
@@ -105,9 +110,13 @@ class ServiceSelectFieldCubit extends StatelessWidget {
       },
       builder: (BuildContext context, state) {
         return TextFormField(
+          style: TextStyle(
+              fontSize: SizeConfig(context, 12).getProportionateScreenHeight),
           autovalidateMode: state.validateMode,
           validator: validator,
           decoration: InputDecoration(
+            labelStyle: TextStyle(
+                fontSize: SizeConfig(context, 12).getProportionateScreenHeight),
             hintText: state.items.length < 1 ? hint : "",
             hintStyle: TextStyle(
               fontSize: SizeConfig(context, 14.0).getProportionateScreenHeight,

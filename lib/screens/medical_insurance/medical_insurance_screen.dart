@@ -35,20 +35,18 @@ class _MedicalInsuranceScreenState extends State<MedicalInsuranceScreen>
       appBar: widget.appBar ??
           InkAppBarWithText(context, title: _strings.getMedicalInsurance),
       body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Head(sectionPadding: sectionPadding),
-              Divider(color: Colors.grey, height: 2.0),
-              SizedBox(height: 25.0),
-              MedicalInsuranceForm(
-                sectionPadding: sectionPadding,
-                sendMedicalInsFormCubit: widget.sendMedicalInsFormCubit,
-                selectfieldCubit: widget.selectfieldCubit,
-              ),
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Head(sectionPadding: sectionPadding),
+            Divider(color: Colors.grey, height: 2.0),
+            SizedBox(height: 25.0),
+            MedicalInsuranceForm(
+              sectionPadding: sectionPadding,
+              sendMedicalInsFormCubit: widget.sendMedicalInsFormCubit,
+              selectfieldCubit: widget.selectfieldCubit,
+            ),
+          ],
         ),
       ),
     );

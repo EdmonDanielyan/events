@@ -48,12 +48,16 @@ class ServiceTextField extends StatelessWidget {
       initialValue: initialValue,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
+        helperStyle: TextStyle(
+            fontSize: SizeConfig(context, 12).getProportionateScreenHeight),
+        labelStyle: TextStyle(
+            fontSize: SizeConfig(context, 12).getProportionateScreenHeight),
         hintText: hint,
         hintStyle: TextStyle(
           fontSize: SizeConfig(context, 15.0).getProportionateScreenHeight,
         ),
         errorStyle: TextStyle(
-          fontSize: SizeConfig(context, 15.0).getProportionateScreenHeight,
+          fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
         ),
         suffixIcon: requiredIcon ? const RequiredTextfieldIcon() : null,
         suffixIconConstraints: const BoxConstraints(maxHeight: double.infinity),

@@ -13,6 +13,7 @@ import 'entities.dart';
 
 class MedicalInsuranceFormUserFields extends StatefulWidget {
   final MedicalInsuranceFormEntities entities;
+
   const MedicalInsuranceFormUserFields({Key? key, required this.entities})
       : super(key: key);
 

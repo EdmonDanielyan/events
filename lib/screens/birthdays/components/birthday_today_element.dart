@@ -16,6 +16,7 @@ import 'package:ink_mobile/setup.dart';
 
 class BirthdayTodayElement extends StatelessWidget {
   final int index;
+
   const BirthdayTodayElement({
     Key? key,
     required this.index,

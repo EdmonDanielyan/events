@@ -76,8 +76,10 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
             shrinkWrap: true,
             controller: ScrollController(keepScrollOffset: false),
             itemCount: answers.length,
-            itemBuilder: (BuildContext context, int index) =>
-                AnswerWidget(index: index, item: answers[index]),
+            itemBuilder: (BuildContext context, int index) => AnswerWidget(
+              index: index,
+              item: answers[index],
+            ),
           ),
           if (currentPage(cubit.pagination.pageNumber) == 1 &&
               cubit.pagination.next) ...[

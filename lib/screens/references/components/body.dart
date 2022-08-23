@@ -10,10 +10,12 @@ import 'loading.dart';
 class Body extends StatelessWidget {
   final SendReferenceFormCubit sendReferenceFormCubit;
   final ReferencesPageCubit referencesPageCubit;
+  
+  final bool isTablet;
   const Body({
     Key? key,
     required this.referencesPageCubit,
-    required this.sendReferenceFormCubit,
+    required this.sendReferenceFormCubit, required this. isTablet,
   }) : super(key: key);
 
   @override
@@ -37,6 +39,7 @@ class Body extends StatelessWidget {
 
           return SafeArea(
             child: ReferencesForm(
+              isTablet:isTablet,
               referencesPageCubit: referencesPageCubit,
               sendReferenceFormCubit: sendReferenceFormCubit,
             ),

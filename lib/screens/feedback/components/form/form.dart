@@ -82,7 +82,9 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
               onChanged: (val) => entities.question = val,
             ),
             SizedBox(height: 10.0),
-            FeedbackHintText(txt: _strings.feedbackFormHint),
+            FeedbackHintText(
+              txt: _strings.feedbackFormHint,
+            ),
             SizedBox(height: 20.0),
             PickFiles(
               key: _pickFilesKey,

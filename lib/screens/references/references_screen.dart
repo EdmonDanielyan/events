@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
+import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/cubit/references/references_cubit.dart';
 import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -31,24 +32,27 @@ class _ReferencesScreenState extends State<ReferencesScreen>
     return Scaffold(
       appBar: widget.appBar ??
           InkAppBarWithText(context, title: _strings.orderInquiry),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 25),
-              child: Text(
-                _strings.orderInquiry,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+      body: CustomLayoutBuilder(builder: (context, constraints, isTablet) {
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 20, left: 25),
+                child: Text(
+                  _strings.orderInquiry,
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            Body(
-              referencesPageCubit: widget.referencesPageCubit,
-              sendReferenceFormCubit: widget.sendReferenceFormCubit,
-            ),
-          ],
-        ),
-      ),
+              Body(
+                isTablet: isTablet,
+                referencesPageCubit: widget.referencesPageCubit,
+                sendReferenceFormCubit: widget.sendReferenceFormCubit,
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 

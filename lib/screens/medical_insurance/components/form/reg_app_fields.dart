@@ -17,9 +17,12 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 class MedicalInsuranceRegAppFields extends StatelessWidget {
   final MedicalInsuranceFormEntities entities;
   final SelectfieldCubit selectfieldCubit;
-  const MedicalInsuranceRegAppFields(
-      {Key? key, required this.entities, required this.selectfieldCubit})
-      : super(key: key);
+
+  const MedicalInsuranceRegAppFields({
+    Key? key,
+    required this.entities,
+    required this.selectfieldCubit,
+  }) : super(key: key);
   static late AppLocalizations _strings;
   static late MedicalServicesList _medicalServicesList;
   static late List<Selectfield> _servicesList;

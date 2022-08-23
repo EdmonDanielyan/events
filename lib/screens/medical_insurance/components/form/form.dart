@@ -72,30 +72,29 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
   Widget build(BuildContext context) {
     return Container(
       child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            contentWrapper(
-              child: MedicalInsuranceFormUserFields(entities: entities),
-            ),
-            Divider(color: Colors.grey, height: 2.0),
-            SizedBox(height: 25.0),
-            contentWrapper(
-              child: Column(
-                children: [
-                  serviceSections(),
-                  SizedBox(height: 20),
-                  _additionalText(),
-                  SizedBox(height: 20),
-                  btnWidget(),
-                ],
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              contentWrapper(
+                child: MedicalInsuranceFormUserFields(entities: entities),
               ),
-            ),
-            SizedBox(height: 20),
-          ],
-        ),
-      ),
+              Divider(color: Colors.grey, height: 2.0),
+              SizedBox(height: 25.0),
+              contentWrapper(
+                child: Column(
+                  children: [
+                    serviceSections(),
+                    SizedBox(height: 20),
+                    _additionalText(),
+                    SizedBox(height: 20),
+                    btnWidget(),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+            ],
+          )),
     );
   }
 
