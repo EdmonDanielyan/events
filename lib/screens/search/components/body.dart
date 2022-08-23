@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/search/data.dart';
 import 'package:ink_mobile/models/search/search_query.dart';
 import 'package:ink_mobile/screens/search/components/background.dart';
@@ -70,12 +71,12 @@ class Body extends StatelessWidget {
 
                 case SearchStateType.EMPTY:
                   {
-                    return Text(_strings.nothingFound);
+                    return Text(_strings.nothingFound,  style: TextStyle(fontSize: SizeConfig(context, 14).getProportionateScreenHeight),);
                   }
 
                 case SearchStateType.STARTING:
                   {
-                    return Text(_strings.searchEmptyString);
+                    return Text(_strings.searchEmptyString, style: TextStyle(fontSize: SizeConfig(context, 14).getProportionateScreenHeight),);
                   }
 
                 case SearchStateType.ERROR:

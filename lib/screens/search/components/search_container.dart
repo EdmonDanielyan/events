@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class SearchContainer extends StatelessWidget {
   final String label;
@@ -17,7 +18,7 @@ class SearchContainer extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               child: Text(
                 label,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: SizeConfig(context, 16).getProportionateScreenHeight),
               )),
           Column(
             children: items,

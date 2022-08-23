@@ -1,5 +1,6 @@
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class SearchItemText extends StatelessWidget {
   final int id;
@@ -30,6 +31,7 @@ class SearchItemText extends StatelessWidget {
                 child: EasyRichText(
                   title,
                   caseSensitive: false,
+                  defaultStyle: TextStyle(fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
                   patternList: [
                     EasyRichTextPattern(
                         targetString: RegExp.escape(query),

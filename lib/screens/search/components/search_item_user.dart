@@ -2,6 +2,7 @@ import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/components/highlight_text.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/search/data.dart';
 
 class SearchItemUser extends StatelessWidget {
@@ -40,7 +41,7 @@ class SearchItemUser extends StatelessWidget {
                       maxLines: 2,
                       defaultStyle: TextStyle(
                           color: Color(0xFF1D2126),
-                          fontSize: 20,
+                          fontSize: SizeConfig(context, 20).getProportionateScreenHeight,
                           fontWeight: FontWeight.w400),
                       caseSensitive: false,
                       patternList: [
@@ -56,7 +57,7 @@ class SearchItemUser extends StatelessWidget {
                         txt: user.workPosition,
                         highlightTxt: query,
                         textStyle: TextStyle(
-                          fontSize: 12.5,
+                          fontSize: SizeConfig(context, 12.5).getProportionateScreenHeight,
                           color: Colors.grey,
                         ),
                         maxLines: 4,
