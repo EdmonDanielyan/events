@@ -3,6 +3,7 @@ import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/ink_icons.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:intl/intl.dart';
 import 'package:ink_mobile/extensions/int_extension.dart';
@@ -68,6 +69,7 @@ class _CommentState extends State<Comment> {
                             arguments: {'id': widget.authorId});
                       },
                       child: CachedCircleAvatar(
+                        avatarHeight: (SizeConfig(context, 50).getProportionateScreenHeight),
                         url: widget.avatar ?? "",
                         name: widget.name ?? "",
                       ),
@@ -89,12 +91,12 @@ class _CommentState extends State<Comment> {
                             child: Text(
                               widget.name ?? '',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                                  fontSize: (SizeConfig(context, 12).getProportionateScreenHeight), fontWeight: FontWeight.bold),
                             )),
                       ),
                       Text(
                         widget.text,
-                        style: TextStyle(color: _textColor, fontSize: 16),
+                        style: TextStyle(color: _textColor, fontSize: (SizeConfig(context, 12).getProportionateScreenHeight)),
                       ),
                       Container(
                         child: Row(
@@ -116,16 +118,20 @@ class _CommentState extends State<Comment> {
                                         color: barrelChecked
                                             ? Theme.of(context).primaryColor
                                             : _textColor,
+                                            size: (SizeConfig(context, 12).getProportionateScreenWidth),
                                       ),
                                       Text(
+                                        
                                         barrelsCount > 1000
                                             ? barrelsCount.toThousandsString()
                                             : barrelsCount.toString(),
+                                            
                                         style: TextStyle(
+                                          
                                           color: barrelChecked
                                               ? Theme.of(context).primaryColor
                                               : _textColor,
-                                          fontSize: 15,
+                                          fontSize: (SizeConfig(context, 15).getProportionateScreenHeight),
                                         ),
                                       )
                                     ],
@@ -145,7 +151,7 @@ class _CommentState extends State<Comment> {
                                     _strings.reply,
                                     style: TextStyle(
                                         color: _textColor,
-                                        fontSize: 14,
+                                        fontSize: (SizeConfig(context, 14).getProportionateScreenHeight),
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
@@ -156,7 +162,7 @@ class _CommentState extends State<Comment> {
                                 child: Text(
                                   DateFormat('dd.MM.yyyy HH:mm')
                                       .format(widget.dateTime),
-                                  style: TextStyle(color: _textColor),
+                                  style: TextStyle(color: _textColor, fontSize: (SizeConfig(context, 12).getProportionateScreenHeight)),
                                 ))
                           ],
                         ),

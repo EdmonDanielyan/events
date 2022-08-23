@@ -16,12 +16,15 @@ class Body extends StatelessWidget {
   final LearningMaterialsListCubit learningMaterialsListCubit;
   final NewsListCubit newsListCubit;
   final OpenUniversityCubit openUniversityCubit;
+  
+  final bool isTablet;
   Body({
     Key? key,
     required this.eventsListCubit,
     required this.learningMaterialsListCubit,
     required this.newsListCubit,
     required this.openUniversityCubit,
+    required this. isTablet,
   }) : super(key: key);
   final ScrollController _scrollController = ScrollController();
 
@@ -56,7 +59,7 @@ class Body extends StatelessWidget {
 
                       case OpenUniversityStateType.ABOUT_PROJECT:
                         {
-                          return AboutProject();
+                          return AboutProject(isTablet: isTablet);
                         }
 
                       case OpenUniversityStateType.EVENTS:

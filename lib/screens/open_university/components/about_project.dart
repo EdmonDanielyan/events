@@ -5,7 +5,9 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/open_university/components/about_project_contact_container.dart';
 
 class AboutProject extends StatelessWidget {
-  AboutProject({Key? key}) : super(key: key);
+  final bool isTablet;
+
+  AboutProject({Key? key, required this.isTablet}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -106,11 +108,26 @@ class AboutProject extends StatelessWidget {
               ) {
                 launchUrl(url!);
               },
-              style: {
-                "a": Style(
-                    color: Colors.blue, textDecoration: TextDecoration.none),
-                "b": Style(fontWeight: FontWeight.normal)
-              },
+              style: isTablet
+                  ? {
+                      "a": Style(
+                          fontSize: FontSize(18),
+                          color: Colors.blue,
+                          textDecoration: TextDecoration.none),
+                      "b": Style(
+                        fontSize: FontSize(24),
+                        fontWeight: FontWeight.normal,
+                      ),
+                      "body": Style(
+                        fontSize: FontSize(24),
+                      )
+                    }
+                  : {
+                      "a": Style(
+                          color: Colors.blue,
+                          textDecoration: TextDecoration.none),
+                      "b": Style(fontWeight: FontWeight.normal)
+                    },
             ),
             Column(
               children: _getContactInfoWidgetList(),
@@ -147,6 +164,7 @@ class AboutProject extends StatelessWidget {
       _widgetList.add(Container(
         margin: EdgeInsets.only(bottom: 10),
         child: AboutProjectContact(
+          isTablet:isTablet,
           title: _items[i].title,
           text: _items[i].text,
           type: _items[i].type,

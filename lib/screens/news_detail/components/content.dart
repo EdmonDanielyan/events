@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class Content extends StatefulWidget {
   final int viewCount;
@@ -56,8 +57,18 @@ class _ContentState extends State<Content> {
             },
             style: {
               "a": Style(
-                  color: Colors.blue, textDecoration: TextDecoration.none),
-              "b": Style(fontWeight: FontWeight.normal)
+                  color: Colors.blue,
+                  textDecoration: TextDecoration.none,
+                  fontSize: FontSize(
+                      SizeConfig(context, 18.0).getProportionateScreenHeight)),
+              "b": Style(
+                  fontWeight: FontWeight.normal,
+                  fontSize: FontSize(
+                      SizeConfig(context, 18.0).getProportionateScreenHeight)),
+              "body": Style(
+                  fontWeight: FontWeight.normal,
+                  fontSize: FontSize(
+                      SizeConfig(context, 12.0).getProportionateScreenHeight)),
             },
           ),
           Container(
@@ -83,7 +94,8 @@ class _ContentState extends State<Content> {
                         child: Text(
                           widget.likeCount.toString(),
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: SizeConfig(context, 18.0)
+                                .getProportionateScreenHeight,
                             color: widget.isLiked
                                 ? Theme.of(context).primaryColor
                                 : Theme.of(context).colorScheme.secondary,
@@ -114,7 +126,8 @@ class _ContentState extends State<Content> {
                             child: Text(
                               widget.commentsCount.toString(),
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: SizeConfig(context, 18.0)
+                                    .getProportionateScreenHeight,
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),

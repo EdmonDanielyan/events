@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/constants/aseets.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:intl/intl.dart';
 
@@ -25,8 +26,9 @@ class NewsListElement extends StatelessWidget {
                 color: Colors.white,
                 border: Border(bottom: BorderSide(color: Color(0xffe5e5e5)))),
             child: Column(children: [
-              Container(
-                  height: 191,
+              SizedBox(
+                  height:
+                      SizeConfig(context, 191.0).getProportionateScreenHeight,
                   width: size.width,
                   child: newsItem.previewPictureLink == null
                       ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
@@ -49,6 +51,8 @@ class NewsListElement extends StatelessWidget {
                                     .format(newsItem.dateCreate!)
                                 : '',
                             style: TextStyle(
+                                fontSize: SizeConfig(context, 13.0)
+                                    .getProportionateScreenHeight,
                                 color: Theme.of(context).iconTheme.color),
                             textAlign: TextAlign.start,
                           )),
@@ -59,7 +63,8 @@ class NewsListElement extends StatelessWidget {
                             newsItem.title ?? '',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 20,
+                              fontSize: SizeConfig(context, 20.0)
+                                  .getProportionateScreenHeight,
                               fontWeight: FontWeight.bold,
                             ),
                             maxLines: 4,
@@ -72,8 +77,10 @@ class NewsListElement extends StatelessWidget {
                             Container(
                                 child: Row(children: [
                               SvgPicture.asset(IconLinks.BARREL_SVG_LINK,
-                                  width: 14,
-                                  height: 16,
+                                  width: SizeConfig(context, 14.0)
+                                      .getProportionateScreenWidth,
+                                  height: SizeConfig(context, 16.0)
+                                      .getProportionateScreenHeight,
                                   color: (newsItem.isLiked != null &&
                                           newsItem.isLiked!)
                                       ? Theme.of(context).primaryColor
@@ -85,6 +92,8 @@ class NewsListElement extends StatelessWidget {
                                           ? newsItem.likeCount.toString()
                                           : '0',
                                       style: TextStyle(
+                                        fontSize: SizeConfig(context, 14.0)
+                                            .getProportionateScreenHeight,
                                         color: (newsItem.isLiked != null &&
                                                 newsItem.isLiked!)
                                             ? Theme.of(context).primaryColor
@@ -94,8 +103,13 @@ class NewsListElement extends StatelessWidget {
                             Container(
                                 margin: EdgeInsets.only(left: 24),
                                 child: Row(children: [
-                                  SvgPicture.asset(IconLinks.COMMENT_SVG_LINK,
-                                      width: 18, height: 16),
+                                  SvgPicture.asset(
+                                    IconLinks.COMMENT_SVG_LINK,
+                                    width: SizeConfig(context, 18.0)
+                                        .getProportionateScreenWidth,
+                                    height: SizeConfig(context, 16.0)
+                                        .getProportionateScreenHeight,
+                                  ),
                                   Container(
                                       margin: EdgeInsets.only(left: 4),
                                       child: Text(
@@ -103,6 +117,8 @@ class NewsListElement extends StatelessWidget {
                                               ? newsItem.commentCount.toString()
                                               : '0',
                                           style: TextStyle(
+                                            fontSize: SizeConfig(context, 14.0)
+                                                .getProportionateScreenHeight,
                                             color: Theme.of(context)
                                                 .iconTheme
                                                 .color,
@@ -115,8 +131,10 @@ class NewsListElement extends StatelessWidget {
                                     children: [
                                   Row(children: [
                                     SvgPicture.asset(
-                                        IconLinks.VIEW_COUNT_SVG_LINK,
-                                        width: 16),
+                                      IconLinks.VIEW_COUNT_SVG_LINK,
+                                      width: SizeConfig(context, 16.0)
+                                          .getProportionateScreenWidth,
+                                    ),
                                     Container(
                                         margin: EdgeInsets.only(left: 4),
                                         child: Text(
@@ -124,6 +142,8 @@ class NewsListElement extends StatelessWidget {
                                                 ? newsItem.viewCount.toString()
                                                 : '0',
                                             style: TextStyle(
+                                              fontSize: SizeConfig(context, 12.0)
+                                  .getProportionateScreenHeight,
                                               color: Theme.of(context)
                                                   .iconTheme
                                                   .color,

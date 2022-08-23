@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
+import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/cubit/events_list/events_list_cubit.dart';
 import 'package:ink_mobile/cubit/learning_materials_list/learning_materials_list_cubit.dart';
@@ -26,11 +27,16 @@ class OpenUniversityScreen extends StatelessWidget {
     final _strings = localizationInstance;
     return Scaffold(
       appBar: InkAppBarWithText(context, title: _strings.openUniversity),
-      body: Body(
-        learningMaterialsListCubit: learningMaterialsListCubit,
-        eventsListCubit: eventsListCubit,
-        newsListCubit: newsListCubit,
-        openUniversityCubit: openUniversityCubit,
+      body: CustomLayoutBuilder(
+      builder: (context, constraints, isTablet) {
+          return Body(
+            isTablet: isTablet,
+            learningMaterialsListCubit: learningMaterialsListCubit,
+            eventsListCubit: eventsListCubit,
+            newsListCubit: newsListCubit,
+            openUniversityCubit: openUniversityCubit,
+          );
+        }
       ),
       bottomNavigationBar: const NewBottomNavBar(),
     );

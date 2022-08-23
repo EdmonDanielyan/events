@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:intl/intl.dart';
 
 class HeaderInfo extends StatelessWidget {
@@ -22,6 +23,8 @@ class HeaderInfo extends StatelessWidget {
                 child: SvgPicture.asset(
                   IconLinks.VIEW_COUNT_SVG_LINK,
                   semanticsLabel: 'View Count',
+                  width: SizeConfig(context, 24.0)
+                          .getProportionateScreenHeight,
                 ),
                 margin: EdgeInsets.only(right: 6.0),
               ),
@@ -30,7 +33,10 @@ class HeaderInfo extends StatelessWidget {
                       style: TextStyle(
                           fontFamily: "Helvetica",
                           fontWeight: FontWeight.w500,
-                          color: Colors.grey)),
+                          color: Colors.grey,
+                          fontSize: SizeConfig(context, 12.0)
+                          .getProportionateScreenHeight
+                          )),
                   margin: EdgeInsets.only(right: 16.0)),
               Text(
                   dateCreate != null
@@ -40,6 +46,8 @@ class HeaderInfo extends StatelessWidget {
                     fontFamily: "Helvetica",
                     color: Colors.grey[500],
                     fontWeight: FontWeight.w200,
+                    fontSize: SizeConfig(context, 12.0)
+                          .getProportionateScreenHeight
                   )),
             ],
           ),
