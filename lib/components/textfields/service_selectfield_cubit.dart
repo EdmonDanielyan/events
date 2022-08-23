@@ -31,7 +31,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
     await showDialog(
       context: context,
       builder: (ctx) {
-        return _listSelectors(localizationInstance);
+        return _listSelectors(context, localizationInstance);
       },
     );
   }
@@ -63,7 +63,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
     return items.map((e) => MultiSelectItem(e, e.title)).toList();
   }
 
-  Widget _listSelectors(AppLocalizations strings) {
+  Widget _listSelectors(BuildContext context, AppLocalizations strings) {
     return BlocBuilder<SelectfieldCubit, SelectfieldCubitState>(
       bloc: cubit,
       builder: (BuildContext context, state) {
@@ -75,14 +75,21 @@ class ServiceSelectFieldCubit extends StatelessWidget {
           title: SizedBox(),
           controlAffinity: ListTileControlAffinity.trailing,
           subWidget: subWidget,
+          itemsTextStyle: TextStyle(
+            fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+          ),
           cancelText: Text(
             strings.back,
-            style: TextStyle(color: Colors.grey[600]),
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+            ),
           ),
           confirmText: Text(
             strings.select,
             style: TextStyle(
               color: Colors.green,
+              fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
             ),
           ),
         );

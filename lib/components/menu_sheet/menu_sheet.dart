@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet_item.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
@@ -23,7 +24,7 @@ class _MenuSheetState extends State<MenuSheet> {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      height: 325,
+      height: SizeConfig(context, 300).getProportionateScreenHeight,
       width: size.width,
       child: Column(children: [
         Container(
@@ -33,10 +34,11 @@ class _MenuSheetState extends State<MenuSheet> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 45,
-                  height: 5,
+                  width: SizeConfig(context, 40).getProportionateScreenHeight,
+                  height: SizeConfig(context, 5).getProportionateScreenHeight,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(
+                        SizeConfig(context, 5).getProportionateScreenHeight),
                     color: Colors.grey.withOpacity(0.3),
                   ),
                 )
@@ -64,7 +66,7 @@ class _MenuSheetState extends State<MenuSheet> {
         },
         icon: SvgPicture.asset(
           'assets/images/menu_news_icon.svg',
-          height: 20,
+          height: SizeConfig(context, 18).getProportionateScreenHeight,
         ),
       ),
       MenuSheetItem(
@@ -75,7 +77,7 @@ class _MenuSheetState extends State<MenuSheet> {
         },
         icon: SvgPicture.asset(
           'assets/images/menu_events_icon.svg',
-          height: 20,
+          height: SizeConfig(context, 18).getProportionateScreenHeight,
         ),
       ),
       MenuSheetItem(
@@ -86,7 +88,7 @@ class _MenuSheetState extends State<MenuSheet> {
         },
         icon: SvgPicture.asset(
           'assets/images/menu_announcements_icon.svg',
-          height: 20,
+          height: SizeConfig(context, 18).getProportionateScreenHeight,
         ),
       ),
       MenuSheetItem(
@@ -97,7 +99,7 @@ class _MenuSheetState extends State<MenuSheet> {
         },
         icon: SvgPicture.asset(
           'assets/images/menu_personal_icon.svg',
-          height: 20,
+          height: SizeConfig(context, 18).getProportionateScreenHeight,
         ),
       ),
       MenuSheetItem(
@@ -110,7 +112,7 @@ class _MenuSheetState extends State<MenuSheet> {
         },
         icon: SvgPicture.asset(
           'assets/images/exit_icon.svg',
-          height: 20,
+          height: SizeConfig(context, 18).getProportionateScreenHeight,
         ),
         withBottomDivider: false,
       ),
@@ -129,24 +131,44 @@ class _ExitAlertDialogState extends State<ExitAlertDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(localizationInstance.signOffAlertTitle),
+      title: Text(
+        localizationInstance.signOffAlertTitle,
+        style: TextStyle(
+          fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+        ),
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(localizationInstance.signOffAlertBody),
+          Text(
+            localizationInstance.signOffAlertBody,
+            style: TextStyle(
+              fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+            ),
+          ),
         ],
       ),
       actions: [
         TextButton(
-          child: Text(localizationInstance.cancel),
+          child: Text(
+            localizationInstance.cancel,
+            style: TextStyle(
+              fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+            ),
+          ),
           onPressed: () => Navigator.of(context).pop(),
           style: TextButton.styleFrom(
             primary: Colors.red,
           ),
         ),
         TextButton(
-          child: Text(localizationInstance.yes),
+          child: Text(
+            localizationInstance.yes,
+            style: TextStyle(
+              fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+            ),
+          ),
           onPressed: () => _exit(context),
           style: TextButton.styleFrom(
             primary: Colors.blue,

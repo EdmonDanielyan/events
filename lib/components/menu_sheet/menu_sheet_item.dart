@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class MenuSheetItem extends StatelessWidget {
   const MenuSheetItem(
@@ -24,8 +25,9 @@ class MenuSheetItem extends StatelessWidget {
         child: Container(
           color: Color(0xfff9f9f9),
           alignment: Alignment.centerLeft,
-          height: 55,
-          padding: EdgeInsets.only(top: 15),
+          height: SizeConfig(context, 47).getProportionateScreenHeight,
+          padding: EdgeInsets.only(
+              top: SizeConfig(context, 13).getProportionateScreenHeight),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -39,7 +41,8 @@ class MenuSheetItem extends StatelessWidget {
                         child: Text(
                           title,
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: SizeConfig(context, 16)
+                                  .getProportionateScreenHeight,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff1d2126)),
                           textAlign: TextAlign.start,
@@ -49,11 +52,15 @@ class MenuSheetItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Container(
-                                child: Icon(Icons.arrow_forward_ios,
-                                    size: 12,
-                                    color: Theme.of(context)
-                                        .primaryColor
-                                        .withOpacity(0.5)))
+                              child: Icon(
+                                Icons.arrow_forward_ios,
+                                size: SizeConfig(context, 11)
+                                    .getProportionateScreenHeight,
+                                color: Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(0.5),
+                              ),
+                            )
                           ]),
                     ),
                   ],
@@ -65,7 +72,9 @@ class MenuSheetItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Container(
-                            margin: EdgeInsets.only(top: 15),
+                            margin: EdgeInsets.only(
+                                top: SizeConfig(context, 10)
+                                    .getProportionateScreenHeight),
                             child: Divider(
                               color: Color(0xffe5e5e5),
                               height: 1,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/custom_tab.dart';
 
 class SwitchTabs extends StatelessWidget {
@@ -40,7 +41,7 @@ class SwitchTabs extends StatelessWidget {
           maxLines: 2,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 13.5,
+            fontSize: SizeConfig(context, 12).getProportionateScreenHeight,
             color: activeIndex == index
                 ? Colors.white
                 : Theme.of(context).primaryColor,
