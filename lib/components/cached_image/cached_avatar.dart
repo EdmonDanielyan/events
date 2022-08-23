@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/cached_image/avatar_indicator.dart';
 import 'package:ink_mobile/functions/files.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 import 'avatar_placeholder.dart';
 
@@ -39,7 +40,7 @@ class CachedCircleAvatar extends StatelessWidget {
                   },
                   imageBuilder: (context, image) {
                     return CircleAvatar(
-                      radius: 30,
+                      radius: SizeConfig(context, 30).getProportionateScreenHeight,
                       foregroundImage: image,
                     );
                   },

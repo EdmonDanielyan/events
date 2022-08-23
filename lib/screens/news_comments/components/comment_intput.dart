@@ -61,7 +61,7 @@ class NewsCommentInput extends StatelessWidget {
                   contentPadding: const EdgeInsets.symmetric(
                       vertical: 12.0, horizontal: 13.0),
                   fillColor: Colors.white,
-                  hintStyle: TextStyle(fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
+                  hintStyle: TextStyle(fontSize: SizeConfig(context, 16).getProportionateScreenHeight),
                   hint: _strings.writeCommentHint,
                   borderRadius: BorderRadius.circular(30),
                   useMarginIos: false,
@@ -74,8 +74,8 @@ class NewsCommentInput extends StatelessWidget {
                 await _onMessageSend(context, newsId);
               },
               child: Container(
-                  width: 40,
-                  height: 40,
+                  width: SizeConfig(context, 40).getProportionateScreenWidth,
+                  height: SizeConfig(context, 40).getProportionateScreenHeight,
                   child: SvgPicture.asset(SEND_COMMENT_SVG_LINK)),
             ),
             SizedBox(width: 3.0),

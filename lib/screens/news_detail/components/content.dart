@@ -84,7 +84,7 @@ class _ContentState extends State<Content> {
                     child: Row(children: [
                       SvgPicture.asset(
                         IconLinks.BARREL_SVG_LINK,
-                        width: 14,
+                        width: SizeConfig(context, 14).getProportionateScreenHeight,
                         color: widget.isLiked
                             ? Theme.of(context).primaryColor
                             : Theme.of(context).colorScheme.secondary,
@@ -118,7 +118,7 @@ class _ContentState extends State<Content> {
                         children: [
                           SvgPicture.asset(
                             IconLinks.COMMENT_SVG_LINK,
-                            width: 18,
+                            width: SizeConfig(context, 14).getProportionateScreenHeight,
                             color: Color(0xFF757678),
                           ),
                           Container(

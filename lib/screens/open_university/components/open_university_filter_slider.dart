@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/filter_slider_element.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/open_university/cubit/open_university_cubit.dart';
 import 'package:ink_mobile/screens/open_university/cubit/open_university_state.dart';
 
@@ -54,6 +55,10 @@ class _OpenUniversityFilterSliderState
               builder: (context, state) {
                 return Container(
                     child: FilterSliderElement(
+                  selectedTextStyle: TextStyle(
+                    fontSize:
+                        SizeConfig(context, 14.0).getProportionateScreenHeight,
+                  ),
                   title: items[index].title,
                   onTap: () async {
                     await widget.openUniversityCubit.load(items[index].code);

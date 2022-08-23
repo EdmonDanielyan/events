@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/functions/fancy_text.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class AvatarPlaceholder extends StatelessWidget {
   final String text;
@@ -9,7 +10,7 @@ class AvatarPlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool textEmpty = text.trim().isEmpty;
     return CircleAvatar(
-      radius: 30,
+      radius: SizeConfig(context, 30).getProportionateScreenHeight,
       backgroundColor: Colors.purple,
       foregroundImage: textEmpty
           ? AssetImage(

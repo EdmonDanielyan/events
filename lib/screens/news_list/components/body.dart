@@ -5,6 +5,7 @@ import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/news_list/components/news_list_element.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -107,7 +108,7 @@ class _BodyState extends State<Body> {
                     Text(
                       _strings.news,
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: SizeConfig(context, 24).getProportionateScreenHeight),
                     )
                   ],
                 )),

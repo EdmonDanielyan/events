@@ -35,6 +35,7 @@ class NewsFilterSlider extends StatelessWidget {
         itemBuilder: (context, index) {
           return Container(
             child: FilterSliderElement(
+              
               title: items[index].title,
               onTap: () {
                 if (items[index].code == 'open_university') {
@@ -48,7 +49,7 @@ class NewsFilterSlider extends StatelessWidget {
               selectedColor: Colors.white,
               selectedTextStyle: TextStyle(
                 fontSize:
-                    SizeConfig(context, 13.0).getProportionateScreenHeight,
+                    SizeConfig(context, 21.0).getProportionateScreenHeight,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),

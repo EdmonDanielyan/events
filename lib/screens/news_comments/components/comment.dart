@@ -118,7 +118,7 @@ class _CommentState extends State<Comment> {
                                         color: barrelChecked
                                             ? Theme.of(context).primaryColor
                                             : _textColor,
-                                            size: (SizeConfig(context, 12).getProportionateScreenWidth),
+                                            size: (SizeConfig(context, 16).getProportionateScreenWidth),
                                       ),
                                       Text(
                                         
