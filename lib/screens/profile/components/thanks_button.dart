@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
+import '../../../messenger/functions/size_config.dart';
 import '../profile_screen.dart';
 
 class ThanksButton extends StatelessWidget {
@@ -39,7 +40,8 @@ class ThanksButton extends StatelessWidget {
                 _strings.thank,
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
-                  fontSize: 19,
+                  fontSize:
+                      SizeConfig(context, 17).getProportionateScreenHeight,
                 ),
               ),
             ),

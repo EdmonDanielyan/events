@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/ink_icons.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class VotesBar extends StatelessWidget {
   final UserVotes? votes;
 
@@ -13,7 +15,7 @@ class VotesBar extends StatelessWidget {
     return Container(
         padding: EdgeInsets.only(bottom: 10.0),
         child: Container(
-          height: 70,
+          height: SizeConfig(context, 50).getProportionateScreenHeight,
           decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
@@ -36,12 +38,14 @@ class VotesBar extends StatelessWidget {
                       padding: EdgeInsets.all(5),
                       child: Icon(
                         InkIcons.barrel,
-                        size: 30,
+                        size: SizeConfig(context, 27)
+                            .getProportionateScreenHeight,
                       )),
                   Text(
                     votes?.barrels.toString() ?? '0',
                     style: TextStyle(
-                        fontSize: 28,
+                        fontSize: SizeConfig(context, 22)
+                            .getProportionateScreenHeight,
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.w300),
                   )
@@ -61,12 +65,14 @@ class VotesBar extends StatelessWidget {
                       padding: EdgeInsets.all(5),
                       child: Icon(
                         InkIcons.storage,
-                        size: 30,
+                        size: SizeConfig(context, 27)
+                            .getProportionateScreenHeight,
                       )),
                   Text(
                     votes?.reservoir.toString() ?? '0',
                     style: TextStyle(
-                        fontSize: 28,
+                        fontSize: SizeConfig(context, 22)
+                            .getProportionateScreenHeight,
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.w300),
                   )
@@ -86,12 +92,14 @@ class VotesBar extends StatelessWidget {
                       padding: EdgeInsets.all(5),
                       child: Icon(
                         InkIcons.tanker,
-                        size: 30,
+                        size: SizeConfig(context, 27)
+                            .getProportionateScreenHeight,
                       )),
                   Text(
                     votes?.tankers.toString() ?? '0',
                     style: TextStyle(
-                        fontSize: 28,
+                        fontSize: SizeConfig(context, 22)
+                            .getProportionateScreenHeight,
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.w300),
                   )

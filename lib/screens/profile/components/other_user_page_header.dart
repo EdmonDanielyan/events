@@ -7,6 +7,8 @@ import 'package:ink_mobile/screens/profile/components/thanks_button.dart';
 import 'package:ink_mobile/screens/profile/components/user_main_info.dart';
 import 'package:ink_mobile/screens/profile/components/write_btn.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class OtherUserPageHeader extends StatelessWidget {
   final UserProfileData user;
 
@@ -43,7 +45,11 @@ class OtherUserPageHeader extends StatelessWidget {
               child: Align(
                 alignment: Alignment(-0.98, -0.7),
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.white,
+                    size: SizeConfig(context, 22).getProportionateScreenHeight,
+                  ),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),

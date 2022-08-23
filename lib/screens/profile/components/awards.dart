@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/awards_item.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class Awards extends StatelessWidget {
   final UserAwards? awards;
   const Awards({Key? key, required this.awards}) : super(key: key);
@@ -27,22 +29,27 @@ class Awards extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                  width: size.width,
-                  height: 104,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border(
-                        top:
-                            BorderSide(color: Colors.grey.shade400, width: 0.5),
-                        bottom:
-                            BorderSide(color: Colors.grey.shade400, width: 0.5),
-                      )),
-                  child: Container(
-                      child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Row(children: getAwards())))))
+                width: size.width,
+                height: SizeConfig(context, 90).getProportionateScreenHeight,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                      top: BorderSide(color: Colors.grey.shade400, width: 0.5),
+                      bottom:
+                          BorderSide(color: Colors.grey.shade400, width: 0.5),
+                    )),
+                child: Container(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Row(
+                        children: getAwards(),
+                      ),
+                    ),
+                  ),
+                ),
+              )
             ],
           ));
     } else {

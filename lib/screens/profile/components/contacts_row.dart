@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class ContactsRow extends StatelessWidget {
   final Widget icon;
   final String title;
   final String value;
   final String type;
-  final bool isTablet;
 
   const ContactsRow(
       {Key? key,
-      required this.isTablet,
       required this.icon,
       required this.title,
       required this.value,
@@ -50,8 +50,10 @@ class ContactsRow extends StatelessWidget {
                       Text(
                         title,
                         style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontSize: isTablet ? 18 : 14),
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontSize: SizeConfig(context, 12)
+                              .getProportionateScreenHeight,
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -67,7 +69,8 @@ class ContactsRow extends StatelessWidget {
                               color: (type == 'call') || (type == 'email')
                                   ? Color(0xFF2B5E4A)
                                   : Color(0xFF1D2126),
-                              fontSize: isTablet ? 20 : 16),
+                              fontSize: SizeConfig(context, 14)
+                                  .getProportionateScreenHeight),
                         ),
                       )
                     ],

@@ -90,18 +90,14 @@ class Body extends StatelessWidget {
       child: Column(children: [
         PersonalPageHeader(user: user),
         Awards(awards: user.awards),
-        CustomLayoutBuilder(
-      builder: (context, constraints, isTablet) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Contacts(contacts: user.contacts, isTablet:isTablet),
-                BasicInformation(info: user.basicInformation, isTablet: isTablet),
-                Diagnostics(logFile: logFile, isTablet: isTablet),
-                ProfileSecuritySection(isTablet: isTablet)
-              ],
-            );
-          }
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Contacts(contacts: user.contacts),
+            BasicInformation(info: user.basicInformation),
+            Diagnostics(logFile: logFile),
+            ProfileSecuritySection()
+          ],
         )
       ]),
     )));
@@ -118,17 +114,19 @@ class Body extends StatelessWidget {
       child: Column(children: [
         OtherUserPageHeader(user: user),
         Awards(awards: user.awards),
-       CustomLayoutBuilder(
-      builder: (context, constraints, isTablet) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Contacts(contacts: user.contacts, isTablet: isTablet,),
-                BasicInformation(info: user.basicInformation, isTablet: isTablet,)
-              ],
-            );
-          }
-        )
+        CustomLayoutBuilder(builder: (context, constraints, isTablet) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Contacts(
+                contacts: user.contacts,
+              ),
+              BasicInformation(
+                info: user.basicInformation,
+              )
+            ],
+          );
+        })
       ]),
     )));
   }

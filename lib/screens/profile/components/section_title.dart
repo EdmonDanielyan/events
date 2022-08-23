@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class SectionTitle extends StatelessWidget {
   final String title;
-  final bool isTablet;
-  const SectionTitle({Key? key, required this.title, required this.isTablet}) : super(key: key);
+  const SectionTitle({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,8 @@ class SectionTitle extends StatelessWidget {
               title.toUpperCase(),
               style: TextStyle(
                   color: Theme.of(context).iconTheme.color,
-                  fontSize: isTablet ? 18 : 14,
+                  fontSize:
+                      SizeConfig(context, 12).getProportionateScreenHeight,
                   fontWeight: FontWeight.bold),
             ))
       ],

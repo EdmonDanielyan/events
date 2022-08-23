@@ -5,13 +5,12 @@ import 'package:ink_mobile/core/logging/send_log.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
+import '../../../messenger/functions/size_config.dart';
 import 'section_title.dart';
 
 class Diagnostics extends StatefulWidget {
   final String logFile;
-  final bool isTablet;
-  const Diagnostics({Key? key, required this.logFile, required this.isTablet})
-      : super(key: key);
+  const Diagnostics({Key? key, required this.logFile}) : super(key: key);
 
   @override
   State<Diagnostics> createState() => _DiagnosticsState();
@@ -37,7 +36,6 @@ class _DiagnosticsState extends State<Diagnostics> {
           Container(
             child: SectionTitle(
               title: _strings.diagnostics,
-              isTablet: widget.isTablet,
             ),
           ),
           Column(
@@ -55,7 +53,9 @@ class _DiagnosticsState extends State<Diagnostics> {
                   child: ListTile(
                     title: Text(
                       "Обратиться в техподдержку",
-                      style: TextStyle(fontSize: widget.isTablet ? 18 : 14),
+                      style: TextStyle(
+                          fontSize: SizeConfig(context, 12)
+                              .getProportionateScreenHeight),
                     ),
                     trailing: Icon(Icons.arrow_forward_ios),
                     onTap: () =>
@@ -75,11 +75,15 @@ class _DiagnosticsState extends State<Diagnostics> {
                   child: ListTile(
                     title: Text(
                       "Информация о работе приложения",
-                      style: TextStyle(fontSize: widget.isTablet ? 18 : 14),
+                      style: TextStyle(
+                          fontSize: SizeConfig(context, 12)
+                              .getProportionateScreenHeight),
                     ),
                     subtitle: Text(
                       "Отправить разработчикам",
-                      style: TextStyle(fontSize: widget.isTablet ? 18 : 14),
+                      style: TextStyle(
+                          fontSize: SizeConfig(context, 12)
+                              .getProportionateScreenHeight),
                     ),
                     trailing: Icon(Icons.arrow_forward_ios),
                     onTap: () => sendErrorLog(widget.logFile),

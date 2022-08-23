@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class UserMainInfo extends StatelessWidget {
   final String? userName;
@@ -19,12 +20,14 @@ class UserMainInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.only(bottom: 60.0),
+      padding: EdgeInsets.only(
+          bottom: SizeConfig(context, 55).getProportionateScreenHeight),
       width: size.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
-            bottomLeft: Radius.elliptical(600, 50),
-            bottomRight: Radius.elliptical(600, 50)),
+          bottomLeft: Radius.elliptical(600, 50),
+          bottomRight: Radius.elliptical(600, 50),
+        ),
         image: DecorationImage(
           image: AssetImage("assets/images/personal_background_line.png"),
           fit: BoxFit.cover,
@@ -45,18 +48,25 @@ class UserMainInfo extends StatelessWidget {
                 Container(
                   child: Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(80.0),
+                        borderRadius: BorderRadius.circular(
+                            SizeConfig(context, 65)
+                                .getProportionateScreenHeight),
                         color: Colors.grey.withOpacity(0.2)),
                     padding: EdgeInsets.all(5),
                     child: Container(
                       child: CachedCircleAvatar(
-                        avatarWidth: 160.0,
-                        avatarHeight: 160.0,
+                        avatarWidth: SizeConfig(context, 140)
+                            .getProportionateScreenHeight,
+                        avatarHeight: SizeConfig(context, 140)
+                            .getProportionateScreenHeight,
                         url: pathToAvatar ?? "",
                       ),
                     ),
                   ),
-                  margin: EdgeInsets.only(top: 57.0, bottom: 24.0),
+                  margin: EdgeInsets.only(
+                      top: SizeConfig(context, 50).getProportionateScreenHeight,
+                      bottom:
+                          SizeConfig(context, 21).getProportionateScreenHeight),
                 ),
                 Container(
                   width: size.width * 0.90,
@@ -68,7 +78,8 @@ class UserMainInfo extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.white,
                           fontStyle: FontStyle.normal,
-                          fontSize: 24,
+                          fontSize: SizeConfig(context, 20)
+                              .getProportionateScreenHeight,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -76,7 +87,7 @@ class UserMainInfo extends StatelessWidget {
                     ],
                   )),
                 ),
-                getUserPositionWidget()
+                getUserPositionWidget(context)
               ],
             ),
           ),
@@ -99,7 +110,7 @@ class UserMainInfo extends StatelessWidget {
     return nameComponents.join(' ');
   }
 
-  Widget getUserPositionWidget() {
+  Widget getUserPositionWidget(BuildContext context) {
     if (userPosition != null) {
       return Padding(
           padding: EdgeInsets.only(top: 10),
@@ -109,10 +120,12 @@ class UserMainInfo extends StatelessWidget {
                 userPosition!.toUpperCase(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Color(0xFFFFFFFF),
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    height: 1.4),
+                  color: Color(0xFFFFFFFF),
+                  fontSize:
+                      SizeConfig(context, 12).getProportionateScreenHeight,
+                  fontWeight: FontWeight.bold,
+                  height: 1.4,
+                ),
               )));
     } else {
       return Container();

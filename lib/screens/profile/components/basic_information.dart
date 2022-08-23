@@ -9,9 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class BasicInformation extends StatelessWidget {
   static late AppLocalizations _strings;
   final UserBasicInfo? info;
-  final bool isTablet;
-
-  const BasicInformation({Key? key, required this.info, required this. isTablet}) : super(key: key);
+  const BasicInformation({Key? key, required this.info}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +28,23 @@ class BasicInformation extends StatelessWidget {
         info!.office != null ||
         info!.department != null) {
       Size size = MediaQuery.of(context).size;
-      return CustomLayoutBuilder(
-      builder: (context, constraints, isTablet) {
-          return Container(
-            width: size.width,
-            margin: EdgeInsets.only(top: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: SectionTitle(title: _strings.mainInformation, isTablet: isTablet,),
+      return CustomLayoutBuilder(builder: (context, constraints, isTablet) {
+        return Container(
+          width: size.width,
+          margin: EdgeInsets.only(top: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: SectionTitle(
+                  title: _strings.mainInformation,
                 ),
-                Column(children: getBasicInfoWidgetRows())
-              ],
-            ),
-          );
-        }
-      );
+              ),
+              Column(children: getBasicInfoWidgetRows())
+            ],
+          ),
+        );
+      });
     } else {
       return Container();
     }
@@ -57,8 +55,10 @@ class BasicInformation extends StatelessWidget {
 
     getRowsInfo().forEach((element) {
       if (element['value'] != null) {
-        widgetRows.add(
-            BasicInfoRow(title: element['title'], value: element['value'], isTablet:isTablet));
+        widgetRows.add(BasicInfoRow(
+          title: element['title'],
+          value: element['value'],
+        ));
       }
     });
 

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../../../messenger/functions/size_config.dart';
+
 class BasicInfoRow extends StatelessWidget {
   final String title;
   final String value;
-  final bool isTablet;
-  const BasicInfoRow(
-      {Key? key,
-      required this.title,
-      required this.value,
-      required this. isTablet})
-      : super(key: key);
+  const BasicInfoRow({
+    Key? key,
+    required this.title,
+    required this.value,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +37,15 @@ class BasicInfoRow extends StatelessWidget {
                   title,
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
-                      fontSize: isTablet ? 18 : 14),
+                      fontSize:
+                          SizeConfig(context, 12).getProportionateScreenHeight),
                 ),
                 Text(
                   value,
-                  style: TextStyle(color: Color(0xFF1D2126), fontSize: isTablet ? 20 : 16),
+                  style: TextStyle(
+                      color: Color(0xFF1D2126),
+                      fontSize:
+                          SizeConfig(context, 14).getProportionateScreenHeight),
                 )
               ],
             ),
