@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class RespondContainer extends StatelessWidget {
   final bool isByMe;
@@ -32,13 +33,13 @@ class RespondContainer extends StatelessWidget {
             GoogleText(
               name,
               color: isByMe ? Colors.purple[300] : Colors.purple,
-              fontSize: 13.0,
+              fontSize: SizeConfig(context, 11).getProportionateScreenHeight,
             ),
             const SizedBox(height: 3.0),
             GoogleText(
               body,
               color: isByMe ? Colors.white : Colors.black,
-              fontSize: 13.0,
+              fontSize: SizeConfig(context, 11).getProportionateScreenHeight,
             ),
             const SizedBox(height: 3.0),
           ],

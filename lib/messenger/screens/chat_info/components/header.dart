@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class ChatInfoHeader extends StatelessWidget {
   final String title;
@@ -11,7 +12,7 @@ class ChatInfoHeader extends StatelessWidget {
       title,
       maxLines: 1,
       fontWeight: FontWeight.w700,
-      fontSize: 12.0,
+      fontSize: SizeConfig(context, 11).getProportionateScreenHeight,
       color: const Color(0XFFBBBBBB),
     );
   }

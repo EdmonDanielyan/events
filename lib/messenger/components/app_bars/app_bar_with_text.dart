@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/messenger/constants/svg_pictures.dart';
 
+import '../../functions/size_config.dart';
 import 'back_btn.dart';
 
 class AppBarWithText extends StatelessWidget with PreferredSizeWidget {
+  final BuildContext context;
   final String title;
   final Widget? titleWidget;
   final List<Widget>? actions;
   final Widget? leading;
-
-  AppBarWithText({
+  AppBarWithText(
+    this.context, {
     Key? key,
     this.title = "",
     this.titleWidget,
@@ -19,7 +21,11 @@ class AppBarWithText extends StatelessWidget with PreferredSizeWidget {
   }) : super(key: key);
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(
+        SizeConfig(context, MediaQuery.of(context).size.width).isTablet
+            ? 70
+            : kToolbarHeight,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +64,9 @@ class AppBarWithText extends StatelessWidget with PreferredSizeWidget {
           Text(
             title,
             textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+            ),
           ),
       centerTitle: true,
       actions: actions,

@@ -5,6 +5,7 @@ import 'package:ink_mobile/messenger/components/selectable/selectable.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/hover_message.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/respond_container_wrapper.dart';
@@ -79,8 +80,10 @@ class MessageCard extends StatelessWidget {
                           child: CachedCircleAvatar(
                             url: user?.avatarUrl ?? "",
                             name: user?.name ?? "",
-                            avatarHeight: 45.0,
-                            avatarWidth: 45.0,
+                            avatarHeight: SizeConfig(context, 40)
+                                .getProportionateScreenHeight,
+                            avatarWidth: SizeConfig(context, 40)
+                                .getProportionateScreenHeight,
                           ),
                         );
                       },

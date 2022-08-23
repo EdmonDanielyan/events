@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/functions/date_functions.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class DateSeparator extends StatelessWidget {
   final DateTime dateTime;
@@ -16,7 +17,7 @@ class DateSeparator extends StatelessWidget {
         ),
         child: GoogleText(
           DateFunctions(dateTime).dayMonthYearHuman(),
-          fontSize: 11.0,
+          fontSize: SizeConfig(context, 10.0).getProportionateScreenHeight,
           fontWeight: FontWeight.bold,
         ),
       ),

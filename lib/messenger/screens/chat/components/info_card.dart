@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 
 class MessageInfoCard extends StatelessWidget {
@@ -18,7 +19,7 @@ class MessageInfoCard extends StatelessWidget {
         ),
         child: GoogleText(
           message.body,
-          fontSize: 13.0,
+          fontSize: SizeConfig(context, 11.5).getProportionateScreenHeight,
           fontWeight: FontWeight.w600,
           textAlign: TextAlign.center,
         ),

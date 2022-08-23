@@ -7,6 +7,8 @@ import 'package:ink_mobile/messenger/cubits/cached/notifications_disabled_chats/
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/messenger/screens/chat_info/components/participant_card.dart';
 
+import '../../../functions/size_config.dart';
+
 class NotificationsBtn extends StatelessWidget {
   final void Function(BuildContext)? onPressed;
   final CachedChatsCubit cachedChatsCubit;
@@ -46,7 +48,7 @@ class NotificationsBtn extends StatelessWidget {
                 child: Icon(
                   contains ? Icons.volume_up_rounded : Icons.volume_off_rounded,
                   color: Colors.white,
-                  size: 26.0,
+                  size: SizeConfig(context, 22).getProportionateScreenHeight,
                 ),
               ),
               divider: const SizedBox(),

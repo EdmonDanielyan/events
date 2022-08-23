@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class MenuItem extends StatelessWidget {
   final String value;
@@ -20,7 +21,7 @@ class MenuItem extends StatelessWidget {
           child: GoogleText(
             value,
             maxLines: 1,
-            fontSize: 14.0,
+            fontSize: SizeConfig(context, 12.0).getProportionateScreenHeight,
           ),
         ),
       ],

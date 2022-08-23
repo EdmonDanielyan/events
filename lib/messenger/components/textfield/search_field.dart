@@ -5,6 +5,7 @@ import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../constants/svg_pictures.dart';
+import '../../functions/size_config.dart';
 
 class SearchField extends StatefulWidget {
   final String hint;
@@ -65,6 +66,10 @@ class _SearchFieldState extends State<SearchField> {
                       textCapitalization: TextCapitalization.sentences,
                       focusNode: _textFieldFocus,
                       placeholder: _hintText ?? widget.hint,
+                      style: TextStyle(
+                        fontSize: SizeConfig(context, 13.0)
+                            .getProportionateScreenHeight,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0),
                         color: Colors.transparent,
@@ -75,8 +80,10 @@ class _SearchFieldState extends State<SearchField> {
                   SvgPicture.asset(
                     SvgPictures.search,
                     color: Colors.grey[700],
-                    width: 20,
-                    height: 20,
+                    width:
+                        SizeConfig(context, 18.0).getProportionateScreenHeight,
+                    height:
+                        SizeConfig(context, 18.0).getProportionateScreenHeight,
                   ),
                 ],
               ),

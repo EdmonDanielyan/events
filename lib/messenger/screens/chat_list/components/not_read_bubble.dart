@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class NotReadBubbble extends StatelessWidget {
   final int count;
@@ -17,7 +18,7 @@ class NotReadBubbble extends StatelessWidget {
         "$count",
         textAlign: TextAlign.center,
         color: Colors.white,
-        fontSize: 12.0,
+        fontSize: SizeConfig(context, 10).getProportionateScreenHeight,
       ),
     );
   }

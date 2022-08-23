@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/cubits/custom/message_cubit.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 
 class RespondingMessageContainer extends StatelessWidget {
@@ -32,7 +33,8 @@ class RespondingMessageContainer extends StatelessWidget {
                     GoogleText(
                       "${state.owner.name}:",
                       maxLines: 1,
-                      fontSize: 11.0,
+                      fontSize:
+                          SizeConfig(context, 9.5).getProportionateScreenHeight,
                     ),
                     GoogleText(
                       state.body,
@@ -45,7 +47,10 @@ class RespondingMessageContainer extends StatelessWidget {
               const SizedBox(width: 10.0),
               InkWell(
                 onTap: () => respondingMessage.set(null),
-                child: const Icon(Icons.close),
+                child: Icon(
+                  Icons.close,
+                  size: SizeConfig(context, 20).getProportionateScreenHeight,
+                ),
               ),
               const SizedBox(width: 5.0),
             ],

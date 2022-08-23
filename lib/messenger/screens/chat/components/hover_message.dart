@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ink_mobile/messenger/components/popup/popup_menu_container.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import '../../../../components/snackbar/custom_snackbar.dart';
 import '../../../components/popup/menu_item.dart' as my;
 import '../../../model/message.dart';
@@ -15,7 +16,7 @@ const _edit = "edit";
 class HoverMessageCard extends StatelessWidget {
   final Widget child;
   final Message message;
-  final double iconSize;
+  final double? iconSize;
   final void Function(BuildContext)? onDelete;
   final void Function(BuildContext)? onEdit;
   final void Function()? onLongPress;
@@ -25,7 +26,7 @@ class HoverMessageCard extends StatelessWidget {
     this.message, {
     Key? key,
     required this.child,
-    this.iconSize = 14.0,
+    this.iconSize,
     this.onDelete,
     this.onEdit,
     this.onLongPress,
@@ -64,6 +65,9 @@ class HoverMessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _iconSize =
+        iconSize ?? SizeConfig(context, 20.0).getProportionateScreenHeight;
+
     return PopupMenuContainer<String>(
       blurBackground: true,
       child: child,
@@ -74,7 +78,7 @@ class HoverMessageCard extends StatelessWidget {
             value: "Ответить",
             icon: Icon(
               CupertinoIcons.arrowshape_turn_up_left_fill,
-              size: iconSize,
+              size: _iconSize,
             ),
           ),
         ),
@@ -85,7 +89,7 @@ class HoverMessageCard extends StatelessWidget {
               value: "Редактировать",
               icon: Icon(
                 CupertinoIcons.pencil,
-                size: iconSize,
+                size: _iconSize,
               ),
             ),
           ),
@@ -96,7 +100,7 @@ class HoverMessageCard extends StatelessWidget {
             value: "Копировать",
             icon: Icon(
               Icons.file_copy,
-              size: iconSize,
+              size: _iconSize,
             ),
           ),
         ),
@@ -107,7 +111,7 @@ class HoverMessageCard extends StatelessWidget {
               value: "Удалить",
               icon: Icon(
                 Icons.delete,
-                size: iconSize,
+                size: _iconSize,
               ),
             ),
           ),
@@ -119,7 +123,7 @@ class HoverMessageCard extends StatelessWidget {
               value: "Перейти",
               icon: Icon(
                 CupertinoIcons.profile_circled,
-                size: iconSize,
+                size: _iconSize,
               ),
             ),
           ),

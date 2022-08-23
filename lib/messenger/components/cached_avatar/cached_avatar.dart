@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/validators/validators/text_validator.dart';
+import '../../functions/size_config.dart';
 import 'avatar_file.dart';
 import 'avatar_indicator.dart';
 import 'avatar_placeholder.dart';
@@ -61,7 +62,13 @@ class CachedCircleAvatar extends StatelessWidget {
 
     return Stack(
       children: [
-        SizedBox(width: avatarWidth, height: avatarHeight, child: _child),
+        SizedBox(
+          width: avatarWidth ??
+              SizeConfig(context, 52.0).getProportionateScreenHeight,
+          height: avatarHeight ??
+              SizeConfig(context, 52.0).getProportionateScreenHeight,
+          child: _child,
+        ),
         if (indicator) ...[
           Positioned(
             right: 0,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/messenger/constants/svg_pictures.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class SearchBar extends StatefulWidget {
   final TextEditingController? controller;
@@ -22,6 +23,9 @@ class _SearchBarState extends State<SearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    final searchIconSize =
+        SizeConfig(context, 18.0).getProportionateScreenHeight;
+    final iosPadding = SizeConfig(context, 7.0).getProportionateScreenHeight;
     return Container(
       padding: widget.contentPadding,
       decoration: const BoxDecoration(
@@ -33,9 +37,9 @@ class _SearchBarState extends State<SearchBar> {
       ),
       child: Platform.isIOS
           ? Container(
-              padding: const EdgeInsets.only(
-                top: 8.0,
-                bottom: 8.0,
+              padding: EdgeInsets.only(
+                top: iosPadding,
+                bottom: iosPadding,
               ),
               child: Row(
                 children: [
@@ -45,6 +49,16 @@ class _SearchBarState extends State<SearchBar> {
                       maxLines: 1,
                       textCapitalization: TextCapitalization.sentences,
                       placeholder: _originalHint,
+                      iosOptions: IosOptions(
+                        placeholderStyle: TextStyle(
+                          fontSize: SizeConfig(context, 13.0)
+                              .getProportionateScreenHeight,
+                        ),
+                      ),
+                      style: TextStyle(
+                        fontSize: SizeConfig(context, 13.0)
+                            .getProportionateScreenHeight,
+                      ),
                       placeholderColor: Colors.grey[700],
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0),
@@ -57,8 +71,8 @@ class _SearchBarState extends State<SearchBar> {
                     padding: const EdgeInsets.only(right: 10.0),
                     child: SvgPicture.asset(
                       SvgPictures.search,
-                      width: 20,
-                      height: 20,
+                      width: searchIconSize,
+                      height: searchIconSize,
                       color: Colors.grey[700],
                     ),
                   )
@@ -71,15 +85,19 @@ class _SearchBarState extends State<SearchBar> {
               decoration: InputDecoration(
                 contentPadding: widget.contentPadding,
                 hintText: _originalHint,
-                hintStyle: TextStyle(color: Colors.grey[700]),
+                hintStyle: TextStyle(
+                  color: Colors.grey[700],
+                  fontSize:
+                      SizeConfig(context, 13.0).getProportionateScreenHeight,
+                ),
                 suffixIconConstraints:
                     const BoxConstraints(minHeight: 24, minWidth: 24),
                 suffixIcon: Container(
                   padding: const EdgeInsets.only(right: 10.0),
                   child: SvgPicture.asset(
                     SvgPictures.search,
-                    width: 20,
-                    height: 20,
+                    width: searchIconSize,
+                    height: searchIconSize,
                     color: Colors.grey[700],
                   ),
                 ),

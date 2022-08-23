@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class GoogleText extends StatelessWidget {
   final String str;
@@ -27,7 +28,8 @@ class GoogleText extends StatelessWidget {
     return Text(
       str,
       style: GoogleFonts.roboto(
-        fontSize: fontSize,
+        fontSize:
+            fontSize ?? SizeConfig(context, 13).getProportionateScreenHeight,
         fontWeight: fontWeight,
         color: color,
         fontStyle: fontStyle,

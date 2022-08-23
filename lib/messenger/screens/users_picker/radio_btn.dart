@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class UserPickerRadio extends StatefulWidget {
   final bool enabled;
@@ -24,15 +25,17 @@ class _UserPickerRadioState extends State<UserPickerRadio> {
         child: Icon(
           Icons.check_circle,
           color: Colors.lightBlue[300],
+          size: SizeConfig(context, 22).getProportionateScreenHeight,
         ),
         onTap: _onTap,
       );
     }
 
     return InkWell(
-      child: const Icon(
+      child: Icon(
         Icons.circle_outlined,
         color: Colors.grey,
+        size: SizeConfig(context, 22).getProportionateScreenHeight,
       ),
       onTap: _onTap,
     );

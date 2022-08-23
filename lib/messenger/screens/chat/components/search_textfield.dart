@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/textfield/native_field.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class ChatSearchTextfield extends StatelessWidget {
   final void Function(String)? onChanged;
@@ -20,6 +21,7 @@ class ChatSearchTextfield extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textSize = SizeConfig(context, 13.0).getProportionateScreenHeight;
     final _buttonWidth = (onUp != null || onDown != null) ? 150.0 : 0.0;
     return Container(
       padding: const EdgeInsets.all(10.0),
@@ -33,11 +35,14 @@ class ChatSearchTextfield extends StatelessWidget {
             onChanged: onChanged,
             onFieldSubmitted: onFieldSubmitted,
             hint: "Поиск",
-            hintStyle: const TextStyle(color: Colors.white70),
+            hintStyle: TextStyle(color: Colors.white70, fontSize: textSize),
             border: InputBorder.none,
             contentPadding: EdgeInsets.only(right: _buttonWidth),
             iosPadding: EdgeInsets.only(right: _buttonWidth),
-            style: TextStyle(color: textColor ?? Colors.white),
+            style: TextStyle(
+              color: textColor ?? Colors.white,
+              fontSize: textSize,
+            ),
             textInputAction: TextInputAction.search,
           ),
           Positioned(
@@ -52,10 +57,14 @@ class ChatSearchTextfield extends StatelessWidget {
                 children: [
                   if (onUp != null) ...[
                     InkWell(
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.all(6.0),
-                        child:
-                            Icon(Icons.keyboard_arrow_up, color: Colors.white),
+                        child: Icon(
+                          Icons.keyboard_arrow_up,
+                          color: Colors.white,
+                          size: SizeConfig(context, 18.0)
+                              .getProportionateScreenHeight,
+                        ),
                       ),
                       onTap: onUp,
                     ),
@@ -63,21 +72,27 @@ class ChatSearchTextfield extends StatelessWidget {
                   ],
                   if (onDown != null) ...[
                     InkWell(
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.all(6.0),
-                        child: Icon(Icons.keyboard_arrow_down,
-                            color: Colors.white),
+                        child: Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Colors.white,
+                          size: SizeConfig(context, 18.0)
+                              .getProportionateScreenHeight,
+                        ),
                       ),
                       onTap: onDown,
                     ),
                   ],
                   const SizedBox(width: 5),
                   InkWell(
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.all(6.0),
                       child: Icon(
                         Icons.close,
                         color: Colors.white,
+                        size: SizeConfig(context, 18.0)
+                            .getProportionateScreenHeight,
                       ),
                     ),
                     onTap: onClose,

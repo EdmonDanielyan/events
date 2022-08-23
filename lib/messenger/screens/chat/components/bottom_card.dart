@@ -4,6 +4,7 @@ import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/message_cubit.dart';
 import 'package:ink_mobile/messenger/functions/create_message.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/textfield.dart';
@@ -114,8 +115,16 @@ class _MessageBottomCardState extends State<MessageBottomCard> {
                       onPressed: () =>
                           state != null ? _onEdit(state) : _onSend(),
                       icon: state != null
-                          ? const Icon(Icons.check)
-                          : const Icon(Icons.send_rounded),
+                          ? Icon(
+                              Icons.check,
+                              size: SizeConfig(context, 20)
+                                  .getProportionateScreenHeight,
+                            )
+                          : Icon(
+                              Icons.send_rounded,
+                              size: SizeConfig(context, 20)
+                                  .getProportionateScreenHeight,
+                            ),
                     );
                   },
                 ),

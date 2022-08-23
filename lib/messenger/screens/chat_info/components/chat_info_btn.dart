@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class ChatInfoBtn extends StatelessWidget {
   final String title;
@@ -23,7 +24,7 @@ class ChatInfoBtn extends StatelessWidget {
           title,
           maxLines: 1,
           color: color,
-          fontSize: 16.0,
+          fontSize: SizeConfig(context, 14.0).getProportionateScreenHeight,
         ),
       ),
       onPressed: onPressed,

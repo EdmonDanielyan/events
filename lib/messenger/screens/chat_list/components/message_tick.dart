@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/messenger/constants/svg_pictures.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 
+import '../../../functions/size_config.dart';
+
 class MessageTick extends StatelessWidget {
   final MessageStatus status;
   final bool isRead;
@@ -40,10 +42,12 @@ class MessageTick extends StatelessWidget {
       color = tickColor ?? const Color(0XFFBBBBBB);
     }
 
+    final iconSize = SizeConfig(context, 11.0).getProportionateScreenHeight;
+
     return SvgPicture.asset(
       asset,
-      width: 13.0,
-      height: 13.0,
+      width: iconSize,
+      height: iconSize,
       color: color,
     );
   }

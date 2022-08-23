@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/cached_avatar/cached_avatar.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 
@@ -64,7 +65,8 @@ class ChatCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 5.0),
+              SizedBox(
+                  height: SizeConfig(context, 4).getProportionateScreenHeight),
               Row(
                 children: [
                   Expanded(
@@ -79,7 +81,8 @@ class ChatCard extends StatelessWidget {
                   ],
                 ],
               ),
-              const SizedBox(height: 8.0),
+              SizedBox(
+                  height: SizeConfig(context, 7).getProportionateScreenHeight),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -108,7 +111,9 @@ class ChatCard extends StatelessWidget {
                   ],
                 ],
               ),
-              const SizedBox(height: 7.0),
+              SizedBox(
+                  height:
+                      SizeConfig(context, 6.0).getProportionateScreenHeight),
               const ChatDivider(),
             ],
           ),

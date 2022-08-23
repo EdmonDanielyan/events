@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../functions/size_config.dart';
+
 class ChatEditTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final String? initialValue;
@@ -28,11 +30,13 @@ class ChatEditTextField extends StatelessWidget {
       textCapitalization: TextCapitalization.sentences,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
-        border: InputBorder.none,
-        hintText: hintText,
-      ),
+          border: InputBorder.none,
+          hintText: hintText,
+          errorStyle: TextStyle(
+            fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+          )),
       style: GoogleFonts.roboto(
-        fontSize: 14.0,
+        fontSize: SizeConfig(context, 12).getProportionateScreenHeight,
         fontWeight: fontWeight,
         color: Colors.black,
       ),

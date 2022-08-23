@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/functions/date_functions.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class ChatDate extends StatelessWidget {
   final DateTime dateTime;
@@ -10,7 +11,7 @@ class ChatDate extends StatelessWidget {
   Widget build(BuildContext context) {
     return GoogleText(
       DateFunctions(dateTime).minutesHoursDayMonthYearHuman(),
-      fontSize: 11.0,
+      fontSize: SizeConfig(context, 9.5).getProportionateScreenHeight,
       color: const Color(0XFF757678),
       fontWeight: FontWeight.w300,
     );

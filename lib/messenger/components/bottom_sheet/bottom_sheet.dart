@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/bottom_sheet/top_line.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 import 'action_btn.dart';
 
@@ -99,8 +100,10 @@ class CustomBottomSheetChild extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Text(
                           title!,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
+                            fontSize: SizeConfig(context, 13)
+                                .getProportionateScreenHeight,
                           ),
                         ),
                       )

@@ -6,6 +6,7 @@ import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dar
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/online_builder.dart';
 
+import '../../../functions/size_config.dart';
 import 'divider.dart';
 
 class ParticipantCard extends StatelessWidget {
@@ -42,8 +43,8 @@ class ParticipantCard extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            width: 35.0,
-            height: 35,
+            width: SizeConfig(context, 31).getProportionateScreenHeight,
+            height: SizeConfig(context, 31).getProportionateScreenHeight,
             child: avatarWidget ??
                 OnlineBuilder(
                   onlineCubit ?? OnlineCubit(),
@@ -52,10 +53,13 @@ class ParticipantCard extends StatelessWidget {
                     return CachedCircleAvatar(
                       url: onlineUser?.avatarUrl ?? user.avatarUrl,
                       name: onlineUser?.name ?? user.name,
-                      avatarHeight: 40,
-                      avatarWidth: 40,
+                      avatarHeight:
+                          SizeConfig(context, 35).getProportionateScreenHeight,
+                      avatarWidth:
+                          SizeConfig(context, 35).getProportionateScreenHeight,
                       indicator: onlineUser != null,
-                      indicatorSize: 10.0,
+                      indicatorSize:
+                          SizeConfig(context, 8).getProportionateScreenHeight,
                     );
                   },
                   cachedChatsCubit: cachedChatsCubit,
@@ -72,7 +76,8 @@ class ParticipantCard extends StatelessWidget {
                           GoogleText(
                             user.name,
                             color: const Color(0XFF1D2126),
-                            fontSize: 16.0,
+                            fontSize: SizeConfig(context, 14)
+                                .getProportionateScreenHeight,
                           ),
                     ),
                     trailingWidget ?? const SizedBox(),
@@ -81,7 +86,8 @@ class ParticipantCard extends StatelessWidget {
                       GoogleText(
                         trailing,
                         color: const Color(0XFF757678),
-                        fontSize: 14.0,
+                        fontSize: SizeConfig(context, 12)
+                            .getProportionateScreenHeight,
                       )
                     ],
                   ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import '../../components/cached_avatar/cached_avatar.dart';
 import '../../model/user.dart';
 
@@ -19,7 +20,7 @@ class _UsersPickerListState extends State<UsersPickerList> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 60,
+      height: SizeConfig(context, 53).getProportionateScreenHeight,
       child: Scrollbar(
         thumbVisibility: true,
         controller: controller,
@@ -37,8 +38,10 @@ class _UsersPickerListState extends State<UsersPickerList> {
                   CachedCircleAvatar(
                     url: widget.users[index].avatarUrl,
                     name: widget.users[index].name,
-                    avatarHeight: 45,
-                    avatarWidth: 45,
+                    avatarHeight:
+                        SizeConfig(context, 40).getProportionateScreenHeight,
+                    avatarWidth:
+                        SizeConfig(context, 40).getProportionateScreenHeight,
                   ),
                   InkWell(
                     onTap: () {
@@ -46,7 +49,8 @@ class _UsersPickerListState extends State<UsersPickerList> {
                     },
                     child: Icon(
                       Icons.close,
-                      size: 18.0,
+                      size:
+                          SizeConfig(context, 16).getProportionateScreenHeight,
                       color: Colors.black,
                     ),
                   ),

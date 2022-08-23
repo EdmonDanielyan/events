@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class MessageSendBtn extends StatelessWidget {
   final Function()? onPressed;
   final Widget icon;
-  const MessageSendBtn({Key? key, required this.onPressed, this.icon = const Icon(Icons.send_rounded)})
+  const MessageSendBtn(
+      {Key? key,
+      required this.onPressed,
+      this.icon = const Icon(Icons.send_rounded)})
       : super(key: key);
 
   @override
@@ -19,6 +23,7 @@ class MessageSendBtn extends StatelessWidget {
           icon: icon,
           onPressed: onPressed,
           color: Colors.white,
+          iconSize: SizeConfig(context, 25).getProportionateScreenHeight,
         ),
       ),
     );

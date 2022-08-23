@@ -26,7 +26,9 @@ class EditingMessageContainer extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Icon(CupertinoIcons.pencil),
+              const Icon(
+                CupertinoIcons.pencil,
+              ),
               const SizedBox(width: 8.0),
               Expanded(
                 child: GoogleText(state.body, maxLines: 1),
@@ -34,7 +36,9 @@ class EditingMessageContainer extends StatelessWidget {
               const SizedBox(width: 10.0),
               InkWell(
                 onTap: () => editingMessage.set(null),
-                child: const Icon(Icons.close),
+                child: const Icon(
+                  Icons.close,
+                ),
               ),
               const SizedBox(width: 5.0),
             ],

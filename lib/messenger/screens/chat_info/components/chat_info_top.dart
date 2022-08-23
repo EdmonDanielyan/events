@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/cached_avatar/cached_avatar.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class ChatInfoTop extends StatelessWidget {
   final String url;
@@ -26,11 +27,12 @@ class ChatInfoTop extends StatelessWidget {
           child: CachedCircleAvatar(
             url: url,
             name: name,
-            avatarHeight: 70.0,
-            avatarWidth: 70.0,
+            avatarHeight:
+                SizeConfig(context, 60.0).getProportionateScreenHeight,
+            avatarWidth: SizeConfig(context, 60.0).getProportionateScreenHeight,
           ),
         ),
-        const SizedBox(width: 15.0),
+        SizedBox(width: SizeConfig(context, 13.0).getProportionateScreenHeight),
         Flexible(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +42,8 @@ class ChatInfoTop extends StatelessWidget {
                 child: GoogleText(
                   name,
                   fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
+                  fontSize:
+                      SizeConfig(context, 18.0).getProportionateScreenHeight,
                   maxLines: 2,
                 ),
               ),
@@ -48,7 +51,8 @@ class ChatInfoTop extends StatelessWidget {
                 const SizedBox(height: 5.0),
                 GoogleText(
                   description,
-                  fontSize: 14.0,
+                  fontSize:
+                      SizeConfig(context, 11.0).getProportionateScreenHeight,
                   color: const Color(0XFF757678),
                   maxLines: 2,
                 ),
@@ -57,7 +61,8 @@ class ChatInfoTop extends StatelessWidget {
                 const SizedBox(height: 5.0),
                 GoogleText(
                   subDescription,
-                  fontSize: 14.0,
+                  fontSize:
+                      SizeConfig(context, 11.0).getProportionateScreenHeight,
                   color: const Color(0XFF757678),
                   maxLines: 2,
                 ),

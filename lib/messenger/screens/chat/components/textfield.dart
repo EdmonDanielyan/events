@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_native_text_input/flutter_native_text_input.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class ChatTextField extends StatefulWidget {
   final TextEditingController textEditingController;
@@ -43,6 +44,16 @@ class _ChatTextFieldState extends State<ChatTextField> {
               placeholder: _originalHint,
               textCapitalization: TextCapitalization.sentences,
               focusNode: widget.focusNode,
+              style: TextStyle(
+                fontSize:
+                    SizeConfig(context, 13.0).getProportionateScreenHeight,
+              ),
+              iosOptions: IosOptions(
+                placeholderStyle: TextStyle(
+                  fontSize:
+                      SizeConfig(context, 13.0).getProportionateScreenHeight,
+                ),
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
                 color: Colors.transparent,
@@ -59,9 +70,16 @@ class _ChatTextFieldState extends State<ChatTextField> {
             focusNode: widget.focusNode,
             enableSuggestions: true,
             autocorrect: true,
+            style: TextStyle(
+              fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
+            ),
             decoration: InputDecoration(
               counterText: "",
               hintText: _originalHint,
+              hintStyle: TextStyle(
+                fontSize:
+                    SizeConfig(context, 13.0).getProportionateScreenHeight,
+              ),
               border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(20.0),

@@ -8,6 +8,7 @@ import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart
 import 'package:ink_mobile/messenger/cubits/custom/messages_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/search_select_cubit/search_select_cubit.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/builder.dart';
@@ -52,6 +53,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
             cachedChatsCubit: cachedChatsCubit,
             builder: (context, state, chat) {
               return AppBarWithText(
+                context,
                 titleWidget: GestureDetector(
                   onTap: () => onClick != null &&
                           cachedChatsCubit.selectedChats.isNotEmpty
@@ -60,7 +62,10 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Column(
                     children: [
                       if (chat != null && !chat.isSingle) ...[
-                        GoogleText(chat.name, maxLines: 1),
+                        GoogleText(
+                          chat.name,
+                          maxLines: 1,
+                        ),
                       ],
                       if (chat != null && chat.isSingle) ...[
                         CachedUserBuilder(
@@ -79,7 +84,8 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                           builder: (context, onlineState, user) {
                             return GoogleText(
                               user != null ? "В сети" : "Не в сети",
-                              fontSize: 11.0,
+                              fontSize: SizeConfig(context, 9)
+                                  .getProportionateScreenHeight,
                             );
                           },
                           cachedChatsCubit: cachedChatsCubit,
@@ -98,9 +104,11 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   context, selectedMessagesState, chat);
                             }
                           : null,
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.delete,
                         color: Colors.red,
+                        size: SizeConfig(context, 20)
+                            .getProportionateScreenHeight,
                       ),
                     ),
                   ],
@@ -109,8 +117,10 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                     icon: SvgPicture.asset(
                       SvgPictures.search,
                       color: Colors.white,
-                      width: 20,
-                      height: 20,
+                      width:
+                          SizeConfig(context, 17).getProportionateScreenHeight,
+                      height:
+                          SizeConfig(context, 17).getProportionateScreenHeight,
                     ),
                   ),
                 ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 import '../../../components/text/google_style.dart';
 
@@ -12,7 +13,7 @@ class MessageEditedMark extends StatelessWidget {
       "Ред.",
       fontStyle: FontStyle.italic,
       color: isByMe ? Colors.white : Colors.black87,
-      fontSize: 11.0,
+      fontSize: SizeConfig(context, 9.5).getProportionateScreenHeight,
     );
   }
 }

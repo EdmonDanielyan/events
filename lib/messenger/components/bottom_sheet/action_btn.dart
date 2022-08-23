@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../functions/size_config.dart';
+
 class ActionBtn extends StatelessWidget {
   final bool ignoring;
   final void Function()? onPressed;
@@ -23,7 +25,7 @@ class ActionBtn extends StatelessWidget {
           title,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 13.0,
+            fontSize: SizeConfig(context, 11).getProportionateScreenHeight,
             color: color ?? Colors.blue,
           ),
         ),
