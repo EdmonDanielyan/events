@@ -7,6 +7,7 @@ import 'package:ink_mobile/cubit/news_comments/news_comments_state.dart';
 import 'package:ink_mobile/functions/plural.dart';
 import 'package:ink_mobile/functions/scroll_to_bottom.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/news_comments/components/comment.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -77,7 +78,7 @@ class _BodyState extends State<Body> {
                           child: Text(
                             "$commentsCount ${Plural(commentsCount).declense(_strings.oneCommentNoun.toUpperCase(), _strings.multipleCommentsNoun.toUpperCase(), _strings.lotOfCommentsNoun.toUpperCase())}",
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w500),
+                                fontSize: SizeConfig(context, 20).getProportionateScreenHeight, fontWeight: FontWeight.w500),
                           ),
                         ),
                         MediaQuery.removePadding(
