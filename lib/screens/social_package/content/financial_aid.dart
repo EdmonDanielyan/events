@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -15,14 +16,23 @@ class FinancialAid extends StatelessWidget {
     return Scaffold(
       appBar: InkAppBarWithText(context, title: _strings.financialAid),
       body: SingleChildScrollView(
-        child: Container(
-          child: Html(
-              onLinkTap: (String? url, RenderContext context,
-                  Map<String, String> attributes, dom.Element? element) {
-                launchUrl(url!);
-              },
-              data: '''
-                  <div>
+        child: CustomLayoutBuilder(builder: (context, constraint, isTablet) {
+            return Container(
+              child: Html(
+                style: isTablet
+                          ? {
+                              "body": Style(
+                                fontSize: FontSize(24.0),
+                              ),
+                            "h3": Style(fontSize: FontSize(26.0),)
+                            }
+                          : {},
+                  onLinkTap: (String? url, RenderContext context,
+                      Map<String, String> attributes, dom.Element? element) {
+                    launchUrl(url!);
+                  },
+                  data: '''
+                      <div>
  <b>Материальная помощь </b>- разовая выплата, предоставляемая сотруднику по решению руководства Компании. Размер материальной помощи определен Положением о гарантиях и компенсациях сотрудникам ООО «ИНК» и составляет <b>25 000 (Двадцать пять тысяч) рублей</b>.
 </div>
 <h3><span style="color: #00736a;">Формы заявлений на предоставление материальной помощи (в формате .doc):</span> </h3>
@@ -117,7 +127,9 @@ class FinancialAid extends StatelessWidget {
 <p>
 	 &nbsp;Ведущий специалист отдела социальных программ – Марина Константинова, тел. 9060, <a href="mailto:konstantinova_me@irkutskoil.ru">konstantinova_me@irkutskoil.ru</a>
 </p>
-                '''),
+                    '''),
+            );
+          }
         ),
       ),
       bottomNavigationBar: const NewBottomNavBar(),

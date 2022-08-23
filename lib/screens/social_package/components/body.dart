@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/social_package/components/social_package_list_element.dart';
 import 'package:ink_mobile/screens/social_package/components/social_package_list_item.dart';
 
@@ -48,7 +49,10 @@ class Body extends StatelessWidget {
           color: Colors.white,
           child: Text(
             _strings.socialPackage,
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: SizeConfig(context, 30).getProportionateScreenHeight,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         Expanded(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -16,14 +17,23 @@ class RecreationalActivities extends StatelessWidget {
       appBar:
           InkAppBarWithText(context, title: _strings.recreationalActivities),
       body: SingleChildScrollView(
-        child: Container(
-          child: Html(
-              onLinkTap: (String? url, RenderContext context,
-                  Map<String, String> attributes, dom.Element? element) {
-                launchUrl(url!);
-              },
-              data: '''
-                 <h3>&nbsp;<b><span style="color: #00736a;">Тренажерный зал Oil Gym</span></b> </h3>
+        child:    CustomLayoutBuilder(builder: (context, constraint, isTablet) {
+            return Container(
+              child: Html(
+                 style: isTablet
+                      ? {
+                          "body": Style(
+                            fontSize: FontSize(24.0),
+                          ),
+                          "h3": Style(fontSize: FontSize(26.0),)
+                        }
+                      : {},
+                  onLinkTap: (String? url, RenderContext context,
+                      Map<String, String> attributes, dom.Element? element) {
+                    launchUrl(url!);
+                  },
+                  data: '''
+                     <h3>&nbsp;<b><span style="color: #00736a;">Тренажерный зал Oil Gym</span></b> </h3>
 <p>
 	 Тренажерный зал Oil Gym находится в цокольном этаже башни "А" офиса компании в&nbsp; г. Иркутске (БЦ "Астра").
 </p>
@@ -95,7 +105,9 @@ class RecreationalActivities extends StatelessWidget {
 </p>
 <p>
 	 Подробнее о группах здоровья (в том числе расписание) -&nbsp; в разделе "<a href="https://portal.irkutskoil.ru/sport/"><b><u>Спорт</u></b></a>".&nbsp;
-                '''),
+                    '''),
+            );
+          }
         ),
       ),
       bottomNavigationBar: const NewBottomNavBar(),

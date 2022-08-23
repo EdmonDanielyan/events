@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class SocialPackageListElement extends StatelessWidget {
   final String title;
@@ -11,33 +13,41 @@ class SocialPackageListElement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, link);
-        },
-        child: Container(
-            color: Colors.white,
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(vertical: 10),
-            height: 60,
-            child: Row(children: [
-              Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  child: Text(
-                    title,
-                    style: TextStyle(fontSize: 15),
-                    overflow: TextOverflow.ellipsis,
-                  )),
-              Expanded(
-                  child: Row(
+      onTap: () {
+        Navigator.pushNamed(context, link);
+      },
+      child: Container(
+        color: Colors.white,
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(vertical: 10),
+        height: 60,
+        child: Row(
+          children: [
+            Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: SizeConfig(context, 13.0)
+                          .getProportionateScreenHeight),
+                  overflow: TextOverflow.ellipsis,
+                )),
+            Expanded(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Icon(
                     Icons.arrow_forward_ios,
-                    size: 12,
+                    size:
+                        SizeConfig(context, 10.0).getProportionateScreenHeight,
                     color: Theme.of(context).primaryColor,
                   )
                 ],
-              ))
-            ])));
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -11,7 +11,11 @@ class SocialPackageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return Scaffold(
-      appBar: InkAppBarWithText(context, title: _strings.socialPackage),
+      appBar: InkAppBarWithText(
+        context,
+        title: _strings.socialPackage,
+        leading: const SizedBox(),
+      ),
       body: Body(),
       bottomNavigationBar: const NewBottomNavBar(),
     );

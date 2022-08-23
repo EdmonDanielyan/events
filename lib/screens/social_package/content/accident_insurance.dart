@@ -5,6 +5,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class AccidentInsurance extends StatelessWidget {
   const AccidentInsurance({Key? key}) : super(key: key);
@@ -17,6 +18,16 @@ class AccidentInsurance extends StatelessWidget {
       body: SingleChildScrollView(
         child: Container(
           child: Html(
+              style: {
+                "h2": Style(
+                  fontSize: FontSize(
+                      SizeConfig(context, 14.0).getProportionateScreenHeight),
+                ),
+                "p": Style(
+                  fontSize: FontSize(
+                      SizeConfig(context, 14.0).getProportionateScreenHeight),
+                )
+              },
               onLinkTap: (String? url, RenderContext context,
                   Map<String, String> attributes, dom.Element? element) {
                 launchUrl(url!);

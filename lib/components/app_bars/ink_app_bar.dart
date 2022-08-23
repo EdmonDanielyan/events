@@ -8,10 +8,12 @@ import '../../messenger/functions/size_config.dart';
 class InkAppBar extends StatelessWidget with PreferredSizeWidget {
   final bool showPersonalPageLink;
   final BuildContext context;
+  final Widget? leading;
   const InkAppBar(
     this.context, {
     Key? key,
     this.showPersonalPageLink = false,
+    this.leading,
   }) : super(key: key);
 
   @override
@@ -24,22 +26,23 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: Builder(
-        builder: (context) {
-          if (Navigator.of(context).canPop()) {
-            return IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-                size: SizeConfig(context, 20).getProportionateScreenHeight,
-              ),
-              onPressed: () => Navigator.of(context).maybePop(),
-            );
-          } else {
-            return Container();
-          }
-        },
-      ),
+      leading: leading ??
+          Builder(
+            builder: (context) {
+              if (Navigator.of(context).canPop()) {
+                return IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.white,
+                    size: SizeConfig(context, 20).getProportionateScreenHeight,
+                  ),
+                  onPressed: () => Navigator.of(context).maybePop(),
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
       flexibleSpace: Container(
         child: SvgPicture.asset(
           'assets/images/appbar_lines.svg',

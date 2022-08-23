@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -18,16 +19,27 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
       body: SingleChildScrollView(
           child: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(bottom: BorderSide(color: Color(0xFFE5E5E5)))),
-            child: Html(
-                onLinkTap: (String? url, RenderContext context,
-                    Map<String, String> attributes, dom.Element? element) {
-                  launchUrl(url!);
-                },
-                data: '''
+          CustomLayoutBuilder(builder: (context, constraint, isTablet) {
+            return Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(bottom: BorderSide(color: Color(0xFFE5E5E5)))),
+              child: Html(
+                  style: isTablet
+                      ? {
+                          "body": Style(
+                            fontSize: FontSize(24.0),
+                          ),
+                          "h3": Style(
+                            fontSize: FontSize(26.0),
+                          )
+                        }
+                      : {},
+                  onLinkTap: (String? url, RenderContext context,
+                      Map<String, String> attributes, dom.Element? element) {
+                    launchUrl(url!);
+                  },
+                  data: '''
 <p style="background: white;">
  <span style="color: #40403b;">ООО «ИНК» в рамках системы ДМС сотрудничает с страховой компанией: АО "СОГАЗ".</span>
 </p>
@@ -156,8 +168,9 @@ class VoluntaryMedicalInsurance extends StatelessWidget {
 <p>
  <a href="https://portal.irkutskoil.ru/upload/medialibrary/d42/d428701873c4da4b101c075d5b54731c.pdf" title="Программа АльфаТелемед ВИП.pdf"></a>
 </p>
-                '''),
-          ),
+                    '''),
+            );
+          }),
         ],
       )),
       bottomNavigationBar: const NewBottomNavBar(),

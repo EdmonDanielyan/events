@@ -56,7 +56,11 @@ class MainScreenState extends State<MainScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: InkAppBar(context, showPersonalPageLink: true),
+      appBar: InkAppBar(
+        context,
+        leading: const SizedBox(),
+        showPersonalPageLink: true,
+      ),
       body: Body(),
     );
   }
