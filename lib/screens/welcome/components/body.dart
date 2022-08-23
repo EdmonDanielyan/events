@@ -6,6 +6,7 @@ import 'package:ink_mobile/constants/important_urls.dart';
 import 'package:ink_mobile/core/logging/send_log.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/screens/auth/components/sign_in_instructions.dart';
 import 'package:ink_mobile/screens/welcome/components/background.dart';
@@ -51,11 +52,13 @@ class _BodyState extends State<Body> {
                       height: size.height * 0.15,
                     ),
                   ),
+                  const SizedBox(height: 10.0),
                   Text(
                     _strings.welcomeTxt,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize:
+                          SizeConfig(context, 21).getProportionateScreenHeight,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       fontStyle: FontStyle.normal,

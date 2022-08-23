@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class SocialPackageListElement extends StatelessWidget {
