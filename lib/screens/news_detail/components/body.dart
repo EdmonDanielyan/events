@@ -7,6 +7,7 @@ import 'package:ink_mobile/cubit/main_page/news_block_state.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_state.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/news_detail/components/content.dart';
 import 'package:ink_mobile/screens/news_detail/components/header.dart';
@@ -93,7 +94,7 @@ class Body extends StatelessWidget {
                           child: Text(
                             newsItem.title ?? '',
                             style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
+                                fontSize:   SizeConfig(context, 22.0).getProportionateScreenHeight, fontWeight: FontWeight.bold),
                           )),
                       BlocBuilder<NewsBlockCubit, NewsBlockState>(
                         bloc: newsBlockCubit,

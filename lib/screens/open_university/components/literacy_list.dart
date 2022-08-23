@@ -6,6 +6,7 @@ import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/news_list/components/news_list_element.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -49,7 +50,7 @@ class OpenUniversityLiteracyList extends StatelessWidget {
               {
                 List<NewsItemData> newsList = state.data!;
 
-                return _getLoadedStateWidget(newsList);
+                return _getLoadedStateWidget(newsList, context);
               }
 
             case NewsListStateType.ERROR:
@@ -80,7 +81,7 @@ class OpenUniversityLiteracyList extends StatelessWidget {
     return CentringWrapper(child: InkPageLoader());
   }
 
-  Widget _getLoadedStateWidget(List<NewsItemData> newsList) {
+  Widget _getLoadedStateWidget(List<NewsItemData> newsList, BuildContext context) {
     return Container(
       color: Color(0xfff9f9f9),
       child: Column(children: [
@@ -91,8 +92,9 @@ class OpenUniversityLiteracyList extends StatelessWidget {
               children: [
                 Text(
                   _strings.inkLiteracy,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                )
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: SizeConfig(context, 24.0)
+                          .getProportionateScreenHeight)),
+                
               ],
             )),
         Container(child: Column(children: _getNewsWidgetList(newsList)))

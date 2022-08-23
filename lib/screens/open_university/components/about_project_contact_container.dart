@@ -5,12 +5,15 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/open_university/components/about_project.dart';
 
 class AboutProjectContact extends StatelessWidget {
+  final bool isTablet;
+
   const AboutProjectContact(
       {Key? key,
       required this.text,
       this.title,
       required this.type,
-      required this.data})
+      required this.data,
+      required this. isTablet})
       : super(key: key);
 
   final String? title;
@@ -55,13 +58,13 @@ class AboutProjectContact extends StatelessWidget {
               title != null
                   ? Container(
                       margin: EdgeInsets.only(bottom: 5),
-                      child: Text(title!, style: TextStyle(fontSize: 12)),
+                      child: Text(title!, style: TextStyle(fontSize:  isTablet ? 18 : 12)),
                     )
                   : Container(),
               Text(
                 text,
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 16),
+                    color: Theme.of(context).primaryColor, fontSize: isTablet ? 20 : 16),
               ),
             ],
           )),

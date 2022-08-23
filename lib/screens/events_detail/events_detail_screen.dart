@@ -20,6 +20,8 @@ class EventDetailScreen extends StatelessWidget {
       'assets/images/default_event.jpg';
 
   final EventDetailCubit eventDetailCubit;
+  
+ 
 
   const EventDetailScreen({Key? key, required this.eventDetailCubit})
       : super(key: key);
@@ -180,6 +182,7 @@ class EventDetailScreen extends StatelessWidget {
                   launchUrl(url!);
                 },
                 style: {
+                  //
                   "a": Style(
                       color: Colors.blue, textDecoration: TextDecoration.none),
                   "b": Style(
