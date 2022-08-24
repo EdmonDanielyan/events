@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
-import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/personnel_movements/components/personnel_movement.dart';
 
 class Body extends StatelessWidget {
@@ -19,9 +19,7 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
 
-    return CustomLayoutBuilder(
-      builder: (context, constraints, isTablet) {
-        return BlocBuilder<PersonnelMovementsCubit, PersonnelMovementsState>(
+    return  BlocBuilder<PersonnelMovementsCubit, PersonnelMovementsState>(
           bloc: personnelMovementsCubit,
           builder: (context, state) {
             switch (state.type) {
@@ -50,7 +48,7 @@ class Body extends StatelessWidget {
                     }
 
                     personnelMovements.add(
-                      PersonnelMovement(label: label, movement: movement, isTablet: isTablet),
+                      PersonnelMovement(label: label, movement: movement),
                     );
                   });
 
@@ -94,7 +92,6 @@ class Body extends StatelessWidget {
               case PersonnelMovementsStateType.ERROR:
                 {
                   return ErrorRefreshButton(
-                    isTablet: isTablet,
                     onTap: personnelMovementsCubit.refresh,
                     text: state.errorMessage!,
                   );
@@ -103,13 +100,12 @@ class Body extends StatelessWidget {
               case PersonnelMovementsStateType.EMPTY:
                 {
                   return Center(
-                    child: Text(_strings.noStaffMovements, style: TextStyle(fontSize: isTablet ? 18 : 14)),
+                    child: Text(_strings.noStaffMovements, style:    TextStyle(fontSize: SizeConfig(context, 14).getProportionateScreenHeight),),
                   );
                 }
             }
           },
-        );
-      }
+        
     );
   }
 }

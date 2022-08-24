@@ -82,6 +82,9 @@ class _SearchBarState extends State<SearchBar> {
           : TextField(
               controller: widget.controller,
               onChanged: widget.onChanged,
+              style: TextStyle(
+                  fontSize:
+                      SizeConfig(context, 14).getProportionateScreenHeight),
               decoration: InputDecoration(
                 contentPadding: widget.contentPadding,
                 hintText: _originalHint,

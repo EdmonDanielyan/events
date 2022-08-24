@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class ErrorRefreshButton extends StatelessWidget {
   final bool isTablet;
@@ -36,7 +37,7 @@ class ErrorRefreshButton extends StatelessWidget {
           child: Text(
             
             _strings.reload,
-            style: TextStyle(color: Colors.white, fontSize: isTablet ? 18 : 14),
+            style: TextStyle(color: Colors.white, fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
           ),
         )
       ],

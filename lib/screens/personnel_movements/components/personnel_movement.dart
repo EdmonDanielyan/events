@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/movements_data.dart';
 
 class PersonnelMovement extends StatelessWidget {
   final PersonnelMovementLabel? label;
   final MovementsData movement;
   
-  final bool isTablet;
+
 
   PersonnelMovement({
     required this.movement,
     Key? key,
-    this.label,
-    required this.isTablet,
+    this.label
   }) : super(key: key);
 
   @override
@@ -44,7 +44,7 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.dateOfTakingPosition,
                           style: TextStyle(
-                             fontSize: isTablet ? 18 : 14,
+                             fontSize: SizeConfig(context, 14).getProportionateScreenHeight,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -52,7 +52,7 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.period,
-                    style: TextStyle(fontSize: isTablet ? 22 : 18),
+                    style: TextStyle(fontSize:  SizeConfig(context, 18).getProportionateScreenHeight),
                   )
                 ],
               ),
@@ -77,16 +77,16 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.position,
                           style: TextStyle(
-                            fontSize: isTablet ? 18 : 14,
+                            fontSize:  SizeConfig(context, 14).getProportionateScreenHeight,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
-                        getLabel()
+                        getLabel(context)
                       ],
                     ),
                   ),
                   Text(
                     movement.position,
-                    style: TextStyle( fontSize: isTablet ? 24 : 18,),
+                    style: TextStyle( fontSize:  SizeConfig(context, 18).getProportionateScreenHeight),
                   )
                 ],
               ),
@@ -111,7 +111,7 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.department,
                           style: TextStyle(
-                            fontSize: isTablet ? 18 : 14,
+                            fontSize:  SizeConfig(context, 14).getProportionateScreenHeight,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -119,7 +119,7 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.department,
-                    style: TextStyle(fontSize: isTablet ? 22 : 18,),
+                    style: TextStyle(fontSize:  SizeConfig(context, 18).getProportionateScreenHeight),
                   )
                 ],
               ),
@@ -144,7 +144,7 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.company,
                           style: TextStyle(
-                            fontSize: isTablet ? 18 : 14,
+                            fontSize:  SizeConfig(context, 14).getProportionateScreenHeight,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -152,7 +152,7 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.organization,
-                    style: TextStyle( fontSize: isTablet ? 22 : 18,),
+                    style: TextStyle( fontSize: SizeConfig(context, 18).getProportionateScreenHeight),
                   )
                 ],
               ),
@@ -177,7 +177,7 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.status,
                           style: TextStyle(
-                            fontSize: isTablet ? 18 : 14,
+                            fontSize:  SizeConfig(context, 14).getProportionateScreenHeight,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -185,7 +185,7 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.operation,
-                    style: TextStyle(fontSize: isTablet ? 22 : 18,),
+                    style: TextStyle(fontSize: SizeConfig(context,18).getProportionateScreenHeight),
                   )
                 ],
               ),
@@ -210,7 +210,7 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.staffNumber,
                           style: TextStyle(
-                            fontSize: isTablet ? 18 : 14,
+                            fontSize:  SizeConfig(context, 14).getProportionateScreenHeight,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -218,7 +218,7 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.pnum,
-                    style: TextStyle(fontSize: isTablet ? 22 : 18,),
+                    style: TextStyle(fontSize:  SizeConfig(context, 18).getProportionateScreenHeight,),
                   )
                 ],
               ),
@@ -229,7 +229,7 @@ class PersonnelMovement extends StatelessWidget {
     );
   }
 
-  Widget getLabel() {
+  Widget getLabel(BuildContext context) {
     return label != null
         ? Container(
             decoration: BoxDecoration(
@@ -241,7 +241,7 @@ class PersonnelMovement extends StatelessWidget {
             child: Text(
               label!.title,
               style: TextStyle(
-                  fontSize:  isTablet ? 14 : 10,
+                  fontSize:   SizeConfig(context, 10).getProportionateScreenHeight,
                   color: label!.color,
                   fontWeight: FontWeight.bold),
             ),

@@ -104,8 +104,8 @@ class _SearchFieldState extends State<SearchField> {
                   child: SvgPicture.asset(
                     SvgPictures.search,
                     color: Colors.grey[700],
-                    width: 20,
-                    height: 20,
+                    width: SizeConfig(context, 20).getProportionateScreenWidth,
+                    height: SizeConfig(context, 20).getProportionateScreenHeight,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
