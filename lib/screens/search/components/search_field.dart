@@ -61,6 +61,15 @@ class _SearchFieldState extends State<SearchField> {
                 children: [
                   Expanded(
                     child: NativeTextInput(
+                      style: TextStyle(
+                        fontSize: SizeConfig(context, 14)
+                            .getProportionateScreenHeight,
+                      ),
+                      iosOptions: IosOptions(
+                          placeholderStyle: TextStyle(
+                        fontSize: SizeConfig(context, 14)
+                            .getProportionateScreenHeight,
+                      )),
                       onChanged: widget.onChanged,
                       textCapitalization: TextCapitalization.sentences,
                       focusNode: _textFieldFocus,
@@ -75,8 +84,9 @@ class _SearchFieldState extends State<SearchField> {
                   SvgPicture.asset(
                     SEARCH_ICON,
                     color: Colors.grey[700],
-                    width: 20,
-                    height: 20,
+                    width: SizeConfig(context, 18).getProportionateScreenHeight,
+                    height:
+                        SizeConfig(context, 18).getProportionateScreenHeight,
                   ),
                 ],
               ),
@@ -85,10 +95,14 @@ class _SearchFieldState extends State<SearchField> {
               focusNode: _textFieldFocus,
               onChanged: widget.onChanged,
               textCapitalization: TextCapitalization.sentences,
-              style: TextStyle(fontSize:  SizeConfig(context, 14).getProportionateScreenHeight,), 
+              style: TextStyle(
+                fontSize: SizeConfig(context, 14).getProportionateScreenHeight,
+              ),
               decoration: InputDecoration(
-                hintStyle: TextStyle(fontSize:  SizeConfig(context, 14).getProportionateScreenHeight,),
-                
+                hintStyle: TextStyle(
+                  fontSize:
+                      SizeConfig(context, 14).getProportionateScreenHeight,
+                ),
                 filled: true,
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide.none,
@@ -99,11 +113,11 @@ class _SearchFieldState extends State<SearchField> {
                 suffixIcon: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: SvgPicture.asset(
-                    
                     SEARCH_ICON,
                     color: Colors.grey[700],
-                    width:  SizeConfig(context, 20).getProportionateScreenWidth,
-                    height:  SizeConfig(context, 20).getProportionateScreenHeight,
+                    width: SizeConfig(context, 20).getProportionateScreenWidth,
+                    height:
+                        SizeConfig(context, 20).getProportionateScreenHeight,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(

@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/video_player/video_player.dart';
 import 'package:ink_mobile/constants/aseets.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -91,7 +92,7 @@ class _HeaderState extends State<Header> {
     return Stack(
       children: [
         Container(
-          height: 300,
+          height: SizeConfig(context, 270).getProportionateScreenHeight,
           color: Colors.black,
           child: PageView(
             onPageChanged: (index) {
@@ -123,15 +124,20 @@ class _HeaderState extends State<Header> {
         ],
         Positioned.fill(
           child: Align(
-            alignment: AlignmentDirectional(-1.1, -0.7),
+            alignment: Alignment.topLeft,
             child: MaterialButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: SvgPicture.asset(
-                IconLinks.CLOSE_BUTTON_SVG_LINK,
-                width: 40,
-                height: 40,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top:
+                        SizeConfig(context, 40.0).getProportionateScreenHeight),
+                child: SvgPicture.asset(
+                  IconLinks.CLOSE_BUTTON_SVG_LINK,
+                  width: SizeConfig(context, 33).getProportionateScreenHeight,
+                  height: SizeConfig(context, 33).getProportionateScreenHeight,
+                ),
               ),
             ),
           ),
@@ -154,7 +160,8 @@ class _HeaderState extends State<Header> {
                   baseColor: Colors.grey,
                   highlightColor: Colors.grey.withOpacity(0.2),
                   child: Container(
-                    height: 300,
+                    height:
+                        SizeConfig(context, 270).getProportionateScreenHeight,
                     width: MediaQuery.of(context).size.width,
                     color: Colors.black,
                   ),

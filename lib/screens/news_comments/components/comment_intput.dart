@@ -56,12 +56,18 @@ class NewsCommentInput extends StatelessWidget {
                   keyboardType: TextInputType.multiline,
                   filled: true,
                   isDense: true,
+                  style: TextStyle(
+                    fontSize:
+                        SizeConfig(context, 13.0).getProportionateScreenHeight,
+                  ),
                   iosPadding: const EdgeInsets.symmetric(
                       vertical: 3.0, horizontal: 10.0),
                   contentPadding: const EdgeInsets.symmetric(
                       vertical: 12.0, horizontal: 13.0),
                   fillColor: Colors.white,
-                  hintStyle: TextStyle(fontSize: SizeConfig(context, 16).getProportionateScreenHeight),
+                  hintStyle: TextStyle(
+                      fontSize:
+                          SizeConfig(context, 16).getProportionateScreenHeight),
                   hint: _strings.writeCommentHint,
                   borderRadius: BorderRadius.circular(30),
                   useMarginIos: false,

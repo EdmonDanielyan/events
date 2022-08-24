@@ -74,6 +74,7 @@ class _ContentState extends State<Content> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 GestureDetector(
                   onTap: () {
@@ -84,7 +85,10 @@ class _ContentState extends State<Content> {
                     child: Row(children: [
                       SvgPicture.asset(
                         IconLinks.BARREL_SVG_LINK,
-                        width: SizeConfig(context, 14).getProportionateScreenHeight,
+                        width: SizeConfig(context, 16)
+                            .getProportionateScreenHeight,
+                        height: SizeConfig(context, 16)
+                            .getProportionateScreenHeight,
                         color: widget.isLiked
                             ? Theme.of(context).primaryColor
                             : Theme.of(context).colorScheme.secondary,
@@ -118,7 +122,10 @@ class _ContentState extends State<Content> {
                         children: [
                           SvgPicture.asset(
                             IconLinks.COMMENT_SVG_LINK,
-                            width: SizeConfig(context, 14).getProportionateScreenHeight,
+                            width: SizeConfig(context, 14)
+                                .getProportionateScreenHeight,
+                            height: SizeConfig(context, 14)
+                                .getProportionateScreenHeight,
                             color: Color(0xFF757678),
                           ),
                           Container(
