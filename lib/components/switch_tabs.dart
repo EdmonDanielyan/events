@@ -35,13 +35,15 @@ class SwitchTabs extends StatelessWidget {
       onTap: () => onIndexChanged(tabs[index].index),
       child: Container(
         decoration: _boxDecoration(context, index),
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 6.0),
+        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0),
         child: Text(
           tabs[index].label,
+          textWidthBasis: TextWidthBasis.longestLine,
           maxLines: 2,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: SizeConfig(context, 12).getProportionateScreenHeight,
+            wordSpacing: 4,
+            fontSize: SizeConfig(context, 14).getProportionateScreenHeight,
             color: activeIndex == index
                 ? Colors.white
                 : Theme.of(context).primaryColor,

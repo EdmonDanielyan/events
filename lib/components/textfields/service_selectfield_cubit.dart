@@ -77,6 +77,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
           onConfirm: onConfirm,
           initialValue: state.items,
           searchable: false,
+          fontsize: SizeConfig(context, 14).getProportionateScreenHeight,
           title: SizedBox(),
           controlAffinity: ListTileControlAffinity.trailing,
           subWidget: subWidget,

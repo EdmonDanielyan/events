@@ -96,6 +96,8 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
   final FormFieldSetter<List<V>>? onSaved;
   final GlobalKey<FormFieldState>? key;
   FormFieldState<List<V>>? state;
+  
+  final double fontsize;
 
   MultiSelectDialogField({
     required this.items,
@@ -129,6 +131,7 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
     this.initialValue,
     this.autovalidateMode = AutovalidateMode.disabled,
     this.key,
+    required this.fontsize
   }) : super(
             key: key,
             onSaved: onSaved,
@@ -165,6 +168,7 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
                 searchHintStyle: searchHintStyle,
                 selectedItemsTextStyle: selectedItemsTextStyle,
                 checkColor: checkColor,
+                fontsize: fontsize,
               );
               return _MultiSelectDialogFieldView<V?>._withState(
                   field as _MultiSelectDialogFieldView<V?>, state);
@@ -202,6 +206,8 @@ class _MultiSelectDialogFieldView<V> extends StatefulWidget {
   final Color? checkColor;
   FormFieldState<List<V>>? state;
 
+  final double fontsize;
+
   _MultiSelectDialogFieldView({
     required this.items,
     this.title,
@@ -230,6 +236,7 @@ class _MultiSelectDialogFieldView<V> extends StatefulWidget {
     this.searchHintStyle,
     this.selectedItemsTextStyle,
     this.checkColor,
+    required this.fontsize,
   });
 
   /// This constructor allows a FormFieldState to be passed in. Called by MultiSelectDialogField.
@@ -262,7 +269,8 @@ class _MultiSelectDialogFieldView<V> extends StatefulWidget {
         searchTextStyle = field.searchTextStyle,
         selectedItemsTextStyle = field.selectedItemsTextStyle,
         checkColor = field.checkColor,
-        state = state;
+        state = state,
+        fontsize = field.fontsize;
 
   @override
   __MultiSelectDialogFieldViewState createState() =>
@@ -365,6 +373,7 @@ class __MultiSelectDialogFieldViewState<V>
           searchable: widget.searchable ?? false,
           confirmText: widget.confirmText,
           cancelText: widget.cancelText,
+          fontsize: widget.fontsize,
           onConfirm: (selected) {
             if (widget.state != null) {
               widget.state!.didChange(selected);

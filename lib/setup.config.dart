@@ -122,23 +122,23 @@ import 'screens/initial/cubit/initial_cubit.dart' as _i106;
 import 'screens/medical_insurance/components/form/entities.dart' as _i95;
 import 'screens/open_university/cubit/open_university_cubit.dart' as _i75;
 
-const String _test = 'test';
-const String _dev = 'dev';
 const String _prod = 'prod';
 const String _unitTest = 'unitTest';
+const String _dev = 'dev';
+const String _test = 'test';
 // ignore_for_file: unnecessary_lambdas
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
 Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
     {String? environment, _i2.EnvironmentFilter? environmentFilter}) async {
   final gh = _i2.GetItHelper(get, environment, environmentFilter);
-  final urlsConfigTest = _$UrlsConfigTest();
-  final urlsConfigDev = _$UrlsConfigDev();
   final urlsConfigProd = _$UrlsConfigProd();
+  final urlsConfigUnitTest = _$UrlsConfigUnitTest();
+  final urlsConfigDev = _$UrlsConfigDev();
+  final urlsConfigTest = _$UrlsConfigTest();
   final tokenDataInjectorModule = _$TokenDataInjectorModule();
   final testLogFilePathInjector = _$TestLogFilePathInjector();
   final logFilePathInjector = _$LogFilePathInjector();
-  final urlsConfigUnitTest = _$UrlsConfigUnitTest();
   final certificateInjector = _$CertificateInjector();
   gh.factory<_i3.AnnouncementCubit>(() => _i3.AnnouncementCubit());
   gh.factoryParam<_i4.AnnouncementsDetailNetworkRequest, int?, dynamic>(
@@ -285,64 +285,64 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
           _i97.SendReferenceFormNetworkRequest(entities: entities));
   gh.singleton<_i99.StaffMovementsNetworkRequest>(
       _i99.StaffMovementsNetworkRequest());
-  gh.factory<String>(() => urlsConfigTest.apiCertificatePath,
-      instanceName: 'apiCertificatePath', registerFor: {_test});
+  gh.factory<String>(() => urlsConfigProd.natsWssUrl,
+      instanceName: 'natsWssUrl', registerFor: {_prod});
+  gh.factory<String>(() => urlsConfigProd.apiCertificatePath,
+      instanceName: 'apiCertificatePath', registerFor: {_prod});
+  gh.factory<String>(() => urlsConfigUnitTest.natsWssUrl,
+      instanceName: 'natsWssUrl', registerFor: {_unitTest});
+  gh.factory<String>(() => urlsConfigUnitTest.natsCluster,
+      instanceName: 'natsCluster', registerFor: {_unitTest});
+  gh.factory<String>(() => urlsConfigUnitTest.natsCertificatePath,
+      instanceName: 'natsCertificatePath', registerFor: {_unitTest});
   gh.factory<String>(() => urlsConfigDev.apiUrl,
       instanceName: 'apiUrl', registerFor: {_dev});
-  gh.factory<String>(() => urlsConfigProd.natsCertificatePath,
-      instanceName: 'natsCertificatePath', registerFor: {_prod});
-  gh.factory<String>(() => urlsConfigDev.natsCertificatePath,
-      instanceName: 'natsCertificatePath', registerFor: {_dev});
-  gh.factory<String>(() => urlsConfigDev.natsCluster,
-      instanceName: 'natsCluster', registerFor: {_dev});
-  gh.factory<String>(() => tokenDataInjectorModule.messengerAuthPassword,
-      instanceName: 'messengerAuthPassword');
-  gh.factory<String>(() => urlsConfigTest.apiUrl,
-      instanceName: 'apiUrl', registerFor: {_test});
+  gh.factory<String>(() => urlsConfigUnitTest.apiCertificatePath,
+      instanceName: 'apiCertificatePath', registerFor: {_unitTest});
   gh.factory<String>(() => urlsConfigTest.natsCertificatePath,
       instanceName: 'natsCertificatePath', registerFor: {_test});
-  gh.factory<String>(() => urlsConfigTest.natsCluster,
-      instanceName: 'natsCluster', registerFor: {_test});
-  gh.factory<String>(() => urlsConfigTest.natsWssUrl,
-      instanceName: 'natsWssUrl', registerFor: {_test});
-  gh.factory<String>(() => testLogFilePathInjector.logFile,
-      instanceName: 'logFile', registerFor: {_unitTest});
+  gh.factory<String>(() => tokenDataInjectorModule.natsToken,
+      instanceName: 'natsToken');
   gh.factory<String>(() => urlsConfigDev.natsWssUrl,
       instanceName: 'natsWssUrl', registerFor: {_dev});
+  gh.factory<String>(() => tokenDataInjectorModule.localDatabasePassword,
+      instanceName: 'localDatabasePassword');
+  gh.factory<String>(() => tokenDataInjectorModule.deviceVirtualId,
+      instanceName: 'deviceVirtualId');
+  gh.factory<String>(() => testLogFilePathInjector.logFile,
+      instanceName: 'logFile', registerFor: {_unitTest});
   await gh.factoryAsync<String>(() => logFilePathInjector.logFile,
       instanceName: 'logFile',
       registerFor: {_test, _prod, _dev},
       preResolve: true);
-  gh.factory<String>(() => urlsConfigUnitTest.natsCertificatePath,
-      instanceName: 'natsCertificatePath', registerFor: {_unitTest});
-  gh.factory<String>(() => urlsConfigProd.apiCertificatePath,
-      instanceName: 'apiCertificatePath', registerFor: {_prod});
-  gh.factory<String>(() => urlsConfigUnitTest.apiUrl,
-      instanceName: 'apiUrl', registerFor: {_unitTest});
-  gh.factory<String>(() => urlsConfigProd.natsCluster,
-      instanceName: 'natsCluster', registerFor: {_prod});
-  gh.factory<String>(() => urlsConfigProd.natsWssUrl,
-      instanceName: 'natsWssUrl', registerFor: {_prod});
+  gh.factory<String>(() => tokenDataInjectorModule.messengerAuthPassword,
+      instanceName: 'messengerAuthPassword');
   gh.factory<String>(() => urlsConfigDev.apiCertificatePath,
       instanceName: 'apiCertificatePath', registerFor: {_dev});
-  gh.factory<String>(() => urlsConfigUnitTest.apiCertificatePath,
-      instanceName: 'apiCertificatePath', registerFor: {_unitTest});
-  gh.factory<String>(() => urlsConfigProd.apiUrl,
-      instanceName: 'apiUrl', registerFor: {_prod});
+  gh.factory<String>(() => urlsConfigTest.apiCertificatePath,
+      instanceName: 'apiCertificatePath', registerFor: {_test});
+  gh.factory<String>(() => urlsConfigDev.natsCluster,
+      instanceName: 'natsCluster', registerFor: {_dev});
+  gh.factory<String>(() => urlsConfigTest.apiUrl,
+      instanceName: 'apiUrl', registerFor: {_test});
+  gh.factory<String>(() => urlsConfigProd.natsCluster,
+      instanceName: 'natsCluster', registerFor: {_prod});
+  gh.factory<String>(() => urlsConfigTest.natsCluster,
+      instanceName: 'natsCluster', registerFor: {_test});
   gh.factory<String>(() => tokenDataInjectorModule.userId,
       instanceName: 'userId');
   gh.factory<String>(() => tokenDataInjectorModule.messengerAuthLogin,
       instanceName: 'messengerAuthLogin');
-  gh.factory<String>(() => urlsConfigUnitTest.natsWssUrl,
-      instanceName: 'natsWssUrl', registerFor: {_unitTest});
-  gh.factory<String>(() => tokenDataInjectorModule.natsToken,
-      instanceName: 'natsToken');
-  gh.factory<String>(() => tokenDataInjectorModule.deviceVirtualId,
-      instanceName: 'deviceVirtualId');
-  gh.factory<String>(() => tokenDataInjectorModule.localDatabasePassword,
-      instanceName: 'localDatabasePassword');
-  gh.factory<String>(() => urlsConfigUnitTest.natsCluster,
-      instanceName: 'natsCluster', registerFor: {_unitTest});
+  gh.factory<String>(() => urlsConfigTest.natsWssUrl,
+      instanceName: 'natsWssUrl', registerFor: {_test});
+  gh.factory<String>(() => urlsConfigProd.apiUrl,
+      instanceName: 'apiUrl', registerFor: {_prod});
+  gh.factory<String>(() => urlsConfigDev.natsCertificatePath,
+      instanceName: 'natsCertificatePath', registerFor: {_dev});
+  gh.factory<String>(() => urlsConfigProd.natsCertificatePath,
+      instanceName: 'natsCertificatePath', registerFor: {_prod});
+  gh.factory<String>(() => urlsConfigUnitTest.apiUrl,
+      instanceName: 'apiUrl', registerFor: {_unitTest});
   gh.singleton<_i100.TagsListCubit>(_i100.TagsListCubit());
   gh.singleton<_i101.TagsListNetworkRequest>(_i101.TagsListNetworkRequest());
   gh.lazySingleton<_i102.TokenDataHolder>(() => _i102.TokenDataHolder());
@@ -368,18 +368,18 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   return get;
 }
 
-class _$UrlsConfigTest extends _i107.UrlsConfigTest {}
+class _$UrlsConfigProd extends _i107.UrlsConfigProd {}
+
+class _$UrlsConfigUnitTest extends _i107.UrlsConfigUnitTest {}
 
 class _$UrlsConfigDev extends _i107.UrlsConfigDev {}
 
-class _$UrlsConfigProd extends _i107.UrlsConfigProd {}
+class _$UrlsConfigTest extends _i107.UrlsConfigTest {}
 
 class _$TokenDataInjectorModule extends _i102.TokenDataInjectorModule {}
 
 class _$TestLogFilePathInjector extends _i108.TestLogFilePathInjector {}
 
 class _$LogFilePathInjector extends _i108.LogFilePathInjector {}
-
-class _$UrlsConfigUnitTest extends _i107.UrlsConfigUnitTest {}
 
 class _$CertificateInjector extends _i20.CertificateInjector {}
