@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:intl/intl.dart';
 
 class DateInputField extends StatefulWidget {
@@ -33,6 +34,11 @@ class _DateInputFieldState extends State<DateInputField> {
             keyboardType: TextInputType.datetime,
             textCapitalization: TextCapitalization.sentences,
             decoration: InputDecoration(
+              hintStyle: TextStyle(fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
+              errorStyle: TextStyle(fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
+              labelStyle: TextStyle(fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
+              helperStyle: TextStyle(fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
+              
               labelText: widget.title,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),

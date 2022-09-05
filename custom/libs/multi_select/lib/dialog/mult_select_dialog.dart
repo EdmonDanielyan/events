@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
+import 'package:multi_select_flutter/dialog/size_config.dart';
+
 import '../util/multi_select_actions.dart';
 import '../util/multi_select_item.dart';
 import '../util/multi_select_list_type.dart';
@@ -85,6 +86,7 @@ class MultiSelectDialog<V> extends StatefulWidget with MultiSelectActions<V> {
   final Widget Function(V, bool)? subWidget;
 
   final bool isTablet;
+  
 
   MultiSelectDialog({
     required this.items,
@@ -149,15 +151,12 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
             activeColor: widget.colorator != null
                 ? widget.colorator!(item.value) ?? widget.selectedColor
                 : widget.selectedColor,
-            title: Text(
-              item.label,
-              style: _selectedValues.contains(item.value)
-                  ? TextStyle.lerp(widget.selectedItemsTextStyle,
-                      TextStyle(fontSize: widget.isTablet ? 18 : 14), 2)
-                  :    TextStyle.lerp(widget.itemsTextStyle,
-                      TextStyle(fontSize: widget.isTablet ? 18 : 14), 2)
-
-            ),
+            title: Text(item.label,
+                style: _selectedValues.contains(item.value)
+                    ? TextStyle.lerp(widget.selectedItemsTextStyle,
+                        TextStyle(fontSize: SizeConfig(context, 14).getProportionateScreenHeight), 2)
+                    : TextStyle.lerp(widget.itemsTextStyle,
+                        TextStyle(fontSize: SizeConfig(context, 14).getProportionateScreenHeight), 2)),
             controlAffinity: widget.controlAffinity,
             onChanged: (checked) {
               setState(() {

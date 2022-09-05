@@ -51,7 +51,7 @@ class _InkDropDownState extends State<InkDropDown> {
                   ? widget.items[selectedIndex!]
                   : widget.hint,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.black, fontSize: 17),
+              style: TextStyle(color: Colors.black, fontSize: SizeConfig(context, 15).getProportionateScreenHeight),
             ),
           ),
         ),
@@ -130,7 +130,7 @@ class _SelectDialogState extends State<SelectDialog> {
                   widget.items[index],
                   style: TextStyle(
                       fontSize:
-                          SizeConfig(context, 11).getProportionateScreenHeight),
+                          SizeConfig(context, 12).getProportionateScreenHeight),
                 ),
                 value: index,
                 groupValue: selectedItem,
