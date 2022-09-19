@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
+
 import '../util/multi_select_actions.dart';
 import '../util/multi_select_item.dart';
 import '../util/multi_select_list_type.dart';
@@ -83,8 +83,11 @@ class MultiSelectDialog<V> extends StatefulWidget with MultiSelectActions<V> {
   final ListTileControlAffinity controlAffinity;
 
   final Widget Function(V, bool)? subWidget;
+  
+  final double fontsize;
 
-  final bool isTablet;
+ 
+  
 
   MultiSelectDialog({
     required this.items,
@@ -113,7 +116,7 @@ class MultiSelectDialog<V> extends StatefulWidget with MultiSelectActions<V> {
     this.searchTextStyle,
     this.selectedItemsTextStyle,
     this.checkColor,
-    this.isTablet = false,
+    required this.fontsize
   });
 
   @override
@@ -124,6 +127,8 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
   List<V> _selectedValues = [];
   bool _showSearch = false;
   List<MultiSelectItem<V>> _items;
+  
+
 
   _MultiSelectDialogState(this._items);
 
@@ -136,6 +141,7 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
 
   /// Returns a CheckboxListTile
   Widget _buildListItem(MultiSelectItem<V> item) {
+
     return Theme(
       data: ThemeData(
         unselectedWidgetColor: widget.unselectedColor ?? Colors.black54,
@@ -149,15 +155,12 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
             activeColor: widget.colorator != null
                 ? widget.colorator!(item.value) ?? widget.selectedColor
                 : widget.selectedColor,
-            title: Text(
-              item.label,
-              style: _selectedValues.contains(item.value)
-                  ? TextStyle.lerp(widget.selectedItemsTextStyle,
-                      TextStyle(fontSize: widget.isTablet ? 18 : 14), 2)
-                  :    TextStyle.lerp(widget.itemsTextStyle,
-                      TextStyle(fontSize: widget.isTablet ? 18 : 14), 2)
-
-            ),
+            title: Text(item.label,
+                style: _selectedValues.contains(item.value)
+                    ? TextStyle.lerp(widget.selectedItemsTextStyle,
+                        TextStyle(fontSize: widget.fontsize), 2,)
+                    : TextStyle.lerp(widget.itemsTextStyle,
+                        TextStyle(fontSize: widget.fontsize), 2,)),
             controlAffinity: widget.controlAffinity,
             onChanged: (checked) {
               setState(() {

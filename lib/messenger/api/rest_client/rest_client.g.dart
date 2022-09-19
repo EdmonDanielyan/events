@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: unnecessary_brace_in_string_interps
-
 part of 'rest_client.dart';
 
 // **************************************************************************
