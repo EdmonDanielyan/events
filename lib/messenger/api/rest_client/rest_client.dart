@@ -34,7 +34,9 @@ abstract class RestClient {
   Future<CreateChatResponse> createChat(@Body() CreateChatRequest request);
   @PUT("/chats/{id}")
   Future<UpdateChatResponse> updateChat(
-      @Path() int id, @Body() UpdateChatRequest request);
+    @Path() int id,
+    @Body() UpdateChatRequest request,
+  );
   @POST("/chats/invite")
   Future<InviteChatResponse> chatInvite(@Body() InviteChatRequest request);
   @POST("/chats/kick")
