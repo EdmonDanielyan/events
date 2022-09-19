@@ -33,8 +33,8 @@ class WriteBtn extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () => _write(context),
           style: ElevatedButton.styleFrom(
-            primary: Colors.white,
-            onPrimary: Theme.of(context).primaryColor,
+            backgroundColor: Colors.white,
+            foregroundColor: Theme.of(context).primaryColor,
             elevation: 10.0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),

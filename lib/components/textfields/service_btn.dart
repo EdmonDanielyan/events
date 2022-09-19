@@ -24,8 +24,8 @@ class ServiceBtn extends StatelessWidget {
           ),
         ),
         style: TextButton.styleFrom(
-          primary: Colors.black,
-          onSurface: Colors.black,
+          foregroundColor: Colors.black,
+          disabledForegroundColor: Colors.black,
           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 13.0),
           shape: RoundedRectangleBorder(
             side: BorderSide(

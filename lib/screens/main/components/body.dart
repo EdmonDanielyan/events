@@ -57,8 +57,6 @@ class Body extends StatelessWidget {
                 );
               }
           }
-
-          return Container();
         },
       ),
     );

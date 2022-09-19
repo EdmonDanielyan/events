@@ -26,7 +26,7 @@ class LoadMoreBtn extends StatelessWidget {
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            primary: Colors.grey[200],
+            backgroundColor: Colors.grey[200],
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50),
             ),

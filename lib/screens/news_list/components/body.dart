@@ -36,42 +36,42 @@ class _BodyState extends State<Body> {
     _controller.addListener(_onScroll);
 
     return RefreshIndicator(
-        onRefresh: () async {
-          widget.cubit.refresh();
+      onRefresh: () async {
+        widget.cubit.refresh();
+      },
+      color: Colors.green,
+      displacement: 20,
+      child: BlocBuilder<NewsListCubit, NewsListState>(
+        bloc: widget.cubit,
+        builder: (context, state) {
+          Map? arg = ModalRoute.of(context)!.settings.arguments as Map?;
+
+          if (arg != null && arg.isNotEmpty) {
+            widget.cubit.filter = arg['filter'];
+          }
+
+          switch (state.type) {
+            case (NewsListStateType.LOADING):
+              {
+                widget.cubit.fetch();
+                return _getLoadingStateWidget();
+              }
+
+            case (NewsListStateType.LOADED):
+              {
+                List<NewsItemData> newsList = state.data!;
+
+                return _getLoadedStateWidget(newsList);
+              }
+
+            case (NewsListStateType.ERROR):
+              {
+                return _getErrorStateWidget(context, state);
+              }
+          }
         },
-        color: Colors.green,
-        displacement: 20,
-        child: BlocBuilder<NewsListCubit, NewsListState>(
-            bloc: widget.cubit,
-            builder: (context, state) {
-              Map? arg = ModalRoute.of(context)!.settings.arguments as Map?;
-
-              if (arg != null && arg.isNotEmpty) {
-                widget.cubit.filter = arg['filter'];
-              }
-
-              switch (state.type) {
-                case (NewsListStateType.LOADING):
-                  {
-                    widget.cubit.fetch();
-                    return _getLoadingStateWidget();
-                  }
-
-                case (NewsListStateType.LOADED):
-                  {
-                    List<NewsItemData> newsList = state.data!;
-
-                    return _getLoadedStateWidget(newsList);
-                  }
-
-                case (NewsListStateType.ERROR):
-                  {
-                    return _getErrorStateWidget(context, state);
-                  }
-              }
-
-              return Container();
-            }));
+      ),
+    );
   }
 
   Future<void> _onScroll() async {
@@ -107,8 +107,10 @@ class _BodyState extends State<Body> {
                   children: [
                     Text(
                       _strings.news,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: SizeConfig(context, 24).getProportionateScreenHeight),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: SizeConfig(context, 24)
+                              .getProportionateScreenHeight),
                     )
                   ],
                 )),

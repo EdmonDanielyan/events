@@ -38,7 +38,7 @@ class DeleteDialog2 {
                   () {
                     Navigator.of(context).pop();
                   },
-              style: TextButton.styleFrom(primary: Colors.black),
+              style: TextButton.styleFrom(foregroundColor: Colors.black),
             ),
           ],
           TextButton(

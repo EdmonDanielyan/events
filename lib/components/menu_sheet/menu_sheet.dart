@@ -159,7 +159,7 @@ class _ExitAlertDialogState extends State<ExitAlertDialog> {
           ),
           onPressed: () => Navigator.of(context).pop(),
           style: TextButton.styleFrom(
-            primary: Colors.red,
+            foregroundColor: Colors.red,
           ),
         ),
         TextButton(
@@ -171,7 +171,7 @@ class _ExitAlertDialogState extends State<ExitAlertDialog> {
           ),
           onPressed: () => _exit(context),
           style: TextButton.styleFrom(
-            primary: Colors.blue,
+            foregroundColor: Colors.blue,
           ),
         ),
       ],

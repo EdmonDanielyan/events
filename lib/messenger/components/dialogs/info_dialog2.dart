@@ -43,7 +43,7 @@ class InfoDialog2 {
                         Navigator.of(context).pop();
                       },
                   style: TextButton.styleFrom(
-                    primary: const Color(0XFF1068D7),
+                    foregroundColor: const Color(0XFF1068D7),
                   ),
                 ),
               ],

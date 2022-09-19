@@ -39,7 +39,7 @@ class CustomAlertCancel {
             ),
             onPressed: () => Navigator.of(context).pop(),
             style: TextButton.styleFrom(
-              primary: Colors.red,
+              foregroundColor: Colors.red,
             ),
           ),
           TextButton(
@@ -51,7 +51,7 @@ class CustomAlertCancel {
             ),
             onPressed: onSubmit,
             style: TextButton.styleFrom(
-              primary: Colors.blue,
+              foregroundColor: Colors.blue,
             ),
           ),
         ],

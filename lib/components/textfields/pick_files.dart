@@ -126,7 +126,7 @@ class PickFilesState extends State<PickFiles> {
           ),
         ),
         style: ElevatedButton.styleFrom(
-          primary: Theme.of(context).primaryColor,
+          backgroundColor: Theme.of(context).primaryColor,
           padding: const EdgeInsets.all(11.0),
         ),
       ),
