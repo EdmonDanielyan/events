@@ -55,7 +55,7 @@ dependencies:
     flutter_linkify: ^5.0.2
     flutter_keyboard_visibility: ^5.2.0
     transparent_image: ^2.0.0
-    flutter_local_notifications: ^9.3.3
+    flutter_local_notifications: ^9.9.1
     archive: ^3.3.0
     share_plus: ^4.0.10
     logging: ^1.0.2
