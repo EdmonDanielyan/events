@@ -7,6 +7,7 @@ import 'device_info_printer.dart';
 
 @lazySingleton
 class FileLogAppender with DeviceInfoPrinter {
+  bool get shouldLog => false;
   String logFile;
   List<String> _recordsCache = [];
   Timer? _timer;
@@ -22,6 +23,10 @@ class FileLogAppender with DeviceInfoPrinter {
   }
 
   void append(String record) async {
+    if (!shouldLog) {
+      return;
+    }
+
     _recordsCache.add(record);
 
     if (_timer != null) {
@@ -31,6 +36,10 @@ class FileLogAppender with DeviceInfoPrinter {
   }
 
   Future<void> _processCache() async {
+    if (!shouldLog) {
+      return;
+    }
+
     try {
       await _ensureLogFile();
       var _list = _recordsCache.toList();
@@ -42,6 +51,10 @@ class FileLogAppender with DeviceInfoPrinter {
   }
 
   Future<bool> _processRecord(String record) async {
+    if (!shouldLog) {
+      return false;
+    }
+
     if (_file != null) {
       try {
         _writeReportToFile(record);
@@ -55,6 +68,10 @@ class FileLogAppender with DeviceInfoPrinter {
   }
 
   Future<bool> _ensureLogFile() async {
+    if (!shouldLog) {
+      return false;
+    }
+
     try {
       if (_file == null) {
         _file = File("$logFile");
@@ -77,15 +94,27 @@ class FileLogAppender with DeviceInfoPrinter {
   }
 
   void _writeLineToFile(String text) {
+    if (!shouldLog) {
+      return;
+    }
+
     _file?.writeAsStringSync('$text\n', mode: FileMode.append, flush: true);
   }
 
   Future<void> _writeReportToFile(String report) async {
+    if (!shouldLog) {
+      return;
+    }
+
     //_printLog("Writing report to file");
     _writeLineToFile(report);
   }
 
   void _printLog(String log) {
+    if (!shouldLog) {
+      return;
+    }
+
     if (printLogs) {
       print(log);
     }

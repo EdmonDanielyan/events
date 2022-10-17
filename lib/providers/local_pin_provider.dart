@@ -3,7 +3,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 const _pinKey = "pincode";
 
 class LocalPinProvider {
-  FlutterSecureStorage _flutterSecureStorage = FlutterSecureStorage();
+  FlutterSecureStorage _flutterSecureStorage = FlutterSecureStorage(
+      aOptions: AndroidOptions(
+    encryptedSharedPreferences: true,
+  ));
 
   Future<bool> isPinAvailable() async {
     final pinCode = await getPin;

@@ -1,20 +1,16 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:safe_device/safe_device.dart';
+import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 
 @injectable
 class SecurityChecker {
   const SecurityChecker();
-  //todo: Перед выдачей в сторы раскоментировать
-  Future<bool> checkApplication() async {
+  Future<bool> isSafe() async {
     if (kDebugMode) {
       return true;
     } else {
-      return Platform.isIOS
-          ? !await SafeDevice.isJailBroken
-          : !await SafeDevice.isSafeDevice;
+      final jailBroken = await FlutterJailbreakDetection.jailbroken;
+      return !jailBroken;
     }
   }
 }

@@ -61,7 +61,6 @@ dependencies:
     logging: ^1.0.2
     local_auth: ^1.1.11
     remove_emoji: ^0.0.6
-    safe_device: ^1.1.1
     keyboard_dismisser: ^2.0.1
     easy_debounce: ^2.0.2+1
     firebase_messaging: ^11.2.5
@@ -83,6 +82,7 @@ dependencies:
     flutter_easyloading: ^3.0.3
     equatable: ^2.0.3
     better_player: ^0.0.83
+    flutter_jailbreak_detection: ^1.8.0
 
 dev_dependencies:
     flutter_test:

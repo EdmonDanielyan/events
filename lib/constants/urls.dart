@@ -21,10 +21,6 @@ abstract class UrlsConfigTest {
   @test
   @Named("apiUrl")
   String get apiUrl => "https://portal.irkutskoil.ru/api/v1/";
-
-  @test
-  @Named("apiCertificatePath")
-  String get apiCertificatePath => "assets/certs/test.ink.vpool.qsoft.ru.pem";
 }
 
 @module
@@ -44,10 +40,6 @@ abstract class UrlsConfigDev {
   @dev
   @Named("apiUrl")
   String get apiUrl => "https://test.ink.vpool.qsoft.ru/api/v1";
-
-  @dev
-  @Named("apiCertificatePath")
-  String get apiCertificatePath => "assets/certs/test.ink.vpool.qsoft.ru.pem";
 }
 
 @module
@@ -67,10 +59,6 @@ abstract class UrlsConfigProd {
   @prod
   @Named("apiUrl")
   String get apiUrl => "https://portal.irkutskoil.ru/api/v1/";
-
-  @prod
-  @Named("apiCertificatePath")
-  String get apiCertificatePath => "assets/certs/portal.irkutskoil.ru.pem";
 }
 
 @module
@@ -90,8 +78,4 @@ abstract class UrlsConfigUnitTest {
   @unitTest
   @Named("apiUrl")
   String get apiUrl => "https://mobile.ink.vpool.qsoft.ru/api/v1";
-
-  @unitTest
-  @Named("apiCertificatePath")
-  String get apiCertificatePath => "assets/certs/mobile.ink.vpool.qsoft.ru.pem";
 }
