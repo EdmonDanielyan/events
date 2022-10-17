@@ -51,7 +51,7 @@ class _InkDropDownState extends State<InkDropDown> {
                   ? widget.items[selectedIndex!]
                   : widget.hint,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.black, fontSize: SizeConfig(context, 15).getProportionateScreenHeight),
+              style: TextStyle(color: Colors.black, fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
             ),
           ),
         ),
