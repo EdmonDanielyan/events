@@ -6,9 +6,13 @@ const _appTokenKey = "appToken";
 @singleton
 class AppTokenProvider {
   final storage = const FlutterSecureStorage(
-      aOptions: AndroidOptions(
-    encryptedSharedPreferences: true,
-  ));
+    aOptions: AndroidOptions(
+      encryptedSharedPreferences: true,
+    ),
+    iOptions: IOSOptions(
+      accessibility: KeychainAccessibility.passcode,
+    ),
+  );
   String currentToken = "";
 
   Future<void> setCurrentToken() async {

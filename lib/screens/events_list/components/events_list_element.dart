@@ -76,8 +76,8 @@ class EventsListElement extends StatelessWidget {
     String timeRange = '';
     List timeAndPlace = [];
 
-    if (event.dateCreate != null) {
-      timeAndPlace.add(DateFormat('dd.MM.yyyy').format(event.dateCreate!));
+    if (event.beginDate != null) {
+      timeAndPlace.add(DateFormat('dd.MM.yyyy').format(event.beginDate!));
     }
 
     if (event.beginDate != null && event.endDate != null) {

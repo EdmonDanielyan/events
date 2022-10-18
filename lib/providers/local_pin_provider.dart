@@ -4,9 +4,13 @@ const _pinKey = "pincode";
 
 class LocalPinProvider {
   FlutterSecureStorage _flutterSecureStorage = FlutterSecureStorage(
-      aOptions: AndroidOptions(
-    encryptedSharedPreferences: true,
-  ));
+    aOptions: AndroidOptions(
+      encryptedSharedPreferences: true,
+    ),
+    iOptions: IOSOptions(
+      accessibility: KeychainAccessibility.passcode,
+    ),
+  );
 
   Future<bool> isPinAvailable() async {
     final pinCode = await getPin;

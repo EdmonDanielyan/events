@@ -5,9 +5,13 @@ import 'package:ink_mobile/models/token.dart';
 @lazySingleton
 class SecureStorage {
   final FlutterSecureStorage _prefs = FlutterSecureStorage(
-      aOptions: AndroidOptions(
-    encryptedSharedPreferences: true,
-  ));
+    aOptions: AndroidOptions(
+      encryptedSharedPreferences: true,
+    ),
+    iOptions: IOSOptions(
+      accessibility: KeychainAccessibility.passcode,
+    ),
+  );
 
   Future<String?> read(String key) async {
     return _prefs.read(key: key);

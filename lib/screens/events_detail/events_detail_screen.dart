@@ -20,8 +20,6 @@ class EventDetailScreen extends StatelessWidget {
       'assets/images/default_event.jpg';
 
   final EventDetailCubit eventDetailCubit;
-  
- 
 
   const EventDetailScreen({Key? key, required this.eventDetailCubit})
       : super(key: key);
@@ -140,7 +138,7 @@ class EventDetailScreen extends StatelessWidget {
                       ),
                       margin: EdgeInsets.only(right: 16.0)),
                   Text(
-                      event.dateCreate != null
+                      event.beginDate != null
                           ? DateFormat('dd.MM.yyyy').format(event.dateCreate!)
                           : '',
                       style: TextStyle(

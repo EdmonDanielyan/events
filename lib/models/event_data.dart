@@ -15,17 +15,18 @@ class EventData extends Data {
   String? pictureLink;
   bool? isMember;
 
-  EventData(
-      {this.id,
-      this.title,
-      this.dateCreate,
-      this.beginDate,
-      this.endDate,
-      this.place,
-      this.viewCount,
-      this.detailText,
-      this.pictureLink,
-      this.isMember});
+  EventData({
+    this.id,
+    this.title,
+    this.dateCreate,
+    this.beginDate,
+    this.endDate,
+    this.place,
+    this.viewCount,
+    this.detailText,
+    this.pictureLink,
+    this.isMember,
+  });
 
   void fillFromMap(Map map) {
     id = map['id'] is int ? map['id'] : int.tryParse(map['id'].toString());
