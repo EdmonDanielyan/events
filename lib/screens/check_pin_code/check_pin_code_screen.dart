@@ -32,11 +32,10 @@ class CheckPinCodeScreen extends StatefulWidget {
 
 class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
   final lockApp = getIt.get<LockApp>();
-  final LocalPinProvider _localPinProvider = LocalPinProvider();
+  final _localPinProvider = getIt<LocalPinProvider>();
   String _myPin = "";
   final BoolCubit _loadingCubit = BoolCubit(false);
   final BoolCubit _canCheckBiometrics = BoolCubit(false);
-  final List<String> tries = [];
   List<BiometricType> availableBios = [];
   final BoolCubit _unlockingViaBio = BoolCubit(false);
 
@@ -81,13 +80,14 @@ class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
   }
 
   Future<void> _onCompleted(String pin, BuildContext context) async {
-    tries.add(pin);
-    if (_myPin == pin) {
-      _success();
-    } else {
-      if (tries.length >= 5) {
-        _logOut(context);
+    try {
+      final isValid = await _localPinProvider.checkPincode(pin);
+      if (isValid) {
+        _success();
       }
+    } on PincodeTriesExpired {
+      _logOut(context);
+      _localPinProvider.resetTries();
     }
   }
 
