@@ -38,13 +38,6 @@ class _BodyState extends State<Body> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      setState(() {
-                        tapCount++;
-                        if (tapCount > 5) {
-                          tapCount = 0;
-                          Navigator.of(context).pushNamed("/config");
-                        }
-                      });
                     },
                     child: SvgPicture.asset(
                       'assets/images/logo.svg',

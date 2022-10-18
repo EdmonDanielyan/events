@@ -56,6 +56,7 @@ abstract class UrlsConfigProd {
   @Named("natsCertificatePath")
   String get natsCertificatePath => "assets/certs/_.irkutskoil.ru.pem";
 
+  //TODO
   @prod
   @Named("apiUrl")
   String get apiUrl => "https://portal.irkutskoil.ru/api/v1/";
