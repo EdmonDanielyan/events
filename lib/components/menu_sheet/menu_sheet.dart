@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet_item.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
+import 'package:ink_mobile/messenger/providers/app_token.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/providers/local_pin_provider.dart';
+import 'package:ink_mobile/providers/secure_storage.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:logging/logging.dart';
 
@@ -179,6 +183,10 @@ class _ExitAlertDialogState extends State<ExitAlertDialog> {
   }
 
   Future<void> _exit(BuildContext context) async {
+    getIt<FlutterSecureStorage>().deleteAll();
+    getIt<AppTokenProvider>().deleteToken();
+    getIt<LocalPinProvider>().removePin();
+    getIt <SecureStorage>().deleteAll();
     getIt<MessengerProvider>().dispose();
     getIt<CachedChatsCubit>().clean();
     Token.deleteTokens();
