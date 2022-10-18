@@ -59,7 +59,7 @@ abstract class UrlsConfigProd {
   //TODO
   @prod
   @Named("apiUrl")
-  String get apiUrl => "https://test.ink.vpool.qsoft.ru/api/v1";
+  String get apiUrl => "https://portal.irkutskoil.ru/api/v1/";
 }
 
 @module
