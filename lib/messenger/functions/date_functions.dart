@@ -69,4 +69,8 @@ class DateFunctions {
   DateTime cutToDay() {
     return DateTime(passedDate.year, passedDate.month, passedDate.day);
   }
+
+  String ddMMyyyyString() {
+    return DateFormat('dd.MM.yyyy').format(passedDate);
+  }
 }
