@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/functions/date_functions.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/movements_data.dart';
+import 'package:intl/intl.dart';
 
 class PersonnelMovement extends StatelessWidget {
   final PersonnelMovementLabel? label;
   final MovementsData movement;
-  
 
-
-  PersonnelMovement({
-    required this.movement,
-    Key? key,
-    this.label
-  }) : super(key: key);
+  PersonnelMovement({required this.movement, Key? key, this.label})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +41,20 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.dateOfTakingPosition,
                           style: TextStyle(
-                             fontSize: SizeConfig(context, 14).getProportionateScreenHeight,
+                              fontSize: SizeConfig(context, 14)
+                                  .getProportionateScreenHeight,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
                     ),
                   ),
                   Text(
-                    movement.period,
-                    style: TextStyle(fontSize:  SizeConfig(context, 18).getProportionateScreenHeight),
+                    DateFunctions(
+                            DateFormat('dd.MM.yyyy').parse(movement.period))
+                        .ddMMyyyyString(),
+                    style: TextStyle(
+                        fontSize: SizeConfig(context, 18)
+                            .getProportionateScreenHeight),
                   )
                 ],
               ),
@@ -77,7 +79,8 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.position,
                           style: TextStyle(
-                            fontSize:  SizeConfig(context, 14).getProportionateScreenHeight,
+                              fontSize: SizeConfig(context, 14)
+                                  .getProportionateScreenHeight,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                         getLabel(context)
@@ -86,7 +89,9 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.position,
-                    style: TextStyle( fontSize:  SizeConfig(context, 18).getProportionateScreenHeight),
+                    style: TextStyle(
+                        fontSize: SizeConfig(context, 18)
+                            .getProportionateScreenHeight),
                   )
                 ],
               ),
@@ -111,7 +116,8 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.department,
                           style: TextStyle(
-                            fontSize:  SizeConfig(context, 14).getProportionateScreenHeight,
+                              fontSize: SizeConfig(context, 14)
+                                  .getProportionateScreenHeight,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -119,7 +125,9 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.department,
-                    style: TextStyle(fontSize:  SizeConfig(context, 18).getProportionateScreenHeight),
+                    style: TextStyle(
+                        fontSize: SizeConfig(context, 18)
+                            .getProportionateScreenHeight),
                   )
                 ],
               ),
@@ -144,7 +152,8 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.company,
                           style: TextStyle(
-                            fontSize:  SizeConfig(context, 14).getProportionateScreenHeight,
+                              fontSize: SizeConfig(context, 14)
+                                  .getProportionateScreenHeight,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -152,7 +161,9 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.organization,
-                    style: TextStyle( fontSize: SizeConfig(context, 18).getProportionateScreenHeight),
+                    style: TextStyle(
+                        fontSize: SizeConfig(context, 18)
+                            .getProportionateScreenHeight),
                   )
                 ],
               ),
@@ -177,7 +188,8 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.status,
                           style: TextStyle(
-                            fontSize:  SizeConfig(context, 14).getProportionateScreenHeight,
+                              fontSize: SizeConfig(context, 14)
+                                  .getProportionateScreenHeight,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -185,7 +197,9 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.operation,
-                    style: TextStyle(fontSize: SizeConfig(context,18).getProportionateScreenHeight),
+                    style: TextStyle(
+                        fontSize: SizeConfig(context, 18)
+                            .getProportionateScreenHeight),
                   )
                 ],
               ),
@@ -210,7 +224,8 @@ class PersonnelMovement extends StatelessWidget {
                         Text(
                           _strings.staffNumber,
                           style: TextStyle(
-                            fontSize:  SizeConfig(context, 14).getProportionateScreenHeight,
+                              fontSize: SizeConfig(context, 14)
+                                  .getProportionateScreenHeight,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
@@ -218,7 +233,10 @@ class PersonnelMovement extends StatelessWidget {
                   ),
                   Text(
                     movement.pnum,
-                    style: TextStyle(fontSize:  SizeConfig(context, 18).getProportionateScreenHeight,),
+                    style: TextStyle(
+                      fontSize:
+                          SizeConfig(context, 18).getProportionateScreenHeight,
+                    ),
                   )
                 ],
               ),
@@ -241,7 +259,8 @@ class PersonnelMovement extends StatelessWidget {
             child: Text(
               label!.title,
               style: TextStyle(
-                  fontSize:   SizeConfig(context, 10).getProportionateScreenHeight,
+                  fontSize:
+                      SizeConfig(context, 10).getProportionateScreenHeight,
                   color: label!.color,
                   fontWeight: FontWeight.bold),
             ),
