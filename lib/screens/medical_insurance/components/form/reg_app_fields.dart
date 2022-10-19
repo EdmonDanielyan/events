@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ink_mobile/components/date_input_field.dart';
 import 'package:ink_mobile/components/textfields/service_selectfield_cubit.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
+import 'package:ink_mobile/messenger/utils/date_functions.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -52,7 +54,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
         SizedBox(height: 20),
         _price(),
         SizedBox(height: 20),
-        _dateStart(),
+        _dateStart(context),
       ],
     );
   }
@@ -92,7 +94,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
     return ServiceTextField(
       hint: _strings.hospitalName,
       requiredIcon: true,
-      validator: (val) => val!.length < 5 ? _strings.fillTheField : null,
+      validator: (val) => val!.length < 1 ? _strings.fillTheField : null,
       inputFormatters: [InputFormatters().lettersNumbersOnly],
       onChanged: (val) => entities.hospitalName = val,
     );
@@ -129,16 +131,15 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
     );
   }
 
-  Widget _dateStart() {
+  Widget _dateStart(BuildContext context) {
     MaskTextInputFormatter mask = TextFieldMasks().date;
-    return ServiceTextField(
-      hint: _strings.medicalDateStart,
-      requiredIcon: true,
+    return DateInputField(
+      controller: TextEditingController(),
+      title: _strings.medicalDateStart,
       validator: (val) =>
-          !mask.isFill() || val!.isEmpty ? _strings.fillTheField : null,
-      onChanged: (val) => entities.dateStart = val,
-      keyboardType: TextInputType.datetime,
-      inputFormatters: [mask],
+          val == null ? _strings.fillTheField : null,
+      onChanged: (val) =>
+          entities.dateStart = DateFunctions(passedDate: val).dayMonthYear(),
     );
   }
 }
