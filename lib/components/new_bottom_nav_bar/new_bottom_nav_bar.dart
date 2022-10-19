@@ -45,6 +45,7 @@ class _NewBottomNavBarState extends State<NewBottomNavBar>
           items: navBarItems,
           onTap: (index) {
             TextFieldUtils.loseTextFieldFocus();
+
             navBottomNavBarItems[index]
                 .onTap(context, _cubit.pageController.jumpToPage, index);
           },

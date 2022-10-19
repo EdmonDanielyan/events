@@ -42,9 +42,11 @@ Future<void> setup({
   await $initGetIt(getIt, environment: scope);
   setupI18n(getIt);
 
-  setupLogging(getIt<FileLogAppender>(),
-      //todo: Убрать подробное логирование перед публикаций в сторы
-      forceLevel: Level.ALL);
+  setupLogging(
+    getIt<FileLogAppender>(),
+    //todo: Убрать подробное логирование перед публикаций в сторы
+    forceLevel: Level.ALL,
+  );
 
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
