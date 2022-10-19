@@ -83,6 +83,7 @@ dependencies:
     equatable: ^2.0.3
     better_player: ^0.0.83
     flutter_jailbreak_detection: ^1.8.0
+    flutter_html_table: ^3.0.0-alpha.4
 
 dev_dependencies:
     flutter_test:
