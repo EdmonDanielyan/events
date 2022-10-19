@@ -6,7 +6,6 @@ import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/core/lists/medical_services.dart';
 import 'package:ink_mobile/core/masks/input_formatters.dart';
-import 'package:ink_mobile/core/masks/textfield_masks.dart';
 import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,6 +14,8 @@ import 'package:ink_mobile/messenger/utils/date_functions.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
+import '../../../../core/masks/textfield_masks.dart';
 
 class MedicalInsuranceRegAppFields extends StatelessWidget {
   final MedicalInsuranceFormEntities entities;
@@ -131,15 +132,32 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
     );
   }
 
+  // Widget _dateStart(BuildContext context) {
+  //   return DateInputField(
+  //     controller: TextEditingController(),
+  //     title: _strings.medicalDateStart,
+  //     validator: (val) => val == null ? _strings.fillTheField : null,
+  //     onChanged: (val) {
+  //       entities.dateStart = DateFunctions(passedDate: val).dayMonthYear();
+  //       print(entities);
+  //     },
+  //   );
+  // }
+
   Widget _dateStart(BuildContext context) {
     MaskTextInputFormatter mask = TextFieldMasks().date;
-    return DateInputField(
+    return ServiceTextField(
+      hint: _strings.medicalDateStart,
+      requiredIcon: true,
       controller: TextEditingController(),
-      title: _strings.medicalDateStart,
       validator: (val) =>
-          val == null ? _strings.fillTheField : null,
-      onChanged: (val) =>
-          entities.dateStart = DateFunctions(passedDate: val).dayMonthYear(),
+          !mask.isFill() || val!.isEmpty ? _strings.fillTheField : null,
+      onChanged: (val) {
+        entities.dateStart = val;
+        print(entities);
+      },
+      keyboardType: TextInputType.datetime,
+      inputFormatters: [mask],
     );
   }
 }
