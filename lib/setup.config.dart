@@ -487,7 +487,6 @@ Future<_i1.GetIt> $initGetIt(
       () => _i105.FileLogAppender(get<String>(instanceName: 'logFile')));
   gh.factory<_i106.InitialCubit>(() => _i106.InitialCubit(
         get<_i87.SecurityChecker>(),
-        get<_i20.CertificateReader>(),
         get<_i104.AuthHandler>(),
       ));
   gh.lazySingleton<_i107.MainApiExLogProvider>(

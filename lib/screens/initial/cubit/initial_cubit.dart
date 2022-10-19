@@ -7,17 +7,15 @@ import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/token.dart';
-import 'package:ink_mobile/providers/certificate_reader.dart';
 import 'package:ink_mobile/providers/security_checker.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_state.dart';
 
 @injectable
 class InitialCubit extends Cubit<InitialState> with Loggable {
   final SecurityChecker securityChecker;
-  final CertificateReader certificateReader;
   final AuthHandler authHandler;
 
-  InitialCubit(this.securityChecker, this.certificateReader, this.authHandler)
+  InitialCubit(this.securityChecker, this.authHandler)
       : super(InitialState(type: InitialStateType.LOADING));
 
   Future<void> readRefreshToken() async {
@@ -35,7 +33,6 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
   }
 
   Future<bool> init() async {
-    await certificateReader.read();
     await readRefreshToken();
     await updateToken();
     await authHandler.bootCubit.load();
