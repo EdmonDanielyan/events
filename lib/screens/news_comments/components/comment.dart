@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bbcode/flutter_bbcode.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/ink_icons.dart';
@@ -94,9 +95,9 @@ class _CommentState extends State<Comment> {
                                   fontSize: (SizeConfig(context, 12).getProportionateScreenHeight), fontWeight: FontWeight.bold),
                             )),
                       ),
-                      Text(
-                        widget.text,
-                        style: TextStyle(color: _textColor, fontSize: (SizeConfig(context, 12).getProportionateScreenHeight)),
+                      BBCodeText(
+                        data: widget.text,
+                        defaultStyle: TextStyle(color: _textColor, fontSize: (SizeConfig(context, 12).getProportionateScreenHeight)),
                       ),
                       Container(
                         child: Row(
