@@ -13,9 +13,6 @@ import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/messenger/utils/date_functions.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-
-import '../../../../core/masks/textfield_masks.dart';
 
 class MedicalInsuranceRegAppFields extends StatelessWidget {
   final MedicalInsuranceFormEntities entities;
@@ -132,32 +129,15 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
     );
   }
 
-  // Widget _dateStart(BuildContext context) {
-  //   return DateInputField(
-  //     controller: TextEditingController(),
-  //     title: _strings.medicalDateStart,
-  //     validator: (val) => val == null ? _strings.fillTheField : null,
-  //     onChanged: (val) {
-  //       entities.dateStart = DateFunctions(passedDate: val).dayMonthYear();
-  //       print(entities);
-  //     },
-  //   );
-  // }
-
   Widget _dateStart(BuildContext context) {
-    MaskTextInputFormatter mask = TextFieldMasks().date;
-    return ServiceTextField(
-      hint: _strings.medicalDateStart,
-      requiredIcon: true,
+    return DateInputField(
       controller: TextEditingController(),
-      validator: (val) =>
-          !mask.isFill() || val!.isEmpty ? _strings.fillTheField : null,
+      title: _strings.medicalDateStart,
+      validator: (val) => val == null ? _strings.fillTheField : null,
       onChanged: (val) {
-        entities.dateStart = val;
-        print(entities);
+        entities.dateStart =
+            DateFunctions(passedDate: val).dayMonthYearNumbers();
       },
-      keyboardType: TextInputType.datetime,
-      inputFormatters: [mask],
     );
   }
 }

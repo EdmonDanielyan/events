@@ -32,10 +32,10 @@ class DateFunctions {
     return formatter.format(passedDate);
   }
 
-  String dayMonthNumbers() {
+  String dayMonthYearNumbers() {
     DateFormat formatter = DateFormat('dd.MM.yyyy');
 
-    return formatter.format(passedDate).replaceAll("/", ".");
+    return formatter.format(passedDate);
   }
 
   String dayMonthYearHuman() {

@@ -45,7 +45,7 @@ class _MedicalInsuranceFormUserFieldsState
       final birthday = DateTime.tryParse(getAutofill.autofill.birthday);
 
       if (birthday != null) {
-        final date = DateFunctions(passedDate: birthday).dayMonthNumbers();
+        final date = DateFunctions(passedDate: birthday).dayMonthYearNumbers();
         widget.entities.birthDate = date;
         birthdayController.text = date;
       }
