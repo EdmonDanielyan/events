@@ -248,5 +248,8 @@
 	"newPinCode": "New pin-code",
 	"repeatPinCode": "Repeat pin-code",
 	"incorrectPinCode": "Incorrect pin-code",
-	"confPolicy": "Confidentiality policy"
+	"confPolicy": "Confidentiality policy",
+	"yourApplyCreated": "Your application has been successfully sent",
+	"end": "Finish",
+	"createNew": "Create a new"
 }
