@@ -58,6 +58,8 @@ import 'package:main_api_client/model/get_search_success.dart';
 import 'package:main_api_client/model/get_transport_order_form.dart';
 import 'package:main_api_client/model/get_user_fail.dart';
 import 'package:main_api_client/model/get_user_success.dart';
+import 'package:main_api_client/model/get_users.dart';
+import 'package:main_api_client/model/get_users_success.dart';
 import 'package:main_api_client/model/movements_fail.dart';
 import 'package:main_api_client/model/movements_object.dart';
 import 'package:main_api_client/model/movements_success.dart';
@@ -144,6 +146,8 @@ part 'serializers.g.dart';
   GetTransportOrderForm,
   GetUserFail,
   GetUserSuccess,
+  GetUsers,
+  GetUsersSuccess,
   MovementsFail,
   MovementsObject,
   MovementsSuccess,

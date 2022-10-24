@@ -5,7 +5,7 @@
 import 'package:main_api_client/api.dart';
 ```
 
-All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
+All URIs are relative to *https://test.ink.vpool.qsoft.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -25,6 +25,7 @@ Method | HTTP request | Description
 [**userReferenceorderformGet**](UserApi.md#userReferenceorderformGet) | **get** /user/referenceorderform | Возвращает вспомогательные данные для формы заказа транспорта
 [**userSendfeedbackPost**](UserApi.md#userSendfeedbackPost) | **post** /user/sendfeedback | Метод для отправки обратной связи (вопроса руководству)
 [**userTranspontorderformGet**](UserApi.md#userTranspontorderformGet) | **get** /user/transpontorderform | Возвращает вспомогательные данные для формы заказа транспорта
+[**usersPost**](UserApi.md#usersPost) | **post** /users | Получение информации о пользователях
 
 
 # **keysGet**
@@ -741,6 +742,50 @@ This endpoint does not need any parameter.
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **usersPost**
+> GetUsersSuccess usersPost(getUsers)
+
+Получение информации о пользователях
+
+### Example 
+```dart
+import 'package:main_api_client/api.dart';
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
+
+var api_instance = new UserApi();
+var getUsers = new GetUsers(); // GetUsers | 
+
+try { 
+    var result = api_instance.usersPost(getUsers);
+    print(result);
+} catch (e) {
+    print('Exception when calling UserApi->usersPost: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **getUsers** | [**GetUsers**](GetUsers.md)|  | [optional] 
+
+### Return type
+
+[**GetUsersSuccess**](GetUsersSuccess.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

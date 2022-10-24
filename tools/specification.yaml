@@ -4,7 +4,7 @@ info:
     version: 1.0.0
     title: QSOFT Mobile API
 servers:
-    - url: https://portal.irkutskoil.ru/api/v1/
+    - url: https://test.ink.vpool.qsoft.ru/api/v1/
 
 tags:
     - name: Auth
@@ -447,6 +447,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/getUserSuccess"
+            security:
+                - bearerAuth: []
+    /users:
+        post:
+            tags:
+                - User
+            summary: Получение информации о пользователях
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/getUsers"
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/getUsersSuccess"
             security:
                 - bearerAuth: []
     /keys:
@@ -1247,6 +1266,157 @@ components:
                         - awards
                         - contacts
                         - basic_information
+        getUsersSuccess:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                status:
+                    type: integer
+                    default: 200
+                data:
+                    type: array
+                    items:
+                    
+                      type: object
+                      properties:
+                          id:
+                              type: integer
+                              example: 1
+                          avatar:
+                              type: string
+                              example: https://example.com/upload/user_avatar/1.png
+                              nullable: true
+                              format: uri
+                          name:
+                              type: string
+                              example: Константин
+                              minLength: 1
+                              maxLength: 255
+                          last_name:
+                              type: string
+                              example: Константинопольский
+                              minLength: 1
+                              maxLength: 255
+                          second_name:
+                              type: string
+                              example: Константинович
+                              nullable: true
+                              minLength: 1
+                              maxLength: 255
+                          work_position:
+                              type: string
+                              example: Очень важная должность
+                              nullable: true
+                              minLength: 1
+                              maxLength: 255
+                          barrels:
+                              type: object
+                              properties:
+                                  tankers:
+                                      type: integer
+                                      example: 0
+                                      format: int32
+                                  reservoir:
+                                      type: integer
+                                      example: 5
+                                      format: int32
+                                  barrels:
+                                      type: integer
+                                      example: 10
+                                      format: int32
+                              required:
+                                  - tankers
+                                  - reservoir
+                                  - barrels
+                          awards:
+                              type: object
+                              properties:
+                                  gold_tanker:
+                                      type: boolean
+                                      example: true
+                                  gold_tanker_2019:
+                                      type: boolean
+                                      example: false
+                                  team:
+                                      type: boolean
+                                      example: false
+                              required:
+                                  - gold_tanker
+                                  - gold_tanker_2019
+                                  - team
+                          contacts:
+                              type: object
+                              properties:
+                                  work_phone:
+                                      type: string
+                                      example: 79999999999
+                                      nullable: true
+                                      minLength: 1
+                                      maxLength: 255
+                                  work_mobile_phone:
+                                      type: string
+                                      example: 79999999999
+                                      nullable: true
+                                      minLength: 1
+                                      maxLength: 255
+                                  mobile_phone:
+                                      type: string
+                                      example: 79999999999
+                                      nullable: true
+                                      minLength: 1
+                                      maxLength: 255
+                                  email:
+                                      type: string
+                                      example: test@example.com
+                                      nullable: true
+                                      format: email
+                              required:
+                                  - work_phone
+                                  - work_mobile_phone
+                                  - mobile_phone
+                                  - email
+                          basic_information:
+                              type: object
+                              properties:
+                                  organization:
+                                      type: string
+                                      example: Организация
+                                      nullable: true
+                                      minLength: 1
+                                      maxLength: 255
+                                  address:
+                                      type: string
+                                      example: Г. Иркутск ул. Ленина 1
+                                      nullable: true
+                                      minLength: 1
+                                      maxLength: 255
+                                  office:
+                                      type: string
+                                      example: Б 12
+                                      nullable: true
+                                      minLength: 1
+                                      maxLength: 255
+                                  birthday:
+                                      type: string
+                                      example: 30 января
+                                      nullable: true
+                              required:
+                                  - organization
+                                  - address
+                                  - office
+                                  - birthday
+                      required:
+                          - id
+                          - avatar
+                          - name
+                          - last_name
+                          - second_name
+                          - work_position
+                          - barrels
+                          - awards
+                          - contacts
+                          - basic_information
         getUserFail:
             allOf:
                 - $ref: "#/components/schemas/RequiredError"
@@ -1788,6 +1958,15 @@ components:
                 - news_id
                 - text
                 - parent_id
+        getUsers:
+            type: object
+            properties:
+                users:
+                    type: array
+                    items:
+                      type: integer
+            required:
+                - users
         postCommentSuccess:
             allOf:
                 - $ref: "#/components/schemas/RequiredSuccess"

@@ -54,7 +54,7 @@ try {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
+All URIs are relative to *https://test.ink.vpool.qsoft.ru/api/v1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
@@ -93,6 +93,7 @@ Class | Method | HTTP request | Description
 *UserApi* | [**userReferenceorderformGet**](doc//UserApi.md#userreferenceorderformget) | **get** /user/referenceorderform | Возвращает вспомогательные данные для формы заказа транспорта
 *UserApi* | [**userSendfeedbackPost**](doc//UserApi.md#usersendfeedbackpost) | **post** /user/sendfeedback | Метод для отправки обратной связи (вопроса руководству)
 *UserApi* | [**userTranspontorderformGet**](doc//UserApi.md#usertranspontorderformget) | **get** /user/transpontorderform | Возвращает вспомогательные данные для формы заказа транспорта
+*UserApi* | [**usersPost**](doc//UserApi.md#userspost) | **post** /users | Получение информации о пользователях
 
 
 ## Documentation For Models
@@ -142,6 +143,8 @@ Class | Method | HTTP request | Description
  - [GetTransportOrderForm](doc//GetTransportOrderForm.md)
  - [GetUserFail](doc//GetUserFail.md)
  - [GetUserSuccess](doc//GetUserSuccess.md)
+ - [GetUsers](doc//GetUsers.md)
+ - [GetUsersSuccess](doc//GetUsersSuccess.md)
  - [MovementsFail](doc//MovementsFail.md)
  - [MovementsObject](doc//MovementsObject.md)
  - [MovementsSuccess](doc//MovementsSuccess.md)
