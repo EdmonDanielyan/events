@@ -52,6 +52,7 @@ doc/GetUserFail.md
 doc/GetUserSuccess.md
 doc/GetUsers.md
 doc/GetUsersSuccess.md
+doc/LogoutParams.md
 doc/MovementsFail.md
 doc/MovementsObject.md
 doc/MovementsSuccess.md
@@ -156,6 +157,7 @@ lib/model/get_user_fail.dart
 lib/model/get_user_success.dart
 lib/model/get_users.dart
 lib/model/get_users_success.dart
+lib/model/logout_params.dart
 lib/model/movements_fail.dart
 lib/model/movements_object.dart
 lib/model/movements_success.dart

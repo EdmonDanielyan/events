@@ -50,6 +50,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/userNotFound"
+    /auth/logout:
+        post:
+            tags:
+                - Auth
+            summary: Выход из профиля
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/logoutParams"
+            responses:
+                200:
+                    description: Пользователь успешно авторизован
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/RequiredSuccess"
+                400:
+                    description: Не верный логин/пароль пользователя
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/badAuthParams"
+                404:
+                    description: Пользователь не найден
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/userNotFound"
+                                      
     /auth/refresh:
         post:
             tags:
@@ -1531,6 +1561,13 @@ components:
             required:
                 - login
                 - password
+        logoutParams:
+            type: object
+            properties:
+                token:
+                    type: string
+            required:
+                - token
         refreshTokenParams:
             type: object
             properties:

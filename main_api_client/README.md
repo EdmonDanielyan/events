@@ -61,6 +61,7 @@ Class | Method | HTTP request | Description
 *AnnouncementsApi* | [**getAnnouncementById**](doc//AnnouncementsApi.md#getannouncementbyid) | **get** /announcements/{id} | Получить информацию об объявлении по ID
 *AnnouncementsApi* | [**getAnnouncements**](doc//AnnouncementsApi.md#getannouncements) | **get** /announcements | Получение списка событий
 *AuthApi* | [**auth**](doc//AuthApi.md#auth) | **post** /auth/login | Авторизация
+*AuthApi* | [**authLogoutPost**](doc//AuthApi.md#authlogoutpost) | **post** /auth/logout | Выход из профиля
 *AuthApi* | [**authRefreshPost**](doc//AuthApi.md#authrefreshpost) | **post** /auth/refresh | Продление JWT токена по refresh token
 *AuthApi* | [**authRegisterConfirmPost**](doc//AuthApi.md#authregisterconfirmpost) | **post** /auth/register/confirm | Подтверждение регистрации по коду из SMS
 *AuthApi* | [**authRegisterPost**](doc//AuthApi.md#authregisterpost) | **post** /auth/register | Регистрация
@@ -145,6 +146,7 @@ Class | Method | HTTP request | Description
  - [GetUserSuccess](doc//GetUserSuccess.md)
  - [GetUsers](doc//GetUsers.md)
  - [GetUsersSuccess](doc//GetUsersSuccess.md)
+ - [LogoutParams](doc//LogoutParams.md)
  - [MovementsFail](doc//MovementsFail.md)
  - [MovementsObject](doc//MovementsObject.md)
  - [MovementsSuccess](doc//MovementsSuccess.md)

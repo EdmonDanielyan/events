@@ -10,6 +10,7 @@ All URIs are relative to *https://test.ink.vpool.qsoft.ru/api/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**auth**](AuthApi.md#auth) | **post** /auth/login | Авторизация
+[**authLogoutPost**](AuthApi.md#authLogoutPost) | **post** /auth/logout | Выход из профиля
 [**authRefreshPost**](AuthApi.md#authRefreshPost) | **post** /auth/refresh | Продление JWT токена по refresh token
 [**authRegisterConfirmPost**](AuthApi.md#authRegisterConfirmPost) | **post** /auth/register/confirm | Подтверждение регистрации по коду из SMS
 [**authRegisterPost**](AuthApi.md#authRegisterPost) | **post** /auth/register | Регистрация
@@ -44,6 +45,47 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**AuthSuccess**](AuthSuccess.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **authLogoutPost**
+> RequiredSuccess authLogoutPost(logoutParams)
+
+Выход из профиля
+
+### Example 
+```dart
+import 'package:main_api_client/api.dart';
+
+var api_instance = new AuthApi();
+var logoutParams = new LogoutParams(); // LogoutParams | 
+
+try { 
+    var result = api_instance.authLogoutPost(logoutParams);
+    print(result);
+} catch (e) {
+    print('Exception when calling AuthApi->authLogoutPost: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **logoutParams** | [**LogoutParams**](LogoutParams.md)|  | [optional] 
+
+### Return type
+
+[**RequiredSuccess**](RequiredSuccess.md)
 
 ### Authorization
 
