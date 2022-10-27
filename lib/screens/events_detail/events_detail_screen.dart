@@ -11,9 +11,9 @@ import 'package:ink_mobile/cubit/events_detail/events_detail_state.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/event_data.dart';
-import 'package:intl/intl.dart';
 
 import '../../messenger/functions/size_config.dart';
+import '../../messenger/utils/date_functions.dart';
 
 class EventDetailScreen extends StatelessWidget {
   static const String DEFAULT_PREVIEW_PICTURE_LINK =
@@ -139,8 +139,8 @@ class EventDetailScreen extends StatelessWidget {
                       margin: EdgeInsets.only(right: 16.0)),
                   Text(
                       event.beginDate != null && event.endDate != null
-                          ? DateFormat('dd.MM.yyyy').format(event.beginDate!) + " - " + DateFormat('dd.MM.yyyy').format(event.endDate!)
-                          : '',
+                          ? "${DateFunctions(passedDate: event.beginDate!).dayMonthNumbers()} ${DateFunctions(passedDate: event.endDate!).hourMinute()} - ${DateFunctions(passedDate: event.endDate!).dayMonthNumbers()} ${DateFunctions(passedDate: event.beginDate!).hourMinute()}"
+                          : "",
                       style: TextStyle(
                         fontFamily: "Helvetica",
                         color: Colors.grey[500],

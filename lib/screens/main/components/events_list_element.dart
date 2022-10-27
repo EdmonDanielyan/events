@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/messenger/utils/date_functions.dart';
 import 'package:ink_mobile/models/event_data.dart';
-import 'package:intl/intl.dart';
 
 import '../../../messenger/functions/size_config.dart';
 
@@ -75,18 +75,11 @@ class EventsListElement extends StatelessWidget {
   }
 
   String _getEventTimeAndPlace() {
-    String timeRange = '';
     List timeAndPlace = [];
 
     if (event.beginDate != null) {
-      timeAndPlace.add(DateFormat('dd.MM.yyyy').format(event.beginDate!));
-    }
-
-    if (event.beginDate != null && event.endDate != null) {
-      timeRange = DateFormat('HH:mm').format(event.beginDate!) +
-          ' - ' +
-          DateFormat('HH:mm').format(event.endDate!);
-      timeAndPlace.add(timeRange);
+      timeAndPlace.add(
+          "${DateFunctions(passedDate: event.beginDate!).dayMonthNumbers()} ${DateFunctions(passedDate: event.beginDate!).hourMinute()}");
     }
 
     if (event.place != null) {
