@@ -138,8 +138,8 @@ class EventDetailScreen extends StatelessWidget {
                       ),
                       margin: EdgeInsets.only(right: 16.0)),
                   Text(
-                      event.beginDate != null
-                          ? DateFormat('dd.MM.yyyy').format(event.dateCreate!)
+                      event.beginDate != null && event.endDate != null
+                          ? DateFormat('dd.MM.yyyy').format(event.beginDate!) + " - " + DateFormat('dd.MM.yyyy').format(event.endDate!)
                           : '',
                       style: TextStyle(
                         fontFamily: "Helvetica",
