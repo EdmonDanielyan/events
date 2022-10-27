@@ -81,9 +81,7 @@ class EventsListElement extends StatelessWidget {
     }
 
     if (event.beginDate != null && event.endDate != null) {
-      timeRange = DateFormat('HH:mm').format(event.beginDate!) +
-          ' - ' +
-          DateFormat('HH:mm').format(event.endDate!);
+      timeRange = DateFormat('HH:mm').format(event.beginDate!);
       timeAndPlace.add(timeRange);
     }
 
