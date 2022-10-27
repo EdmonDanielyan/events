@@ -32,7 +32,6 @@ class CachedUsersCubit extends HydratedCubit<CachedUsersState> {
   bool exists(int userId) {
     return users.indexWhere((element) => element.id == userId) >= 0;
   }
-
   void removeAndAddUser(User user, int userId) {
     final _newUsers = List<User>.from(users)
       ..removeWhere((element) => element.id == userId)
