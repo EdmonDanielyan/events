@@ -3,9 +3,13 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/feedback/components/select_file_dialog.dart';
 import 'package:path/path.dart';
+import '../../functions/errors.dart';
+
+const _blockedDirectory = "externalstorage";
 
 class PickFiles extends StatefulWidget {
   final String title;
@@ -36,6 +40,13 @@ class PickFilesState extends State<PickFiles> {
 
     if (result != null) {
       File file = File(result.files.single.path!);
+
+      if (result.files.single.identifier != null &&
+          result.files.single.identifier!.contains(_blockedDirectory)) {
+        showErrorDialog(localizationInstance.incorrectDirectory);
+        return;
+      }
+
       setState(() {
         pickedFiles.add(file);
       });

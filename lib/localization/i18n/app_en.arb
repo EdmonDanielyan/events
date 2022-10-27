@@ -248,5 +248,6 @@
 	"newPinCode": "New pin-code",
 	"repeatPinCode": "Repeat pin-code",
 	"incorrectPinCode": "Incorrect pin-code",
-	"confPolicy": "Confidentiality policy"
+	"confPolicy": "Confidentiality policy",
+	"incorrectDirectory": "Incorrect directory"
 }

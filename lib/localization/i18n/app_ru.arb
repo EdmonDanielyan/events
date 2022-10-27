@@ -248,5 +248,6 @@
 	"newPinCode": "Новый пин-код",
 	"repeatPinCode": "Введите еще раз",
 	"incorrectPinCode": "Неправильный пин-код",
-	"confPolicy": "Политика конфиденциальности"
+	"confPolicy": "Политика конфиденциальности",
+	"incorrectDirectory": "Запрещено из этой директории"
 }

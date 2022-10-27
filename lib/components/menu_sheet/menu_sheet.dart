@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet_item.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -188,6 +189,7 @@ class _ExitAlertDialogState extends State<ExitAlertDialog> {
     getIt<MessengerProvider>().dispose();
     getIt<CachedChatsCubit>().clean();
     Token.deleteTokens();
+    FlutterSecureStorage().deleteAll();
 
     Navigator.pushNamedAndRemoveUntil(context, '/init', (route) => true);
   }
