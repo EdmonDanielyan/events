@@ -6,7 +6,6 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/api/auth_api.dart';
 import 'package:main_api_client/model/logout_params.dart';
 import 'package:main_api_client/model/required_success.dart';
 
@@ -14,11 +13,10 @@ import 'logout_source.dart';
 
 @injectable
 class LogoutNetworkRequest extends LogoutSource {
-
   @override
   Future<Response<RequiredSuccess>> postLogout() async {
-    final AuthApi authApi = getIt<MainApiProvider>().getAuthApi();
-    final LogoutParamsBuilder paramsBuilder = LogoutParamsBuilder();
+    final authApi = getIt<MainApiProvider>().getAuthApi();
+    final paramsBuilder = LogoutParamsBuilder();
     await Token.setNewTokensIfExpired();
     paramsBuilder.token = await Token.getRefresh();
     paramsBuilder.token;
