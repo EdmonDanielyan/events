@@ -79,7 +79,7 @@ class EventsListElement extends StatelessWidget {
 
     if (event.beginDate != null) {
       timeAndPlace.add(
-          "${DateFunctions(passedDate: event.beginDate!).dayMonthNumbers()} ${DateFunctions(passedDate: event.beginDate!).hourMinute()}");
+          "${DateFunctions(passedDate: event.beginDate!).dayMonthYearNumbers()} ${DateFunctions(passedDate: event.beginDate!).hourMinute()}");
     }
 
     if (event.place != null) {

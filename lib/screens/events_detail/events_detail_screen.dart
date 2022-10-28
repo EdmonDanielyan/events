@@ -139,7 +139,7 @@ class EventDetailScreen extends StatelessWidget {
                       margin: EdgeInsets.only(right: 16.0)),
                   Text(
                       event.beginDate != null && event.endDate != null
-                          ? "${DateFunctions(passedDate: event.beginDate!).dayMonthNumbers()} ${DateFunctions(passedDate: event.endDate!).hourMinute()} - ${DateFunctions(passedDate: event.endDate!).dayMonthNumbers()} ${DateFunctions(passedDate: event.beginDate!).hourMinute()}"
+                          ? "${DateFunctions(passedDate: event.beginDate!).dayMonthYearNumbers()} ${DateFunctions(passedDate: event.endDate!).hourMinute()} - ${DateFunctions(passedDate: event.endDate!).dayMonthYearNumbers()} ${DateFunctions(passedDate: event.beginDate!).hourMinute()}"
                           : "",
                       style: TextStyle(
                         fontFamily: "Helvetica",
