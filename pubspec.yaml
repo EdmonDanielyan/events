@@ -39,7 +39,6 @@ dependencies:
     flutter_secure_storage: ^5.0.2
     smooth_page_indicator: ^1.0.0+2
     intl: ">=0.17.0 <1.0.0"
-    flick_video_player: ^0.5.0
     flutter_launcher_icons: ">=0.8.0 <1.0.0"
     shimmer: ">=2.0.0 <3.0.0"
     modal_bottom_sheet: ^2.0.0
@@ -81,9 +80,13 @@ dependencies:
     flutter_logs: ^2.1.5
     flutter_easyloading: ^3.0.3
     equatable: ^2.0.3
-    better_player: ^0.0.83
+    better_player:
+        git:
+            url: https://github.com/tintran-dev/betterplayer.git
     flutter_jailbreak_detection: ^1.8.0
     flutter_bbcode: ^1.2.0
+    flutter_html_table: ^3.0.0-alpha.4
+    video_player: ^2.4.7
 
 dev_dependencies:
     flutter_test:

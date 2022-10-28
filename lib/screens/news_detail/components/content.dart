@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
@@ -47,6 +48,9 @@ class _ContentState extends State<Content> {
         children: [
           Html(
             data: widget.text,
+            customRenders: {
+              tableMatcher(): tableRender(),
+            },
             onLinkTap: (
               String? url,
               RenderContext context,
