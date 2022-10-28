@@ -90,7 +90,7 @@ class _MedicalInsuranceFormUserFieldsState
       hint: _strings.fullnameHint,
       requiredIcon: true,
       validator: (val) =>
-          val!.isNotEmpty ? _strings.fillTheField : null,
+          val!.isEmpty ? _strings.fillTheField : null,
       autocorrect: false,
       inputFormatters: [InputFormatters().lettersOnly],
       onChanged: (val) => widget.entities.fio = val,
