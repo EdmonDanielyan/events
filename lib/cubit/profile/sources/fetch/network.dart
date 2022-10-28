@@ -6,6 +6,8 @@ import 'package:ink_mobile/setup.dart';
 import 'package:dio/dio.dart';
 import 'package:main_api_client/api/user_api.dart';
 import 'package:main_api_client/model/get_user_success.dart';
+import 'package:main_api_client/model/get_users.dart';
+import 'package:main_api_client/model/get_users_success.dart';
 
 import 'dependency.dart';
 
@@ -23,6 +25,15 @@ class ProfileFetchNetworkRequest extends ProfileFetchRequestDependency {
     } else {
       response = await user.userIdGet(id);
     }
+
+    return response;
+  }
+
+  @override
+  Future<Response<GetUsersSuccess>> getUsers(List<int> ids) async {
+    final userApi = getIt<MainApiProvider>().getUserApi();
+    final builder = GetUsersBuilder()..users.addAll(ids);
+    final response = await userApi.usersPost(getUsers: builder.build());
 
     return response;
   }

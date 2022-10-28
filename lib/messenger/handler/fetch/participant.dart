@@ -1,5 +1,5 @@
 import 'package:ink_mobile/cubit/profile/sources/fetch/network.dart';
-import 'package:ink_mobile/extensions/get_user_success.dart';
+import 'package:ink_mobile/extensions/get_users_success.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/messenger/providers/logger.dart';
@@ -17,28 +17,30 @@ class FetchPartcipants {
       final cachedUsers = getIt<CachedUsersCubit>();
       final passedADay =
           cachedUsers.passedTimeAfterLastCache(Duration(days: 1));
-      for (final user in users) {
-        if (!cachedUsers.exists(user.id) || passedADay) {
-          await cacheUser(user.id, cachedUsers);
-        }
+
+      if (users.any((element) => !cachedUsers.exists(element.id)) || passedADay) {
+        await cacheUsers(users.map((e) => e.id).toList(), cachedUsers);
       }
     }
   }
 
-  Future<void> cacheUser(int userId, CachedUsersCubit cubit) async {
+  Future<void> cacheUsers(List<int> userIds, CachedUsersCubit cubit) async {
     try {
       await Token.setNewTokensIfExpired();
       final response =
-          await getIt<ProfileFetchNetworkRequest>(param1: userId)();
-      UserProfileData userData = response.mapResponse();
+          await getIt<ProfileFetchNetworkRequest>().getUsers(userIds);
+      List<UserProfileData> userData = response.mapResponse();
 
-      final user = User(
-        id: userId,
-        name: "${userData.lastName ?? ""} ${userData.name ?? ""}".trim(),
-        avatarUrl: userData.pathToAvatar ?? "",
-      );
-
-      cubit.removeAndAddUser(user, userId);
+      final users = userData
+          .map((user) => User(
+                id: user.id,
+                name: "${user.lastName ?? ""} ${user.name ?? ""}".trim(),
+                avatarUrl: user.pathToAvatar ?? "",
+              ))
+          .toList();
+      for (User u in users) {
+        cubit.removeAndAddUser(u, u.id);
+      }
     } catch (_e) {
       logger.e(_e.toString());
     }
