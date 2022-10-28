@@ -9,18 +9,12 @@ import 'package:ink_mobile/setup.dart';
 
 class FetchPartcipants {
   final List<User> users;
-
   const FetchPartcipants(this.users);
 
   Future<void> call() async {
     if (users.isNotEmpty) {
       final cachedUsers = getIt<CachedUsersCubit>();
-      final passedADay =
-          cachedUsers.passedTimeAfterLastCache(Duration(days: 1));
-
-      if (users.any((element) => !cachedUsers.exists(element.id)) || passedADay) {
-        await cacheUsers(users.map((e) => e.id).toList(), cachedUsers);
-      }
+      await cacheUsers(users.map((e) => e.id).toList(), cachedUsers);
     }
   }
 
@@ -38,8 +32,10 @@ class FetchPartcipants {
                 avatarUrl: user.pathToAvatar ?? "",
               ))
           .toList();
-      for (User u in users) {
-        cubit.removeAndAddUser(u, u.id);
+      if (users.isNotEmpty) {
+        for (final u in users) {
+          cubit.removeAndAddUser(u, u.id);
+        }
       }
     } catch (_e) {
       logger.e(_e.toString());

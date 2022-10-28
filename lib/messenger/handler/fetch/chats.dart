@@ -5,6 +5,8 @@ import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/setup.dart';
 
+import '../../model/user.dart';
+
 class FetchChats {
   final int offset;
   final int count;
@@ -25,12 +27,15 @@ class FetchChats {
         }
 
         if (chats.isNotEmpty) {
+          List<User> participants = [];
           for (final chat in chats) {
-            FetchPartcipants(chat.participants).call();
+            participants.addAll(chat.participants);
             if (!messengerProvider.isListiningToChat(chat.id)) {
               messengerProvider.subscribeToChat(chat.id);
             }
           }
+
+          FetchPartcipants(participants).call();
         }
       },
     ).call();
