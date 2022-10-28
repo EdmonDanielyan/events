@@ -19,6 +19,8 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:ink_mobile/screens/feedback/components/form/validator.dart';
 import 'package:ink_mobile/screens/feedback/components/hint_text.dart';
+import 'package:ink_mobile/screens/feedback/components/success_screen.dart';
+import 'package:ink_mobile/screens/service_list/service_list_page_viewer.dart';
 
 import '../../feedback_screen.dart';
 import 'entities.dart';
@@ -137,7 +139,20 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
         }
         if (state.state == BtnCubitStateEnums.SUCCESS) {
           clearForm(formKey: key, pickFilesKey: pickFilesKey);
-          SuccessCustomSnackbar(context: context, txt: state.message);
+          Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) {
+                return SuccessScreen(
+                  onDismiss: () {
+                    Navigator.of(context).pop();
+                    ServiceListPageViewerState.pageViewer.pageController
+                        .jumpToPage(0);
+                  },
+                  onSendNew: (screenContext) {
+                    Navigator.of(screenContext).pop();
+                  },
+                );
+              }));
         }
       },
       builder: (BuildContext context, state) {

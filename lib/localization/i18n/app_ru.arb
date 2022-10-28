@@ -249,5 +249,8 @@
 	"repeatPinCode": "Введите еще раз",
 	"incorrectPinCode": "Неправильный пин-код",
 	"confPolicy": "Политика конфиденциальности",
-	"incorrectDirectory": "Запрещено из этой директории"
+	"incorrectDirectory": "Запрещено из этой директории",
+	"yourApplyCreated": "Ваша заявка успешно отправлена",
+	"end": "Завершить",
+	"createNew": "Создать новую"
 }

@@ -249,5 +249,8 @@
 	"repeatPinCode": "Repeat pin-code",
 	"incorrectPinCode": "Incorrect pin-code",
 	"confPolicy": "Confidentiality policy",
-	"incorrectDirectory": "Incorrect directory"
+	"incorrectDirectory": "Incorrect directory",
+	"yourApplyCreated": "Your application has been successfully sent",
+	"end": "Finish",
+	"createNew": "Create a new"
 }
