@@ -143,8 +143,8 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
               fullscreenDialog: true,
               builder: (context) {
                 return SuccessScreen(
-                  onDismiss: () {
-                    Navigator.of(context).pop();
+                  onDismiss: (screenContext) {
+                    Navigator.of(screenContext).pop();
                     ServiceListPageViewerState.pageViewer.pageController
                         .jumpToPage(0);
                   },

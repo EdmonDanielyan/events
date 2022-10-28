@@ -3,7 +3,7 @@ import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class SuccessScreen extends StatelessWidget {
-  final void Function() onDismiss;
+  final void Function(BuildContext) onDismiss;
   final void Function(BuildContext) onSendNew;
 
   const SuccessScreen({
@@ -33,7 +33,7 @@ class SuccessScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               ElevatedButton(
-                onPressed: onDismiss,
+                onPressed: () => onDismiss(context),
                 child: Text(localizationInstance.end),
                 style: style,
               ),
