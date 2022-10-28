@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/messenger/utils/date_functions.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
+import '../../../../components/date_input_field.dart';
 import 'entities.dart';
 
 class MedicalInsuranceFormUserFields extends StatefulWidget {
@@ -45,7 +46,7 @@ class _MedicalInsuranceFormUserFieldsState
       final birthday = DateTime.tryParse(getAutofill.autofill.birthday);
 
       if (birthday != null) {
-        final date = DateFunctions(passedDate: birthday).dayMonthNumbers();
+        final date = DateFunctions(passedDate: birthday).dayMonthYearNumbers();
         widget.entities.birthDate = date;
         birthdayController.text = date;
       }
@@ -89,7 +90,7 @@ class _MedicalInsuranceFormUserFieldsState
       hint: _strings.fullnameHint,
       requiredIcon: true,
       validator: (val) =>
-          val!.split(" ").length < 2 ? _strings.fillTheField : null,
+          val!.split(" ").length < 3 ? _strings.fillTheField : null,
       autocorrect: false,
       inputFormatters: [InputFormatters().lettersOnly],
       onChanged: (val) => widget.entities.fio = val,
@@ -97,15 +98,14 @@ class _MedicalInsuranceFormUserFieldsState
   }
 
   Widget _birthDate() {
-    MaskTextInputFormatter mask = TextFieldMasks().date;
-    return ServiceTextField(
-      hint: _strings.birthDate,
-      controller: birthdayController,
-      requiredIcon: true,
+    return DateInputField(
+      controller: TextEditingController(),
+      title: _strings.birthDate,
       validator: (val) => val!.length <= 8 ? _strings.fillTheField : null,
-      onChanged: (val) => widget.entities.birthDate = val,
-      keyboardType: TextInputType.datetime,
-      inputFormatters: [mask],
+      onChanged: (val) {
+        widget.entities.birthDate =
+            DateFunctions(passedDate: val).dayMonthYearNumbers();
+      },
     );
   }
 

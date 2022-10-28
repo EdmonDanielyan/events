@@ -25,7 +25,7 @@ class FieldValidator {
   }
 
   String? streetValidator(String? str) {
-    return str!.length < 8 ? strings.fillTheField : null;
+    return str!.length < 1 ? strings.fillTheField : null;
   }
 
   String? addressValidator(String? str) {
