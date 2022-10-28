@@ -148,8 +148,8 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
                     ServiceListPageViewerState.pageViewer.pageController
                         .jumpToPage(0);
                   },
-                  onSendNew: () {
-                    Navigator.of(context).pop();
+                  onSendNew: (screenContext) {
+                    Navigator.of(screenContext).pop();
                   },
                 );
               }));

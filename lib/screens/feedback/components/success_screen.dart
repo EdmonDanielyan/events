@@ -4,7 +4,7 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 class SuccessScreen extends StatelessWidget {
   final void Function() onDismiss;
-  final void Function() onSendNew;
+  final void Function(BuildContext) onSendNew;
 
   const SuccessScreen({
     required this.onDismiss,
@@ -39,7 +39,7 @@ class SuccessScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               ElevatedButton(
-                onPressed: onSendNew,
+                onPressed: () =>  onSendNew(context),
                 child: Text(localizationInstance.createNew),
                 style: style,
               )
