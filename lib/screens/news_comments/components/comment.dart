@@ -109,7 +109,7 @@ class _CommentState extends State<Comment> {
                           tagsParsers: {
                             ...allTags
                               ..removeWhere((e) => e is ColorTag)
-                              ..add(CustomColorTag()),
+                              ..add(CustomColorTag(defaultColor: _textColor)),
                           }),
                       Container(
                         child: Row(
