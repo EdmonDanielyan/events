@@ -1,0 +1,25 @@
+import 'package:flutter/material.dart';
+
+const wordToColor = <String, Color>{
+  'black': Colors.black,
+  'white': Colors.white,
+  'red': Colors.red,
+  'green': Colors.green,
+  'blue': Colors.blue,
+  'purple': Colors.purple,
+  'firebrick': Color(0xFFb22222),
+  'maroon': Color(0xFF800000),
+  'orangered': Color(0xffff4500),
+  'midnightblue': Color(0xFF191970),
+  'cornflowerblue': Color(0xFF6495ED),
+  'cyan': Color(0xFF00FFFF),
+  'yellow': Colors.yellow,
+  'magenta': Color(0xFFFF00FF),
+  'darkgreen': Color(0xFF023020),
+  'darkgoldenrod': Color(0xFFb8860b),
+  'gold': Color(0xFFFFD700),
+  'orchid': Color(0xFFda70d6),
+  'blueviolet': Color(0xFF8a2be2),
+  'burlywood': Color(0xFFdeb887),
+  'peachpuff': Color(0xFFffdab9),
+};
