@@ -10,7 +10,6 @@ import 'package:ink_mobile/components/textfields/service_selectfield_cubit.dart'
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/core/cubit/btn/btn_state.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
-import 'package:ink_mobile/core/masks/input_formatters.dart';
 import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/cubit/send_feedback_form/send_form_cubit.dart';
 import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart';
@@ -64,7 +63,6 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
             ServiceTextField(
               hint: "${_strings.fullnameHint} ${_strings.notRequired}",
               onChanged: (val) => entities.name = val,
-              inputFormatters: [InputFormatters().lettersOnly],
             ),
             SizedBox(height: 20.0),
             ServiceTextField(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
-import 'package:ink_mobile/core/masks/input_formatters.dart';
 import 'package:ink_mobile/core/masks/textfield_masks.dart';
 import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/cubit/autofill/get_autofill.dart';
@@ -92,7 +91,6 @@ class _MedicalInsuranceFormUserFieldsState
       validator: (val) =>
           val!.split(" ").length < 3 ? _strings.fillTheField : null,
       autocorrect: false,
-      inputFormatters: [InputFormatters().lettersOnly],
       onChanged: (val) => widget.entities.fio = val,
     );
   }
@@ -115,7 +113,6 @@ class _MedicalInsuranceFormUserFieldsState
       hint: _strings.position,
       requiredIcon: true,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
-      inputFormatters: [InputFormatters().lettersOnly],
       onChanged: (val) => widget.entities.position = val,
     );
   }
