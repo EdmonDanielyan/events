@@ -89,7 +89,7 @@ class _MedicalInsuranceFormUserFieldsState
       hint: _strings.fullnameHint,
       requiredIcon: true,
       validator: (val) =>
-          val!.split(" ").length < 3 ? _strings.fillTheField : null,
+          val!.isEmpty ? _strings.fillTheField : null,
       autocorrect: false,
       onChanged: (val) => widget.entities.fio = val,
     );
