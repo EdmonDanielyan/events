@@ -4,7 +4,7 @@ info:
     version: 1.0.0
     title: QSOFT Mobile API
 servers:
-    - url: https://test.ink.vpool.qsoft.ru/api/v1/
+    - url: https://portal.irkutskoil.ru/api/v1/
 
 tags:
     - name: Auth
