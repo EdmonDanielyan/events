@@ -4,7 +4,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 
 class CustomEmojiPicker extends StatelessWidget {
-  final void Function(Category, Emoji) onEmojiSelected;
+  final void Function(Category?, Emoji) onEmojiSelected;
   final void Function()? onBackspacePressed;
   const CustomEmojiPicker(
       {Key? key, required this.onEmojiSelected, this.onBackspacePressed})
@@ -25,7 +25,6 @@ class CustomEmojiPicker extends StatelessWidget {
           indicatorColor: Colors.blue,
           iconColor: Colors.grey,
           iconColorSelected: Colors.blue,
-          progressIndicatorColor: Colors.blue,
           backspaceColor: Colors.blue,
           skinToneDialogBgColor: Colors.white,
           skinToneIndicatorColor: Colors.grey,
