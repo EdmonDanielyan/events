@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/components/html.dart';
 import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
-import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/screens/announcements_detail/components/background.dart';
@@ -119,28 +118,8 @@ class _BodyState extends State<Body> {
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
-                child: Html(
+                child: CustomHtml(
                   data: widget.announcement.detailText ?? '',
-                  onLinkTap: (
-                    String? url,
-                    RenderContext context,
-                    Map<String, String> attributes,
-                    _,
-                  ) {
-                    launchUrl(url!);
-                  },
-                  style: {
-                    "a": Style(
-                        color: Colors.blue,
-                        textDecoration: TextDecoration.none),
-                    "b": Style(fontWeight: FontWeight.normal),
-                    "p": isTablet
-                        ? Style(
-                            fontSize: FontSize(SizeConfig(context, 13)
-                                .getProportionateScreenHeight),
-                          )
-                        : Style(),
-                  },
                 ),
               )
             ],
