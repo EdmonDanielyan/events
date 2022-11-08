@@ -25,19 +25,15 @@ class FilterSliderElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.15),
-                spreadRadius: 1,
-                blurRadius: 5,
-                offset: Offset(1, 4))
-          ],
-          borderRadius: BorderRadius.all(Radius.circular(18))),
-      child: ElevatedButton(
+    final buttonStyle = ButtonStyle(
+               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(color: Color.fromRGBO(110, 150, 110, 1)),
+                )),
+                backgroundColor: MaterialStateProperty.all(Color(0xFFFAFAFA)));
+
+    return TextButton(
         onPressed: () {
           onTap();
         },
@@ -47,18 +43,14 @@ class FilterSliderElement extends StatelessWidget {
               ? selectedTextStyle
               : (unselectedTextStyle ??
                   TextStyle(
-                    color: Colors.black,
+                    color: Color.fromRGBO(110, 150, 110, 1),
                     fontSize:
                         SizeConfig(context, 13.0).getProportionateScreenHeight,
                   )),
         ),
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
-              isSelected ? selectedColor : unselectedColor),
-          padding: MaterialStateProperty.all<EdgeInsets>(
-              EdgeInsets.symmetric(horizontal: 8)),
-        ),
-      ),
-    );
+        style: isSelected
+            ? buttonStyle
+            : buttonStyle
+        );
   }
 }

@@ -34,7 +34,7 @@ class _OpenUniversityFilterSliderState
     _strings = localizationInstance;
 
     return Container(
-        height: 30,
+        height: 35,
         margin: EdgeInsets.only(top: 8.0),
         child: Container(child: _getFilterListView(context)));
   }
@@ -53,8 +53,7 @@ class _OpenUniversityFilterSliderState
           return BlocBuilder<OpenUniversityCubit, OpenUniversityState>(
               bloc: widget.openUniversityCubit,
               builder: (context, state) {
-                return Container(
-                    child: FilterSliderElement(
+                return FilterSliderElement(
                   selectedTextStyle: TextStyle(
                     fontSize:
                         SizeConfig(context, 14.0).getProportionateScreenHeight,
@@ -68,7 +67,7 @@ class _OpenUniversityFilterSliderState
                   },
                   isSelected: items[index].code == selectedFilter,
                   selectedColor: Theme.of(context).primaryColor,
-                ));
+                );
               });
         },
         separatorBuilder: (context, index) {
