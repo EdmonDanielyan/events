@@ -16,9 +16,7 @@ class NewsFilterSlider extends StatelessWidget {
     return Container(
       height: SizeConfig(context, 28.0).getProportionateScreenHeight,
       margin: EdgeInsets.only(top: 8.0),
-      child: Container(
-        child: getFilterListView(context),
-      ),
+      child: getFilterListView(context),
     );
   }
 
@@ -30,7 +28,7 @@ class NewsFilterSlider extends StatelessWidget {
         physics: AlwaysScrollableScrollPhysics(),
         addRepaintBoundaries: false,
         addSemanticIndexes: false,
-        clipBehavior: Clip.none,
+      
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Container(
@@ -44,7 +42,7 @@ class NewsFilterSlider extends StatelessWidget {
                       arguments: {'filter': items[index].code});
                 }
               },
-              isSelected: items[index].code == 'news',
+              isSelected: false,
               selectedColor: Colors.white,
               selectedTextStyle: TextStyle(
                 fontSize:
