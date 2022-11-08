@@ -42,7 +42,7 @@ class ChatBody extends StatelessWidget {
           maxLines: 1,
           term: highlightValue,
           textStyle: GoogleFonts.roboto(
-            fontSize: SizeConfig(context, 12).getProportionateScreenHeight,
+            fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
             color: const Color(0XFF757678),
           ),
           strutStyle: const StrutStyle(forceStrutHeight: true),

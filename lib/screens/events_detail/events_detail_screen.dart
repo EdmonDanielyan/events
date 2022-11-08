@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
+import 'package:ink_mobile/components/html.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_state.dart';
-import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/event_data.dart';
 
@@ -169,38 +168,7 @@ class EventDetailScreen extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Html(
-                data: event.detailText ?? '',
-                onLinkTap: (
-                  String? url,
-                  RenderContext context,
-                  Map<String, String> attributes,
-                  _,
-                ) {
-                  launchUrl(url!);
-                },
-                style: {
-                  //
-                  "a": Style(
-                      color: Colors.blue, textDecoration: TextDecoration.none),
-                  "b": Style(
-                    fontWeight: FontWeight.normal,
-                    fontSize: FontSize(
-                      SizeConfig(context, 12.0).getProportionateScreenHeight,
-                    ),
-                  ),
-                  "p": Style(
-                    fontSize: FontSize(
-                      SizeConfig(context, 12.0).getProportionateScreenHeight,
-                    ),
-                  ),
-                  "li": Style(
-                    fontSize: FontSize(
-                      SizeConfig(context, 12.0).getProportionateScreenHeight,
-                    ),
-                  )
-                },
-              ),
+              child: CustomHtml(data: event.detailText),
             ),
             Container(
               padding: EdgeInsets.only(bottom: 30, top: 20),

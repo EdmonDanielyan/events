@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/components/html.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
-import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class Content extends StatefulWidget {
@@ -46,35 +44,7 @@ class _ContentState extends State<Content> {
       padding: EdgeInsets.only(left: 10, right: 10),
       child: Column(
         children: [
-          Html(
-            data: widget.text,
-            customRenders: {
-              tableMatcher(): tableRender(),
-            },
-            onLinkTap: (
-              String? url,
-              RenderContext context,
-              Map<String, String> attributes,
-              _,
-            ) {
-              launchUrl(url!);
-            },
-            style: {
-              "a": Style(
-                  color: Colors.blue,
-                  textDecoration: TextDecoration.none,
-                  fontSize: FontSize(
-                      SizeConfig(context, 18.0).getProportionateScreenHeight)),
-              "b": Style(
-                  fontWeight: FontWeight.normal,
-                  fontSize: FontSize(
-                      SizeConfig(context, 18.0).getProportionateScreenHeight)),
-              "body": Style(
-                  fontWeight: FontWeight.normal,
-                  fontSize: FontSize(
-                      SizeConfig(context, 12.0).getProportionateScreenHeight)),
-            },
-          ),
+          CustomHtml(data: widget.text),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             child: Row(
