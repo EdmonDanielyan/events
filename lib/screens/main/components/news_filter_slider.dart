@@ -14,7 +14,7 @@ class NewsFilterSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     _strings = localizationInstance;
     return Container(
-      height: SizeConfig(context, 28.0).getProportionateScreenHeight,
+      height: SizeConfig(context, 32.0).getProportionateScreenHeight,
       margin: EdgeInsets.only(top: 8.0),
       child: getFilterListView(context),
     );
@@ -28,28 +28,24 @@ class NewsFilterSlider extends StatelessWidget {
         physics: AlwaysScrollableScrollPhysics(),
         addRepaintBoundaries: false,
         addSemanticIndexes: false,
-      
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return Container(
-            child: FilterSliderElement(
-              title: items[index].title,
-              onTap: () {
-                if (items[index].code == 'open_university') {
-                  Navigator.pushNamed(context, '/open_university');
-                } else {
-                  Navigator.pushNamed(context, '/news_list',
-                      arguments: {'filter': items[index].code});
-                }
-              },
-              isSelected: false,
-              selectedColor: Colors.white,
-              selectedTextStyle: TextStyle(
-                fontSize:
-                    SizeConfig(context, 16.0).getProportionateScreenHeight,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+          return FilterSliderElement(
+            title: items[index].title,
+            onTap: () {
+              if (items[index].code == 'open_university') {
+                Navigator.pushNamed(context, '/open_university');
+              } else {
+                Navigator.pushNamed(context, '/news_list',
+                    arguments: {'filter': items[index].code});
+              }
+            },
+            isSelected: false,
+            selectedColor: Colors.white,
+            selectedTextStyle: TextStyle(
+              fontSize: SizeConfig(context, 16.0).getProportionateScreenHeight,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
           );
         },
