@@ -29,12 +29,9 @@ class _HeaderState extends State<Header> {
 
     if (widget.videoLinks != null && widget.videoLinks!.isNotEmpty) {
       for (final link in widget.videoLinks!) {
-        if (link.isNotEmpty) {
+        if (link.isNotEmpty && link.contains("mp4")) {
           BetterPlayerDataSource betterPlayerDataSource =
-              BetterPlayerDataSource(
-            BetterPlayerDataSourceType.network,
-            link,
-          );
+              BetterPlayerDataSource(BetterPlayerDataSourceType.network, link);
           final _controller = BetterPlayerController(
             BetterPlayerConfiguration(
               controlsConfiguration: BetterPlayerControlsConfiguration(
