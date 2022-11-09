@@ -16,7 +16,7 @@ class MainApiProvider extends MainApiClient {
     return HttpClient(context: securityContext);
   }
 
-  MainApiProvider() : super(basePathOverride: UrlsConfig.debugUrl) {
+  MainApiProvider() : super(basePathOverride: UrlsConfig.apiUrl) {
     dio.options.connectTimeout = API_CONNECT_TIMEOUT_MS;
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         _sslPinnedHttpClient;
