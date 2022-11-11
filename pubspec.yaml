@@ -67,7 +67,7 @@ dependencies:
     json_annotation: ^4.4.0
     flutter_native_text_input:
         path: "./custom/libs/native_text_input"
-    cached_network_image: ^3.2.0
+    cached_network_image: ^3.2.2
     emoji_picker_flutter: ^1.5.0
     flutter_emoji: ^2.4.0
     pinput: ^2.2.5

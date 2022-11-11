@@ -13,7 +13,7 @@ import 'package:ink_mobile/setup.dart';
 
 import 'package:ink_mobile/extensions/birthday_success.dart';
 
-@injectable
+@LazySingleton()
 class BirthdaysCubit extends Cubit<BirthdaysState> {
   BirthdaysCubit() : super(BirthdaysState(type: BirthdaysStateType.LOADING));
 
@@ -27,12 +27,12 @@ class BirthdaysCubit extends Cubit<BirthdaysState> {
       final _errorHandler = DioErrorHandler(e: e);
 
       if (_errorHandler.isEmpty()) {
-        emitEmpty();
+        _emitEmpty();
         return;
       }
 
       ErrorModel error = _errorHandler.call();
-      emitError(error.msg);
+      _emitError(error.msg);
       throw error.exception;
     }
   }
@@ -48,26 +48,28 @@ class BirthdaysCubit extends Cubit<BirthdaysState> {
     );
   }
 
-  void emitEmpty() {
-    emitState(
+  void _emitEmpty() {
+    _emitState(
       type: BirthdaysStateType.EMPTY,
     );
   }
 
-  void emitError(String errorMsg) {
-    emitState(type: BirthdaysStateType.ERROR, errorMessage: errorMsg);
+  void _emitError(String errorMsg) {
+    _emitState(type: BirthdaysStateType.ERROR, errorMessage: errorMsg);
   }
 
-  void emitState(
-      {required BirthdaysStateType type,
-      List<BirthdayData>? birthdaysToday,
-      List<BirthdayData>? birthdaysOther,
-      String? errorMessage}) {
+  void _emitState({
+    required BirthdaysStateType type,
+    List<BirthdayData>? birthdaysToday,
+    List<BirthdayData>? birthdaysOther,
+    String? errorMessage,
+  }) {
     emit(BirthdaysState(
-        type: type,
-        birthdaysToday: birthdaysToday,
-        birthdaysOther: birthdaysOther,
-        errorMessage: errorMessage));
+      type: type,
+      birthdaysToday: birthdaysToday,
+      birthdaysOther: birthdaysOther,
+      errorMessage: errorMessage,
+    ));
   }
 
   void refresh() {

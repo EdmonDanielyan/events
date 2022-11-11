@@ -3,7 +3,6 @@ import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_ba
 import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_cubit.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
-import 'package:ink_mobile/cubit/birthdays/birthdays_cubit.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart';
 import 'package:ink_mobile/cubit/events_list/events_list_cubit.dart';
 import 'package:ink_mobile/cubit/learning_materials_list/learning_materials_list_cubit.dart';
@@ -104,9 +103,7 @@ class MainRoutes {
     '/christmas_gifts': (BuildContext context) => ChristmasGifts(),
     '/recreational_activities': (BuildContext context) =>
         RecreationalActivities(),
-    '/birthdays': (BuildContext context) => BirthdaysScreen(
-          birthdaysCubit: getIt<BirthdaysCubit>(),
-        ),
+    '/birthdays': (BuildContext context) => BirthdaysScreen(),
     '/open_university': (BuildContext context) => OpenUniversityScreen(
           eventsListCubit: getIt<EventsListCubit>(),
           learningMaterialsListCubit: getIt<LearningMaterialsListCubit>(),

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:ink_mobile/constants/aseets.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
@@ -13,6 +10,8 @@ import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_avatar.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_body.dart';
 import 'package:ink_mobile/setup.dart';
+
+import 'congratulate.dart';
 
 class BirthdayTodayElement extends StatelessWidget {
   final int index;
@@ -83,39 +82,10 @@ class BirthdayTodayElement extends StatelessWidget {
               ),
             ),
             if (birthday.id != JwtPayload.myId) ...[
-              _congratulateWidget(context),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _congratulateWidget(BuildContext context) {
-    return InkWell(
-      onTap: () => _congratulate(context),
-      child: Container(
-        padding: const EdgeInsets.all(9.0),
-        margin: const EdgeInsets.only(right: 1.0),
-        color: Theme.of(context).primaryColor,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 12),
-            SizedBox(
-              width: SizeConfig(context, 35).getProportionateScreenHeight,
-              height: SizeConfig(context, 32.0).getProportionateScreenHeight,
-              child: SvgPicture.asset(GIFT_ICON_SVG, color: Colors.white),
-            ),
-            const SizedBox(height: 3.0),
-            Text(
-              localizationInstance.congratulate,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: SizeConfig(context, 10).getProportionateScreenHeight,
+              BirthdayCongratulate(
+                onTap: () => _congratulate(context),
               ),
-            ),
-            const SizedBox(height: 12),
+            ],
           ],
         ),
       ),

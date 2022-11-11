@@ -7,9 +7,8 @@ class FilterSliderElement extends StatelessWidget {
   final bool isSelected;
   final Color selectedColor;
   final Color unselectedColor;
-  final TextStyle selectedTextStyle;
+  final TextStyle? selectedTextStyle;
   final TextStyle? unselectedTextStyle;
-
   const FilterSliderElement({
     Key? key,
     required this.title,
@@ -17,38 +16,37 @@ class FilterSliderElement extends StatelessWidget {
     this.isSelected = false,
     this.selectedColor = Colors.green,
     this.unselectedColor = Colors.white,
-    this.selectedTextStyle = const TextStyle(
-      color: Colors.white,
-    ),
+    this.selectedTextStyle,
     this.unselectedTextStyle,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final buttonStyle = ButtonStyle(
-      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18.0),
-        side: BorderSide(color: const Color.fromARGB(255, 13, 133, 17)),
-      )),
-      backgroundColor: MaterialStateProperty.all(Color(0xFFFAFAFA)),
-    );
-
     return TextButton(
-        onPressed: () {
-          onTap();
-        },
-        child: Text(
-          title,
-          style: isSelected
-              ? selectedTextStyle
-              : (unselectedTextStyle ??
-                  TextStyle(
-                    color: const Color.fromARGB(255, 13, 133, 17),
-                    fontSize:
-                        SizeConfig(context, 13.0).getProportionateScreenHeight,
-                  )),
+      onPressed: () {
+        onTap();
+      },
+      child: Text(
+        title,
+        style: isSelected
+            ? TextStyle(
+                color: Colors.white,
+                fontSize:
+                    SizeConfig(context, 13.0).getProportionateScreenHeight,
+              )
+            : TextStyle(
+                color: Colors.black,
+                fontSize:
+                    SizeConfig(context, 13.0).getProportionateScreenHeight,
+              ),
+      ),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(
+          isSelected ? selectedColor : unselectedColor,
         ),
-        style: isSelected ? buttonStyle : buttonStyle);
+        padding: MaterialStateProperty.all<EdgeInsets>(
+            EdgeInsets.symmetric(horizontal: 8)),
+      ),
+    );
   }
 }

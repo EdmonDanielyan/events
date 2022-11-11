@@ -12,15 +12,20 @@ import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_other_days_element.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_today_element.dart';
+import 'package:ink_mobile/screens/birthdays/components/birthdays_listview_builder.dart';
 import 'package:ink_mobile/setup.dart';
 
 import '../../messenger/functions/size_config.dart';
-import 'components/birthday_title.dart';
 
-class BirthdaysScreen extends StatelessWidget {
-  final BirthdaysCubit birthdaysCubit;
-  const BirthdaysScreen({Key? key, required this.birthdaysCubit})
-      : super(key: key);
+class BirthdaysScreen extends StatefulWidget {
+  const BirthdaysScreen({Key? key}) : super(key: key);
+
+  @override
+  State<BirthdaysScreen> createState() => _BirthdaysScreenState();
+}
+
+class _BirthdaysScreenState extends State<BirthdaysScreen> {
+  final uiCuibt = getIt<BirthdaysCubit>();
 
   void _setUsersToCache(BirthdaysState state) {
     List<User> users = [];
@@ -45,6 +50,12 @@ class BirthdaysScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    uiCuibt.load();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
 
@@ -59,7 +70,7 @@ class BirthdaysScreen extends StatelessWidget {
             _setUsersToCache(state);
           }
         },
-        bloc: birthdaysCubit,
+        bloc: uiCuibt,
         builder: (context, state) {
           switch (state.type) {
             case (BirthdaysStateType.EMPTY):
@@ -77,10 +88,6 @@ class BirthdaysScreen extends StatelessWidget {
 
             case (BirthdaysStateType.LOADED):
               {
-                List<Widget> bdaysToday =
-                    _getBirthdaysToday(context, state.birthdaysToday!);
-                List<Widget> bdaysOther =
-                    _getBirthdaysOther(context, state.birthdaysOther!);
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -115,75 +122,29 @@ class BirthdaysScreen extends StatelessWidget {
                       ),
                       /* Дни рождения сегодня*/
                       state.birthdaysToday!.length > 0
-                          ? Container(
-                              alignment: Alignment.bottomLeft,
-                              margin: EdgeInsets.only(top: 25),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  BirthdayTitle(_strings.today.toUpperCase()),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border(
-                                          top: BorderSide(
-                                              width: 1,
-                                              color: Color(0xFFE5E5E5)),
-                                          bottom: BorderSide(
-                                              width: 1,
-                                              color: Color(0xFFE5E5E5)),
-                                        )),
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      controller: ScrollController(
-                                          keepScrollOffset: false),
-                                      itemCount: bdaysToday.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) =>
-                                              bdaysToday[index],
-                                    ),
-                                  )
-                                ],
-                              ),
+                          ? BirthdaysListViewBuilder(
+                              title: _strings.today.toUpperCase(),
+                              itemCount: state.birthdaysToday!.length,
+                              itemBuilder: (index) {
+                                return BirthdayTodayElement(
+                                  index: index,
+                                  birthday: state.birthdaysToday![index],
+                                );
+                              },
                             )
-                          : Container(),
+                          : SizedBox(),
                       /* Дни рождения в ближайшие дни*/
                       state.birthdaysOther!.length > 0
-                          ? Container(
-                              alignment: Alignment.bottomLeft,
-                              margin: EdgeInsets.only(top: 25),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  BirthdayTitle(
-                                      _strings.inComingDays.toUpperCase()),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border(
-                                          top: BorderSide(
-                                              width: 1,
-                                              color: Color(0xFFE5E5E5)),
-                                          bottom: BorderSide(
-                                              width: 1,
-                                              color: Color(0xFFE5E5E5)),
-                                        )),
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      controller: ScrollController(
-                                          keepScrollOffset: false),
-                                      itemCount: bdaysOther.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) =>
-                                              bdaysOther[index],
-                                    ),
-                                  )
-                                ],
-                              ),
+                          ? BirthdaysListViewBuilder(
+                              title: _strings.inComingDays.toUpperCase(),
+                              itemCount: state.birthdaysOther!.length,
+                              itemBuilder: (index) {
+                                return BirthdayOtherDaysElement(
+                                  birthday: state.birthdaysOther![index],
+                                );
+                              },
                             )
-                          : Container(),
+                          : SizedBox(),
                     ],
                   ),
                 );
@@ -191,14 +152,13 @@ class BirthdaysScreen extends StatelessWidget {
 
             case (BirthdaysStateType.LOADING):
               {
-                birthdaysCubit.load();
                 return InkPageLoader();
               }
 
             case (BirthdaysStateType.ERROR):
               {
                 return ErrorRefreshButton(
-                  onTap: birthdaysCubit.refresh,
+                  onTap: () => uiCuibt.load(),
                   text: state.errorMessage!,
                 );
               }
@@ -207,47 +167,5 @@ class BirthdaysScreen extends StatelessWidget {
       ),
       bottomNavigationBar: const NewBottomNavBar(),
     );
-  }
-
-  List<Widget> _getBirthdaysToday(
-      BuildContext context, List<BirthdayData>? birthdaysData) {
-    List<Widget> birthdays = [];
-
-    int i = 0;
-
-    birthdaysData?.forEach((birthday) {
-      birthdays.add(BirthdayTodayElement(
-        birthday: birthday,
-        index: i,
-      ));
-
-      birthdays.add(Divider(
-        thickness: 1,
-        height: 4,
-      ));
-      i++;
-    });
-
-    if (birthdays.length > 0) birthdays.removeLast();
-
-    return birthdays;
-  }
-
-  List<Widget> _getBirthdaysOther(
-      BuildContext context, List<BirthdayData>? birthdaysData) {
-    List<Widget> birthdays = [];
-
-    birthdaysData?.forEach((birthday) {
-      birthdays.add(BirthdayOtherDaysElement(birthday: birthday));
-
-      birthdays.add(Divider(
-        thickness: 1,
-        height: 4,
-      ));
-    });
-
-    if (birthdays.length > 0) birthdays.removeLast();
-
-    return birthdays;
   }
 }

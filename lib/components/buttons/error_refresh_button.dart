@@ -5,18 +5,16 @@ import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class ErrorRefreshButton extends StatelessWidget {
   final bool isTablet;
-
-  const ErrorRefreshButton(
-      {Key? key,
-      required this.onTap,
-      this.buttonText = 'Обновить',
-      this.text = ErrorMessages.SIMPLE_ERROR_MESSAGE,
-      this.isTablet = false})
-      : super(key: key);
-
-  final Function onTap;
+  final void Function() onTap;
   final String buttonText;
   final String text;
+  const ErrorRefreshButton({
+    Key? key,
+    required this.onTap,
+    this.buttonText = 'Обновить',
+    this.text = ErrorMessages.SIMPLE_ERROR_MESSAGE,
+    this.isTablet = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +29,12 @@ class ErrorRefreshButton extends StatelessWidget {
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color?>(
                   Theme.of(context).primaryColor)),
-          onPressed: () {
-            onTap();
-          },
+          onPressed: onTap,
           child: Text(
-            
             _strings.reload,
-            style: TextStyle(color: Colors.white, fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
           ),
         )
       ],
