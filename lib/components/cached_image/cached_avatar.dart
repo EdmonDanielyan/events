@@ -30,7 +30,7 @@ class CachedCircleAvatar extends StatelessWidget {
         SizedBox(
           width: avatarWidth,
           height: avatarHeight,
-          child: isStringUrl(url)
+          child: isStrPicture(url)
               ? CachedNetworkImage(
                   imageUrl: url,
                   fit: BoxFit.cover,
