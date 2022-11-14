@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,22 +13,21 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:ink_mobile/app.dart';
-import 'package:ink_mobile/assets/constants.dart';
-import 'package:ink_mobile/exceptions/custom_exceptions.dart';
-import 'package:ink_mobile/functions/errors.dart';
-import 'package:ink_mobile/handlers/error_catcher.dart';
+import 'package:ink_mobile/firebase_options.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/providers/global_providers.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/themes/light.dart';
-import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
   runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+    setupCrashlytics();
+
     HttpOverrides.global = MyHttpOverrides();
     final storage = await HydratedStorage.build(
       storageDirectory: kIsWeb
@@ -41,15 +43,17 @@ void main() async {
       },
       storage: storage,
     );
-  }, (Object error, StackTrace stack) {
-    if (error is CustomException) {
-      ErrorCatcher catcher = ErrorCatcher.getInstance();
-      catcher.onError(error, stack);
-    } else {
-      Logger('general').severe('Unexpected error', error, stack);
-      showErrorDialog(ErrorMessages.UNKNOWN_ERROR_MESSAGE);
-    }
+  }, (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack);
   });
+
+  Isolate.current.addErrorListener(RawReceivePort((pair) async {
+    final List<dynamic> errorAndStacktrace = pair;
+    await FirebaseCrashlytics.instance.recordError(
+      errorAndStacktrace.first,
+      errorAndStacktrace.last,
+    );
+  }).sendPort);
 }
 
 class InkMobile extends StatelessWidget {

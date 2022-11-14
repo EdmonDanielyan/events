@@ -62,7 +62,7 @@ dependencies:
     remove_emoji: ^0.0.6
     keyboard_dismisser: ^2.0.1
     easy_debounce: ^2.0.2+1
-    firebase_messaging: ^11.2.5
+    firebase_messaging: ^14.1.0
     uuid: ^3.0.6
     json_annotation: ^4.4.0
     flutter_native_text_input:
@@ -87,6 +87,8 @@ dependencies:
     flutter_bbcode: ^1.2.0
     flutter_html_table: ^3.0.0-alpha.4
     video_player: ^2.4.7
+    firebase_crashlytics: ^3.0.5
+    firebase_core: ^2.2.0
 
 dev_dependencies:
     flutter_test:

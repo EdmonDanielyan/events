@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "127480352333",
+    "project_id": "ink-mobile-14dff",
+    "storage_bucket": "ink-mobile-14dff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127480352333:android:6809fdb823086b27425604",
+        "android_client_info": {
+          "package_name": "ru.irkutskoil.portal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127480352333-rsi8hbk5ocjddf20ee5uthkmu85s1mqo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCm3gXcbVHXGskRLCgZpGg2pFUqzEPdVFY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127480352333-rsi8hbk5ocjddf20ee5uthkmu85s1mqo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "127480352333-o4fqvuasovuvth36vr0mtk51blt5pcag.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ru.irkutskoil.portal"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

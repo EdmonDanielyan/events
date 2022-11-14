@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -9,6 +10,7 @@ import 'package:ink_mobile/messenger/providers/notifications.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/providers/secure_storage.dart';
 import 'package:logging/logging.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import 'setup.config.dart';
 
@@ -42,15 +44,13 @@ Future<void> setup({
   await $initGetIt(getIt, environment: scope);
   setupI18n(getIt);
 
+  setupCrashlytics();
+
   setupLogging(
     getIt<FileLogAppender>(),
     //todo: Убрать подробное логирование перед публикаций в сторы
     forceLevel: Level.ALL,
   );
-
-  FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.dumpErrorToConsole(details);
-  };
 
   await getIt<LocalNotificationsProvider>().load();
 
@@ -68,12 +68,19 @@ Future<void> fcmSetup({
   WidgetsFlutterBinding.ensureInitialized();
   await $initGetIt(getIt, environment: scope);
 
-  setupLogging(getIt<FileLogAppender>(),
-      //todo: Убрать подробное логирование перед публикаций в сторы
-      forceLevel: Level.ALL);
+  setupLogging(
+    getIt<FileLogAppender>(),
+    forceLevel: Level.WARNING,
+  );
 
-  FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.dumpErrorToConsole(details);
-  };
   await getIt<PackageInfoProvider>().load();
+}
+
+Future<void> setupCrashlytics() async {
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 }
