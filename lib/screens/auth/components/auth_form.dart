@@ -31,7 +31,7 @@ class AuthForm extends StatelessWidget {
               ),
             ),
             style: TextStyle(
-              fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+              fontSize: SizeConfig(context, 15).getProportionateScreenHeight,
             ),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (val) => val!.isEmpty ? _strings.fillTheField : null,

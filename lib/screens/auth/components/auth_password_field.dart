@@ -39,7 +39,7 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: _obscureText,
       style: TextStyle(
-        fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+        fontSize: SizeConfig(context, 15).getProportionateScreenHeight,
       ),
       decoration: InputDecoration(
         labelText: _strings.password,

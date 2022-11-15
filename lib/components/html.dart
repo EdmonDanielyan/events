@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:ink_mobile/components/webview_screen.dart';
+import 'package:ink_mobile/functions/files.dart';
+import '../functions/launch_url.dart';
 import '../messenger/functions/size_config.dart';
 
 class CustomHtml extends StatelessWidget {
@@ -19,11 +21,15 @@ class CustomHtml extends StatelessWidget {
         __,
       ) {
         if (url != null) {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (BuildContext context) =>  WebviewScreen(url),
-            ),
-          );
+          if (isStringHttpUrl(url)) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) => WebviewScreen(url),
+              ),
+            );
+          } else {
+            launchUrl(url);
+          }
         }
       },
       customRenders: {
