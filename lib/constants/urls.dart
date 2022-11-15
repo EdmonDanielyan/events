@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class UrlsConfig {
   static const prodUrl = "https://portal.irkutskoil.ru/api/v1/";
   static const debugUrl = "https://test.ink.vpool.qsoft.ru/api/v1";
@@ -10,8 +12,8 @@ class UrlsConfig {
     "https://ink.vpool.qsoft.ru/api/v1"
   };
 
-  static String get apiUrl => debugUrl; // kDebugMode ? debugUrl : prodUrl;
-  static String get wsUrl => wsDebugUrl; // kDebugMode ? wsDebugUrl : wsProdUrl;
-  static String get messengerApiUrl => messengerApiUrls
-      .last; // kDebugMode ? messengerApiUrls.last : messengerApiUrls.first;
+  static String get apiUrl => kDebugMode ? debugUrl : prodUrl;
+  static String get wsUrl => kDebugMode ? wsDebugUrl : wsProdUrl;
+  static String get messengerApiUrl =>
+      kDebugMode ? messengerApiUrls.last : messengerApiUrls.first;
 }
