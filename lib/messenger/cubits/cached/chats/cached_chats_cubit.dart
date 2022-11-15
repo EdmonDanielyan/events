@@ -165,17 +165,12 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
   }
 
   void cleanChat(int id) {
-    final chat = chats.firstWhereOrNull((element) => element.id == id);
+    final currentChats = List<Chat>.from(chats);
+    final chat = currentChats.firstWhereOrNull((element) => element.id == id);
     if (chat != null) {
-      emit(
-        state.copyWith(
-          chats: List.from(chats)
-            ..removeWhere((element) => element.id == id)
-            ..add(
-              chat.copyWith(messages: [], updatedAt: DateTime.now()),
-            ),
-        ),
-      );
+      currentChats.removeWhere((element) => element.id == id);
+      currentChats.add(chat.copyWith(messages: [], updatedAt: DateTime.now()));
+      emit(state.copyWith(chats: currentChats));
     }
   }
 

@@ -43,6 +43,7 @@ class PinCodeTextField extends StatelessWidget {
       onChanged: onChanged,
       onCompleted: onCompleted,
       obscureText: true,
+      autofocus: true,
     );
   }
 }

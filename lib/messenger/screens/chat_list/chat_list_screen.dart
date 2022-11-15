@@ -16,7 +16,6 @@ import 'package:ink_mobile/messenger/screens/chat_list/components/empty_chats.da
 import 'package:ink_mobile/messenger/screens/chat_list/components/search_bar.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
 import 'components/builder.dart';
 import 'components/hidden_chats_builder.dart';
 
@@ -131,7 +130,8 @@ class _ChatListState extends State<ChatList> {
                           ? hiddenchatsCubit.filterChats(searchState.items)
                           : hiddenchatsCubit.filterChats(state.chats);
 
-                      _chats.removeWhere((element) => element.messages.isEmpty);
+                      _chats.removeWhere((element) =>
+                          element.isSingle && element.messages.isEmpty);
 
                       _chats = _chats.toSet().toList();
 

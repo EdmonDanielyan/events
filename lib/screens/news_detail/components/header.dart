@@ -1,11 +1,11 @@
 import 'package:better_player/better_player.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/video_player/video_player.dart';
 import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
+import 'package:optimized_cached_image/optimized_cached_image.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -150,7 +150,7 @@ class _HeaderState extends State<Header> {
       images.forEach((image) {
         imagesContainer.add(Stack(
           children: [
-            CachedNetworkImage(
+            OptimizedCacheImage(
               imageUrl: image,
               placeholder: (context, _) {
                 return Shimmer.fromColors(

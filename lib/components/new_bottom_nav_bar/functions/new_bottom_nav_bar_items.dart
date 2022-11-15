@@ -93,7 +93,10 @@ class ServicesBottomNavBarItem extends NavBottomNavBarItem {
   void onTap(BuildContext context, Function onChanged, int index) {
     NavigationUtils(context).popToFirstScreenIfCan();
     onChanged(index);
-    ServiceListPageViewerState.pageViewer.pageController.jumpToPage(0);
+
+    if (ServiceListPageViewerState.pageViewer.pageController.hasClients) {
+      ServiceListPageViewerState.pageViewer.pageController.jumpToPage(0);
+    }
   }
 }
 

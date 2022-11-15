@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/validators/validators/text_validator.dart';
+import 'package:optimized_cached_image/optimized_cached_image.dart';
 import '../../functions/size_config.dart';
 import 'avatar_file.dart';
 import 'avatar_indicator.dart';
@@ -33,7 +33,7 @@ class CachedCircleAvatar extends StatelessWidget {
 
     final validator = TextValidator(url);
     if (validator.hasHttp() && validator.isStringUrl()) {
-      _child = CachedNetworkImage(
+      _child = OptimizedCacheImage(
         imageUrl: url,
         fadeInDuration: fadeInDuration,
         fit: BoxFit.cover,

@@ -49,10 +49,10 @@ class ChatInfoOpener {
   }
 
   void _onChatClean(BuildContext context, Chat chat) {
-    cachedChatsCubit.cleanChat(chat.id);
     if (chat.messages.isNotEmpty) {
       getIt<HiddenMessagesCubit>().add(chat.messages.map((e) => e.id).toList());
     }
+    cachedChatsCubit.cleanChat(chat.id);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 

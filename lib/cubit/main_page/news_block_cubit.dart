@@ -32,7 +32,6 @@ class NewsBlockCubit extends Cubit<NewsBlockState> {
       ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);
-      throw error.exception;
     } on Exception catch (_) {
       emitError(localizationInstance.errorOccurred);
       throw UnknownErrorException();
