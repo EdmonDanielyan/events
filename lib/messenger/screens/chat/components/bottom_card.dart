@@ -60,8 +60,10 @@ class _MessageBottomCardState extends State<MessageBottomCard> {
 
     if (msg.body.isNotEmpty && selectedChats.isNotEmpty) {
       widget.onMessageSend(msg, selectedChats.last);
-      widget.scrollController
-          .scrollTo(index: 0, duration: const Duration(milliseconds: 300));
+      if (widget.scrollController.isAttached) {
+        widget.scrollController
+            .scrollTo(index: 0, duration: const Duration(milliseconds: 300));
+      }
     }
 
     if (isResponse) {

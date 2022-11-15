@@ -1,12 +1,11 @@
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
-
-import '../../../constants/urls.dart';
+import 'package:ink_mobile/constants/urls.dart';
 import 'base_url_state.dart';
 
 @singleton
 class BaseUrlCubit extends HydratedCubit<BaseUrlState> {
-  BaseUrlCubit() : super(BaseUrlState(url: Urls.baseUrls.first));
+  BaseUrlCubit() : super(BaseUrlState(url: UrlsConfig.messengerApiUrl));
 
   String get url => state.url;
 

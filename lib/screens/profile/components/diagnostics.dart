@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/core/logging/send_log.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -58,8 +59,7 @@ class _DiagnosticsState extends State<Diagnostics> {
                               .getProportionateScreenHeight),
                     ),
                     trailing: Icon(Icons.arrow_forward_ios),
-                    onTap: () =>
-                        launchUrl('https://portal.irkutskoil.ru/login/report/'),
+                    onTap: () => launchUrl(UrlsConfig.supportUrl),
                   )),
               if (kDebugMode) ...[
                 Container(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/constants/important_urls.dart';
+import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/core/logging/send_log.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -37,8 +38,7 @@ class _BodyState extends State<Body> {
               child: Column(
                 children: [
                   GestureDetector(
-                    onTap: () {
-                    },
+                    onTap: () {},
                     child: SvgPicture.asset(
                       'assets/images/logo.svg',
                       semanticsLabel: 'INK Logo',
@@ -127,7 +127,12 @@ class _BodyState extends State<Body> {
                   ),
                   const SizedBox(height: 10.0),
                   SignInInstructions(),
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 10.0),
+                  SignInInstructions(
+                    txt: _strings.techSupport,
+                    link: UrlsConfig.supportUrl,
+                  ),
+                  const SizedBox(height: 10.0),
                   SignInInstructions(
                     txt: _strings.confPolicy,
                     link: ImportantUrls.policyConf,
