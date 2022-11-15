@@ -6,6 +6,7 @@ import 'package:ink_mobile/setup.dart';
 import '../../../model/chat.dart';
 import '../../../model/message.dart';
 import '../../../model/user.dart';
+import '../chat_users_picker/chat_users_picker_cubit.dart';
 import 'cached_chats_state.dart';
 import 'package:collection/collection.dart';
 
@@ -401,4 +402,7 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
       CachedChatsState.fromMap(json);
   @override
   Map<String, dynamic>? toJson(CachedChatsState state) => state.toMap();
+
+  @override
+  String get id => CHATS_UNIQUE_KEY;
 }

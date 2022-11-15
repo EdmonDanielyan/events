@@ -5,6 +5,8 @@ import '../../../model/chat.dart';
 import '../../../model/user.dart';
 import 'chat_users_picker_state.dart';
 
+const CHATS_UNIQUE_KEY = "unique_key_3";
+
 @singleton
 class ChatUsersPickerCubit extends HydratedCubit<ChatUsersPickerState> {
   ChatUsersPickerCubit() : super(const ChatUsersPickerState(users: []));
@@ -61,4 +63,7 @@ class ChatUsersPickerCubit extends HydratedCubit<ChatUsersPickerState> {
 
   @override
   Map<String, dynamic>? toJson(ChatUsersPickerState state) => state.toMap();
+
+  @override
+  String get id => CHATS_UNIQUE_KEY;
 }

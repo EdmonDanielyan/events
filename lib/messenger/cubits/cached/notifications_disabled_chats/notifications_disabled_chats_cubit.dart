@@ -1,6 +1,7 @@
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../chat_users_picker/chat_users_picker_cubit.dart';
 import 'notifications_disabled_chats_state.dart';
 
 @singleton
@@ -29,4 +30,7 @@ class NotificationsDisabledChatsCubit
   @override
   Map<String, dynamic>? toJson(NotificationsDisabledChatsState state) =>
       state.toMap();
+
+  @override
+  String get id => CHATS_UNIQUE_KEY;
 }

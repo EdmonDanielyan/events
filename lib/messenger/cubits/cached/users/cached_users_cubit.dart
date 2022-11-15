@@ -3,6 +3,8 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_state.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 
+import '../chat_users_picker/chat_users_picker_cubit.dart';
+
 @singleton
 class CachedUsersCubit extends HydratedCubit<CachedUsersState> {
   CachedUsersCubit()
@@ -32,6 +34,7 @@ class CachedUsersCubit extends HydratedCubit<CachedUsersState> {
   bool exists(int userId) {
     return users.indexWhere((element) => element.id == userId) >= 0;
   }
+
   void removeAndAddUser(User user, int userId) {
     final _newUsers = List<User>.from(users)
       ..removeWhere((element) => element.id == userId)
@@ -74,4 +77,7 @@ class CachedUsersCubit extends HydratedCubit<CachedUsersState> {
 
   @override
   Map<String, dynamic>? toJson(CachedUsersState state) => state.toMap();
+
+  @override
+  String get id => CHATS_UNIQUE_KEY;
 }

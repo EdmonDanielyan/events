@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/messenger/cubits/cached/hidden_messages/hidden_messages_cubit.dart';
 
 import '../../../model/chat.dart';
+import '../chat_users_picker/chat_users_picker_cubit.dart';
 import 'hidden_chats_state.dart';
 
 @singleton
@@ -42,4 +43,7 @@ class HiddenChatsCubit extends HydratedCubit<HiddenChatsState> {
       HiddenChatsState.fromMap(json);
   @override
   Map<String, dynamic>? toJson(HiddenChatsState state) => state.toMap();
+
+  @override
+  String get id => CHATS_UNIQUE_KEY;
 }
