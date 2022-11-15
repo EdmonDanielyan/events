@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html_table/flutter_html_table.dart';
-
-import '../functions/launch_url.dart';
+import 'package:ink_mobile/components/webview_screen.dart';
 import '../messenger/functions/size_config.dart';
 
 class CustomHtml extends StatelessWidget {
@@ -15,12 +14,16 @@ class CustomHtml extends StatelessWidget {
       data: data ?? '',
       onLinkTap: (
         String? url,
-        RenderContext context,
+        RenderContext _,
         Map<String, String> attributes,
-        _,
+        __,
       ) {
         if (url != null) {
-          launchUrl(url);
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) =>  WebviewScreen(url),
+            ),
+          );
         }
       },
       customRenders: {
