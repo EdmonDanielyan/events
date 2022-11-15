@@ -10,6 +10,8 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>YES</string>
 	<key>CFBundleDisplayName</key>
 	<string>ИНК-Портал</string>
 	<key>CFBundleExecutable</key>
