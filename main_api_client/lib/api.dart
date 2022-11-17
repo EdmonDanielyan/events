@@ -42,8 +42,8 @@ class MainApiClient {
     if (dio == null) {
       BaseOptions options = new BaseOptions(
         baseUrl: basePathOverride ?? basePath,
-        connectTimeout: 5000,
-        receiveTimeout: 3000,
+        connectTimeout: 15000,
+        receiveTimeout: 15000,
       );
       this.dio = new Dio(options);
     }

@@ -272,6 +272,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                     if (chat == null) {
                       return const SizedBox();
                     }
+                    chat = chat.copyWith(
+                      messages: hiddenMessagesCubit.filter(chat.messages),
+                    );
                     chat.messages.sort((a, b) => a.id.compareTo(b.id));
                     final messages = chat.messages.reversed.toList();
 
@@ -315,7 +318,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                   message: _currentMessage,
                                   onDelete: widget.onMessageDelete != null
                                       ? (context) => widget.onMessageDelete!(
-                                          context, [_currentMessage], chat)
+                                          context, [_currentMessage], chat!)
                                       : null,
                                   onEdit: (context) => _onEdit(_currentMessage),
                                   onRespond: (context) =>
@@ -333,9 +336,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                         'id': _currentMessage.owner.id
                                       };
 
-                                      if (chat.isSingle) {
+                                      if (chat?.isSingle == true) {
                                         final oppositeUserId =
-                                            chat.getFirstNotMyId(
+                                            chat?.getFirstNotMyId(
                                                 widget.cachedChatsCubit.myId);
 
                                         if (oppositeUserId ==

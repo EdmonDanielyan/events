@@ -10,8 +10,11 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/screens/auth/components/sign_in_instructions.dart';
+import 'package:ink_mobile/screens/welcome/components/auth_btn.dart';
 import 'package:ink_mobile/screens/welcome/components/background.dart';
 import 'package:ink_mobile/setup.dart';
+
+import '../../../components/webview_screen.dart';
 
 class Body extends StatefulWidget {
   final PackageInfoProvider packageInfo;
@@ -66,28 +69,24 @@ class _BodyState extends State<Body> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/auth');
-                      },
-                      child: Text(
-                        _strings.signIn,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: isTablet ? 23 : 19,
-                            fontWeight: FontWeight.bold),
+                  AuthBtn(
+                    title: _strings.signIn,
+                    onTap: () => Navigator.pushNamed(context, '/auth'),
+                    isTablet: isTablet,
+                  ),
+                  const SizedBox(height: 20.0),
+                  AuthBtn(
+                    title: _strings.aboutCompany,
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => WebviewScreen(
+                          UrlsConfig.aboutCompany,
+                          title: _strings.aboutCompany,
+                        ),
                       ),
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
-                          minimumSize: isTablet
-                              ? MaterialStateProperty.all<Size>(Size(500, 75))
-                              : MaterialStateProperty.all<Size>(Size(335, 50)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                          )))),
+                    ),
+                    isTablet: isTablet,
+                  ),
                   SizedBox(height: size.height * 0.01),
                   Row(
                     children: [
