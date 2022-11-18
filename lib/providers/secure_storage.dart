@@ -21,7 +21,7 @@ class SecureStorage {
     await _prefs.delete(key: TokenTypes.jwt.key);
     await _prefs.delete(key: TokenTypes.localDbToken.key);
     await _prefs.delete(key: TokenTypes.refresh.key);
-    //return _prefs.deleteAll();
+    await _prefs.deleteAll();
   }
 
   Future<void> write({required String key, required String value}) {

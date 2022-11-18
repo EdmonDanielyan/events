@@ -112,7 +112,9 @@ class _MenuSheetState extends State<MenuSheet> {
         onTap: () async {
           showDialog(
             context: context,
-            builder: (_) => ExitAlertDialog(),
+            builder: (_) => ExitAlertDialog(
+              onPressed: () => _exit(_),
+            ),
           );
         },
         icon: SvgPicture.asset(
@@ -126,7 +128,8 @@ class _MenuSheetState extends State<MenuSheet> {
 }
 
 class ExitAlertDialog extends StatefulWidget {
-  const ExitAlertDialog({Key? key}) : super(key: key);
+  final void Function()? onPressed;
+  const ExitAlertDialog({Key? key, required this.onPressed}) : super(key: key);
 
   @override
   _ExitAlertDialogState createState() => _ExitAlertDialogState();
@@ -174,7 +177,7 @@ class _ExitAlertDialogState extends State<ExitAlertDialog> {
               fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
             ),
           ),
-          onPressed: () => _exit(context),
+          onPressed: widget.onPressed,
           style: TextButton.styleFrom(
             foregroundColor: Colors.blue,
           ),
@@ -182,17 +185,18 @@ class _ExitAlertDialogState extends State<ExitAlertDialog> {
       ],
     );
   }
+}
 
-  Future<void> _exit(BuildContext context) async {
-    await getIt<LogoutCubit>().logout();
-    getIt<AppTokenProvider>().deleteToken();
-    getIt<LocalPinProvider>().removePin();
-    getIt<SecureStorage>().deleteAll();
-    getIt<MessengerProvider>().dispose();
-    getIt<CachedChatsCubit>().clean();
-    Token.deleteTokens();
-    FlutterSecureStorage().deleteAll();
+Future<void> _exit(BuildContext context) async {
+  getIt<LogoutCubit>().logout();
+  getIt<AppTokenProvider>().deleteToken();
+  getIt<LocalPinProvider>().removePin();
+  getIt<SecureStorage>().deleteAll();
+  getIt<MessengerProvider>().dispose();
+  getIt<CachedChatsCubit>().clean();
+  Token.deleteTokens();
+  FlutterSecureStorage().deleteAll();
 
-    Navigator.pushNamedAndRemoveUntil(context, '/init', (route) => true);
-  }
+  Navigator.of(context).popUntil((route) => route.isFirst);
+  Navigator.pushReplacementNamed(context, '/init');
 }
