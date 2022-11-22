@@ -19,7 +19,6 @@ class ReadMessagesHandler {
       if (msgIndex >= 0) {
         final notRead = messages
             .getRange(0, msgIndex + 1)
-            .toList()
             .where((element) => !element.isReadByMe(initiatorId))
             .toList();
 
@@ -30,13 +29,14 @@ class ReadMessagesHandler {
 
             if (index >= 0) {
               messages[index] = messages[index].copyWith(
-                readBy: List.from(messages[index].readBy)..add(initiatorId),
+                readBy: List<int>.from(messages[index].readBy)
+                  ..add(initiatorId),
               );
             }
           }
 
           final newChat = chat.copyWith(
-            messages: List.from([])..addAll(messages),
+            messages: List<Message>.from([])..addAll(messages),
           );
 
           chatsCubit.updateChatById(newChat, chat.id);

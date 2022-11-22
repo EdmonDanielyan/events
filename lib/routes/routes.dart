@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
 import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_cubit.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
-import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart';
 import 'package:ink_mobile/cubit/events_list/events_list_cubit.dart';
 import 'package:ink_mobile/cubit/learning_materials_list/learning_materials_list_cubit.dart';
@@ -57,9 +56,7 @@ class MainRoutes {
           packageInfoProvider: getIt<PackageInfoProvider>(),
         ),
     '/auth': (BuildContext context) => AuthScreen(
-          authCubit: getIt<AuthCubit>(),
           newBottomNavBarCubit: getIt<NewBottomNavBarCubit>(),
-          // chatDatabaseCubit: getIt<ChatDatabaseCubit>(),
         ),
     '/personal': (BuildContext context) => ProfileScreen(
         profileCubit: getIt(), logFile: getIt(instanceName: "logFile")),

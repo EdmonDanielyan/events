@@ -18,14 +18,18 @@ class _SetPinCodeScreenState extends State<SetPinCodeScreen> {
   final IntCubit _stageCubit = IntCubit(1);
   final TextEditingController _controller = TextEditingController();
   final LocalPinProvider _localPinProvider = LocalPinProvider();
+  final focusNode = FocusNode();
 
   String _pinCode1 = "";
   String _pinCode2 = "";
 
-  void _onComplete1() {
+  void _onComplete1(BuildContext context) {
     _stageCubit.setNew(2);
     _controller.clear();
     _pinCode2 = "";
+    Future.delayed(Duration(milliseconds: 200), () {
+      focusNode.requestFocus();
+    });
   }
 
   void _onComplete2(BuildContext context) {
@@ -64,6 +68,7 @@ class _SetPinCodeScreenState extends State<SetPinCodeScreen> {
                 Center(
                   child: PinCodeTextField(
                     controller: _controller,
+                    focusNode: focusNode,
                     errorBuilder: (str, str2) {
                       if (str2 == _pinCode1) return const SizedBox();
 
@@ -96,8 +101,9 @@ class _SetPinCodeScreenState extends State<SetPinCodeScreen> {
                         }
                       }
                     },
-                    onCompleted: (pin) =>
-                        state == 2 ? _onComplete2(context) : _onComplete1(),
+                    onCompleted: (pin) => state == 2
+                        ? _onComplete2(context)
+                        : _onComplete1(context),
                   ),
                 ),
                 const SizedBox(height: 10.0),

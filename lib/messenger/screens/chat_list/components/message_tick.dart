@@ -34,7 +34,8 @@ class MessageTick extends StatelessWidget {
     if (isRead) {
       asset = SvgPictures.doubleTick;
       color = readColor ?? const Color(0XFF5FB9CF);
-    } else if (status == MessageStatus.sending) {
+    } else if (status == MessageStatus.sending ||
+        status == MessageStatus.error) {
       asset = SvgPictures.clock;
       color = clockColor ?? const Color(0XFFBBBBBB);
     } else if (status == MessageStatus.sent) {

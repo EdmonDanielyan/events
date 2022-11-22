@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/screens/auth/components/auth_buttons.dart';
 import 'package:ink_mobile/screens/auth/components/auth_hint.dart';
 import 'package:ink_mobile/screens/auth/components/background.dart';
@@ -7,7 +8,11 @@ import 'package:ink_mobile/screens/auth/components/auth_title.dart';
 import 'auth_form.dart';
 
 class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
+  final AuthCubit authCubit;
+  const Body({
+    Key? key,
+    required this.authCubit,
+  }) : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
@@ -34,7 +39,9 @@ class _BodyState extends State<Body> {
                       AuthTitle(),
                     ],
                   ),
-                  AuthForm(),
+                  AuthForm(
+                    authCubit: widget.authCubit,
+                  ),
                   Expanded(
                     child: Stack(
                       clipBehavior: Clip.none,

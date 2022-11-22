@@ -161,6 +161,7 @@ class _ChatListState extends State<ChatList> {
                         itemPositionsListener: itemPositionsListener,
                         itemBuilder: (context, index) {
                           final _currentChat = _chats[index];
+                          _currentChat.sortMessagesByTime();
 
                           final _notReadMsgs =
                               cubit.notReadMsgsOfChat(_currentChat.id);

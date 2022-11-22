@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
 
 import '../../../messenger/functions/size_config.dart';
 
 class AuthPasswordField extends StatefulWidget {
+  final AuthCubit authCubit;
   const AuthPasswordField({
     Key? key,
+    required this.authCubit,
   }) : super(key: key);
 
   @override
@@ -32,7 +35,7 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
 
     return TextFormField(
       onChanged: (value) {
-        AuthScreen.of(context).authCubit.password = value;
+        widget.authCubit.password = value;
       },
       initialValue: AuthScreen.of(context).authCubit.password,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,

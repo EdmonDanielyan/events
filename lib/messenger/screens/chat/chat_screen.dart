@@ -28,7 +28,6 @@ import 'package:ink_mobile/messenger/screens/chat/components/message_card.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/selected_messages_builder.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
 import 'components/bottom_card.dart';
 import 'components/search_builder.dart';
 import 'components/search_textfield.dart';
@@ -95,9 +94,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
 
     if (widget.cachedChatsCubit.selectedChats.isNotEmpty) {
-      final messages = widget.cachedChatsCubit.selectedChats.last.messages;
-      if (messages.isNotEmpty) {
-        widget.readMessage(messages.last);
+      final selectedChat = widget.cachedChatsCubit.selectedChats.last;
+      selectedChat.sortMessagesByTime();
+      if (selectedChat.messages.isNotEmpty) {
+        final lastMessage = selectedChat.messages.last;
+        widget.readMessage(lastMessage);
       }
     }
 
@@ -275,7 +276,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                     chat = chat.copyWith(
                       messages: hiddenMessagesCubit.filter(chat.messages),
                     );
-                    chat.messages.sort((a, b) => a.id.compareTo(b.id));
+                    chat.sortMessagesByTime();
+
                     final messages = chat.messages.reversed.toList();
 
                     return BlocBuilder<SearchSelectCubit<Message>,

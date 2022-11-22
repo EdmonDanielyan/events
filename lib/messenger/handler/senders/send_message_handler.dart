@@ -47,6 +47,13 @@ class SendMessageHandler {
               )).call();
             }
           },
+          errorCallback: (err) {
+            chatsCubit.updateMessage(
+              message.copyWith(status: MessageStatus.error),
+              message.id,
+              message.chatId,
+            );
+          },
         ).call();
       }
     }

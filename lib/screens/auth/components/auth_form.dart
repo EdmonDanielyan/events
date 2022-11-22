@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
@@ -6,7 +7,8 @@ import 'package:ink_mobile/screens/auth/auth_screen.dart';
 import 'auth_password_field.dart';
 
 class AuthForm extends StatelessWidget {
-  AuthForm({Key? key}) : super(key: key);
+  final AuthCubit authCubit;
+  const AuthForm({Key? key, required this.authCubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +39,11 @@ class AuthForm extends StatelessWidget {
             validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
             initialValue: AuthScreen.of(context).authCubit.login,
             onChanged: (login) {
-              AuthScreen.of(context).authCubit.login = login;
+              authCubit.login = login;
             },
           ),
           SizedBox(height: size.height * 0.03),
-          AuthPasswordField(),
+          AuthPasswordField(authCubit: authCubit),
         ],
       ),
     );

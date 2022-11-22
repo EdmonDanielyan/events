@@ -9,6 +9,7 @@ class PinCodeTextField extends StatelessWidget {
   final void Function(String)? onChanged;
   final void Function(String)? onCompleted;
   final Widget Function(String?, String)? errorBuilder;
+  final FocusNode? focusNode;
   const PinCodeTextField({
     Key? key,
     this.controller,
@@ -16,12 +17,14 @@ class PinCodeTextField extends StatelessWidget {
     this.onCompleted,
     this.errorBuilder,
     this.validator,
+    this.focusNode,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Pinput(
       controller: controller,
+      focusNode: focusNode,
       errorBuilder: errorBuilder ??
           (str, str2) {
             return Padding(

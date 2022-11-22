@@ -4,16 +4,23 @@ import 'package:ink_mobile/messenger/cubits/custom/rest_cubit/rest_api_service_c
 import 'package:ink_mobile/messenger/cubits/custom/rest_cubit/rest_api_service_state.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 
+import '../../rest_client/error/error_response.dart';
+
 class SendMessageService {
   final Message message;
   final void Function(Message, String)? successCallback;
   final int myId;
-  const SendMessageService(this.message,
-      {this.successCallback, required this.myId});
+  final void Function(ErrorApiResponse?)? errorCallback;
+  const SendMessageService(
+    this.message, {
+    this.successCallback,
+    required this.myId,
+    this.errorCallback,
+  });
 
   Future<void> call() async {
     final service = RestApiServiceCubit(RestApiServiceState(load: _request));
-    await service.load();
+    await service.load(errorCallback: errorCallback);
   }
 
   Future<void> _request() async {

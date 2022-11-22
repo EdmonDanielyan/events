@@ -19,8 +19,8 @@ class ReadMessagesSenderHandler {
     await ReadMessagesService(
       lastMessage.id,
       successCallback: (token) {
+        ReadMessagesHandler(lastMessage, myId).call();
         if (!lastMessage.isReadByMe(myId)) {
-          ReadMessagesHandler(lastMessage, myId).call();
           ReadMessageSender(
             ReadMessageModel(
               lastMessage: lastMessage,
@@ -30,6 +30,7 @@ class ReadMessagesSenderHandler {
           ).call();
         }
       },
+      errorCallback: (error) {},
     ).call();
   }
 }

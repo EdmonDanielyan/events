@@ -89,8 +89,6 @@ class ChatScreenOpener {
   }
 
   void _readMessages(Message lastReadMessage) {
-    if (!lastReadMessage.isByMe(cachedChatsCubit.myId)) {
-      ReadMessagesSenderHandler(lastReadMessage, cachedChatsCubit.myId).call();
-    }
+    ReadMessagesSenderHandler(lastReadMessage, cachedChatsCubit.myId).call();
   }
 }

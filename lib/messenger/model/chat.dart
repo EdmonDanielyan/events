@@ -138,4 +138,8 @@ class Chat extends Equatable {
   bool isOwner(int id) {
     return ownerId == id;
   }
+
+  void sortMessagesByTime() {
+    messages.sort((a, b) => a.id.compareTo(b.id));
+  }
 }
