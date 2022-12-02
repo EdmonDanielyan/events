@@ -17,8 +17,10 @@
 1. Выполните сборку проекта:
 
     Для Android: 
-    
-    `flutter pub build apk --no-sound-null-safety`
+
+    `flutter build apk --no-sound-null-safety`
+    или, в случае, если сборка не работает
+    `flutter build apk --release --no-sound-null-safety --obfuscate --split-debug-info=./debug` 
     
     Для IOS:
     
