@@ -17,6 +17,7 @@ import 'package:ink_mobile/providers/global_providers.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/themes/light.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
@@ -41,6 +42,14 @@ void main() async {
       storage: storage,
     );
   }, (error, stack) {});
+
+  OneSignal.shared.setAppId("4a08e645-b5e8-434d-9c5c-5280e7e49048");
+
+  //TODO: update with In-App message
+  // The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+  OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+    print("Accepted permission: $accepted");
+  });
 }
 
 class InkMobile extends StatelessWidget {

@@ -7,6 +7,7 @@ class UrlsConfig {
   static const wsDebugUrl = "wss://ink.vpool.qsoft.ru";
   static const supportUrl = "https://portal.irkutskoil.ru/login/report/";
   static const aboutCompany = "https://irkutskoil.ru/";
+  static const pushBaseUrl = "http://ink-portal.ru/";
 
   static Set<String> messengerApiUrls = {
     "https://messenger.irkutskoil.ru:3009/api/v1",
