@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/cubit/contact_picker/contact_picker_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/user_data.dart';
@@ -58,6 +59,15 @@ class Contacts extends StatelessWidget {
         ));
       }
     });
+    contactRows.add(InkWell(
+      //onTap: ContactPickerCubit.getContactsJson,
+      child: SizedBox.square(
+        dimension: 50.0,
+        child: Text(
+          "GET CONTACTS LIST"
+        ),
+      ),
+    ));
 
     return contactRows;
   }
