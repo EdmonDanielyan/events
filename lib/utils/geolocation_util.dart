@@ -14,7 +14,6 @@ class GeolocationUtil {
       Map<String, double> coordinates = {"lat": position.latitude, "lon": position.longitude};
       locationJson = jsonEncode(coordinates);
     }
-    print(">>>>>> COORDINATES: $locationJson <<<<<<<<<<<<<<");
     return locationJson;
   }
 }

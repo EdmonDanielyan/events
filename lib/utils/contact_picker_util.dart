@@ -12,11 +12,7 @@ class ContactPickerUtil {
       List<Contact> contacts = await ContactsService.getContacts();
       List<Map> contactsMap = [];
       contacts.forEach((element) => contactsMap.add(element.toMap()));
-      print(">>>>>>>>CONTACTS FROM LIST<<<<<<<<");
-      //final contactsMap = contacts.map((e) => e.toMap()).toList().asMap();
       contactsMap.forEach((element) => print(jsonEncode(element)));
-      print(">>>>>>>>CONTACTS FROM MAP<<<<<<<<");
-      print(jsonEncode(contactsMap.asMap()));
       return jsonEncode(contactsMap.asMap());
     }
     return null;

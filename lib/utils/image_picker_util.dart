@@ -14,7 +14,6 @@ class ImagePickerUtil {
     } else {
       pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
     }
-    print("PATH OF IMAGE ${pickedFile?.path}");
     return pickedFile?.path;
   }
 }

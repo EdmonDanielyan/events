@@ -11,9 +11,7 @@ class PermissionsUtil {
   PermissionsUtil(this.permissionType);
 
   Future<bool> askPermissions() async {
-    print("Ask permission");
     PermissionStatus permissionStatus = await _getPermission();
-    print("permission: ${permissionStatus.name}");
     return permissionStatus == PermissionStatus.granted;
   }
 
@@ -32,7 +30,6 @@ class PermissionsUtil {
     }
 
     PermissionStatus permissionStatus = await permission.status;
-    print("current permission status: ${permissionStatus.name}");
     if (permissionStatus != PermissionStatus.granted &&
         permissionStatus != PermissionStatus.permanentlyDenied) {
        permissionStatus = await permission.request();
