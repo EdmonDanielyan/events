@@ -7,7 +7,7 @@ import 'package:ink_mobile/messenger/model/message.dart';
 
 import 'user.dart';
 
-enum ChatType { single, group }
+enum ChatType { single, group, notifications }
 
 class Chat extends Equatable {
   final int id;
@@ -119,6 +119,7 @@ class Chat extends Equatable {
 
   bool get isGroup => type == ChatType.group;
   bool get isSingle => type == ChatType.single;
+  bool get isNotifications => type == ChatType.notifications;
 
   static Chat? fromJsonCustom(String source) {
     try {

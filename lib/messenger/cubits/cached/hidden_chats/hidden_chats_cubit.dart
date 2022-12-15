@@ -25,7 +25,6 @@ class HiddenChatsCubit extends HydratedCubit<HiddenChatsState> {
   List<Chat> filterChats(List<Chat> chats) {
     final filtered = List<Chat>.from(
         chats.where((element) => !state.chatIds.contains(element.id)).toList());
-
     List<Chat> newChats = [];
 
     if (filtered.isNotEmpty) {

@@ -41,6 +41,9 @@ class PushTapHandler {
           NavigationMethods.openAnnouncementDetail(currentContext!, int.parse(pathParts[1]));
         }
         break;
+      case "newEventNotification":
+        NavigationMethods.openNotificationChat(currentContext!);
+        break;
       default:
         break;
     }
