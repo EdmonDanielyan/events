@@ -34,12 +34,22 @@ class PushTapHandler {
           NavigationMethods.openEventDetail(currentContext!, int.parse(pathParts[1]));
         }
         break;
-      case "announcements":
-        if (pathParts.length == 1) {
-          NavigationMethods.openAnnouncementsList(currentContext!);
-        } else {
-          NavigationMethods.openAnnouncementDetail(currentContext!, int.parse(pathParts[1]));
+      case "chat_with":
+        if (pathParts.length == 2) {
+          // TODO: открыть приватный чат по ID собеседника
         }
+        break;
+
+      case "chat":
+        if (pathParts.length == 1) {
+          // TODO: открыть мессенждер
+        } else {
+          // TODO: открыть чат по ID
+        }
+        break;
+
+      case "announcements":
+        // TODO: открыть чат с уведомлениями
         break;
       default:
         break;
