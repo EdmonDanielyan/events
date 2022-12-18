@@ -14,6 +14,7 @@ import 'package:ink_mobile/providers/local_pin_provider.dart';
 import 'package:ink_mobile/providers/secure_storage.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:logging/logging.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class MenuSheet extends StatefulWidget {
   static final Logger logger = Logger('MenuSheet');
@@ -192,6 +193,7 @@ Future<void> _exit(BuildContext context) async {
   getIt<CachedChatsCubit>().clean();
   Token.deleteTokens();
   FlutterSecureStorage().deleteAll();
+  OneSignal.shared.removeExternalUserId();
 
   Navigator.of(context).popUntil((route) => route.isFirst);
   Navigator.pushReplacementNamed(context, '/init');

@@ -43,6 +43,7 @@ void main() async {
     );
   }, (error, stack) {});
 
+  // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   OneSignal.shared.setAppId("4a08e645-b5e8-434d-9c5c-5280e7e49048");
 
   //TODO: update with In-App message

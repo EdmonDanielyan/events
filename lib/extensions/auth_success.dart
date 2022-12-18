@@ -5,6 +5,7 @@ import 'package:ink_mobile/core/handlers/AuthHandler.dart';
 import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:main_api_client/model/auth_success.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../setup.dart';
 
@@ -25,6 +26,12 @@ extension AuthSuccessExt on Response<AuthSuccess> {
       await Token.setDeviceVirtualIdIfEmpty();
 
       await getIt<AuthHandler>().authChallenge(pass: true);
+
+      // если старое значение не удалить, новое не встанет
+      OneSignal.shared.removeExternalUserId().then((result){
+        OneSignal.shared.setExternalUserId(responseData['user_id'].toString());
+      });
+
       return true;
     } else {
       return false;
