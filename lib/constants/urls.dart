@@ -1,12 +1,9 @@
 import 'package:flutter/foundation.dart';
 
 class UrlsConfig {
-
-    // CHANGED BASE URL
-//  static const prodUrl = "https://portal.irkutskoil.ru/api/v1/";
-    static const prodUrl = "https://mp-test-portal.irkutskoil.ru/api/v1";
-  
-    static const debugUrl = "http://mp-test-portal.irkutskoil.ru/api/v1";
+  // CHANGED BASE URL
+  static const prodUrl = "https://portal.irkutskoil.ru/api/v1/";
+  static const debugUrl = "http://mp-test-portal.irkutskoil.ru/api/v1";
 
   static const wsProdUrl = "wss://messenger.irkutskoil.ru:3009";
   static const wsDebugUrl = "ws://mp-test-portal.irkutskoil.ru:6042";
@@ -19,9 +16,4 @@ class UrlsConfig {
     "https://messenger.irkutskoil.ru:3009/api/v1",
     "http://mp-test-portal.irkutskoil.ru:8080/api/v1"
   };
-
-  static String get apiUrl => kDebugMode ? debugUrl : prodUrl;
-  static String get wsUrl => kDebugMode ? wsDebugUrl : wsProdUrl;
-  static String get messengerApiUrl =>
-      kDebugMode ? messengerApiUrls.last : messengerApiUrls.first;
 }
