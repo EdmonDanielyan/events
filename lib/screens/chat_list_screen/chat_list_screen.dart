@@ -105,32 +105,27 @@ class _ChatListScreenState extends State<ChatListScreen>
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await FetchChats().call();
-          },
-        child: Column(
-          children: [
-            Expanded(
-              child: ChatList(
-                cubit: chatsCubit,
-                onDismissed: (chat) {
-                  RemoveParticipantHandler(chat, chatsCubit.myId, [chatsCubit.me])
-                      .call();
-                  RemoveChatHandler(chat)();
-                },
-                onTap: (chat) => ChatScreenOpener(
-                  context,
-                  chat.id,
-                  chatsCubit,
-                  onlineCubit: onlineCubit,
-                  cachedUsersCubit: cachedUsersCubit,
-                )(),
+      body: Column(
+        children: [
+          Expanded(
+            child: ChatList(
+              cubit: chatsCubit,
+              onDismissed: (chat) {
+                RemoveParticipantHandler(chat, chatsCubit.myId, [chatsCubit.me])
+                    .call();
+                RemoveChatHandler(chat)();
+              },
+              onTap: (chat) => ChatScreenOpener(
+                context,
+                chat.id,
+                chatsCubit,
+                onlineCubit: onlineCubit,
                 cachedUsersCubit: cachedUsersCubit,
-              ),
+              )(),
+              cachedUsersCubit: cachedUsersCubit,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
