@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 class UrlsConfig {
 
     // *** YAR: CHANGED BASE URL
-//  static const prodUrl = "https://portal.irkutskoil.ru/api/v1/";
+    static const prodUrl = "https://portal.irkutskoil.ru/api/v1/";
 
-    static const prodUrl = "https://mp-test-portal.irkutskoil.ru/api/v1";
+    //static const prodUrl = "https://mp-test-portal.irkutskoil.ru/api/v1";
     static const debugUrl = "http://mp-test-portal.irkutskoil.ru/api/v1";
 
 //  static const wsProdUrl = "wss://messenger.irkutskoil.ru:3009";
