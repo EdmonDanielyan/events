@@ -9,7 +9,8 @@ class PushTapHandler {
 
   static void subscribe() {
     OneSignal.shared.setNotificationOpenedHandler((notification) {
-      if (currentContext != null && notification.notification.launchUrl?.isNotEmpty == true) {
+      if (currentContext != null &&
+          notification.notification.launchUrl?.isNotEmpty == true) {
         navigateToScreen(notification.notification.launchUrl!);
       }
     });
@@ -24,24 +25,39 @@ class PushTapHandler {
         if (pathParts.length == 1) {
           NavigationMethods.openNewsList(currentContext!);
         } else {
-          NavigationMethods.openNewsDetail(currentContext!, int.parse(pathParts[1]));
+          NavigationMethods.openNewsDetail(
+            currentContext!,
+            int.parse(pathParts[1]),
+          );
         }
         break;
       case "events":
         if (pathParts.length == 1) {
           NavigationMethods.openEventsList(currentContext!);
         } else {
-          NavigationMethods.openEventDetail(currentContext!, int.parse(pathParts[1]));
+          NavigationMethods.openEventDetail(
+            currentContext!,
+            int.parse(pathParts[1]),
+          );
         }
         break;
       case "announcements":
         if (pathParts.length == 1) {
           NavigationMethods.openAnnouncementsList(currentContext!);
         } else {
-          NavigationMethods.openAnnouncementDetail(currentContext!, int.parse(pathParts[1]));
+          NavigationMethods.openAnnouncementDetail(
+            currentContext!,
+            int.parse(pathParts[1]),
+          );
         }
         break;
-      case "newEventNotification":
+      case "chat_with":
+        NavigationMethods.openAnnouncementDetail(
+          currentContext!,
+          int.parse(pathParts[1]),
+        );
+        break;
+      case "notifications":
         NavigationMethods.openNotificationChat(currentContext!);
         break;
       default:

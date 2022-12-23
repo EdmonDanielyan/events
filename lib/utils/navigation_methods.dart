@@ -60,17 +60,31 @@ class NavigationMethods {
 
   static void openNotificationChat(BuildContext context, {dynamic arguments}) {
     final chatsCubit = getIt<CachedChatsCubit>();
-    final chat = chatsCubit.state.chats.firstWhereOrNull((selectedChat) => selectedChat.type == ChatType.notifications);
+    final chat = chatsCubit.state.chats.firstWhereOrNull(
+        (selectedChat) => selectedChat.type == ChatType.notifications);
     if (chat != null) {
-      backToMainScreen(context);
-      getIt<NewBottomNavBarCubit>().goToPage(NavBarItems.messages);
-      ChatScreenOpener(
-        context,
-        chat.id,
-        chatsCubit,
-        onlineCubit: getIt<OnlineCubit>(),
-        cachedUsersCubit: getIt<CachedUsersCubit>(),
-      )();
+      _openChat(context, chat.id);
     }
+  }
+
+  static void openChatByID(BuildContext context, int chatID) {
+    final chatsCubit = getIt<CachedChatsCubit>();
+    final chat = chatsCubit.state.chats
+        .firstWhereOrNull((selectedChat) => selectedChat.id == chatID);
+    if (chat != null) {
+      _openChat(context, chatID);
+    }
+  }
+
+  static void _openChat(BuildContext context, int chatID) {
+    backToMainScreen(context);
+    getIt<NewBottomNavBarCubit>().goToPage(NavBarItems.messages);
+    ChatScreenOpener(
+      context,
+      chatID,
+      getIt<CachedChatsCubit>(),
+      onlineCubit: getIt<OnlineCubit>(),
+      cachedUsersCubit: getIt<CachedUsersCubit>(),
+    )();
   }
 }
