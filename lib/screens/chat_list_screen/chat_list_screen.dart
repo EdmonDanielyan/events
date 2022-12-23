@@ -7,6 +7,7 @@ import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/string_cubit.dart';
 import 'package:ink_mobile/messenger/handler/create_chat.dart';
+import 'package:ink_mobile/messenger/handler/fetch/chats.dart';
 import 'package:ink_mobile/messenger/handler/remove_chat_handler.dart';
 import 'package:ink_mobile/messenger/handler/senders/remove_participant_sender_handler.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
@@ -105,27 +106,32 @@ class _ChatListScreenState extends State<ChatListScreen>
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ChatList(
-              cubit: chatsCubit,
-              onDismissed: (chat) {
-                RemoveParticipantHandler(chat, chatsCubit.myId, [chatsCubit.me])
-                    .call();
-                RemoveChatHandler(chat)();
-              },
-              onTap: (chat) => ChatScreenOpener(
-                context,
-                chat.id,
-                chatsCubit,
-                onlineCubit: onlineCubit,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await FetchChats().call();
+          },
+        child: Column(
+          children: [
+            Expanded(
+              child: ChatList(
+                cubit: chatsCubit,
+                onDismissed: (chat) {
+                  RemoveParticipantHandler(chat, chatsCubit.myId, [chatsCubit.me])
+                      .call();
+                  RemoveChatHandler(chat)();
+                },
+                onTap: (chat) => ChatScreenOpener(
+                  context,
+                  chat.id,
+                  chatsCubit,
+                  onlineCubit: onlineCubit,
+                  cachedUsersCubit: cachedUsersCubit,
+                )(),
                 cachedUsersCubit: cachedUsersCubit,
-              )(),
-              cachedUsersCubit: cachedUsersCubit,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
