@@ -11,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../components/date_input_field.dart';
 import '../../../../messenger/utils/date_functions.dart';
@@ -134,7 +135,9 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
     return DateInputField(
       controller: TextEditingController(),
       title: _strings.medicalDateStart,
-      validator: (val) => val == null ? _strings.fillTheField : null,
+      firstDate: DateTime.now().subtract(Duration(days: 3)),
+      lastDate: DateTime.now().add(Duration(days: 7)),
+      validator: (val) => val!.length <= 8 ? _strings.fillTheField : null,
       onChanged: (val) {
         entities.dateStart =
             DateFunctions(passedDate: val).dayMonthYearNumbers();

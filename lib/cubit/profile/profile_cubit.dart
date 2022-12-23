@@ -61,6 +61,11 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+  Future<void> saveFAboutMy({userId, required String value} ) async {
+    //написать запрос к api для сохранение поля "о себе "
+    emitSuccessUser(state.data!.copyWith(aboutMy: value));
+  }
+
   void emitSuccessOtherUser(UserProfileData data) {
     emitState(type: ProfileStateType.OTHER_USER_LOADED, data: data);
   }

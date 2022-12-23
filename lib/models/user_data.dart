@@ -9,6 +9,7 @@ class UserProfileData {
   UserAwards? awards;
   UserContacts? contacts;
   UserBasicInfo? basicInformation;
+  String? aboutMy;
 
   UserProfileData(
       {required this.id,
@@ -20,6 +21,7 @@ class UserProfileData {
       this.awards,
       this.contacts,
       this.basicInformation,
+      this.aboutMy ,
       required this.canBeThanked});
 
   UserProfileData copyWith({
@@ -32,6 +34,7 @@ class UserProfileData {
     UserVotes? votes,
     UserAwards? awards,
     UserContacts? contacts,
+    String? aboutMy,
     UserBasicInfo? basicInformation,
   }) {
     return UserProfileData(
@@ -44,6 +47,7 @@ class UserProfileData {
       votes: votes ?? this.votes,
       awards: awards ?? this.awards,
       contacts: contacts ?? this.contacts,
+      aboutMy: aboutMy ?? this.aboutMy,
       basicInformation: basicInformation ?? this.basicInformation,
     );
   }

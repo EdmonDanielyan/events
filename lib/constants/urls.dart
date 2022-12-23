@@ -1,10 +1,17 @@
 import 'package:flutter/foundation.dart';
 
-class UrlsConfig {
-  static const prodUrl = "https://portal.irkutskoil.ru/api/v1/";
-  static const debugUrl = "https://test.ink.vpool.qsoft.ru/api/v1";
-  static const wsProdUrl = "wss://messenger.irkutskoil.ru:3009";
-  static const wsDebugUrl = "wss://ink.vpool.qsoft.ru";
+class UrlsConfig { //TODO url
+  //static const prodUrl = "https://portal.irkutskoil.ru/api/v1/";
+  static const prodUrl = "https://mp-test-portal.irkutskoil.ru:8080/api/v1";
+
+  static const debugUrl = "http://mp-test-portal.irkutskoil.ru:8080/api/v1";
+  //static const debugUrl = "https://test.ink.vpool.qsoft.ru/api/v1";  нет кредов
+
+  static const wsProdUrl = "wss://mp-test-portal.irkutskoil.ru:6042";
+  static const wsDebugUrl = "ws://mp-test-portal.irkutskoil.ru:6042";
+  //static const wsProdUrl = "wss://messenger.irkutskoil.ru:3009";
+  //static const wsDebugUrl = "wss://ink.vpool.qsoft.ru";
+
   static const supportUrl = "https://portal.irkutskoil.ru/login/report/";
   static const aboutCompany = "https://irkutskoil.ru/";
 

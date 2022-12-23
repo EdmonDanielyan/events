@@ -8,6 +8,7 @@ import 'package:ink_mobile/cubit/profile/profile_state.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/user_data.dart';
+import 'package:ink_mobile/screens/profile/components/about_my_field.dart';
 import 'package:ink_mobile/screens/profile/components/awards.dart';
 import 'package:ink_mobile/screens/profile/components/background.dart';
 import 'package:ink_mobile/screens/profile/components/basic_information.dart';
@@ -22,10 +23,12 @@ import 'diagnostics.dart';
 
 class Body extends StatelessWidget {
   final ProfileCubit userCubit;
+
   const Body({Key? key, required this.userCubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return RefreshIndicator(
       onRefresh: () async {
         userCubit.refresh();
@@ -80,12 +83,14 @@ class Body extends StatelessWidget {
   }
 
   Widget getLoadedStateWidget(context, ProfileState state) {
+    final ScrollController _scrollController = ScrollController();
     UserProfileData user = state.data!;
     final logFile = ProfileScreen.of(context).widget.logFile;
 
     return Container(
         child: Background(
             child: SingleChildScrollView(
+              controller: _scrollController,
       physics: AlwaysScrollableScrollPhysics(),
       child: Column(children: [
         PersonalPageHeader(user: user),
@@ -96,7 +101,8 @@ class Body extends StatelessWidget {
             Contacts(contacts: user.contacts),
             BasicInformation(info: user.basicInformation),
             Diagnostics(logFile: logFile),
-            ProfileSecuritySection()
+            ProfileSecuritySection(),
+            AboutMyField(user: user, scrollController: _scrollController,)
           ],
         )
       ]),

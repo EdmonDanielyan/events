@@ -60,7 +60,7 @@ android {
     }
 
     //UNCOMMENT THIS FOR RELEASE
-//     signingConfigs {
+
 //         release {
 //             keyAlias keystoreProperties['keyAlias']
 //             keyPassword keystoreProperties['keyPassword']
