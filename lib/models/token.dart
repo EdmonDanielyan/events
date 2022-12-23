@@ -14,6 +14,7 @@ import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:main_api_client/api/auth_api.dart';
 import 'package:main_api_client/model/refresh_token_params.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 import '../providers/secure_storage.dart';
@@ -99,6 +100,11 @@ abstract class Token {
           SetOauthToken(token: newJwt).setBearer();
           await Token.setJwt(newJwt);
           await Token.setRefresh(newRefresh);
+
+          // если старое значение не удалить, новое не встанет
+          OneSignal.shared.removeExternalUserId().then((result){
+            OneSignal.shared.setExternalUserId(refreshDataMap['user_id'].toString());
+          });
         }
       } else {
         throw InvalidRefreshTokenException();

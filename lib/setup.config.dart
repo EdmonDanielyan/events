@@ -10,16 +10,16 @@ import 'package:injectable/injectable.dart' as _i2;
 import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart'
     as _i61;
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart'
-    as _i85;
+    as _i83;
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_state.dart'
-    as _i86;
-import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart' as _i90;
+    as _i84;
+import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart' as _i89;
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart'
-    as _i91;
-import 'package:ink_mobile/core/handlers/AuthHandler.dart' as _i78;
+    as _i90;
+import 'package:ink_mobile/core/handlers/AuthHandler.dart' as _i104;
 import 'package:ink_mobile/core/logging/file_log_appender.dart' as _i105;
 import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_cubit.dart'
-    as _i38;
+    as _i3;
 import 'package:ink_mobile/cubit/announcements_detail/sources/network.dart'
     as _i4;
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart'
@@ -55,7 +55,7 @@ import 'package:ink_mobile/cubit/logout/sources/logout_network.dart' as _i55;
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart'
     as _i56;
 import 'package:ink_mobile/cubit/main_page/events_and_announcements_block_cubit.dart'
-    as _i3;
+    as _i38;
 import 'package:ink_mobile/cubit/main_page/events_list_cubit.dart' as _i58;
 import 'package:ink_mobile/cubit/main_page/main_cubit.dart' as _i59;
 import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart' as _i62;
@@ -74,33 +74,33 @@ import 'package:ink_mobile/cubit/news_detail/sources/like/network.dart' as _i70;
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart' as _i71;
 import 'package:ink_mobile/cubit/news_list/sources/network.dart' as _i72;
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart'
-    as _i80;
+    as _i78;
 import 'package:ink_mobile/cubit/personnel_movements/sources/network.dart'
-    as _i101;
-import 'package:ink_mobile/cubit/profile/profile_cubit.dart' as _i81;
-import 'package:ink_mobile/cubit/profile/sources/fetch/network.dart' as _i82;
-import 'package:ink_mobile/cubit/profile/sources/thank/network.dart' as _i83;
-import 'package:ink_mobile/cubit/references/references_cubit.dart' as _i84;
+    as _i100;
+import 'package:ink_mobile/cubit/profile/profile_cubit.dart' as _i79;
+import 'package:ink_mobile/cubit/profile/sources/fetch/network.dart' as _i80;
+import 'package:ink_mobile/cubit/profile/sources/thank/network.dart' as _i81;
+import 'package:ink_mobile/cubit/references/references_cubit.dart' as _i82;
 import 'package:ink_mobile/cubit/references/sources/check_permission/network.dart'
     as _i19;
 import 'package:ink_mobile/cubit/references/sources/get_autofill_data/network.dart'
     as _i46;
-import 'package:ink_mobile/cubit/search/search_cubit.dart' as _i87;
-import 'package:ink_mobile/cubit/search/sources/network.dart' as _i88;
+import 'package:ink_mobile/cubit/search/search_cubit.dart' as _i85;
+import 'package:ink_mobile/cubit/search/sources/network.dart' as _i86;
 import 'package:ink_mobile/cubit/send_feedback_form/send_form_cubit.dart'
-    as _i94;
+    as _i93;
 import 'package:ink_mobile/cubit/send_feedback_form/sources/network.dart'
-    as _i92;
+    as _i91;
 import 'package:ink_mobile/cubit/send_medical_ins_form/send_form_cubit.dart'
-    as _i95;
+    as _i94;
 import 'package:ink_mobile/cubit/send_medical_ins_form/sources/network.dart'
-    as _i96;
+    as _i95;
 import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart'
-    as _i98;
+    as _i97;
 import 'package:ink_mobile/cubit/send_reference_form/sources/network.dart'
-    as _i99;
-import 'package:ink_mobile/cubit/tags_list/sources/network.dart' as _i103;
-import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart' as _i102;
+    as _i98;
+import 'package:ink_mobile/cubit/tags_list/sources/network.dart' as _i102;
+import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart' as _i101;
 import 'package:ink_mobile/messenger/cubits/cached/base_url/base_url_cubit.dart'
     as _i13;
 import 'package:ink_mobile/messenger/cubits/cached/chat_users_picker/chat_users_picker_cubit.dart'
@@ -151,21 +151,21 @@ import 'package:ink_mobile/models/learning_materials_data.dart' as _i49;
 import 'package:ink_mobile/models/new_comment_entities.dart' as _i64;
 import 'package:ink_mobile/models/news_data.dart' as _i73;
 import 'package:ink_mobile/models/pagination.dart' as _i7;
-import 'package:ink_mobile/models/send_reference_form_entities.dart' as _i100;
-import 'package:ink_mobile/models/token.dart' as _i104;
+import 'package:ink_mobile/models/send_reference_form_entities.dart' as _i99;
+import 'package:ink_mobile/models/token.dart' as _i103;
 import 'package:ink_mobile/providers/local_pin_provider.dart' as _i52;
 import 'package:ink_mobile/providers/lock_app.dart' as _i53;
 import 'package:ink_mobile/providers/main_api.dart' as _i57;
-import 'package:ink_mobile/providers/package_info.dart' as _i79;
-import 'package:ink_mobile/providers/secure_storage.dart' as _i89;
-import 'package:ink_mobile/providers/security_checker.dart' as _i77;
+import 'package:ink_mobile/providers/package_info.dart' as _i77;
+import 'package:ink_mobile/providers/secure_storage.dart' as _i87;
+import 'package:ink_mobile/providers/security_checker.dart' as _i88;
 import 'package:ink_mobile/screens/feedback/components/form/entities.dart'
-    as _i93;
-import 'package:ink_mobile/screens/initial/cubit/initial_cubit.dart' as _i76;
+    as _i92;
+import 'package:ink_mobile/screens/initial/cubit/initial_cubit.dart' as _i107;
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart'
-    as _i97;
+    as _i96;
 import 'package:ink_mobile/screens/open_university/cubit/open_university_cubit.dart'
-    as _i107;
+    as _i76;
 
 import 'core/logging/files.dart' as _i108;
 import 'models/token.dart' as _i109;
@@ -191,8 +191,7 @@ Future<_i1.GetIt> $initGetIt(
   final tokenDataInjectorModule = _$TokenDataInjectorModule();
   final testLogFilePathInjector = _$TestLogFilePathInjector();
   final logFilePathInjector = _$LogFilePathInjector();
-  gh.factory<_i3.EventsAndAnnouncementsBlockCubit>(
-      () => _i3.EventsAndAnnouncementsBlockCubit());
+  gh.factory<_i3.AnnouncementCubit>(() => _i3.AnnouncementCubit());
   gh.factoryParam<_i4.AnnouncementsDetailNetworkRequest, int?, dynamic>((
     announcementId,
     _,
@@ -256,7 +255,8 @@ Future<_i1.GetIt> $initGetIt(
     _,
   ) =>
       _i37.EventInviteNetworkRequest(eventId: eventId));
-  gh.factory<_i38.AnnouncementCubit>(() => _i38.AnnouncementCubit());
+  gh.factory<_i38.EventsAndAnnouncementsBlockCubit>(
+      () => _i38.EventsAndAnnouncementsBlockCubit());
   gh.factoryParam<_i39.EventsDetailNetworkRequest, int?, dynamic>((
     eventId,
     _,
@@ -344,65 +344,66 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i74.NotificationsDisabledChatsCubit>(
       _i74.NotificationsDisabledChatsCubit());
   gh.singleton<_i75.OnlineCubit>(_i75.OnlineCubit());
-  gh.factory<_i76.InitialCubit>(() => _i76.InitialCubit(
-        gh<_i77.SecurityChecker>(),
-        gh<_i78.AuthHandler>(),
-      ));
-  gh.lazySingleton<_i79.PackageInfoProvider>(() => _i79.PackageInfoProvider());
-  gh.factory<_i80.PersonnelMovementsCubit>(
-      () => _i80.PersonnelMovementsCubit());
-  gh.factory<_i81.ProfileCubit>(() => _i81.ProfileCubit());
-  gh.factoryParam<_i82.ProfileFetchNetworkRequest, int?, dynamic>((
+  gh.factory<_i76.OpenUniversityCubit>(() => _i76.OpenUniversityCubit());
+  gh.lazySingleton<_i77.PackageInfoProvider>(() => _i77.PackageInfoProvider());
+  gh.factory<_i78.PersonnelMovementsCubit>(
+      () => _i78.PersonnelMovementsCubit());
+  gh.factory<_i79.ProfileCubit>(() => _i79.ProfileCubit());
+  gh.factoryParam<_i80.ProfileFetchNetworkRequest, int?, dynamic>((
     id,
     _,
   ) =>
-      _i82.ProfileFetchNetworkRequest(id: id));
-  gh.factoryParam<_i83.ProfileThankNetworkRequest, int?, dynamic>((
+      _i80.ProfileFetchNetworkRequest(id: id));
+  gh.factoryParam<_i81.ProfileThankNetworkRequest, int?, dynamic>((
     id,
     _,
   ) =>
-      _i83.ProfileThankNetworkRequest(id: id));
-  gh.singleton<_i84.ReferencesPageCubit>(_i84.ReferencesPageCubit());
-  gh.factoryParam<_i85.ScrollBottomLoadMoreCubit,
-      _i86.ScrollBottomLoadMoreState?, dynamic>((
+      _i81.ProfileThankNetworkRequest(id: id));
+  gh.singleton<_i82.ReferencesPageCubit>(_i82.ReferencesPageCubit());
+  gh.factoryParam<_i83.ScrollBottomLoadMoreCubit,
+      _i84.ScrollBottomLoadMoreState?, dynamic>((
     initialState,
     _,
   ) =>
-      _i85.ScrollBottomLoadMoreCubit(initialState));
-  gh.singleton<_i87.SearchCubit>(_i87.SearchCubit());
-  gh.factoryParam<_i88.SearchNetworkRequest, String?, dynamic>((
+      _i83.ScrollBottomLoadMoreCubit(initialState));
+  gh.singleton<_i85.SearchCubit>(_i85.SearchCubit());
+  gh.factoryParam<_i86.SearchNetworkRequest, String?, dynamic>((
     query,
     _,
   ) =>
-      _i88.SearchNetworkRequest(query: query));
-  gh.lazySingleton<_i89.SecureStorage>(() => _i89.SecureStorage());
-  gh.factory<_i77.SecurityChecker>(() => _i77.SecurityChecker());
-  gh.factory<_i90.SelectableCubit<dynamic>>(
-      () => _i90.SelectableCubit<dynamic>());
-  gh.factory<_i91.SelectfieldCubit>(() => _i91.SelectfieldCubit());
-  gh.factoryParam<_i92.SendFeedbackFormNetworkRequest,
-      _i93.ManagementFeedbackFormEntities?, dynamic>((
+      _i86.SearchNetworkRequest(query: query));
+  gh.lazySingleton<_i87.SecureStorage>(() => _i87.SecureStorage());
+  gh.factory<_i88.SecurityChecker>(() => _i88.SecurityChecker());
+  gh.factory<_i89.SelectableCubit<dynamic>>(
+      () => _i89.SelectableCubit<dynamic>());
+  gh.factory<_i90.SelectfieldCubit>(() => _i90.SelectfieldCubit());
+  gh.factoryParam<_i91.SendFeedbackFormNetworkRequest,
+      _i92.ManagementFeedbackFormEntities?, dynamic>((
     entities,
     _,
   ) =>
-      _i92.SendFeedbackFormNetworkRequest(entities: entities));
-  gh.singleton<_i94.SendManagementFormCubit>(_i94.SendManagementFormCubit());
-  gh.singleton<_i95.SendMedicalInsFormCubit>(_i95.SendMedicalInsFormCubit());
-  gh.factoryParam<_i96.SendMedicalInsFormNetworkRequest,
-      _i97.MedicalInsuranceFormEntities?, dynamic>((
+      _i91.SendFeedbackFormNetworkRequest(entities: entities));
+  gh.singleton<_i93.SendManagementFormCubit>(_i93.SendManagementFormCubit());
+  gh.singleton<_i94.SendMedicalInsFormCubit>(_i94.SendMedicalInsFormCubit());
+  gh.factoryParam<_i95.SendMedicalInsFormNetworkRequest,
+      _i96.MedicalInsuranceFormEntities?, dynamic>((
     entities,
     _,
   ) =>
-      _i96.SendMedicalInsFormNetworkRequest(entities: entities));
-  gh.singleton<_i98.SendReferenceFormCubit>(_i98.SendReferenceFormCubit());
-  gh.factoryParam<_i99.SendReferenceFormNetworkRequest,
-      _i100.SendReferenceFormEntities?, dynamic>((
+      _i95.SendMedicalInsFormNetworkRequest(entities: entities));
+  gh.singleton<_i97.SendReferenceFormCubit>(_i97.SendReferenceFormCubit());
+  gh.factoryParam<_i98.SendReferenceFormNetworkRequest,
+      _i99.SendReferenceFormEntities?, dynamic>((
     entities,
     _,
   ) =>
-      _i99.SendReferenceFormNetworkRequest(entities: entities));
-  gh.singleton<_i101.StaffMovementsNetworkRequest>(
-      _i101.StaffMovementsNetworkRequest());
+      _i98.SendReferenceFormNetworkRequest(entities: entities));
+  gh.singleton<_i100.StaffMovementsNetworkRequest>(
+      _i100.StaffMovementsNetworkRequest());
+  gh.factory<String>(
+    () => tokenDataInjectorModule.messengerAuthPassword,
+    instanceName: 'messengerAuthPassword',
+  );
   gh.factory<String>(
     () => tokenDataInjectorModule.localDatabasePassword,
     instanceName: 'localDatabasePassword',
@@ -416,8 +417,8 @@ Future<_i1.GetIt> $initGetIt(
     instanceName: 'natsToken',
   );
   gh.factory<String>(
-    () => tokenDataInjectorModule.messengerAuthPassword,
-    instanceName: 'messengerAuthPassword',
+    () => tokenDataInjectorModule.messengerAuthLogin,
+    instanceName: 'messengerAuthLogin',
   );
   gh.factory<String>(
     () => tokenDataInjectorModule.userId,
@@ -438,19 +439,18 @@ Future<_i1.GetIt> $initGetIt(
     },
     preResolve: true,
   );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.messengerAuthLogin,
-    instanceName: 'messengerAuthLogin',
-  );
-  gh.singleton<_i102.TagsListCubit>(_i102.TagsListCubit());
-  gh.singleton<_i103.TagsListNetworkRequest>(_i103.TagsListNetworkRequest());
-  gh.lazySingleton<_i104.TokenDataHolder>(() => _i104.TokenDataHolder());
-  gh.singleton<_i78.AuthHandler>(_i78.AuthHandler(gh<_i16.BootCubit>()));
+  gh.singleton<_i101.TagsListCubit>(_i101.TagsListCubit());
+  gh.singleton<_i102.TagsListNetworkRequest>(_i102.TagsListNetworkRequest());
+  gh.lazySingleton<_i103.TokenDataHolder>(() => _i103.TokenDataHolder());
+  gh.singleton<_i104.AuthHandler>(_i104.AuthHandler(gh<_i16.BootCubit>()));
   gh.lazySingleton<_i105.FileLogAppender>(
       () => _i105.FileLogAppender(gh<String>(instanceName: 'logFile')));
   gh.singleton<_i106.HiddenChatsCubit>(
       _i106.HiddenChatsCubit(gh<_i47.HiddenMessagesCubit>()));
-  gh.factory<_i107.OpenUniversityCubit>(() => _i107.OpenUniversityCubit());
+  gh.factory<_i107.InitialCubit>(() => _i107.InitialCubit(
+        gh<_i88.SecurityChecker>(),
+        gh<_i104.AuthHandler>(),
+      ));
   return getIt;
 }
 
