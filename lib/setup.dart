@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/core/logging/file_log_appender.dart';
 import 'package:ink_mobile/core/logging/logging.dart';
 import 'package:ink_mobile/cubit/boot/boot_cubit.dart';
@@ -11,6 +12,7 @@ import 'package:ink_mobile/providers/secure_storage.dart';
 import 'package:logging/logging.dart';
 
 import 'setup.config.dart';
+import 'utils/app_config.dart';
 
 final getIt = GetIt.instance;
 
@@ -26,7 +28,7 @@ Future<String> readEnv() async {
   return currentEnv;
 }
 
-void writeEnv(String value) async {
+Future<void> writeEnv(String value) async {
   SecureStorage().write(key: "environment", value: value);
   currentEnv = value;
 }
@@ -36,10 +38,16 @@ void writeEnv(String value) async {
   preferRelativeImports: true, // default
   asExtension: false, // default
 )
-Future<void> setup({
-  scope = defaultScope,
-}) async {
-  await $initGetIt(getIt, environment: scope);
+Future<void> setup() async {
+  bool isProd = currentEnv == Environment.prod;
+  getIt.registerLazySingleton<AppConfig>(() => AppConfig(
+        serverUrl: isProd ? UrlsConfig.prodUrl : UrlsConfig.debugUrl,
+        wsUrl: isProd ? UrlsConfig.wsProdUrl : UrlsConfig.wsDebugUrl,
+        messengerApiUrl: isProd
+            ? UrlsConfig.messengerApiUrls.first
+            : UrlsConfig.messengerApiUrls.last,
+      ));
+  await $initGetIt(getIt, environment: currentEnv);
   setupI18n(getIt);
 
   setupLogging(
