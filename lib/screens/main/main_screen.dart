@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar.dart';
-import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/events_and_announcements_block_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/events_list_cubit.dart';
