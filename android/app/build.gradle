@@ -65,7 +65,8 @@ android {
 //             keyAlias keystoreProperties['keyAlias']
 //             keyPassword keystoreProperties['keyPassword']
 //             try {
-//                 storeFile file("../keystore.uu").exists() ? file("../keystore.uu"): new File(System.env.KEY_STORE)
+//                // keys pass fcntl00io
+//                 storeFile file("../key.store").exists() ? file("../key.store"): new File(System.env.KEY_STORE)
 //             } catch (Exception e) {
 //                 println("please specify keystore: ${e}")
 //             }
@@ -79,11 +80,11 @@ android {
         release {
             signingConfig signingConfigs.debug
         }
-        
+
         //UNCOMMENT THIS FOR RELEASE
 //         release {
 //             signingConfig signingConfigs.release
-//
+///
 //             minifyEnabled true
 //
 //             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

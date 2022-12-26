@@ -342,7 +342,6 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
       List<Chat> _updateChats = [];
       for (final fetchedChat in fetchedChats) {
         final storedChat = getChatById(fetchedChat.id);
-
         if (storedChat == null) {
           _newChats.add(fetchedChat);
         } else {
