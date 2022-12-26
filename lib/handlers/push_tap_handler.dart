@@ -11,7 +11,8 @@ class PushTapHandler {
 
   static void subscribe() {
     OneSignal.shared.setNotificationOpenedHandler((notification) {
-      if (currentContext != null && notification.notification.launchUrl?.isNotEmpty == true) {
+      if (currentContext != null &&
+          notification.notification.launchUrl?.isNotEmpty == true) {
         navigateToScreen(notification.notification.launchUrl!);
       }
     });
@@ -26,14 +27,20 @@ class PushTapHandler {
         if (pathParts.length == 1) {
           NavigationMethods.openNewsList(currentContext!);
         } else {
-          NavigationMethods.openNewsDetail(currentContext!, int.parse(pathParts[1]));
+          NavigationMethods.openNewsDetail(
+            currentContext!,
+            int.parse(pathParts[1]),
+          );
         }
         break;
       case "events":
         if (pathParts.length == 1) {
           NavigationMethods.openEventsList(currentContext!);
         } else {
-          NavigationMethods.openEventDetail(currentContext!, int.parse(pathParts[1]));
+          NavigationMethods.openEventDetail(
+            currentContext!,
+            int.parse(pathParts[1]),
+          );
         }
         break;
 
@@ -41,15 +48,20 @@ class PushTapHandler {
         if (pathParts.length == 1) {
           NavigationMethods.openAnnouncementsList(currentContext!);
         } else {
-          NavigationMethods.openAnnouncementDetail(currentContext!, int.parse(pathParts[1]));
+          NavigationMethods.openAnnouncementDetail(
+            currentContext!,
+            int.parse(pathParts[1]),
+          );
         }
         break;
-
       case "chat_with":
-        if (pathParts.length == 2) {
-          logger.finest('TODO: Open private chat with '+pathParts[1]);
-          // TODO: открыть приватный чат по ID собеседника
-        }
+        NavigationMethods.openAnnouncementDetail(
+          currentContext!,
+          int.parse(pathParts[1]),
+        );
+        break;
+      case "notifications":
+        NavigationMethods.openNotificationChat(currentContext!);
         break;
       case "chat":
         if (pathParts.length == 1) {
@@ -59,11 +71,6 @@ class PushTapHandler {
           logger.finest('TODO:  Open chat '+pathParts[1]);
         }
         break;
-      case "notifications":
-        logger.finest('TODO: Open notifications channel');
-        // TODO: открыть чат с уведомлениями
-        break;
-
       default:
         break;
     }
