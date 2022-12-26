@@ -9,8 +9,6 @@ import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/utils/app_config.dart';
 import 'package:main_api_client/api.dart';
 
-import '../constants/urls.dart';
-
 @lazySingleton
 class MainApiProvider extends MainApiClient {
   HttpClient? _sslPinnedHttpClient(HttpClient client) {

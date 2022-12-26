@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -33,7 +32,6 @@ import 'components/bottom_card.dart';
 import 'components/search_builder.dart';
 import 'components/search_textfield.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'dart:io' show Platform;
 
 class ChatScreen extends StatefulWidget {
   final CachedChatsCubit cachedChatsCubit;

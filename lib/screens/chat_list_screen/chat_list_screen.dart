@@ -7,7 +7,6 @@ import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/string_cubit.dart';
 import 'package:ink_mobile/messenger/handler/create_chat.dart';
-import 'package:ink_mobile/messenger/handler/fetch/chats.dart';
 import 'package:ink_mobile/messenger/handler/remove_chat_handler.dart';
 import 'package:ink_mobile/messenger/handler/senders/remove_participant_sender_handler.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
