@@ -18,6 +18,7 @@ import 'package:ink_mobile/screens/profile/components/other_user_page_header.dar
 import 'package:ink_mobile/screens/profile/components/security.dart';
 import 'package:ink_mobile/setup.dart';
 
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import '../profile_screen.dart';
 import 'diagnostics.dart';
 
@@ -29,12 +30,23 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return RefreshIndicator(
+    return CustomRefreshIndicator(
       onRefresh: () async {
         userCubit.refresh();
       },
-      color: Colors.green,
-      displacement: 20,
+      leadingScrollIndicatorVisible: false,
+      trailingScrollIndicatorVisible: false,
+      triggerMode: IndicatorTriggerMode.anywhere,
+      trigger: IndicatorTrigger.bothEdges,
+      builder: MaterialIndicatorDelegate(
+        builder:  (BuildContext context, IndicatorController controller) {
+          return Icon(
+            Icons.update,
+            color: Colors.green[900],
+            size: 30,
+          );
+        },
+      ),
       child: BlocConsumer<ProfileCubit, ProfileState>(
         listener: (context, state) {
           if (state.data != null) {
@@ -91,7 +103,7 @@ class Body extends StatelessWidget {
         child: Background(
             child: SingleChildScrollView(
               controller: _scrollController,
-      physics: AlwaysScrollableScrollPhysics(),
+      //physics: AlwaysScrollableScrollPhysics(),
       child: Column(children: [
         PersonalPageHeader(user: user),
         Awards(awards: user.awards),
