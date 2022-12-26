@@ -55,7 +55,7 @@ class PushTapHandler {
         }
         break;
       case "chat_with":
-        NavigationMethods.openAnnouncementDetail(
+        NavigationMethods.openChatByUserID(
           currentContext!,
           int.parse(pathParts[1]),
         );
@@ -68,6 +68,8 @@ class PushTapHandler {
           logger.finest('TODO: Open meddenger');
           // TODO: открыть мессенждер
         } else {
+          NavigationMethods.openChatByID(currentContext!,
+            int.parse(pathParts[1]),);
           logger.finest('TODO:  Open chat '+pathParts[1]);
         }
         break;

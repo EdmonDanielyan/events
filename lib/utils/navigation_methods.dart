@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/messenger/handler/create_chat.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:collection/collection.dart';
 
@@ -73,6 +74,22 @@ class NavigationMethods {
         .firstWhereOrNull((selectedChat) => selectedChat.id == chatID);
     if (chat != null) {
       _openChat(context, chatID);
+    }
+  }
+
+  static void openChatByUserID(BuildContext context, int userID) {
+    final cachedUsersCubit = getIt<CachedUsersCubit>();
+    final user = cachedUsersCubit.getUser(userID);
+    if (user != null) {
+      backToMainScreen(context);
+      getIt<NewBottomNavBarCubit>().goToPage(NavBarItems.messages);
+      CreateChatHandler(
+        [user],
+        context,
+        chatsCubit: getIt<CachedChatsCubit>(),
+        onlineCubit: getIt<OnlineCubit>(),
+        cachedUsersCubit: cachedUsersCubit,
+      ).call();
     }
   }
 
