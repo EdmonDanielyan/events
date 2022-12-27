@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:ink_mobile/app.dart';
-import 'package:ink_mobile/firebase_options.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/providers/global_providers.dart';
 import 'package:ink_mobile/routes/routes.dart';
@@ -22,8 +20,6 @@ import 'package:path_provider/path_provider.dart';
 void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
 
     HttpOverrides.global = MyHttpOverrides();
     final storage = await HydratedStorage.build(
@@ -69,6 +65,7 @@ class InkMobile extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalMaterialLocalizations.delegate
         ],
+        debugShowCheckedModeBanner: false,
         supportedLocales: I18n.all,
         routes: MainRoutes.routes,
         theme: LightTheme().getThemeData(),

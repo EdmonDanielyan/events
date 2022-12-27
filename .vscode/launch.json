@@ -11,14 +11,6 @@
             "args": [
                 "--no-sound-null-safety"
             ]
-        },
-        {
-            "name": "ink-mobile-2",
-            "request": "launch",
-            "type": "dart",
-            "args": [
-                "--no-sound-null-safety"
-            ]
-        },
+        }
     ]
 }
