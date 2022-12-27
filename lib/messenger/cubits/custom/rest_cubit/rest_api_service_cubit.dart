@@ -11,7 +11,7 @@ class RestApiServiceCubit<T, K> extends Cubit<RestApiServiceState<T, K?>> {
 
   bool get isError => state.loadingState == LoadingState.error;
 
-  void newLoaadFunction(Future<dynamic> Function() load) {
+  void newLoadFunction(Future<dynamic> Function() load) {
     emit(state.copyWith(load: load));
   }
 
