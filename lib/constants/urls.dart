@@ -3,7 +3,8 @@ class UrlsConfig {
   static const debugUrl = "https://mp-test-portal.irkutskoil.ru/api/v1";
 
   static const wsProdUrl = "wss://messenger.irkutskoil.ru:3009";
-  static const wsDebugUrl = "https://mp-test-portal.irkutskoil.ru/api/v1";
+  // TODO: wss for release
+  static const wsDebugUrl = "ws://mp-test-portal.irkutskoil.ru:6042";
 
   static const supportUrl = "https://portal.irkutskoil.ru/login/report/";
   static const aboutCompany = "https://irkutskoil.ru/";
