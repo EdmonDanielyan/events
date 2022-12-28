@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/cubit/profile/sources/fetch/network.dart';
+import 'package:ink_mobile/extensions/get_user_success.dart';
 import 'package:ink_mobile/messenger/handler/create_chat.dart';
+import 'package:ink_mobile/messenger/model/user.dart';
+import 'package:ink_mobile/models/token.dart';
+import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:collection/collection.dart';
 
@@ -77,20 +82,25 @@ class NavigationMethods {
     }
   }
 
-  static void openChatByUserID(BuildContext context, int userID) {
+  static Future<void> openChatByUserID(BuildContext context, int userID) async {
     final cachedUsersCubit = getIt<CachedUsersCubit>();
-    final user = cachedUsersCubit.getUser(userID);
-    if (user != null) {
-      backToMainScreen(context);
-      getIt<NewBottomNavBarCubit>().goToPage(NavBarItems.messages);
-      CreateChatHandler(
-        [user],
-        context,
-        chatsCubit: getIt<CachedChatsCubit>(),
-        onlineCubit: getIt<OnlineCubit>(),
-        cachedUsersCubit: cachedUsersCubit,
-      ).call();
+    User? user = cachedUsersCubit.getUser(userID);
+    if (user == null) {
+      await Token.setNewTokensIfExpired();
+      final response =
+          await getIt<ProfileFetchNetworkRequest>(param1: userID)();
+      UserProfileData userData = response.mapResponse();
+      user = User.fromUserProfileData(userData);
     }
+    backToMainScreen(context);
+    getIt<NewBottomNavBarCubit>().goToPage(NavBarItems.messages);
+    CreateChatHandler(
+      [user],
+      context,
+      chatsCubit: getIt<CachedChatsCubit>(),
+      onlineCubit: getIt<OnlineCubit>(),
+      cachedUsersCubit: cachedUsersCubit,
+    ).call();
   }
 
   static void _openChat(BuildContext context, int chatID) {
