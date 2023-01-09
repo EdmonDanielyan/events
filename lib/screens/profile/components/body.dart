@@ -141,7 +141,8 @@ class Body extends StatelessWidget {
               ),
               BasicInformation(
                 info: user.basicInformation,
-              )
+              ),
+              //будет поле о пользователе
             ],
           );
         })

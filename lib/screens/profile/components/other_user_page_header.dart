@@ -19,6 +19,7 @@ class OtherUserPageHeader extends StatelessWidget {
     bool showWriteBtn = true;
     Map? arg = ModalRoute.of(context)!.settings.arguments as Map?;
 
+
     if (arg != null && arg.isNotEmpty) {
       if (arg.containsKey(HIDE_WRITE_BTN)) {
         showWriteBtn = false;
@@ -40,6 +41,7 @@ class OtherUserPageHeader extends StatelessWidget {
                   userName: user.name,
                   userPosition: user.workPosition,
                   pathToAvatar: user.pathToAvatar,
+                  isOtherUser: true,
                 )),
             Positioned.fill(
               child: Align(

@@ -28,6 +28,7 @@ class PersonalPageHeader extends StatelessWidget {
                 userName: user.name,
                 userPosition: user.workPosition,
                 pathToAvatar: user.pathToAvatar,
+                isOtherUser: false,
               ),
             ),
             Positioned.fill(
