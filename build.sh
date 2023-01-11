@@ -5,8 +5,6 @@ platform=$2
 #### Environment values: prod, dev
 #### Platform values: android, ios
 
-flutter clean
-flutter pub upgrade
 flutter packages pub run build_runner build --delete-conflicting-outputs
 
 if [ "$platform" == "android" ]; then

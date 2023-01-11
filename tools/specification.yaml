@@ -1164,7 +1164,6 @@ components:
                             example: 1
                         avatar:
                             type: string
-                            example: https://example.com/upload/user_avatar/1.png
                             nullable: true
                             format: uri
                         name:
@@ -1315,7 +1314,6 @@ components:
                               example: 1
                           avatar:
                               type: string
-                              example: https://example.com/upload/user_avatar/1.png
                               nullable: true
                               format: uri
                           name:
@@ -2651,7 +2649,6 @@ components:
                                         nullable: true
                                         minLength: 1
                                         maxLength: 255
-                                        example: "http://example.com/upload/uf/68b/user_3.png"
                         query:
                             type: string
                             nullable: true
@@ -2775,7 +2772,6 @@ components:
                     nullable: true
                 avatar:
                     type: string
-                    example: "https://example.com/upload/user_avatar/1.png"
                     nullable: true
             required:
                 - id
