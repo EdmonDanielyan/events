@@ -58,10 +58,6 @@ class _AboutMyFieldState extends State<AboutMyField> {
                 textInputAction: TextInputAction.go,
                 onChanged: (_) {
                   setState((){
-                    // WidgetsBinding.instance.addPostFrameCallback(
-                    //         (__) =>
-                    //         widget.scrollController.jumpTo(widget.scrollController.position.maxScrollExtent)
-                    // );
                     WidgetsBinding.instance.addPostFrameCallback(
                             (__) =>
                             widget.scrollController.animateTo(widget.scrollController.position.maxScrollExtent,duration: Duration(milliseconds: 500), curve: Curves.easeOut )

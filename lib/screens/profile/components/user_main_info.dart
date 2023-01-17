@@ -261,7 +261,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
     String start = DateFormat('d.M.yyyy').format(startDate);
     String end = DateFormat('d.M.yyyy').format(dateEnd);
     String text = "Отсутствует с $start по $end (отпуск основной)";
-    if (true/*TODO логика отображения отпуска*/) return Container(
+    if (true/* логика отображения отпуска*/) return Container(
       margin: EdgeInsets.all(2),
       padding: EdgeInsets.all(2),
       decoration: BoxDecoration(

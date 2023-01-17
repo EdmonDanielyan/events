@@ -72,6 +72,8 @@ class BasicInformation extends StatelessWidget {
       {'title': _strings.address, 'value': info!.address},
       {'title': _strings.office, 'value': info!.office},
       {'title': _strings.birthday, 'value': info!.birthday},
+      {'title': 'Осталось на питание', 'value': "{0-3000} руб "},
+      {'title': 'Результаты тестов на ковид', 'value': "{ЗДОРОВ / COVID}"}
     ];
   }
 }

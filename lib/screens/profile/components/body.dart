@@ -103,7 +103,7 @@ class Body extends StatelessWidget {
         child: Background(
             child: SingleChildScrollView(
               controller: _scrollController,
-      //physics: AlwaysScrollableScrollPhysics(),
+      physics: AlwaysScrollableScrollPhysics(),
       child: Column(children: [
         PersonalPageHeader(user: user),
         Awards(awards: user.awards),
@@ -115,6 +115,7 @@ class Body extends StatelessWidget {
             Diagnostics(logFile: logFile),
             ProfileSecuritySection(),
             AboutMyField(user: user, scrollController: _scrollController,)
+
           ],
         )
       ]),
