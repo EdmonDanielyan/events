@@ -37,8 +37,8 @@ class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
   late Animation<Offset> _animation;
   late Animation<double> _leftIconAnimation;
   late Animation<double> _rightIconAnimation;
-  Function()? _onSwipeLeft;
-  Function()? _onSwipeRight;
+  Function()? get _onSwipeLeft => widget.onLeftSwipe;
+  Function()? get _onSwipeRight => widget.onRightSwipe;
 
   @override
   initState() {
@@ -59,9 +59,7 @@ class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
     _rightIconAnimation = _controller.drive(
       Tween<double>(begin: 0.0, end: 0.0),
     );
-    _onSwipeLeft = widget.onLeftSwipe;
 
-    _onSwipeRight = widget.onRightSwipe;
     _controller.addListener(() {
       setState(() {});
     });
