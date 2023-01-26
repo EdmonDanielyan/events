@@ -613,18 +613,18 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 121;
+				CURRENT_PROJECT_VERSION = 122;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
-				FLUTTER_TARGET = /Users/maximmagin/Development/Projects/ink_portal/lib/prod_main.dart;
+				FLUTTER_TARGET = /Users/maximmagin/Development/Projects/ink_portal/lib/dev_main.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.21;
+				MARKETING_VERSION = 1.2.22;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -756,18 +756,18 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 121;
+				CURRENT_PROJECT_VERSION = 122;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
-				FLUTTER_TARGET = /Users/maximmagin/Development/Projects/ink_portal/lib/prod_main.dart;
+				FLUTTER_TARGET = /Users/maximmagin/Development/Projects/ink_portal/lib/dev_main.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.21;
+				MARKETING_VERSION = 1.2.22;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -791,18 +791,18 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 121;
+				CURRENT_PROJECT_VERSION = 122;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
-				FLUTTER_TARGET = /Users/maximmagin/Development/Projects/ink_portal/lib/prod_main.dart;
+				FLUTTER_TARGET = /Users/maximmagin/Development/Projects/ink_portal/lib/dev_main.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.21;
+				MARKETING_VERSION = 1.2.22;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
