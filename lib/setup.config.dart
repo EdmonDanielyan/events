@@ -416,28 +416,28 @@ Future<_i1.GetIt> $initGetIt(
     registerFor: {_unitTest},
   );
   gh.factory<String>(
-    () => tokenDataInjectorModule.localDatabasePassword,
-    instanceName: 'localDatabasePassword',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.deviceVirtualId,
-    instanceName: 'deviceVirtualId',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.natsToken,
-    instanceName: 'natsToken',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.messengerAuthPassword,
-    instanceName: 'messengerAuthPassword',
+    () => tokenDataInjectorModule.userId,
+    instanceName: 'userId',
   );
   gh.factory<String>(
     () => tokenDataInjectorModule.messengerAuthLogin,
     instanceName: 'messengerAuthLogin',
   );
   gh.factory<String>(
-    () => tokenDataInjectorModule.userId,
-    instanceName: 'userId',
+    () => tokenDataInjectorModule.messengerAuthPassword,
+    instanceName: 'messengerAuthPassword',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.natsToken,
+    instanceName: 'natsToken',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.deviceVirtualId,
+    instanceName: 'deviceVirtualId',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.localDatabasePassword,
+    instanceName: 'localDatabasePassword',
   );
   gh.singleton<_i101.TagsListCubit>(_i101.TagsListCubit());
   gh.singleton<_i102.TagsListNetworkRequest>(_i102.TagsListNetworkRequest());
