@@ -28,6 +28,7 @@ import 'package:ink_mobile/messenger/screens/chat/components/message_card.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/selected_messages_builder.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import '../../../components/swipe_to.dart';
 import 'components/bottom_card.dart';
 import 'components/search_builder.dart';
 import 'components/search_textfield.dart';
@@ -82,7 +83,6 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   Message? lastMessage;
 
-
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
@@ -121,7 +121,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           }
           if (items.first.itemLeadingEdge > 0.0) {
             if (getSelectedChat != null) {
-              _fetchMessages(chatID: getSelectedChat!.id, offset: _paginator.newMessagesOffset, callback: fetchNextPart);
+              _fetchMessages(
+                  chatID: getSelectedChat!.id,
+                  offset: _paginator.newMessagesOffset,
+                  callback: fetchNextPart);
             }
           }
         }
@@ -352,46 +355,60 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                 scrollIndexes.add(
                                     _currentMessage.id.toString(), index);
 
-                                return MessageCard(
-                                  selectOnTap: selectedMessagesState.isNotEmpty,
-                                  onSelected: (selected) =>
-                                      _onSelected(selected, _currentMessage),
-                                  cachedChatsCubit: widget.cachedChatsCubit,
-                                  message: _currentMessage,
-                                  onDelete: widget.onMessageDelete != null
-                                      ? (context) => widget.onMessageDelete!(
-                                          context, [_currentMessage], chat!)
+                                bool isMyMessage = _currentMessage.owner.id ==
+                                    widget.cachedChatsCubit.myId;
+
+                                return SwipeTo(
+                                  onLeftSwipe: isMyMessage
+                                      ? () => _onRespond(_currentMessage)
                                       : null,
-                                  onEdit: (context) => _onEdit(_currentMessage),
-                                  onRespond: (context) =>
-                                      _onRespond(_currentMessage),
-                                  selected: selectedMessagesState
-                                      .contains(_currentMessage),
-                                  searchSelected: searchState.enabled &&
-                                      searchMessagesCubit
-                                          .isSelected(_currentMessage),
-                                  cachedUsersCubit: widget.cachedUsersCubit,
-                                  onGoTo: (context) {
-                                    Future.delayed(Duration(milliseconds: 200),
-                                        () {
-                                      Map<String, dynamic> args = {
-                                        'id': _currentMessage.owner.id
-                                      };
+                                  onRightSwipe: isMyMessage
+                                      ? null
+                                      : () => _onRespond(_currentMessage),
+                                  child: MessageCard(
+                                    selectOnTap:
+                                        selectedMessagesState.isNotEmpty,
+                                    onSelected: (selected) =>
+                                        _onSelected(selected, _currentMessage),
+                                    cachedChatsCubit: widget.cachedChatsCubit,
+                                    message: _currentMessage,
+                                    onDelete: widget.onMessageDelete != null
+                                        ? (context) => widget.onMessageDelete!(
+                                            context, [_currentMessage], chat!)
+                                        : null,
+                                    onEdit: (context) =>
+                                        _onEdit(_currentMessage),
+                                    onRespond: (context) =>
+                                        _onRespond(_currentMessage),
+                                    selected: selectedMessagesState
+                                        .contains(_currentMessage),
+                                    searchSelected: searchState.enabled &&
+                                        searchMessagesCubit
+                                            .isSelected(_currentMessage),
+                                    cachedUsersCubit: widget.cachedUsersCubit,
+                                    onGoTo: (context) {
+                                      Future.delayed(
+                                          Duration(milliseconds: 200), () {
+                                        Map<String, dynamic> args = {
+                                          'id': _currentMessage.owner.id
+                                        };
 
-                                      if (chat?.isSingle == true) {
-                                        final oppositeUserId =
-                                            chat?.getFirstNotMyId(
-                                                widget.cachedChatsCubit.myId);
+                                        if (chat?.isSingle == true) {
+                                          final oppositeUserId =
+                                              chat?.getFirstNotMyId(
+                                                  widget.cachedChatsCubit.myId);
 
-                                        if (oppositeUserId ==
-                                            _currentMessage.owner.id) {
-                                          args[HIDE_WRITE_BTN] = true;
+                                          if (oppositeUserId ==
+                                              _currentMessage.owner.id) {
+                                            args[HIDE_WRITE_BTN] = true;
+                                          }
                                         }
-                                      }
-                                      Navigator.pushNamed(context, "/personal",
-                                          arguments: args);
-                                    });
-                                  },
+                                        Navigator.pushNamed(
+                                            context, "/personal",
+                                            arguments: args);
+                                      });
+                                    },
+                                  ),
                                 );
                               },
                             );
