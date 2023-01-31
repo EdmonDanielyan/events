@@ -33,4 +33,14 @@
     
     `flutter pub build ios --no-sound-null-safety`
 
-3. Добавьте директорию .dart_tool/flutter_gen/ в исходники проекта
+2. Добавьте директорию .dart_tool/flutter_gen/ в исходники проекта
+
+
+### OneSignal
+
+Настройка Flutter, согласно официальной документации https://documentation.onesignal.com/docs/flutter-sdk-setup
+Генерация ios сертификатов OneSignal https://documentation.onesignal.com/docs/generate-an-ios-push-certificate
+
+В приложении используется базовая структура пуша OneSignal:
+Основные поля: title, subtitle, message, image, launchUrl
+Для навигации в приложении по пушу используется поле launchUrl (автоматический редирект по launchUrl отключается на каждой платформе отдельно https://documentation.onesignal.com/docs/links)

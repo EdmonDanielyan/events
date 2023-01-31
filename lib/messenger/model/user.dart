@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:ink_mobile/models/user_data.dart';
 
 class User extends Equatable {
   final int id;
@@ -43,6 +44,14 @@ class User extends Equatable {
   String toJson() => json.encode(toMap());
 
   factory User.fromJson(String source) => User.fromMap(json.decode(source));
+
+  factory User.fromUserProfileData(UserProfileData userData) {
+    return User(
+      id: userData.id,
+      name: "${userData.name ?? "" } ${userData.lastName ?? "" }",
+      avatarUrl: userData.pathToAvatar ?? "",
+    );
+  }
 
   @override
   String toString() => 'User(id: $id, name: $name, avatarUrl: $avatarUrl)';

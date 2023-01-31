@@ -261,22 +261,23 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             },
           ),
           Expanded(
-            child: SmartRefresher(
-              onLoading: () async {
-                await _loadMessages();
-                Future.delayed(
-                  const Duration(seconds: 1),
-                  () => refreshController.loadComplete(),
-                );
-              },
-              enablePullDown: false,
-              enablePullUp: true,
-              controller: refreshController,
-              footer: ClassicFooter(
-                loadStyle: LoadStyle.ShowWhenLoading,
-                idleIcon: SizedBox.shrink(),
-                idleText: "",
-              ),
+            //TODO: return refresher back (MMagin)
+            // child: SmartRefresher(
+            //   onLoading: () async {
+            //     await _loadMessages();
+            //     Future.delayed(
+            //       const Duration(seconds: 1),
+            //       () => refreshController.loadComplete(),
+            //     );
+            //   },
+            //   enablePullDown: false,
+            //   enablePullUp: true,
+            //   controller: refreshController,
+            //   footer: ClassicFooter(
+            //     loadStyle: LoadStyle.ShowWhenLoading,
+            //     idleIcon: SizedBox.shrink(),
+            //     idleText: "",
+            //   ),
               child: HiddenMessagesBuilder(
                 hiddenMessagesCubit,
                 builder: (context, hiddenMessagesState) {
@@ -385,7 +386,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                 },
               ),
             ),
-          ),
+          //),
           ChatBuilder(
             cachedChatsCubit: widget.cachedChatsCubit,
             builder: (context, state, chat) {

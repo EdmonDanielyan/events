@@ -58,6 +58,7 @@ class Contacts extends StatelessWidget {
         ));
       }
     });
+
     return contactRows;
   }
 
