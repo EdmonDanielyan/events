@@ -311,6 +311,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                   },
                   builder: (context, state, chat) {
                     if (chat == null) {
+                      if (selectedChat != null) {
+                        widget.cachedChatsCubit
+                            .selectChatById(selectedChat!.id);
+                      }
                       return const SizedBox();
                     }
                     chat = chat.copyWith(

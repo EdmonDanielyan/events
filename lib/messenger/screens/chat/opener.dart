@@ -31,10 +31,6 @@ class ChatScreenOpener {
   void call() {
     FocusManager.instance.primaryFocus?.unfocus();
     cachedChatsCubit.selectChatById(chatId);
-    if (Navigator.of(context).canPop()) {
-      Navigator.of(context).popUntil((route) => route.isFirst);
-    }
-
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => ChatScreen(
