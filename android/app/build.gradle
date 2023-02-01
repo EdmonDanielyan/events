@@ -74,6 +74,12 @@ android {
         }
     }
 
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "${variant.productFlavors[0].name}-${variant.buildType.name}.apk"
+        }
+    }
+
     //UNCOMMENT THIS FOR RELEASE
 //     signingConfigs {
 //         release {
