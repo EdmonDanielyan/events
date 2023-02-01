@@ -15,7 +15,7 @@
 	<key>io.flutter.embedded_views_preview</key>
 	<string>YES</string>
 	<key>CFBundleDisplayName</key>
-	<string>ИНК-Портал</string>
+	<string>${APP_DISPLAY_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

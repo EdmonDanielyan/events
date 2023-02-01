@@ -64,13 +64,13 @@ android {
         prod {
             dimension "app"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            resValue "string", "app_name", "ИНК-портал"
+            resValue "string", "app_name", "ИНК-Портал"
         }
         dev {
             dimension "app"
             applicationIdSuffix ".dev"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            resValue "string", "app_name", "DEV ИНК-портал"
+            resValue "string", "app_name", "DEV ИНК-Портал"
         }
     }
 

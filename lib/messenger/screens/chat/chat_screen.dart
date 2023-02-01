@@ -32,6 +32,7 @@ import 'components/bottom_card.dart';
 import 'components/search_builder.dart';
 import 'components/search_textfield.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:collection/collection.dart';
 
 class ChatScreen extends StatefulWidget {
   final CachedChatsCubit cachedChatsCubit;
@@ -79,6 +80,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       ? widget.cachedChatsCubit.selectedChats.last
       : null;
 
+  Message? lastMessage;
+
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
@@ -99,8 +103,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       final selectedChat = widget.cachedChatsCubit.selectedChats.last;
       selectedChat.sortMessagesByTime();
       if (selectedChat.messages.isNotEmpty) {
-        final lastMessage = selectedChat.messages.last;
-        widget.readMessage(lastMessage);
+        final lastReadMessage = selectedChat.messages.last;
+        widget.readMessage(lastReadMessage);
       }
     }
 
@@ -109,12 +113,16 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     Future.delayed(Duration.zero, () {
       itemPositionsListener.itemPositions.addListener(() {
         final items = itemPositionsListener.itemPositions.value.toList();
-
         if (items.isNotEmpty) {
           final getFirstIndex = items.last.index + 1;
 
           if (_paginator.page == getFirstIndex) {
             _loadMessages();
+          }
+          if (items.first.itemLeadingEdge > 0.0) {
+            if (getSelectedChat != null) {
+              _fetchMessages(chatID: getSelectedChat!.id, offset: _paginator.newMessagesOffset, callback: fetchNextPart);
+            }
           }
         }
       });
@@ -126,6 +134,23 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     }
   }
 
+  void fetchNextPart(List<Message> fetchedMessages) {
+    if (getSelectedChat != null) {
+      Message? alreadyFetchedMessage = fetchedMessages
+          .firstWhereOrNull((message) => message.id == lastMessage?.id);
+      if (alreadyFetchedMessage == null && fetchedMessages.isNotEmpty) {
+        _paginator.newMessagesOffset += _paginator.limit;
+        _fetchMessages(
+            chatID: getSelectedChat!.id,
+            offset: _paginator.newMessagesOffset,
+            callback: fetchNextPart);
+      } else {
+        lastMessage = getSelectedChat!.messages.last;
+        _paginator.newMessagesOffset = 0;
+      }
+    }
+  }
+
   Future<void> _loadMessages({bool showLoading = true}) async {
     final chat = getSelectedChat;
     if (chat != null && !_paginator.block) {
@@ -133,20 +158,33 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       if (showLoading) {
         EasyLoading.show();
       }
-      await FetchMessages(
-        chat.id,
-        offset: _paginator.page,
-        count: _paginator.limit,
-        successCallback: (msgs) {
-          _paginator.block = false;
-          _paginator.page = _paginator.page + _paginator.limit;
-          if (msgs.length < _paginator.limit) {
-            _paginator.block = true;
-          }
-        },
-      ).call();
+      _fetchMessages(
+          chatID: chat.id,
+          offset: _paginator.page,
+          callback: (msgs) {
+            _paginator.block = false;
+            _paginator.page = _paginator.page + _paginator.limit;
+            if (msgs.length < _paginator.limit) {
+              _paginator.block = true;
+            }
+          });
       EasyLoading.dismiss();
+      lastMessage = getSelectedChat?.messages.last;
     }
+  }
+
+  Future<void> _fetchMessages({
+    required int chatID,
+    required int offset,
+    Function(List<Message>)? callback,
+    int? count,
+  }) async {
+    await FetchMessages(
+      chatID,
+      offset: offset,
+      count: count ?? _paginator.limit,
+      successCallback: callback,
+    ).call();
   }
 
   @override
@@ -261,131 +299,115 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             },
           ),
           Expanded(
-            //TODO: return refresher back (MMagin)
-            // child: SmartRefresher(
-            //   onLoading: () async {
-            //     await _loadMessages();
-            //     Future.delayed(
-            //       const Duration(seconds: 1),
-            //       () => refreshController.loadComplete(),
-            //     );
-            //   },
-            //   enablePullDown: false,
-            //   enablePullUp: true,
-            //   controller: refreshController,
-            //   footer: ClassicFooter(
-            //     loadStyle: LoadStyle.ShowWhenLoading,
-            //     idleIcon: SizedBox.shrink(),
-            //     idleText: "",
-            //   ),
-              child: HiddenMessagesBuilder(
-                hiddenMessagesCubit,
-                builder: (context, hiddenMessagesState) {
-                  return ChatBuilder(
-                    cachedChatsCubit: widget.cachedChatsCubit,
-                    listener: (context, state, chat) {
-                      if (chat != null && chat.messages.isNotEmpty) {
-                        widget.readMessage(chat.messages.last);
+            child: HiddenMessagesBuilder(
+              hiddenMessagesCubit,
+              builder: (context, hiddenMessagesState) {
+                return ChatBuilder(
+                  cachedChatsCubit: widget.cachedChatsCubit,
+                  listener: (context, state, chat) {
+                    if (chat != null && chat.messages.isNotEmpty) {
+                      widget.readMessage(chat.messages.last);
+                    }
+                  },
+                  builder: (context, state, chat) {
+                    if (chat == null) {
+                      if (selectedChat != null) {
+                        widget.cachedChatsCubit
+                            .selectChatById(selectedChat!.id);
                       }
-                    },
-                    builder: (context, state, chat) {
-                      if (chat == null) {
-                        return const SizedBox();
-                      }
-                      chat = chat.copyWith(
-                        messages: hiddenMessagesCubit.filter(chat.messages),
-                      );
-                      chat.sortMessagesByTime();
+                      return const SizedBox();
+                    }
+                    chat = chat.copyWith(
+                      messages: hiddenMessagesCubit.filter(chat.messages),
+                    );
+                    chat.sortMessagesByTime();
 
-                      final messages = chat.messages.reversed.toList();
+                    final messages = chat.messages.reversed.toList();
 
-                      return BlocBuilder<SearchSelectCubit<Message>,
-                          SearchSelectState<Message>>(
-                        bloc: searchMessagesCubit,
-                        builder: (context, searchState) {
-                          return SelectedMessagesBuilder(
-                            selectedMessages,
-                            builder: (context, selectedMessagesState) {
-                              if (messages.isEmpty) {
-                                return SizedBox();
-                              }
+                    return BlocBuilder<SearchSelectCubit<Message>,
+                        SearchSelectState<Message>>(
+                      bloc: searchMessagesCubit,
+                      builder: (context, searchState) {
+                        return SelectedMessagesBuilder(
+                          selectedMessages,
+                          builder: (context, selectedMessagesState) {
+                            if (messages.isEmpty) {
+                              return SizedBox();
+                            }
 
-                              return GroupedList<Message, int>(
-                                items: messages,
-                                reverse: true,
-                                itemPositionsListener: itemPositionsListener,
-                                controller: itemScrollController,
-                                groupBy: (msg) => DateTime(msg.createdAt.year,
-                                        msg.createdAt.month, msg.createdAt.day)
-                                    .millisecondsSinceEpoch,
-                                header: (msg) => DateSeparator(
-                                  dateTime: msg.createdAt,
-                                ),
-                                itemBuilder: (context, index) {
-                                  final _currentMessage = messages[index];
+                            return GroupedList<Message, int>(
+                              items: messages,
+                              reverse: true,
+                              itemPositionsListener: itemPositionsListener,
+                              controller: itemScrollController,
+                              groupBy: (msg) => DateTime(msg.createdAt.year,
+                                      msg.createdAt.month, msg.createdAt.day)
+                                  .millisecondsSinceEpoch,
+                              header: (msg) => DateSeparator(
+                                dateTime: msg.createdAt,
+                              ),
+                              itemBuilder: (context, index) {
+                                final _currentMessage = messages[index];
 
-                                  if (_currentMessage.isInfo) {
-                                    return MessageInfoCard(_currentMessage);
-                                  }
+                                if (_currentMessage.isInfo) {
+                                  return MessageInfoCard(_currentMessage);
+                                }
 
-                                  scrollIndexes.add(
-                                      _currentMessage.id.toString(), index);
+                                scrollIndexes.add(
+                                    _currentMessage.id.toString(), index);
 
-                                  return MessageCard(
-                                    selectOnTap:
-                                        selectedMessagesState.isNotEmpty,
-                                    onSelected: (selected) =>
-                                        _onSelected(selected, _currentMessage),
-                                    cachedChatsCubit: widget.cachedChatsCubit,
-                                    message: _currentMessage,
-                                    onDelete: widget.onMessageDelete != null
-                                        ? (context) => widget.onMessageDelete!(
-                                            context, [_currentMessage], chat!)
-                                        : null,
-                                    onEdit: (context) =>
-                                        _onEdit(_currentMessage),
-                                    onRespond: (context) =>
-                                        _onRespond(_currentMessage),
-                                    selected: selectedMessagesState
-                                        .contains(_currentMessage),
-                                    searchSelected: searchState.enabled &&
-                                        searchMessagesCubit
-                                            .isSelected(_currentMessage),
-                                    cachedUsersCubit: widget.cachedUsersCubit,
-                                    onGoTo: (context) {
-                                      Future.delayed(
-                                          Duration(milliseconds: 200), () {
-                                        Map<String, dynamic> args = {
-                                          'id': _currentMessage.owner.id
-                                        };
+                                return MessageCard(
+                                  selectOnTap: selectedMessagesState.isNotEmpty,
+                                  onSelected: (selected) =>
+                                      _onSelected(selected, _currentMessage),
+                                  cachedChatsCubit: widget.cachedChatsCubit,
+                                  message: _currentMessage,
+                                  onDelete: widget.onMessageDelete != null
+                                      ? (context) => widget.onMessageDelete!(
+                                          context, [_currentMessage], chat!)
+                                      : null,
+                                  onEdit: (context) => _onEdit(_currentMessage),
+                                  onRespond: (context) =>
+                                      _onRespond(_currentMessage),
+                                  selected: selectedMessagesState
+                                      .contains(_currentMessage),
+                                  searchSelected: searchState.enabled &&
+                                      searchMessagesCubit
+                                          .isSelected(_currentMessage),
+                                  cachedUsersCubit: widget.cachedUsersCubit,
+                                  onGoTo: (context) {
+                                    Future.delayed(Duration(milliseconds: 200),
+                                        () {
+                                      Map<String, dynamic> args = {
+                                        'id': _currentMessage.owner.id
+                                      };
 
-                                        if (chat?.isSingle == true) {
-                                          final oppositeUserId =
-                                              chat?.getFirstNotMyId(
-                                                  widget.cachedChatsCubit.myId);
+                                      if (chat?.isSingle == true) {
+                                        final oppositeUserId =
+                                            chat?.getFirstNotMyId(
+                                                widget.cachedChatsCubit.myId);
 
-                                          if (oppositeUserId ==
-                                              _currentMessage.owner.id) {
-                                            args[HIDE_WRITE_BTN] = true;
-                                          }
+                                        if (oppositeUserId ==
+                                            _currentMessage.owner.id) {
+                                          args[HIDE_WRITE_BTN] = true;
                                         }
-                                        Navigator.pushNamed(
-                                            context, "/personal",
-                                            arguments: args);
-                                      });
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
+                                      }
+                                      Navigator.pushNamed(context, "/personal",
+                                          arguments: args);
+                                    });
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              },
             ),
+          ),
           //),
           ChatBuilder(
             cachedChatsCubit: widget.cachedChatsCubit,
