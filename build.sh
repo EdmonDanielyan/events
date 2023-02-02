@@ -10,11 +10,12 @@ building()
   build_type=$1
   environment=$2
 
-  if ["$environment" == all]; then
+  if [ "$environment" == "all" ]; then
     flutter build "$build_type" --release --no-sound-null-safety --flavor dev -t lib/dev_main.dart
     flutter build "$build_type" --release --no-sound-null-safety --flavor prod -t lib/prod_main.dart
+  else flutter build "$build_type" --release --no-sound-null-safety --flavor "$environment" -t lib/"$environment"_main.dart
   fi
-  flutter build "$build_type" --release --no-sound-null-safety --flavor environment -t lib/"$environment"_main.dart
+
 }
 
 flutter packages pub run build_runner build --delete-conflicting-outputs
