@@ -83,6 +83,8 @@ class NavigationMethods {
   }
 
   static Future<void> openChatByUserID(BuildContext context, int userID) async {
+    backToMainScreen(context);
+    getIt<NewBottomNavBarCubit>().goToPage(NavBarItems.messages);
     final cachedUsersCubit = getIt<CachedUsersCubit>();
     User? user = cachedUsersCubit.getUser(userID);
     if (user == null) {
@@ -92,8 +94,6 @@ class NavigationMethods {
       UserProfileData userData = response.mapResponse();
       user = User.fromUserProfileData(userData);
     }
-    backToMainScreen(context);
-    getIt<NewBottomNavBarCubit>().goToPage(NavBarItems.messages);
     CreateChatHandler(
       [user],
       context,
