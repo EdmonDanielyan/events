@@ -98,7 +98,6 @@ class Body extends StatelessWidget {
     final ScrollController _scrollController = ScrollController();
     UserProfileData user = state.data!;
     final logFile = ProfileScreen.of(context).widget.logFile;
-
     return Container(
         child: Background(
             child: SingleChildScrollView(
@@ -143,7 +142,7 @@ class Body extends StatelessWidget {
               BasicInformation(
                 info: user.basicInformation,
               ),
-              //будет поле о пользователе
+              //будет поле о пользователе без возможности редактировать
             ],
           );
         })

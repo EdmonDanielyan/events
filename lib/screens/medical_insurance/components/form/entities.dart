@@ -15,6 +15,7 @@ class MedicalInsuranceFormEntities {
   String dateStart;
   String additionalText;
   String guaranteeLetterDate;
+  bool isSymptomsORVI;
 
   MedicalInsuranceFormEntities({
     this.type = "",
@@ -31,5 +32,6 @@ class MedicalInsuranceFormEntities {
     this.dateStart = "",
     this.additionalText = "",
     this.guaranteeLetterDate = "",
+    this.isSymptomsORVI = false,
   });
 }

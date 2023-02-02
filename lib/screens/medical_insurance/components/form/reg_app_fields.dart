@@ -11,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
+import 'package:ink_mobile/screens/medical_insurance/components/form/symptoms_rb.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../components/date_input_field.dart';
@@ -55,6 +56,8 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
         _price(),
         SizedBox(height: 20),
         _dateStart(context),
+        SizedBox(height: 20),
+        SymptomsRb(entities: entities)
       ],
     );
   }
