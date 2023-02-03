@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bbcode/flutter_bbcode.dart';
+import 'package:flutter_bbcode/tags/tag_parser.dart';
 import 'package:ink_mobile/messenger/utils/hex_color.dart';
 import 'package:ink_mobile/messenger/utils/word_to_color_map.dart';
 
