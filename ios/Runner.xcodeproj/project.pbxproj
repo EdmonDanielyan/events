@@ -531,11 +531,11 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 125;
+				CURRENT_PROJECT_VERSION = 126;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.2.23;
-				FLUTTER_BUILD_NUMBER = 123;
+				FLUTTER_BUILD_NAME = 1.2.26;
+				FLUTTER_BUILD_NUMBER = 126;
 				FLUTTER_TARGET = /Users/maximmagin/Development/Projects/ink_portal/lib/dev_main.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -543,7 +543,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.25;
+				MARKETING_VERSION = 1.2.26;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -660,11 +660,11 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 125;
+				CURRENT_PROJECT_VERSION = 126;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.2.23;
-				FLUTTER_BUILD_NUMBER = 123;
+				FLUTTER_BUILD_NAME = 1.2.26;
+				FLUTTER_BUILD_NUMBER = 126;
 				FLUTTER_TARGET = /Users/maximmagin/Development/Projects/ink_portal/lib/dev_main.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -672,7 +672,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.25;
+				MARKETING_VERSION = 1.2.26;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -783,11 +783,11 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 125;
+				CURRENT_PROJECT_VERSION = 126;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.2.23;
-				FLUTTER_BUILD_NUMBER = 123;
+				FLUTTER_BUILD_NAME = 1.2.26;
+				FLUTTER_BUILD_NUMBER = 126;
 				FLUTTER_TARGET = /Users/maximmagin/Development/Projects/ink_portal/lib/dev_main.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -795,7 +795,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.25;
+				MARKETING_VERSION = 1.2.26;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -843,9 +843,9 @@
 			};
 			name = "Profile-dev";
 		};
-		1546ABAB29714F5B004E36CB /* Debug-prod */ = {
+		1546ABAB29714F5B004E36CB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1CC8CEDF44116A023C81B4DC /* Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig */;
+			baseConfigurationReference = ED818A463DD1CDC589D0E9D5 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -881,11 +881,11 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Debug-prod";
+			name = Debug;
 		};
-		1546ABAC29714F5B004E36CB /* Release-prod */ = {
+		1546ABAC29714F5B004E36CB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6A6C5598C7A7EF4E8E4C08F8 /* Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig */;
+			baseConfigurationReference = 19A7753BB96481F6FC606830 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -918,11 +918,11 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Release-prod";
+			name = Release;
 		};
-		1546ABAD29714F5B004E36CB /* Profile-prod */ = {
+		1546ABAD29714F5B004E36CB /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8B823D78C85C7D42C0D57A69 /* Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig */;
+			baseConfigurationReference = 444F0CA7EA198219F798AE3C /* Pods-OneSignalNotificationServiceExtension.profile.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -955,9 +955,9 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Profile-prod";
+			name = Profile;
 		};
-		249021D3217E4FDB00AE95B9 /* Profile-prod */ = {
+		249021D3217E4FDB00AE95B9 /* Profile */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1006,9 +1006,9 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Profile-prod";
+			name = Profile;
 		};
-		249021D4217E4FDB00AE95B9 /* Profile-prod */ = {
+		249021D4217E4FDB00AE95B9 /* Profile */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
@@ -1021,12 +1021,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 125;
+				CURRENT_PROJECT_VERSION = 126;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.2.23;
-				FLUTTER_BUILD_NUMBER = 123;
+				FLUTTER_BUILD_NAME = 1.2.26;
+				FLUTTER_BUILD_NUMBER = 126;
 				FLUTTER_TARGET = /Users/maximmagin/Development/Projects/ink_portal/lib/prod_main.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1034,7 +1034,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.25;
+				MARKETING_VERSION = 1.2.26;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1044,9 +1044,9 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
-			name = "Profile-prod";
+			name = Profile;
 		};
-		97C147031CF9000F007C117D /* Debug-prod */ = {
+		97C147031CF9000F007C117D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1100,9 +1100,9 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Debug-prod";
+			name = Debug;
 		};
-		97C147041CF9000F007C117D /* Release-prod */ = {
+		97C147041CF9000F007C117D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1153,9 +1153,9 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release-prod";
+			name = Release;
 		};
-		97C147061CF9000F007C117D /* Debug-prod */ = {
+		97C147061CF9000F007C117D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
@@ -1168,12 +1168,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 125;
+				CURRENT_PROJECT_VERSION = 126;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.2.23;
-				FLUTTER_BUILD_NUMBER = 123;
+				FLUTTER_BUILD_NAME = 1.2.26;
+				FLUTTER_BUILD_NUMBER = 126;
 				FLUTTER_TARGET = /Users/maximmagin/Development/Projects/ink_portal/lib/prod_main.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1181,7 +1181,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.25;
+				MARKETING_VERSION = 1.2.26;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1192,9 +1192,9 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
-			name = "Debug-prod";
+			name = Debug;
 		};
-		97C147071CF9000F007C117D /* Release-prod */ = {
+		97C147071CF9000F007C117D /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
@@ -1207,12 +1207,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 125;
+				CURRENT_PROJECT_VERSION = 126;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.2.23;
-				FLUTTER_BUILD_NUMBER = 123;
+				FLUTTER_BUILD_NAME = 1.2.26;
+				FLUTTER_BUILD_NUMBER = 126;
 				FLUTTER_TARGET = /Users/maximmagin/Development/Projects/ink_portal/lib/prod_main.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1220,7 +1220,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.25;
+				MARKETING_VERSION = 1.2.26;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1230,7 +1230,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
-			name = "Release-prod";
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -1238,41 +1238,41 @@
 		1546ABAE29714F5B004E36CB /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1546ABAB29714F5B004E36CB /* Debug-prod */,
+				1546ABAB29714F5B004E36CB /* Debug */,
 				15293D4E298A911100ECB0AD /* Debug-dev */,
-				1546ABAC29714F5B004E36CB /* Release-prod */,
+				1546ABAC29714F5B004E36CB /* Release */,
 				15293D51298A916600ECB0AD /* Release-dev */,
-				1546ABAD29714F5B004E36CB /* Profile-prod */,
+				1546ABAD29714F5B004E36CB /* Profile */,
 				15293D54298A916900ECB0AD /* Profile-dev */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-prod";
+			defaultConfigurationName = Release;
 		};
 		97C146E91CF9000F007C117D /* Build configuration list for PBXProject "Runner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				97C147031CF9000F007C117D /* Debug-prod */,
+				97C147031CF9000F007C117D /* Debug */,
 				15293D4C298A911100ECB0AD /* Debug-dev */,
-				97C147041CF9000F007C117D /* Release-prod */,
+				97C147041CF9000F007C117D /* Release */,
 				15293D4F298A916600ECB0AD /* Release-dev */,
-				249021D3217E4FDB00AE95B9 /* Profile-prod */,
+				249021D3217E4FDB00AE95B9 /* Profile */,
 				15293D52298A916900ECB0AD /* Profile-dev */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-prod";
+			defaultConfigurationName = Release;
 		};
 		97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				97C147061CF9000F007C117D /* Debug-prod */,
+				97C147061CF9000F007C117D /* Debug */,
 				15293D4D298A911100ECB0AD /* Debug-dev */,
-				97C147071CF9000F007C117D /* Release-prod */,
+				97C147071CF9000F007C117D /* Release */,
 				15293D50298A916600ECB0AD /* Release-dev */,
-				249021D4217E4FDB00AE95B9 /* Profile-prod */,
+				249021D4217E4FDB00AE95B9 /* Profile */,
 				15293D53298A916900ECB0AD /* Profile-dev */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release-prod";
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
