@@ -43,6 +43,7 @@ Future<void> setup() async {
   getIt.registerLazySingleton<AppConfig>(() => AppConfig(
         serverUrl: isProd ? UrlsConfig.prodUrl : UrlsConfig.debugUrl,
         wsUrl: isProd ? UrlsConfig.wsProdUrl : UrlsConfig.wsDebugUrl,
+        wsPath: isProd ? UrlsConfig.wsProdPath : UrlsConfig.wsDebugPath,
         messengerApiUrl: isProd
             ? UrlsConfig.messengerApiUrls.first
             : UrlsConfig.messengerApiUrls.last,

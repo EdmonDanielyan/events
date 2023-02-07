@@ -48,8 +48,13 @@ class MainScreenState extends State<MainScreen>
   void initState() {
     super.initState();
 
-    getIt<MessengerProvider>().init(getIt.get<AppConfig>().wsUrl, JwtPayload.myId,
-        apiUrl: getIt.get<AppConfig>().messengerApiUrl);
+    getIt<MessengerProvider>().init(
+        getIt.get<AppConfig>().wsUrl,
+        JwtPayload.myId,
+        path: getIt.get<AppConfig>().wsPath,
+        apiUrl: getIt.get<AppConfig>().messengerApiUrl
+    );
+
   }
 
   @override
