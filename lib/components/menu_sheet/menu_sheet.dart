@@ -188,7 +188,7 @@ class _ExitAlertDialogState extends State<ExitAlertDialog> {
 }
 
 Future<void> _exit(BuildContext context) async {
-  getIt<LogoutCubit>().logout();
+  await getIt<LogoutCubit>().logout();
   getIt<AppTokenProvider>().deleteToken();
   getIt<LocalPinProvider>().removePin();
   getIt<SecureStorage>().deleteAll();

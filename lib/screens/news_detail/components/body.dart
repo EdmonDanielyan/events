@@ -77,25 +77,31 @@ class Body extends StatelessWidget {
 
                 return SingleChildScrollView(
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
                         child: Header(
-                            imageLinks: newsItem.detailPictureLinks,
-                            videoLinks: newsItem.videoLinks),
+                          imageLinks: newsItem.detailPictureLinks,
+                          videoLinks: newsItem.videoLinks,
+                        ),
                       ),
                       HeaderInfo(
-                          viewCount: newsItem.viewCount ?? 0,
-                          dateCreate: newsItem.dateCreate),
+                        viewCount: newsItem.viewCount ?? 0,
+                        dateCreate: newsItem.dateCreate,
+                      ),
                       Container(
-                          width: size.width,
-                          color: Colors.white,
-                          padding:
-                              EdgeInsets.only(left: 20, right: 50, bottom: 10),
-                          child: Text(
-                            newsItem.title ?? '',
-                            style: TextStyle(
-                                fontSize:   SizeConfig(context, 22.0).getProportionateScreenHeight, fontWeight: FontWeight.bold),
-                          )),
+                        width: size.width,
+                        color: Colors.white,
+                        padding:
+                            EdgeInsets.only(left: 20, right: 50, bottom: 10),
+                        child: Text(
+                          newsItem.title ?? '',
+                          style: TextStyle(
+                              fontSize: SizeConfig(context, 22.0)
+                                  .getProportionateScreenHeight,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
                       BlocBuilder<NewsBlockCubit, NewsBlockState>(
                         bloc: newsBlockCubit,
                         builder: (context, state) {

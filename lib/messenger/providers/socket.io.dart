@@ -1,4 +1,5 @@
 import 'package:ink_mobile/messenger/messenger/listeners/listener.dart';
+import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 class SocketProvider {
@@ -20,14 +21,15 @@ class SocketProvider {
 
   Socket init() {
     Socket socket = io(
-        url,
-        OptionBuilder()
-            .setTransports(['websocket'])
-            .enableForceNewConnection()
-            .setExtraHeaders(
-              {"userId": 15},
-            )
-            .build());
+      url,
+      OptionBuilder()
+          .setTransports(['websocket'])
+          .enableForceNewConnection()
+          .setExtraHeaders(
+            {"userId": JwtPayload.myId},
+          )
+          .build(),
+    );
     _onConnect(socket);
     _onConnectError(socket);
     _onDisconnect(socket);

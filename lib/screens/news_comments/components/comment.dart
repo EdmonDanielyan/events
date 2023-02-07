@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bbcode/flutter_bbcode.dart';
-import 'package:flutter_bbcode/tags/basic_tags.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/ink_icons.dart';
@@ -102,15 +101,9 @@ class _CommentState extends State<Comment> {
                       ),
                       BBCodeText(
                           data: widget.text,
-                          defaultStyle: TextStyle(
-                              color: _textColor,
-                              fontSize: SizeConfig(context, 12)
-                                  .getProportionateScreenHeight),
-                          tagsParsers: {
-                            ...allTags
-                              ..removeWhere((e) => e is ColorTag)
-                              ..add(CustomColorTag(defaultColor: _textColor)),
-                          }),
+                          stylesheet: defaultBBStylesheet()
+                            ..replaceTag(
+                                CustomColorTag(defaultColor: _textColor))),
                       Container(
                         child: Row(
                           children: [

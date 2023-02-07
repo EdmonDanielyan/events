@@ -11,7 +11,7 @@ class DeviceInfoProvider {
       return info.identifierForVendor ?? "";
     } else if (Platform.isAndroid) {
       final info = await deviceInfo.androidInfo;
-      return info.androidId ?? "";
+      return info.id ?? "";
     }
 
     return null;

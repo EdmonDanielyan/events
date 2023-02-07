@@ -19,7 +19,6 @@ class LogoutNetworkRequest extends LogoutSource {
     final paramsBuilder = LogoutParamsBuilder();
     await Token.setNewTokensIfExpired();
     paramsBuilder.token = await Token.getRefresh();
-    paramsBuilder.token;
     final response = await authApi.authLogoutPost(
       logoutParams: paramsBuilder.build(),
     );

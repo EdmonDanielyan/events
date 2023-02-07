@@ -18,25 +18,39 @@ import 'package:ink_mobile/themes/light.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
-  runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  runZoned(
+    () {
+      runZonedGuarded(
+        () async {
+          WidgetsFlutterBinding.ensureInitialized();
 
-    HttpOverrides.global = MyHttpOverrides();
-    final storage = await HydratedStorage.build(
-      storageDirectory: kIsWeb
-          ? HydratedStorage.webStorageDirectory
-          : await getTemporaryDirectory(),
-    );
+          HttpOverrides.global = MyHttpOverrides();
+          final storage = await HydratedStorage.build(
+            storageDirectory: kIsWeb
+                ? HydratedStorage.webStorageDirectory
+                : await getTemporaryDirectory(),
+          );
 
-    HydratedBlocOverrides.runZoned(
-      () async {
-        await setup(scope: await readEnv());
+          HydratedBlocOverrides.runZoned(
+            () async {
+              await setup(scope: await readEnv());
 
-        runApp(InkMobile());
+              runApp(InkMobile());
+            },
+            storage: storage,
+          );
+        },
+        (error, stack) {},
+      );
+    },
+    zoneSpecification: ZoneSpecification(
+      print: (self, parent, zone, line) {
+        if (kDebugMode) {
+          parent.print(zone, line);
+        }
       },
-      storage: storage,
-    );
-  }, (error, stack) {});
+    ),
+  );
 }
 
 class InkMobile extends StatelessWidget {

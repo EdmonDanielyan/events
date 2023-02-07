@@ -7,7 +7,6 @@ import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/messenger/providers/app_token.dart';
-import 'package:ink_mobile/messenger/providers/logger.dart' as customLogger;
 import 'package:ink_mobile/models/converter.dart';
 import 'package:ink_mobile/providers/device_info.dart';
 import 'package:ink_mobile/providers/main_api.dart';
@@ -103,9 +102,7 @@ abstract class Token {
       } else {
         throw InvalidRefreshTokenException();
       }
-    } catch (e) {
-      customLogger.logger.e("ERROR UPDATING TOKEn $e");
-    }
+    } catch (e) {}
   }
 
   static Future<DateTime?> getJwtExpired() async {

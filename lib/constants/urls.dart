@@ -14,7 +14,7 @@ class UrlsConfig {
   };
 
   static String get apiUrl => kDebugMode ? debugUrl : prodUrl;
-  static String get wsUrl => kDebugMode ? wsDebugUrl : wsProdUrl;
+  static String get wsUrl => !kDebugMode ? wsDebugUrl : wsProdUrl;
   static String get messengerApiUrl =>
       kDebugMode ? messengerApiUrls.last : messengerApiUrls.first;
 }
