@@ -15,7 +15,7 @@ class OnlineListener extends Listener {
 
   OnlineCubit get onlineCubit => getIt<OnlineCubit>();
 
-  final debouncer = Debouncer(duration: const Duration(seconds: 50));
+  final debouncer = Debouncer(duration: const Duration(minutes: 15));
 
   @override
   void handler(data) {

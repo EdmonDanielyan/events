@@ -5,20 +5,28 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "ink-mobile",
+            "name": "dev",
             "request": "launch",
             "type": "dart",
             "args": [
-                "--no-sound-null-safety"
+                "--no-sound-null-safety",
+                "--flavor",
+                "dev",
+                "-t",
+                "./lib/dev_main.dart"
             ]
         },
         {
-            "name": "ink-mobile-2",
+            "name": "prod",
             "request": "launch",
             "type": "dart",
             "args": [
-                "--no-sound-null-safety"
+                "--no-sound-null-safety",
+                "--flavor",
+                "prod",
+                "-t",
+                "./lib/prod_main.dart"
             ]
-        },
+        }
     ]
 }

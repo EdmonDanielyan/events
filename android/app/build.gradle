@@ -59,8 +59,29 @@ android {
         multiDexEnabled true
     }
 
+    flavorDimensions "app"
+    productFlavors {
+        prod {
+            dimension "app"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "ИНК-Портал"
+        }
+        dev {
+            dimension "app"
+            applicationIdSuffix ".dev"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "DEV ИНК-Портал"
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "${variant.productFlavors[0].name}-${variant.buildType.name}.apk"
+        }
+    }
+
     //UNCOMMENT THIS FOR RELEASE
-//     signingConfigs {
+
 //         release {
 //             keyAlias keystoreProperties['keyAlias']
 //             keyPassword keystoreProperties['keyPassword']

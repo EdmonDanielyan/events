@@ -25,8 +25,8 @@ class SocketProvider {
         .setTransports(['websocket'])
         .enableForceNewConnection()
         .setExtraHeaders(
-        {"userId": 15},
-      );
+      {"userId": 15},
+    );
 
     final path = this.path;
     if (path != null){
@@ -35,8 +35,7 @@ class SocketProvider {
 
     Socket socket = io(
         url,
-        options.build()
-    );
+        options.build());
     _onConnect(socket);
     _onConnectError(socket);
     _onDisconnect(socket);

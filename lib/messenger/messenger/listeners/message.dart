@@ -22,7 +22,7 @@ class MessageListener extends Listener {
         for (final message in model.messages) {
           if (message.owner.id != chatsCubit.myId) {
             chatsCubit.addMessagesToChatById([message], message.chatId);
-            ShowNotification(message).call();
+            //ShowNotification(message).call();
           }
         }
       }

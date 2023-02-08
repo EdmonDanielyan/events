@@ -54,6 +54,7 @@ class MainScreenState extends State<MainScreen>
         path: getIt.get<AppConfig>().wsPath,
         apiUrl: getIt.get<AppConfig>().messengerApiUrl
     );
+
   }
 
   @override

@@ -13,7 +13,7 @@ class LocalNotificationsProvider {
       requestAlertPermission: true,
     );
     var _initializationSettingsAndroid =
-        const AndroidInitializationSettings('notification_logo');
+        const AndroidInitializationSettings('ic_stat_onesignal_default');
     var _initializationSettings = InitializationSettings(
       android: _initializationSettingsAndroid,
       iOS: _initializationSettingsIOS,

@@ -111,6 +111,7 @@ abstract class Token {
       }
     } catch (e) {
       customLogger.logger.e("ERROR UPDATING TOKEn $e");
+      throw UnknownErrorException();
     }
   }
 

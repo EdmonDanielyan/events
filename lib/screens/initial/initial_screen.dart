@@ -2,14 +2,22 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
+import 'package:ink_mobile/cubit/logout/logout_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
+import 'package:ink_mobile/messenger/providers/app_token.dart';
+import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/local_pin_provider.dart';
+import 'package:ink_mobile/providers/secure_storage.dart';
 import 'package:ink_mobile/routes/pass_data_routes.dart';
 import 'package:ink_mobile/screens/check_pin_code/check_pin_code_screen.dart';
 import 'package:ink_mobile/screens/initial/component/loader.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_cubit.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_state.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class InitPage extends StatefulWidget with Loggable {
   final InitialCubit cubit;
@@ -53,7 +61,7 @@ class _InitPageState extends State<InitPage> {
           }
         }
         if (state.type == InitialStateType.LOAD_WELCOME) {
-          Navigator.popAndPushNamed(context, '/welcome');
+          _exit(context);
         }
       },
       child: FutureBuilder<bool>(
@@ -74,5 +82,20 @@ class _InitPageState extends State<InitPage> {
         },
       ),
     );
+  }
+
+  Future<void> _exit(BuildContext context) async {
+    getIt<LogoutCubit>().logout();
+    getIt<AppTokenProvider>().deleteToken();
+    getIt<LocalPinProvider>().removePin();
+    getIt<SecureStorage>().deleteAll();
+    getIt<MessengerProvider>().dispose();
+    getIt<CachedChatsCubit>().clean();
+    Token.deleteTokens();
+    FlutterSecureStorage().deleteAll();
+    OneSignal.shared.removeExternalUserId();
+
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushReplacementNamed(context, '/welcome');
   }
 }

@@ -7,10 +7,14 @@ class DateInputField extends StatefulWidget {
   final String title;
   final String? Function(String?)? validator;
   final void Function(DateTime)? onChanged;
+  final DateTime? firstDate ;
+  final DateTime? lastDate ;
   const DateInputField(
       {Key? key,
       required this.controller,
       required this.title,
+      this.firstDate,
+      this.lastDate,
       this.onChanged,
       this.validator})
       : super(key: key);
@@ -53,8 +57,8 @@ class _DateInputFieldState extends State<DateInputField> {
         context: context,
         locale: Locale('ru', 'RU'),
         initialDate: _selectedDate,
-        firstDate: DateTime(1901, 1),
-        lastDate: DateTime(2100));
+        firstDate: widget.firstDate ?? DateTime(1946),
+        lastDate: widget.lastDate ?? DateTime(2100));
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
