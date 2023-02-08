@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/list_element_divider.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/main_page/events_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/events_list_state.dart';
 import 'package:ink_mobile/models/event_data.dart';
+import 'package:ink_mobile/screens/events_list/components/events_list_empty_state.dart';
 import 'package:ink_mobile/screens/main/components/events_list_element.dart';
 import 'package:ink_mobile/screens/main/components/events_list_element_placeholder.dart';
 
@@ -22,34 +27,35 @@ class EventsList extends StatelessWidget {
           case EventsListStateType.LOADED:
             {
               List<Widget> items = getEventsWidgetList(state.data!);
-              return Container(
-                margin: EdgeInsets.only(top: 30),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  controller: ScrollController(keepScrollOffset: false),
-                  itemCount: items.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      items[index],
-                ),
-              );
+              if (items.isNotEmpty) {
+                return Container(
+                  margin: EdgeInsets.only(top: 30),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    controller: ScrollController(keepScrollOffset: false),
+                    itemCount: items.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        items[index],
+                  ),
+                );
+              } else {
+                return EventsListEmptyState();
+              }
             }
 
           case EventsListStateType.LOADING:
             {
               eventsCubit.fetchEvents();
               return Container(
-                  margin: EdgeInsets.only(top: 30),
-                  child: Column(children: [
-                    EventsListElementPlaceholder(),
-                    ListElementDivider(),
-                    EventsListElementPlaceholder(),
-                    ListElementDivider(),
-                    EventsListElementPlaceholder(),
-                    ListElementDivider(),
-                    EventsListElementPlaceholder(),
-                    ListElementDivider(),
-                    EventsListElementPlaceholder()
-                  ]));
+                margin: EdgeInsets.only(top: 30),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (ctx, index) => EventsListElementPlaceholder(),
+                  separatorBuilder: (ctx, index) => ListElementDivider(),
+                  itemCount: 4,
+                ),
+              );
             }
 
           case EventsListStateType.ERROR:
@@ -66,13 +72,16 @@ class EventsList extends StatelessWidget {
   List<Widget> getEventsWidgetList(List<EventData> events) {
     List<Widget> eventsWidgetList = [];
 
-    events.forEach((element) {
-      eventsWidgetList
-          .addAll([EventsListElement(event: element), ListElementDivider()]);
-    });
-
-    eventsWidgetList.removeLast();
+    if (events.isNotEmpty) {
+      events.forEach((element) {
+        eventsWidgetList
+            .addAll([EventsListElement(event: element), ListElementDivider()]);
+      });
+      eventsWidgetList.removeLast();
+    }
 
     return eventsWidgetList;
   }
 }
+
+

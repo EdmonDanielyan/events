@@ -7,6 +7,7 @@ import 'package:ink_mobile/cubit/events_list/events_list_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/screens/events_list/components/events_list_element.dart';
+import 'package:ink_mobile/screens/events_list/components/events_list_empty_state.dart';
 
 import '../../../messenger/functions/size_config.dart';
 
@@ -44,42 +45,48 @@ class Body extends StatelessWidget {
   }
 
   Widget _getLoadedStateWidget(BuildContext context, EventsListState state) {
-    List<EventsListElement> items = _getEventsWidgetList(state.data!);
-    return Container(
-      color: Color(0xfff9f9f9),
-      child: SingleChildScrollView(
-        controller: _controller,
-        child: Column(
-          children: [
-            Container(
-              color: Colors.white,
-              padding:
-                  EdgeInsets.only(left: 20, right: 20, top: 24, bottom: 20),
-              child: Row(
-                children: [
-                  Text(
-                    localizationInstance.events,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: SizeConfig(context, 21.0)
-                          .getProportionateScreenHeight,
-                    ),
-                  )
-                ],
+    List<EventsListElement> items = [];
+    if (state.data?.isNotEmpty == true) {
+      items = _getEventsWidgetList(state.data!);
+      return Container(
+        color: Color(0xfff9f9f9),
+        child: SingleChildScrollView(
+          controller: _controller,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.white,
+                padding:
+                    EdgeInsets.only(left: 20, right: 20, top: 24, bottom: 20),
+                child: Row(
+                  children: [
+                    Text(
+                      localizationInstance.events,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: SizeConfig(context, 21.0)
+                            .getProportionateScreenHeight,
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            Container(
-              child: ListView.builder(
-                shrinkWrap: true,
-                controller: ScrollController(keepScrollOffset: false),
-                itemCount: items.length,
-                itemBuilder: (BuildContext context, int index) => items[index],
-              ),
-            )
-          ],
+              Container(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: ScrollController(keepScrollOffset: false),
+                  itemCount: items.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      items[index],
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return EventsListEmptyState();
+    }
   }
 
   Future<void> _onScroll() async {
