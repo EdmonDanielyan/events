@@ -7,7 +7,6 @@ class UrlsConfig { //todo url
   static const wsDebugUrl = "wss://mp-test-portal.irkutskoil.ru";
   static const wsDebugPath = "/messenger_ws/socket.io/";
 
-
   static const supportUrl = "https://portal.irkutskoil.ru/login/report/";
   static const aboutCompany = "https://irkutskoil.ru/";
   static const pushBaseUrl = "http://ink-portal.ru/";
