@@ -58,9 +58,14 @@ import 'package:main_api_client/model/get_search_success.dart';
 import 'package:main_api_client/model/get_transport_order_form.dart';
 import 'package:main_api_client/model/get_user_fail.dart';
 import 'package:main_api_client/model/get_user_success.dart';
-import 'package:main_api_client/model/get_users.dart';
-import 'package:main_api_client/model/get_users_success.dart';
-import 'package:main_api_client/model/logout_params.dart';
+import 'package:main_api_client/model/list_page_response_data.dart';
+import 'package:main_api_client/model/list_page_success_response_body.dart';
+import 'package:main_api_client/model/list_page_success_response_body_all_of.dart';
+import 'package:main_api_client/model/list_section_response_data.dart';
+import 'package:main_api_client/model/list_section_success_response_body.dart';
+import 'package:main_api_client/model/list_section_success_response_body_all_of.dart';
+import 'package:main_api_client/model/list_snippet_success_response_body.dart';
+import 'package:main_api_client/model/list_snippet_success_response_body_all_of.dart';
 import 'package:main_api_client/model/movements_fail.dart';
 import 'package:main_api_client/model/movements_object.dart';
 import 'package:main_api_client/model/movements_success.dart';
@@ -68,6 +73,7 @@ import 'package:main_api_client/model/news_like_success.dart';
 import 'package:main_api_client/model/news_not_found.dart';
 import 'package:main_api_client/model/news_property.dart';
 import 'package:main_api_client/model/news_property_by_id.dart';
+import 'package:main_api_client/model/not_event_member.dart';
 import 'package:main_api_client/model/not_found.dart';
 import 'package:main_api_client/model/order_dms.dart';
 import 'package:main_api_client/model/order_dms_fail.dart';
@@ -76,6 +82,8 @@ import 'package:main_api_client/model/order_reference_fail.dart';
 import 'package:main_api_client/model/order_reference_success.dart';
 import 'package:main_api_client/model/order_transport_fail.dart';
 import 'package:main_api_client/model/order_transport_success.dart';
+import 'package:main_api_client/model/page.dart';
+import 'package:main_api_client/model/page_section.dart';
 import 'package:main_api_client/model/post_comment.dart';
 import 'package:main_api_client/model/post_comment_params_fail.dart';
 import 'package:main_api_client/model/post_comment_success.dart';
@@ -88,16 +96,27 @@ import 'package:main_api_client/model/register_confirm_params.dart';
 import 'package:main_api_client/model/register_confirm_success.dart';
 import 'package:main_api_client/model/register_params.dart';
 import 'package:main_api_client/model/register_success.dart';
+import 'package:main_api_client/model/remove_event_member.dart';
 import 'package:main_api_client/model/required_error.dart';
 import 'package:main_api_client/model/required_success.dart';
 import 'package:main_api_client/model/send_feedback_fail.dart';
 import 'package:main_api_client/model/send_feedback_success.dart';
 import 'package:main_api_client/model/server_error.dart';
+import 'package:main_api_client/model/single_page_response_data.dart';
+import 'package:main_api_client/model/single_page_success_response_body.dart';
+import 'package:main_api_client/model/single_page_success_response_body_all_of.dart';
+import 'package:main_api_client/model/single_section_response_data.dart';
+import 'package:main_api_client/model/single_section_success_response_body.dart';
+import 'package:main_api_client/model/single_section_success_response_body_all_of.dart';
+import 'package:main_api_client/model/snippet.dart';
+import 'package:main_api_client/model/snippet_list_response_data.dart';
+import 'package:main_api_client/model/text_page.dart';
 import 'package:main_api_client/model/thank_by_id.dart';
 import 'package:main_api_client/model/thank_self.dart';
 import 'package:main_api_client/model/transport_form.dart';
 import 'package:main_api_client/model/user_not_found.dart';
 import 'package:main_api_client/model/user_properties.dart';
+import 'package:main_api_client/model/web_view_page.dart';
 
 part 'serializers.g.dart';
 
@@ -147,9 +166,14 @@ part 'serializers.g.dart';
   GetTransportOrderForm,
   GetUserFail,
   GetUserSuccess,
-  GetUsers,
-  GetUsersSuccess,
-  LogoutParams,
+  ListPageResponseData,
+  ListPageSuccessResponseBody,
+  ListPageSuccessResponseBodyAllOf,
+  ListSectionResponseData,
+  ListSectionSuccessResponseBody,
+  ListSectionSuccessResponseBodyAllOf,
+  ListSnippetSuccessResponseBody,
+  ListSnippetSuccessResponseBodyAllOf,
   MovementsFail,
   MovementsObject,
   MovementsSuccess,
@@ -157,6 +181,7 @@ part 'serializers.g.dart';
   NewsNotFound,
   NewsProperty,
   NewsPropertyById,
+  NotEventMember,
   NotFound,
   OrderDMS,
   OrderDMSFail,
@@ -165,6 +190,8 @@ part 'serializers.g.dart';
   OrderReferenceSuccess,
   OrderTransportFail,
   OrderTransportSuccess,
+  Page,
+  PageSection,
   PostComment,
   PostCommentParamsFail,
   PostCommentSuccess,
@@ -177,16 +204,27 @@ part 'serializers.g.dart';
   RegisterConfirmSuccess,
   RegisterParams,
   RegisterSuccess,
+  RemoveEventMember,
   RequiredError,
   RequiredSuccess,
   SendFeedbackFail,
   SendFeedbackSuccess,
   ServerError,
+  SinglePageResponseData,
+  SinglePageSuccessResponseBody,
+  SinglePageSuccessResponseBodyAllOf,
+  SingleSectionResponseData,
+  SingleSectionSuccessResponseBody,
+  SingleSectionSuccessResponseBodyAllOf,
+  Snippet,
+  SnippetListResponseData,
+  TextPage,
   ThankById,
   ThankSelf,
   TransportForm,
   UserNotFound,
   UserProperties,
+  WebViewPage,
 ])
 Serializers serializers =
     (_$serializers.toBuilder()..add(Iso8601DateTimeSerializer())).build();

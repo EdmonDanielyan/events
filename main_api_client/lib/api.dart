@@ -16,6 +16,7 @@ import 'package:main_api_client/auth/oauth.dart';
 import 'package:main_api_client/api/announcements_api.dart';
 import 'package:main_api_client/api/auth_api.dart';
 import 'package:main_api_client/api/contacts_api.dart';
+import 'package:main_api_client/api/content_api.dart';
 import 'package:main_api_client/api/events_api.dart';
 import 'package:main_api_client/api/news_api.dart';
 import 'package:main_api_client/api/publications_api.dart';
@@ -32,10 +33,7 @@ final _defaultInterceptors = [
 class MainApiClient {
   Dio dio;
   Serializers serializers;
-  
-    // *** YAR: ORIGINAL BASE PATH
-    // String basePath = 'https://portal.irkutskoil.ru/api/v1';
-    String basePath = 'https://mpt-test-portal.irkutskoil.ru/api/v1';
+  String basePath = 'https://test.ink.vpool.qsoft.ru/api/v1';
 
   MainApiClient(
       {this.dio,
@@ -45,8 +43,8 @@ class MainApiClient {
     if (dio == null) {
       BaseOptions options = new BaseOptions(
         baseUrl: basePathOverride ?? basePath,
-        connectTimeout: 15000,
-        receiveTimeout: 15000,
+        connectTimeout: 5000,
+        receiveTimeout: 3000,
       );
       this.dio = new Dio(options);
     }
@@ -102,6 +100,14 @@ class MainApiClient {
     */
   ContactsApi getContactsApi() {
     return ContactsApi(dio, serializers);
+  }
+
+  /**
+    * Get ContentApi instance, base route and serializer can be overridden by a given but be careful,
+    * by doing that all interceptors will not be executed
+    */
+  ContentApi getContentApi() {
+    return ContentApi(dio, serializers);
   }
 
   /**

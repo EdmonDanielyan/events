@@ -4,7 +4,7 @@ info:
     version: 1.0.0
     title: QSOFT Mobile API
 servers:
-    - url: https://portal.irkutskoil.ru/api/v1/
+    - url: https://test.ink.vpool.qsoft.ru/api/v1
 
 tags:
     - name: Auth
@@ -50,36 +50,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/userNotFound"
-    /auth/logout:
-        post:
-            tags:
-                - Auth
-            summary: Выход из профиля
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/logoutParams"
-            responses:
-                200:
-                    description: Пользователь успешно авторизован
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/RequiredSuccess"
-                400:
-                    description: Не верный логин/пароль пользователя
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/badAuthParams"
-                404:
-                    description: Пользователь не найден
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/userNotFound"
-                                      
     /auth/refresh:
         post:
             tags:
@@ -108,13 +78,13 @@ paths:
                         schema:
                             $ref: "#/components/schemas/registerParams"
             responses:
-                "200":
+                '200':
                     description: Регистрация прошла успешно. Отправлена Смс.
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/registerSuccess"
-                "400":
+                '400':
                     description: |
                         Неправильная длина табельного номера или номера телефона
                         или такой пользователь уже зарегестрирован
@@ -125,21 +95,20 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/bad_request"
-                "403":
-                    description:
-                        Пользователь находится в стоп листе, доступ запрещен
+                '403':
+                    description: Пользователь находится в стоп листе, доступ запрещен
                         или такой пользователь уже зарегестрирован на портале
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/forbidden"
-                "404":
+                '404':
                     description: Сотрудник не найден.
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/not_found"
-                "500":
+                '500':
                     description: Техническая ошибка на сервере
                         или ошибка подключения модуля
                     content:
@@ -157,7 +126,7 @@ paths:
                         schema:
                             $ref: "#/components/schemas/registerConfirmParams"
             responses:
-                "200":
+                '200':
                     description: Регистрация прошла успешно. Отправлено sms.
                     content:
                         application/json:
@@ -177,7 +146,7 @@ paths:
                   required: false
                   schema:
                       type: string
-                      default: ""
+                      default: ''
                 - name: page_number
                   in: query
                   description: Номер страницы для пагинации
@@ -223,17 +192,7 @@ paths:
                   description: фильтр для выдачи определенной группы новостей, допустимые значения news, news-idea, volunteer_news, information_sport, information_ms, literacy
                   schema:
                       type: string
-                      enum:
-                          [
-                              news,
-                              news-idea,
-                              volunteer_news,
-                              information_sport,
-                              information_ms,
-                              literacy,
-                              stable_development,
-                              error,
-                          ]
+                      enum: [news, news-idea, volunteer_news, information_sport, information_ms, literacy, stable_development, error]
                       nullable: true
                 - name: page_number
                   in: query
@@ -477,25 +436,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/getUserSuccess"
-            security:
-                - bearerAuth: []
-    /users:
-        post:
-            tags:
-                - User
-            summary: Получение информации о пользователях
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/getUsers"
-            responses:
-                200:
-                    description: Успешное выполнение
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/getUsersSuccess"
             security:
                 - bearerAuth: []
     /keys:
@@ -779,6 +719,34 @@ paths:
                                 $ref: "#/components/schemas/alreadyEventMember"
             security:
                 - bearerAuth: []
+    /events/removeeventmember/{id}:
+        get:
+            tags:
+                - Events
+            summary: Удалить текущего пользователя как участника события
+            parameters:
+                - name: id
+                  in: path
+                  description: ID события
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/addEventMember"
+                400:
+                    description: Текущий пользователь уже является участником события
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/notEventMember"
+            security:
+                - bearerAuth: [ ]
     /user/birthday:
         get:
             tags:
@@ -1004,6 +972,109 @@ paths:
                                 $ref: "#/components/schemas/orderTransportFail"
             security:
                 - bearerAuth: []
+
+    /snippets:
+        get:
+            tags:
+                - Content
+            summary: Получить список текстовых фрагментов для использования в интерфейсе.
+            responses:
+                200:
+                    description: Список снипетов
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/listSnippetSuccessResponseBody"
+            security:
+                - bearerAuth: [ ]
+
+    /pages/sections:
+        get:
+            tags:
+                - Content
+            summary: Получить список разделов страниц.
+            responses:
+                200:
+                    description: Список страниц
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/listSectionSuccessResponseBody"
+            security:
+                - bearerAuth: [ ]
+
+
+    /pages/sections/{code}:
+        get:
+            tags:
+                - Content
+            parameters:
+                - name: code
+                  in: path
+                  description: Символьный код раздела
+                  required: true
+                  schema:
+                      type: string
+            summary: Получить список страниц раздела. Например, список страниц для раздела "социальная ответственность".
+            responses:
+                200:
+                    description: Список страниц
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/singleSectionSuccessResponseBody"
+                404:
+                    description: Раздел не найден
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/not_found"
+            security:
+                - bearerAuth: [ ]
+
+    /pages/pages:
+        get:
+            tags:
+                - Content
+            summary: Получает список страниц с не пустыми сивольными кода. Для отладки.
+            responses:
+                200:
+                    description: Список страниц
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/listPageSuccessResponseBody"
+            security:
+                - bearerAuth: [ ]
+
+    /pages/pages/{idOrCode}:
+        get:
+            tags:
+                - Content
+            parameters:
+                - name: idOrCode
+                  in: path
+                  description: ID или символьный код страницы
+                  required: true
+                  schema:
+                      type: string
+            summary: Получает полный текст страницы.
+            responses:
+                200:
+                    description: Данные страницы
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/SinglePageResponseData"
+                404:
+                    description: Страница не найдена
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/not_found"
+            security:
+                - bearerAuth: [ ]
+
 components:
     schemas:
         registerParams:
@@ -1087,7 +1158,7 @@ components:
                     nullable: true
                 pnum:
                     type: string
-                    example: "0123-4567"
+                    example: '0123-4567'
                     nullable: true
             required:
                 - period
@@ -1164,6 +1235,7 @@ components:
                             example: 1
                         avatar:
                             type: string
+                            example: https://example.com/upload/user_avatar/1.png
                             nullable: true
                             format: uri
                         name:
@@ -1284,6 +1356,52 @@ components:
                                 - address
                                 - office
                                 - birthday
+                        absence:
+                            type: object
+                            nullable: true
+                            properties:
+                                reason:
+                                    type: string
+                                    example: Командировка
+                                from:
+                                    type: string
+                                    format: date-time
+                                    example: 2022-03-09T00:00:00+08:00
+                                to:
+                                    type: string
+                                    format: date-time
+                                    example: 2023-04-10T00:00:00+08:00
+                            required:
+                                - reason
+                                - from
+                                - to
+                        shift_man:
+                            type: object
+                            nullable: true
+                            properties:
+                                id:
+                                    type: integer
+                                    format: int32
+                                    example: 25124
+                                login:
+                                    type: string
+                                    example: ai_admin
+                                email:
+                                    type: string
+                                    format: email
+                                    example: ai@adictgroup.ru
+                                text:
+                                    type: string
+                                    example: Имя Фамилия
+                                photo:
+                                    type: string
+                                    example: http://mp-test-portal.irkutskoil.ru/local/img/nofoto.png
+                            required:
+                                - id
+                                - login
+                                - email
+                                - text
+                                - photo
                     required:
                         - id
                         - avatar
@@ -1295,156 +1413,6 @@ components:
                         - awards
                         - contacts
                         - basic_information
-        getUsersSuccess:
-            allOf:
-                - $ref: "#/components/schemas/RequiredSuccess"
-            type: object
-            properties:
-                status:
-                    type: integer
-                    default: 200
-                data:
-                    type: array
-                    items:
-                    
-                      type: object
-                      properties:
-                          id:
-                              type: integer
-                              example: 1
-                          avatar:
-                              type: string
-                              nullable: true
-                              format: uri
-                          name:
-                              type: string
-                              example: Константин
-                              minLength: 1
-                              maxLength: 255
-                          last_name:
-                              type: string
-                              example: Константинопольский
-                              minLength: 1
-                              maxLength: 255
-                          second_name:
-                              type: string
-                              example: Константинович
-                              nullable: true
-                              minLength: 1
-                              maxLength: 255
-                          work_position:
-                              type: string
-                              example: Очень важная должность
-                              nullable: true
-                              minLength: 1
-                              maxLength: 255
-                          barrels:
-                              type: object
-                              properties:
-                                  tankers:
-                                      type: integer
-                                      example: 0
-                                      format: int32
-                                  reservoir:
-                                      type: integer
-                                      example: 5
-                                      format: int32
-                                  barrels:
-                                      type: integer
-                                      example: 10
-                                      format: int32
-                              required:
-                                  - tankers
-                                  - reservoir
-                                  - barrels
-                          awards:
-                              type: object
-                              properties:
-                                  gold_tanker:
-                                      type: boolean
-                                      example: true
-                                  gold_tanker_2019:
-                                      type: boolean
-                                      example: false
-                                  team:
-                                      type: boolean
-                                      example: false
-                              required:
-                                  - gold_tanker
-                                  - gold_tanker_2019
-                                  - team
-                          contacts:
-                              type: object
-                              properties:
-                                  work_phone:
-                                      type: string
-                                      example: 79999999999
-                                      nullable: true
-                                      minLength: 1
-                                      maxLength: 255
-                                  work_mobile_phone:
-                                      type: string
-                                      example: 79999999999
-                                      nullable: true
-                                      minLength: 1
-                                      maxLength: 255
-                                  mobile_phone:
-                                      type: string
-                                      example: 79999999999
-                                      nullable: true
-                                      minLength: 1
-                                      maxLength: 255
-                                  email:
-                                      type: string
-                                      example: test@example.com
-                                      nullable: true
-                                      format: email
-                              required:
-                                  - work_phone
-                                  - work_mobile_phone
-                                  - mobile_phone
-                                  - email
-                          basic_information:
-                              type: object
-                              properties:
-                                  organization:
-                                      type: string
-                                      example: Организация
-                                      nullable: true
-                                      minLength: 1
-                                      maxLength: 255
-                                  address:
-                                      type: string
-                                      example: Г. Иркутск ул. Ленина 1
-                                      nullable: true
-                                      minLength: 1
-                                      maxLength: 255
-                                  office:
-                                      type: string
-                                      example: Б 12
-                                      nullable: true
-                                      minLength: 1
-                                      maxLength: 255
-                                  birthday:
-                                      type: string
-                                      example: 30 января
-                                      nullable: true
-                              required:
-                                  - organization
-                                  - address
-                                  - office
-                                  - birthday
-                      required:
-                          - id
-                          - avatar
-                          - name
-                          - last_name
-                          - second_name
-                          - work_position
-                          - barrels
-                          - awards
-                          - contacts
-                          - basic_information
         getUserFail:
             allOf:
                 - $ref: "#/components/schemas/RequiredError"
@@ -1559,13 +1527,6 @@ components:
             required:
                 - login
                 - password
-        logoutParams:
-            type: object
-            properties:
-                token:
-                    type: string
-            required:
-                - token
         refreshTokenParams:
             type: object
             properties:
@@ -1662,7 +1623,7 @@ components:
                     format: int32
                 title:
                     type: string
-                    example: 'Вебинар "Актуальный деловой стиль"'
+                    example: "Вебинар \"Актуальный деловой стиль\""
                     minLength: 1
                     maxLength: 255
                 date_create:
@@ -1903,7 +1864,7 @@ components:
                     type: array
                     items:
                         allOf:
-                            - $ref: "#/components/schemas/commentParent"
+                            - $ref: '#/components/schemas/commentParent'
         comment:
             type: object
             properties:
@@ -1952,12 +1913,12 @@ components:
                 - user_last_name
         commentParent:
             allOf:
-                - $ref: "#/components/schemas/comment"
+                - $ref: '#/components/schemas/comment'
             properties:
                 children:
                     type: array
                     items:
-                        $ref: "#/components/schemas/comment"
+                        $ref: '#/components/schemas/comment'
         commentsNotFound:
             allOf:
                 - $ref: "#/components/schemas/RequiredError"
@@ -1993,15 +1954,6 @@ components:
                 - news_id
                 - text
                 - parent_id
-        getUsers:
-            type: object
-            properties:
-                users:
-                    type: array
-                    items:
-                      type: integer
-            required:
-                - users
         postCommentSuccess:
             allOf:
                 - $ref: "#/components/schemas/RequiredSuccess"
@@ -2249,7 +2201,7 @@ components:
                 detail_text:
                     type: string
                     nullable: true
-                    example: "Описание события"
+                    example: 'Описание события'
                     default: null
                 detail_picture:
                     type: string
@@ -2275,6 +2227,14 @@ components:
                 data:
                     type: string
                     default: Пользователь успешно добавлен
+        removeEventMember:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+            type: object
+            properties:
+                data:
+                    type: string
+                    default: Пользователь успешно отписан
         alreadyEventMember:
             allOf:
                 - $ref: "#/components/schemas/RequiredError"
@@ -2282,16 +2242,38 @@ components:
             properties:
                 title:
                     type: string
-                    default: Текущий пользователь уже учавствует в этом событии
+                    default: Текущий пользователь уже участвует в этом событии
                 detail:
                     type: string
-                    example: Текущий пользователь уже учавствует в этом событии
+                    example: Текущий пользователь уже участвует в этом событии
                 status:
                     type: integer
                     default: 400
                 code:
                     type: string
                     default: "QMA-34"
+            required:
+                - title
+                - detail
+                - status
+                - code
+        notEventMember:
+            allOf:
+                - $ref: "#/components/schemas/RequiredError"
+            type: object
+            properties:
+                title:
+                    type: string
+                    default: Текущий пользователь не участвует в этом событии
+                detail:
+                    type: string
+                    example: Текущий пользователь не участвует в этом событии
+                status:
+                    type: integer
+                    default: 400
+                code:
+                    type: string
+                    default: "QMA-36"
             required:
                 - title
                 - detail
@@ -2365,7 +2347,7 @@ components:
                 detail_text:
                     type: string
                     nullable: true
-                    example: "Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления"
+                    example: 'Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления Очень длинное описание объявления'
                     default: null
             required:
                 - id
@@ -2617,7 +2599,7 @@ components:
                                         example: 117791
                                     title:
                                         type: string
-                                        example: 'Благотворительная акция в помощь фонду "Оберег"'
+                                        example: "Благотворительная акция в помощь фонду \"Оберег\""
                         users:
                             type: array
                             items:
@@ -2649,6 +2631,7 @@ components:
                                         nullable: true
                                         minLength: 1
                                         maxLength: 255
+                                        example: "http://example.com/upload/uf/68b/user_3.png"
                         query:
                             type: string
                             nullable: true
@@ -2772,6 +2755,7 @@ components:
                     nullable: true
                 avatar:
                     type: string
+                    example: "https://example.com/upload/user_avatar/1.png"
                     nullable: true
             required:
                 - id
@@ -2821,15 +2805,7 @@ components:
                     nullable: true
                 email:
                     type: string
-                    example: "example@example.com"
-                    nullable: true
-                birthday:
-                    type: string
-                    example: "1995-02-15T00:00:00Z"
-                    nullable: true
-                personalPhone:
-                    type: string
-                    example: "+75557778899"
+                    example: 'example@example.com'
                     nullable: true
         orderDMS:
             type: object
@@ -2839,28 +2815,28 @@ components:
                     example: "policy OR letter"
                 last_name:
                     type: string
-                    example: "Иванов"
+                    example: 'Иванов'
                 first_name:
                     type: string
-                    example: "Иван"
+                    example: 'Иван'
                 second_name:
                     type: string
-                    example: "Иванович"
+                    example: 'Иванович'
                 birthday:
                     type: string
-                    example: "01.01.1969"
+                    example: '01.01.1969'
                 work_position:
                     type: string
-                    example: "Слесарь ЭВМ"
+                    example: 'Слесарь ЭВМ'
                 phone:
                     type: string
-                    example: "+71231234567"
+                    example: '+71231234567'
                 email:
                     type: string
-                    example: "test@test.com"
+                    example: 'test@test.com'
                 additional_information:
                     type: string
-                    example: "Дополнительная информация"
+                    example: 'Дополнительная информация'
                 dental_select:
                     type: boolean
                     example: false
@@ -2875,31 +2851,31 @@ components:
                     example: false
                 spec_text:
                     type: string
-                    example: "Уточнение специалист"
+                    example: 'Уточнение специалист'
                 lab_text:
                     type: string
-                    example: "Уточнение лаборатория"
+                    example: 'Уточнение лаборатория'
                 other_text:
                     type: string
-                    example: "Уточнение другое"
+                    example: 'Уточнение другое'
                 clinic:
                     type: string
-                    example: "Клиника"
+                    example: 'Клиника'
                 city:
                     type: string
-                    example: "Город"
+                    example: 'Город'
                 address:
                     type: string
-                    example: "Адрес"
+                    example: 'Адрес'
                 money:
                     type: string
-                    example: "10000000"
+                    example: '10000000'
                 date:
                     type: string
-                    example: "01.01.2000"
+                    example: '01.01.2000'
                 date_to:
                     type: string
-                    example: "01.01.2000"
+                    example: '01.01.2000'
             required:
                 - dms_type
                 - last_name
@@ -3014,7 +2990,7 @@ components:
             properties:
                 id:
                     type: string
-                    example: "charter"
+                    example: 'charter'
                 title:
                     type: string
                     example: "Чартер"
@@ -3154,7 +3130,7 @@ components:
                     properties:
                         name:
                             type: string
-                            example: "Иванов Иван Иванович"
+                            example: 'Иванов Иван Иванович'
                         position:
                             type: string
                             example: "Название должности"
@@ -3179,6 +3155,188 @@ components:
                 title:
                     type: string
                     example: "Срочно"
+
+        Snippet:
+            type: object
+            properties:
+                type:
+                    type: string
+                    description: Тип строки, простой текст или html.
+                    enum:
+                        - text
+                        - html
+                code:
+                    type: string
+                    example: "form_1_header"
+                text:
+                    type: string
+                    example: "Шапка формы"
+
+        SnippetsList:
+            type: array
+            items:
+                $ref: '#/components/schemas/Snippet'
+
+        SnippetListResponseData:
+            type: object
+            properties:
+                snippets:
+                    $ref: "#/components/schemas/SnippetsList"
+
+        listSnippetSuccessResponseBody:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+                - type: object
+                  properties:
+                      data:
+                          $ref: "#/components/schemas/SnippetListResponseData"
+
+
+        Page:
+            type: object
+            oneOf:
+                - $ref: '#/components/schemas/TextPage'
+                - $ref: '#/components/schemas/WebViewPage'
+            discriminator:
+                propertyName: type
+                mapping:
+                    text: '#/components/schemas/TextPage'
+                    webview: '#/components/schemas/WebViewPage'
+
+        PageList:
+            type: array
+            items:
+                $ref: '#/components/schemas/Page'
+
+        TextPage:
+            required:
+                - type
+                - id
+            type: object
+            properties:
+                type:
+                    type: string
+                    nullable: false
+                id:
+                    type: integer
+                    example: 121
+                    nullable: false
+                code:
+                    type: string
+                    example: "agreement_page"
+                name:
+                    type: string
+                    example: "Пользовательское соглашение"
+                preview:
+                    type: string
+                    example: "Краткий текст для вывода в списках"
+                detail:
+                    type: string
+                    example: "полный текст для вывода на детальной станице"
+
+        WebViewPage:
+            required:
+                - type
+                - id
+            type: object
+            properties:
+                type:
+                    type: string
+                    nullable: false
+                id:
+                    type: integer
+                    example: 121
+                    nullable: false
+                code:
+                    type: string
+                    example: "agreement_page"
+                name:
+                    type: string
+                    example: "Пользовательское соглашение"
+                url:
+                    type: string
+                    example: "https://portal.ink.ru/agreement_page.html"
+
+        PageSection:
+            type: object
+            properties:
+                code:
+                    type: string
+                    example: "agreement_page"
+                    nullable: false
+                name:
+                    type: string
+                    example: "Пользовательское соглашение"
+
+        PageSectionList:
+            type: array
+            items:
+                $ref: '#/components/schemas/PageSection'
+
+
+        SinglePageResponseData:
+            type: object
+            properties:
+                page:
+                    $ref: "#/components/schemas/Page"
+
+
+        ListPageResponseData:
+            type: object
+            properties:
+                pages:
+                    $ref: "#/components/schemas/PageList"
+
+
+        SingleSectionResponseData:
+            type: object
+            properties:
+                section:
+                    $ref: "#/components/schemas/PageSection"
+                pages:
+                    $ref: "#/components/schemas/PageList"
+
+        ListSectionResponseData:
+            type: object
+            properties:
+                sections:
+                    $ref: "#/components/schemas/PageSectionList"
+
+        singlePageSuccessResponseBody:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+                - type: object
+                  properties:
+                      data:
+                          $ref: "#/components/schemas/SinglePageResponseData"
+
+
+        singleSectionSuccessResponseBody:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+                - type: object
+                  properties:
+                      data:
+                          $ref: "#/components/schemas/SingleSectionResponseData"
+
+        listPageSuccessResponseBody:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+                - type: object
+                  properties:
+                      data:
+                          $ref: "#/components/schemas/ListPageResponseData"
+
+        listSectionSuccessResponseBody:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+                - type: object
+                  properties:
+                      data:
+                          $ref: "#/components/schemas/ListSectionResponseData"
+
+
+
     securitySchemes:
         bearerAuth:
             type: http

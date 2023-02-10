@@ -54,19 +54,24 @@ try {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
+All URIs are relative to *https://test.ink.vpool.qsoft.ru/api/v1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AnnouncementsApi* | [**getAnnouncementById**](doc//AnnouncementsApi.md#getannouncementbyid) | **get** /announcements/{id} | Получить информацию об объявлении по ID
 *AnnouncementsApi* | [**getAnnouncements**](doc//AnnouncementsApi.md#getannouncements) | **get** /announcements | Получение списка событий
 *AuthApi* | [**auth**](doc//AuthApi.md#auth) | **post** /auth/login | Авторизация
-*AuthApi* | [**authLogoutPost**](doc//AuthApi.md#authlogoutpost) | **post** /auth/logout | Выход из профиля
 *AuthApi* | [**authRefreshPost**](doc//AuthApi.md#authrefreshpost) | **post** /auth/refresh | Продление JWT токена по refresh token
 *AuthApi* | [**authRegisterConfirmPost**](doc//AuthApi.md#authregisterconfirmpost) | **post** /auth/register/confirm | Подтверждение регистрации по коду из SMS
 *AuthApi* | [**authRegisterPost**](doc//AuthApi.md#authregisterpost) | **post** /auth/register | Регистрация
 *ContactsApi* | [**getContacts**](doc//ContactsApi.md#getcontacts) | **get** /contacts | Получение контактов
+*ContentApi* | [**pagesPagesGet**](doc//ContentApi.md#pagespagesget) | **get** /pages/pages | Получает список страниц с не пустыми сивольными кода. Для отладки.
+*ContentApi* | [**pagesPagesIdOrCodeGet**](doc//ContentApi.md#pagespagesidorcodeget) | **get** /pages/pages/{idOrCode} | Получает полный текст страницы.
+*ContentApi* | [**pagesSectionsCodeGet**](doc//ContentApi.md#pagessectionscodeget) | **get** /pages/sections/{code} | Получить список страниц раздела. Например, список страниц для раздела \&quot;социальная ответственность\&quot;.
+*ContentApi* | [**pagesSectionsGet**](doc//ContentApi.md#pagessectionsget) | **get** /pages/sections | Получить список разделов страниц.
+*ContentApi* | [**snippetsGet**](doc//ContentApi.md#snippetsget) | **get** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
 *EventsApi* | [**eventsAddeventmemberIdGet**](doc//EventsApi.md#eventsaddeventmemberidget) | **get** /events/addeventmember/{id} | Добавить текущего пользователя как участника события
+*EventsApi* | [**eventsRemoveeventmemberIdGet**](doc//EventsApi.md#eventsremoveeventmemberidget) | **get** /events/removeeventmember/{id} | Удалить текущего пользователя как участника события
 *EventsApi* | [**getEventById**](doc//EventsApi.md#geteventbyid) | **get** /events/{id} | Получить информацию о событии по ID
 *EventsApi* | [**getEvents**](doc//EventsApi.md#getevents) | **get** /events | Метод получения событий
 *NewsApi* | [**getNews**](doc//NewsApi.md#getnews) | **get** /news | Получение списка новостей
@@ -94,7 +99,6 @@ Class | Method | HTTP request | Description
 *UserApi* | [**userReferenceorderformGet**](doc//UserApi.md#userreferenceorderformget) | **get** /user/referenceorderform | Возвращает вспомогательные данные для формы заказа транспорта
 *UserApi* | [**userSendfeedbackPost**](doc//UserApi.md#usersendfeedbackpost) | **post** /user/sendfeedback | Метод для отправки обратной связи (вопроса руководству)
 *UserApi* | [**userTranspontorderformGet**](doc//UserApi.md#usertranspontorderformget) | **get** /user/transpontorderform | Возвращает вспомогательные данные для формы заказа транспорта
-*UserApi* | [**usersPost**](doc//UserApi.md#userspost) | **post** /users | Получение информации о пользователях
 
 
 ## Documentation For Models
@@ -144,9 +148,14 @@ Class | Method | HTTP request | Description
  - [GetTransportOrderForm](doc//GetTransportOrderForm.md)
  - [GetUserFail](doc//GetUserFail.md)
  - [GetUserSuccess](doc//GetUserSuccess.md)
- - [GetUsers](doc//GetUsers.md)
- - [GetUsersSuccess](doc//GetUsersSuccess.md)
- - [LogoutParams](doc//LogoutParams.md)
+ - [ListPageResponseData](doc//ListPageResponseData.md)
+ - [ListPageSuccessResponseBody](doc//ListPageSuccessResponseBody.md)
+ - [ListPageSuccessResponseBodyAllOf](doc//ListPageSuccessResponseBodyAllOf.md)
+ - [ListSectionResponseData](doc//ListSectionResponseData.md)
+ - [ListSectionSuccessResponseBody](doc//ListSectionSuccessResponseBody.md)
+ - [ListSectionSuccessResponseBodyAllOf](doc//ListSectionSuccessResponseBodyAllOf.md)
+ - [ListSnippetSuccessResponseBody](doc//ListSnippetSuccessResponseBody.md)
+ - [ListSnippetSuccessResponseBodyAllOf](doc//ListSnippetSuccessResponseBodyAllOf.md)
  - [MovementsFail](doc//MovementsFail.md)
  - [MovementsObject](doc//MovementsObject.md)
  - [MovementsSuccess](doc//MovementsSuccess.md)
@@ -154,6 +163,7 @@ Class | Method | HTTP request | Description
  - [NewsNotFound](doc//NewsNotFound.md)
  - [NewsProperty](doc//NewsProperty.md)
  - [NewsPropertyById](doc//NewsPropertyById.md)
+ - [NotEventMember](doc//NotEventMember.md)
  - [NotFound](doc//NotFound.md)
  - [OrderDMS](doc//OrderDMS.md)
  - [OrderDMSFail](doc//OrderDMSFail.md)
@@ -162,6 +172,8 @@ Class | Method | HTTP request | Description
  - [OrderReferenceSuccess](doc//OrderReferenceSuccess.md)
  - [OrderTransportFail](doc//OrderTransportFail.md)
  - [OrderTransportSuccess](doc//OrderTransportSuccess.md)
+ - [Page](doc//Page.md)
+ - [PageSection](doc//PageSection.md)
  - [PostComment](doc//PostComment.md)
  - [PostCommentParamsFail](doc//PostCommentParamsFail.md)
  - [PostCommentSuccess](doc//PostCommentSuccess.md)
@@ -174,16 +186,27 @@ Class | Method | HTTP request | Description
  - [RegisterConfirmSuccess](doc//RegisterConfirmSuccess.md)
  - [RegisterParams](doc//RegisterParams.md)
  - [RegisterSuccess](doc//RegisterSuccess.md)
+ - [RemoveEventMember](doc//RemoveEventMember.md)
  - [RequiredError](doc//RequiredError.md)
  - [RequiredSuccess](doc//RequiredSuccess.md)
  - [SendFeedbackFail](doc//SendFeedbackFail.md)
  - [SendFeedbackSuccess](doc//SendFeedbackSuccess.md)
  - [ServerError](doc//ServerError.md)
+ - [SinglePageResponseData](doc//SinglePageResponseData.md)
+ - [SinglePageSuccessResponseBody](doc//SinglePageSuccessResponseBody.md)
+ - [SinglePageSuccessResponseBodyAllOf](doc//SinglePageSuccessResponseBodyAllOf.md)
+ - [SingleSectionResponseData](doc//SingleSectionResponseData.md)
+ - [SingleSectionSuccessResponseBody](doc//SingleSectionSuccessResponseBody.md)
+ - [SingleSectionSuccessResponseBodyAllOf](doc//SingleSectionSuccessResponseBodyAllOf.md)
+ - [Snippet](doc//Snippet.md)
+ - [SnippetListResponseData](doc//SnippetListResponseData.md)
+ - [TextPage](doc//TextPage.md)
  - [ThankById](doc//ThankById.md)
  - [ThankSelf](doc//ThankSelf.md)
  - [TransportForm](doc//TransportForm.md)
  - [UserNotFound](doc//UserNotFound.md)
  - [UserProperties](doc//UserProperties.md)
+ - [WebViewPage](doc//WebViewPage.md)
 
 
 ## Documentation For Authorization

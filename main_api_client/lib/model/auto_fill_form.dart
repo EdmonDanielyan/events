@@ -28,14 +28,6 @@ abstract class AutoFillForm
   @BuiltValueField(wireName: r'email')
   String get email;
 
-  @nullable
-  @BuiltValueField(wireName: r'birthday')
-  String get birthday;
-
-  @nullable
-  @BuiltValueField(wireName: r'personalPhone')
-  String get personalPhone;
-
   // Boilerplate code needed to wire-up generated code
   AutoFillForm._();
 

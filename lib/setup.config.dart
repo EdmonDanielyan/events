@@ -188,9 +188,9 @@ Future<_i1.GetIt> $initGetIt(
     environment,
     environmentFilter,
   );
-  final testLogFilePathInjector = _$TestLogFilePathInjector();
   final tokenDataInjectorModule = _$TokenDataInjectorModule();
   final logFilePathInjector = _$LogFilePathInjector();
+  final testLogFilePathInjector = _$TestLogFilePathInjector();
   gh.factory<_i3.AnnouncementCubit>(() => _i3.AnnouncementCubit());
   gh.factoryParam<_i4.AnnouncementsDetailNetworkRequest, int?, dynamic>((
     announcementId,
@@ -401,11 +401,6 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i100.StaffMovementsNetworkRequest>(
       _i100.StaffMovementsNetworkRequest());
   gh.factory<String>(
-    () => testLogFilePathInjector.logFile,
-    instanceName: 'logFile',
-    registerFor: {_unitTest},
-  );
-  gh.factory<String>(
     () => tokenDataInjectorModule.localDatabasePassword,
     instanceName: 'localDatabasePassword',
   );
@@ -416,6 +411,16 @@ Future<_i1.GetIt> $initGetIt(
   gh.factory<String>(
     () => tokenDataInjectorModule.natsToken,
     instanceName: 'natsToken',
+  );
+  await gh.factoryAsync<String>(
+    () => logFilePathInjector.logFile,
+    instanceName: 'logFile',
+    registerFor: {
+      _test,
+      _prod,
+      _dev,
+    },
+    preResolve: true,
   );
   gh.factory<String>(
     () => tokenDataInjectorModule.messengerAuthPassword,
@@ -429,15 +434,10 @@ Future<_i1.GetIt> $initGetIt(
     () => tokenDataInjectorModule.userId,
     instanceName: 'userId',
   );
-  await gh.factoryAsync<String>(
-    () => logFilePathInjector.logFile,
+  gh.factory<String>(
+    () => testLogFilePathInjector.logFile,
     instanceName: 'logFile',
-    registerFor: {
-      _test,
-      _prod,
-      _dev,
-    },
-    preResolve: true,
+    registerFor: {_unitTest},
   );
   gh.singleton<_i101.TagsListCubit>(_i101.TagsListCubit());
   gh.singleton<_i102.TagsListNetworkRequest>(_i102.TagsListNetworkRequest());
