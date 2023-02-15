@@ -54,26 +54,29 @@ try {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://test.ink.vpool.qsoft.ru/api/v1*
+All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AnnouncementsApi* | [**getAnnouncementById**](doc//AnnouncementsApi.md#getannouncementbyid) | **get** /announcements/{id} | Получить информацию об объявлении по ID
 *AnnouncementsApi* | [**getAnnouncements**](doc//AnnouncementsApi.md#getannouncements) | **get** /announcements | Получение списка событий
 *AuthApi* | [**auth**](doc//AuthApi.md#auth) | **post** /auth/login | Авторизация
+*AuthApi* | [**authLogoutPost**](doc//AuthApi.md#authlogoutpost) | **post** /auth/logout | Выход из профиля
 *AuthApi* | [**authRefreshPost**](doc//AuthApi.md#authrefreshpost) | **post** /auth/refresh | Продление JWT токена по refresh token
 *AuthApi* | [**authRegisterConfirmPost**](doc//AuthApi.md#authregisterconfirmpost) | **post** /auth/register/confirm | Подтверждение регистрации по коду из SMS
 *AuthApi* | [**authRegisterPost**](doc//AuthApi.md#authregisterpost) | **post** /auth/register | Регистрация
 *ContactsApi* | [**getContacts**](doc//ContactsApi.md#getcontacts) | **get** /contacts | Получение контактов
-*ContentApi* | [**pagesPagesGet**](doc//ContentApi.md#pagespagesget) | **get** /pages/pages | Получает список страниц с не пустыми сивольными кода. Для отладки.
-*ContentApi* | [**pagesPagesIdOrCodeGet**](doc//ContentApi.md#pagespagesidorcodeget) | **get** /pages/pages/{idOrCode} | Получает полный текст страницы.
-*ContentApi* | [**pagesSectionsCodeGet**](doc//ContentApi.md#pagessectionscodeget) | **get** /pages/sections/{code} | Получить список страниц раздела. Например, список страниц для раздела \&quot;социальная ответственность\&quot;.
-*ContentApi* | [**pagesSectionsGet**](doc//ContentApi.md#pagessectionsget) | **get** /pages/sections | Получить список разделов страниц.
-*ContentApi* | [**snippetsGet**](doc//ContentApi.md#snippetsget) | **get** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
+*ContentApi* | [**getPage**](doc//ContentApi.md#getpage) | **get** /pages/pages/{idOrCode} | Получает полный текст страницы.
+*ContentApi* | [**getPagesList**](doc//ContentApi.md#getpageslist) | **get** /pages/pages | Получает список страниц с не пустыми сивольными кода. Для отладки.
+*ContentApi* | [**getPagesSection**](doc//ContentApi.md#getpagessection) | **get** /pages/sections/{code} | Получить список страниц раздела. Например, список страниц для раздела \&quot;социальная ответственность\&quot;.
+*ContentApi* | [**getPagesSectionsList**](doc//ContentApi.md#getpagessectionslist) | **get** /pages/sections | Получить список разделов страниц.
+*ContentApi* | [**getSnippetsList**](doc//ContentApi.md#getsnippetslist) | **get** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
 *EventsApi* | [**eventsAddeventmemberIdGet**](doc//EventsApi.md#eventsaddeventmemberidget) | **get** /events/addeventmember/{id} | Добавить текущего пользователя как участника события
 *EventsApi* | [**eventsRemoveeventmemberIdGet**](doc//EventsApi.md#eventsremoveeventmemberidget) | **get** /events/removeeventmember/{id} | Удалить текущего пользователя как участника события
 *EventsApi* | [**getEventById**](doc//EventsApi.md#geteventbyid) | **get** /events/{id} | Получить информацию о событии по ID
 *EventsApi* | [**getEvents**](doc//EventsApi.md#getevents) | **get** /events | Метод получения событий
+*GlobalApi* | [**getSettings**](doc//GlobalApi.md#getsettings) | **get** /settings | Настройки приложения
+*GlobalApi* | [**getSnippetsList**](doc//GlobalApi.md#getsnippetslist) | **get** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
 *NewsApi* | [**getNews**](doc//NewsApi.md#getnews) | **get** /news | Получение списка новостей
 *NewsApi* | [**newsCommentsIdGet**](doc//NewsApi.md#newscommentsidget) | **get** /news/comments/{id} | Получение комментариев к новости по ID
 *NewsApi* | [**newsCommentsLikeIdGet**](doc//NewsApi.md#newscommentslikeidget) | **get** /news/comments/like/{id} | Поблагодарить комментарий
@@ -99,6 +102,7 @@ Class | Method | HTTP request | Description
 *UserApi* | [**userReferenceorderformGet**](doc//UserApi.md#userreferenceorderformget) | **get** /user/referenceorderform | Возвращает вспомогательные данные для формы заказа транспорта
 *UserApi* | [**userSendfeedbackPost**](doc//UserApi.md#usersendfeedbackpost) | **post** /user/sendfeedback | Метод для отправки обратной связи (вопроса руководству)
 *UserApi* | [**userTranspontorderformGet**](doc//UserApi.md#usertranspontorderformget) | **get** /user/transpontorderform | Возвращает вспомогательные данные для формы заказа транспорта
+*UserApi* | [**usersPost**](doc//UserApi.md#userspost) | **post** /users | Получение информации о пользователях
 
 
 ## Documentation For Models
@@ -148,6 +152,11 @@ Class | Method | HTTP request | Description
  - [GetTransportOrderForm](doc//GetTransportOrderForm.md)
  - [GetUserFail](doc//GetUserFail.md)
  - [GetUserSuccess](doc//GetUserSuccess.md)
+ - [GetUsers](doc//GetUsers.md)
+ - [GetUsersSuccess](doc//GetUsersSuccess.md)
+ - [GlobalSettings](doc//GlobalSettings.md)
+ - [GlobalSettingsResponseBody](doc//GlobalSettingsResponseBody.md)
+ - [GlobalSettingsResponseBodyAllOf](doc//GlobalSettingsResponseBodyAllOf.md)
  - [ListPageResponseData](doc//ListPageResponseData.md)
  - [ListPageSuccessResponseBody](doc//ListPageSuccessResponseBody.md)
  - [ListPageSuccessResponseBodyAllOf](doc//ListPageSuccessResponseBodyAllOf.md)
@@ -156,6 +165,7 @@ Class | Method | HTTP request | Description
  - [ListSectionSuccessResponseBodyAllOf](doc//ListSectionSuccessResponseBodyAllOf.md)
  - [ListSnippetSuccessResponseBody](doc//ListSnippetSuccessResponseBody.md)
  - [ListSnippetSuccessResponseBodyAllOf](doc//ListSnippetSuccessResponseBodyAllOf.md)
+ - [LogoutParams](doc//LogoutParams.md)
  - [MovementsFail](doc//MovementsFail.md)
  - [MovementsObject](doc//MovementsObject.md)
  - [MovementsSuccess](doc//MovementsSuccess.md)

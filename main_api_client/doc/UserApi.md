@@ -5,7 +5,7 @@
 import 'package:main_api_client/api.dart';
 ```
 
-All URIs are relative to *https://test.ink.vpool.qsoft.ru/api/v1*
+All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -25,6 +25,7 @@ Method | HTTP request | Description
 [**userReferenceorderformGet**](UserApi.md#userReferenceorderformGet) | **get** /user/referenceorderform | Возвращает вспомогательные данные для формы заказа транспорта
 [**userSendfeedbackPost**](UserApi.md#userSendfeedbackPost) | **post** /user/sendfeedback | Метод для отправки обратной связи (вопроса руководству)
 [**userTranspontorderformGet**](UserApi.md#userTranspontorderformGet) | **get** /user/transpontorderform | Возвращает вспомогательные данные для формы заказа транспорта
+[**usersPost**](UserApi.md#usersPost) | **post** /users | Получение информации о пользователях
 
 
 # **keysGet**
@@ -486,7 +487,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **userOrderreferencePost**
-> OrderReferenceSuccess userOrderreferencePost(referenceType, phone, way, postalCode, address, period, destination, num_, child, dateStart, dateEnd, filesLeftSquareBracketRightSquareBracket)
+> OrderReferenceSuccess userOrderreferencePost(referenceType, phone, way, postalCode, address, period, destination, num_, child, dateStart, dateEnd, files)
 
 Метод для заказа справок
 
@@ -509,10 +510,10 @@ var num_ = 56; // int |
 var child = child_example; // String | 
 var dateStart = dateStart_example; // String | 
 var dateEnd = dateEnd_example; // String | 
-var filesLeftSquareBracketRightSquareBracket = [BINARY_DATA_HERE]; // BuiltList<Uint8List> | 
+var files = [BINARY_DATA_HERE]; // BuiltList<Uint8List> | 
 
 try { 
-    var result = api_instance.userOrderreferencePost(referenceType, phone, way, postalCode, address, period, destination, num_, child, dateStart, dateEnd, filesLeftSquareBracketRightSquareBracket);
+    var result = api_instance.userOrderreferencePost(referenceType, phone, way, postalCode, address, period, destination, num_, child, dateStart, dateEnd, files);
     print(result);
 } catch (e) {
     print('Exception when calling UserApi->userOrderreferencePost: $e\n');
@@ -534,7 +535,7 @@ Name | Type | Description  | Notes
  **child** | **String**|  | [optional] 
  **dateStart** | **String**|  | [optional] 
  **dateEnd** | **String**|  | [optional] 
- **filesLeftSquareBracketRightSquareBracket** | [**BuiltList<Uint8List>**](Uint8List.md)|  | [optional] 
+ **files** | [**BuiltList<Uint8List>**](Uint8List.md)|  | [optional] 
 
 ### Return type
 
@@ -552,7 +553,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **userOrdertransportPost**
-> OrderTransportSuccess userOrdertransportPost(fio, phone, status, date, time, place, howLong, passengers, route, filesLeftSquareBracketRightSquareBracket)
+> OrderTransportSuccess userOrdertransportPost(fio, phone, status, date, time, place, howLong, passengers, route, files)
 
 Метод для заказа транспорта
 
@@ -573,10 +574,10 @@ var place = place_example; // String |
 var howLong = howLong_example; // String | 
 var passengers = passengers_example; // String | 
 var route = route_example; // String | 
-var filesLeftSquareBracketRightSquareBracket = [BINARY_DATA_HERE]; // BuiltList<Uint8List> | 
+var files = [BINARY_DATA_HERE]; // BuiltList<Uint8List> | 
 
 try { 
-    var result = api_instance.userOrdertransportPost(fio, phone, status, date, time, place, howLong, passengers, route, filesLeftSquareBracketRightSquareBracket);
+    var result = api_instance.userOrdertransportPost(fio, phone, status, date, time, place, howLong, passengers, route, files);
     print(result);
 } catch (e) {
     print('Exception when calling UserApi->userOrdertransportPost: $e\n');
@@ -596,7 +597,7 @@ Name | Type | Description  | Notes
  **howLong** | **String**|  | 
  **passengers** | **String**|  | 
  **route** | **String**|  | 
- **filesLeftSquareBracketRightSquareBracket** | [**BuiltList<Uint8List>**](Uint8List.md)|  | [optional] 
+ **files** | [**BuiltList<Uint8List>**](Uint8List.md)|  | [optional] 
 
 ### Return type
 
@@ -654,7 +655,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **userSendfeedbackPost**
-> SendFeedbackSuccess userSendfeedbackPost(question, tags, fio, contacts, filesLeftSquareBracketRightSquareBracket)
+> SendFeedbackSuccess userSendfeedbackPost(question, tags, fio, contacts, files)
 
 Метод для отправки обратной связи (вопроса руководству)
 
@@ -670,10 +671,10 @@ var question = question_example; // String |
 var tags = tags_example; // String | 
 var fio = fio_example; // String | 
 var contacts = contacts_example; // String | 
-var filesLeftSquareBracketRightSquareBracket = [BINARY_DATA_HERE]; // BuiltList<Uint8List> | 
+var files = [BINARY_DATA_HERE]; // BuiltList<Uint8List> | 
 
 try { 
-    var result = api_instance.userSendfeedbackPost(question, tags, fio, contacts, filesLeftSquareBracketRightSquareBracket);
+    var result = api_instance.userSendfeedbackPost(question, tags, fio, contacts, files);
     print(result);
 } catch (e) {
     print('Exception when calling UserApi->userSendfeedbackPost: $e\n');
@@ -688,7 +689,7 @@ Name | Type | Description  | Notes
  **tags** | **String**|  | 
  **fio** | **String**|  | [optional] 
  **contacts** | **String**|  | [optional] 
- **filesLeftSquareBracketRightSquareBracket** | [**BuiltList<Uint8List>**](Uint8List.md)|  | [optional] 
+ **files** | [**BuiltList<Uint8List>**](Uint8List.md)|  | [optional] 
 
 ### Return type
 
@@ -741,6 +742,50 @@ This endpoint does not need any parameter.
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **usersPost**
+> GetUsersSuccess usersPost(getUsers)
+
+Получение информации о пользователях
+
+### Example 
+```dart
+import 'package:main_api_client/api.dart';
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
+
+var api_instance = new UserApi();
+var getUsers = new GetUsers(); // GetUsers | 
+
+try { 
+    var result = api_instance.usersPost(getUsers);
+    print(result);
+} catch (e) {
+    print('Exception when calling UserApi->usersPost: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **getUsers** | [**GetUsers**](GetUsers.md)|  | [optional] 
+
+### Return type
+
+[**GetUsersSuccess**](GetUsersSuccess.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

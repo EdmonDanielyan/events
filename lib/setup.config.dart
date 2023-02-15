@@ -189,8 +189,8 @@ Future<_i1.GetIt> $initGetIt(
     environmentFilter,
   );
   final tokenDataInjectorModule = _$TokenDataInjectorModule();
-  final logFilePathInjector = _$LogFilePathInjector();
   final testLogFilePathInjector = _$TestLogFilePathInjector();
+  final logFilePathInjector = _$LogFilePathInjector();
   gh.factory<_i3.AnnouncementCubit>(() => _i3.AnnouncementCubit());
   gh.factoryParam<_i4.AnnouncementsDetailNetworkRequest, int?, dynamic>((
     announcementId,
@@ -401,6 +401,18 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i100.StaffMovementsNetworkRequest>(
       _i100.StaffMovementsNetworkRequest());
   gh.factory<String>(
+    () => tokenDataInjectorModule.userId,
+    instanceName: 'userId',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.messengerAuthLogin,
+    instanceName: 'messengerAuthLogin',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.natsToken,
+    instanceName: 'natsToken',
+  );
+  gh.factory<String>(
     () => tokenDataInjectorModule.localDatabasePassword,
     instanceName: 'localDatabasePassword',
   );
@@ -409,8 +421,9 @@ Future<_i1.GetIt> $initGetIt(
     instanceName: 'deviceVirtualId',
   );
   gh.factory<String>(
-    () => tokenDataInjectorModule.natsToken,
-    instanceName: 'natsToken',
+    () => testLogFilePathInjector.logFile,
+    instanceName: 'logFile',
+    registerFor: {_unitTest},
   );
   await gh.factoryAsync<String>(
     () => logFilePathInjector.logFile,
@@ -425,19 +438,6 @@ Future<_i1.GetIt> $initGetIt(
   gh.factory<String>(
     () => tokenDataInjectorModule.messengerAuthPassword,
     instanceName: 'messengerAuthPassword',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.messengerAuthLogin,
-    instanceName: 'messengerAuthLogin',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.userId,
-    instanceName: 'userId',
-  );
-  gh.factory<String>(
-    () => testLogFilePathInjector.logFile,
-    instanceName: 'logFile',
-    registerFor: {_unitTest},
   );
   gh.singleton<_i101.TagsListCubit>(_i101.TagsListCubit());
   gh.singleton<_i102.TagsListNetworkRequest>(_i102.TagsListNetworkRequest());

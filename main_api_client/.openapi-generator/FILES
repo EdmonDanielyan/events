@@ -51,6 +51,12 @@ doc/GetSearchSuccess.md
 doc/GetTransportOrderForm.md
 doc/GetUserFail.md
 doc/GetUserSuccess.md
+doc/GetUsers.md
+doc/GetUsersSuccess.md
+doc/GlobalApi.md
+doc/GlobalSettings.md
+doc/GlobalSettingsResponseBody.md
+doc/GlobalSettingsResponseBodyAllOf.md
 doc/ListPageResponseData.md
 doc/ListPageSuccessResponseBody.md
 doc/ListPageSuccessResponseBodyAllOf.md
@@ -59,6 +65,7 @@ doc/ListSectionSuccessResponseBody.md
 doc/ListSectionSuccessResponseBodyAllOf.md
 doc/ListSnippetSuccessResponseBody.md
 doc/ListSnippetSuccessResponseBodyAllOf.md
+doc/LogoutParams.md
 doc/MovementsFail.md
 doc/MovementsObject.md
 doc/MovementsSuccess.md
@@ -121,6 +128,7 @@ lib/api/auth_api.dart
 lib/api/contacts_api.dart
 lib/api/content_api.dart
 lib/api/events_api.dart
+lib/api/global_api.dart
 lib/api/news_api.dart
 lib/api/publications_api.dart
 lib/api/search_api.dart
@@ -176,6 +184,11 @@ lib/model/get_search_success.dart
 lib/model/get_transport_order_form.dart
 lib/model/get_user_fail.dart
 lib/model/get_user_success.dart
+lib/model/get_users.dart
+lib/model/get_users_success.dart
+lib/model/global_settings.dart
+lib/model/global_settings_response_body.dart
+lib/model/global_settings_response_body_all_of.dart
 lib/model/list_page_response_data.dart
 lib/model/list_page_success_response_body.dart
 lib/model/list_page_success_response_body_all_of.dart
@@ -184,6 +197,7 @@ lib/model/list_section_success_response_body.dart
 lib/model/list_section_success_response_body_all_of.dart
 lib/model/list_snippet_success_response_body.dart
 lib/model/list_snippet_success_response_body_all_of.dart
+lib/model/logout_params.dart
 lib/model/movements_fail.dart
 lib/model/movements_object.dart
 lib/model/movements_success.dart

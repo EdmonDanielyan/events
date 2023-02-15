@@ -28,7 +28,7 @@ class SendFeedbackFormNetworkRequest extends SendFeedbackFormDependency {
           fio: entities!.name,
           contacts: entities!.email,
           filesLeftSquareBracketRightSquareBracket: entities!.files.length > 0
-              ? getFilesAsMultipart(entities!.files)
+              ? getFilesAsBuiltList(entities!.files)
               : null,
         )
         .timeout(const Duration(minutes: 5));

@@ -9,7 +9,7 @@ java -jar openapi-generator-cli.jar generate -i $url -g dart-dio -o $dir -c $con
 pushd
 cd $dir
 flutter clean
-flutter pub get
+dart pub get
 flutter pub run build_runner build --delete-conflicting-outputs
 flutter format $dir
 popd

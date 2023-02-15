@@ -58,6 +58,11 @@ import 'package:main_api_client/model/get_search_success.dart';
 import 'package:main_api_client/model/get_transport_order_form.dart';
 import 'package:main_api_client/model/get_user_fail.dart';
 import 'package:main_api_client/model/get_user_success.dart';
+import 'package:main_api_client/model/get_users.dart';
+import 'package:main_api_client/model/get_users_success.dart';
+import 'package:main_api_client/model/global_settings.dart';
+import 'package:main_api_client/model/global_settings_response_body.dart';
+import 'package:main_api_client/model/global_settings_response_body_all_of.dart';
 import 'package:main_api_client/model/list_page_response_data.dart';
 import 'package:main_api_client/model/list_page_success_response_body.dart';
 import 'package:main_api_client/model/list_page_success_response_body_all_of.dart';
@@ -66,6 +71,7 @@ import 'package:main_api_client/model/list_section_success_response_body.dart';
 import 'package:main_api_client/model/list_section_success_response_body_all_of.dart';
 import 'package:main_api_client/model/list_snippet_success_response_body.dart';
 import 'package:main_api_client/model/list_snippet_success_response_body_all_of.dart';
+import 'package:main_api_client/model/logout_params.dart';
 import 'package:main_api_client/model/movements_fail.dart';
 import 'package:main_api_client/model/movements_object.dart';
 import 'package:main_api_client/model/movements_success.dart';
@@ -166,6 +172,11 @@ part 'serializers.g.dart';
   GetTransportOrderForm,
   GetUserFail,
   GetUserSuccess,
+  GetUsers,
+  GetUsersSuccess,
+  GlobalSettings,
+  GlobalSettingsResponseBody,
+  GlobalSettingsResponseBodyAllOf,
   ListPageResponseData,
   ListPageSuccessResponseBody,
   ListPageSuccessResponseBodyAllOf,
@@ -174,6 +185,7 @@ part 'serializers.g.dart';
   ListSectionSuccessResponseBodyAllOf,
   ListSnippetSuccessResponseBody,
   ListSnippetSuccessResponseBodyAllOf,
+  LogoutParams,
   MovementsFail,
   MovementsObject,
   MovementsSuccess,

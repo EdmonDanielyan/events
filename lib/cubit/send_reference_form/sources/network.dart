@@ -28,9 +28,9 @@ class SendReferenceFormNetworkRequest
             address: entities!.entities.address,
             period: entities!.entities.period,
             destination: entities!.entities.toProvideIn,
-            filesLeftSquareBracketRightSquareBracket:
+            files:
                 entities!.entities.files.length > 0
-                    ? getFilesAsMultipart(entities!.entities.files)
+                    ? getFilesAsBuiltList(entities!.entities.files)
                     : null,
             num_: entities!.entities.quantity,
             child: entities!.entities.fioChildren,

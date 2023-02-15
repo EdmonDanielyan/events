@@ -11,9 +11,9 @@ Name | Type | Description | Notes
 **type** | **String** |  | 
 **id** | **int** |  | 
 **code** | **String** |  | [optional] 
-**name** | **String** |  | [optional] 
+**name** | **String** |  | 
 **preview** | **String** |  | [optional] 
-**detail** | **String** |  | [optional] 
+**detail** | **String** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
