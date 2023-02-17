@@ -103,7 +103,7 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
     }
 
     final RenderBox overlay =
-        Overlay.of(context).context.findRenderObject()! as RenderBox;
+        Overlay.of(context)?.context.findRenderObject()! as RenderBox;
 
     switchMenuShown(true);
 
