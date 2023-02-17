@@ -26,7 +26,7 @@ class LinkifyText extends StatelessWidget {
       },
       linkStyle: linkStyle ??
           TextStyle(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
     );
   }

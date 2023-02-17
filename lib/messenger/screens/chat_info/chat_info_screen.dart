@@ -10,7 +10,6 @@ import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/builder.dart';
 import 'package:ink_mobile/messenger/screens/chat_info/components/app_bar.dart';
 import 'package:ink_mobile/messenger/screens/chat_info/components/edit_screen.dart';
-import 'package:ink_mobile/messenger/screens/chat_info/components/notifications_btn.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/cached_user_builder.dart';
 import 'package:ink_mobile/setup.dart';
 import 'components/add_btn.dart';

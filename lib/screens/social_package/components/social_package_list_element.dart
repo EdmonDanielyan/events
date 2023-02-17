@@ -4,9 +4,10 @@ import 'package:ink_mobile/messenger/functions/size_config.dart';
 class SocialPackageListElement extends StatelessWidget {
   final String title;
   final String link;
+  final String code;
 
   const SocialPackageListElement(
-      {Key? key, required this.title, required this.link})
+      {Key? key, required this.title, required this.link, required this.code})
       : super(key: key);
 
   @override

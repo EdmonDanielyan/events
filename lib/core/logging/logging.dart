@@ -8,7 +8,7 @@ String isolateName = 'MAIN';
 void setIsolateName(String value) => isolateName = value;
 
 void setupLogging(FileLogAppender fileLogAppender,
-    {bool printToConsole: true, Level? forceLevel}) {
+    {bool printToConsole = true, Level? forceLevel}) {
   Logger.root.clearListeners();
   Logger.root.level = forceLevel ?? (kDebugMode ? Level.ALL : Level.WARNING);
   fileLogAppender.printLogs = false;

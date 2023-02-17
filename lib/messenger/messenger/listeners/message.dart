@@ -1,6 +1,5 @@
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/messenger/constants/events.dart';
-import 'package:ink_mobile/messenger/functions/show_notification.dart';
 import 'package:ink_mobile/messenger/messenger/senders/message/model.dart';
 import 'package:ink_mobile/setup.dart';
 

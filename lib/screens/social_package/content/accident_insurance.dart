@@ -17,7 +17,7 @@ class AccidentInsurance extends StatefulWidget {
 
 class _AccidentInsuranceState extends State<AccidentInsurance> {
 
-  Future<String> getText() {
+  Future<String> _getText() {
     return Future.value("");
   }
 
