@@ -14,6 +14,7 @@ import 'package:ink_mobile/providers/local_pin_provider.dart';
 import 'package:ink_mobile/providers/secure_storage.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:logging/logging.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class MenuSheet extends StatefulWidget {
   static final Logger logger = Logger('MenuSheet');
@@ -66,8 +67,7 @@ class _MenuSheetState extends State<MenuSheet> {
       MenuSheetItem(
         title: strings.news,
         onTap: () {
-          Navigator.of(context).pop();
-          Navigator.pushNamed(context, '/news_list');
+          Navigator.popAndPushNamed(context, '/news_list');
         },
         icon: SvgPicture.asset(
           'assets/images/menu_news_icon.svg',
@@ -77,8 +77,7 @@ class _MenuSheetState extends State<MenuSheet> {
       MenuSheetItem(
         title: strings.events,
         onTap: () {
-          Navigator.of(context).pop();
-          Navigator.pushNamed(context, '/events_list');
+          Navigator.popAndPushNamed(context, '/events_list');
         },
         icon: SvgPicture.asset(
           'assets/images/menu_events_icon.svg',
@@ -88,8 +87,7 @@ class _MenuSheetState extends State<MenuSheet> {
       MenuSheetItem(
         title: strings.announcements,
         onTap: () {
-          Navigator.of(context).pop();
-          Navigator.pushNamed(context, '/announcements_list');
+          Navigator.popAndPushNamed(context, '/announcements_list');
         },
         icon: SvgPicture.asset(
           'assets/images/menu_announcements_icon.svg',
@@ -99,8 +97,7 @@ class _MenuSheetState extends State<MenuSheet> {
       MenuSheetItem(
         title: strings.myData,
         onTap: () {
-          Navigator.of(context).pop();
-          Navigator.pushNamed(context, '/personal');
+          Navigator.popAndPushNamed(context, '/personal');
         },
         icon: SvgPicture.asset(
           'assets/images/menu_personal_icon.svg',
@@ -196,6 +193,7 @@ Future<void> _exit(BuildContext context) async {
   getIt<CachedChatsCubit>().clean();
   Token.deleteTokens();
   FlutterSecureStorage().deleteAll();
+  OneSignal.shared.removeExternalUserId();
 
   Navigator.of(context).popUntil((route) => route.isFirst);
   Navigator.pushReplacementNamed(context, '/init');

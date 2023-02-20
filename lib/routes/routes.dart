@@ -45,6 +45,35 @@ import 'package:ink_mobile/setup.dart';
 import '../cubit/main_page/announcements_list_cubit.dart';
 
 class MainRoutes {
+
+  static String initScreenKey = "/init";
+  static String appLayerScreenKey = "/app_layer";
+  static String welcomeScreenKey = "/welcome";
+  static String authScreenKey = "/auth";
+  static String profileScreenKey = "/personal";
+  static String newsScreenKey = "/news_list";
+  static String newsDetailScreenKey = "/news_detail";
+  static String newsCommentScreenKey = "/news_comment";
+  static String announcementsScreenKey = "/announcements_list";
+  static String announcementDetailScreenKey = "/announcement_detail";
+  static String errorScreenKey = "/404";
+  static String eventsScreenKey = "/events_list";
+  static String eventDetailScreenKey = "/event_detail";
+  static String servicesScreenKey = "/services";
+  static String personnelMovementsScreenKey = "/personnel_movements";
+  static String socialPackageScreenKey = "/social_package";
+  static String voluntaryMedicalInsuranceScreenKey = "/voluntary_medical_insurance";
+  static String accidentInsuranceScreenKey = "/accident_insurance";
+  static String financialAidScreenKey = "/financial_aid";
+  static String childrenRestScreenKey = "/children_rest";
+  static String christmasGiftsScreenKey = "/christmas_gifts";
+  static String recreationalActivitiesScreenKey = "/recreational_activities";
+  static String birthdaysScreenKey = "/birthdays";
+  static String openUniversityScreenKey = "/open_university";
+  static String setPinScreenKey = "/set_pin";
+  static String anniversaryBonusScreenKey = "/anniversary_bonus";
+  static String compensationTravelScreenKey = "/compensation_travel";
+
   static Map<String, Widget Function(BuildContext)> routes = {
     '/init': (BuildContext context) => InitPage(
           cubit: getIt(),

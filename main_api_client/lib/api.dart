@@ -32,7 +32,10 @@ final _defaultInterceptors = [
 class MainApiClient {
   Dio dio;
   Serializers serializers;
-  String basePath = 'https://portal.irkutskoil.ru/api/v1';
+  
+    // *** YAR: ORIGINAL BASE PATH
+    // String basePath = 'https://portal.irkutskoil.ru/api/v1';
+    String basePath = 'https://mpt-test-portal.irkutskoil.ru/api/v1';
 
   MainApiClient(
       {this.dio,

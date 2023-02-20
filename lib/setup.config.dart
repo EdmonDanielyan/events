@@ -7,135 +7,184 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
-
-import 'components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart'
+import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart'
     as _i61;
-import 'core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart'
+import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart'
     as _i83;
-import 'core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_state.dart'
+import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_state.dart'
     as _i84;
-import 'core/cubit/selectable/selectable_cubit.dart' as _i89;
-import 'core/cubit/selectfield/selectfield_cubit.dart' as _i90;
-import 'core/handlers/AuthHandler.dart' as _i104;
-import 'core/logging/file_log_appender.dart' as _i105;
-import 'core/logging/files.dart' as _i108;
-import 'cubit/announcements_detail/announcements_detail_cubit.dart' as _i3;
-import 'cubit/announcements_detail/sources/network.dart' as _i4;
-import 'cubit/announcements_list/announcements_list_cubit.dart' as _i5;
-import 'cubit/announcements_list/sources/network.dart' as _i6;
-import 'cubit/auth/auth_cubit.dart' as _i11;
-import 'cubit/auth/sources/network.dart' as _i12;
-import 'cubit/birthdays/birthdays_cubit.dart' as _i14;
-import 'cubit/birthdays/sources/network.dart' as _i15;
-import 'cubit/boot/boot_cubit.dart' as _i16;
-import 'cubit/chat_person_list/chat_person_list_cubit.dart' as _i20;
-import 'cubit/chat_person_list/sources/network.dart' as _i23;
-import 'cubit/events_detail/events_detail_cubit.dart' as _i36;
-import 'cubit/events_detail/sources/fetch/network.dart' as _i39;
-import 'cubit/events_detail/sources/invite/network.dart' as _i37;
-import 'cubit/events_list/events_list_cubit.dart' as _i40;
-import 'cubit/events_list/sources/network.dart' as _i41;
-import 'cubit/feedback_answer_list/answer_list_cubit.dart' as _i43;
-import 'cubit/feedback_answer_list/sources/network.dart' as _i44;
-import 'cubit/learning_materials_list/learning_materials_list_cubit.dart'
+import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart' as _i89;
+import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart'
+    as _i90;
+import 'package:ink_mobile/core/handlers/AuthHandler.dart' as _i104;
+import 'package:ink_mobile/core/logging/file_log_appender.dart' as _i105;
+import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_cubit.dart'
+    as _i3;
+import 'package:ink_mobile/cubit/announcements_detail/sources/network.dart'
+    as _i4;
+import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart'
+    as _i5;
+import 'package:ink_mobile/cubit/announcements_list/sources/network.dart'
+    as _i6;
+import 'package:ink_mobile/cubit/auth/auth_cubit.dart' as _i11;
+import 'package:ink_mobile/cubit/auth/sources/network.dart' as _i12;
+import 'package:ink_mobile/cubit/birthdays/birthdays_cubit.dart' as _i14;
+import 'package:ink_mobile/cubit/birthdays/sources/network.dart' as _i15;
+import 'package:ink_mobile/cubit/boot/boot_cubit.dart' as _i16;
+import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart'
+    as _i20;
+import 'package:ink_mobile/cubit/chat_person_list/sources/network.dart' as _i23;
+import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart'
+    as _i36;
+import 'package:ink_mobile/cubit/events_detail/sources/fetch/network.dart'
+    as _i39;
+import 'package:ink_mobile/cubit/events_detail/sources/invite/network.dart'
+    as _i37;
+import 'package:ink_mobile/cubit/events_list/events_list_cubit.dart' as _i40;
+import 'package:ink_mobile/cubit/events_list/sources/network.dart' as _i41;
+import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_cubit.dart'
+    as _i43;
+import 'package:ink_mobile/cubit/feedback_answer_list/sources/network.dart'
+    as _i44;
+import 'package:ink_mobile/cubit/learning_materials_list/learning_materials_list_cubit.dart'
     as _i50;
-import 'cubit/learning_materials_list/sources/network.dart' as _i48;
-import 'cubit/logout/logout_cubit.dart' as _i54;
-import 'cubit/logout/sources/logout_network.dart' as _i55;
-import 'cubit/main_page/announcements_list_cubit.dart' as _i56;
-import 'cubit/main_page/events_and_announcements_block_cubit.dart' as _i38;
-import 'cubit/main_page/events_list_cubit.dart' as _i58;
-import 'cubit/main_page/main_cubit.dart' as _i59;
-import 'cubit/main_page/news_block_cubit.dart' as _i62;
-import 'cubit/news_comments/news_comments_cubit.dart' as _i65;
-import 'cubit/news_comments/sources/comment/network.dart' as _i63;
-import 'cubit/news_comments/sources/fetch/network.dart' as _i66;
-import 'cubit/news_comments/sources/like/network.dart' as _i67;
-import 'cubit/news_detail/news_detail_cubit.dart' as _i68;
-import 'cubit/news_detail/sources/fetch/network.dart' as _i69;
-import 'cubit/news_detail/sources/like/network.dart' as _i70;
-import 'cubit/news_list/news_list_cubit.dart' as _i71;
-import 'cubit/news_list/sources/network.dart' as _i72;
-import 'cubit/personnel_movements/personnel_movements_cubit.dart' as _i78;
-import 'cubit/personnel_movements/sources/network.dart' as _i100;
-import 'cubit/profile/profile_cubit.dart' as _i79;
-import 'cubit/profile/sources/fetch/network.dart' as _i80;
-import 'cubit/profile/sources/thank/network.dart' as _i81;
-import 'cubit/references/references_cubit.dart' as _i82;
-import 'cubit/references/sources/check_permission/network.dart' as _i19;
-import 'cubit/references/sources/get_autofill_data/network.dart' as _i46;
-import 'cubit/search/search_cubit.dart' as _i85;
-import 'cubit/search/sources/network.dart' as _i86;
-import 'cubit/send_feedback_form/send_form_cubit.dart' as _i93;
-import 'cubit/send_feedback_form/sources/network.dart' as _i91;
-import 'cubit/send_medical_ins_form/send_form_cubit.dart' as _i94;
-import 'cubit/send_medical_ins_form/sources/network.dart' as _i95;
-import 'cubit/send_reference_form/send_form_cubit.dart' as _i97;
-import 'cubit/send_reference_form/sources/network.dart' as _i98;
-import 'cubit/tags_list/sources/network.dart' as _i102;
-import 'cubit/tags_list/tags_list_cubit.dart' as _i101;
-import 'messenger/cubits/cached/base_url/base_url_cubit.dart' as _i13;
-import 'messenger/cubits/cached/chat_users_picker/chat_users_picker_cubit.dart'
+import 'package:ink_mobile/cubit/learning_materials_list/sources/network.dart'
+    as _i48;
+import 'package:ink_mobile/cubit/logout/logout_cubit.dart' as _i54;
+import 'package:ink_mobile/cubit/logout/sources/logout_network.dart' as _i55;
+import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart'
+    as _i56;
+import 'package:ink_mobile/cubit/main_page/events_and_announcements_block_cubit.dart'
+    as _i38;
+import 'package:ink_mobile/cubit/main_page/events_list_cubit.dart' as _i58;
+import 'package:ink_mobile/cubit/main_page/main_cubit.dart' as _i59;
+import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart' as _i62;
+import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart'
+    as _i65;
+import 'package:ink_mobile/cubit/news_comments/sources/comment/network.dart'
+    as _i63;
+import 'package:ink_mobile/cubit/news_comments/sources/fetch/network.dart'
+    as _i66;
+import 'package:ink_mobile/cubit/news_comments/sources/like/network.dart'
+    as _i67;
+import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart' as _i68;
+import 'package:ink_mobile/cubit/news_detail/sources/fetch/network.dart'
+    as _i69;
+import 'package:ink_mobile/cubit/news_detail/sources/like/network.dart' as _i70;
+import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart' as _i71;
+import 'package:ink_mobile/cubit/news_list/sources/network.dart' as _i72;
+import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart'
+    as _i78;
+import 'package:ink_mobile/cubit/personnel_movements/sources/network.dart'
+    as _i100;
+import 'package:ink_mobile/cubit/profile/profile_cubit.dart' as _i79;
+import 'package:ink_mobile/cubit/profile/sources/fetch/network.dart' as _i80;
+import 'package:ink_mobile/cubit/profile/sources/thank/network.dart' as _i81;
+import 'package:ink_mobile/cubit/references/references_cubit.dart' as _i82;
+import 'package:ink_mobile/cubit/references/sources/check_permission/network.dart'
+    as _i19;
+import 'package:ink_mobile/cubit/references/sources/get_autofill_data/network.dart'
+    as _i46;
+import 'package:ink_mobile/cubit/search/search_cubit.dart' as _i85;
+import 'package:ink_mobile/cubit/search/sources/network.dart' as _i86;
+import 'package:ink_mobile/cubit/send_feedback_form/send_form_cubit.dart'
+    as _i93;
+import 'package:ink_mobile/cubit/send_feedback_form/sources/network.dart'
+    as _i91;
+import 'package:ink_mobile/cubit/send_medical_ins_form/send_form_cubit.dart'
+    as _i94;
+import 'package:ink_mobile/cubit/send_medical_ins_form/sources/network.dart'
+    as _i95;
+import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart'
+    as _i97;
+import 'package:ink_mobile/cubit/send_reference_form/sources/network.dart'
+    as _i98;
+import 'package:ink_mobile/cubit/tags_list/sources/network.dart' as _i102;
+import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart' as _i101;
+import 'package:ink_mobile/messenger/cubits/cached/base_url/base_url_cubit.dart'
+    as _i13;
+import 'package:ink_mobile/messenger/cubits/cached/chat_users_picker/chat_users_picker_cubit.dart'
     as _i21;
-import 'messenger/cubits/cached/chats/cached_chats_cubit.dart' as _i17;
-import 'messenger/cubits/cached/hidden_chats/hidden_chats_cubit.dart' as _i106;
-import 'messenger/cubits/cached/hidden_messages/hidden_messages_cubit.dart'
+import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart'
+    as _i17;
+import 'package:ink_mobile/messenger/cubits/cached/hidden_chats/hidden_chats_cubit.dart'
+    as _i106;
+import 'package:ink_mobile/messenger/cubits/cached/hidden_messages/hidden_messages_cubit.dart'
     as _i47;
-import 'messenger/cubits/cached/notifications_disabled_chats/notifications_disabled_chats_cubit.dart'
+import 'package:ink_mobile/messenger/cubits/cached/notifications_disabled_chats/notifications_disabled_chats_cubit.dart'
     as _i74;
-import 'messenger/cubits/cached/users/cached_users_cubit.dart' as _i18;
-import 'messenger/cubits/custom/app_state/app_state_cubit.dart' as _i9;
-import 'messenger/cubits/custom/online_cubit/online_cubit.dart' as _i75;
-import 'messenger/messenger/listeners/add_participant.dart' as _i24;
-import 'messenger/messenger/listeners/connect.dart' as _i22;
-import 'messenger/messenger/listeners/delete_message.dart' as _i25;
-import 'messenger/messenger/listeners/direct_message.dart' as _i26;
-import 'messenger/messenger/listeners/disconnect.dart' as _i34;
-import 'messenger/messenger/listeners/error.dart' as _i35;
-import 'messenger/messenger/listeners/invite.dart' as _i27;
-import 'messenger/messenger/listeners/message.dart' as _i28;
-import 'messenger/messenger/listeners/online_listener.dart' as _i29;
-import 'messenger/messenger/listeners/read_message_listener.dart' as _i30;
-import 'messenger/messenger/listeners/remove_participant.dart' as _i31;
-import 'messenger/messenger/listeners/update_chat_listener.dart' as _i32;
-import 'messenger/messenger/listeners/update_message.dart' as _i33;
-import 'messenger/providers/app_token.dart' as _i10;
-import 'messenger/providers/messenger.dart' as _i60;
-import 'messenger/providers/notifications.dart' as _i51;
-import 'models/announcement_data.dart' as _i8;
-import 'models/event_data.dart' as _i42;
-import 'models/feedback/management_answer.dart' as _i45;
-import 'models/learning_materials_data.dart' as _i49;
-import 'models/new_comment_entities.dart' as _i64;
-import 'models/news_data.dart' as _i73;
-import 'models/pagination.dart' as _i7;
-import 'models/send_reference_form_entities.dart' as _i99;
-import 'models/token.dart' as _i103;
-import 'providers/local_pin_provider.dart' as _i52;
-import 'providers/lock_app.dart' as _i53;
-import 'providers/main_api.dart' as _i57;
-import 'providers/package_info.dart' as _i77;
-import 'providers/secure_storage.dart' as _i87;
-import 'providers/security_checker.dart' as _i88;
-import 'screens/feedback/components/form/entities.dart' as _i92;
-import 'screens/initial/cubit/initial_cubit.dart' as _i107;
-import 'screens/medical_insurance/components/form/entities.dart' as _i96;
-import 'screens/open_university/cubit/open_university_cubit.dart' as _i76;
+import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart'
+    as _i18;
+import 'package:ink_mobile/messenger/cubits/custom/app_state/app_state_cubit.dart'
+    as _i9;
+import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart'
+    as _i75;
+import 'package:ink_mobile/messenger/messenger/listeners/add_participant.dart'
+    as _i24;
+import 'package:ink_mobile/messenger/messenger/listeners/connect.dart' as _i22;
+import 'package:ink_mobile/messenger/messenger/listeners/delete_message.dart'
+    as _i25;
+import 'package:ink_mobile/messenger/messenger/listeners/direct_message.dart'
+    as _i26;
+import 'package:ink_mobile/messenger/messenger/listeners/disconnect.dart'
+    as _i34;
+import 'package:ink_mobile/messenger/messenger/listeners/error.dart' as _i35;
+import 'package:ink_mobile/messenger/messenger/listeners/invite.dart' as _i27;
+import 'package:ink_mobile/messenger/messenger/listeners/message.dart' as _i28;
+import 'package:ink_mobile/messenger/messenger/listeners/online_listener.dart'
+    as _i29;
+import 'package:ink_mobile/messenger/messenger/listeners/read_message_listener.dart'
+    as _i30;
+import 'package:ink_mobile/messenger/messenger/listeners/remove_participant.dart'
+    as _i31;
+import 'package:ink_mobile/messenger/messenger/listeners/update_chat_listener.dart'
+    as _i32;
+import 'package:ink_mobile/messenger/messenger/listeners/update_message.dart'
+    as _i33;
+import 'package:ink_mobile/messenger/providers/app_token.dart' as _i10;
+import 'package:ink_mobile/messenger/providers/messenger.dart' as _i60;
+import 'package:ink_mobile/messenger/providers/notifications.dart' as _i51;
+import 'package:ink_mobile/models/announcement_data.dart' as _i8;
+import 'package:ink_mobile/models/event_data.dart' as _i42;
+import 'package:ink_mobile/models/feedback/management_answer.dart' as _i45;
+import 'package:ink_mobile/models/learning_materials_data.dart' as _i49;
+import 'package:ink_mobile/models/new_comment_entities.dart' as _i64;
+import 'package:ink_mobile/models/news_data.dart' as _i73;
+import 'package:ink_mobile/models/pagination.dart' as _i7;
+import 'package:ink_mobile/models/send_reference_form_entities.dart' as _i99;
+import 'package:ink_mobile/models/token.dart' as _i103;
+import 'package:ink_mobile/providers/local_pin_provider.dart' as _i52;
+import 'package:ink_mobile/providers/lock_app.dart' as _i53;
+import 'package:ink_mobile/providers/main_api.dart' as _i57;
+import 'package:ink_mobile/providers/package_info.dart' as _i77;
+import 'package:ink_mobile/providers/secure_storage.dart' as _i87;
+import 'package:ink_mobile/providers/security_checker.dart' as _i88;
+import 'package:ink_mobile/screens/feedback/components/form/entities.dart'
+    as _i92;
+import 'package:ink_mobile/screens/initial/cubit/initial_cubit.dart' as _i107;
+import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart'
+    as _i96;
+import 'package:ink_mobile/screens/open_university/cubit/open_university_cubit.dart'
+    as _i76;
 
-const String _unitTest = 'unitTest';
+import 'core/logging/files.dart' as _i108;
+import 'models/token.dart' as _i109;
+
 const String _test = 'test';
 const String _prod = 'prod';
 const String _dev = 'dev';
-// ignore_for_file: unnecessary_lambdas
-// ignore_for_file: lines_longer_than_80_chars
-/// initializes the registration of provided dependencies inside of [GetIt]
+const String _unitTest = 'unitTest';
+
+/// ignore_for_file: unnecessary_lambdas
+/// ignore_for_file: lines_longer_than_80_chars
+/// initializes the registration of main-scope dependencies inside of [GetIt]
 Future<_i1.GetIt> $initGetIt(
-  _i1.GetIt get, {
+  _i1.GetIt getIt, {
   String? environment,
   _i2.EnvironmentFilter? environmentFilter,
 }) async {
   final gh = _i2.GetItHelper(
-    get,
+    getIt,
     environment,
     environmentFilter,
   );
@@ -368,6 +417,10 @@ Future<_i1.GetIt> $initGetIt(
     instanceName: 'messengerAuthPassword',
   );
   gh.factory<String>(
+    () => tokenDataInjectorModule.messengerAuthLogin,
+    instanceName: 'messengerAuthLogin',
+  );
+  gh.factory<String>(
     () => tokenDataInjectorModule.userId,
     instanceName: 'userId',
   );
@@ -386,27 +439,23 @@ Future<_i1.GetIt> $initGetIt(
     },
     preResolve: true,
   );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.messengerAuthLogin,
-    instanceName: 'messengerAuthLogin',
-  );
   gh.singleton<_i101.TagsListCubit>(_i101.TagsListCubit());
   gh.singleton<_i102.TagsListNetworkRequest>(_i102.TagsListNetworkRequest());
   gh.lazySingleton<_i103.TokenDataHolder>(() => _i103.TokenDataHolder());
-  gh.singleton<_i104.AuthHandler>(_i104.AuthHandler(get<_i16.BootCubit>()));
+  gh.singleton<_i104.AuthHandler>(_i104.AuthHandler(gh<_i16.BootCubit>()));
   gh.lazySingleton<_i105.FileLogAppender>(
-      () => _i105.FileLogAppender(get<String>(instanceName: 'logFile')));
+      () => _i105.FileLogAppender(gh<String>(instanceName: 'logFile')));
   gh.singleton<_i106.HiddenChatsCubit>(
-      _i106.HiddenChatsCubit(get<_i47.HiddenMessagesCubit>()));
+      _i106.HiddenChatsCubit(gh<_i47.HiddenMessagesCubit>()));
   gh.factory<_i107.InitialCubit>(() => _i107.InitialCubit(
-        get<_i88.SecurityChecker>(),
-        get<_i104.AuthHandler>(),
+        gh<_i88.SecurityChecker>(),
+        gh<_i104.AuthHandler>(),
       ));
-  return get;
+  return getIt;
 }
 
-class _$TokenDataInjectorModule extends _i103.TokenDataInjectorModule {}
+class _$LogFilePathInjector extends _i108.LogFilePathInjector {}
 
 class _$TestLogFilePathInjector extends _i108.TestLogFilePathInjector {}
 
-class _$LogFilePathInjector extends _i108.LogFilePathInjector {}
+class _$TokenDataInjectorModule extends _i109.TokenDataInjectorModule {}

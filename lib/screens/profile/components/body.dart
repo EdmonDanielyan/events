@@ -8,6 +8,7 @@ import 'package:ink_mobile/cubit/profile/profile_state.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/user_data.dart';
+import 'package:ink_mobile/screens/profile/components/about_my_field.dart';
 import 'package:ink_mobile/screens/profile/components/awards.dart';
 import 'package:ink_mobile/screens/profile/components/background.dart';
 import 'package:ink_mobile/screens/profile/components/basic_information.dart';
@@ -17,21 +18,35 @@ import 'package:ink_mobile/screens/profile/components/other_user_page_header.dar
 import 'package:ink_mobile/screens/profile/components/security.dart';
 import 'package:ink_mobile/setup.dart';
 
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import '../profile_screen.dart';
 import 'diagnostics.dart';
 
 class Body extends StatelessWidget {
   final ProfileCubit userCubit;
+
   const Body({Key? key, required this.userCubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
+
+    return CustomRefreshIndicator(
       onRefresh: () async {
         userCubit.refresh();
       },
-      color: Colors.green,
-      displacement: 20,
+      leadingScrollIndicatorVisible: false,
+      trailingScrollIndicatorVisible: false,
+      triggerMode: IndicatorTriggerMode.anywhere,
+      trigger: IndicatorTrigger.bothEdges,
+      builder: MaterialIndicatorDelegate(
+        builder:  (BuildContext context, IndicatorController controller) {
+          return Icon(
+            Icons.update,
+            color: Colors.green[900],
+            size: 30,
+          );
+        },
+      ),
       child: BlocConsumer<ProfileCubit, ProfileState>(
         listener: (context, state) {
           if (state.data != null) {
@@ -80,12 +95,13 @@ class Body extends StatelessWidget {
   }
 
   Widget getLoadedStateWidget(context, ProfileState state) {
+    final ScrollController _scrollController = ScrollController();
     UserProfileData user = state.data!;
     final logFile = ProfileScreen.of(context).widget.logFile;
-
     return Container(
         child: Background(
             child: SingleChildScrollView(
+              controller: _scrollController,
       physics: AlwaysScrollableScrollPhysics(),
       child: Column(children: [
         PersonalPageHeader(user: user),
@@ -96,7 +112,9 @@ class Body extends StatelessWidget {
             Contacts(contacts: user.contacts),
             BasicInformation(info: user.basicInformation),
             Diagnostics(logFile: logFile),
-            ProfileSecuritySection()
+            ProfileSecuritySection(),
+            AboutMyField(user: user, scrollController: _scrollController,)
+
           ],
         )
       ]),
@@ -123,7 +141,8 @@ class Body extends StatelessWidget {
               ),
               BasicInformation(
                 info: user.basicInformation,
-              )
+              ),
+              //будет поле о пользователе без возможности редактировать
             ],
           );
         })

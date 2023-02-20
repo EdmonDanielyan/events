@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar.dart';
-import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/events_and_announcements_block_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/events_list_cubit.dart';
@@ -10,6 +9,7 @@ import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/screens/main/components/body.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/utils/app_config.dart';
 
 class MainScreen extends StatefulWidget {
   static MainScreenState of(BuildContext context) =>
@@ -48,8 +48,13 @@ class MainScreenState extends State<MainScreen>
   void initState() {
     super.initState();
 
-    getIt<MessengerProvider>().init(UrlsConfig.wsUrl, JwtPayload.myId,
-        apiUrl: UrlsConfig.messengerApiUrl);
+    getIt<MessengerProvider>().init(
+        getIt.get<AppConfig>().wsUrl,
+        JwtPayload.myId,
+        path: getIt.get<AppConfig>().wsPath,
+        apiUrl: getIt.get<AppConfig>().messengerApiUrl
+    );
+
   }
 
   @override

@@ -74,7 +74,6 @@ class _ChatListScreenState extends State<ChatListScreen>
       appBar: InkAppBarWithText(
         context,
         title: "Сообщения",
-        leading: SizedBox(),
         actions: [
           IconButton(
             onPressed: () {

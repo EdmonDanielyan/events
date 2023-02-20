@@ -33,7 +33,7 @@ void main() async {
 
           HydratedBlocOverrides.runZoned(
             () async {
-              await setup(scope: await readEnv());
+              await setup();
 
               runApp(InkMobile());
             },

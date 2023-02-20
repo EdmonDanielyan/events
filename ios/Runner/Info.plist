@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>OneSignal_suppress_launch_urls</key>
+	<true/>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
@@ -13,7 +15,7 @@
 	<key>io.flutter.embedded_views_preview</key>
 	<string>YES</string>
 	<key>CFBundleDisplayName</key>
-	<string>ИНК-Портал</string>
+	<string>${APP_DISPLAY_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -21,7 +23,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>ink_mobile</string>
+	<string>${BUNDLE_NAME}</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -82,7 +84,12 @@
 	<array>
 		<string>_dartobservatory._tcp</string>
 	</array>
+<<<<<<< HEAD
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+=======
+	<key>NSContactsUsageDescription</key>
+	<string>This app requires contacts access to function properly.</string>
+>>>>>>> develop
 </dict>
 </plist>

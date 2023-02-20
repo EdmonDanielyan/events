@@ -59,35 +59,56 @@ android {
         multiDexEnabled true
     }
 
+    flavorDimensions "app"
+    productFlavors {
+        prod {
+            dimension "app"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "ИНК-Портал"
+        }
+        dev {
+            dimension "app"
+            applicationIdSuffix ".dev"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "DEV ИНК-Портал"
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "${variant.productFlavors[0].name}-${variant.buildType.name}.apk"
+        }
+    }
+
     //UNCOMMENT THIS FOR RELEASE
-     signingConfigs {
-         release {
-             keyAlias keystoreProperties['keyAlias']
-             keyPassword keystoreProperties['keyPassword']
-             try {
-                 storeFile file("../keystore.uu").exists() ? file("../keystore.uu"): new File(System.env.KEY_STORE)
-             } catch (Exception e) {
-                 println("please specify keystore: ${e}")
-             }
-             storePassword keystoreProperties['storePassword']
-         }
-     }
+
+//         release {
+//             keyAlias keystoreProperties['keyAlias']
+//             keyPassword keystoreProperties['keyPassword']
+//             try {
+//                 storeFile file("../keystore.uu").exists() ? file("../keystore.uu"): new File(System.env.KEY_STORE)
+//             } catch (Exception e) {
+//                 println("please specify keystore: ${e}")
+//             }
+//             storePassword keystoreProperties['storePassword']
+//         }
+//     }
 
     buildTypes {
 
         //DEBUG
-//        release {
-//            signingConfig signingConfigs.debug
-//        }
+        release {
+            signingConfig signingConfigs.debug
+        }
         
         //UNCOMMENT THIS FOR RELEASE
-         release {
-             signingConfig signingConfigs.release
-
-             minifyEnabled true
-
-             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-         }
+//         release {
+//             signingConfig signingConfigs.release
+//
+//             minifyEnabled true
+//
+//             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//         }
     }
 }
 

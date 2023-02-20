@@ -5,9 +5,9 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/constants/timeouts.dart';
+import 'package:ink_mobile/setup.dart';
+import 'package:ink_mobile/utils/app_config.dart';
 import 'package:main_api_client/api.dart';
-
-import '../constants/urls.dart';
 
 @lazySingleton
 class MainApiProvider extends MainApiClient {
@@ -16,7 +16,7 @@ class MainApiProvider extends MainApiClient {
     return HttpClient(context: securityContext);
   }
 
-  MainApiProvider() : super(basePathOverride: UrlsConfig.apiUrl) {
+  MainApiProvider() : super(basePathOverride: getIt.get<AppConfig>().serverUrl) {
     dio.options.connectTimeout = API_CONNECT_TIMEOUT_MS;
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         _sslPinnedHttpClient;

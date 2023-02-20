@@ -45,6 +45,7 @@ class MessengerProvider {
   void init(
     String url,
     int userId, {
+    String? path,
     required String apiUrl,
   }) {
     if (disposed) {
@@ -60,6 +61,7 @@ class MessengerProvider {
       final connectListener = getIt<ConnectListener>();
       socket = SocketProvider(
         url,
+        path: path,
         onConnect: connectListener.handler,
         onConnectError: connectListener.onError,
         onDisconnect: getIt<DisconnectListener>().handler,

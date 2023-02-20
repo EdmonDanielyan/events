@@ -1,20 +1,65 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
+import 'package:ink_mobile/components/textfields/service_btn.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
+import 'package:ink_mobile/screens/profile/components/photo_preview_page.dart';
+import 'package:intl/intl.dart';
 
-class UserMainInfo extends StatelessWidget {
+class UserMainInfo extends StatefulWidget {
   final String? userName;
   final String? userLastName;
   final String? userPosition;
   final String? pathToAvatar;
-
+  final bool? isOtherUser;
   UserMainInfo(
       {Key? key,
       this.userLastName,
       this.userName,
       this.userPosition,
-      this.pathToAvatar})
+      this.pathToAvatar,
+      this.isOtherUser})
       : super(key: key);
+
+  @override
+  State<UserMainInfo> createState() => _UserMainInfoState();
+}
+
+class _UserMainInfoState extends State<UserMainInfo> {
+  TextEditingController fioFieldC = TextEditingController();
+  late FocusNode textFormFocus;
+  bool isEditing = false;
+  late bool isOtherUser = widget.isOtherUser ?? true;
+
+  @override
+  void initState() {
+    fioFieldC.text = getFullName();
+    textFormFocus = FocusNode();
+    super.initState();
+  }
+  @override
+  void dispose() {
+    textFormFocus.dispose();
+    super.dispose();
+  }
+
+  ImagePicker picker = ImagePicker();
+
+  Future getImage(ImageSource source) async {
+    try {
+      final image = await picker.pickImage(source: source);
+      if (image == null) return;
+      final imageTemporary = File(image.path);
+
+      Navigator.of(context).push(MaterialPageRoute (
+        builder: (BuildContext context) =>  PhotoPreviewPage(file: imageTemporary),
+      ),);
+    } on PlatformException catch (e) {
+      debugPrint('Failed to pick image: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +98,45 @@ class UserMainInfo extends StatelessWidget {
                                 .getProportionateScreenHeight),
                         color: Colors.grey.withOpacity(0.2)),
                     padding: EdgeInsets.all(5),
-                    child: Container(
-                      child: CachedCircleAvatar(
-                        avatarWidth: SizeConfig(context, 140)
-                            .getProportionateScreenHeight,
-                        avatarHeight: SizeConfig(context, 140)
-                            .getProportionateScreenHeight,
-                        url: pathToAvatar ?? "",
+                    child: PopupMenuButton(
+                      itemBuilder: (context) {
+                        return <PopupMenuItem>[
+                          PopupMenuItem(child: TextButton(child: Text('Просмотр'),
+                                onPressed: (){
+                                    Navigator.of(context).push(MaterialPageRoute (
+                                      builder: (BuildContext context) =>  PhotoPreviewPage(url: widget.pathToAvatar ?? ""),
+                                    ),);
+
+                            }
+                            ,)),
+                          if (!isOtherUser) PopupMenuItem(child:
+                              TextButton(child: Text('Галерея'),
+                                onPressed: ()=> getImage(ImageSource.gallery),
+                              )
+                        ) ,
+                          if (!isOtherUser) PopupMenuItem(child: TextButton(child: Text('Сделать фото'),
+                                onPressed: ()=> getImage(ImageSource.camera),)),
+                          //PopupMenuItem(child: Text('Отмена')),
+                        ];
+                      },
+                      child: Stack(
+                        clipBehavior: Clip.hardEdge,
+                        children: [
+                          Container(
+                            child: CachedCircleAvatar(
+                              avatarWidth: SizeConfig(context, 140)
+                                  .getProportionateScreenHeight,
+                              avatarHeight: SizeConfig(context, 140)
+                                  .getProportionateScreenHeight,
+                              url: widget.pathToAvatar ?? "",
+                            ),
+                          ),
+                          if(!isOtherUser) Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child:  Icon(Icons.add_a_photo_outlined),
+                            )
+                        ],
                       ),
                     ),
                   ),
@@ -73,21 +150,63 @@ class UserMainInfo extends StatelessWidget {
                   child: Center(
                       child: Column(
                     children: [
-                      Text(
-                        getFullName(),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontStyle: FontStyle.normal,
-                          fontSize: SizeConfig(context, 20)
-                              .getProportionateScreenHeight,
-                          fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTapDown: (_)=> _enableEdit(),
+                        behavior: HitTestBehavior.translucent,
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20.0),
+                              child: TextFormField(
+                                controller: fioFieldC,
+                                readOnly: !isEditing,
+                                focusNode: textFormFocus,
+                                autofocus: true,
+                                cursorColor: Theme.of(context).primaryColorLight,
+                                textAlign: TextAlign.center,
+                                style:  TextStyle(
+                                  color: Colors.white,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: SizeConfig(context, 20)
+                                      .getProportionateScreenHeight,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textInputAction: TextInputAction.go,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  isCollapsed: true,
+                                ),
+                              ),
+                            ),
+                            if(!isOtherUser && isEditing != true)
+                              Positioned(
+                                right: 0,
+                                bottom: 10,
+                                child:  IconButton(
+
+                                  icon: Icon(Icons.edit),
+                                  onPressed: _enableEdit
+                                ),)
+                          ],
                         ),
-                        textAlign: TextAlign.center,
                       ),
+                      if(isEditing)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: ServiceBtn(
+                              txt: 'Сохранить',
+                              onPressed: (){
+                                setState((){
+                                  isEditing = false;
+                                });
+                              }),
+                        )
                     ],
                   )),
                 ),
-                getUserPositionWidget(context)
+                getUserPositionWidget(context),
+                ///user is vacation
+                getInfoUserInVacation( startDate: DateTime(2022,12,20), dateEnd: DateTime(2022,12,29))
               ],
             ),
           ),
@@ -98,26 +217,32 @@ class UserMainInfo extends StatelessWidget {
 
   String getFullName() {
     List nameComponents = [];
-
-    if (userLastName != null) {
-      nameComponents.add(userLastName);
+    if (widget.userLastName != null) {
+      nameComponents.add(widget.userLastName);
     }
-
-    if (userName != null) {
-      nameComponents.add(userName);
+    if (widget.userName != null) {
+      nameComponents.add(widget.userName);
     }
-
     return nameComponents.join(' ');
   }
 
+  void _enableEdit() {
+    if(isEditing != true) {
+      setState(() {
+        isEditing = true;
+      });
+      FocusScope.of(context).requestFocus(textFormFocus);
+    }
+  }
+
   Widget getUserPositionWidget(BuildContext context) {
-    if (userPosition != null) {
+    if (widget.userPosition != null) {
       return Padding(
           padding: EdgeInsets.only(top: 10),
           child: Opacity(
               opacity: 0.7,
               child: Text(
-                userPosition!.toUpperCase(),
+                widget.userPosition!.toUpperCase(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xFFFFFFFF),
@@ -131,4 +256,26 @@ class UserMainInfo extends StatelessWidget {
       return Container();
     }
   }
+
+  Widget getInfoUserInVacation({required DateTime startDate, required DateTime dateEnd }) {
+    String start = DateFormat('d.M.yyyy').format(startDate);
+    String end = DateFormat('d.M.yyyy').format(dateEnd);
+    String text = "Отсутствует с $start по $end (отпуск основной)";
+    if (true/* логика отображения отпуска*/) return Container(
+      margin: EdgeInsets.all(2),
+      padding: EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(246, 203, 69, 1),
+        // border: Border.all(
+        //     style: BorderStyle.solid,
+        //     width: 1.0
+        // ),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(7),bottomRight: Radius.circular(7),topRight: Radius.circular(4),bottomLeft: Radius.circular(4)),
+      ),
+      child: Text(text)
+    );
+    else return SizedBox();
+  }
+
 }
+

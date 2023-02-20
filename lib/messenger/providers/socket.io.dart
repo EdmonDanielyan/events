@@ -4,6 +4,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 class SocketProvider {
   final String url;
+  final String? path;
   final void Function(dynamic)? onConnect;
   final void Function(dynamic)? onConnectError;
   final void Function(dynamic)? onDisconnect;
@@ -12,6 +13,7 @@ class SocketProvider {
 
   const SocketProvider(
     this.url, {
+    this.path,
     this.onConnect,
     this.onConnectError,
     this.onDisconnect,
@@ -20,6 +22,18 @@ class SocketProvider {
   });
 
   Socket init() {
+    final options = OptionBuilder()
+        .setTransports(['websocket'])
+        .enableForceNewConnection()
+        .setExtraHeaders(
+      {"userId": 15},
+    );
+
+    final path = this.path;
+    if (path != null){
+      options.setPath(path);
+    }
+
     Socket socket = io(
       url,
       OptionBuilder()
