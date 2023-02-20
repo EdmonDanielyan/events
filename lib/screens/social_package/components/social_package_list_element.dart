@@ -14,7 +14,7 @@ class SocialPackageListElement extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, link);
+        Navigator.pushNamed(context, link, arguments: {"code": code});
       },
       child: Container(
         color: Colors.white,

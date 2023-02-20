@@ -61,6 +61,7 @@ class _BodyState extends State<Body> {
         builder: (context, state) {
           switch (state.type) {
             case GetSectionCubitStateEnums.LOADING:
+              getSectionCubit.fetch();
               return Center(
                 child: InkPageLoader(),
               );
