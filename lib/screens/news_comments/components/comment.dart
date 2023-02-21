@@ -99,7 +99,11 @@ class _CommentState extends State<Comment> {
                                   fontWeight: FontWeight.bold),
                             )),
                       ),
-
+                      BBCodeText(
+                          data: widget.text,
+                          stylesheet: defaultBBStylesheet()
+                            ..replaceTag(
+                                CustomColorTag(defaultColor: _textColor))),
                       Container(
                         child: Row(
                           children: [

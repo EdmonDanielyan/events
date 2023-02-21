@@ -1,0 +1,251 @@
+PODS:
+  - better_player (0.0.1):
+    - Cache (~> 6.0.0)
+    - Flutter
+    - GCDWebServer
+    - HLSCachingReverseProxyServer
+    - PINCache
+  - Cache (6.0.0)
+  - device_info_plus (0.0.1):
+    - Flutter
+  - DKImagePickerController/Core (4.3.4):
+    - DKImagePickerController/ImageDataManager
+    - DKImagePickerController/Resource
+  - DKImagePickerController/ImageDataManager (4.3.4)
+  - DKImagePickerController/PhotoGallery (4.3.4):
+    - DKImagePickerController/Core
+    - DKPhotoGallery
+  - DKImagePickerController/Resource (4.3.4)
+  - DKPhotoGallery (0.0.17):
+    - DKPhotoGallery/Core (= 0.0.17)
+    - DKPhotoGallery/Model (= 0.0.17)
+    - DKPhotoGallery/Preview (= 0.0.17)
+    - DKPhotoGallery/Resource (= 0.0.17)
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Core (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Preview
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Model (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Preview (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Resource
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Resource (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - file_picker (0.0.1):
+    - DKImagePickerController/PhotoGallery
+    - Flutter
+  - Flutter (1.0.0)
+  - flutter_image_compress (1.0.0):
+    - Flutter
+    - Mantle
+    - SDWebImage
+    - SDWebImageWebPCoder
+  - flutter_jailbreak_detection (1.0.0):
+    - Flutter
+    - IOSSecuritySuite
+  - flutter_keyboard_visibility (0.0.1):
+    - Flutter
+  - flutter_local_notifications (0.0.1):
+    - Flutter
+  - flutter_logs (0.0.1):
+    - Flutter
+    - ZIPFoundation
+  - flutter_native_splash (0.0.1):
+    - Flutter
+  - flutter_native_text_input (2.2.0):
+    - Flutter
+  - flutter_secure_storage (3.3.1):
+    - Flutter
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - GCDWebServer (3.5.4):
+    - GCDWebServer/Core (= 3.5.4)
+  - GCDWebServer/Core (3.5.4)
+  - HLSCachingReverseProxyServer (0.1.0):
+    - GCDWebServer (~> 3.5)
+    - PINCache (>= 3.0.1-beta.3)
+  - IOSSecuritySuite (1.9.6)
+  - libwebp (1.2.4):
+    - libwebp/demux (= 1.2.4)
+    - libwebp/mux (= 1.2.4)
+    - libwebp/webp (= 1.2.4)
+  - libwebp/demux (1.2.4):
+    - libwebp/webp
+  - libwebp/mux (1.2.4):
+    - libwebp/demux
+  - libwebp/webp (1.2.4)
+  - local_auth (0.0.1):
+    - Flutter
+  - Mantle (2.2.0):
+    - Mantle/extobjc (= 2.2.0)
+  - Mantle/extobjc (2.2.0)
+  - package_info_plus (0.4.5):
+    - Flutter
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - PINCache (3.0.3):
+    - PINCache/Arc-exception-safe (= 3.0.3)
+    - PINCache/Core (= 3.0.3)
+  - PINCache/Arc-exception-safe (3.0.3):
+    - PINCache/Core
+  - PINCache/Core (3.0.3):
+    - PINOperation (~> 1.2.1)
+  - PINOperation (1.2.1)
+  - SDWebImage (5.14.2):
+    - SDWebImage/Core (= 5.14.2)
+  - SDWebImage/Core (5.14.2)
+  - SDWebImageWebPCoder (0.9.1):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.13)
+  - smart_auth (0.0.1):
+    - Flutter
+  - sqflite (0.0.2):
+    - Flutter
+    - FMDB (>= 2.7.5)
+  - SwiftyGif (5.4.3)
+  - url_launcher_ios (0.0.1):
+    - Flutter
+  - video_player_avfoundation (0.0.1):
+    - Flutter
+  - wakelock (0.0.1):
+    - Flutter
+  - webview_flutter_wkwebview (0.0.1):
+    - Flutter
+  - ZIPFoundation (0.9.11)
+
+DEPENDENCIES:
+  - better_player (from `.symlinks/plugins/better_player/ios`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
+  - file_picker (from `.symlinks/plugins/file_picker/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
+  - flutter_jailbreak_detection (from `.symlinks/plugins/flutter_jailbreak_detection/ios`)
+  - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - flutter_logs (from `.symlinks/plugins/flutter_logs/ios`)
+  - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
+  - flutter_native_text_input (from `.symlinks/plugins/flutter_native_text_input/ios`)
+  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
+  - local_auth (from `.symlinks/plugins/local_auth/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
+  - smart_auth (from `.symlinks/plugins/smart_auth/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
+  - wakelock (from `.symlinks/plugins/wakelock/ios`)
+  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Cache
+    - DKImagePickerController
+    - DKPhotoGallery
+    - FMDB
+    - GCDWebServer
+    - HLSCachingReverseProxyServer
+    - IOSSecuritySuite
+    - libwebp
+    - Mantle
+    - PINCache
+    - PINOperation
+    - SDWebImage
+    - SDWebImageWebPCoder
+    - SwiftyGif
+    - ZIPFoundation
+
+EXTERNAL SOURCES:
+  better_player:
+    :path: ".symlinks/plugins/better_player/ios"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
+  file_picker:
+    :path: ".symlinks/plugins/file_picker/ios"
+  Flutter:
+    :path: Flutter
+  flutter_image_compress:
+    :path: ".symlinks/plugins/flutter_image_compress/ios"
+  flutter_jailbreak_detection:
+    :path: ".symlinks/plugins/flutter_jailbreak_detection/ios"
+  flutter_keyboard_visibility:
+    :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  flutter_logs:
+    :path: ".symlinks/plugins/flutter_logs/ios"
+  flutter_native_splash:
+    :path: ".symlinks/plugins/flutter_native_splash/ios"
+  flutter_native_text_input:
+    :path: ".symlinks/plugins/flutter_native_text_input/ios"
+  flutter_secure_storage:
+    :path: ".symlinks/plugins/flutter_secure_storage/ios"
+  local_auth:
+    :path: ".symlinks/plugins/local_auth/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/ios"
+  smart_auth:
+    :path: ".symlinks/plugins/smart_auth/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
+  video_player_avfoundation:
+    :path: ".symlinks/plugins/video_player_avfoundation/ios"
+  wakelock:
+    :path: ".symlinks/plugins/wakelock/ios"
+  webview_flutter_wkwebview:
+    :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
+
+SPEC CHECKSUMS:
+  better_player: 2406bfe8175203c7a46fa15f9d778d73b12e1646
+  Cache: 4ca7e00363fca5455f26534e5607634c820ffc2d
+  device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
+  DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
+  DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
+  file_picker: 817ab1d8cd2da9d2da412a417162deee3500fc95
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_image_compress: 5a5e9aee05b6553048b8df1c3bc456d0afaac433
+  flutter_jailbreak_detection: c5bf66ff6c0c4230769b6ba0bd63eb6ac4148a76
+  flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
+  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
+  flutter_logs: 5d0dca26963e0f30b11a995a764744ef77d5d428
+  flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
+  flutter_native_text_input: 246da758e5a2e744774aa839a1a21902e0e84ceb
+  flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
+  HLSCachingReverseProxyServer: 59935e1e0244ad7f3375d75b5ef46e8eb26ab181
+  IOSSecuritySuite: 7e7e632bcaf3067cd7ee8b698733417e92e65fa7
+  libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
+  local_auth: 1740f55d7af0a2e2a8684ce225fe79d8931e808c
+  Mantle: c5aa8794a29a022dfbbfc9799af95f477a69b62d
+  package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
+  path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
+  PINCache: 7a8fc1a691173d21dbddbf86cd515de6efa55086
+  PINOperation: 00c935935f1e8cf0d1e2d6b542e75b88fc3e5e20
+  SDWebImage: b9a731e1d6307f44ca703b3976d18c24ca561e84
+  SDWebImageWebPCoder: 18503de6621dd2c420d680e33d46bf8e1d5169b0
+  smart_auth: 4bedbc118723912d0e45a07e8ab34039c19e04f2
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
+  url_launcher_ios: fb12c43172927bb5cf75aeebd073f883801f1993
+  video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
+  wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
+  webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
+  ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
+
+PODFILE CHECKSUM: 8ae02c2d53c0906432eb4f410085728904c9b052
+
+COCOAPODS: 1.11.3

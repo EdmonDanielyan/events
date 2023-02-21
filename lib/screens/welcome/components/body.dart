@@ -1,10 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/constants/important_urls.dart';
 import 'package:ink_mobile/constants/urls.dart';
-import 'package:ink_mobile/core/logging/send_log.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
@@ -12,7 +10,6 @@ import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/screens/auth/components/sign_in_instructions.dart';
 import 'package:ink_mobile/screens/welcome/components/auth_btn.dart';
 import 'package:ink_mobile/screens/welcome/components/background.dart';
-import 'package:ink_mobile/setup.dart';
 
 import '../../../components/webview_screen.dart';
 
@@ -147,14 +144,6 @@ class _BodyState extends State<Body> {
                               fontSize: isTablet ? 17.0 : 13),
                         ),
                       ),
-                      if (kDebugMode) ...[
-                        Align(
-                            alignment: Alignment.centerRight,
-                            child: IconButton(
-                                onPressed: () => sendErrorLog(
-                                    getIt(instanceName: "logFile")),
-                                icon: Icon(Icons.bug_report)))
-                      ],
                     ],
                   ),
                 ],

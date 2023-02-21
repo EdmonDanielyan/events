@@ -12,7 +12,6 @@ import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/symptoms_rb.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../components/date_input_field.dart';
 import '../../../../messenger/utils/date_functions.dart';

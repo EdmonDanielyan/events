@@ -1,7 +1,6 @@
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/messenger/cubits/cached/hidden_chats/hidden_chats_cubit.dart';
-import 'package:ink_mobile/messenger/providers/logger.dart';
 import 'package:ink_mobile/setup.dart';
 import '../../../model/chat.dart';
 import '../../../model/message.dart';
@@ -389,7 +388,6 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
         final index = ids.lastIndexWhere((element) => element == chat.id);
 
         if (index < 0) {
-          logger.i("CHAT ${chat.name} DOES NOT EXIST IN $ids");
           removeChatById(chat.id);
         }
       }

@@ -2,7 +2,6 @@ import 'package:ink_mobile/cubit/profile/sources/fetch/network.dart';
 import 'package:ink_mobile/extensions/get_users_success.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
-import 'package:ink_mobile/messenger/providers/logger.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/setup.dart';
@@ -37,8 +36,6 @@ class FetchPartcipants {
           cubit.removeAndAddUser(u, u.id);
         }
       }
-    } catch (_e) {
-      logger.e(_e.toString());
-    }
+    } catch (_e) {}
   }
 }

@@ -84,7 +84,12 @@
 	<array>
 		<string>_dartobservatory._tcp</string>
 	</array>
+<<<<<<< HEAD
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+=======
 	<key>NSContactsUsageDescription</key>
 	<string>This app requires contacts access to function properly.</string>
+>>>>>>> develop
 </dict>
 </plist>
