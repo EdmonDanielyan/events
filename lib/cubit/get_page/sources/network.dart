@@ -7,11 +7,10 @@ import 'package:ink_mobile/setup.dart';
 import 'package:main_api_client/api/content_api.dart';
 import 'package:dio/dio.dart';
 import 'package:main_api_client/model/single_page_success_response_body.dart';
-import 'package:main_api_client/model/single_section_success_response_body.dart';
 
 import 'dependency.dart';
 
-@singleton
+@injectable
 class SinglePageNetworkRequest extends SinglePageRequestDependency {
   String? code;
   SinglePageNetworkRequest(

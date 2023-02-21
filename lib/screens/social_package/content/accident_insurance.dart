@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:html/dom.dart' as dom;
-import 'package:ink_mobile/components/html.dart';
-import 'package:ink_mobile/components/ink_page_loader.dart';
-import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
-import 'package:ink_mobile/cubit/get_page/get_page_cubit.dart';
-import 'package:ink_mobile/cubit/get_page/get_page_state.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
+import 'package:ink_mobile/screens/social_package/content/social_package_widget.dart';
 
 class AccidentInsurance extends StatefulWidget {
   const AccidentInsurance({Key? key}) : super(key: key);
@@ -21,41 +15,16 @@ class AccidentInsurance extends StatefulWidget {
 
 class _AccidentInsuranceState extends State<AccidentInsurance> {
 
-  final getPageCubit = GetPageCubit();
-  String code = "";
-
   @override
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
-    return Scaffold(
-      appBar: InkAppBarWithText(context, title: _strings.accidentInsurance),
-      body: SingleChildScrollView(
-        child: BlocBuilder<GetPageCubit, GetPageCubitState>(
-          bloc: getPageCubit,
-          builder: (context, state) {
-            final args = ModalRoute.of(context)!.settings.arguments as Map?;
-            if (args != null && args.isNotEmpty) {
-              code = args["code"];
-            }
-            switch (state.type) {
-              case GetPageCubitStateEnums.LOADING:
-                getPageCubit.fetch(code);
-                return Center(
-                  child: InkPageLoader(),
-                );
-              case GetPageCubitStateEnums.SUCCESS:
-                return CustomHtml(data: state.data?.detail,);
-              case GetPageCubitStateEnums.ERROR:
-                return _oldTextWidget();
-            }
-          }
-        ),
-      ),
-      bottomNavigationBar: const NewBottomNavBar(),
+    return SocialPackageWidget(
+      appBarTitle: _strings.accidentInsurance,
+      errorWidget: _oldTextWidget(),
     );
   }
 
-  Container _oldTextWidget() {
+  Widget _oldTextWidget() {
     return Container(
       child: Html(
           style: {

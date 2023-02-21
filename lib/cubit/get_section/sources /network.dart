@@ -10,7 +10,7 @@ import 'package:main_api_client/model/single_section_success_response_body.dart'
 
 import 'dependency.dart';
 
-@singleton
+@injectable
 class SingleSectionNetworkRequest extends SingleSectionRequestDependency {
   String? code;
   SingleSectionNetworkRequest(
