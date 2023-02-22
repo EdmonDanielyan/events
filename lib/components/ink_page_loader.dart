@@ -8,9 +8,8 @@ class InkPageLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-        width: 50.0,
-        height: 50.0,
+      child: SizedBox.square(
+        dimension: 50.0,
         child: AwesomeLoader(
           color: Theme.of(context).primaryColor,
         ),

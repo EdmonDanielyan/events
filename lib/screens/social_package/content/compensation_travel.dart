@@ -17,7 +17,6 @@ class _CompensationTravelState extends State<CompensationTravel> {
   @override
   Widget build(BuildContext context) {
     return SocialPackageWidget(
-      appBarTitle: "Компенсация проезда к месту отдыха",
       errorWidget: _oldTextWidget(),
     );
   }

@@ -19,7 +19,6 @@ class _ChristmasGiftsState extends State<ChristmasGifts> {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return SocialPackageWidget(
-      appBarTitle: _strings.childrenRest,
       errorWidget: _oldTextWidget(),
     );
   }

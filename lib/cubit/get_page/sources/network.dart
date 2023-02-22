@@ -12,14 +12,14 @@ import 'dependency.dart';
 
 @injectable
 class SinglePageNetworkRequest extends SinglePageRequestDependency {
-  String? code;
+  String? id;
   SinglePageNetworkRequest(
-      {@factoryParam required this.code})
-      : assert(code != null);
+      {@factoryParam required this.id})
+      : assert(id != null);
 
   @override
   Future<Response<SinglePageSuccessResponseBody>> call() async {
     ContentApi contentApi = getIt<MainApiProvider>().getContentApi();
-    return await contentApi.getPage(code);
+    return await contentApi.getPage(id);
   }
 }

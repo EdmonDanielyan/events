@@ -20,7 +20,6 @@ class _VoluntaryMedicalInsuranceState extends State<VoluntaryMedicalInsurance> {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return SocialPackageWidget(
-      appBarTitle: _strings.voluntaryMedicalInsurance,
       errorWidget: _oldTextWidget(),
     );
   }

@@ -19,7 +19,6 @@ class _AccidentInsuranceState extends State<AccidentInsurance> {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return SocialPackageWidget(
-      appBarTitle: _strings.accidentInsurance,
       errorWidget: _oldTextWidget(),
     );
   }

@@ -18,7 +18,6 @@ class _ChildrenRestState extends State<ChildrenRest> {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return SocialPackageWidget(
-      appBarTitle: _strings.childrenRest,
       errorWidget: _oldTextWidget(),
     );
   }

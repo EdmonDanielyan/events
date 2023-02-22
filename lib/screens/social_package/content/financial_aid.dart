@@ -19,7 +19,6 @@ class _FinancialAidState extends State<FinancialAid> {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return SocialPackageWidget(
-      appBarTitle: _strings.financialAid,
       errorWidget: _oldTextWidget(),
     );
   }

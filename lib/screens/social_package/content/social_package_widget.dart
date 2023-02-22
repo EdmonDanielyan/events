@@ -8,11 +8,9 @@ import 'package:ink_mobile/cubit/get_page/get_page_cubit.dart';
 import 'package:ink_mobile/cubit/get_page/get_page_state.dart';
 
 class SocialPackageWidget extends StatefulWidget {
-  final String appBarTitle;
   final Widget errorWidget;
 
   SocialPackageWidget({
-    this.appBarTitle = "",
     this.errorWidget = const SizedBox.shrink(),
   });
   @override
@@ -25,29 +23,27 @@ class _SocialPackageWidgetState extends State<SocialPackageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Map?;
+    String? _appBarTitle;
+    if (args != null && args.isNotEmpty) {
+      _id = args["id"];
+      _appBarTitle = args["app_bar_title"];
+    }
     return Scaffold(
-      appBar: InkAppBarWithText(context, title: widget.appBarTitle),
-      body: SingleChildScrollView(
-        child: BlocBuilder<GetPageCubit, GetPageCubitState>(
-          bloc: _getPageCubit,
-            builder: (context, state) {
-              final args = ModalRoute.of(context)!.settings.arguments as Map?;
-              if (args != null && args.isNotEmpty) {
-                _id = args["id"];
-              }
-              switch (state.type) {
-                case GetPageCubitStateEnums.LOADING:
-                  _getPageCubit.fetch(_id);
-                  return Center(
-                    child: InkPageLoader(),
-                  );
-                case GetPageCubitStateEnums.SUCCESS:
-                  return CustomHtml(data: state.data?.detail,);
-                case GetPageCubitStateEnums.ERROR:
-                  return widget.errorWidget;
-              }
+      appBar: InkAppBarWithText(context, title: _appBarTitle ?? ""),
+      body: BlocBuilder<GetPageCubit, GetPageCubitState>(
+        bloc: _getPageCubit,
+          builder: (context, state) {
+            switch (state.type) {
+              case GetPageCubitStateEnums.LOADING:
+                _getPageCubit.fetch(_id);
+                return Center(child: InkPageLoader());
+              case GetPageCubitStateEnums.SUCCESS:
+                return SingleChildScrollView(child: CustomHtml(data: state.data?.detail,), );
+              case GetPageCubitStateEnums.ERROR:
+                return widget.errorWidget;
             }
-        ),
+          }
       ),
       bottomNavigationBar: const NewBottomNavBar(),
     );

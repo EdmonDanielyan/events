@@ -16,8 +16,8 @@ import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load
 import 'package:ink_mobile/core/cubit/selectable/selectable_cubit.dart' as _i92;
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart'
     as _i93;
-import 'package:ink_mobile/core/handlers/AuthHandler.dart' as _i108;
-import 'package:ink_mobile/core/logging/file_log_appender.dart' as _i109;
+import 'package:ink_mobile/core/handlers/AuthHandler.dart' as _i109;
+import 'package:ink_mobile/core/logging/file_log_appender.dart' as _i110;
 import 'package:ink_mobile/cubit/announcements_detail/announcements_detail_cubit.dart'
     as _i3;
 import 'package:ink_mobile/cubit/announcements_detail/sources/network.dart'
@@ -47,9 +47,10 @@ import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_cubit.dart'
 import 'package:ink_mobile/cubit/feedback_answer_list/sources/network.dart'
     as _i44;
 import 'package:ink_mobile/cubit/get_page/get_page_cubit.dart' as _i47;
+import 'package:ink_mobile/cubit/get_page/sources/network.dart' as _i103;
 import 'package:ink_mobile/cubit/get_pages/sources/network.dart' as _i53;
 import 'package:ink_mobile/cubit/get_section/get_section_cubit.dart' as _i48;
-import 'package:ink_mobile/cubit/get_section/sources%20/network.dart' as _i103;
+import 'package:ink_mobile/cubit/get_section/sources%20/network.dart' as _i104;
 import 'package:ink_mobile/cubit/learning_materials_list/learning_materials_list_cubit.dart'
     as _i52;
 import 'package:ink_mobile/cubit/learning_materials_list/sources/network.dart'
@@ -80,7 +81,7 @@ import 'package:ink_mobile/cubit/news_list/sources/network.dart' as _i75;
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart'
     as _i81;
 import 'package:ink_mobile/cubit/personnel_movements/sources/network.dart'
-    as _i104;
+    as _i105;
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart' as _i82;
 import 'package:ink_mobile/cubit/profile/sources/fetch/network.dart' as _i83;
 import 'package:ink_mobile/cubit/profile/sources/thank/network.dart' as _i84;
@@ -103,8 +104,8 @@ import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart'
     as _i100;
 import 'package:ink_mobile/cubit/send_reference_form/sources/network.dart'
     as _i101;
-import 'package:ink_mobile/cubit/tags_list/sources/network.dart' as _i106;
-import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart' as _i105;
+import 'package:ink_mobile/cubit/tags_list/sources/network.dart' as _i107;
+import 'package:ink_mobile/cubit/tags_list/tags_list_cubit.dart' as _i106;
 import 'package:ink_mobile/messenger/cubits/cached/base_url/base_url_cubit.dart'
     as _i13;
 import 'package:ink_mobile/messenger/cubits/cached/chat_users_picker/chat_users_picker_cubit.dart'
@@ -112,7 +113,7 @@ import 'package:ink_mobile/messenger/cubits/cached/chat_users_picker/chat_users_
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart'
     as _i17;
 import 'package:ink_mobile/messenger/cubits/cached/hidden_chats/hidden_chats_cubit.dart'
-    as _i110;
+    as _i111;
 import 'package:ink_mobile/messenger/cubits/cached/hidden_messages/hidden_messages_cubit.dart'
     as _i49;
 import 'package:ink_mobile/messenger/cubits/cached/notifications_disabled_chats/notifications_disabled_chats_cubit.dart'
@@ -156,7 +157,7 @@ import 'package:ink_mobile/models/new_comment_entities.dart' as _i67;
 import 'package:ink_mobile/models/news_data.dart' as _i76;
 import 'package:ink_mobile/models/pagination.dart' as _i7;
 import 'package:ink_mobile/models/send_reference_form_entities.dart' as _i102;
-import 'package:ink_mobile/models/token.dart' as _i107;
+import 'package:ink_mobile/models/token.dart' as _i108;
 import 'package:ink_mobile/providers/local_pin_provider.dart' as _i55;
 import 'package:ink_mobile/providers/lock_app.dart' as _i56;
 import 'package:ink_mobile/providers/main_api.dart' as _i60;
@@ -165,14 +166,14 @@ import 'package:ink_mobile/providers/secure_storage.dart' as _i90;
 import 'package:ink_mobile/providers/security_checker.dart' as _i91;
 import 'package:ink_mobile/screens/feedback/components/form/entities.dart'
     as _i95;
-import 'package:ink_mobile/screens/initial/cubit/initial_cubit.dart' as _i111;
+import 'package:ink_mobile/screens/initial/cubit/initial_cubit.dart' as _i112;
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart'
     as _i99;
 import 'package:ink_mobile/screens/open_university/cubit/open_university_cubit.dart'
     as _i79;
 
-import 'core/logging/files.dart' as _i112;
-import 'models/token.dart' as _i113;
+import 'core/logging/files.dart' as _i113;
+import 'models/token.dart' as _i114;
 
 const String _test = 'test';
 const String _prod = 'prod';
@@ -295,7 +296,7 @@ Future<_i1.GetIt> $initGetIt(
       _i50.LearningMaterialListNetworkRequest(pagination: pagination));
   gh.factory<_i52.LearningMaterialsListCubit>(
       () => _i52.LearningMaterialsListCubit());
-  gh.singleton<_i53.ListPageNetworkRequest>(_i53.ListPageNetworkRequest());
+  gh.factory<_i53.ListPageNetworkRequest>(() => _i53.ListPageNetworkRequest());
   gh.singleton<_i54.LocalNotificationsProvider>(
       _i54.LocalNotificationsProvider());
   gh.lazySingleton<_i55.LocalPinProvider>(() => _i55.LocalPinProvider());
@@ -405,13 +406,18 @@ Future<_i1.GetIt> $initGetIt(
     _,
   ) =>
       _i101.SendReferenceFormNetworkRequest(entities: entities));
-  gh.factoryParam<_i103.SingleSectionNetworkRequest, String?, dynamic>((
+  gh.factoryParam<_i103.SinglePageNetworkRequest, String?, dynamic>((
+    id,
+    _,
+  ) =>
+      _i103.SinglePageNetworkRequest(id: id));
+  gh.factoryParam<_i104.SingleSectionNetworkRequest, String?, dynamic>((
     code,
     _,
   ) =>
-      _i103.SingleSectionNetworkRequest(code: code));
-  gh.singleton<_i104.StaffMovementsNetworkRequest>(
-      _i104.StaffMovementsNetworkRequest());
+      _i104.SingleSectionNetworkRequest(code: code));
+  gh.singleton<_i105.StaffMovementsNetworkRequest>(
+      _i105.StaffMovementsNetworkRequest());
   gh.factory<String>(
     () => tokenDataInjectorModule.localDatabasePassword,
     instanceName: 'localDatabasePassword',
@@ -451,23 +457,23 @@ Future<_i1.GetIt> $initGetIt(
     },
     preResolve: true,
   );
-  gh.singleton<_i105.TagsListCubit>(_i105.TagsListCubit());
-  gh.singleton<_i106.TagsListNetworkRequest>(_i106.TagsListNetworkRequest());
-  gh.lazySingleton<_i107.TokenDataHolder>(() => _i107.TokenDataHolder());
-  gh.singleton<_i108.AuthHandler>(_i108.AuthHandler(gh<_i16.BootCubit>()));
-  gh.lazySingleton<_i109.FileLogAppender>(
-      () => _i109.FileLogAppender(gh<String>(instanceName: 'logFile')));
-  gh.singleton<_i110.HiddenChatsCubit>(
-      _i110.HiddenChatsCubit(gh<_i49.HiddenMessagesCubit>()));
-  gh.factory<_i111.InitialCubit>(() => _i111.InitialCubit(
+  gh.singleton<_i106.TagsListCubit>(_i106.TagsListCubit());
+  gh.singleton<_i107.TagsListNetworkRequest>(_i107.TagsListNetworkRequest());
+  gh.lazySingleton<_i108.TokenDataHolder>(() => _i108.TokenDataHolder());
+  gh.singleton<_i109.AuthHandler>(_i109.AuthHandler(gh<_i16.BootCubit>()));
+  gh.lazySingleton<_i110.FileLogAppender>(
+      () => _i110.FileLogAppender(gh<String>(instanceName: 'logFile')));
+  gh.singleton<_i111.HiddenChatsCubit>(
+      _i111.HiddenChatsCubit(gh<_i49.HiddenMessagesCubit>()));
+  gh.factory<_i112.InitialCubit>(() => _i112.InitialCubit(
         gh<_i91.SecurityChecker>(),
-        gh<_i108.AuthHandler>(),
+        gh<_i109.AuthHandler>(),
       ));
   return getIt;
 }
 
-class _$LogFilePathInjector extends _i112.LogFilePathInjector {}
+class _$LogFilePathInjector extends _i113.LogFilePathInjector {}
 
-class _$TestLogFilePathInjector extends _i112.TestLogFilePathInjector {}
+class _$TestLogFilePathInjector extends _i113.TestLogFilePathInjector {}
 
-class _$TokenDataInjectorModule extends _i113.TokenDataInjectorModule {}
+class _$TokenDataInjectorModule extends _i114.TokenDataInjectorModule {}

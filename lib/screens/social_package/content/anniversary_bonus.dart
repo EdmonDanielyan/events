@@ -17,7 +17,6 @@ class _AnniversaryBonusState extends State<AnniversaryBonus> {
   @override
   Widget build(BuildContext context) {
     return SocialPackageWidget(
-      appBarTitle: "Премирование сотрудников",
       errorWidget: _oldTextWidget(),
     );
   }

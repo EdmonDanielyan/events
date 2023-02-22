@@ -19,7 +19,6 @@ class _RecreationalActivitiesState extends State<RecreationalActivities> {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return SocialPackageWidget(
-      appBarTitle: _strings.recreationalActivities,
       errorWidget: _oldTextWidget(),
     );
   }
