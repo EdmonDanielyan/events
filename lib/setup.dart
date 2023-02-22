@@ -1,6 +1,6 @@
-import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+
 import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/core/logging/file_log_appender.dart';
 import 'package:ink_mobile/core/logging/logging.dart';
@@ -9,7 +9,6 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/providers/notifications.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/providers/secure_storage.dart';
-import 'package:logging/logging.dart';
 
 import 'setup.config.dart';
 import 'utils/app_config.dart';
@@ -51,32 +50,11 @@ Future<void> setup() async {
   await $initGetIt(getIt, environment: currentEnv);
   setupI18n(getIt);
 
-  setupLogging(
-    getIt<FileLogAppender>(),
-    //todo: Убрать подробное логирование перед публикаций в сторы
-    forceLevel: Level.ALL,
-  );
-
   await getIt<LocalNotificationsProvider>().load();
 
   getIt<BootCubit>()
     ..onStart = () async {
       return true;
     };
-  await getIt<PackageInfoProvider>().load();
-}
-
-Future<void> fcmSetup({
-  scope = defaultScope,
-}) async {
-  await getIt.reset();
-  WidgetsFlutterBinding.ensureInitialized();
-  await $initGetIt(getIt, environment: scope);
-
-  setupLogging(
-    getIt<FileLogAppender>(),
-    forceLevel: Level.WARNING,
-  );
-
   await getIt<PackageInfoProvider>().load();
 }

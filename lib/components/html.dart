@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:ink_mobile/components/webview_screen.dart';
 import 'package:ink_mobile/functions/files.dart';
 import '../functions/launch_url.dart';
-import '../messenger/functions/size_config.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+
 
 class CustomHtml extends StatelessWidget {
   final String? data;
@@ -12,50 +11,38 @@ class CustomHtml extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Html(
-      data: data ?? '',
-      onLinkTap: (
-        String? url,
-        RenderContext _,
-        Map<String, String> attributes,
-        __,
-      ) {
-        if (url != null) {
-          if (isStringHttpUrl(url)) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) => WebviewScreen(url),
-              ),
-            );
-          } else {
-            launchUrl(url);
-          }
+    return HtmlWidget(
+      data ?? "",
+      onTapUrl: (url) async {
+        if (isStringHttpUrl(url)) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) => WebviewScreen(url),
+            ),
+          );
+        } else {
+          launchUrl(url);
         }
+
+        return true;
       },
-      customRenders: {
-        tableMatcher(): tableRender(),
-      },
-      style: {
-        "a": Style(color: Colors.blue, textDecoration: TextDecoration.none),
-        "b": Style(
-          fontWeight: FontWeight.normal,
-          fontSize: FontSize(
-            SizeConfig(context, 12.0).getProportionateScreenHeight,
-          ),
-        ),
-        "p": Style(
-          fontSize: FontSize(
-            SizeConfig(context, 12.0).getProportionateScreenHeight,
-          ),
-        ),
-        "li": Style(
-          fontSize: FontSize(
-            SizeConfig(context, 12.0).getProportionateScreenHeight,
-          ),
-        ),
-        "span": Style(border: Border.all(width: 0)),
-        "td": Style(border: Border.all(width: 0, color: Colors.transparent)),
-        "tr": Style(border: Border.all(width: 0))
+      customStylesBuilder: (element) {
+        if (element.localName == "a") {
+          return {
+            'color': 'blue',
+          };
+        }
+        if (element.localName?.contains("tbody") == true ||
+            element.localName?.contains("td") == true ||
+            element.localName?.contains("tr") == true ||
+            element.localName?.contains("span") == true ||
+            element.localName?.contains("table") == true) {
+          return {
+            'border': 'none !important',
+          };
+        }
+
+        return null;
       },
     );
   }

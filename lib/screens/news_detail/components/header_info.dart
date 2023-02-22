@@ -23,8 +23,7 @@ class HeaderInfo extends StatelessWidget {
                 child: SvgPicture.asset(
                   IconLinks.VIEW_COUNT_SVG_LINK,
                   semanticsLabel: 'View Count',
-                  width: SizeConfig(context, 24.0)
-                          .getProportionateScreenHeight,
+                  width: SizeConfig(context, 24.0).getProportionateScreenHeight,
                 ),
                 margin: EdgeInsets.only(right: 6.0),
               ),
@@ -35,20 +34,18 @@ class HeaderInfo extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           color: Colors.grey,
                           fontSize: SizeConfig(context, 12.0)
-                          .getProportionateScreenHeight
-                          )),
+                              .getProportionateScreenHeight)),
                   margin: EdgeInsets.only(right: 16.0)),
               Text(
                   dateCreate != null
                       ? DateFormat('dd.MM.yyyy').format(dateCreate!)
                       : '',
                   style: TextStyle(
-                    fontFamily: "Helvetica",
-                    color: Colors.grey[500],
-                    fontWeight: FontWeight.w200,
-                    fontSize: SizeConfig(context, 12.0)
-                          .getProportionateScreenHeight
-                  )),
+                      fontFamily: "Helvetica",
+                      color: Colors.grey[500],
+                      fontWeight: FontWeight.w200,
+                      fontSize: SizeConfig(context, 12.0)
+                          .getProportionateScreenHeight)),
             ],
           ),
           margin: EdgeInsets.only(left: 20.0, top: 17.0, bottom: 10.0),

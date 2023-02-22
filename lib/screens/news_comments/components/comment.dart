@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bbcode/flutter_bbcode.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/ink_icons.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
+import 'package:ink_mobile/screens/news_comments/components/custom_color_tag.dart';
 import 'package:intl/intl.dart';
 import 'package:ink_mobile/extensions/int_extension.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -97,7 +99,11 @@ class _CommentState extends State<Comment> {
                                   fontWeight: FontWeight.bold),
                             )),
                       ),
-
+                      BBCodeText(
+                          data: widget.text,
+                          stylesheet: defaultBBStylesheet()
+                            ..replaceTag(
+                                CustomColorTag(defaultColor: _textColor))),
                       Container(
                         child: Row(
                           children: [

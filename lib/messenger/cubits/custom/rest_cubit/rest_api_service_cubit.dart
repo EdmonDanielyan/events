@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/messenger/api/rest_client/error/error_response.dart';
-import 'package:ink_mobile/messenger/providers/logger.dart';
 
 import 'rest_api_service_state.dart';
 
@@ -24,17 +23,10 @@ class RestApiServiceCubit<T, K> extends Cubit<RestApiServiceState<T, K?>> {
       emitState(LoadingState.loaded);
 
       return response;
-    } catch (e, stack) {
+    } catch (e) {
       ErrorApiResponse? response;
       if (e is DioError) {
         final res = (e).response;
-
-        logger.e(
-          "Got error : ${res?.realUri} ${res?.statusCode} -> ${res?.data}",
-          className: "RestApiServiceCubit",
-          methodName: "load",
-          stackTrace: stack,
-        );
 
         if (res?.data != null && res?.data is Map<String, dynamic>) {
           response = ErrorApiResponse.fromJson(res?.data);
@@ -43,14 +35,7 @@ class RestApiServiceCubit<T, K> extends Cubit<RestApiServiceState<T, K?>> {
         if (errorCallback != null) {
           errorCallback(response);
         }
-      } else {
-        logger.e(
-          "UnexpectedError : $e ",
-          stackTrace: stack,
-          className: "RestApiServiceCubit",
-          methodName: "load",
-        );
-      }
+      } else {}
 
       emitError(response);
     }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/core/logging/send_log.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/screens/initial/cubit/initial_cubit.dart';
 import 'package:ink_mobile/screens/welcome/components/background.dart';
@@ -94,18 +93,6 @@ class _BodyState extends State<Body> {
                           ),
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: IconButton(
-                          onPressed: () =>
-                              sendErrorLog(getIt(instanceName: "logFile")),
-                          icon: Icon(
-                            Icons.bug_report,
-                            size: SizeConfig(context, 24.0)
-                                .getProportionateScreenHeight,
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 ],
