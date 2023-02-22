@@ -36,6 +36,7 @@ import 'package:ink_mobile/screens/social_package/content/christmas_gifts.dart';
 import 'package:ink_mobile/screens/social_package/content/compensation_travel.dart';
 import 'package:ink_mobile/screens/social_package/content/financial_aid.dart';
 import 'package:ink_mobile/screens/social_package/content/recreational_activities.dart';
+import 'package:ink_mobile/screens/social_package/content/social_package_widget.dart';
 import 'package:ink_mobile/screens/social_package/content/voluntary_medical_insurance.dart';
 import 'package:ink_mobile/screens/social_package/social_package_screen.dart';
 import 'package:ink_mobile/screens/test/test_screen.dart';
@@ -62,6 +63,7 @@ class MainRoutes {
   static String servicesScreenKey = "/services";
   static String personnelMovementsScreenKey = "/personnel_movements";
   static String socialPackageScreenKey = "/social_package";
+  static String socialPackageDetailsScreenKey = "/social_package_details";
   static String voluntaryMedicalInsuranceScreenKey = "/voluntary_medical_insurance";
   static String accidentInsuranceScreenKey = "/accident_insurance";
   static String financialAidScreenKey = "/financial_aid";
@@ -121,6 +123,7 @@ class MainRoutes {
           personnelMovementsCubit: getIt<PersonnelMovementsCubit>(),
         ),
     '/social_package': (BuildContext context) => SocialPackageScreen(),
+    "/social_package_details": (BuildContext context) => SocialPackageWidget(),
     '/voluntary_medical_insurance': (BuildContext context) =>
         VoluntaryMedicalInsurance(),
     '/accident_insurance': (BuildContext context) => AccidentInsurance(),

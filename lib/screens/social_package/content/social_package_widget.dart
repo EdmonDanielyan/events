@@ -21,7 +21,7 @@ class SocialPackageWidget extends StatefulWidget {
 
 class _SocialPackageWidgetState extends State<SocialPackageWidget> {
   final _getPageCubit = GetPageCubit();
-  String _code = "";
+  String _id = "";
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +33,11 @@ class _SocialPackageWidgetState extends State<SocialPackageWidget> {
             builder: (context, state) {
               final args = ModalRoute.of(context)!.settings.arguments as Map?;
               if (args != null && args.isNotEmpty) {
-                _code = args["code"];
+                _id = args["id"];
               }
               switch (state.type) {
                 case GetPageCubitStateEnums.LOADING:
-                  _getPageCubit.fetch(_code);
+                  _getPageCubit.fetch(_id);
                   return Center(
                     child: InkPageLoader(),
                   );

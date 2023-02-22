@@ -88,12 +88,12 @@ class _BodyState extends State<Body> {
                         separatorBuilder: (context, index) {
                           return Divider(color: Colors.grey);
                         },
-                        itemCount: items.length,
+                        itemCount: pages.length,
                         itemBuilder: (context, index) {
                           return SocialPackageListElement(
-                            title: items[index].title,
-                            link: items[index].link,
-                            code: pages[index].code,
+                            title: pages[index].name,
+                            link: pages[index].url,
+                            id: pages[index].id.toString(),
                           );
                         },
                       ),

@@ -21,10 +21,10 @@ class GetPageCubit extends Cubit<GetPageCubitState> {
 
   String _emptySectionError = "There is no similar page";
 
-  Future<void> fetch(String code) async {
+  Future<void> fetch(String id) async {
     try {
       await Token.setNewTokensIfExpired();
-      final response = await getIt<SinglePageNetworkRequest>(param1: code)();
+      final response = await getIt<SinglePageNetworkRequest>(param1: id)();
       final page = response.data?.data.page;
       if (page != null) {
         emitSuccess(page);
