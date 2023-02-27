@@ -261,20 +261,24 @@ class _UserMainInfoState extends State<UserMainInfo> {
     String start = DateFormat('d.M.yyyy').format(startDate);
     String end = DateFormat('d.M.yyyy').format(dateEnd);
     String text = "Отсутствует с $start по $end (отпуск основной)";
-    if (true/* логика отображения отпуска*/) return Container(
-      margin: EdgeInsets.all(2),
-      padding: EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(246, 203, 69, 1),
-        // border: Border.all(
-        //     style: BorderStyle.solid,
-        //     width: 1.0
-        // ),
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(7),bottomRight: Radius.circular(7),topRight: Radius.circular(4),bottomLeft: Radius.circular(4)),
-      ),
-      child: Text(text)
-    );
-    else return SizedBox();
+    if (true/* логика отображения отпуска*/) {
+      return Container(
+          margin: EdgeInsets.all(2),
+          padding: EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(246, 203, 69, 1),
+            // border: Border.all(
+            //     style: BorderStyle.solid,
+            //     width: 1.0
+            // ),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(7),
+                bottomRight: Radius.circular(7),
+                topRight: Radius.circular(4),
+                bottomLeft: Radius.circular(4)),
+          ),
+          child: Text(text));
+    } else return SizedBox();
   }
 
 }

@@ -857,7 +857,7 @@ class UserApi {
     String child,
     String dateStart,
     String dateEnd,
-    List<MultipartFile> filesLeftSquareBracketRightSquareBracket,
+    BuiltList<Uint8List> files,
     CancelToken cancelToken,
     Map<String, dynamic> headers,
     Map<String, dynamic> extra,
@@ -896,9 +896,8 @@ class UserApi {
         r'date_start': parameterToString(_serializers, dateStart),
       if (dateEnd != null)
         r'date_end': parameterToString(_serializers, dateEnd),
-      if (filesLeftSquareBracketRightSquareBracket != null &&
-          filesLeftSquareBracketRightSquareBracket.isNotEmpty)
-        r'files[]': filesLeftSquareBracketRightSquareBracket,
+      if (files != null)
+        r'files': files,
     };
     bodyData = FormData.fromMap(formData);
 
@@ -962,7 +961,7 @@ class UserApi {
     String howLong,
     String passengers,
     String route, {
-    List<MultipartFile> filesLeftSquareBracketRightSquareBracket,
+    BuiltList<Uint8List> files,
     CancelToken cancelToken,
     Map<String, dynamic> headers,
     Map<String, dynamic> extra,
@@ -995,9 +994,8 @@ class UserApi {
       r'how_long': parameterToString(_serializers, howLong),
       r'passengers': parameterToString(_serializers, passengers),
       r'route': parameterToString(_serializers, route),
-      if (filesLeftSquareBracketRightSquareBracket != null &&
-          filesLeftSquareBracketRightSquareBracket.isNotEmpty)
-        r'files[]': filesLeftSquareBracketRightSquareBracket,
+      if (files != null)
+        r'files': files,
     };
     bodyData = FormData.fromMap(formData);
 
@@ -1127,7 +1125,7 @@ class UserApi {
     String tags, {
     String fio,
     String contacts,
-    List<MultipartFile> filesLeftSquareBracketRightSquareBracket,
+    BuiltList<Uint8List> files,
     CancelToken cancelToken,
     Map<String, dynamic> headers,
     Map<String, dynamic> extra,
@@ -1156,9 +1154,8 @@ class UserApi {
         r'contacts': parameterToString(_serializers, contacts),
       r'question': parameterToString(_serializers, question),
       r'tags': parameterToString(_serializers, tags),
-      if (filesLeftSquareBracketRightSquareBracket != null &&
-          filesLeftSquareBracketRightSquareBracket.isNotEmpty)
-        r'files[]': filesLeftSquareBracketRightSquareBracket,
+      if (files != null)
+        r'files': files,
     };
     bodyData = FormData.fromMap(formData);
 

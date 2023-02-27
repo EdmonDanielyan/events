@@ -55,6 +55,17 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GetUserSuccess.serializer)
       ..add(GetUsers.serializer)
       ..add(GetUsersSuccess.serializer)
+      ..add(GlobalSettings.serializer)
+      ..add(GlobalSettingsResponseBody.serializer)
+      ..add(GlobalSettingsResponseBodyAllOf.serializer)
+      ..add(ListPageResponseData.serializer)
+      ..add(ListPageSuccessResponseBody.serializer)
+      ..add(ListPageSuccessResponseBodyAllOf.serializer)
+      ..add(ListSectionResponseData.serializer)
+      ..add(ListSectionSuccessResponseBody.serializer)
+      ..add(ListSectionSuccessResponseBodyAllOf.serializer)
+      ..add(ListSnippetSuccessResponseBody.serializer)
+      ..add(ListSnippetSuccessResponseBodyAllOf.serializer)
       ..add(LogoutParams.serializer)
       ..add(MovementsFail.serializer)
       ..add(MovementsObject.serializer)
@@ -63,6 +74,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(NewsNotFound.serializer)
       ..add(NewsProperty.serializer)
       ..add(NewsPropertyById.serializer)
+      ..add(NotEventMember.serializer)
       ..add(NotFound.serializer)
       ..add(OrderDMS.serializer)
       ..add(OrderDMSFail.serializer)
@@ -71,6 +83,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(OrderReferenceSuccess.serializer)
       ..add(OrderTransportFail.serializer)
       ..add(OrderTransportSuccess.serializer)
+      ..add(Page.serializer)
+      ..add(PageSection.serializer)
       ..add(PostComment.serializer)
       ..add(PostCommentParamsFail.serializer)
       ..add(PostCommentSuccess.serializer)
@@ -83,16 +97,28 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(RegisterConfirmSuccess.serializer)
       ..add(RegisterParams.serializer)
       ..add(RegisterSuccess.serializer)
+      ..add(RemoveEventMember.serializer)
       ..add(RequiredError.serializer)
       ..add(RequiredSuccess.serializer)
       ..add(SendFeedbackFail.serializer)
       ..add(SendFeedbackSuccess.serializer)
       ..add(ServerError.serializer)
+      ..add(SinglePageResponseData.serializer)
+      ..add(SinglePageSuccessResponseBody.serializer)
+      ..add(SinglePageSuccessResponseBodyAllOf.serializer)
+      ..add(SingleSectionResponseData.serializer)
+      ..add(SingleSectionSuccessResponseBody.serializer)
+      ..add(SingleSectionSuccessResponseBodyAllOf.serializer)
+      ..add(Snippet.serializer)
+      ..add(SnippetListResponseData.serializer)
+      ..add(SnippetTypeEnum.serializer)
+      ..add(TextPage.serializer)
       ..add(ThankById.serializer)
       ..add(ThankSelf.serializer)
       ..add(TransportForm.serializer)
       ..add(UserNotFound.serializer)
       ..add(UserProperties.serializer)
+      ..add(WebViewPage.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Comment)]),
           () => new ListBuilder<Comment>())
@@ -109,8 +135,23 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(MovementsObject)]),
           () => new ListBuilder<MovementsObject>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Page)]),
+          () => new ListBuilder<Page>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Page)]),
+          () => new ListBuilder<Page>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PageSection)]),
+          () => new ListBuilder<PageSection>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(QuestionsListData)]),
           () => new ListBuilder<QuestionsListData>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Snippet)]),
+          () => new ListBuilder<Snippet>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())
@@ -131,4 +172,4 @@ Serializers _$serializers = (new Serializers().toBuilder()
           () => new ListBuilder<int>()))
     .build();
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint
