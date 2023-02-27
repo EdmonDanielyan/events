@@ -24,7 +24,7 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return Background(
-      child: Container(
+      child: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: Stack(
           children: [
