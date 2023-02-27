@@ -27,6 +27,6 @@ class FontStyles {
   static rubikH2({Color? color}) => GoogleFonts.rubik(
         fontWeight: FontWeight.w700,
         fontSize: 24,
-        color: color ?? Palette.white,
+        color: color ?? Palette.textBlack,
       );
 }

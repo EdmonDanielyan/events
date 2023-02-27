@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
@@ -52,7 +53,18 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
         errorStyle: TextStyle(
           fontSize: SizeConfig(context, 12).getProportionateScreenHeight,
         ),
-        border: OutlineInputBorder(),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: Palette.text20Grey),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: Palette.text20Grey),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: Palette.text20Grey),
+        ),
         fillColor: Colors.white,
         filled: true,
         suffixIcon: GestureDetector(

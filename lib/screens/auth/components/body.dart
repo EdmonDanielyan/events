@@ -33,24 +33,16 @@ class _BodyState extends State<Body> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      AuthTitle(),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 32.0, bottom: 24.0),
+                    child: Align(child: AuthTitle(), alignment: Alignment.topLeft,),
                   ),
                   AuthForm(
                     authCubit: widget.authCubit,
                   ),
-                  Expanded(
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        AuthHint(),
-                        AuthButtons(formKey: formKey),
-                      ],
-                    ),
-                  )
+                  AuthHint(),
+                  const Spacer(),
+                  AuthButtons(formKey: formKey),
                 ],
               ),
             ),

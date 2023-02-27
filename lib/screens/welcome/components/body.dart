@@ -52,7 +52,7 @@ class _BodyState extends State<Body> {
                     Text(
                       _strings.welcomeTxt,
                       textAlign: TextAlign.center,
-                      style: FontStyles.rubikH2(),
+                      style: FontStyles.rubikH2(color: Palette.white),
                     ),
                   ],
                 ),

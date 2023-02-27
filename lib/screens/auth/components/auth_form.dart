@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
@@ -25,7 +26,18 @@ class AuthForm extends StatelessWidget {
               labelStyle: TextStyle(
                 fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
               ),
-              border: OutlineInputBorder(),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Palette.text20Grey),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Palette.text20Grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Palette.text20Grey),
+              ),
               fillColor: Colors.white,
               filled: true,
               errorStyle: TextStyle(
@@ -42,7 +54,7 @@ class AuthForm extends StatelessWidget {
               authCubit.login = login;
             },
           ),
-          SizedBox(height: size.height * 0.03),
+          SizedBox(height: 24.0),
           AuthPasswordField(authCubit: authCubit),
         ],
       ),

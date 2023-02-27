@@ -30,7 +30,7 @@ class DefaultLinkButton extends StatelessWidget {
       child: Text(
         txt ?? localizationInstance.signInInstructions,
         style: FontStyles.rubikP2(
-          color: Palette.white,
+          color: txtColor,
           decoration: TextDecoration.underline,
         ),
       ),
