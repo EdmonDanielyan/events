@@ -1,7 +1,11 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 class Palette {
-  static Color text5Grey = Color(0x1D2126).withOpacity(0.05);
-  static Color text20Grey = Color(0x1D2126).withOpacity(0.2);
-  static Color textBlack = Color(0x1D2126).withOpacity(1);
+  static Color white = Colors.white;
+  static Color text5Grey = Color(0xFF1D2126).withOpacity(0.05);
+  static Color text20Grey = Color(0xFF1D2126).withOpacity(0.2);
+  static Color textBlack = Color(0xFF1D2126).withOpacity(1);
+
+  static Color green66E = Color(0xFF46966E);
+  static Color transparent = Colors.transparent;
 }

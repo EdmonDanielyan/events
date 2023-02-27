@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 
-class AuthBtn extends StatelessWidget {
+class DefaultButton extends StatelessWidget {
   final String title;
   final void Function()? onTap;
   final bool isTablet;
-  const AuthBtn({
+  final Color? buttonColor;
+  final Color? textColor;
+  final Color? borderColor;
+  const DefaultButton({
     Key? key,
     required this.title,
     this.onTap,
     this.isTablet = false,
+    this.buttonColor,
+    this.textColor,
+    this.borderColor,
   }) : super(key: key);
 
   @override
@@ -18,20 +26,19 @@ class AuthBtn extends StatelessWidget {
       onPressed: onTap,
       child: Text(
         title,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: SizeConfig(context, 17).getProportionateScreenHeight,
-          fontWeight: FontWeight.bold,
-        ),
+        style: FontStyles.rubikP1Medium(color: textColor),
       ),
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        backgroundColor: MaterialStateProperty.all<Color>(buttonColor ?? Palette.white),
         minimumSize: isTablet
             ? MaterialStateProperty.all<Size>(Size(500, 75))
             : MaterialStateProperty.all<Size>(Size(335, 50)),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50.0),
+            side: BorderSide(
+              color: borderColor ?? Palette.transparent,
+            )
           ),
         ),
       ),

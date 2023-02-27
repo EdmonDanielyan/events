@@ -2,8 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import 'package:ink_mobile/constants/urls.dart';
-import 'package:ink_mobile/core/logging/file_log_appender.dart';
-import 'package:ink_mobile/core/logging/logging.dart';
 import 'package:ink_mobile/cubit/boot/boot_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/providers/notifications.dart';

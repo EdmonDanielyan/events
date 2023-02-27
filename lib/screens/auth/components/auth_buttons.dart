@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
+import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/cubit/auth/auth_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -71,40 +72,44 @@ class _AuthButtonsState extends State<AuthButtons> {
 
     return SafeArea(
       child: Container(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          btnWidget(context),
-          SizedBox(height: size.height * 0.02),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  width: 100,
-                  child: Divider(
-                    color: Color(0xffe5e5e5),
-                    thickness: 1,
-                    indent: 5,
-                    endIndent: 8,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            btnWidget(context),
+            SizedBox(height: size.height * 0.02),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    width: 100,
+                    child: Divider(
+                      color: Color(0xffe5e5e5),
+                      thickness: 1,
+                      indent: 5,
+                      endIndent: 8,
+                    ),
                   ),
                 ),
-              ),
-              SignInInstructions(txtColor: Color(0xFF1D2126)),
-              Expanded(
-                child: Container(
-                  width: 100,
-                  child: Divider(
-                    color: Color(0xffe5e5e5),
-                    thickness: 1,
-                    indent: 5,
-                    endIndent: 8,
+                DefaultLinkButton(
+                  txtColor: Color(0xFF1D2126),
+                  link: UrlsConfig.signInInstructionUrl,
+                ),
+                Expanded(
+                  child: Container(
+                    width: 100,
+                    child: Divider(
+                      color: Color(0xffe5e5e5),
+                      thickness: 1,
+                      indent: 5,
+                      endIndent: 8,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
-      )),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
