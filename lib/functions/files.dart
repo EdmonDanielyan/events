@@ -1,7 +1,10 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:path/path.dart';
+import 'package:built_collection/built_collection.dart';
+
 
 List<MultipartFile> getFilesAsMultipart(List<File> files) {
   List<MultipartFile> summary = [];
@@ -12,6 +15,16 @@ List<MultipartFile> getFilesAsMultipart(List<File> files) {
   }
 
   return summary;
+}
+
+BuiltList<Uint8List> getFilesAsBuiltList(List<File> files) {
+  List<Uint8List> summary = [];
+
+  for (File file in files) {
+    summary.add(file.readAsBytesSync());
+  }
+
+  return BuiltList.from(summary);
 }
 
 bool isStringUrl(String url) {

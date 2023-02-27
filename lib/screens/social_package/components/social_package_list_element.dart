@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
+import 'package:ink_mobile/routes/routes.dart';
 
 class SocialPackageListElement extends StatelessWidget {
   final String title;
   final String link;
+  final String id;
 
   const SocialPackageListElement(
-      {Key? key, required this.title, required this.link})
+      {Key? key, required this.title, required this.link, required this.id})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, link);
+        Navigator.pushNamed(context, MainRoutes.socialPackageDetailsScreenKey, arguments: {"id": id, "app_bar_title": title});
       },
       child: Container(
         color: Colors.white,

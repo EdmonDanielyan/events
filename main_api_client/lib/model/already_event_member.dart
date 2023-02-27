@@ -57,7 +57,7 @@ abstract class AlreadyEventMember
   AlreadyEventMember._();
 
   static void _initializeBuilder(AlreadyEventMemberBuilder b) => b
-    ..title = 'Текущий пользователь уже учавствует в этом событии'
+    ..title = 'Текущий пользователь уже участвует в этом событии'
     ..status = 400
     ..code = 'QMA-34'
     ..success = false

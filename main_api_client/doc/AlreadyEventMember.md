@@ -8,7 +8,7 @@ import 'package:main_api_client/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**title** | **String** |  | [default to 'Текущий пользователь уже учавствует в этом событии']
+**title** | **String** |  | [default to 'Текущий пользователь уже участвует в этом событии']
 **detail** | **String** |  | 
 **status** | **int** |  | [default to 400]
 **code** | **String** |  | [default to 'QMA-34']

@@ -66,9 +66,17 @@ Class | Method | HTTP request | Description
 *AuthApi* | [**authRegisterConfirmPost**](doc//AuthApi.md#authregisterconfirmpost) | **post** /auth/register/confirm | Подтверждение регистрации по коду из SMS
 *AuthApi* | [**authRegisterPost**](doc//AuthApi.md#authregisterpost) | **post** /auth/register | Регистрация
 *ContactsApi* | [**getContacts**](doc//ContactsApi.md#getcontacts) | **get** /contacts | Получение контактов
+*ContentApi* | [**getPage**](doc//ContentApi.md#getpage) | **get** /pages/pages/{idOrCode} | Получает полный текст страницы.
+*ContentApi* | [**getPagesList**](doc//ContentApi.md#getpageslist) | **get** /pages/pages | Получает список страниц с не пустыми сивольными кода. Для отладки.
+*ContentApi* | [**getPagesSection**](doc//ContentApi.md#getpagessection) | **get** /pages/sections/{code} | Получить список страниц раздела. Например, список страниц для раздела \&quot;социальная ответственность\&quot;.
+*ContentApi* | [**getPagesSectionsList**](doc//ContentApi.md#getpagessectionslist) | **get** /pages/sections | Получить список разделов страниц.
+*ContentApi* | [**getSnippetsList**](doc//ContentApi.md#getsnippetslist) | **get** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
 *EventsApi* | [**eventsAddeventmemberIdGet**](doc//EventsApi.md#eventsaddeventmemberidget) | **get** /events/addeventmember/{id} | Добавить текущего пользователя как участника события
+*EventsApi* | [**eventsRemoveeventmemberIdGet**](doc//EventsApi.md#eventsremoveeventmemberidget) | **get** /events/removeeventmember/{id} | Удалить текущего пользователя как участника события
 *EventsApi* | [**getEventById**](doc//EventsApi.md#geteventbyid) | **get** /events/{id} | Получить информацию о событии по ID
 *EventsApi* | [**getEvents**](doc//EventsApi.md#getevents) | **get** /events | Метод получения событий
+*GlobalApi* | [**getSettings**](doc//GlobalApi.md#getsettings) | **get** /settings | Настройки приложения
+*GlobalApi* | [**getSnippetsList**](doc//GlobalApi.md#getsnippetslist) | **get** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
 *NewsApi* | [**getNews**](doc//NewsApi.md#getnews) | **get** /news | Получение списка новостей
 *NewsApi* | [**newsCommentsIdGet**](doc//NewsApi.md#newscommentsidget) | **get** /news/comments/{id} | Получение комментариев к новости по ID
 *NewsApi* | [**newsCommentsLikeIdGet**](doc//NewsApi.md#newscommentslikeidget) | **get** /news/comments/like/{id} | Поблагодарить комментарий
@@ -146,6 +154,17 @@ Class | Method | HTTP request | Description
  - [GetUserSuccess](doc//GetUserSuccess.md)
  - [GetUsers](doc//GetUsers.md)
  - [GetUsersSuccess](doc//GetUsersSuccess.md)
+ - [GlobalSettings](doc//GlobalSettings.md)
+ - [GlobalSettingsResponseBody](doc//GlobalSettingsResponseBody.md)
+ - [GlobalSettingsResponseBodyAllOf](doc//GlobalSettingsResponseBodyAllOf.md)
+ - [ListPageResponseData](doc//ListPageResponseData.md)
+ - [ListPageSuccessResponseBody](doc//ListPageSuccessResponseBody.md)
+ - [ListPageSuccessResponseBodyAllOf](doc//ListPageSuccessResponseBodyAllOf.md)
+ - [ListSectionResponseData](doc//ListSectionResponseData.md)
+ - [ListSectionSuccessResponseBody](doc//ListSectionSuccessResponseBody.md)
+ - [ListSectionSuccessResponseBodyAllOf](doc//ListSectionSuccessResponseBodyAllOf.md)
+ - [ListSnippetSuccessResponseBody](doc//ListSnippetSuccessResponseBody.md)
+ - [ListSnippetSuccessResponseBodyAllOf](doc//ListSnippetSuccessResponseBodyAllOf.md)
  - [LogoutParams](doc//LogoutParams.md)
  - [MovementsFail](doc//MovementsFail.md)
  - [MovementsObject](doc//MovementsObject.md)
@@ -154,6 +173,7 @@ Class | Method | HTTP request | Description
  - [NewsNotFound](doc//NewsNotFound.md)
  - [NewsProperty](doc//NewsProperty.md)
  - [NewsPropertyById](doc//NewsPropertyById.md)
+ - [NotEventMember](doc//NotEventMember.md)
  - [NotFound](doc//NotFound.md)
  - [OrderDMS](doc//OrderDMS.md)
  - [OrderDMSFail](doc//OrderDMSFail.md)
@@ -162,6 +182,8 @@ Class | Method | HTTP request | Description
  - [OrderReferenceSuccess](doc//OrderReferenceSuccess.md)
  - [OrderTransportFail](doc//OrderTransportFail.md)
  - [OrderTransportSuccess](doc//OrderTransportSuccess.md)
+ - [Page](doc//Page.md)
+ - [PageSection](doc//PageSection.md)
  - [PostComment](doc//PostComment.md)
  - [PostCommentParamsFail](doc//PostCommentParamsFail.md)
  - [PostCommentSuccess](doc//PostCommentSuccess.md)
@@ -174,16 +196,27 @@ Class | Method | HTTP request | Description
  - [RegisterConfirmSuccess](doc//RegisterConfirmSuccess.md)
  - [RegisterParams](doc//RegisterParams.md)
  - [RegisterSuccess](doc//RegisterSuccess.md)
+ - [RemoveEventMember](doc//RemoveEventMember.md)
  - [RequiredError](doc//RequiredError.md)
  - [RequiredSuccess](doc//RequiredSuccess.md)
  - [SendFeedbackFail](doc//SendFeedbackFail.md)
  - [SendFeedbackSuccess](doc//SendFeedbackSuccess.md)
  - [ServerError](doc//ServerError.md)
+ - [SinglePageResponseData](doc//SinglePageResponseData.md)
+ - [SinglePageSuccessResponseBody](doc//SinglePageSuccessResponseBody.md)
+ - [SinglePageSuccessResponseBodyAllOf](doc//SinglePageSuccessResponseBodyAllOf.md)
+ - [SingleSectionResponseData](doc//SingleSectionResponseData.md)
+ - [SingleSectionSuccessResponseBody](doc//SingleSectionSuccessResponseBody.md)
+ - [SingleSectionSuccessResponseBodyAllOf](doc//SingleSectionSuccessResponseBodyAllOf.md)
+ - [Snippet](doc//Snippet.md)
+ - [SnippetListResponseData](doc//SnippetListResponseData.md)
+ - [TextPage](doc//TextPage.md)
  - [ThankById](doc//ThankById.md)
  - [ThankSelf](doc//ThankSelf.md)
  - [TransportForm](doc//TransportForm.md)
  - [UserNotFound](doc//UserNotFound.md)
  - [UserProperties](doc//UserProperties.md)
+ - [WebViewPage](doc//WebViewPage.md)
 
 
 ## Documentation For Authorization

@@ -14,7 +14,6 @@ class SocialPackageScreen extends StatelessWidget {
       appBar: InkAppBarWithText(
         context,
         title: _strings.socialPackage,
-        leading: const SizedBox(),
       ),
       body: Body(),
       bottomNavigationBar: const NewBottomNavBar(),

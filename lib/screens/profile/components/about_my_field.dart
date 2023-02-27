@@ -2,12 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/textfields/service_btn.dart';
-import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/section_title.dart';
-import 'package:ink_mobile/screens/profile/profile_screen.dart';
 
 class AboutMyField extends StatefulWidget {
 
@@ -21,8 +17,6 @@ class AboutMyField extends StatefulWidget {
 }
 
 class _AboutMyFieldState extends State<AboutMyField> {
-  static late AppLocalizations _strings;
-
   bool _isLoading = false;
   bool _isErorr = false;
   String text = "";
@@ -36,9 +30,6 @@ class _AboutMyFieldState extends State<AboutMyField> {
 
   @override
   Widget build(BuildContext context) {
-    _strings = localizationInstance;
-    final ProfileCubit userCubit = ProfileScreen.of(context).profileCubit;
-
     return Container(
       margin: EdgeInsets.only(top: 24,bottom: 12),
       child: Column(
