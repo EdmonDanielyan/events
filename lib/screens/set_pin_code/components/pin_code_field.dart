@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../messenger/functions/size_config.dart';
@@ -47,6 +49,11 @@ class PinCodeTextField extends StatelessWidget {
       onCompleted: onCompleted,
       obscureText: true,
       autofocus: true,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      preFilledWidget: Text(
+        "-",
+        style: FontStyles.rubikP2(color: Palette.textBlack50),
+      ),
     );
   }
 }

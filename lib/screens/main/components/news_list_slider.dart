@@ -16,7 +16,7 @@ class NewsListSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       height: SizeConfig(context, 350.0).getProportionateScreenHeight,
       child: Column(
         children: [
@@ -44,7 +44,7 @@ class NewsListSlider extends StatelessWidget {
 
   Widget getSlider(Size size) {
     if (newsList.length < 2) {
-      return Container();
+      return SizedBox.shrink();
     }
 
     return Container(

@@ -16,13 +16,11 @@ class NewsFilterSlider extends StatelessWidget {
     return Container(
       height: SizeConfig(context, 28.0).getProportionateScreenHeight,
       margin: EdgeInsets.only(top: 8.0),
-      child: Container(
-        child: getFilterListView(context),
-      ),
+      child: getFilterListView(),
     );
   }
 
-  ListView getFilterListView(BuildContext context) {
+  ListView getFilterListView() {
     List<FilterItem> items = _getFilterItems();
 
     return ListView.separated(
@@ -33,25 +31,23 @@ class NewsFilterSlider extends StatelessWidget {
         clipBehavior: Clip.none,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return Container(
-            child: FilterSliderElement(
-              title: items[index].title,
-              onTap: () {
-                if (items[index].code == 'open_university') {
-                  Navigator.pushNamed(context, '/open_university');
-                } else {
-                  Navigator.pushNamed(context, '/news_list',
-                      arguments: {'filter': items[index].code});
-                }
-              },
-              isSelected: items[index].code == 'news',
-              selectedColor: Colors.white,
-              selectedTextStyle: TextStyle(
-                fontSize:
-                    SizeConfig(context, 15.0).getProportionateScreenHeight,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+          return FilterSliderElement(
+            title: items[index].title,
+            onTap: () {
+              if (items[index].code == 'open_university') {
+                Navigator.pushNamed(context, '/open_university');
+              } else {
+                Navigator.pushNamed(context, '/news_list',
+                    arguments: {'filter': items[index].code});
+              }
+            },
+            isSelected: items[index].code == 'news',
+            selectedColor: Colors.white,
+            selectedTextStyle: TextStyle(
+              fontSize:
+                  SizeConfig(context, 15.0).getProportionateScreenHeight,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
           );
         },

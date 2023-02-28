@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 import '../../messenger/functions/size_config.dart';
@@ -75,10 +78,7 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
             padding: EdgeInsets.all(10.0),
             child: Text(
               localizationInstance.appName,
-              style: TextStyle(
-                fontSize:
-                    SizeConfig(context, 17.0).getProportionateScreenHeight,
-              ),
+              style: FontStyles.rubikP1(color: Palette.white),
             ),
           ),
         ],
@@ -92,20 +92,24 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
     List<Widget> actions = [];
 
     if (showPersonalPageLink) {
-      actions.add(Container(
-        margin: EdgeInsets.only(right: 15.0),
-        child: InkWell(
-          child: SvgPicture.asset(
-            'assets/images/personal_page_link.svg',
-            height: SizeConfig(context, 27.0).getProportionateScreenHeight,
+      actions.add(
+        Container(
+          margin: EdgeInsets.only(right: 15.0),
+          child: InkWell(
+            child: SvgPicture.asset(
+              IconLinks.USER_ICON_LINK,
+              height: 24.0,
+              width: 24.0,
+              color: Palette.white,
+            ),
+            onTap: () {
+              SchedulerBinding.instance.addPostFrameCallback((_) {
+                Navigator.pushNamed(context, '/personal');
+              });
+            },
           ),
-          onTap: () {
-            SchedulerBinding.instance.addPostFrameCallback((_) {
-              Navigator.pushNamed(context, '/personal');
-            });
-          },
         ),
-      ));
+      );
     }
 
     return actions;

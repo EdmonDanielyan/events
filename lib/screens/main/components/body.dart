@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/events_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/main_cubit.dart';
@@ -29,7 +30,7 @@ class Body extends StatelessWidget {
       onRefresh: () async {
         mainPageCubit.refresh();
       },
-      color: Colors.green,
+      color: Palette.greenE4A,
       displacement: 20,
       child: BlocBuilder<MainPageCubit, MainPageState>(
         bloc: mainPageCubit,
@@ -46,7 +47,7 @@ class Body extends StatelessWidget {
                 newsBlockCubit.refresh();
                 mainAnnouncementsListCubit.refresh();
                 mainEventsListCubit.refresh();
-                return getLoadingStateWidget(context);
+                return InkPageLoader();
               }
 
             case (MainPageStateType.ERROR):
@@ -64,18 +65,12 @@ class Body extends StatelessWidget {
 
   Widget getLoadedStateWidget() {
     return Background(
-      child: Container(
-        child: Column(
-          children: [
-            NewsBlock(),
-            EventsAndAnnouncementsBlock(),
-          ],
-        ),
+      child: Column(
+        children: [
+          NewsBlock(),
+          EventsAndAnnouncementsBlock(),
+        ],
       ),
     );
-  }
-
-  Widget getLoadingStateWidget(BuildContext context) {
-    return InkPageLoader();
   }
 }

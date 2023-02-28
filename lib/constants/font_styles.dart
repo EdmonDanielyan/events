@@ -35,4 +35,10 @@ class FontStyles {
         fontSize: 24,
         color: color ?? Palette.textBlack,
       );
+
+  static rubikH4({Color? color}) => GoogleFonts.rubik(
+    fontWeight: FontWeight.w500,
+    fontSize: 18,
+    color: color ?? Palette.textBlack,
+  );
 }

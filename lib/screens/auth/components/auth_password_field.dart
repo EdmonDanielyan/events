@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
@@ -21,9 +22,6 @@ class AuthPasswordField extends StatefulWidget {
 
 class _AuthPasswordFieldState extends State<AuthPasswordField> {
   bool _obscureText = true;
-
-  static const String SHOW_TEXT_ICON_LINK = 'assets/svg/closed_eye.svg';
-  static const String HIDE_TEXT_ICON_LINK = 'assets/svg/opened_eye.svg';
 
   void _toggle() {
     setState(() {
@@ -70,7 +68,7 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: SvgPicture.asset(
-              _obscureText ? SHOW_TEXT_ICON_LINK : HIDE_TEXT_ICON_LINK,
+              _obscureText ? IconLinks.CLOSED_EYE_ICON_LINK : IconLinks.OPENED_EYE_ICON_LINK,
               width: SizeConfig(context, 8.0).getProportionateScreenHeight,
               height: SizeConfig(context, 8.0).getProportionateScreenHeight,
             ),
