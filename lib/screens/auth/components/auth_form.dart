@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -40,9 +41,7 @@ class AuthForm extends StatelessWidget {
               ),
               fillColor: Colors.white,
               filled: true,
-              errorStyle: TextStyle(
-                fontSize: SizeConfig(context, 12).getProportionateScreenHeight,
-              ),
+              errorStyle: FontStyles.rubikP3Medium(color: Palette.redF1C),
             ),
             style: TextStyle(
               fontSize: SizeConfig(context, 15).getProportionateScreenHeight,

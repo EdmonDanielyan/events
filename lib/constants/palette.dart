@@ -10,4 +10,6 @@ class Palette {
   static Color green66E = Color(0xFF46966E);
   static Color greenE4A = Color(0xFF2B5E4A);
   static Color transparent = Colors.transparent;
+
+  static Color redF1C = Color(0xFFCB2F1C);
 }
