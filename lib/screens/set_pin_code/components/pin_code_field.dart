@@ -24,35 +24,38 @@ class PinCodeTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Pinput(
-      controller: controller,
-      focusNode: focusNode,
-      errorBuilder: errorBuilder ??
-          (str, str2) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  str ?? "",
-                  style: TextStyle(
-                    fontSize:
-                        SizeConfig(context, 11.0).getProportionateScreenHeight,
-                    color: Colors.red,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Pinput(
+        controller: controller,
+        focusNode: focusNode,
+        errorBuilder: errorBuilder ??
+            (str, str2) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    str ?? "",
+                    style: TextStyle(
+                      fontSize:
+                          SizeConfig(context, 11.0).getProportionateScreenHeight,
+                      color: Colors.red,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ),
-            );
-          },
-      validator: validator,
-      onChanged: onChanged,
-      onCompleted: onCompleted,
-      obscureText: true,
-      autofocus: true,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      preFilledWidget: Text(
-        "-",
-        style: FontStyles.rubikP2(color: Palette.textBlack50),
+              );
+            },
+        validator: validator,
+        onChanged: onChanged,
+        onCompleted: onCompleted,
+        obscureText: true,
+        autofocus: true,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        preFilledWidget: Text(
+          "-",
+          style: FontStyles.rubikP2(color: Palette.textBlack50),
+        ),
       ),
     );
   }
