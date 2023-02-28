@@ -24,9 +24,7 @@ class AuthForm extends StatelessWidget {
           TextFormField(
             decoration: InputDecoration(
               labelText: _strings.login,
-              labelStyle: TextStyle(
-                fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
-              ),
+              labelStyle: FontStyles.rubikP2(color: Palette.textBlack50),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
                 borderSide: BorderSide(color: Palette.text20Grey),
@@ -43,9 +41,7 @@ class AuthForm extends StatelessWidget {
               filled: true,
               errorStyle: FontStyles.rubikP3Medium(color: Palette.redF1C),
             ),
-            style: TextStyle(
-              fontSize: SizeConfig(context, 15).getProportionateScreenHeight,
-            ),
+            style: FontStyles.rubikP2(color: Palette.textBlack),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
             initialValue: AuthScreen.of(context).authCubit.login,
@@ -53,7 +49,7 @@ class AuthForm extends StatelessWidget {
               authCubit.login = login;
             },
           ),
-          SizedBox(height: 24.0),
+          const SizedBox(height: 24.0),
           AuthPasswordField(authCubit: authCubit),
         ],
       ),

@@ -41,14 +41,10 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       obscureText: _obscureText,
-      style: TextStyle(
-        fontSize: SizeConfig(context, 15).getProportionateScreenHeight,
-      ),
+      style: FontStyles.rubikP2(color: Palette.textBlack),
       decoration: InputDecoration(
         labelText: _strings.password,
-        labelStyle: TextStyle(
-          fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
-        ),
+        labelStyle: FontStyles.rubikP2(color: Palette.textBlack50),
         errorStyle: FontStyles.rubikP3Medium(color: Palette.redF1C),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
@@ -66,16 +62,15 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
         filled: true,
         suffixIcon: GestureDetector(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: EdgeInsets.only(top: 16, bottom: 16, right: 16),
             child: SvgPicture.asset(
               _obscureText ? IconLinks.CLOSED_EYE_ICON_LINK : IconLinks.OPENED_EYE_ICON_LINK,
-              width: SizeConfig(context, 8.0).getProportionateScreenHeight,
-              height: SizeConfig(context, 8.0).getProportionateScreenHeight,
+              width: 20.0,
+              height: 20.0,
+              color: Palette.greenE4A,
             ),
           ),
-          onTap: () {
-            _toggle();
-          },
+          onTap: _toggle,
         ),
       ),
     );
