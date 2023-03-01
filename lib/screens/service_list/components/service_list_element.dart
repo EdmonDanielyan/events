@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/service_list/components/service_list_item.dart';
 import 'package:ink_mobile/screens/service_list/service_list_page_viewer.dart';
@@ -20,23 +22,22 @@ class ServiceListElement extends StatelessWidget {
         }
       },
       child: Container(
-        color: Colors.white,
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        padding: EdgeInsets.only(left: 22.0, right: 32.0, top: 16.0, bottom: 16.0),
         height: 60,
         child: Row(
           children: [
             SvgPicture.asset(
               item.svgPicturePath,
-              width: SizeConfig(context, 40).getProportionateScreenHeight,
+              width: 24.0,
+              height: 24.0,
+              color: Palette.greenE4A,
             ),
             Container(
-              margin: EdgeInsets.only(left: 20),
+              margin: EdgeInsets.only(left: 14),
               child: Text(
                 item.title,
-                style: TextStyle(
-                    fontSize:
-                        SizeConfig(context, 14).getProportionateScreenHeight),
+                style: FontStyles.rubikP1(color: Palette.textBlack),
               ),
             ),
             Expanded(
@@ -45,8 +46,8 @@ class ServiceListElement extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.arrow_forward_ios,
-                    size: SizeConfig(context, 10).getProportionateScreenHeight,
-                    color: Theme.of(context).primaryColor,
+                    size: 20.0,
+                    color: Palette.greenE4A,
                   )
                 ],
               ),

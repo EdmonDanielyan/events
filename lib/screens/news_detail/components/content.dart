@@ -96,7 +96,7 @@ class _ContentState extends State<Content> {
                       child: Row(
                         children: [
                           SvgPicture.asset(
-                            IconLinks.COMMENT_SVG_LINK,
+                            IconLinks.COMMENT_ICON_LINK,
                             width: SizeConfig(context, 14)
                                 .getProportionateScreenHeight,
                             height: SizeConfig(context, 14)

@@ -133,7 +133,7 @@ class NewsListSliderElement extends StatelessWidget {
                                           CrossAxisAlignment.center,
                                       children: [
                                         SvgPicture.asset(
-                                          IconLinks.COMMENT_SVG_LINK,
+                                          IconLinks.COMMENT_ICON_LINK,
                                           width: 16.0,
                                           height: 16.0,
                                           color: Palette.textBlack50,

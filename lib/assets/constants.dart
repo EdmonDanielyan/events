@@ -12,10 +12,17 @@ class IconLinks {
   static const String CLOSE_BUTTON_SVG_LINK = "assets/images/close_button.svg";
   static const String VIEW_COUNT_SVG_LINK = "assets/images/view_count.svg";
   static const String BARREL_SVG_LINK = "assets/svg/barrel.svg";
-  static const String COMMENT_SVG_LINK = "assets/svg/comments.svg";
+  static const String COMMENT_ICON_LINK = "assets/svg/comments.svg";
   static const String APP_BAR_LINES_SVG_LINK = "assets/images/appbar_lines.svg";
   static const String SEARCH_ICON = "assets/svg/search_icon.svg";
   static const String CLOSED_EYE_ICON_LINK = "assets/svg/closed_eye.svg";
   static const String OPENED_EYE_ICON_LINK = "assets/svg/opened_eye.svg";
   static const String USER_ICON_LINK = "assets/svg/user.svg";
+  static const String CAKE_ICON_LINK = "assets/svg/cake.svg";
+  static const String DOCUMENT_ICON_LINK = "assets/svg/document.svg";
+  static const String HEALTH_ICON_LINK = "assets/svg/health.svg";
+  static const String TEAM_ICON_LINK = "assets/svg/team.svg";
+  static const String UMBRELLA_ICON_LINK = "assets/svg/umbrella.svg";
+
+
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 import 'components/body.dart';
@@ -21,7 +22,7 @@ class _ServiceListScreenState extends State<ServiceListScreen>
     return Scaffold(
       appBar: InkAppBarWithText(context, title: _strings.services),
       body: Body(),
-      backgroundColor: Color(0xfff9f9f9),
+      backgroundColor: Palette.white,
     );
   }
 
