@@ -33,7 +33,7 @@ abstract class NavBottomNavBarItem {
 }
 
 class MainBottomNavBarItem extends NavBottomNavBarItem {
-  String icon = 'assets/images/home.svg';
+  String icon = 'assets/svg/home.svg';
   String label = localizationInstance.home;
   Widget screen = MainScreen(
     mainAnnouncementsListCubit: getIt<MainAnnouncementsListCubit>(),
@@ -63,7 +63,7 @@ class SearchBottomNavBarItem extends NavBottomNavBarItem {
 }
 
 class MessagesBottomNavBarItem extends NavBottomNavBarItem {
-  String icon = 'assets/images/message.svg';
+  String icon = 'assets/svg/chat.svg';
   String label = localizationInstance.messages;
 
   Widget screen = ChatListScreen();
@@ -75,7 +75,7 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
 }
 
 class ServicesBottomNavBarItem extends NavBottomNavBarItem {
-  String icon = 'assets/images/services.svg';
+  String icon = 'assets/svg/service.svg';
   String label = localizationInstance.services;
   Widget screen = ServiceListPageViewer(
       feedbackAnswerListCubit: getIt<FeedbackAnswerListCubit>(),
@@ -101,7 +101,7 @@ class ServicesBottomNavBarItem extends NavBottomNavBarItem {
 }
 
 class MenuBottomNavBarItem extends NavBottomNavBarItem {
-  String icon = 'assets/images/menu.svg';
+  String icon = 'assets/svg/menu.svg';
   String label = localizationInstance.menu;
   Widget screen = SizedBox();
 

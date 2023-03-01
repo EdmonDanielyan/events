@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/functions/new_bottom_nav_bar_items.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/nav_bar_indicator.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/setup.dart';
 
@@ -58,6 +59,7 @@ class NewBottomNavBarMixin {
             child: SvgPicture.asset(
               item.icon,
               height: iconHeight,
+              color: Palette.textBlack50,
             ),
           ),
           if (msgIndicator) ...[
@@ -77,7 +79,7 @@ class NewBottomNavBarMixin {
                   child: SvgPicture.asset(
                     item.icon,
                     height: activeIconHeight,
-                    color: Color(0xff12512a),
+                    color: Palette.greenE4A,
                   ),
                 ),
                 if (msgIndicator) ...[

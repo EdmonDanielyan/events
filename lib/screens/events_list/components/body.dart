@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/events_list/events_list_cubit.dart';
 import 'package:ink_mobile/cubit/events_list/events_list_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -48,27 +50,20 @@ class Body extends StatelessWidget {
     List<EventsListElement> items = [];
     if (state.data?.isNotEmpty == true) {
       items = _getEventsWidgetList(state.data!);
-      return Container(
-        color: Color(0xfff9f9f9),
-        child: SingleChildScrollView(
-          controller: _controller,
+      return SingleChildScrollView(
+        controller: _controller,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 color: Colors.white,
                 padding:
-                    EdgeInsets.only(left: 20, right: 20, top: 24, bottom: 20),
-                child: Row(
-                  children: [
-                    Text(
-                      localizationInstance.events,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: SizeConfig(context, 21.0)
-                            .getProportionateScreenHeight,
-                      ),
-                    )
-                  ],
+                    EdgeInsets.symmetric(vertical: 32.0),
+                child: Text(
+                  localizationInstance.events,
+                  style: FontStyles.rubikH2(color: Palette.textBlack),
                 ),
               ),
               Container(

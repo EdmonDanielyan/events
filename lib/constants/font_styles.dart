@@ -24,6 +24,12 @@ class FontStyles {
         decoration: decoration,
       );
 
+  static rubikP3({Color? color}) => GoogleFonts.rubik(
+    fontWeight: FontWeight.w400,
+    fontSize: 12,
+    color: color ?? Palette.textBlack,
+  );
+
   static rubikP3Medium({Color? color}) => GoogleFonts.rubik(
     fontWeight: FontWeight.w500,
     fontSize: 12,
@@ -35,6 +41,12 @@ class FontStyles {
         fontSize: 24,
         color: color ?? Palette.textBlack,
       );
+
+  static rubikH3({Color? color}) => GoogleFonts.rubik(
+    fontWeight: FontWeight.w500,
+    fontSize: 20,
+    color: color ?? Palette.textBlack,
+  );
 
   static rubikH4({Color? color}) => GoogleFonts.rubik(
     fontWeight: FontWeight.w500,

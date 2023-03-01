@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -39,7 +41,7 @@ class _BodyState extends State<Body> {
       onRefresh: () async {
         widget.cubit.refresh();
       },
-      color: Colors.green,
+      color: Palette.greenE4A,
       displacement: 20,
       child: BlocBuilder<NewsListCubit, NewsListState>(
         bloc: widget.cubit,
@@ -95,35 +97,34 @@ class _BodyState extends State<Body> {
   Widget _getLoadedStateWidget(List<NewsItemData> newsList) {
     List<Widget> items = _getNewsWidgetList(newsList);
     return Container(
-        color: Color(0xfff9f9f9),
-        child: SingleChildScrollView(
-          controller: _controller,
-          child: Column(children: [
-            Container(
-                color: Colors.white,
-                padding:
-                    EdgeInsets.only(left: 20, right: 20, top: 24, bottom: 20),
-                child: Row(
-                  children: [
-                    Text(
-                      _strings.news,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: SizeConfig(context, 24)
-                              .getProportionateScreenHeight),
-                    )
-                  ],
-                )),
-            Container(
-              child: ListView.builder(
-                shrinkWrap: true,
-                controller: ScrollController(keepScrollOffset: false),
-                itemCount: items.length,
-                itemBuilder: (BuildContext context, int index) => items[index],
+      color: Palette.white,
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: SingleChildScrollView(
+        controller: _controller,
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 32,
               ),
-            )
-          ]),
-        ));
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  _strings.news,
+                  style: FontStyles.rubikH2(color: Palette.textBlack),
+                ),
+              ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              controller: ScrollController(keepScrollOffset: false),
+              itemCount: items.length,
+              itemBuilder: (BuildContext context, int index) => items[index],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _getErrorStateWidget(BuildContext context, NewsListState state) {
