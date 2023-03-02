@@ -23,6 +23,9 @@ class IconLinks {
   static const String HEALTH_ICON_LINK = "assets/svg/health.svg";
   static const String TEAM_ICON_LINK = "assets/svg/team.svg";
   static const String UMBRELLA_ICON_LINK = "assets/svg/umbrella.svg";
-
-
+  static const String ANNOUNCEMENT_ICON_LINK = "assets/svg/announcement.svg";
+  static const String CALENDAR_ICON_LINK = "assets/svg/calendar.svg";
+  static const String NEWS_ICON_LINK = "assets/svg/news.svg";
+  static const String LOGOUT_ICON_LINK = "assets/svg/logout.svg";
+  static const String DOUBLE_CHECK_ICON_LINK = "assets/svg/double_check.svg";
 }

@@ -12,4 +12,6 @@ class Palette {
   static Color transparent = Colors.transparent;
 
   static Color redF1C = Color(0xFFCB2F1C);
+
+  static Color blue9CF = Color(0xFF5FB9CF);
 }

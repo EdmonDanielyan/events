@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet.dart';
 import 'package:ink_mobile/constants/aseets.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_state.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
@@ -107,9 +108,9 @@ class MenuBottomNavBarItem extends NavBottomNavBarItem {
 
   void onTap(BuildContext context, Function onChanged, int index) {
     showMaterialModalBottomSheet(
-      backgroundColor: Color(0xfff9f9f9),
+      backgroundColor: Palette.white,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
       ),
       context: context,
       builder: (context) {

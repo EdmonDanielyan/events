@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/functions/date_functions.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
@@ -9,11 +11,9 @@ class ChatDate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GoogleText(
+    return Text(
       DateFunctions(dateTime).minutesHoursDayMonthYearHuman(),
-      fontSize: SizeConfig(context, 9.5).getProportionateScreenHeight,
-      color: const Color(0XFF757678),
-      fontWeight: FontWeight.w300,
+      style: FontStyles.rubikP3(color: Palette.textBlack50),
     );
   }
 }

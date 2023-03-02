@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/highlight_text/highlight_text.dart';
 
 import '../../../functions/size_config.dart';
@@ -25,13 +27,9 @@ class ChatBody extends StatelessWidget {
             text: title,
             maxLines: 1,
             term: highlightValue,
-            textStyle: GoogleFonts.roboto(
-              fontSize: SizeConfig(context, 12).getProportionateScreenHeight,
-              color: const Color(0XFF1D2126),
-              fontWeight: FontWeight.w400,
-            ),
+            textStyle: FontStyles.rubikP2(color: Palette.textBlack50),
             strutStyle: const StrutStyle(forceStrutHeight: true),
-            textStyleHighlight: const TextStyle(color: Colors.blue),
+            textStyleHighlight: FontStyles.rubikP2(color: Palette.greenE4A),
             overflow: TextOverflow.ellipsis,
           ),
           SizedBox(
@@ -41,12 +39,9 @@ class ChatBody extends StatelessWidget {
           text: body,
           maxLines: 1,
           term: highlightValue,
-          textStyle: GoogleFonts.roboto(
-            fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
-            color: const Color(0XFF757678),
-          ),
+          textStyle: FontStyles.rubikP2(color: Palette.textBlack50),
           strutStyle: const StrutStyle(forceStrutHeight: true),
-          textStyleHighlight: const TextStyle(color: Colors.blue),
+          textStyleHighlight: FontStyles.rubikP2(color: Palette.greenE4A),
           overflow: TextOverflow.ellipsis,
         ),
       ],

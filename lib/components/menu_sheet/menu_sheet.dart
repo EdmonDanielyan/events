@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet_item.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/logout/logout_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
@@ -29,11 +31,12 @@ class _MenuSheetState extends State<MenuSheet> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Container(
-      height: SizeConfig(context, 300).getProportionateScreenHeight,
+    return SizedBox(
+      height: 324.0,
       width: size.width,
-      child: Column(children: [
-        Container(
+      child: Column(
+        children: [
+          Container(
             margin: const EdgeInsets.only(top: 7),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -47,17 +50,19 @@ class _MenuSheetState extends State<MenuSheet> {
                         SizeConfig(context, 5).getProportionateScreenHeight),
                     color: Colors.grey.withOpacity(0.3),
                   ),
-                )
+                ),
               ],
-            )),
-        Container(
-          margin: const EdgeInsets.only(top: 24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: _getItemsList(context, localizationInstance),
+            ),
           ),
-        ),
-      ]),
+          Container(
+            margin: const EdgeInsets.only(top: 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: _getItemsList(context, localizationInstance),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -70,8 +75,10 @@ class _MenuSheetState extends State<MenuSheet> {
           Navigator.popAndPushNamed(context, '/news_list');
         },
         icon: SvgPicture.asset(
-          'assets/images/menu_news_icon.svg',
-          height: SizeConfig(context, 18).getProportionateScreenHeight,
+          IconLinks.NEWS_ICON_LINK,
+          height: 24.0,
+          width: 24.0,
+          color: Palette.greenE4A,
         ),
       ),
       MenuSheetItem(
@@ -80,8 +87,10 @@ class _MenuSheetState extends State<MenuSheet> {
           Navigator.popAndPushNamed(context, '/events_list');
         },
         icon: SvgPicture.asset(
-          'assets/images/menu_events_icon.svg',
-          height: SizeConfig(context, 18).getProportionateScreenHeight,
+          IconLinks.CALENDAR_ICON_LINK,
+          height: 24.0,
+          width: 24.0,
+          color: Palette.greenE4A,
         ),
       ),
       MenuSheetItem(
@@ -90,8 +99,10 @@ class _MenuSheetState extends State<MenuSheet> {
           Navigator.popAndPushNamed(context, '/announcements_list');
         },
         icon: SvgPicture.asset(
-          'assets/images/menu_announcements_icon.svg',
-          height: SizeConfig(context, 18).getProportionateScreenHeight,
+          IconLinks.ANNOUNCEMENT_ICON_LINK,
+          height: 24.0,
+          width: 24.0,
+          color: Palette.greenE4A,
         ),
       ),
       MenuSheetItem(
@@ -100,8 +111,10 @@ class _MenuSheetState extends State<MenuSheet> {
           Navigator.popAndPushNamed(context, '/personal');
         },
         icon: SvgPicture.asset(
-          'assets/images/menu_personal_icon.svg',
-          height: SizeConfig(context, 18).getProportionateScreenHeight,
+          IconLinks.USER_ICON_LINK,
+          height: 24.0,
+          width: 24.0,
+          color: Palette.greenE4A,
         ),
       ),
       MenuSheetItem(
@@ -115,8 +128,10 @@ class _MenuSheetState extends State<MenuSheet> {
           );
         },
         icon: SvgPicture.asset(
-          'assets/images/exit_icon.svg',
-          height: SizeConfig(context, 18).getProportionateScreenHeight,
+          IconLinks.LOGOUT_ICON_LINK,
+          height: 24.0,
+          width: 24.0,
+          color: Palette.greenE4A,
         ),
         withBottomDivider: false,
       ),

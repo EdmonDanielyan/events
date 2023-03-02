@@ -58,7 +58,7 @@ class EventsListElement extends StatelessWidget {
               alignment: Alignment.topLeft,
               child: Text(
                 event.title ?? '',
-                style: FontStyles.rubikH3(color: Palette.textBlack),
+                style: FontStyles.rubikH4(color: Palette.textBlack),
                 maxLines: 4,
                 textAlign: TextAlign.start,
               ),

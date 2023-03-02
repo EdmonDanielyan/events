@@ -104,7 +104,10 @@ class _ChatListState extends State<ChatList> {
               }
 
               return SearchBar(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 7.0),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 32.0,
+                ),
                 onChanged: (str) {
                   final items = cubit.searchChats(str);
 
@@ -127,8 +130,7 @@ class _ChatListState extends State<ChatList> {
                       bool isSearchNotEmpty =
                           searchState.value.trim().isNotEmpty;
                       List<Chat> _chats = isSearchNotEmpty
-                          ? hiddenchatsCubit
-                              .filterChats(searchState.items)
+                          ? hiddenchatsCubit.filterChats(searchState.items)
                           : hiddenchatsCubit.filterChats(state.chats);
 
                       _chats.removeWhere((element) =>
