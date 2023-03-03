@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/app_bars/back_btn.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 
 import '../../messenger/functions/size_config.dart';
 
@@ -61,15 +63,10 @@ class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
         ),
       ),
       title: titleWidget ??
-          Container(
-            child: Text(
-              '$title',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize:
-                    SizeConfig(context, 17.0).getProportionateScreenHeight,
-              ),
-            ),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: FontStyles.rubikP1(color: Palette.white),
           ),
       centerTitle: true,
       actions: actions,

@@ -12,11 +12,13 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
   final bool showPersonalPageLink;
   final BuildContext context;
   final Widget? leading;
+  final String? title;
   const InkAppBar(
     this.context, {
     Key? key,
     this.showPersonalPageLink = false,
     this.leading,
+    this.title,
   }) : super(key: key);
 
   @override
@@ -64,25 +66,31 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
               tileMode: TileMode.decal),
         ),
       ),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            'assets/images/logo.svg',
-            semanticsLabel: 'INK Logo',
-            width: SizeConfig(context, 28).getProportionateScreenHeight,
-          ),
-          const SizedBox(width: 10.0),
-          Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Text(
-              localizationInstance.appName,
+      title: title != null
+          ? Text(
+              title!,
+              textAlign: TextAlign.center,
               style: FontStyles.rubikP1(color: Palette.white),
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/images/logo.svg',
+                  semanticsLabel: 'INK Logo',
+                  width: SizeConfig(context, 28).getProportionateScreenHeight,
+                ),
+                const SizedBox(width: 10.0),
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                    localizationInstance.appName,
+                    style: FontStyles.rubikP1(color: Palette.white),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
       centerTitle: true,
       actions: getActions(context),
     );
