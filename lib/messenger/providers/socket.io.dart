@@ -26,7 +26,7 @@ class SocketProvider {
         .setTransports(['websocket'])
         .enableForceNewConnection()
         .setExtraHeaders(
-      {"userId": 15},
+      {"userId": JwtPayload.myId},
     );
 
     final path = this.path;
@@ -36,13 +36,7 @@ class SocketProvider {
 
     Socket socket = io(
       url,
-      OptionBuilder()
-          .setTransports(['websocket'])
-          .enableForceNewConnection()
-          .setExtraHeaders(
-            {"userId": JwtPayload.myId},
-          )
-          .build(),
+        options.build(),
     );
     _onConnect(socket);
     _onConnectError(socket);

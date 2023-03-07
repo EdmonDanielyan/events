@@ -1,6 +1,7 @@
 class UrlsConfig { //todo url
   static const prodUrl = "https://portal.irkutskoil.ru/api/v1/";
   static const debugUrl = "https://mp-test-portal.irkutskoil.ru/api/v1";
+
   static const wsProdUrl = "wss://messenger.irkutskoil.ru:3009";
   static const wsProdPath = null;
 
