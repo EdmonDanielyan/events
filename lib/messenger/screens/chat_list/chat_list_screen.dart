@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/hidden_chats/hidden_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
@@ -13,7 +14,7 @@ import 'package:ink_mobile/messenger/handler/fetch/chats.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_card_wrapper.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/empty_chats.dart';
-import 'package:ink_mobile/messenger/screens/chat_list/components/search_bar.dart';
+import 'package:ink_mobile/components/fields/search_field.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'components/builder.dart';
@@ -104,16 +105,15 @@ class _ChatListState extends State<ChatList> {
                 if (chatsState.chats.isEmpty) {
                   return const SizedBox.shrink();
                 }
-
-                return SearchBar(
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 32.0,
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 32.0),
+                  child: SearchField(
+                    hint: localizationInstance.searchHint,
+                    onChanged: (str) {
+                      final items = cubit.searchChats(str);
+                      searchCubit.setItems(str, items);
+                    },
                   ),
-                  onChanged: (str) {
-                    final items = cubit.searchChats(str);
-
-                    searchCubit.setItems(str, items);
-                  },
                 );
               },
             ),

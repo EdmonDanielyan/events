@@ -1,4 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class SearchContainer extends StatelessWidget {
@@ -10,19 +12,21 @@ class SearchContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
         children: [
-          Container(
-              alignment: Alignment.bottomLeft,
-              margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
               child: Text(
                 label,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: SizeConfig(context, 16).getProportionateScreenHeight),
-              )),
-          Column(
-            children: items,
-          )
+                style: FontStyles.rubikH4(color: Palette.textBlack),
+              ),
+            ),
+          ),
+          ...items,
         ],
       ),
     );
