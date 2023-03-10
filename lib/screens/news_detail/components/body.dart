@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_state.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_state.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/news_detail/components/content.dart';
 import 'package:ink_mobile/screens/news_detail/components/header.dart';
@@ -79,11 +80,9 @@ class Body extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        child: Header(
-                          imageLinks: newsItem.detailPictureLinks,
-                          videoLinks: newsItem.videoLinks,
-                        ),
+                      Header(
+                        imageLinks: newsItem.detailPictureLinks,
+                        videoLinks: newsItem.videoLinks,
                       ),
                       HeaderInfo(
                         viewCount: newsItem.viewCount ?? 0,
@@ -93,13 +92,10 @@ class Body extends StatelessWidget {
                         width: size.width,
                         color: Colors.white,
                         padding:
-                            EdgeInsets.only(left: 20, right: 50, bottom: 10),
+                            EdgeInsets.only(left: 20.0, right: 20.0, bottom: 24.0),
                         child: Text(
                           newsItem.title ?? '',
-                          style: TextStyle(
-                              fontSize: SizeConfig(context, 22.0)
-                                  .getProportionateScreenHeight,
-                              fontWeight: FontWeight.bold),
+                          style: FontStyles.rubikH3(color: Palette.textBlack),
                         ),
                       ),
                       BlocBuilder<NewsBlockCubit, NewsBlockState>(

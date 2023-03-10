@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/html.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
 
 class Content extends StatefulWidget {
   final int viewCount;
@@ -36,93 +38,54 @@ class _ContentState extends State<Content> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.symmetric(
-          horizontal: BorderSide(color: Color(0xFFE5E5E5), width: 1),
-        ),
-      ),
-      padding: EdgeInsets.only(left: 10, right: 10),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CustomHtml(data: widget.text),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-            child: Row(
+          color: Colors.white,
+          border: Border(top: BorderSide(color: Palette.text20Grey))),
+      child: Padding(
+        padding: const EdgeInsets.only(
+            left: 20.0, right: 20.0, top: 24.0, bottom: 32.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CustomHtml(data: widget.text),
+            Row(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    widget.onLike();
-                  },
-                  child: Container(
-                    color: Colors.white,
-                    child: Row(children: [
-                      SvgPicture.asset(
-                        IconLinks.BARREL_SVG_LINK,
-                        width: SizeConfig(context, 16)
-                            .getProportionateScreenHeight,
-                        height: SizeConfig(context, 16)
-                            .getProportionateScreenHeight,
-                        color: widget.isLiked
-                            ? Theme.of(context).primaryColor
-                            : Theme.of(context).colorScheme.secondary,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 4),
-                        child: Text(
-                          widget.likeCount.toString(),
-                          style: TextStyle(
-                            fontSize: SizeConfig(context, 18.0)
-                                .getProportionateScreenHeight,
-                            color: widget.isLiked
-                                ? Theme.of(context).primaryColor
-                                : Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                      )
-                    ]),
+                DefaultButton(
+                  title: widget.likeCount.toString(),
+                  icon: SvgPicture.asset(
+                    IconLinks.BARREL_SVG_LINK,
+                    width: 20.0,
+                    height: 20.0,
+                    color: Palette.greenE4A,
                   ),
+                  textColor: Palette.greenE4A,
+                  borderColor: Palette.greenE4A,
+                  buttonColor: Palette.transparent,
+                  width: MediaQuery.of(context).size.width * 0.42,
+                  onTap: widget.onLike,
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 24),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/news_comment',
-                          arguments: {'id': widget.id});
-                    },
-                    child: Container(
-                      color: Colors.white,
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            IconLinks.COMMENT_ICON_LINK,
-                            width: SizeConfig(context, 14)
-                                .getProportionateScreenHeight,
-                            height: SizeConfig(context, 14)
-                                .getProportionateScreenHeight,
-                            color: Color(0xFF757678),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 4),
-                            child: Text(
-                              widget.commentsCount.toString(),
-                              style: TextStyle(
-                                fontSize: SizeConfig(context, 18.0)
-                                    .getProportionateScreenHeight,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                DefaultButton(
+                  title: widget.commentsCount.toString(),
+                  icon: SvgPicture.asset(
+                    IconLinks.COMMENT_ICON_LINK,
+                    width: 20.0,
+                    height: 20.0,
+                    color: Palette.greenE4A,
                   ),
+                  textColor: Palette.greenE4A,
+                  borderColor: Palette.greenE4A,
+                  buttonColor: Palette.transparent,
+                  width: MediaQuery.of(context).size.width * 0.42,
+                  onTap: () {
+                    Navigator.pushNamed(context, '/news_comment',
+                        arguments: {'id': widget.id});
+                  },
                 ),
               ],
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

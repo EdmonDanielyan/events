@@ -86,60 +86,41 @@ class _HeaderState extends State<Header> {
       ..addAll(getImagesContainer(widget.imageLinks))
       ..toSet();
 
-    return Stack(
-      children: [
-        Container(
-          height: SizeConfig(context, 270).getProportionateScreenHeight,
-          color: Colors.black,
-          child: PageView(
-            onPageChanged: (index) {
-              setState(() {
-                setSliderIndex(index);
-              });
-              _stopAllVideos();
-            },
-            scrollDirection: Axis.horizontal,
-            children: slider,
-          ),
-        ),
-        if (slider.length > 1) ...[
+    return SizedBox(
+      height: SizeConfig(context, 270).getProportionateScreenHeight,
+      child: Stack(
+        children: [
           Positioned.fill(
-            child: Align(
-              alignment: AlignmentDirectional(0, 0.9),
-              child: AnimatedSmoothIndicator(
-                activeIndex: _sliderIndex,
-                count: slider.length,
-                effect: ScrollingDotsEffect(
-                  dotColor: Color(0xFFFFFFFF).withOpacity(0.5),
-                  dotWidth: 10,
-                  dotHeight: 10,
-                  activeDotColor: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ],
-        Positioned.fill(
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: MaterialButton(
-              onPressed: () {
-                Navigator.pop(context);
+            child: PageView(
+              onPageChanged: (index) {
+                setState(() {
+                  setSliderIndex(index);
+                });
+                _stopAllVideos();
               },
-              child: Padding(
-                padding: EdgeInsets.only(
-                    top:
-                        SizeConfig(context, 40.0).getProportionateScreenHeight),
-                child: SvgPicture.asset(
-                  IconLinks.CLOSE_BUTTON_SVG_LINK,
-                  width: SizeConfig(context, 33).getProportionateScreenHeight,
-                  height: SizeConfig(context, 33).getProportionateScreenHeight,
+              scrollDirection: Axis.horizontal,
+              children: slider,
+            ),
+          ),
+          if (slider.length > 1) ...[
+            Positioned.fill(
+              child: Align(
+                alignment: AlignmentDirectional(0, 0.9),
+                child: AnimatedSmoothIndicator(
+                  activeIndex: _sliderIndex,
+                  count: slider.length,
+                  effect: ScrollingDotsEffect(
+                    dotColor: Color(0xFFFFFFFF).withOpacity(0.5),
+                    dotWidth: 10,
+                    dotHeight: 10,
+                    activeDotColor: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-      ],
+          ],
+        ],
+      ),
     );
   }
 
@@ -147,9 +128,9 @@ class _HeaderState extends State<Header> {
     List<Widget> imagesContainer = [];
 
     if (images != null && images.isNotEmpty) {
-      images.forEach((image) {
-        imagesContainer.add(Stack(
-          children: [
+      images.forEach(
+        (image) {
+          imagesContainer.add(
             OptimizedCacheImage(
               imageUrl: image,
               placeholder: (context, _) {
@@ -183,16 +164,18 @@ class _HeaderState extends State<Header> {
                 );
               },
             ),
-          ],
-        ));
-      });
+          );
+        },
+      );
     } else {
-      imagesContainer.add(Image.asset(
-        DEFAULT_PREVIEW_PICTURE_LINK,
-        fit: BoxFit.fill,
-        colorBlendMode: BlendMode.darken,
-        color: Colors.black.withOpacity(0.15),
-      ));
+      imagesContainer.add(
+        Image.asset(
+          DEFAULT_PREVIEW_PICTURE_LINK,
+          fit: BoxFit.fill,
+          colorBlendMode: BlendMode.darken,
+          color: Colors.black.withOpacity(0.15),
+        ),
+      );
     }
 
     return imagesContainer;

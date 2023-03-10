@@ -10,7 +10,7 @@ import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/main/components/announcements_list.dart';
 import 'package:ink_mobile/screens/main/components/events_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ink_mobile/screens/welcome/components/auth_btn.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
 
 import '../main_screen.dart';
 

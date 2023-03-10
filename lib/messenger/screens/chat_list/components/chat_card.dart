@@ -50,6 +50,8 @@ class ChatCard extends StatelessWidget {
                 url: chatAvatar ?? chat.avatarUrl,
                 name: chatName ?? chat.name,
                 indicator: user != null ? true : false,
+                avatarHeight: 52.0,
+                avatarWidth: 52.0,
               );
             },
             cachedChatsCubit: cachedChatsCubit,
@@ -59,6 +61,8 @@ class ChatCard extends StatelessWidget {
           CachedCircleAvatar(
             url: chatAvatar ?? chat.avatarUrl,
             name: chatName ?? chat.name,
+            avatarHeight: 52.0,
+            avatarWidth: 52.0,
           ),
         ],
         const SizedBox(width: 15.0),
@@ -66,8 +70,6 @@ class ChatCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                  height: SizeConfig(context, 4).getProportionateScreenHeight),
               Row(
                 children: [
                   Expanded(

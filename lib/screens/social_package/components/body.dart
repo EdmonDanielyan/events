@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/get_section/get_section_cubit.dart';
 import 'package:ink_mobile/cubit/get_section/get_section_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -71,11 +73,7 @@ class _BodyState extends State<Body> {
                     color: Colors.white,
                     child: Text(
                       _strings.socialPackage,
-                      style: TextStyle(
-                        fontSize: SizeConfig(context, 30)
-                            .getProportionateScreenHeight,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: FontStyles.rubikH2(color: Palette.textBlack),
                     ),
                   ),
                   Expanded(

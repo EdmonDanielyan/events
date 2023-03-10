@@ -9,12 +9,11 @@ import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/cubit/auth/auth_state.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/providers/local_pin_provider.dart';
 import 'package:ink_mobile/routes/pass_data_routes.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
 import 'package:ink_mobile/screens/auth/components/sign_in_instructions.dart';
-import 'package:ink_mobile/screens/welcome/components/auth_btn.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
 import 'package:logging/logging.dart';
 
 class AuthButtons extends StatefulWidget {
@@ -74,20 +73,18 @@ class _AuthButtonsState extends State<AuthButtons> {
     Size size = MediaQuery.of(context).size;
 
     return SafeArea(
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            btnWidget(context),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 32.0),
-              child: DefaultLinkButton(
-                txtColor: Palette.greenE4A,
-                link: UrlsConfig.signInInstructionUrl,
-              ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          btnWidget(context),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 32.0),
+            child: DefaultLinkButton(
+              txtColor: Palette.greenE4A,
+              link: UrlsConfig.signInInstructionUrl,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

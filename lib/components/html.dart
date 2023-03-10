@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/webview_screen.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/functions/files.dart';
 import '../functions/launch_url.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
@@ -13,6 +14,7 @@ class CustomHtml extends StatelessWidget {
   Widget build(BuildContext context) {
     return HtmlWidget(
       data ?? "",
+      textStyle: FontStyles.rubikP1(),
       onTapUrl: (url) async {
         if (isStringHttpUrl(url)) {
           Navigator.of(context).push(

@@ -8,15 +8,11 @@ import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/screens/auth/components/sign_in_instructions.dart';
-import 'package:ink_mobile/screens/welcome/components/auth_btn.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
 import 'package:ink_mobile/screens/welcome/components/background.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:ink_mobile/utils/app_config.dart';
-
-import '../../../components/webview_screen.dart';
 
 class Body extends StatefulWidget {
   final PackageInfoProvider packageInfo;
@@ -60,6 +56,7 @@ class _BodyState extends State<Body> {
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(bottom: 48.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
