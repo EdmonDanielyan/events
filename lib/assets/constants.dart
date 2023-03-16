@@ -28,4 +28,6 @@ class IconLinks {
   static const String NEWS_ICON_LINK = "assets/svg/news.svg";
   static const String LOGOUT_ICON_LINK = "assets/svg/logout.svg";
   static const String DOUBLE_CHECK_ICON_LINK = "assets/svg/double_check.svg";
+  static const String ATTACHMENT_ICON = "assets/svg/attachment.svg";
+  static const String CLOSE_ICON = "assets/svg/close.svg";
 }

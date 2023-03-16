@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/cubit/feedback_answer_list/answer_list_cubit.dart';
@@ -59,6 +60,7 @@ class FeedBackScreenState extends State<FeedBackScreen>
         body: Body(),
         bottomNavigationBar:
             widget.bottomNavigationBar ?? const NewBottomNavBar(),
+        backgroundColor: Palette.white,
       ),
     );
   }

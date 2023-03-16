@@ -254,5 +254,14 @@
 	"end": "Finish",
 	"createNew": "Create a new",
 	"techSupport": "Support",
-	"aboutCompany": "About company"
+	"aboutCompany": "About company",
+	"theme": "Theme",
+	"requiredInitials": "Ваше ФИО",
+    "optionalInitials": "Ваше ФИО (не обязательно)",
+    "requiredEmail": "Эл. почта",
+    "optionalEmail": "Эл. почта (не обязательно)",
+    "yourQuestion": "Ваш вопрос",
+	"feedbackRecommendation": "Рекомендуем указывать ваши ФИО и адрес электронной почты для ответа. На анонимный вопрос не всегда можно ответить, так как не хватает информации.",
+	"attachFile": "Прикрепить файл",
+    "companyRight": "Компания оставляет за собой право не публиковать ответы на анонимные вопросы на портале и сохранять отправляемые сообщения и вложения на портале."
 }

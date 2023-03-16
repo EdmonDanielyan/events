@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/models/custom_tab.dart';
 
 class SwitchTabs extends StatelessWidget {
@@ -17,7 +18,7 @@ class SwitchTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return Container(
+    return SizedBox(
       width: size.width,
       child: Row(
         children: List.generate(
@@ -31,51 +32,16 @@ class SwitchTabs extends StatelessWidget {
   }
 
   Widget _buildTabWidget(BuildContext context, int index) {
+    bool isActive = activeIndex == index;
     return InkWell(
       onTap: () => onIndexChanged(tabs[index].index),
-      child: Container(
-        decoration: _boxDecoration(context, index),
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0),
-        child: Text(
-          tabs[index].label,
-          textWidthBasis: TextWidthBasis.longestLine,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            wordSpacing: 4,
-            fontSize: SizeConfig(context, 14).getProportionateScreenHeight,
-            color: activeIndex == index
-                ? Colors.white
-                : Theme.of(context).primaryColor,
-          ),
-        ),
+      child: Text(
+        tabs[index].label,
+        textWidthBasis: TextWidthBasis.longestLine,
+        maxLines: 2,
+        textAlign: TextAlign.center,
+        style: FontStyles.rubikH2(color: isActive ? Palette.textBlack : Palette.text20Grey),
       ),
     );
-  }
-
-  BoxDecoration _boxDecoration(BuildContext context, int index) {
-    final double borderRadius = 5.0;
-    return BoxDecoration(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(isFirstElement(index) ? borderRadius : 0.0),
-        bottomLeft: Radius.circular(isFirstElement(index) ? borderRadius : 0.0),
-        topRight: Radius.circular(isLastElement(index) ? borderRadius : 0.0),
-        bottomRight: Radius.circular(isLastElement(index) ? borderRadius : 0.0),
-      ),
-      border: Border.all(color: Theme.of(context).primaryColor),
-      color: isActive(index) ? Theme.of(context).primaryColor : Colors.white,
-    );
-  }
-
-  bool isActive(int index) {
-    return activeIndex == index;
-  }
-
-  bool isFirstElement(int index) {
-    return index == 0;
-  }
-
-  bool isLastElement(int index) {
-    return index == tabs.length - 1;
   }
 }

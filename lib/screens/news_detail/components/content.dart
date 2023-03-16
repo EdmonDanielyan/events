@@ -53,7 +53,7 @@ class _ContentState extends State<Content> {
               children: [
                 DefaultButton(
                   title: widget.likeCount.toString(),
-                  icon: SvgPicture.asset(
+                  prefixIcon: SvgPicture.asset(
                     IconLinks.BARREL_SVG_LINK,
                     width: 20.0,
                     height: 20.0,
@@ -67,7 +67,7 @@ class _ContentState extends State<Content> {
                 ),
                 DefaultButton(
                   title: widget.commentsCount.toString(),
-                  icon: SvgPicture.asset(
+                  prefixIcon: SvgPicture.asset(
                     IconLinks.COMMENT_ICON_LINK,
                     width: 20.0,
                     height: 20.0,

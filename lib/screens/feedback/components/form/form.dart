@@ -8,6 +8,8 @@ import 'package:ink_mobile/components/textfields/pick_files.dart';
 import 'package:ink_mobile/components/textfields/service_btn.dart';
 import 'package:ink_mobile/components/textfields/service_selectfield_cubit.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/core/cubit/btn/btn_state.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/core/validator/field_validator.dart';
@@ -17,7 +19,6 @@ import 'package:ink_mobile/cubit/tags_list/tags_list_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:ink_mobile/screens/feedback/components/form/validator.dart';
-import 'package:ink_mobile/screens/feedback/components/hint_text.dart';
 import 'package:ink_mobile/screens/feedback/components/success_screen.dart';
 import 'package:ink_mobile/screens/service_list/service_list_page_viewer.dart';
 
@@ -51,46 +52,61 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
 
     selectfieldCubit = FeedBackScreen.of(context).selectfieldCubit;
 
-    return Container(
-      color: Colors.white,
+    return Padding(
       padding: EdgeInsets.all(20.0),
       child: Form(
         key: _formKey,
         child: Column(
           children: [
             _selectAddresseesWidget(entities: entities),
-            SizedBox(height: 20.0),
-            ServiceTextField(
-              hint: "${_strings.fullnameHint} ${_strings.notRequired}",
-              onChanged: (val) => entities.name = val,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24.0),
+              child: ServiceTextField(
+                hint: "${_strings.fullnameHint} ${_strings.notRequired}",
+                onChanged: (val) => entities.name = val,
+                descriptionText: localizationInstance.optionalInitials,
+              ),
             ),
-            SizedBox(height: 20.0),
-            ServiceTextField(
-              hint: "${_strings.email} ${_strings.notRequired}",
-              validator: (val) => FieldValidator(_strings)
-                  .emailValidator(val, canBeEmpty: true),
-              keyboardType: TextInputType.emailAddress,
-              autocorrect: false,
-              onChanged: (val) => entities.email = val,
+            Text(
+              localizationInstance.feedbackRecommendation,
+              style: FontStyles.rubikP2(color: Palette.textBlack50),
             ),
-            SizedBox(height: 20.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24.0),
+              child: ServiceTextField(
+                hint: "${_strings.email} ${_strings.notRequired}",
+                validator: (val) => FieldValidator(_strings)
+                    .emailValidator(val, canBeEmpty: true),
+                keyboardType: TextInputType.emailAddress,
+                autocorrect: false,
+                onChanged: (val) => entities.email = val,
+                descriptionText: localizationInstance.optionalEmail,
+              ),
+            ),
             ServiceTextField(
-              requiredIcon: true,
               validator: _validator.questionValidator,
               hint: _strings.question,
               keyboardType: TextInputType.multiline,
               onChanged: (val) => entities.question = val,
+              descriptionText: localizationInstance.yourQuestion,
             ),
-            SizedBox(height: 10.0),
-            FeedbackHintText(
-              txt: _strings.feedbackFormHint,
-            ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 24.0,),
             PickFiles(
               key: _pickFilesKey,
               onSuccesfullyPicked: (List<File> files) => entities.files = files,
             ),
-            SizedBox(height: 20.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24.0),
+              child: Text(
+                _strings.feedbackFormHint,
+                style: FontStyles.rubikP2(color: Palette.textBlack50),
+              ),
+            ),
+            Text(
+              _strings.companyRight,
+              style: FontStyles.rubikP2(color: Palette.textBlack50),
+            ),
+            const SizedBox(height: 24.0,),
             _btnWidget(_formKey, _pickFilesKey, entities),
           ],
         ),
@@ -119,6 +135,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
             items: getItems,
             validator: (_) => _validator.toWhomValidator(entities.toWhom),
             onChanged: (val) => entities.toWhom = val,
+            descriptionText: localizationInstance.theme,
           ),
         );
       },

@@ -4,10 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ink_mobile/constants/palette.dart';
 
 class FontStyles {
-  static rubikP1Medium({Color? color}) => GoogleFonts.rubik(
+  static rubikP1Medium({Color? color, TextDecoration? decoration}) =>
+      GoogleFonts.rubik(
         fontWeight: FontWeight.w500,
         fontSize: 16,
         color: color ?? Palette.textBlack,
+        decoration: decoration,
       );
 
   static rubikP1({Color? color}) => GoogleFonts.rubik(
@@ -24,24 +26,23 @@ class FontStyles {
         decoration: decoration,
       );
 
-  static rubikP2Medium({Color? color}) =>
-      GoogleFonts.rubik(
+  static rubikP2Medium({Color? color}) => GoogleFonts.rubik(
         fontWeight: FontWeight.w500,
         fontSize: 14,
         color: color ?? Palette.textBlack,
       );
 
   static rubikP3({Color? color}) => GoogleFonts.rubik(
-    fontWeight: FontWeight.w400,
-    fontSize: 12,
-    color: color ?? Palette.textBlack,
-  );
+        fontWeight: FontWeight.w400,
+        fontSize: 12,
+        color: color ?? Palette.textBlack,
+      );
 
   static rubikP3Medium({Color? color}) => GoogleFonts.rubik(
-    fontWeight: FontWeight.w500,
-    fontSize: 12,
-    color: color ?? Palette.textBlack,
-  );
+        fontWeight: FontWeight.w500,
+        fontSize: 12,
+        color: color ?? Palette.textBlack,
+      );
 
   static rubikH2({Color? color}) => GoogleFonts.rubik(
         fontWeight: FontWeight.w700,
@@ -50,14 +51,14 @@ class FontStyles {
       );
 
   static rubikH3({Color? color}) => GoogleFonts.rubik(
-    fontWeight: FontWeight.w500,
-    fontSize: 20,
-    color: color ?? Palette.textBlack,
-  );
+        fontWeight: FontWeight.w500,
+        fontSize: 20,
+        color: color ?? Palette.textBlack,
+      );
 
   static rubikH4({Color? color}) => GoogleFonts.rubik(
-    fontWeight: FontWeight.w500,
-    fontSize: 18,
-    color: color ?? Palette.textBlack,
-  );
+        fontWeight: FontWeight.w500,
+        fontSize: 18,
+        color: color ?? Palette.textBlack,
+      );
 }

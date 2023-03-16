@@ -54,7 +54,7 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
               errorMsg: localizationInstance.errorLoadingQuestions);
         }
 
-        return SizedBox();
+        return const SizedBox.shrink();
       },
     );
   }
@@ -68,28 +68,25 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
 
   Widget _listWidget(List<ManagementAnswer> answers,
       FeedbackAnswerListCubit cubit, Function loadMore) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        children: [
-          ListView.builder(
-            shrinkWrap: true,
-            controller: ScrollController(keepScrollOffset: false),
-            itemCount: answers.length,
-            itemBuilder: (BuildContext context, int index) => AnswerWidget(
-              index: index,
-              item: answers[index],
-            ),
+    return Column(
+      children: [
+        ListView.builder(
+          shrinkWrap: true,
+          controller: ScrollController(keepScrollOffset: false),
+          itemCount: answers.length,
+          itemBuilder: (BuildContext context, int index) => AnswerWidget(
+            index: index,
+            item: answers[index],
           ),
-          if (currentPage(cubit.pagination.pageNumber) == 1 &&
-              cubit.pagination.next) ...[
-            LoadMoreBtn(
-              onPressed: () => loadMore(),
-              text: localizationInstance.allAnswers,
-            ),
-          ],
+        ),
+        if (currentPage(cubit.pagination.pageNumber) == 1 &&
+            cubit.pagination.next) ...[
+          LoadMoreBtn(
+            onPressed: () => loadMore(),
+            text: localizationInstance.allAnswers,
+          ),
         ],
-      ),
+      ],
     );
   }
 }

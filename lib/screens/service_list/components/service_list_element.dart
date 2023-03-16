@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/service_list/components/service_list_item.dart';
 import 'package:ink_mobile/screens/service_list/service_list_page_viewer.dart';
 
@@ -12,7 +11,7 @@ class ServiceListElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         if (item.pageViewerId != null) {
           ServiceListPageViewerState.pageViewer.pageController

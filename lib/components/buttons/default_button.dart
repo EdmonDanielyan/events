@@ -9,7 +9,8 @@ class DefaultButton extends StatelessWidget {
   final Color? buttonColor;
   final Color? textColor;
   final Color? borderColor;
-  final Widget? icon;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final double? height;
   final double? width;
 
@@ -21,14 +22,15 @@ class DefaultButton extends StatelessWidget {
     this.buttonColor,
     this.textColor,
     this.borderColor,
-    this.icon,
+    this.prefixIcon,
+    this.suffixIcon,
     this.height,
     this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
       child: Container(
         height: height,
@@ -44,14 +46,18 @@ class DefaultButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (icon != null)...[
-              icon!,
+            if (prefixIcon != null)...[
+              prefixIcon!,
               const SizedBox(width: 8.0,)
               ],
             Text(
               title,
               style: FontStyles.rubikP1Medium(color: textColor),
             ),
+            if (suffixIcon != null)...[
+              const SizedBox(width: 8.0),
+              suffixIcon!,
+            ],
           ],
         ),
       ),

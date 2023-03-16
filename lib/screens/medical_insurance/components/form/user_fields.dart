@@ -87,11 +87,10 @@ class _MedicalInsuranceFormUserFieldsState
     return ServiceTextField(
       controller: fioController,
       hint: _strings.fullnameHint,
-      requiredIcon: true,
-      validator: (val) =>
-          val!.isEmpty ? _strings.fillTheField : null,
+      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       autocorrect: false,
       onChanged: (val) => widget.entities.fio = val,
+      descriptionText: "Ваше ФИО",
     );
   }
 
@@ -104,6 +103,7 @@ class _MedicalInsuranceFormUserFieldsState
         widget.entities.birthDate =
             DateFunctions(passedDate: val).dayMonthYearNumbers();
       },
+      descriptionText: "Дата рождения",
     );
   }
 
@@ -111,9 +111,9 @@ class _MedicalInsuranceFormUserFieldsState
     return ServiceTextField(
       controller: positionController,
       hint: _strings.position,
-      requiredIcon: true,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => widget.entities.position = val,
+      descriptionText: "Должность",
     );
   }
 
@@ -123,11 +123,11 @@ class _MedicalInsuranceFormUserFieldsState
     return ServiceTextField(
       hint: "+7 (ххх) xxx-xx-xx",
       controller: phoneController,
-      requiredIcon: true,
       validator: (val) => val!.length < 17 ? _strings.fillTheField : null,
       onChanged: (val) => widget.entities.phone = val,
       keyboardType: TextInputType.phone,
       inputFormatters: [mask],
+      descriptionText: "Номер телефона",
     );
   }
 
@@ -135,11 +135,11 @@ class _MedicalInsuranceFormUserFieldsState
     return ServiceTextField(
       controller: emailController,
       hint: _strings.email,
-      requiredIcon: true,
       validator: (val) => FieldValidator(_strings).emailValidator(val),
       keyboardType: TextInputType.emailAddress,
       autocorrect: false,
       onChanged: (val) => widget.entities.email = val,
+      descriptionText: "Эл. почта",
     );
   }
 }

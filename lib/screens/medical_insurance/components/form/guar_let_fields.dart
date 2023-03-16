@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
@@ -17,11 +19,9 @@ class MedicalInsuranceGuarLetFields extends StatelessWidget {
       children: [
         Text(
           localizationInstance.extGuarantLetterDesc,
-          style: TextStyle(
-            fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
-          ),
+          style: FontStyles.rubikP2(color: Palette.textBlack50),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20.0),
         _dateWidget(),
       ],
     );
@@ -38,6 +38,7 @@ class MedicalInsuranceGuarLetFields extends StatelessWidget {
         entities.guaranteeLetterDate =
             DateFunctions(passedDate: val).dayMonthYearNumbers();
       },
+      descriptionText: "Крайний срок продления",
     );
   }
 }
