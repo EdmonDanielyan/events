@@ -181,7 +181,7 @@ class EventDetailScreen extends StatelessWidget {
                             .getProportionateScreenHeight,
                       ),
                     )
-                  : Container(
+                  : Container(    // TODO добавить логику оторбражения кнопки"Я пойду", когда в API добавят поля.   Примерно  !(event.limit == 0 ||  event.isSuspended) ?   Кнопка  :  Текст
                       width: double.infinity,
                       decoration: BoxDecoration(
                           border:
