@@ -1,9 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/components/textfields/service_btn.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/profile/components/photo_preview_page.dart';
 import 'package:intl/intl.dart';
@@ -39,6 +43,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
     textFormFocus = FocusNode();
     super.initState();
   }
+
   @override
   void dispose() {
     textFormFocus.dispose();
@@ -53,9 +58,12 @@ class _UserMainInfoState extends State<UserMainInfo> {
       if (image == null) return;
       final imageTemporary = File(image.path);
 
-      Navigator.of(context).push(MaterialPageRoute (
-        builder: (BuildContext context) =>  PhotoPreviewPage(file: imageTemporary),
-      ),);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) =>
+              PhotoPreviewPage(file: imageTemporary),
+        ),
+      );
     } on PlatformException catch (e) {
       debugPrint('Failed to pick image: $e');
     }
@@ -88,127 +96,132 @@ class _UserMainInfoState extends State<UserMainInfo> {
       child: Column(
         children: [
           Container(
-            child: Column(
-              children: [
-                Container(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            SizeConfig(context, 65)
-                                .getProportionateScreenHeight),
-                        color: Colors.grey.withOpacity(0.2)),
-                    padding: EdgeInsets.all(5),
-                    child: PopupMenuButton(
-                      itemBuilder: (context) {
-                        return <PopupMenuItem>[
-                          PopupMenuItem(child: TextButton(child: Text('Просмотр'),
-                                onPressed: (){
-                                    Navigator.of(context).push(MaterialPageRoute (
-                                      builder: (BuildContext context) =>  PhotoPreviewPage(url: widget.pathToAvatar ?? ""),
-                                    ),);
-
-                            }
-                            ,)),
-                          if (!isOtherUser) PopupMenuItem(child:
-                              TextButton(child: Text('Галерея'),
-                                onPressed: ()=> getImage(ImageSource.gallery),
-                              )
-                        ) ,
-                          if (!isOtherUser) PopupMenuItem(child: TextButton(child: Text('Сделать фото'),
-                                onPressed: ()=> getImage(ImageSource.camera),)),
-                          //PopupMenuItem(child: Text('Отмена')),
-                        ];
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                    SizeConfig(context, 65).getProportionateScreenHeight),
+                color: Colors.grey.withOpacity(0.2)),
+            margin: const EdgeInsets.only(top: 60.0),
+            child: PopupMenuButton(
+              itemBuilder: (context) {
+                return <PopupMenuItem>[
+                  PopupMenuItem(
+                    child: TextButton(
+                      child: Text('Просмотр'),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => PhotoPreviewPage(
+                                url: widget.pathToAvatar ?? ""),
+                          ),
+                        );
                       },
-                      child: Stack(
-                        clipBehavior: Clip.hardEdge,
-                        children: [
-                          Container(
-                            child: CachedCircleAvatar(
-                              avatarWidth: SizeConfig(context, 140)
-                                  .getProportionateScreenHeight,
-                              avatarHeight: SizeConfig(context, 140)
-                                  .getProportionateScreenHeight,
-                              url: widget.pathToAvatar ?? "",
+                    ),
+                  ),
+                  if (!isOtherUser)
+                    PopupMenuItem(
+                      child: TextButton(
+                        child: Text('Галерея'),
+                        onPressed: () => getImage(ImageSource.gallery),
+                      ),
+                    ),
+                  if (!isOtherUser)
+                    PopupMenuItem(
+                      child: TextButton(
+                        child: Text('Сделать фото'),
+                        onPressed: () => getImage(ImageSource.camera),
+                      ),
+                    ),
+                  //PopupMenuItem(child: Text('Отмена')),
+                ];
+              },
+              child: Stack(
+                clipBehavior: Clip.hardEdge,
+                children: [
+                  CachedCircleAvatar(
+                    avatarWidth:
+                        SizeConfig(context, 140).getProportionateScreenHeight,
+                    avatarHeight:
+                        SizeConfig(context, 140).getProportionateScreenHeight,
+                    url: widget.pathToAvatar ?? "",
+                  ),
+                  if (!isOtherUser)
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        height: 44.0,
+                        width: 44.0,
+                        decoration: BoxDecoration(
+                            color: Palette.greenE4A,
+                            borderRadius: BorderRadius.circular(64.0)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Center(
+                            child: SvgPicture.asset(
+                              IconLinks.PHOTO_ICON,
+                              color: Palette.white,
+                              height: 20.0,
+                              width: 20.0,
                             ),
                           ),
-                          if(!isOtherUser) Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child:  Icon(Icons.add_a_photo_outlined),
-                            )
-                        ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16.0,),
+          Container(
+            width: size.width * 0.90,
+            child: Center(
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTapDown: (_) => _enableEdit(),
+                    behavior: HitTestBehavior.translucent,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: TextFormField(
+                        controller: fioFieldC,
+                        readOnly: !isEditing,
+                        focusNode: textFormFocus,
+                        autofocus: true,
+                        cursorColor: Theme.of(context).primaryColorLight,
+                        textAlign: TextAlign.center,
+                        style: FontStyles.rubikH3(color: Palette.white),
+                        textInputAction: TextInputAction.go,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          isCollapsed: true,
+                        ),
                       ),
                     ),
                   ),
-                  margin: EdgeInsets.only(
-                      top: SizeConfig(context, 50).getProportionateScreenHeight,
-                      bottom:
-                          SizeConfig(context, 21).getProportionateScreenHeight),
-                ),
-                Container(
-                  width: size.width * 0.90,
-                  child: Center(
-                      child: Column(
-                    children: [
-                      GestureDetector(
-                        onTapDown: (_)=> _enableEdit(),
-                        behavior: HitTestBehavior.translucent,
-                        child: Stack(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 20.0),
-                              child: TextFormField(
-                                controller: fioFieldC,
-                                readOnly: !isEditing,
-                                focusNode: textFormFocus,
-                                autofocus: true,
-                                cursorColor: Theme.of(context).primaryColorLight,
-                                textAlign: TextAlign.center,
-                                style:  TextStyle(
-                                  color: Colors.white,
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: SizeConfig(context, 20)
-                                      .getProportionateScreenHeight,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textInputAction: TextInputAction.go,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  isCollapsed: true,
-                                ),
-                              ),
-                            ),
-                            if(!isOtherUser && isEditing != true)
-                              Positioned(
-                                right: 0,
-                                bottom: 10,
-                                child:  IconButton(
-
-                                  icon: Icon(Icons.edit),
-                                  onPressed: _enableEdit
-                                ),)
-                          ],
-                        ),
+                  if (isEditing)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 18.0),
+                      child: ServiceBtn(
+                        txt: 'Сохранить',
+                        onPressed: () {
+                          setState(
+                            () {
+                              isEditing = false;
+                            },
+                          );
+                        },
                       ),
-                      if(isEditing)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: ServiceBtn(
-                              txt: 'Сохранить',
-                              onPressed: (){
-                                setState((){
-                                  isEditing = false;
-                                });
-                              }),
-                        )
-                    ],
-                  )),
-                ),
-                getUserPositionWidget(context),
-                ///user is vacation
-                getInfoUserInVacation( startDate: DateTime(2022,12,20), dateEnd: DateTime(2022,12,29))
-              ],
+                    ),
+                ],
+              ),
             ),
+          ),
+          getUserPositionWidget(context),
+
+          ///user is vacation
+          getInfoUserInVacation(
+            startDate: DateTime(2022, 12, 20),
+            dateEnd: DateTime(2022, 12, 29),
           ),
         ],
       ),
@@ -227,7 +240,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
   }
 
   void _enableEdit() {
-    if(isEditing != true) {
+    if (isEditing != true) {
       setState(() {
         isEditing = true;
       });
@@ -245,7 +258,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
                 widget.userPosition!.toUpperCase(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color(0xFFFFFFFF),
+                  color: Palette.white,
                   fontSize:
                       SizeConfig(context, 12).getProportionateScreenHeight,
                   fontWeight: FontWeight.bold,
@@ -253,20 +266,24 @@ class _UserMainInfoState extends State<UserMainInfo> {
                 ),
               )));
     } else {
-      return Container();
+      return const SizedBox.shrink();
     }
   }
 
-  Widget getInfoUserInVacation({required DateTime startDate, required DateTime dateEnd }) {
+  Widget getInfoUserInVacation(
+      {required DateTime startDate, required DateTime dateEnd}) {
     String start = DateFormat('d.M.yyyy').format(startDate);
     String end = DateFormat('d.M.yyyy').format(dateEnd);
     String text = "Отсутствует с $start по $end (отпуск основной)";
-    if (true/* логика отображения отпуска*/) {
-      return Container(
-          margin: EdgeInsets.all(2),
-          padding: EdgeInsets.all(2),
+    if (true /* логика отображения отпуска*/) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+          height: 52.0,
+          width: double.infinity,
           decoration: BoxDecoration(
-            color: Color.fromRGBO(246, 203, 69, 1),
+            color: Palette.yellow300,
             // border: Border.all(
             //     style: BorderStyle.solid,
             //     width: 1.0
@@ -277,9 +294,28 @@ class _UserMainInfoState extends State<UserMainInfo> {
                 topRight: Radius.circular(4),
                 bottomLeft: Radius.circular(4)),
           ),
-          child: Text(text));
-    } else return SizedBox();
+          child: Row(
+            children: [
+              SizedBox(
+                width: 258.0,
+                child: Text(
+                  text,
+                  style: FontStyles.rubikP3Medium(color: Palette.textBlack),
+                  maxLines: 2,
+                ),
+              ),
+              const Spacer(),
+              SvgPicture.asset(
+                IconLinks.SUN_ICON,
+                color: Palette.textBlack,
+                width: 24.0,
+                height: 24.0,
+              ),
+            ],
+          ),
+        ),
+      );
+    } else
+      return SizedBox();
   }
-
 }
-

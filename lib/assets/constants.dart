@@ -30,4 +30,7 @@ class IconLinks {
   static const String DOUBLE_CHECK_ICON_LINK = "assets/svg/double_check.svg";
   static const String ATTACHMENT_ICON = "assets/svg/attachment.svg";
   static const String CLOSE_ICON = "assets/svg/close.svg";
+  static const String SUN_ICON = "assets/svg/sun.svg";
+  static const String PHOTO_ICON = "assets/svg/photo.svg";
+  static const String MAIL_ICON = "assets/svg/mail.svg";
 }

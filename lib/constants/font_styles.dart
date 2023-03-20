@@ -50,6 +50,12 @@ class FontStyles {
         color: color ?? Palette.textBlack,
       );
 
+  static rubikH2Medium({Color? color}) => GoogleFonts.rubik(
+    fontWeight: FontWeight.w500,
+    fontSize: 24,
+    color: color ?? Palette.textBlack,
+  );
+
   static rubikH3({Color? color}) => GoogleFonts.rubik(
         fontWeight: FontWeight.w500,
         fontSize: 20,

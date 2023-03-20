@@ -13,7 +13,7 @@ class Awards extends StatelessWidget {
     if (awards != null) {
       return getAwardsWidget(context);
     } else {
-      return Container();
+      return const SizedBox.shrink();
     }
   }
 
@@ -38,14 +38,12 @@ class Awards extends StatelessWidget {
                       bottom:
                           BorderSide(color: Colors.grey.shade400, width: 0.5),
                     )),
-                child: Container(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Row(
-                        children: getAwards(),
-                      ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Row(
+                      children: getAwards(),
                     ),
                   ),
                 ),
@@ -53,7 +51,7 @@ class Awards extends StatelessWidget {
             ],
           ));
     } else {
-      return Container();
+      return const SizedBox.shrink();
     }
   }
 

@@ -17,7 +17,7 @@ class Contacts extends StatelessWidget {
     if (contacts != null) {
       return getContactsWidget(context);
     } else {
-      return Container();
+      return const SizedBox.shrink();
     }
   }
 

@@ -29,7 +29,6 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return CustomRefreshIndicator(
       onRefresh: () async {
         userCubit.refresh();
@@ -39,7 +38,7 @@ class Body extends StatelessWidget {
       triggerMode: IndicatorTriggerMode.anywhere,
       trigger: IndicatorTrigger.bothEdges,
       builder: MaterialIndicatorDelegate(
-        builder:  (BuildContext context, IndicatorController controller) {
+        builder: (BuildContext context, IndicatorController controller) {
           return Icon(
             Icons.update,
             color: Colors.green[900],
@@ -98,27 +97,31 @@ class Body extends StatelessWidget {
     final ScrollController _scrollController = ScrollController();
     UserProfileData user = state.data!;
     final logFile = ProfileScreen.of(context).widget.logFile;
-    return Container(
-        child: Background(
-            child: SingleChildScrollView(
-              controller: _scrollController,
-      physics: AlwaysScrollableScrollPhysics(),
-      child: Column(children: [
-        PersonalPageHeader(user: user),
-        Awards(awards: user.awards),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Background(
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Column(
           children: [
-            Contacts(contacts: user.contacts),
-            BasicInformation(info: user.basicInformation),
-            Diagnostics(logFile: logFile),
-            ProfileSecuritySection(),
-            AboutMyField(user: user, scrollController: _scrollController,)
-
+            PersonalPageHeader(user: user),
+            Awards(awards: user.awards),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Contacts(contacts: user.contacts),
+                BasicInformation(info: user.basicInformation),
+                Diagnostics(logFile: logFile),
+                ProfileSecuritySection(),
+                AboutMyField(
+                  user: user,
+                  scrollController: _scrollController,
+                )
+              ],
+            ),
           ],
-        )
-      ]),
-    )));
+        ),
+      ),
+    );
   }
 
   Widget getOtherUserLoadedWidget(context, ProfileState state) {
