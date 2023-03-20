@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/basic_information_row.dart';
@@ -28,39 +29,51 @@ class BasicInformation extends StatelessWidget {
         info!.office != null ||
         info!.department != null) {
       Size size = MediaQuery.of(context).size;
-      return CustomLayoutBuilder(builder: (context, constraints, isTablet) {
-        return Container(
-          width: size.width,
-          margin: EdgeInsets.only(top: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                child: SectionTitle(
+      return CustomLayoutBuilder(
+        builder: (context, constraints, isTablet) {
+          return Container(
+            width: size.width,
+            margin: EdgeInsets.only(top: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SectionTitle(
                   title: _strings.mainInformation,
                 ),
-              ),
-              Column(children: getBasicInfoWidgetRows())
-            ],
-          ),
-        );
-      });
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: Palette.text20Grey),
+                      bottom: BorderSide(color: Palette.text20Grey),
+                    ),
+                  ),
+                  child: Column(children: getBasicInfoWidgetRows()),
+                ),
+              ],
+            ),
+          );
+        },
+      );
     } else {
-      return Container();
+      return const SizedBox.shrink();
     }
   }
 
   List<Widget> getBasicInfoWidgetRows() {
     List<Widget> widgetRows = [];
 
-    getRowsInfo().forEach((element) {
-      if (element['value'] != null) {
-        widgetRows.add(BasicInfoRow(
-          title: element['title'],
-          value: element['value'],
-        ));
-      }
-    });
+    getRowsInfo().forEach(
+      (element) {
+        if (element['value'] != null) {
+          widgetRows.add(
+            BasicInfoRow(
+              title: element['title'],
+              value: element['value'],
+            ),
+          );
+        }
+      },
+    );
     return widgetRows;
   }
 
@@ -74,7 +87,10 @@ class BasicInformation extends StatelessWidget {
       {'title': 'Осталось на питание', 'value': "{0-3000} руб "},
       {'title': 'Результаты тестов на ковид', 'value': "{ЗДОРОВ / COVID}"},
       {'title': 'Оставшиеся дни отпуска', 'value': "{10}"},
-      {'title': 'Статус:', 'value': "{В отпуске с ... по ... / Работаю / На больничном}"},
+      {
+        'title': 'Статус:',
+        'value': "{В отпуске с ... по ... / Работаю / На больничном}"
+      },
       {'title': 'Сменщик:', 'value': "{Иван Иванов}"},
     ];
   }

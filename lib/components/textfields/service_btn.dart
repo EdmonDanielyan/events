@@ -13,6 +13,7 @@ class ServiceBtn extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
       width: size.width,
+      margin: const EdgeInsets.symmetric(horizontal: 20.0),
       child: TextButton(
         onPressed: onPressed,
         child: Text(

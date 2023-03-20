@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
+import 'package:ink_mobile/components/menu_sheet/menu_sheet.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/user_data.dart';
@@ -108,6 +114,7 @@ class Body extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                //TODO: вынести в отдельный виджет - во всех 5-ти секциях дублирование кода
                 Contacts(contacts: user.contacts),
                 BasicInformation(info: user.basicInformation),
                 Diagnostics(logFile: logFile),
@@ -115,7 +122,32 @@ class Body extends StatelessWidget {
                 AboutMyField(
                   user: user,
                   scrollController: _scrollController,
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 32.0,
+                    horizontal: 20.0,
+                  ),
+                  child: DefaultButton(
+                    title: localizationInstance.signOffAccount,
+                    borderColor: Palette.greenE4A,
+                    textColor: Palette.greenE4A,
+                    prefixIcon: SvgPicture.asset(
+                      IconLinks.LOGOUT_ICON_LINK,
+                      width: 20.0,
+                      height: 20.0,
+                      color: Palette.greenE4A,
+                    ),
+                    onTap: () async {
+                      showDialog(
+                        context: context,
+                        builder: (_) => ExitAlertDialog(
+                          onPressed: () => userCubit.exit(context),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ],
