@@ -45,6 +45,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
   Widget build(BuildContext context) {
     final GlobalKey<PickFilesState> _pickFilesKey = GlobalKey<PickFilesState>();
     final _strings = localizationInstance;
+    final size = MediaQuery.of(context).size;
     _validator = ManagementFeedbackFormValidator();
 
     sendManagementFormCubit =
@@ -52,63 +53,70 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
 
     selectfieldCubit = FeedBackScreen.of(context).selectfieldCubit;
 
-    return Padding(
-      padding: EdgeInsets.all(20.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            _selectAddresseesWidget(entities: entities),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24.0),
-              child: ServiceTextField(
-                hint: "${_strings.fullnameHint} ${_strings.notRequired}",
-                onChanged: (val) => entities.name = val,
-                descriptionText: localizationInstance.optionalInitials,
-              ),
+    return SingleChildScrollView(
+      controller:
+      FeedBackScreen.of(context).scrollBottomLoadMoreCubit.scrollController,
+      child: Container(
+        width: size.width,
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                _selectAddresseesWidget(entities: entities),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24.0),
+                  child: ServiceTextField(
+                    hint: "${_strings.fullnameHint} ${_strings.notRequired}",
+                    onChanged: (val) => entities.name = val,
+                    descriptionText: localizationInstance.optionalInitials,
+                  ),
+                ),
+                Text(
+                  localizationInstance.feedbackRecommendation,
+                  style: FontStyles.rubikP2(color: Palette.textBlack50),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24.0),
+                  child: ServiceTextField(
+                    hint: "${_strings.email} ${_strings.notRequired}",
+                    validator: (val) => FieldValidator(_strings)
+                        .emailValidator(val, canBeEmpty: true),
+                    keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    onChanged: (val) => entities.email = val,
+                    descriptionText: localizationInstance.optionalEmail,
+                  ),
+                ),
+                ServiceTextField(
+                  validator: _validator.questionValidator,
+                  hint: _strings.question,
+                  keyboardType: TextInputType.multiline,
+                  onChanged: (val) => entities.question = val,
+                  descriptionText: localizationInstance.yourQuestion,
+                ),
+                const SizedBox(height: 24.0,),
+                PickFiles(
+                  key: _pickFilesKey,
+                  onSuccesfullyPicked: (List<File> files) => entities.files = files,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24.0),
+                  child: Text(
+                    _strings.feedbackFormHint,
+                    style: FontStyles.rubikP2(color: Palette.textBlack50),
+                  ),
+                ),
+                Text(
+                  _strings.companyRight,
+                  style: FontStyles.rubikP2(color: Palette.textBlack50),
+                ),
+                const SizedBox(height: 24.0,),
+                _btnWidget(_formKey, _pickFilesKey, entities),
+              ],
             ),
-            Text(
-              localizationInstance.feedbackRecommendation,
-              style: FontStyles.rubikP2(color: Palette.textBlack50),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24.0),
-              child: ServiceTextField(
-                hint: "${_strings.email} ${_strings.notRequired}",
-                validator: (val) => FieldValidator(_strings)
-                    .emailValidator(val, canBeEmpty: true),
-                keyboardType: TextInputType.emailAddress,
-                autocorrect: false,
-                onChanged: (val) => entities.email = val,
-                descriptionText: localizationInstance.optionalEmail,
-              ),
-            ),
-            ServiceTextField(
-              validator: _validator.questionValidator,
-              hint: _strings.question,
-              keyboardType: TextInputType.multiline,
-              onChanged: (val) => entities.question = val,
-              descriptionText: localizationInstance.yourQuestion,
-            ),
-            const SizedBox(height: 24.0,),
-            PickFiles(
-              key: _pickFilesKey,
-              onSuccesfullyPicked: (List<File> files) => entities.files = files,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24.0),
-              child: Text(
-                _strings.feedbackFormHint,
-                style: FontStyles.rubikP2(color: Palette.textBlack50),
-              ),
-            ),
-            Text(
-              _strings.companyRight,
-              style: FontStyles.rubikP2(color: Palette.textBlack50),
-            ),
-            const SizedBox(height: 24.0,),
-            _btnWidget(_formKey, _pickFilesKey, entities),
-          ],
+          ),
         ),
       ),
     );
