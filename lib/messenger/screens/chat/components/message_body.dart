@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
+import 'package:ink_mobile/messenger/components/text/message_style.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class MessageBody extends StatelessWidget {
@@ -14,7 +15,7 @@ class MessageBody extends StatelessWidget {
     return Flexible(
       child: Container(
         width: width,
-        child: GoogleText(
+        child: MessageText(
           text,
           color: isByMe ? Colors.white : const Color(0XFF1D2126),
           maxLines: 10,
