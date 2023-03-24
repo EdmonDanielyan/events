@@ -180,9 +180,9 @@ const String _prod = 'prod';
 const String _dev = 'dev';
 const String _unitTest = 'unitTest';
 
-// ignore_for_file: unnecessary_lambdas
-// ignore_for_file: lines_longer_than_80_chars
-// initializes the registration of main-scope dependencies inside of GetIt
+/// ignore_for_file: unnecessary_lambdas
+/// ignore_for_file: lines_longer_than_80_chars
+/// initializes the registration of main-scope dependencies inside of [GetIt]
 Future<_i1.GetIt> $initGetIt(
   _i1.GetIt getIt, {
   String? environment,
@@ -419,10 +419,6 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i105.StaffMovementsNetworkRequest>(
       _i105.StaffMovementsNetworkRequest());
   gh.factory<String>(
-    () => tokenDataInjectorModule.userId,
-    instanceName: 'userId',
-  );
-  gh.factory<String>(
     () => tokenDataInjectorModule.localDatabasePassword,
     instanceName: 'localDatabasePassword',
   );
@@ -441,6 +437,10 @@ Future<_i1.GetIt> $initGetIt(
   gh.factory<String>(
     () => tokenDataInjectorModule.messengerAuthLogin,
     instanceName: 'messengerAuthLogin',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.userId,
+    instanceName: 'userId',
   );
   gh.factory<String>(
     () => testLogFilePathInjector.logFile,

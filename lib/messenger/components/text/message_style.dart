@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MessageText extends StatelessWidget {
   final String str;
@@ -28,10 +29,15 @@ class MessageText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width * 0.7
+        //maxWidth: MediaQuery.of(context).size.width * 0.7
       ),
       child: Html(
+        shrinkWrap: true,
         data: str,
+        onLinkTap: (_url ,context,__,___){
+          Uri url = Uri.parse(_url!);
+          launchUrl(url);
+        },
         style: {
           '#': Style(fontSize: FontSize(fontSize ?? 13),fontWeight: fontWeight, maxLines: maxLines,color: color, textOverflow: textOverflow, textAlign: textAlign, fontStyle: fontStyle),
         },
