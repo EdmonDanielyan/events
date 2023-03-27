@@ -3,6 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_bbcode/flutter_bbcode.dart';
+
 
 class MessageText extends StatelessWidget {
   final String str;
@@ -31,17 +33,22 @@ class MessageText extends StatelessWidget {
       constraints: BoxConstraints(
         //maxWidth: MediaQuery.of(context).size.width * 0.7
       ),
-      child: Html(
-        shrinkWrap: true,
+      child: BBCodeText(
         data: str,
-        onLinkTap: (_url ,context,__,___){
-          Uri url = Uri.parse(_url!);
-          launchUrl(url);
-        },
-        style: {
-          '#': Style(fontSize: FontSize(fontSize ?? 13),fontWeight: fontWeight, maxLines: maxLines,color: color, textOverflow: textOverflow, textAlign: textAlign, fontStyle: fontStyle),
-        },
+
       ),
+
+      // Html(
+      //   shrinkWrap: true,
+      //   data: str,
+      //   onLinkTap: (_url ,context,__,___){
+      //     Uri url = Uri.parse(_url!);
+      //     launchUrl(url);
+      //   },
+      //   style: {
+      //     '#': Style(fontSize: FontSize(fontSize ?? 13),fontWeight: fontWeight, maxLines: maxLines,color: color, textOverflow: textOverflow, textAlign: textAlign, fontStyle: fontStyle),
+      //   },
+      // ),
     );
   }
 }
