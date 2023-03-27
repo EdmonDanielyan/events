@@ -30,25 +30,27 @@ class MessageText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
-        //maxWidth: MediaQuery.of(context).size.width * 0.7
-      ),
-      child: BBCodeText(
-        data: str,
-
-      ),
-
-      // Html(
-      //   shrinkWrap: true,
+      child:
+      // BBCodeText(
       //   data: str,
-      //   onLinkTap: (_url ,context,__,___){
-      //     Uri url = Uri.parse(_url!);
-      //     launchUrl(url);
-      //   },
-      //   style: {
-      //     '#': Style(fontSize: FontSize(fontSize ?? 13),fontWeight: fontWeight, maxLines: maxLines,color: color, textOverflow: textOverflow, textAlign: textAlign, fontStyle: fontStyle),
-      //   },
-      // ),
+      //   stylesheet: defaultBBStylesheet(
+      //     textStyle: TextStyle(fontStyle: fontStyle ,fontWeight: fontWeight, color: color, overflow: textOverflow, fontSize: fontSize),
+      //   ).replaceTag(UrlTag(onTap: (url){
+      //     launchUrl(Uri.parse(url));
+      //   })),
+      // )
+
+      Html(
+        shrinkWrap: true,
+        data: str.replaceAll("[B]", "").replaceAll("[/B]", ""),
+        onLinkTap: (_url ,context,__,___){
+          Uri url = Uri.parse(_url!);
+          launchUrl(url);
+        },
+        style: {
+          '#': Style(fontSize: FontSize(fontSize ?? 13),fontWeight: fontWeight, maxLines: maxLines,color: color, textOverflow: textOverflow, textAlign: textAlign, fontStyle: fontStyle),
+        },
+      ),
     );
   }
 }
