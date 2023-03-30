@@ -113,7 +113,8 @@ class Body extends StatelessWidget {
             BasicInformation(info: user.basicInformation),
             Diagnostics(logFile: logFile),
             ProfileSecuritySection(),
-            AboutMyField(user: user, scrollController: _scrollController,)
+            /// todo AboutMyField
+            // AboutMyField(user: user, scrollController: _scrollController,)
 
           ],
         )

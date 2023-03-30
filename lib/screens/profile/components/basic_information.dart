@@ -71,11 +71,12 @@ class BasicInformation extends StatelessWidget {
       {'title': _strings.address, 'value': info!.address},
       {'title': _strings.office, 'value': info!.office},
       {'title': _strings.birthday, 'value': info!.birthday},
-      {'title': 'Осталось на питание', 'value': "{0-3000} руб "},
-      {'title': 'Результаты тестов на ковид', 'value': "{ЗДОРОВ / COVID}"},
-      {'title': 'Оставшиеся дни отпуска', 'value': "{10}"},
-      {'title': 'Статус:', 'value': "{В отпуске с ... по ... / Работаю / На больничном}"},
-      {'title': 'Сменщик:', 'value': "{Иван Иванов}"},
+      /// todo дополнительные поля в "Основоной информации"
+      //{'title': 'Осталось на питание', 'value': "{0-3000} руб "},
+      //{'title': 'Результаты тестов на ковид', 'value': "{ЗДОРОВ / COVID}"},
+      //{'title': 'Оставшиеся дни отпуска', 'value': "{10}"},
+      //{'title': 'Статус:', 'value': "{В отпуске с ... по ... / Работаю / На больничном}"},
+      //{'title': 'Сменщик:', 'value': "{Иван Иванов}"},
     ];
   }
 }

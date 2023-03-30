@@ -205,8 +205,8 @@ class _UserMainInfoState extends State<UserMainInfo> {
                   )),
                 ),
                 getUserPositionWidget(context),
-                ///user is vacation
-                getInfoUserInVacation( startDate: DateTime(2022,12,20), dateEnd: DateTime(2022,12,29))
+                ///todo - user is vacation?!
+                //getInfoUserInVacation( startDate: DateTime(2022,12,20), dateEnd: DateTime(2022,12,29))
               ],
             ),
           ),
