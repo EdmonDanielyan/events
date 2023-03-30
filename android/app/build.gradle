@@ -81,8 +81,8 @@ android {
     }
 
     //UNCOMMENT THIS FOR RELEASE
-//    signingConfigs {
-//        release {
+    signingConfigs {
+        release {
 //            keyAlias keystoreProperties['keyAlias']
 //            keyPassword keystoreProperties['keyPassword']
 //            try {
@@ -91,8 +91,13 @@ android {
 //                println("please specify keystore: ${e}")
 //            }
 //            storePassword keystoreProperties['storePassword']
-//        }
-//    }
+
+            storeFile file('ink.keystore')
+            storePassword 'fcntl16io'
+            keyAlias 'key0'
+            keyPassword 'fcntl16io'
+        }
+    }
 
     buildTypes {
 
@@ -100,13 +105,13 @@ android {
        release {
             signingConfig signingConfigs.debug
        }
-        
+
         //UNCOMMENT THIS FOR RELEASE
-//        release {
-//             signingConfig signingConfigs.release
-//             minifyEnabled true
-//             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//         }
+        release {
+             signingConfig signingConfigs.release
+             minifyEnabled true
+             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+         }
     }
 }
 
