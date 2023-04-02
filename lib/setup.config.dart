@@ -180,9 +180,9 @@ const String _prod = 'prod';
 const String _dev = 'dev';
 const String _unitTest = 'unitTest';
 
-/// ignore_for_file: unnecessary_lambdas
-/// ignore_for_file: lines_longer_than_80_chars
-/// initializes the registration of main-scope dependencies inside of [GetIt]
+// ignore_for_file: unnecessary_lambdas
+// ignore_for_file: lines_longer_than_80_chars
+// initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
   _i1.GetIt getIt, {
   String? environment,
@@ -193,9 +193,9 @@ Future<_i1.GetIt> $initGetIt(
     environment,
     environmentFilter,
   );
-  final logFilePathInjector = _$LogFilePathInjector();
-  final testLogFilePathInjector = _$TestLogFilePathInjector();
   final tokenDataInjectorModule = _$TokenDataInjectorModule();
+  final testLogFilePathInjector = _$TestLogFilePathInjector();
+  final logFilePathInjector = _$LogFilePathInjector();
   gh.factory<_i3.AnnouncementCubit>(() => _i3.AnnouncementCubit());
   gh.factoryParam<_i4.AnnouncementsDetailNetworkRequest, int?, dynamic>((
     announcementId,
@@ -418,24 +418,9 @@ Future<_i1.GetIt> $initGetIt(
       _i104.SingleSectionNetworkRequest(code: code));
   gh.singleton<_i105.StaffMovementsNetworkRequest>(
       _i105.StaffMovementsNetworkRequest());
-  await gh.factoryAsync<String>(
-    () => logFilePathInjector.logFile,
-    instanceName: 'logFile',
-    registerFor: {
-      _test,
-      _prod,
-      _dev,
-    },
-    preResolve: true,
-  );
   gh.factory<String>(
-    () => testLogFilePathInjector.logFile,
-    instanceName: 'logFile',
-    registerFor: {_unitTest},
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.userId,
-    instanceName: 'userId',
+    () => tokenDataInjectorModule.natsToken,
+    instanceName: 'natsToken',
   );
   gh.factory<String>(
     () => tokenDataInjectorModule.localDatabasePassword,
@@ -446,16 +431,31 @@ Future<_i1.GetIt> $initGetIt(
     instanceName: 'deviceVirtualId',
   );
   gh.factory<String>(
-    () => tokenDataInjectorModule.natsToken,
-    instanceName: 'natsToken',
-  );
-  gh.factory<String>(
     () => tokenDataInjectorModule.messengerAuthPassword,
     instanceName: 'messengerAuthPassword',
   );
   gh.factory<String>(
     () => tokenDataInjectorModule.messengerAuthLogin,
     instanceName: 'messengerAuthLogin',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.userId,
+    instanceName: 'userId',
+  );
+  gh.factory<String>(
+    () => testLogFilePathInjector.logFile,
+    instanceName: 'logFile',
+    registerFor: {_unitTest},
+  );
+  await gh.factoryAsync<String>(
+    () => logFilePathInjector.logFile,
+    instanceName: 'logFile',
+    registerFor: {
+      _test,
+      _prod,
+      _dev,
+    },
+    preResolve: true,
   );
   gh.singleton<_i106.TagsListCubit>(_i106.TagsListCubit());
   gh.singleton<_i107.TagsListNetworkRequest>(_i107.TagsListNetworkRequest());
