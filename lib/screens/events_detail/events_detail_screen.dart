@@ -173,7 +173,8 @@ class EventDetailScreen extends StatelessWidget {
             Container(
               padding: EdgeInsets.only(bottom: 30, top: 20),
               margin: EdgeInsets.symmetric(horizontal: 20),
-              child: event.isMember!
+              child: (event.isActual! && event.placesAvailable!)?
+              event.isMember!
                   ? Text(
                       _strings.nowParticipatingInTheEvent,
                       style: TextStyle(
@@ -181,7 +182,7 @@ class EventDetailScreen extends StatelessWidget {
                             .getProportionateScreenHeight,
                       ),
                     )
-                  : Container(    // TODO добавить логику оторбражения кнопки"Я пойду", когда в API добавят поля.   Примерно  !(event.limit == 0 ||  event.isSuspended) ?   Кнопка  :  Текст
+                  : Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
                           border:
@@ -213,7 +214,7 @@ class EventDetailScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
+                    ):SizedBox(),
             ),
           ],
         ),
