@@ -45,21 +45,21 @@ class _UserMainInfoState extends State<UserMainInfo> {
     super.dispose();
   }
 
-  ImagePicker picker = ImagePicker();
-
-  Future getImage(ImageSource source) async {
-    try {
-      final image = await picker.pickImage(source: source);
-      if (image == null) return;
-      final imageTemporary = File(image.path);
-
-      Navigator.of(context).push(MaterialPageRoute (
-        builder: (BuildContext context) =>  PhotoPreviewPage(file: imageTemporary),
-      ),);
-    } on PlatformException catch (e) {
-      debugPrint('Failed to pick image: $e');
-    }
-  }
+  // ImagePicker picker = ImagePicker();
+  //
+  // Future getImage(ImageSource source) async {
+  //   try {
+  //     final image = await picker.pickImage(source: source);
+  //     if (image == null) return;
+  //     final imageTemporary = File(image.path);
+  //
+  //     Navigator.of(context).push(MaterialPageRoute (
+  //       builder: (BuildContext context) =>  PhotoPreviewPage(file: imageTemporary),
+  //     ),);
+  //   } on PlatformException catch (e) {
+  //     debugPrint('Failed to pick image: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -98,45 +98,13 @@ class _UserMainInfoState extends State<UserMainInfo> {
                                 .getProportionateScreenHeight),
                         color: Colors.grey.withOpacity(0.2)),
                     padding: EdgeInsets.all(5),
-                    child: PopupMenuButton(
-                      itemBuilder: (context) {
-                        return <PopupMenuItem>[
-                          PopupMenuItem(child: TextButton(child: Text('Просмотр'),
-                                onPressed: (){
-                                    Navigator.of(context).push(MaterialPageRoute (
-                                      builder: (BuildContext context) =>  PhotoPreviewPage(url: widget.pathToAvatar ?? ""),
-                                    ),);
-
-                            }
-                            ,)),
-                          if (!isOtherUser) PopupMenuItem(child:
-                              TextButton(child: Text('Галерея'),
-                                onPressed: ()=> getImage(ImageSource.gallery),
-                              )
-                        ) ,
-                          if (!isOtherUser) PopupMenuItem(child: TextButton(child: Text('Сделать фото'),
-                                onPressed: ()=> getImage(ImageSource.camera),)),
-                          //PopupMenuItem(child: Text('Отмена')),
-                        ];
-                      },
-                      child: Stack(
-                        clipBehavior: Clip.hardEdge,
-                        children: [
-                          Container(
-                            child: CachedCircleAvatar(
-                              avatarWidth: SizeConfig(context, 140)
-                                  .getProportionateScreenHeight,
-                              avatarHeight: SizeConfig(context, 140)
-                                  .getProportionateScreenHeight,
-                              url: widget.pathToAvatar ?? "",
-                            ),
-                          ),
-                          if(!isOtherUser) Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child:  Icon(Icons.add_a_photo_outlined),
-                            )
-                        ],
+                    child: Container(
+                      child: CachedCircleAvatar(
+                        avatarWidth: SizeConfig(context, 140)
+                            .getProportionateScreenHeight,
+                        avatarHeight: SizeConfig(context, 140)
+                            .getProportionateScreenHeight,
+                        url: widget.pathToAvatar ?? "",
                       ),
                     ),
                   ),
@@ -151,56 +119,45 @@ class _UserMainInfoState extends State<UserMainInfo> {
                       child: Column(
                     children: [
                       GestureDetector(
-                        onTapDown: (_)=> _enableEdit(),
+                        //onTapDown: (_)=> _enableEdit(),
                         behavior: HitTestBehavior.translucent,
-                        child: Stack(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 20.0),
-                              child: TextFormField(
-                                controller: fioFieldC,
-                                readOnly: !isEditing,
-                                focusNode: textFormFocus,
-                                autofocus: true,
-                                cursorColor: Theme.of(context).primaryColorLight,
-                                textAlign: TextAlign.center,
-                                style:  TextStyle(
-                                  color: Colors.white,
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: SizeConfig(context, 20)
-                                      .getProportionateScreenHeight,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textInputAction: TextInputAction.go,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  isCollapsed: true,
-                                ),
-                              ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 20.0),
+                          child: TextFormField(
+                            controller: fioFieldC,
+                            readOnly: !isEditing,
+                            focusNode: textFormFocus,
+                            autofocus: true,
+                            maxLines: 2,
+                            cursorColor: Theme.of(context).primaryColorLight,
+                            textAlign: TextAlign.center,
+                            style:  TextStyle(
+                              overflow: TextOverflow.visible,
+                              color: Colors.white,
+                              fontStyle: FontStyle.normal,
+                              fontSize: SizeConfig(context, 20)
+                                  .getProportionateScreenHeight,
+                              fontWeight: FontWeight.bold,
                             ),
-                            if(!isOtherUser && isEditing != true)
-                              Positioned(
-                                right: 0,
-                                bottom: 10,
-                                child:  IconButton(
-
-                                  icon: Icon(Icons.edit),
-                                  onPressed: _enableEdit
-                                ),)
-                          ],
+                            textInputAction: TextInputAction.go,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              isCollapsed: true,
+                            ),
+                          ),
                         ),
                       ),
-                      if(isEditing)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: ServiceBtn(
-                              txt: 'Сохранить',
-                              onPressed: (){
-                                setState((){
-                                  isEditing = false;
-                                });
-                              }),
-                        )
+                      // if(isEditing)
+                      //   Padding(
+                      //     padding: const EdgeInsets.only(top: 10.0),
+                      //     child: ServiceBtn(
+                      //         txt: 'Сохранить',
+                      //         onPressed: (){
+                      //           setState((){
+                      //             isEditing = false;
+                      //           });
+                      //         }),
+                      //   )
                     ],
                   )),
                 ),
@@ -226,14 +183,14 @@ class _UserMainInfoState extends State<UserMainInfo> {
     return nameComponents.join(' ');
   }
 
-  void _enableEdit() {
-    if(isEditing != true) {
-      setState(() {
-        isEditing = true;
-      });
-      FocusScope.of(context).requestFocus(textFormFocus);
-    }
-  }
+  // void _enableEdit() {
+  //   if(isEditing != true) {
+  //     setState(() {
+  //       isEditing = true;
+  //     });
+  //     FocusScope.of(context).requestFocus(textFormFocus);
+  //   }
+  // }
 
   Widget getUserPositionWidget(BuildContext context) {
     if (widget.userPosition != null) {
