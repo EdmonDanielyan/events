@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/components/ink_drop_down.dart';
 import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/components/textfields/pick_files.dart';
@@ -39,7 +40,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
   final _formKey = GlobalKey<FormState>();
   late SendManagementFormCubit sendManagementFormCubit;
   late SelectfieldCubit selectfieldCubit;
-
+  late int referenceId = 0 ;
   @override
   Widget build(BuildContext context) {
     final GlobalKey<PickFilesState> _pickFilesKey = GlobalKey<PickFilesState>();
@@ -98,6 +99,8 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
     );
   }
 
+
+
   Widget _selectAddresseesWidget(
       {required ManagementFeedbackFormEntities entities}) {
     final tagsListCubit = FeedBackScreen.of(context).tagsListCubit;
@@ -110,16 +113,25 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
 
         List<Selectfield> getItems =
             state.state == TagsListCubitStateEnums.SUCCESS ? state.data : [];
+        List<String> _items = [];
+        getItems.forEach((e) => _items.add(e.title));
+
         return IgnorePointer(
           ignoring: state.data.length < 1,
-          child: ServiceSelectFieldCubit(
-            hint:
-                "${localizationInstance.topic} (${localizationInstance.markMultiple})",
-            cubit: selectfieldCubit,
-            items: getItems,
-            validator: (_) => _validator.toWhomValidator(entities.toWhom),
-            onChanged: (val) => entities.toWhom = val,
+          child: DropdownButtonFormField<String>(
+            hint: Text("${localizationInstance.topic}"),
+            items: _items.map((str) => DropdownMenuItem<String>(
+              value: str,
+              child: SizedBox(width: MediaQuery.of(context).size.width * 0.75,
+                child: Text(str, overflow: TextOverflow.visible,),
+              )
+            )).toList(),
+            onChanged: (value) {
+              entities.toWhom = getItems.where((element) => element.title == value).toList();
+            },
+            decoration: InputDecoration(border: OutlineInputBorder(borderSide: BorderSide(color: Colors.black54,width: 1))),
           ),
+
         );
       },
     );
