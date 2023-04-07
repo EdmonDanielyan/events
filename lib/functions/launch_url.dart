@@ -1,8 +1,12 @@
+
+import 'dart:ffi';
+
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:ink_mobile/functions/errors.dart';
 import 'package:url_launcher/url_launcher.dart' as urlLaucnher;
 
-Future<void> launchUrl(String url, {bool formatUrl = true}) async {
+Future<void> launchUrl(String url, {bool formatUrl = true, BuildContext? context}) async {
   try {
     if (!url.contains("http")) {
       final separate = url.split(":");
@@ -12,7 +16,15 @@ Future<void> launchUrl(String url, {bool formatUrl = true}) async {
         return;
       }
     }
-
+    if(url.contains("USER_ID")) {
+      if(context != null){
+        var _id = int.tryParse(url.substring(url.indexOf('=')+1,url.length)) ;
+        if (_id == null) showErrorDialog('Не удалось перейти по внешней ссылке');
+        else Navigator.pushNamed(
+              context!, "/personal", arguments: {'id': _id});
+        return;
+      }
+    }
     String newUrl = formatUrl ? Uri.encodeFull(url) : url;
 
     await urlLaucnher.canLaunchUrl(Uri.parse(newUrl))

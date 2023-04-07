@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:ink_mobile/functions/launch_url.dart';
+
 import 'package:flutter_bbcode/flutter_bbcode.dart';
 
 
@@ -26,9 +27,9 @@ class MessageText extends StatelessWidget {
     this.textAlign,
     this.fontStyle,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+
     return Container(
       child:
       // BBCodeText(
@@ -43,9 +44,8 @@ class MessageText extends StatelessWidget {
       Html(
         shrinkWrap: true,
         data: str.replaceAll("[B]", "").replaceAll("[/B]", ""),
-        onLinkTap: (_url ,context,__,___){
-          Uri url = Uri.parse(_url!);
-          launchUrl(url);
+        onLinkTap: (_url ,con,__,___){
+          launchUrl(_url!,context: context);
         },
         style: {
           '#': Style(fontSize: FontSize(fontSize ?? 13),fontWeight: fontWeight, maxLines: maxLines,color: color, textOverflow: textOverflow, textAlign: textAlign, fontStyle: fontStyle),
