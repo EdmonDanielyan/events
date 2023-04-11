@@ -173,7 +173,7 @@ class EventDetailScreen extends StatelessWidget {
             Container(
               padding: EdgeInsets.only(bottom: 30, top: 20),
               margin: EdgeInsets.symmetric(horizontal: 20),
-              child: (event.isActual! && event.placesAvailable!)?
+              child: ((event.isActual ?? false) && (event.placesAvailable ?? false))?
               event.isMember!
                   ? Text(
                       _strings.nowParticipatingInTheEvent,
