@@ -87,11 +87,11 @@ PODS:
   - GCDWebServer/Core (3.5.4)
   - geolocator_apple (1.2.0):
     - Flutter
-  - GoogleUtilities/Environment (7.11.0):
+  - GoogleUtilities/Environment (7.11.1):
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.11.0):
+  - GoogleUtilities/Logger (7.11.1):
     - GoogleUtilities/Environment
-  - "GoogleUtilities/NSData+zlib (7.11.0)"
+  - "GoogleUtilities/NSData+zlib (7.11.1)"
   - HLSCachingReverseProxyServer (0.1.0):
     - GCDWebServer (~> 3.5)
     - PINCache (>= 3.0.1-beta.3)
@@ -306,7 +306,7 @@ SPEC CHECKSUMS:
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
-  GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
+  GoogleUtilities: 9aa0ad5a7bc171f8bae016300bfcfa3fb8425749
   HLSCachingReverseProxyServer: 59935e1e0244ad7f3375d75b5ef46e8eb26ab181
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   IOSSecuritySuite: 7e7e632bcaf3067cd7ee8b698733417e92e65fa7
@@ -333,6 +333,6 @@ SPEC CHECKSUMS:
   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: d0811c0571dca93ad5c5e74c7c7e05050886299a
+PODFILE CHECKSUM: 93f7d3d7b80167062e2b3f2d45eefaea9480cd26
 
 COCOAPODS: 1.12.0
