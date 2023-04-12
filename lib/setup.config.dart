@@ -419,16 +419,16 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i105.StaffMovementsNetworkRequest>(
       _i105.StaffMovementsNetworkRequest());
   gh.factory<String>(
-    () => tokenDataInjectorModule.natsToken,
-    instanceName: 'natsToken',
-  );
-  gh.factory<String>(
     () => tokenDataInjectorModule.localDatabasePassword,
     instanceName: 'localDatabasePassword',
   );
   gh.factory<String>(
     () => tokenDataInjectorModule.deviceVirtualId,
     instanceName: 'deviceVirtualId',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.natsToken,
+    instanceName: 'natsToken',
   );
   gh.factory<String>(
     () => tokenDataInjectorModule.messengerAuthPassword,
