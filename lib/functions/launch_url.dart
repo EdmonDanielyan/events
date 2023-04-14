@@ -20,6 +20,10 @@ Future<void> launchUrl(String url, {bool formatUrl = true, BuildContext? context
         url = 'https://portal.irkutskoil.ru' + url;
         urlLaucnher.launchUrl(Uri.parse(url),mode: urlLaucnher.LaunchMode.externalApplication );
         return;
+      } else if(url.contains('/')){
+        url = 'https://portal.irkutskoil.ru/' + url;
+        urlLaucnher.launchUrl(Uri.parse(url),mode: urlLaucnher.LaunchMode.externalApplication );
+        return;
       }
       final separate = url.split(":");
       if (separate.length == 2) {

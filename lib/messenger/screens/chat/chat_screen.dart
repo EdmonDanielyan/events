@@ -432,8 +432,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               if (chat == null) {
                 return const SizedBox();
               }
-
-              return MessageBottomCard(
+              if(chat.type.name != 'notifications')
+                return MessageBottomCard(
                 cachedChatsCubit: widget.cachedChatsCubit,
                 onMessageSend: widget.onMessageSend,
                 chat: chat,
@@ -445,6 +445,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                 cachedUsersCubit: widget.cachedUsersCubit,
                 scrollController: itemScrollController,
               );
+              return SizedBox(height: 30);
             },
           ),
         ],
