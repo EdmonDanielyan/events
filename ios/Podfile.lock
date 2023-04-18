@@ -1,4 +1,7 @@
 PODS:
+  - appmetrica_plugin (1.1.0):
+    - Flutter
+    - YandexMobileMetrica (~> 4.4)
   - audio_session (0.0.1):
     - Flutter
   - better_player (0.0.1):
@@ -163,9 +166,18 @@ PODS:
     - Flutter
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
+  - YandexMobileMetrica (4.5.0):
+    - YandexMobileMetrica/Static (= 4.5.0)
+  - YandexMobileMetrica/Static (4.5.0):
+    - YandexMobileMetrica/Static/Core (= 4.5.0)
+    - YandexMobileMetrica/Static/Crashes (= 4.5.0)
+  - YandexMobileMetrica/Static/Core (4.5.0)
+  - YandexMobileMetrica/Static/Crashes (4.5.0):
+    - YandexMobileMetrica/Static/Core
   - ZIPFoundation (0.9.11)
 
 DEPENDENCIES:
+  - appmetrica_plugin (from `.symlinks/plugins/appmetrica_plugin/ios`)
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - better_player (from `.symlinks/plugins/better_player/ios`)
   - contacts_service (from `.symlinks/plugins/contacts_service/ios`)
@@ -219,9 +231,12 @@ SPEC REPOS:
     - SDWebImage
     - SDWebImageWebPCoder
     - SwiftyGif
+    - YandexMobileMetrica
     - ZIPFoundation
 
 EXTERNAL SOURCES:
+  appmetrica_plugin:
+    :path: ".symlinks/plugins/appmetrica_plugin/ios"
   audio_session:
     :path: ".symlinks/plugins/audio_session/ios"
   better_player:
@@ -282,6 +297,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  appmetrica_plugin: 4a29f127f4608f66aada648f02e1cb0054ba3f74
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
   better_player: 2406bfe8175203c7a46fa15f9d778d73b12e1646
   Cache: 4ca7e00363fca5455f26534e5607634c820ffc2d
@@ -331,6 +347,7 @@ SPEC CHECKSUMS:
   video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
+  YandexMobileMetrica: 7dafc7d224077d4443ab3a587b82b24e9b6cc9c7
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
 PODFILE CHECKSUM: 93f7d3d7b80167062e2b3f2d45eefaea9480cd26
