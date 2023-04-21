@@ -26,7 +26,6 @@ class ReferencesList {
       title: localizationInstance.refEmploymentCenter,
       referencesType: 'employment_center',
       deliveryList: [
-        DeliveryType.SECURITY_UK,
         DeliveryType.BUH,
         DeliveryType.INKTKRS,
         DeliveryType.POST
@@ -37,7 +36,6 @@ class ReferencesList {
       title: localizationInstance.refVisa,
       referencesType: 'visa',
       deliveryList: [
-        DeliveryType.SECURITY_UK,
         DeliveryType.OK_UK,
         DeliveryType.OK_IRK,
         DeliveryType.INKTKRS,
@@ -48,7 +46,6 @@ class ReferencesList {
       title: localizationInstance.refSickLeave,
       referencesType: 'sick_leave',
       deliveryList: [
-        DeliveryType.SECURITY_UK,
         DeliveryType.BUH,
         DeliveryType.INKTKRS,
         DeliveryType.POST
@@ -58,7 +55,6 @@ class ReferencesList {
         title: localizationInstance.refIncome2ndfl,
         referencesType: 'income_2ndfl',
         deliveryList: [
-          DeliveryType.SECURITY_UK,
           DeliveryType.BUH,
           DeliveryType.INKTKRS,
           DeliveryType.POST
@@ -71,7 +67,6 @@ class ReferencesList {
         title: localizationInstance.refIncome,
         referencesType: 'income',
         deliveryList: [
-          DeliveryType.SECURITY_UK,
           DeliveryType.BUH,
           DeliveryType.INKTKRS,
           DeliveryType.POST
@@ -83,7 +78,6 @@ class ReferencesList {
         title: localizationInstance.refChildAllowance,
         referencesType: 'child_allowance',
         deliveryList: [
-          DeliveryType.SECURITY_UK,
           DeliveryType.OK_UK,
           DeliveryType.OK_IRK,
           DeliveryType.INKTKRS,
@@ -96,7 +90,6 @@ class ReferencesList {
         title: localizationInstance.refChildAllowance1HalfYears,
         referencesType: 'child_allowance_1.5_years',
         deliveryList: [
-          DeliveryType.SECURITY_UK,
           DeliveryType.OK_UK,
           DeliveryType.OK_IRK,
           DeliveryType.INKTKRS,
@@ -109,7 +102,6 @@ class ReferencesList {
       title: localizationInstance.refFifo,
       referencesType: 'FIFO',
       deliveryList: [
-        DeliveryType.SECURITY_UK,
         DeliveryType.OK_UK,
         DeliveryType.OK_IRK,
         DeliveryType.INKTKRS,
@@ -120,7 +112,6 @@ class ReferencesList {
       title: localizationInstance.refWorkAtCompany,
       referencesType: 'work_at_company',
       deliveryList: [
-        DeliveryType.SECURITY_UK,
         DeliveryType.OK_UK,
         DeliveryType.OK_IRK,
         DeliveryType.INKTKRS,
@@ -131,7 +122,6 @@ class ReferencesList {
         title: localizationInstance.refAverageEarnings,
         referencesType: 'average_earnings',
         deliveryList: [
-          DeliveryType.SECURITY_UK,
           DeliveryType.BUH,
           DeliveryType.INKTKRS,
           DeliveryType.POST
@@ -144,7 +134,6 @@ class ReferencesList {
         title: localizationInstance.refPayrollAccount,
         referencesType: 'payroll_account',
         deliveryList: [
-          DeliveryType.SECURITY_UK,
           DeliveryType.BUH,
           DeliveryType.INKTKRS,
           DeliveryType.POST
@@ -157,7 +146,6 @@ class ReferencesList {
         title: localizationInstance.refFundsWithholding,
         referencesType: 'funds_withholding',
         deliveryList: [
-          DeliveryType.SECURITY_UK,
           DeliveryType.BUH,
           DeliveryType.INKTKRS,
           DeliveryType.POST
@@ -170,7 +158,6 @@ class ReferencesList {
       title: localizationInstance.refLaborActivity,
       referencesType: 'labor_activity',
       deliveryList: [
-        DeliveryType.SECURITY_UK,
         DeliveryType.OK_UK,
         DeliveryType.OK_IRK,
         DeliveryType.INKTKRS,
@@ -181,7 +168,6 @@ class ReferencesList {
       title: localizationInstance.refEmploymentRecord,
       referencesType: 'employment_record',
       deliveryList: [
-        DeliveryType.SECURITY_UK,
         DeliveryType.OK_UK,
         DeliveryType.OK_IRK,
         DeliveryType.INKTKRS,

@@ -1,16 +1,13 @@
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/references/reference_list.dart';
 
-enum DeliveryType { BUH, SECURITY_UK, OK_IRK, OK_UK, INKTKRS, POST }
+enum DeliveryType { BUH, OK_IRK, OK_UK, INKTKRS, POST }
 
 class DeliveryList {
   DeliveryList();
 
   DeliveryItem buh() => DeliveryItem(
       title: localizationInstance.deliveryMethodBuh, deliveryType: 'BUH');
-  DeliveryItem securityUk() => DeliveryItem(
-      title: localizationInstance.deliveryMethodSecurityUk,
-      deliveryType: 'SECURITY_UK');
   DeliveryItem okIrk() => DeliveryItem(
       title: localizationInstance.deliveryMethodOkIrk, deliveryType: 'OK_IRK');
   DeliveryItem okUk() => DeliveryItem(
@@ -25,8 +22,6 @@ class DeliveryList {
     switch (type) {
       case DeliveryType.BUH:
         return buh();
-      case DeliveryType.SECURITY_UK:
-        return securityUk();
       case DeliveryType.OK_IRK:
         return okIrk();
       case DeliveryType.OK_UK:
