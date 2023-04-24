@@ -109,47 +109,13 @@ class Body extends StatelessWidget {
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
-            PersonalPageHeader(user: user),
-            Awards(awards: user.awards),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //TODO: вынести в отдельный виджет - во всех 5-ти секциях дублирование кода
-                Contacts(contacts: user.contacts),
-                BasicInformation(info: user.basicInformation),
-                Diagnostics(logFile: logFile),
-                ProfileSecuritySection(),
-                AboutMyField(
-                  user: user,
-                  scrollController: _scrollController,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 32.0,
-                    horizontal: 20.0,
-                  ),
-                  child: DefaultButton(
-                    title: localizationInstance.signOffAccount,
-                    borderColor: Palette.greenE4A,
-                    textColor: Palette.greenE4A,
-                    prefixIcon: SvgPicture.asset(
-                      IconLinks.LOGOUT_ICON_LINK,
-                      width: 20.0,
-                      height: 20.0,
-                      color: Palette.greenE4A,
-                    ),
-                    onTap: () async {
-                      showDialog(
-                        context: context,
-                        builder: (_) => ExitAlertDialog(
-                          onPressed: () => userCubit.exit(context),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+            Contacts(contacts: user.contacts),
+            BasicInformation(info: user.basicInformation),
+            Diagnostics(logFile: logFile),
+            ProfileSecuritySection(),
+            /// todo AboutMyField
+            // AboutMyField(user: user, scrollController: _scrollController,)
+
           ],
         ),
       ),

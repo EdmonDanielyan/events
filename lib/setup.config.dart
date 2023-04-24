@@ -429,11 +429,6 @@ Future<_i1.GetIt> $initGetIt(
     preResolve: true,
   );
   gh.factory<String>(
-    () => testLogFilePathInjector.logFile,
-    instanceName: 'logFile',
-    registerFor: {_unitTest},
-  );
-  gh.factory<String>(
     () => tokenDataInjectorModule.localDatabasePassword,
     instanceName: 'localDatabasePassword',
   );
@@ -456,6 +451,21 @@ Future<_i1.GetIt> $initGetIt(
   gh.factory<String>(
     () => tokenDataInjectorModule.userId,
     instanceName: 'userId',
+  );
+  gh.factory<String>(
+    () => testLogFilePathInjector.logFile,
+    instanceName: 'logFile',
+    registerFor: {_unitTest},
+  );
+  await gh.factoryAsync<String>(
+    () => logFilePathInjector.logFile,
+    instanceName: 'logFile',
+    registerFor: {
+      _test,
+      _prod,
+      _dev,
+    },
+    preResolve: true,
   );
   gh.singleton<_i106.TagsListCubit>(_i106.TagsListCubit());
   gh.singleton<_i107.TagsListNetworkRequest>(_i107.TagsListNetworkRequest());

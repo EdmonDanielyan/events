@@ -81,34 +81,37 @@ android {
     }
 
     //UNCOMMENT THIS FOR RELEASE
+    signingConfigs {
+        release {
+//            keyAlias keystoreProperties['keyAlias']
+//            keyPassword keystoreProperties['keyPassword']
+//            try {
+//                storeFile file("../keystore.uu").exists() ? file("../keystore.uu") : new File(System.env.KEY_STORE)
+//            } catch (Exception e) {
+//                println("please specify keystore: ${e}")
+//            }
+//            storePassword keystoreProperties['storePassword']
 
-//         release {
-//             keyAlias keystoreProperties['keyAlias']
-//             keyPassword keystoreProperties['keyPassword']
-//             try {
-//                 storeFile file("../keystore.uu").exists() ? file("../keystore.uu"): new File(System.env.KEY_STORE)
-//             } catch (Exception e) {
-//                 println("please specify keystore: ${e}")
-//             }
-//             storePassword keystoreProperties['storePassword']
-//         }
-//     }
+            storeFile file('ink.keystore')
+            storePassword 'fcntl16io'
+            keyAlias 'key0'
+            keyPassword 'fcntl16io'
+        }
+    }
 
     buildTypes {
 
         //DEBUG
-        release {
+       release {
             signingConfig signingConfigs.debug
-        }
-        
+       }
+
         //UNCOMMENT THIS FOR RELEASE
-//         release {
-//             signingConfig signingConfigs.release
-//
-//             minifyEnabled true
-//
-//             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//         }
+        release {
+             signingConfig signingConfigs.release
+             minifyEnabled true
+             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+         }
     }
 }
 

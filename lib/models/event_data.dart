@@ -14,6 +14,8 @@ class EventData extends Data {
   String? detailText;
   String? pictureLink;
   bool? isMember;
+  bool? isActual;
+  bool? placesAvailable;
 
   EventData({
     this.id,
@@ -26,6 +28,8 @@ class EventData extends Data {
     this.detailText,
     this.pictureLink,
     this.isMember,
+    this.isActual,
+    this.placesAvailable
   });
 
   void fillFromMap(Map map) {
@@ -56,6 +60,8 @@ class EventData extends Data {
         : int.tryParse(map['detail_picture'].toString());
 
     isMember = map['is_member'] is bool ? map['is_member'] : null;
+    isActual = map['is_actual'] is bool ? map['is_actual'] : null;
+    placesAvailable = map['places_available'] is bool ? map['places_available'] : null;
   }
 
   factory EventData.fromMap(Map map) {
@@ -78,6 +84,8 @@ class EventData extends Data {
       pictureLink:
           map['preview_picture'] is String ? map['preview_picture'] : null,
       isMember: map['is_member'] is bool ? map['is_member'] : null,
+      isActual: map['is_actual'] is bool ? map['is_actual'] : null,
+      placesAvailable: map['places_available'] is bool ? map['places_available'] : null,
     );
   }
 
@@ -92,6 +100,8 @@ class EventData extends Data {
     String? detailText,
     String? pictureLink,
     bool? isMember,
+    bool? isActual,
+    bool? placesAvailable,
   }) {
     return EventData(
       id: id ?? this.id,
@@ -104,6 +114,8 @@ class EventData extends Data {
       detailText: detailText ?? this.detailText,
       pictureLink: pictureLink ?? this.pictureLink,
       isMember: isMember ?? this.isMember,
+      isActual: isActual ?? this.isActual,
+      placesAvailable: placesAvailable ?? this.placesAvailable,
     );
   }
 
@@ -118,7 +130,10 @@ class EventData extends Data {
         endDate: property.dateFinish,
         place: property.place,
         pictureLink: property.detailPicture,
-        isMember: property.isMember);
+        isMember: property.isMember,
+        isActual: property.isActual,
+        placesAvailable: property.placesAvailable,
+    );
   }
 
   static List<EventData> getListFromResponse(List eventDataList) {

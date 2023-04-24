@@ -57,8 +57,8 @@ class MessageCard extends StatelessWidget {
           message,
           onDelete: onDelete,
           onEdit: cachedChatsCubit.myId == message.owner.id ? onEdit : null,
-          onRespond: onRespond,
-          onGoTo: cachedChatsCubit.myId != message.owner.id ? onGoTo : null,
+          onRespond:  cachedChatsCubit.selectedChats.last.type.name !="notifications"? onRespond : null,
+          onGoTo: cachedChatsCubit.myId != message.owner.id && cachedChatsCubit.selectedChats.last.type.name !="notifications"? onGoTo : null,
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 9.0),
@@ -70,7 +70,7 @@ class MessageCard extends StatelessWidget {
                 mainAxisAlignment:
                     isByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
                 children: [
-                  if (!isByMe) ...[
+                  if (!isByMe && cachedChatsCubit.selectedChats.last.type.name !="notifications") ...[
                     CachedUserBuilder(
                       cachedUsersCubit: cachedUsersCubit,
                       userId: message.owner.id,

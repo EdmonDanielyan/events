@@ -50,24 +50,21 @@ class _UserMainInfoState extends State<UserMainInfo> {
     super.dispose();
   }
 
-  ImagePicker picker = ImagePicker();
-
-  Future getImage(ImageSource source) async {
-    try {
-      final image = await picker.pickImage(source: source);
-      if (image == null) return;
-      final imageTemporary = File(image.path);
-
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) =>
-              PhotoPreviewPage(file: imageTemporary),
-        ),
-      );
-    } on PlatformException catch (e) {
-      debugPrint('Failed to pick image: $e');
-    }
-  }
+  // ImagePicker picker = ImagePicker();
+  //
+  // Future getImage(ImageSource source) async {
+  //   try {
+  //     final image = await picker.pickImage(source: source);
+  //     if (image == null) return;
+  //     final imageTemporary = File(image.path);
+  //
+  //     Navigator.of(context).push(MaterialPageRoute (
+  //       builder: (BuildContext context) =>  PhotoPreviewPage(file: imageTemporary),
+  //     ),);
+  //   } on PlatformException catch (e) {
+  //     debugPrint('Failed to pick image: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -96,32 +93,23 @@ class _UserMainInfoState extends State<UserMainInfo> {
       child: Column(
         children: [
           Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
-                    SizeConfig(context, 65).getProportionateScreenHeight),
-                color: Colors.grey.withOpacity(0.2)),
-            margin: const EdgeInsets.only(top: 60.0),
-            child: PopupMenuButton(
-              itemBuilder: (context) {
-                return <PopupMenuItem>[
-                  PopupMenuItem(
-                    child: TextButton(
-                      child: Text('Просмотр'),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => PhotoPreviewPage(
-                                url: widget.pathToAvatar ?? ""),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  if (!isOtherUser)
-                    PopupMenuItem(
-                      child: TextButton(
-                        child: Text('Галерея'),
-                        onPressed: () => getImage(ImageSource.gallery),
+            child: Column(
+              children: [
+                Container(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                            SizeConfig(context, 65)
+                                .getProportionateScreenHeight),
+                        color: Colors.grey.withOpacity(0.2)),
+                    padding: EdgeInsets.all(5),
+                    child: Container(
+                      child: CachedCircleAvatar(
+                        avatarWidth: SizeConfig(context, 140)
+                            .getProportionateScreenHeight,
+                        avatarHeight: SizeConfig(context, 140)
+                            .getProportionateScreenHeight,
+                        url: widget.pathToAvatar ?? "",
                       ),
                     ),
                   if (!isOtherUser)
@@ -144,76 +132,63 @@ class _UserMainInfoState extends State<UserMainInfo> {
                         SizeConfig(context, 140).getProportionateScreenHeight,
                     url: widget.pathToAvatar ?? "",
                   ),
-                  if (!isOtherUser)
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        height: 44.0,
-                        width: 44.0,
-                        decoration: BoxDecoration(
-                            color: Palette.greenE4A,
-                            borderRadius: BorderRadius.circular(64.0)),
+                  margin: EdgeInsets.only(
+                      top: SizeConfig(context, 50).getProportionateScreenHeight,
+                      bottom:
+                          SizeConfig(context, 21).getProportionateScreenHeight),
+                ),
+                Container(
+                  width: size.width * 0.90,
+                  child: Center(
+                      child: Column(
+                    children: [
+                      GestureDetector(
+                        //onTapDown: (_)=> _enableEdit(),
+                        behavior: HitTestBehavior.translucent,
                         child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Center(
-                            child: SvgPicture.asset(
-                              IconLinks.PHOTO_ICON,
-                              color: Palette.white,
-                              height: 20.0,
-                              width: 20.0,
+                          padding: const EdgeInsets.only(bottom: 20.0),
+                          child: TextFormField(
+                            controller: fioFieldC,
+                            readOnly: !isEditing,
+                            focusNode: textFormFocus,
+                            autofocus: true,
+                            maxLines: 2,
+                            cursorColor: Theme.of(context).primaryColorLight,
+                            textAlign: TextAlign.center,
+                            style:  TextStyle(
+                              overflow: TextOverflow.visible,
+                              color: Colors.white,
+                              fontStyle: FontStyle.normal,
+                              fontSize: SizeConfig(context, 20)
+                                  .getProportionateScreenHeight,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textInputAction: TextInputAction.go,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              isCollapsed: true,
                             ),
                           ),
                         ),
                       ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 16.0,),
-          Container(
-            width: size.width * 0.90,
-            child: Center(
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTapDown: (_) => _enableEdit(),
-                    behavior: HitTestBehavior.translucent,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: TextFormField(
-                        controller: fioFieldC,
-                        readOnly: !isEditing,
-                        focusNode: textFormFocus,
-                        autofocus: true,
-                        cursorColor: Theme.of(context).primaryColorLight,
-                        textAlign: TextAlign.center,
-                        style: FontStyles.rubikH3(color: Palette.white),
-                        textInputAction: TextInputAction.go,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          isCollapsed: true,
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (isEditing)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 18.0),
-                      child: ServiceBtn(
-                        txt: 'Сохранить',
-                        onPressed: () {
-                          setState(
-                            () {
-                              isEditing = false;
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                ],
-              ),
+                      // if(isEditing)
+                      //   Padding(
+                      //     padding: const EdgeInsets.only(top: 10.0),
+                      //     child: ServiceBtn(
+                      //         txt: 'Сохранить',
+                      //         onPressed: (){
+                      //           setState((){
+                      //             isEditing = false;
+                      //           });
+                      //         }),
+                      //   )
+                    ],
+                  )),
+                ),
+                getUserPositionWidget(context),
+                ///todo - user is vacation?!
+                //getInfoUserInVacation( startDate: DateTime(2022,12,20), dateEnd: DateTime(2022,12,29))
+              ],
             ),
           ),
           getUserPositionWidget(context),
@@ -239,14 +214,14 @@ class _UserMainInfoState extends State<UserMainInfo> {
     return nameComponents.join(' ');
   }
 
-  void _enableEdit() {
-    if (isEditing != true) {
-      setState(() {
-        isEditing = true;
-      });
-      FocusScope.of(context).requestFocus(textFormFocus);
-    }
-  }
+  // void _enableEdit() {
+  //   if(isEditing != true) {
+  //     setState(() {
+  //       isEditing = true;
+  //     });
+  //     FocusScope.of(context).requestFocus(textFormFocus);
+  //   }
+  // }
 
   Widget getUserPositionWidget(BuildContext context) {
     if (widget.userPosition != null) {

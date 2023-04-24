@@ -89,6 +89,20 @@ class _$EventPropertySerializer implements StructuredSerializer<EventProperty> {
         ..add(
             serializers.serialize(value, specifiedType: const FullType(bool)));
     }
+    value = object.isActual;
+    if (value != null) {
+      result
+        ..add('is_actual')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.placesAvailable;
+    if (value != null) {
+      result
+        ..add('places_available')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     return result;
   }
 
@@ -144,6 +158,14 @@ class _$EventPropertySerializer implements StructuredSerializer<EventProperty> {
           result.isMember = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
           break;
+        case 'is_actual':
+          result.isActual = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
+        case 'places_available':
+          result.placesAvailable = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -172,6 +194,10 @@ class _$EventProperty extends EventProperty {
   final String detailPicture;
   @override
   final bool isMember;
+  @override
+  final bool isActual;
+  @override
+  final bool placesAvailable;
 
   factory _$EventProperty([void Function(EventPropertyBuilder) updates]) =>
       (new EventPropertyBuilder()..update(updates))._build();
@@ -186,7 +212,9 @@ class _$EventProperty extends EventProperty {
       this.viewCount,
       this.detailText,
       this.detailPicture,
-      this.isMember})
+      this.isMember,
+      this.isActual,
+      this.placesAvailable})
       : super._();
 
   @override
@@ -209,7 +237,9 @@ class _$EventProperty extends EventProperty {
         viewCount == other.viewCount &&
         detailText == other.detailText &&
         detailPicture == other.detailPicture &&
-        isMember == other.isMember;
+        isMember == other.isMember &&
+        isActual == other.isActual &&
+        placesAvailable == other.placesAvailable;
   }
 
   @override
@@ -225,6 +255,8 @@ class _$EventProperty extends EventProperty {
     _$hash = $jc(_$hash, detailText.hashCode);
     _$hash = $jc(_$hash, detailPicture.hashCode);
     _$hash = $jc(_$hash, isMember.hashCode);
+    _$hash = $jc(_$hash, isActual.hashCode);
+    _$hash = $jc(_$hash, placesAvailable.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -241,7 +273,9 @@ class _$EventProperty extends EventProperty {
           ..add('viewCount', viewCount)
           ..add('detailText', detailText)
           ..add('detailPicture', detailPicture)
-          ..add('isMember', isMember))
+          ..add('isMember', isMember)
+          ..add('isActual', isActual)
+          ..add('placesAvailable', placesAvailable))
         .toString();
   }
 }
@@ -291,6 +325,15 @@ class EventPropertyBuilder
   bool get isMember => _$this._isMember;
   set isMember(bool isMember) => _$this._isMember = isMember;
 
+  bool _isActual;
+  bool get isActual => _$this._isActual;
+  set isActual(bool isActual) => _$this._isActual = isActual;
+
+  bool _placesAvailable;
+  bool get placesAvailable => _$this._placesAvailable;
+  set placesAvailable(bool placesAvailable) =>
+      _$this._placesAvailable = placesAvailable;
+
   EventPropertyBuilder() {
     EventProperty._initializeBuilder(this);
   }
@@ -308,6 +351,8 @@ class EventPropertyBuilder
       _detailText = $v.detailText;
       _detailPicture = $v.detailPicture;
       _isMember = $v.isMember;
+      _isActual = $v.isActual;
+      _placesAvailable = $v.placesAvailable;
       _$v = null;
     }
     return this;
@@ -339,7 +384,9 @@ class EventPropertyBuilder
             viewCount: viewCount,
             detailText: detailText,
             detailPicture: detailPicture,
-            isMember: isMember);
+            isMember: isMember,
+            isActual: isActual,
+            placesAvailable: placesAvailable);
     replace(_$result);
     return _$result;
   }

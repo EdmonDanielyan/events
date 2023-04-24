@@ -23,7 +23,7 @@ class CustomHtml extends StatelessWidget {
             ),
           );
         } else {
-          launchUrl(url);
+          launchUrl(url,context: context);
         }
 
         return true;

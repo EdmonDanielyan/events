@@ -85,19 +85,19 @@ class NewsListCubit extends Cubit<NewsListState> {
 
   Future<void> onScroll(ScrollController controller) async {
     scrollBottomToLoad.setController(controller);
-
     scrollBottomToLoad.onScroll(() async {
       await fetch().then((value) {
-        scrollBottomToLoad.isLoading = false;
+        scrollBottomToLoad.clear();
       }).onError((error, stackTrace) {
         String message = error is NoConnectionException
             ? localizationInstance.noConnectionError
             : localizationInstance.unknownError;
 
         showErrorDialog(message);
-        scrollBottomToLoad.isLoading = false;
+        scrollBottomToLoad.clear();
       });
     });
+
   }
 
   void emitSuccess(List<NewsItemData> items) {

@@ -32,7 +32,7 @@ bool isStringUrl(String url) {
 }
 
 bool isStringHttpUrl(String url) {
-  return isStringUrl(url) && (url.toLowerCase().contains("http"));
+  return isStringUrl(url) && (url.toLowerCase().contains("http") && !url.endsWith("pdf")  && !url.endsWith("docx") && !url.endsWith("doc") && !url.endsWith("xlsx") && !url.contains("USER_ID="));
 }
 
 bool isStrPicture(String picture) {

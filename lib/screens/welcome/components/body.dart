@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:injectable/injectable.dart';
@@ -60,17 +61,33 @@ class _BodyState extends State<Body> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      DefaultButton(
-                        title: _strings.signIn,
-                        onTap: () => Navigator.pushNamed(context, '/auth'),
-                        isTablet: isTablet,
-                        buttonColor: Palette.green66E,
-                        textColor: Palette.white,
-                      ),
-                      const SizedBox(height: 20.0),
-                      DefaultButton(
-                        title: _strings.registration,
-                        onTap: () {
+                      Expanded(
+                          child: Container(
+                              width: isTablet ? 150 : 100,
+                              child: Divider(
+                                color: Colors.white,
+                                thickness: 1,
+                                indent: 24,
+                                endIndent: 15,
+                              ))),
+                      defaultTargetPlatform == TargetPlatform.iOS?
+                      TextButton(
+                        onPressed: () {
+                          launchUrl(
+                              'https://portal.irkutskoil.ru/login/%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D0%B8%D1%8F%20%D0%BF%D0%BE%20%D1%80%D0%B5%D0%B3%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BD%D0%B0%20%D0%98%D0%9D%D0%9A%20%D0%BF%D0%BE%D1%80%D1%82%D0%B0%D0%BB%D0%B5.pdf',
+                              formatUrl: false);
+                        },
+                        child: Text(
+                          'Инструкция по входу',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: isTablet ? 20 : 16,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      )
+                      :TextButton(
+                        onPressed: () {
                           launchUrl(
                               'https://portal.irkutskoil.ru/login/?act=register');
                         },
@@ -79,9 +96,41 @@ class _BodyState extends State<Body> {
                         textColor: Palette.white,
                         borderColor: Palette.white,
                       ),
-                      const SizedBox(height: 24.0),
-                      DefaultLinkButton(
-                        link: UrlsConfig.signInInstructionUrl,
+                      Expanded(
+                          child: Container(
+                              width: isTablet ? 150 : 100,
+                              child: Divider(
+                                color: Colors.white,
+                                thickness: 1,
+                                indent: 24,
+                                endIndent: 15,
+                              ))),
+                    ],
+                  ),
+                  defaultTargetPlatform != TargetPlatform.iOS? Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: SignInInstructions(),
+                  ):SizedBox(),
+                  const SizedBox(height: 10.0),
+                  SignInInstructions(
+                    txt: _strings.techSupport,
+                    link: UrlsConfig.supportUrl,
+                  ),
+                  const SizedBox(height: 10.0),
+                  SignInInstructions(
+                    txt: _strings.confPolicy,
+                    link: ImportantUrls.policyConf,
+                  ),
+                  Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      Center(
+                        child: Text(
+                          widget.packageInfo.version,
+                          style: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: isTablet ? 17.0 : 13),
+                        ),
                       ),
                       const SizedBox(height: 10.0),
                       DefaultLinkButton(
