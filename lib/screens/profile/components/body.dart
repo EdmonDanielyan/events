@@ -109,6 +109,8 @@ class Body extends StatelessWidget {
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
+            PersonalPageHeader(user: user),
+            Awards(awards: user.awards),
             Contacts(contacts: user.contacts),
             BasicInformation(info: user.basicInformation),
             Diagnostics(logFile: logFile),
