@@ -1,3 +1,4 @@
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
@@ -12,6 +13,7 @@ class ServiceListElement extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        _metrica();
         if (item.pageViewerId != null) {
           ServiceListPageViewerState.pageViewer.pageController
               .jumpToPage(item.pageViewerId!);
@@ -55,5 +57,27 @@ class ServiceListElement extends StatelessWidget {
         ),
       ),
     );
+  }
+  _metrica(){
+    switch(item.link) {
+      case '/feedback':
+        AppMetrica.reportEvent('вход пользователя в раздел «Обратная связь»');
+        break;
+      case '/references':
+        AppMetrica.reportEvent('вход пользователя в раздел «Заказ справок»');
+        break;
+      case '/medical_insurance':
+        AppMetrica.reportEvent('вход пользователя в раздел «Оформление ДМС»');
+        break;
+      case '/social_package':
+        AppMetrica.reportEvent('вход пользователя в раздел «Социальный пакет»');
+        break;
+      case '/personnel_movements':
+        AppMetrica.reportEvent('вход пользователя в раздел «Кадровые перемещения»');
+        break;
+      case '/birthdays':
+        AppMetrica.reportEvent('вход пользователя в раздел «Дни рождения»');
+        break;
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
@@ -28,6 +29,7 @@ class _BodyState extends State<Body> {
     super.initState();
     widget.cubit.pagination.clear();
     widget.cubit.emitState(type: NewsListStateType.LOADING);
+    AppMetrica.reportEvent('вход пользователя в раздел «Новости»');
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,8 @@ void main() async {
   OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
     print("Accepted permission: $accepted");
   });
+
+  AppMetrica.activate(AppMetricaConfig("3948ed67-c81f-4920-ad3a-bd4b70a59376"));
 }
 
 

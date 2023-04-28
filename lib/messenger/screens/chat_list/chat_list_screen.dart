@@ -1,3 +1,4 @@
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -50,7 +51,7 @@ class _ChatListState extends State<ChatList> {
   @override
   void initState() {
     super.initState();
-
+    AppMetrica.reportEvent('вход пользователя в раздел «Сообщения»');
     Future.delayed(Duration.zero, () {
       _addListener();
     });
