@@ -47,7 +47,7 @@ void main() async {
     print("Accepted permission: $accepted");
   });
 
-  AppMetrica.activate(AppMetricaConfig("3948ed67-c81f-4920-ad3a-bd4b70a59376"));
+  //AppMetrica.activate(AppMetricaConfig("3948ed67-c81f-4920-ad3a-bd4b70a59376"));
 }
 
 
