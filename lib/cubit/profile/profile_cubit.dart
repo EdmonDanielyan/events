@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -23,6 +25,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       await Token.setNewTokensIfExpired();
       final response =
           await getIt<ProfileFetchNetworkRequest>(param1: userId)();
+      print(response);
       UserProfileData userData = response.mapResponse();
 
       JwtPayload? authUser = await Token.getJwtPayloadObject();
@@ -63,7 +66,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   Future<void> saveFAboutMy({userId, required String value} ) async {
     //написать запрос к api для сохранение поля "о себе "
-    emitSuccessUser(state.data!.copyWith(aboutMy: value));
+    //emitSuccessUser(state.data!.copyWith(aboutMy: value));
   }
 
   void emitSuccessOtherUser(UserProfileData data) {

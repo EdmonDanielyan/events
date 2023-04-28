@@ -9,7 +9,8 @@ class UserProfileData {
   UserAwards? awards;
   UserContacts? contacts;
   UserBasicInfo? basicInformation;
-  String? aboutMy;
+  String? absence;
+  String? shift_man;
 
   UserProfileData(
       {required this.id,
@@ -21,7 +22,8 @@ class UserProfileData {
       this.awards,
       this.contacts,
       this.basicInformation,
-      this.aboutMy ,
+      this.absence ,
+      this.shift_man ,
       required this.canBeThanked});
 
   UserProfileData copyWith({
@@ -34,7 +36,8 @@ class UserProfileData {
     UserVotes? votes,
     UserAwards? awards,
     UserContacts? contacts,
-    String? aboutMy,
+    String? absence,
+    String? shift_man,
     UserBasicInfo? basicInformation,
   }) {
     return UserProfileData(
@@ -47,7 +50,8 @@ class UserProfileData {
       votes: votes ?? this.votes,
       awards: awards ?? this.awards,
       contacts: contacts ?? this.contacts,
-      aboutMy: aboutMy ?? this.aboutMy,
+      absence: absence ?? this.absence,
+      shift_man: shift_man ?? this.shift_man,
       basicInformation: basicInformation ?? this.basicInformation,
     );
   }
@@ -72,7 +76,10 @@ class UserProfileData {
             ? UserBasicInfo.getUserBasicInfoFromMap(
                 userData['basic_information'])
             : null,
-        canBeThanked: userData['canBeThanked']);
+        canBeThanked: userData['canBeThanked'],
+        absence: userData['absence'],
+        shift_man: userData['shift_man'],
+    );
   }
 }
 

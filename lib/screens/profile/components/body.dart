@@ -12,6 +12,7 @@ import 'package:ink_mobile/screens/profile/components/about_my_field.dart';
 import 'package:ink_mobile/screens/profile/components/awards.dart';
 import 'package:ink_mobile/screens/profile/components/background.dart';
 import 'package:ink_mobile/screens/profile/components/basic_information.dart';
+import 'package:ink_mobile/screens/profile/components/basic_information_row.dart';
 import 'package:ink_mobile/screens/profile/components/contacts.dart';
 import 'package:ink_mobile/screens/profile/components/header.dart';
 import 'package:ink_mobile/screens/profile/components/other_user_page_header.dart';
@@ -111,6 +112,8 @@ class Body extends StatelessWidget {
           children: [
             Contacts(contacts: user.contacts),
             BasicInformation(info: user.basicInformation),
+            if(user.absence!=null) BasicInfoRow(title: 'Статус', value: user.absence!),
+            if(user.shift_man!=null)BasicInfoRow(title: 'Сменщик', value: user.shift_man!),
             Diagnostics(logFile: logFile),
             ProfileSecuritySection(),
             /// todo AboutMyField
@@ -143,6 +146,8 @@ class Body extends StatelessWidget {
               BasicInformation(
                 info: user.basicInformation,
               ),
+              if(user.absence!=null) BasicInfoRow(title: 'Статус', value: user.absence!),
+              if(user.shift_man!=null)BasicInfoRow(title: 'Сменщик', value: user.shift_man!),
               //будет поле о пользователе без возможности редактировать
             ],
           );

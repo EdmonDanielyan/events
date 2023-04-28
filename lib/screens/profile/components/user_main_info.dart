@@ -14,13 +14,14 @@ class UserMainInfo extends StatefulWidget {
   final String? userPosition;
   final String? pathToAvatar;
   final bool? isOtherUser;
+  final String? absenceUser;
   UserMainInfo(
       {Key? key,
       this.userLastName,
       this.userName,
       this.userPosition,
       this.pathToAvatar,
-      this.isOtherUser})
+      this.isOtherUser, this.absenceUser})
       : super(key: key);
 
   @override
@@ -163,7 +164,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
                 ),
                 getUserPositionWidget(context),
                 ///todo - user is vacation?!
-                //getInfoUserInVacation( startDate: DateTime(2022,12,20), dateEnd: DateTime(2022,12,29))
+                getInfoAbsenceUser()
               ],
             ),
           ),
@@ -214,29 +215,39 @@ class _UserMainInfoState extends State<UserMainInfo> {
     }
   }
 
-  Widget getInfoUserInVacation({required DateTime startDate, required DateTime dateEnd }) {
-    String start = DateFormat('d.M.yyyy').format(startDate);
-    String end = DateFormat('d.M.yyyy').format(dateEnd);
-    String text = "Отсутствует с $start по $end (отпуск основной)";
-    if (true/* логика отображения отпуска*/) {
+  Widget getInfoAbsenceUser() {
+    String str = widget.absenceUser ?? '' ;
+
+    if(str != ''){
       return Container(
-          margin: EdgeInsets.all(2),
+          margin: EdgeInsets.only(top:20,left: 20,right: 20),
           padding: EdgeInsets.all(2),
           decoration: BoxDecoration(
-            color: Color.fromRGBO(246, 203, 69, 1),
+            color: str.contains('Отсутствие')? Color(0xFFEBB300) : Color(0xFF6E3255),
             // border: Border.all(
             //     style: BorderStyle.solid,
             //     width: 1.0
             // ),
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(7),
-                bottomRight: Radius.circular(7),
-                topRight: Radius.circular(4),
-                bottomLeft: Radius.circular(4)),
+                topLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16)
+            ),
           ),
-          child: Text(text));
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+               Expanded(child: Padding(
+                 padding: const EdgeInsets.only(left: 6.0),
+                 child: Text(str,style: TextStyle(color: (!str.contains('Отсутствие'))?  Colors.white: Colors.black),),
+               )),
+
+              Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: str.contains('Отсутствие')? Icon(Icons.sunny,color: Colors.black,):Icon(Icons.airplanemode_on_outlined,color: Colors.white,),
+              )
+            ],
+          ));
     } else return SizedBox();
   }
-
 }
 

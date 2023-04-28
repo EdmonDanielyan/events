@@ -24,7 +24,7 @@ class _AboutMyFieldState extends State<AboutMyField> {
 
   @override
   void initState() {
-    _aboutMyFieldC.text = widget.user.aboutMy ?? '';  //удалить если баг
+    //_aboutMyFieldC.text = widget.user.aboutMy ?? '';
     super.initState();
   }
 
