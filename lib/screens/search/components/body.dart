@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/search/data.dart';
 import 'package:ink_mobile/models/search/search_query.dart';
 import 'package:ink_mobile/screens/search/components/background.dart';
 import 'package:ink_mobile/screens/search/components/search_container.dart';
-import 'package:ink_mobile/screens/search/components/search_field.dart';
+import 'package:ink_mobile/components/fields/search_field.dart';
 import 'package:ink_mobile/screens/search/components/search_item_text.dart';
 import 'package:ink_mobile/screens/search/components/search_item_user.dart';
 import 'package:ink_mobile/cubit/search/search_cubit.dart';
@@ -24,24 +26,28 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     _strings = localizationInstance;
     return Background(
-        child: Column(
-      children: [
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 35, vertical: 40),
-          padding: EdgeInsets.only(top: 15),
-          child: SearchField(
-            hint: _strings.searchHint,
-            onChanged: (query) {
-              if (query.length >= 3) {
-                SearchQuery.query = query;
-                searchCubit.search(query);
-              } else {
-                searchCubit.refresh();
-              }
-            },
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              right: 20.0,
+              left: 20.0,
+              top: 24.0,
+              bottom: 16.0,
+            ),
+            child: SearchField(
+              hint: _strings.searchHint,
+              onChanged: (query) {
+                if (query.length >= 3) {
+                  SearchQuery.query = query;
+                  searchCubit.search(query);
+                } else {
+                  searchCubit.refresh();
+                }
+              },
+            ),
           ),
-        ),
-        BlocBuilder<SearchCubit, SearchState>(
+          BlocBuilder<SearchCubit, SearchState>(
             bloc: searchCubit,
             builder: (context, state) {
               switch (state.type) {
@@ -55,28 +61,32 @@ class Body extends StatelessWidget {
                     List<SearchContainer> searchResult =
                         _getSearchResult(state);
 
-                    return MediaQuery.removePadding(
-                      context: context,
-                      removeTop: true,
-                      removeBottom: true,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        controller: ScrollController(keepScrollOffset: false),
-                        itemCount: searchResult.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            searchResult[index],
-                      ),
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      controller: ScrollController(keepScrollOffset: false),
+                      itemCount: searchResult.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          searchResult[index],
                     );
                   }
 
                 case SearchStateType.EMPTY:
                   {
-                    return Text(_strings.nothingFound,  style: TextStyle(fontSize: SizeConfig(context, 14).getProportionateScreenHeight),);
+                    return Text(
+                      _strings.nothingFound,
+                      style: FontStyles.rubikP2(color: Palette.textBlack50),
+                    );
                   }
 
                 case SearchStateType.STARTING:
                   {
-                    return Text(_strings.searchEmptyString, style: TextStyle(fontSize: SizeConfig(context, 14).getProportionateScreenHeight),);
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        _strings.searchEmptyString,
+                        style: FontStyles.rubikP2(color: Palette.textBlack50),
+                      ),
+                    );
                   }
 
                 case SearchStateType.ERROR:
@@ -93,9 +103,11 @@ class Body extends StatelessWidget {
                     );
                   }
               }
-            })
-      ],
-    ));
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   List<SearchContainer> _getSearchResult(SearchState state) {
@@ -173,14 +185,19 @@ class Body extends StatelessWidget {
     List<SearchItemText> items = [];
 
     if (itemsFromState != null) {
-      itemsFromState.forEach((item) {
-        items.add(SearchItemText(
-          id: item.id,
-          title: item.title,
-          query: SearchQuery.query,
-          route: route,
-        ));
-      });
+      itemsFromState.forEach(
+        (item) {
+          items.add(
+            SearchItemText(
+              id: item.id,
+              title: item.title,
+              query: SearchQuery.query,
+              route: route,
+              isLastItem: itemsFromState.last == item,
+            ),
+          );
+        },
+      );
     }
 
     return items;

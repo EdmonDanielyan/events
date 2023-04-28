@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/service_list/components/service_list_element.dart';
 import 'package:ink_mobile/screens/service_list/components/service_list_item.dart';
@@ -14,12 +15,11 @@ class Body extends StatelessWidget {
     List<ServiceListItem> items = ServiceListItemListView.getItems(_strings);
 
     return Container(
-      color: Colors.white,
       width: size.width,
       padding: EdgeInsets.only(top: 10),
       child: ListView.separated(
         separatorBuilder: (context, index) {
-          return Divider(color: Colors.grey);
+          return Divider(color: Palette.text20Grey);
         },
         itemCount: items.length,
         itemBuilder: (context, index) {

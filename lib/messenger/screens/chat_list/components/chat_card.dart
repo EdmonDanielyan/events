@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/cached_avatar/cached_avatar.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
@@ -49,6 +50,8 @@ class ChatCard extends StatelessWidget {
                 url: chatAvatar ?? chat.avatarUrl,
                 name: chatName ?? chat.name,
                 indicator: user != null ? true : false,
+                avatarHeight: 52.0,
+                avatarWidth: 52.0,
               );
             },
             cachedChatsCubit: cachedChatsCubit,
@@ -58,6 +61,8 @@ class ChatCard extends StatelessWidget {
           CachedCircleAvatar(
             url: chatAvatar ?? chat.avatarUrl,
             name: chatName ?? chat.name,
+            avatarHeight: 52.0,
+            avatarWidth: 52.0,
           ),
         ],
         const SizedBox(width: 15.0),
@@ -65,8 +70,6 @@ class ChatCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                  height: SizeConfig(context, 4).getProportionateScreenHeight),
               Row(
                 children: [
                   Expanded(
@@ -99,21 +102,18 @@ class ChatCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 3.0),
-                  if (notReadMsgs > 0) ...[
+                  if (notReadMsgs > 0)
                     NotReadBubbble(notReadMsgs),
-                  ],
-                  if (notReadMsgs < 1 && chat.messages.isNotEmpty) ...[
+                  if (notReadMsgs < 1 && chat.messages.isNotEmpty)
                     MessageTick(
                       chat.messages.last.status,
                       isRead: chat.messages.last.isReadByOthers,
                       type: chat.messages.last.type,
+                      readColor: Palette.blue9CF,
                     ),
-                  ],
                 ],
               ),
-              SizedBox(
-                  height:
-                      SizeConfig(context, 6.0).getProportionateScreenHeight),
+              const SizedBox(height: 12.0),
               const ChatDivider(),
             ],
           ),

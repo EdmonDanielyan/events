@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 
 import '../../../messenger/functions/size_config.dart';
 
@@ -11,15 +13,12 @@ class SectionTitle extends StatelessWidget {
     return Row(
       children: [
         Container(
-            padding: EdgeInsets.only(left: 20, bottom: 8),
-            child: Text(
-              title.toUpperCase(),
-              style: TextStyle(
-                  color: Theme.of(context).iconTheme.color,
-                  fontSize:
-                      SizeConfig(context, 12).getProportionateScreenHeight,
-                  fontWeight: FontWeight.bold),
-            ))
+          padding: EdgeInsets.only(left: 20, bottom: 8),
+          child: Text(
+            title.toUpperCase(),
+            style: FontStyles.rubikP2Medium(color: Palette.text20Grey),
+          ),
+        ),
       ],
     );
   }

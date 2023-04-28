@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/palette.dart';
 
 class Background extends StatelessWidget {
   final Widget child;
@@ -12,7 +13,7 @@ class Background extends StatelessWidget {
       height: size.height,
       width: size.width,
       child: SingleChildScrollView(child: child),
-      decoration: BoxDecoration(color: Color(0xFFF9F9F9)),
+      decoration: BoxDecoration(color: Palette.white),
     );
   }
 }

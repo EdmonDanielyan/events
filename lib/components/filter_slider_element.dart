@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class FilterSliderElement extends StatelessWidget {
   final String title;
-  final Function onTap;
+  final Function() onTap;
   final bool isSelected;
   final Color selectedColor;
   final Color unselectedColor;
@@ -26,38 +28,24 @@ class FilterSliderElement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      clipBehavior: Clip.hardEdge,
+      //clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.15),
-                spreadRadius: 1,
-                blurRadius: 5,
-                offset: Offset(1, 4))
-          ],
-          borderRadius: BorderRadius.all(Radius.circular(18))),
-      child: ElevatedButton(
-          onPressed: () {
-            onTap();
-          },
+        color: Palette.transparent,
+        borderRadius: BorderRadius.all(Radius.circular(65)),
+        border: Border.all(
+          color: Palette.greenE4A,
+        )
+      ),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
           child: Text(
             title,
-            style: isSelected
-                ? selectedTextStyle
-                : (unselectedTextStyle ??
-                    TextStyle(
-                      color: Colors.black,
-                      fontSize: SizeConfig(context, 13.0)
-                          .getProportionateScreenHeight,
-                    )),
+            style: FontStyles.rubikP2(color: Palette.greenE4A),
           ),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                isSelected ? selectedColor : unselectedColor),
-            padding: MaterialStateProperty.all<EdgeInsets>(
-                EdgeInsets.symmetric(horizontal: 8)),
-          )),
+        ),
+      ),
     );
   }
 }

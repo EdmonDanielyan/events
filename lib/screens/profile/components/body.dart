@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
+import 'package:ink_mobile/components/menu_sheet/menu_sheet.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/user_data.dart';
@@ -30,7 +36,6 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return CustomRefreshIndicator(
       onRefresh: () async {
         userCubit.refresh();
@@ -40,7 +45,7 @@ class Body extends StatelessWidget {
       triggerMode: IndicatorTriggerMode.anywhere,
       trigger: IndicatorTrigger.bothEdges,
       builder: MaterialIndicatorDelegate(
-        builder:  (BuildContext context, IndicatorController controller) {
+        builder: (BuildContext context, IndicatorController controller) {
           return Icon(
             Icons.update,
             color: Colors.green[900],
@@ -99,17 +104,14 @@ class Body extends StatelessWidget {
     final ScrollController _scrollController = ScrollController();
     UserProfileData user = state.data!;
     final logFile = ProfileScreen.of(context).widget.logFile;
-    return Container(
-        child: Background(
-            child: SingleChildScrollView(
-              controller: _scrollController,
-      physics: AlwaysScrollableScrollPhysics(),
-      child: Column(children: [
-        PersonalPageHeader(user: user),
-        Awards(awards: user.awards),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Background(
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Column(
           children: [
+            PersonalPageHeader(user: user),
+            Awards(awards: user.awards),
             Contacts(contacts: user.contacts),
             BasicInformation(info: user.basicInformation),
             if(user.absence!=null) BasicInfoRow(title: 'Статус', value: user.absence!),
@@ -120,9 +122,9 @@ class Body extends StatelessWidget {
             // AboutMyField(user: user, scrollController: _scrollController,)
 
           ],
-        )
-      ]),
-    )));
+        ),
+      ),
+    );
   }
 
   Widget getOtherUserLoadedWidget(context, ProfileState state) {

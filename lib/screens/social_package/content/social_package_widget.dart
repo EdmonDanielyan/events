@@ -39,7 +39,10 @@ class _SocialPackageWidgetState extends State<SocialPackageWidget> {
                 _getPageCubit.fetch(_id);
                 return Center(child: InkPageLoader());
               case GetPageCubitStateEnums.SUCCESS:
-                return SingleChildScrollView(child: CustomHtml(data: state.data?.detail,), );
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 32.0),
+                  child: SingleChildScrollView(child: CustomHtml(data: state.data?.detail,), ),
+                );
               case GetPageCubitStateEnums.ERROR:
                 return widget.errorWidget;
             }

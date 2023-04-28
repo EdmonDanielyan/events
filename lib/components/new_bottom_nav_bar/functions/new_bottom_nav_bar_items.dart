@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/menu_sheet/menu_sheet.dart';
 import 'package:ink_mobile/constants/aseets.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_state.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
@@ -33,7 +34,7 @@ abstract class NavBottomNavBarItem {
 }
 
 class MainBottomNavBarItem extends NavBottomNavBarItem {
-  String icon = 'assets/images/home.svg';
+  String icon = 'assets/svg/home.svg';
   String label = localizationInstance.home;
   Widget screen = MainScreen(
     mainAnnouncementsListCubit: getIt<MainAnnouncementsListCubit>(),
@@ -63,7 +64,7 @@ class SearchBottomNavBarItem extends NavBottomNavBarItem {
 }
 
 class MessagesBottomNavBarItem extends NavBottomNavBarItem {
-  String icon = 'assets/images/message.svg';
+  String icon = 'assets/svg/chat.svg';
   String label = localizationInstance.messages;
 
   Widget screen = ChatListScreen();
@@ -75,7 +76,7 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
 }
 
 class ServicesBottomNavBarItem extends NavBottomNavBarItem {
-  String icon = 'assets/images/services.svg';
+  String icon = 'assets/svg/service.svg';
   String label = localizationInstance.services;
   Widget screen = ServiceListPageViewer(
       feedbackAnswerListCubit: getIt<FeedbackAnswerListCubit>(),
@@ -101,15 +102,15 @@ class ServicesBottomNavBarItem extends NavBottomNavBarItem {
 }
 
 class MenuBottomNavBarItem extends NavBottomNavBarItem {
-  String icon = 'assets/images/menu.svg';
+  String icon = 'assets/svg/menu.svg';
   String label = localizationInstance.menu;
   Widget screen = SizedBox();
 
   void onTap(BuildContext context, Function onChanged, int index) {
     showMaterialModalBottomSheet(
-      backgroundColor: Color(0xfff9f9f9),
+      backgroundColor: Palette.white,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
       ),
       context: context,
       builder: (context) {

@@ -73,15 +73,22 @@ class EventsList extends StatelessWidget {
     List<Widget> eventsWidgetList = [];
 
     if (events.isNotEmpty) {
-      events.forEach((element) {
-        eventsWidgetList
-            .addAll([EventsListElement(event: element), ListElementDivider()]);
-      });
+      events.forEach(
+        (element) {
+          eventsWidgetList.addAll(
+            [
+              EventsListElement(event: element),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: ListElementDivider(),
+              ),
+            ],
+          );
+        },
+      );
       eventsWidgetList.removeLast();
     }
 
     return eventsWidgetList;
   }
 }
-
-

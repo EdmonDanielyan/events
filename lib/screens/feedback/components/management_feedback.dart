@@ -9,14 +9,10 @@ class ManagementFeedback extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _strings = localizationInstance;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ManagementFeedbackForm(),
-        Divider(color: Colors.grey, height: 2.0),
-        QuestionsHeader(text: _strings.answersToQuestions),
-        Divider(color: Colors.grey, height: 2.0),
         ManagementFeedbackAnswersList(),
       ],
     );

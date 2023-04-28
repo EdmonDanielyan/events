@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/app_bars/back_btn.dart';
+import 'package:ink_mobile/components/app_bars/ink_app_bar.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
@@ -100,18 +101,19 @@ class ServiceListPageViewerState extends State<ServiceListPageViewer> {
       child: MedicalInsuranceScreen(
         appBar: appBar(context, _strings.getMedicalInsurance),
         sendMedicalInsFormCubit: widget.sendMedicalInsFormCubit,
-        selectfieldCubit: widget.selectfieldCubitMedical,
+        selectFieldCubit: widget.selectfieldCubitMedical,
       ),
     );
   }
 
   PreferredSizeWidget appBar(BuildContext context, String title) {
-    return InkAppBarWithText(
+    return InkAppBar(
       context,
       title: title,
       leading: AppBarBackBtn(
         onPressed: () => jumpToMainPage(),
       ),
+      showPersonalPageLink: true,
     );
   }
 

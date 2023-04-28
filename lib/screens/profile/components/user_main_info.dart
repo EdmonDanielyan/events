@@ -46,21 +46,6 @@ class _UserMainInfoState extends State<UserMainInfo> {
     super.dispose();
   }
 
-  // ImagePicker picker = ImagePicker();
-  //
-  // Future getImage(ImageSource source) async {
-  //   try {
-  //     final image = await picker.pickImage(source: source);
-  //     if (image == null) return;
-  //     final imageTemporary = File(image.path);
-  //
-  //     Navigator.of(context).push(MaterialPageRoute (
-  //       builder: (BuildContext context) =>  PhotoPreviewPage(file: imageTemporary),
-  //     ),);
-  //   } on PlatformException catch (e) {
-  //     debugPrint('Failed to pick image: $e');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -86,10 +71,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
           tileMode: TileMode.decal,
         ),
       ),
-      child: Column(
-        children: [
-          Container(
-            child: Column(
+      child:  Column(
               children: [
                 Container(
                   child: Container(
@@ -163,14 +145,10 @@ class _UserMainInfoState extends State<UserMainInfo> {
                   )),
                 ),
                 getUserPositionWidget(context),
-                ///todo - user is vacation?!
                 getInfoAbsenceUser()
               ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 
   String getFullName() {

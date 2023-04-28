@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/functions/new_bottom_nav_bar_mixin.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/setup.dart';
 
@@ -25,8 +27,8 @@ class _NewBottomNavBarState extends State<NewBottomNavBar>
   Widget build(BuildContext context) {
     navBarItems = getItems(
       showActive: widget.showActive,
-      iconHeight: SizeConfig(context, 21.0).getProportionateScreenHeight,
-      activeIconHeight: SizeConfig(context, 21.0).getProportionateScreenHeight,
+      iconHeight: 24.0,
+      activeIconHeight: 24.0,
     );
     return BlocBuilder<NewBottomNavBarCubit, int>(
       bloc: _cubit,
@@ -34,13 +36,11 @@ class _NewBottomNavBarState extends State<NewBottomNavBar>
         return BottomNavigationBar(
           currentIndex: currentIndex,
           selectedItemColor:
-              widget.showActive ? Color(0xff12512a) : Colors.grey,
-          unselectedItemColor: Colors.grey,
-          selectedFontSize:
-              SizeConfig(context, 10.0).getProportionateScreenHeight,
-          unselectedFontSize:
-              SizeConfig(context, 10.0).getProportionateScreenHeight,
-          iconSize: 30,
+              widget.showActive ? Palette.greenE4A : Palette.textBlack50,
+          unselectedItemColor: Palette.textBlack50,
+          selectedLabelStyle: FontStyles.rubikP3(color: Palette.greenE4A),
+          unselectedLabelStyle: FontStyles.rubikP3(color: Palette.textBlack50),
+          iconSize: 24,
           type: BottomNavigationBarType.fixed,
           items: navBarItems,
           onTap: (index) {

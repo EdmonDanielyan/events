@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/utils/date_functions.dart';
 import 'package:ink_mobile/models/event_data.dart';
 
@@ -16,62 +18,57 @@ class EventsListElement extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, '/event_detail',
-              arguments: {'id': event.id});
-        },
-        child: Container(
-            color: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              children: [
-                Container(
-                    width: size.width,
-                    clipBehavior: Clip.hardEdge,
-                    height:
-                        SizeConfig(context, 180.0).getProportionateScreenHeight,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
+      onTap: () {
+        Navigator.pushNamed(context, '/event_detail',
+            arguments: {'id': event.id});
+      },
+      child: Container(
+        color: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          children: [
+            Container(
+              width: size.width,
+              clipBehavior: Clip.hardEdge,
+              height: SizeConfig(context, 180.0).getProportionateScreenHeight,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: event.pictureLink == null
+                  ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
+                      fit: BoxFit.fitWidth)
+                  : Image.network(
+                      event.pictureLink!,
+                      fit: BoxFit.fitWidth,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
+                            fit: BoxFit.fitWidth);
+                      },
                     ),
-                    child: event.pictureLink == null
-                        ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
-                            fit: BoxFit.fitWidth)
-                        : Image.network(event.pictureLink!,
-                            fit: BoxFit.fitWidth,
-                            errorBuilder: (context, error, stackTrace) {
-                            return Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
-                                fit: BoxFit.fitWidth);
-                          })),
-                Container(
-                    margin: EdgeInsets.only(top: 20),
-                    child: Container(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        _getEventTimeAndPlace(),
-                        style: TextStyle(
-                          color: Theme.of(context).iconTheme.color,
-                          fontSize: SizeConfig(context, 14.0)
-                              .getProportionateScreenHeight,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                    )),
-                Container(
-                  margin: EdgeInsets.only(top: 8, bottom: 5),
+            ),
+            Container(
+                margin: EdgeInsets.only(top: 20),
+                child: Container(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    event.title ?? '',
-                    style: TextStyle(
-                      fontSize: SizeConfig(context, 18.0)
-                          .getProportionateScreenHeight,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                    _getEventTimeAndPlace(),
+                    style: FontStyles.rubikP2(color: Palette.textBlack50),
                     textAlign: TextAlign.start,
                   ),
-                )
-              ],
-            )));
+                )),
+            Container(
+              margin: EdgeInsets.only(top: 8, bottom: 5),
+              alignment: Alignment.topLeft,
+              child: Text(
+                event.title ?? '',
+                style: FontStyles.rubikH4(color: Palette.textBlack),
+                textAlign: TextAlign.start,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   String _getEventTimeAndPlace() {

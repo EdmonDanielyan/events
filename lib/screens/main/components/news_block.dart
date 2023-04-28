@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/page_indicator/custom_page_indicator.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -10,6 +11,8 @@ import 'package:ink_mobile/screens/main/components/news_filter_slider.dart';
 import 'package:ink_mobile/screens/main/components/news_list_slider.dart';
 import 'package:ink_mobile/screens/main/components/news_list_slider_element_placeholder.dart';
 import 'package:ink_mobile/screens/main/main_screen.dart';
+
+import '../../../constants/palette.dart';
 
 class NewsBlock extends StatelessWidget {
   NewsBlock({Key? key}) : super(key: key);
@@ -28,19 +31,21 @@ class NewsBlock extends StatelessWidget {
           padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 24.0),
           child: Column(
             children: [
-              Row(
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  _strings.news,
+                  style: FontStyles.rubikH2(color: Palette.textBlack),
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              Column(
                 children: [
-                  Text(
-                    _strings.news,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: SizeConfig(context, 26.0)
-                          .getProportionateScreenHeight,
-                    ),
-                  ),
+                  NewsFilterSlider(),
+                  const SizedBox(height: 16.0),
+                  getCurrentStateWidget(context, state),
                 ],
               ),
-              getCurrentStateWidget(context, state)
             ],
           ),
         );
@@ -65,64 +70,51 @@ class NewsBlock extends StatelessWidget {
         {
           MainScreen.of(context).mainPageCubit.emitErrorState();
 
-          return Container();
+          return SizedBox.shrink();
         }
     }
   }
 
   Widget getLoadedStateWidget(List<NewsItemData> data) {
-    return Container(
-      child: Column(
-        children: [
-          NewsFilterSlider(),
-          NewsListSlider(newsList: data),
-        ],
-      ),
-    );
+    return NewsListSlider(newsList: data);
   }
 
   Widget getLoadingStateWidget(BuildContext context) {
     final PageController _controllerOne = PageController();
-
-    return Column(
-      children: [
-        NewsFilterSlider(),
-        Container(
-          height: SizeConfig(context, 350).getProportionateScreenHeight,
-          child: Column(
-            children: [
-              Container(
-                width: size.width,
-                height: SizeConfig(context, 300).getProportionateScreenHeight,
-                alignment: AlignmentDirectional.topStart,
-                margin: EdgeInsets.only(top: 20.0),
-                clipBehavior: Clip.none,
-                child: ListView(
-                  controller: _controllerOne,
-                  clipBehavior: Clip.none,
-                  scrollDirection: Axis.horizontal,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    Container(
-                        margin: EdgeInsets.only(right: 30),
-                        child: NewsListSliderElementPlaceholder()),
-                    Container(child: NewsListSliderElementPlaceholder()),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.only(top: 30),
-                  child: CustomPageIndicator(
-                    controller: _controllerOne,
-                    count: 5,
-                  ),
-                ),
-              )
-            ],
+    return SizedBox(
+      height: SizeConfig(context, 350).getProportionateScreenHeight,
+      child: Column(
+        children: [
+          Container(
+            width: size.width,
+            height: SizeConfig(context, 300).getProportionateScreenHeight,
+            alignment: AlignmentDirectional.topStart,
+            margin: EdgeInsets.only(top: 20.0),
+            clipBehavior: Clip.none,
+            child: ListView(
+              controller: _controllerOne,
+              clipBehavior: Clip.none,
+              scrollDirection: Axis.horizontal,
+              physics: NeverScrollableScrollPhysics(),
+              children: [
+                Container(
+                    margin: EdgeInsets.only(right: 30),
+                    child: NewsListSliderElementPlaceholder()),
+                NewsListSliderElementPlaceholder(),
+              ],
+            ),
           ),
-        )
-      ],
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(top: 30),
+              child: CustomPageIndicator(
+                controller: _controllerOne,
+                count: 5,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

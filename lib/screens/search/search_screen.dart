@@ -1,5 +1,6 @@
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/app_bars/ink_app_bar.dart';
 import 'package:ink_mobile/screens/search/components/body.dart';
 import 'package:ink_mobile/cubit/search/search_cubit.dart';
 
@@ -22,6 +23,12 @@ class _SearchScreenState extends State<SearchScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      appBar: InkAppBar(
+        context,
+        leading: const SizedBox(),
+        showPersonalPageLink: true,
+          title: "Поиск по порталу",
+      ),
       body: Body(
         searchCubit: widget.searchCubit,
       ),

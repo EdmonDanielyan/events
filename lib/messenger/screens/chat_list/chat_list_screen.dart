@@ -2,6 +2,7 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/hidden_chats/hidden_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
@@ -14,7 +15,7 @@ import 'package:ink_mobile/messenger/handler/fetch/chats.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_card_wrapper.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/empty_chats.dart';
-import 'package:ink_mobile/messenger/screens/chat_list/components/search_bar.dart';
+import 'package:ink_mobile/components/fields/search_field.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'components/builder.dart';
@@ -92,127 +93,130 @@ class _ChatListState extends State<ChatList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (widget.showSearch) ...[
-          const SizedBox(height: 5.0),
-          ChatsBuilder(
-            cachedChatsCubit: cubit,
-            builder: (context, chatsState) {
-              if (chatsState.chats.isEmpty) {
-                return const SizedBox.shrink();
-              }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (widget.showSearch) ...[
+            const SizedBox(height: 5.0),
+            ChatsBuilder(
+              cachedChatsCubit: cubit,
+              builder: (context, chatsState) {
+                if (chatsState.chats.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 32.0),
+                  child: SearchField(
+                    hint: localizationInstance.searchHint,
+                    onChanged: (str) {
+                      final items = cubit.searchChats(str);
+                      searchCubit.setItems(str, items);
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+          Expanded(
+            child: BlocBuilder<SearchListCubit<Chat>, SearchListState<Chat>>(
+              bloc: searchCubit,
+              builder: (context, searchState) {
+                return HiddenChatsBuilder(
+                  cubit: hiddenchatsCubit,
+                  builder: (context, hiddenChatsState) {
+                    return ChatsBuilder(
+                      cachedChatsCubit: cubit,
+                      builder: (context, state) {
+                        bool isSearchNotEmpty =
+                            searchState.value.trim().isNotEmpty;
+                        List<Chat> _chats = isSearchNotEmpty
+                            ? hiddenchatsCubit.filterChats(searchState.items)
+                            : hiddenchatsCubit.filterChats(state.chats);
 
-              return SearchBar(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 7.0),
-                onChanged: (str) {
-                  final items = cubit.searchChats(str);
+                        _chats.removeWhere((element) =>
+                            element.isSingle && element.messages.isEmpty);
 
-                  searchCubit.setItems(str, items);
-                },
-              );
-            },
-          ),
-        ],
-        Expanded(
-          child: BlocBuilder<SearchListCubit<Chat>, SearchListState<Chat>>(
-            bloc: searchCubit,
-            builder: (context, searchState) {
-              return HiddenChatsBuilder(
-                cubit: hiddenchatsCubit,
-                builder: (context, hiddenChatsState) {
-                  return ChatsBuilder(
-                    cachedChatsCubit: cubit,
-                    builder: (context, state) {
-                      bool isSearchNotEmpty =
-                          searchState.value.trim().isNotEmpty;
-                      List<Chat> _chats = isSearchNotEmpty
-                          ? hiddenchatsCubit
-                              .filterChats(searchState.items)
-                          : hiddenchatsCubit.filterChats(state.chats);
+                        _chats = _chats.toSet().toList();
 
-                      _chats.removeWhere((element) =>
-                          element.isSingle && element.messages.isEmpty);
+                        if (_chats.isEmpty) {
+                          return RefreshIndicator(
+                            onRefresh: () async {
+                              await FetchChats().call();
+                            },
+                            child: Center(
+                              child: ListView(
+                                shrinkWrap: true,
+                                physics: AlwaysScrollableScrollPhysics(),
+                                children: [
+                                  EmptyChats(
+                                      title: isSearchNotEmpty
+                                          ? "Ничего не найдено"
+                                          : "Список пустой"),
+                                ],
+                              ),
+                            ),
+                          );
+                        }
 
-                      _chats = _chats.toSet().toList();
+                        _chats.sort((a, b) {
+                          final aM = a.messages.isNotEmpty
+                              ? a.messages.last.createdAt
+                              : a.createdAt;
+                          final bM = b.messages.isNotEmpty
+                              ? b.messages.last.createdAt
+                              : b.createdAt;
 
-                      if (_chats.isEmpty) {
+                          return bM.compareTo(aM);
+                        });
+
+                        widget.cubit.setVisibleChats(_chats);
+
                         return RefreshIndicator(
                           onRefresh: () async {
                             await FetchChats().call();
                           },
-                          child: Center(
-                            child: ListView(
-                              shrinkWrap: true,
-                              physics: AlwaysScrollableScrollPhysics(),
-                              children: [
-                                EmptyChats(
-                                    title: isSearchNotEmpty
-                                        ? "Ничего не найдено"
-                                        : "Список пустой"),
-                              ],
-                            ),
+                          child: ScrollablePositionedList.builder(
+                            physics: AlwaysScrollableScrollPhysics(),
+                            itemCount: _chats.length,
+                            itemScrollController: _controller,
+                            itemPositionsListener: itemPositionsListener,
+                            itemBuilder: (context, index) {
+                              final _currentChat = _chats[index];
+                              _currentChat.sortMessagesByTime();
+
+                              final _notReadMsgs =
+                                  cubit.notReadMsgsOfChat(_currentChat.id);
+
+                              return ChatCardWrapper(
+                                notReadMsgs: _notReadMsgs,
+                                highlightValue: searchState.value,
+                                cachedChatsCubit: cubit,
+                                chat: _currentChat,
+                                onDismissed: widget.onDismissed != null
+                                    ? (_) {
+                                        widget.onDismissed!(_currentChat);
+                                      }
+                                    : null,
+                                onTap: widget.onTap != null
+                                    ? () => widget.onTap!(_currentChat)
+                                    : null,
+                                onlineCubit: onlineCubit,
+                                cachedUsersCubit: widget.cachedUsersCubit,
+                              );
+                            },
                           ),
                         );
-                      }
-
-                      _chats.sort((a, b) {
-                        final aM = a.messages.isNotEmpty
-                            ? a.messages.last.createdAt
-                            : a.createdAt;
-                        final bM = b.messages.isNotEmpty
-                            ? b.messages.last.createdAt
-                            : b.createdAt;
-
-                        return bM.compareTo(aM);
-                      });
-
-                      widget.cubit.setVisibleChats(_chats);
-
-                      return RefreshIndicator(
-                        onRefresh: () async {
-                          await FetchChats().call();
-                        },
-                        child: ScrollablePositionedList.builder(
-                          physics: AlwaysScrollableScrollPhysics(),
-                          itemCount: _chats.length,
-                          itemScrollController: _controller,
-                          itemPositionsListener: itemPositionsListener,
-                          itemBuilder: (context, index) {
-                            final _currentChat = _chats[index];
-                            _currentChat.sortMessagesByTime();
-
-                            final _notReadMsgs =
-                                cubit.notReadMsgsOfChat(_currentChat.id);
-
-                            return ChatCardWrapper(
-                              notReadMsgs: _notReadMsgs,
-                              highlightValue: searchState.value,
-                              cachedChatsCubit: cubit,
-                              chat: _currentChat,
-                              onDismissed: widget.onDismissed != null
-                                  ? (_) {
-                                      widget.onDismissed!(_currentChat);
-                                    }
-                                  : null,
-                              onTap: widget.onTap != null
-                                  ? () => widget.onTap!(_currentChat)
-                                  : null,
-                              onlineCubit: onlineCubit,
-                              cachedUsersCubit: widget.cachedUsersCubit,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  );
-                },
-              );
-            },
+                      },
+                    );
+                  },
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

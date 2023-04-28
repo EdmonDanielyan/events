@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/constants/palette.dart';
 
+import '../../../constants/font_styles.dart';
+
 class EventsListEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -27,21 +29,13 @@ class EventsListEmptyState extends StatelessWidget {
           const SizedBox(height: 24.0,),
           Text(
             "Ничего не найдено",
-            style: GoogleFonts.rubik(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-                color: Palette.textBlack
-            ),
+            style: FontStyles.rubikP1Medium(),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 4.0,),
           Text(
             "Пока что у нас нет никаких объявлений для вас",
-            style: GoogleFonts.rubik(
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-                color: Palette.textBlack
-            ),
+            style: FontStyles.rubikP1(),
             textAlign: TextAlign.center,
             maxLines: 2,
           ),

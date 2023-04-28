@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/highlight_text/highlight_text.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 
@@ -15,11 +17,7 @@ class ChatName extends StatelessWidget {
       text: name,
       maxLines: 1,
       term: highlightValue,
-      textStyle: GoogleFonts.roboto(
-        fontWeight: FontWeight.bold,
-        fontSize: SizeConfig(context, 13.5).getProportionateScreenHeight,
-        color: Colors.black,
-      ),
+      textStyle: FontStyles.rubikP2Medium(color: Palette.textBlack),
       strutStyle: const StrutStyle(forceStrutHeight: true),
       textStyleHighlight: const TextStyle(color: Colors.blue),
       overflow: TextOverflow.ellipsis,

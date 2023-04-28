@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class MenuSheetItem extends StatelessWidget {
@@ -19,74 +21,70 @@ class MenuSheetItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () async {
-          onTap();
-        },
-        child: Container(
-          color: Color(0xfff9f9f9),
-          alignment: Alignment.centerLeft,
-          height: SizeConfig(context, 47).getProportionateScreenHeight,
-          padding: EdgeInsets.only(
-              top: SizeConfig(context, 13).getProportionateScreenHeight),
+      onTap: () async {
+        onTap();
+      },
+      child: Container(
+        color: Palette.white,
+        alignment: Alignment.centerLeft,
+        height: 52.0,
+        padding: EdgeInsets.only(
+            top: SizeConfig(context, 13).getProportionateScreenHeight),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                child: Row(
-                  children: [
-                    Container(child: icon),
-                    Container(
-                        margin: EdgeInsets.only(left: 15),
-                        child: Text(
-                          title,
-                          style: TextStyle(
-                              fontSize: SizeConfig(context, 16)
-                                  .getProportionateScreenHeight,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff1d2126)),
-                          textAlign: TextAlign.start,
-                        )),
-                    Expanded(
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                size: SizeConfig(context, 11)
-                                    .getProportionateScreenHeight,
-                                color: Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(0.5),
-                              ),
-                            )
-                          ]),
+              Row(
+                children: [
+                  icon,
+                  Container(
+                    margin: EdgeInsets.only(left: 15),
+                    child: Text(
+                      title,
+                      style: FontStyles.rubikP1(color: Palette.textBlack),
+                      textAlign: TextAlign.start,
                     ),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20.0,
+                            color: Palette.greenE4A,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
               withBottomDivider
                   ? Expanded(
                       child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
                             margin: EdgeInsets.only(
                                 top: SizeConfig(context, 10)
                                     .getProportionateScreenHeight),
                             child: Divider(
-                              color: Color(0xffe5e5e5),
+                              color: Palette.text20Grey,
                               height: 1,
-                              thickness: 1.3,
-                              endIndent: 0,
-                              indent: 55,
-                            ))
-                      ],
-                    ))
-                  : Container()
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : const SizedBox.shrink()
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

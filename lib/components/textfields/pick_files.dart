@@ -2,7 +2,12 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/feedback/components/select_file_dialog.dart';
@@ -79,78 +84,60 @@ class PickFilesState extends State<PickFiles> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.title,
-          style: widget.titleStyle ??
-              TextStyle(
-                fontSize:
-                    SizeConfig(context, 15.0).getProportionateScreenHeight,
-                fontWeight: FontWeight.bold,
-              ),
+        _btnWidget(context),
+        const SizedBox(
+          height: 24.0,
         ),
-        SizedBox(height: 5.0),
-        Column(
-          children: List.generate(
-            pickedFiles.length + 1,
-            (index) => Container(
-              margin: EdgeInsets.only(top: 5.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _btnWidget(context),
-                  SizedBox(width: 10.0),
-                  Expanded(
-                    child: _fileStatusWidget(
-                        context, hasElement(index) ? pickedFiles[index] : null),
-                  ),
-                  if (hasElement(index)) ...[
-                    _deleteItemWidget(index),
-                  ],
+        if (pickedFiles.isEmpty)
+          _fileStatusWidget(context),
+        ...List.generate(
+          pickedFiles.length,
+          (index) {
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: _fileStatusWidget(
+                      context, hasElement(index) ? pickedFiles[index] : null),
+                ),
+                if (hasElement(index)) ...[
+                  _deleteItemWidget(index),
                 ],
-              ),
-            ),
-          ),
+              ],
+            );
+          }
         ),
       ],
     );
   }
 
   Widget _btnWidget(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: ElevatedButton(
-        onPressed: () {
-          CustomBottomSheet(
-            context: context,
-            child: SelectFileDialog(
-              onGallery: () => _pickFile(FileType.media),
-              onFiles: () => _pickFile(FileType.custom),
-            ),
-          );
-        },
-        child: Text(
-          "Выбрать файл",
-          style: TextStyle(
-            fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
+    return DefaultButton(
+      title: localizationInstance.attachFile,
+      onTap: () {
+        CustomBottomSheet(
+          context: context,
+          child: SelectFileDialog(
+            onGallery: () => _pickFile(FileType.media),
+            onFiles: () => _pickFile(FileType.custom),
           ),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).primaryColor,
-          padding: const EdgeInsets.all(11.0),
-        ),
+        );
+      },
+      borderColor: Palette.greenE4A,
+      textColor: Palette.greenE4A,
+      suffixIcon: SvgPicture.asset(
+        IconLinks.ATTACHMENT_ICON,
+        color: Palette.greenE4A,
+        height: 20.0,
+        width: 20.0,
       ),
     );
   }
 
-  Widget _fileStatusWidget(BuildContext context, File? file) {
+  Widget _fileStatusWidget(BuildContext context, [File? file]) {
     return Text(
       file == null ? noFilePicked : basename(file.path),
-      style: TextStyle(
-        color: Colors.grey,
-        fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
-      ),
+      style: FontStyles.rubikP1Medium(color: Palette.textBlack),
       maxLines: 1,
     );
   }
@@ -158,9 +145,11 @@ class PickFilesState extends State<PickFiles> {
   Widget _deleteItemWidget(int index) {
     return IconButton(
       onPressed: () => _removeFile(index),
-      icon: Icon(
-        Icons.delete,
-        color: Colors.red,
+      icon: SvgPicture.asset(
+        IconLinks.CLOSE_ICON,
+        color: Palette.greenE4A,
+        width: 20.0,
+        height: 20.0,
       ),
     );
   }

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/ink_icons.dart';
 
@@ -12,101 +16,82 @@ class VotesBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-        padding: EdgeInsets.only(bottom: 10.0),
-        child: Container(
-          height: SizeConfig(context, 50).getProportionateScreenHeight,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.15),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3))
+    return SizedBox(
+      height: SizeConfig(context, 50).getProportionateScreenHeight,
+      width: size.width,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  IconLinks.BARREL_SVG_LINK,
+                  height: 32.0,
+                  width: 32.0,
+                  color: Palette.greenE4A,
+                ),
+                const SizedBox(width: 8.0,),
+                Text(
+                  votes?.barrels.toString() ?? '0',
+                  style: FontStyles.rubikH2Medium(color: Palette.textBlack),
+                ),
               ],
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          width: size.width * 0.90,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Icon(
-                        InkIcons.barrel,
-                        size: SizeConfig(context, 27)
-                            .getProportionateScreenHeight,
-                      )),
-                  Text(
-                    votes?.barrels.toString() ?? '0',
-                    style: TextStyle(
-                        fontSize: SizeConfig(context, 22)
-                            .getProportionateScreenHeight,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w300),
-                  )
-                ],
-              )),
-              Container(
-                  height: size.height * 0.05,
-                  child: VerticalDivider(
-                    color: Color(0xFFE5E5E5),
-                    thickness: 2,
-                  )),
-              Expanded(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Icon(
-                        InkIcons.storage,
-                        size: SizeConfig(context, 27)
-                            .getProportionateScreenHeight,
-                      )),
-                  Text(
-                    votes?.reservoir.toString() ?? '0',
-                    style: TextStyle(
-                        fontSize: SizeConfig(context, 22)
-                            .getProportionateScreenHeight,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w300),
-                  )
-                ],
-              )),
-              Container(
-                  height: size.height * 0.05,
-                  child: VerticalDivider(
-                    color: Color(0xFFE5E5E5),
-                    thickness: 2,
-                  )),
-              Expanded(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Icon(
-                        InkIcons.tanker,
-                        size: SizeConfig(context, 27)
-                            .getProportionateScreenHeight,
-                      )),
-                  Text(
-                    votes?.tankers.toString() ?? '0',
-                    style: TextStyle(
-                        fontSize: SizeConfig(context, 22)
-                            .getProportionateScreenHeight,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w300),
-                  )
-                ],
-              )),
-            ],
+            ),
           ),
-        ));
+          SizedBox(
+            height: 32.0,
+            child: VerticalDivider(
+              color: Palette.text20Grey,
+              thickness: 2,
+            ),
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  IconLinks.BARREL_SVG_LINK,
+                  height: 32.0,
+                  width: 32.0,
+                  color: Palette.greenE4A,
+                ),
+                const SizedBox(width: 8.0,),
+                Text(
+                  votes?.reservoir.toString() ?? '0',
+                  style: FontStyles.rubikH2Medium(color: Palette.textBlack),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 32.0,
+            child: VerticalDivider(
+              color: Palette.text20Grey,
+              thickness: 2,
+            ),
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  IconLinks.BARREL_SVG_LINK,
+                  height: 32.0,
+                  width: 32.0,
+                  color: Palette.greenE4A,
+                ),
+                const SizedBox(width: 8.0,),
+                Text(
+                  votes?.tankers.toString() ?? '0',
+                  style: FontStyles.rubikH2Medium(color: Palette.textBlack),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

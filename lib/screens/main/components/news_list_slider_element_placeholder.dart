@@ -122,7 +122,7 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                                             margin: EdgeInsets.only(left: 24),
                                             child: Row(children: [
                                               SvgPicture.asset(
-                                                  IconLinks.COMMENT_SVG_LINK,
+                                                  IconLinks.COMMENT_ICON_LINK,
                                                   width: 18,
                                                   height: 16),
                                               Container(

@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/html.dart';
 import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
@@ -47,80 +49,51 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return CustomLayoutBuilder(
       builder: (context, constraints, isTablet) {
-        return Background(
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
+                padding: EdgeInsets.only(top: 32.0, bottom: 16.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      child: SvgPicture.asset(
-                        IconLinks.VIEW_COUNT_SVG_LINK,
-                        semanticsLabel: 'View Count',
-                        width: isTablet ? 30 : null,
-                        height: isTablet ? 30 : null,
-                      ),
-                      margin: EdgeInsets.only(right: 10.0),
-                    ),
-                    Container(
-                        child: Text(
-                          widget.announcement.viewCount != null
-                              ? widget.announcement.viewCount.toString()
-                              : '',
-                          style: TextStyle(
-                              fontFamily: "Helvetica",
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey,
-                              fontSize: SizeConfig(context, 14)
-                                  .getProportionateScreenHeight),
-                        ),
-                        margin: EdgeInsets.only(right: 16.0)),
                     Text(
                       widget.announcement.dateCreate != null
                           ? DateFormat('dd.MM.yyyy')
-                              .format(widget.announcement.dateCreate!)
+                          .format(widget.announcement.dateCreate!)
                           : '',
-                      style: TextStyle(
-                        fontFamily: "Helvetica",
-                        color: Colors.grey[500],
-                        fontWeight: FontWeight.w200,
-                        fontSize: SizeConfig(context, 12)
-                            .getProportionateScreenHeight,
-                      ),
+                      style: FontStyles.rubikP2(color: Palette.textBlack50),
+                    ),
+                    const Spacer(),
+                    SvgPicture.asset(
+                      IconLinks.OPENED_EYE_ICON_LINK,
+                      semanticsLabel: 'View Count',
+                      height: 16.0,
+                      width: 16.0,
+                      color: Palette.textBlack50,
+                    ),
+                    const SizedBox(
+                      width: 4.0,
+                    ),
+                    Text(
+                      (widget.announcement.viewCount ?? 0).toString(),
+                      style: FontStyles.rubikP2(color: Palette.textBlack50),
                     ),
                   ],
                 ),
-                padding: EdgeInsets.only(left: 20.0, top: 17.0, bottom: 10.0),
               ),
-              Container(
-                child: Column(
-                  children: [
-                    Text(
-                      widget.announcement.title ?? '',
-                      style: TextStyle(
-                        fontSize: SizeConfig(context, 21)
-                            .getProportionateScreenHeight,
-                        height: 1.3,
-                        fontWeight: FontWeight.w900,
-                        fontFamily: "Helvetica",
-                      ),
-                    )
-                  ],
-                ),
-                margin: EdgeInsets.symmetric(horizontal: 20.0),
+              Text(
+                widget.announcement.title ?? '',
+                style: FontStyles.rubikH3(color: Palette.textBlack),
               ),
-              Container(
-                child: Divider(
-                  thickness: 2.0,
-                ),
-                margin: EdgeInsets.only(top: 16.0, bottom: 11.0),
+              Divider(
+                thickness: 2.0,
+                height: 48.0,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                child: CustomHtml(
-                  data: widget.announcement.detailText ?? '',
-                ),
+              CustomHtml(
+                data: widget.announcement.detailText ?? '',
               )
             ],
           ),

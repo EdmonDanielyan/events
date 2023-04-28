@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/routes/routes.dart';
 
@@ -28,11 +30,10 @@ class SocialPackageListElement extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: Text(
                   title,
-                  style: TextStyle(
-                      fontSize: SizeConfig(context, 13.0)
-                          .getProportionateScreenHeight),
+                  style: FontStyles.rubikP1(color: Palette.textBlack),
                   overflow: TextOverflow.ellipsis,
-                )),
+                  maxLines: 2,
+                ),),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/core/cubit/int_cubit/int_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/providers/local_pin_provider.dart';
@@ -55,69 +57,72 @@ class _SetPinCodeScreenState extends State<SetPinCodeScreen> {
         child: BlocBuilder<IntCubit, int>(
           bloc: _stageCubit,
           builder: (context, state) {
-            return Column(
-              children: [
-                const SizedBox(height: 30.0),
-                Text(
-                  state == 2 ? _strings.repeatPinCode : _strings.newPinCode,
-                  style: const TextStyle(
-                    fontSize: 22.0,
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 20.0),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      state == 2 ? _strings.repeatPinCode : _strings.newPinCode,
+                      style: FontStyles.rubikH2(color: Palette.textBlack),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 30.0),
-                Center(
-                  child: PinCodeTextField(
-                    controller: _controller,
-                    focusNode: focusNode,
-                    errorBuilder: (str, str2) {
-                      if (str2 == _pinCode1) return const SizedBox();
+                  const SizedBox(height: 30.0),
+                  Center(
+                    child: PinCodeTextField(
+                      controller: _controller,
+                      focusNode: focusNode,
+                      errorBuilder: (str, str2) {
+                        if (str2 == _pinCode1) return const SizedBox();
 
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            str ?? "",
-                            style: TextStyle(fontSize: 13.0, color: Colors.red),
-                            textAlign: TextAlign.center,
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Text(
+                              str ?? "",
+                              style: TextStyle(fontSize: 13.0, color: Colors.red),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    validator: (str) {
-                      if (state == 2) {
-                        if (str != _pinCode1) {
-                          return _strings.incorrectPinCode;
-                        }
-                      }
-
-                      return null;
-                    },
-                    onChanged: (str) {
-                      if (str.isNotEmpty) {
+                        );
+                      },
+                      validator: (str) {
                         if (state == 2) {
-                          _pinCode2 = str;
-                        } else {
-                          _pinCode1 = str;
+                          if (str != _pinCode1) {
+                            return _strings.incorrectPinCode;
+                          }
                         }
-                      }
-                    },
-                    onCompleted: (pin) => state == 2
-                        ? _onComplete2(context)
-                        : _onComplete1(context),
+
+                        return null;
+                      },
+                      onChanged: (str) {
+                        if (str.isNotEmpty) {
+                          if (state == 2) {
+                            _pinCode2 = str;
+                          } else {
+                            _pinCode1 = str;
+                          }
+                        }
+                      },
+                      onCompleted: (pin) => state == 2
+                          ? _onComplete2(context)
+                          : _onComplete1(context),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10.0),
-                if (state == 2) ...[
-                  TextButton(
-                    child: Text(_strings.clear),
-                    onPressed: () {
-                      _controller.clear();
-                      _pinCode1 = "";
-                      _stageCubit.setNew(1);
-                    },
-                  )
+                  const SizedBox(height: 10.0),
+                  if (state == 2) ...[
+                    TextButton(
+                      child: Text(_strings.clear),
+                      onPressed: () {
+                        _controller.clear();
+                        _pinCode1 = "";
+                        _stageCubit.setNew(1);
+                      },
+                    )
+                  ],
                 ],
-              ],
+              ),
             );
           },
         ),

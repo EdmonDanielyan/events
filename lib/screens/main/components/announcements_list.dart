@@ -70,7 +70,10 @@ class AnnouncementsList extends StatelessWidget {
     announcements.forEach((element) {
       announcementsWidgetList.addAll([
         AnnouncementsListElement(announcement: element),
-        ListElementDivider()
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: ListElementDivider(),
+        )
       ]);
     });
 

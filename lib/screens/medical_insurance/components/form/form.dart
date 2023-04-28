@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
 import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/components/switch_tabs.dart';
 import 'package:ink_mobile/components/textfields/service_btn.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/core/cubit/btn/btn_state.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/core/masks/input_formatters.dart';
@@ -19,13 +21,11 @@ import 'entities.dart';
 
 class MedicalInsuranceForm extends StatefulWidget {
   final SendMedicalInsFormCubit sendMedicalInsFormCubit;
-  final EdgeInsetsGeometry sectionPadding;
-  final SelectfieldCubit selectfieldCubit;
+  final SelectfieldCubit selectFieldCubit;
   const MedicalInsuranceForm({
     Key? key,
-    required this.sectionPadding,
     required this.sendMedicalInsFormCubit,
-    required this.selectfieldCubit,
+    required this.selectFieldCubit,
   }) : super(key: key);
 
   @override
@@ -38,25 +38,29 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
   CustomSectionSwitcher? tabsSwitcher;
 
   void setTabsSwitcher() {
-    setState(() {
-      tabsSwitcher = CustomSectionSwitcher(tabs: [
-        CustomSectionTab(
-          index: 0,
-          name: "policy",
-          label: localizationInstance.regAppForMedIns,
-          widget: MedicalInsuranceRegAppFields(
-            entities: entities,
-            selectfieldCubit: widget.selectfieldCubit,
-          ),
-        ),
-        CustomSectionTab(
-          index: 1,
-          name: "letter",
-          label: localizationInstance.extGuarantLetter,
-          widget: MedicalInsuranceGuarLetFields(entities: entities),
-        ),
-      ]);
-    });
+    setState(
+      () {
+        tabsSwitcher = CustomSectionSwitcher(
+          tabs: [
+            CustomSectionTab(
+              index: 0,
+              name: "policy",
+              label: localizationInstance.regAppForMedIns,
+              widget: MedicalInsuranceRegAppFields(
+                entities: entities,
+                selectfieldCubit: widget.selectFieldCubit,
+              ),
+            ),
+            CustomSectionTab(
+              index: 1,
+              name: "letter",
+              label: localizationInstance.extGuarantLetter,
+              widget: MedicalInsuranceGuarLetFields(entities: entities),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -70,38 +74,35 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              contentWrapper(
-                child: MedicalInsuranceFormUserFields(entities: entities),
-              ),
-              Divider(color: Colors.grey, height: 2.0),
-              SizedBox(height: 25.0),
-              contentWrapper(
-                child: Column(
-                  children: [
-                    serviceSections(),
-                    SizedBox(height: 20),
-                    _additionalText(),
-                    SizedBox(height: 20),
-                    btnWidget(),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-            ],
-          )),
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          contentWrapper(
+            child: MedicalInsuranceFormUserFields(entities: entities),
+          ),
+          const SizedBox(height: 25.0),
+          contentWrapper(
+            child: Column(
+              children: [
+                serviceSections(),
+                const SizedBox(height: 20),
+                _additionalText(),
+                const SizedBox(height: 20),
+                btnWidget(),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
+      ),
     );
   }
 
   Widget contentWrapper({required Widget child}) {
-    return Container(
-      color: Colors.white,
-      padding: widget.sectionPadding,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: child,
     );
   }
@@ -120,12 +121,12 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
             },
             tabs: tabsSwitcher!.tabs,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 24.0),
           tabsSwitcher!.tabs[tabsSwitcher!.activeIndex].widget,
         ],
       );
     }
-    return SizedBox();
+    return const SizedBox.shrink();
   }
 
   Widget _additionalText() {
@@ -134,6 +135,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
       onChanged: (val) => entities.additionalText = val,
       inputFormatters: [InputFormatters().lettersNumbersOnly],
       maxLines: 4,
+      descriptionText: "Комментарий",
     );
   }
 
@@ -161,8 +163,11 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
         if (state.state == BtnCubitStateEnums.SENDING) {
           return CustomCircularProgressIndicator();
         } else {
-          return ServiceBtn(
-            onPressed: () async {
+          return DefaultButton(
+            title: localizationInstance.submit,
+            buttonColor: Palette.greenE4A,
+            textColor: Palette.white,
+            onTap: () async {
               if (_formKey.currentState!.validate()) {
                 final sent = await widget.sendMedicalInsFormCubit
                     .send(entities: entities);
@@ -172,7 +177,6 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
                 }
               }
             },
-            txt: localizationInstance.submit,
           );
         }
       },
@@ -181,6 +185,6 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
 
   void clearForm() {
     _formKey.currentState!.reset();
-    widget.selectfieldCubit.clear();
+    widget.selectFieldCubit.clear();
   }
 }

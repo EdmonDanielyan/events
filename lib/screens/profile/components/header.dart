@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/user_main_info.dart';
 import 'package:ink_mobile/screens/profile/components/votes_bar.dart';
@@ -12,49 +13,70 @@ class PersonalPageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // it's the only method to make circle grey border only at the bottom
+    // if you try to use
+    // border: Border.only(bottom:...)
+    // and
+    // borderRadius: BorderRadius.only( bottomLeft:..., bottomRight: ...),
+    // you will get an error "A borderRadius can only be given for a uniform Border."
     return Container(
-      padding: EdgeInsets.only(bottom: 50),
       decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-              bottom: BorderSide(color: Colors.grey.shade400, width: 0.5))),
-      child: Column(
-        children: [
-          Stack(clipBehavior: Clip.none, children: [
-            Align(
-              alignment: AlignmentDirectional.topCenter,
-              child: UserMainInfo(
-                userLastName: user.lastName,
-                userName: user.name,
-                userPosition: user.workPosition,
-                pathToAvatar: user.pathToAvatar,
-                absenceUser: user.absence,
-                isOtherUser: false,
-              ),
-            ),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment(0, 1.25),
-                child: VotesBar(
-                  votes: user.votes,
-                ),
-              ),
-            ),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment(-0.98, -0.7),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                    size: SizeConfig(context, 24).getProportionateScreenHeight,
+        color: Palette.text20Grey,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(32.0),
+          bottomRight: Radius.circular(32.0),
+        ),
+      ),
+      child: Container(
+        padding: EdgeInsets.only(bottom: 32.0),
+        margin: const EdgeInsetsDirectional.only(bottom: 1.0),
+        decoration: BoxDecoration(
+          color: Palette.white,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(32.0),
+            bottomRight: Radius.circular(32.0),
+          ),
+        ),
+        child: Column(
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Align(
+                  alignment: AlignmentDirectional.topCenter,
+                  child: UserMainInfo(
+                    userLastName: user.lastName,
+                    userName: user.name,
+                    userPosition: user.workPosition,
+                    pathToAvatar: user.pathToAvatar,
+                    isOtherUser: false,
+
                   ),
-                  onPressed: () => Navigator.of(context).pop(),
                 ),
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment(-0.98, -0.7),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                        size: SizeConfig(context, 24)
+                            .getProportionateScreenHeight,
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: VotesBar(
+                votes: user.votes,
               ),
-            )
-          ]),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

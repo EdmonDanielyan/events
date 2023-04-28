@@ -37,13 +37,6 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
 
     return Column(
       children: [
-        Text(
-          _strings.regAppForMedInsDesc,
-          style: TextStyle(
-            fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
-          ),
-        ),
-        SizedBox(height: 20),
         _selectService(context),
         SizedBox(height: 20),
         _hospitalName(),
@@ -55,8 +48,6 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
         _price(),
         SizedBox(height: 20),
         _dateStart(context),
-        SizedBox(height: 20),
-        SymptomsRb(entities: entities)
       ],
     );
   }
@@ -70,6 +61,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
       validator: (_) =>
           entities.services.length < 1 ? _strings.fillTheField : null,
       onChanged: (val) => entities.services = val,
+      descriptionText: "Тип услуги",
     );
   }
 
@@ -95,41 +87,41 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
   Widget _hospitalName() {
     return ServiceTextField(
       hint: _strings.hospitalName,
-      requiredIcon: true,
       validator: (val) => val!.length < 1 ? _strings.fillTheField : null,
       inputFormatters: [InputFormatters().lettersNumbersOnly],
       onChanged: (val) => entities.hospitalName = val,
+      descriptionText: "Название клиники",
     );
   }
 
   Widget _city() {
     return ServiceTextField(
       hint: _strings.city,
-      requiredIcon: true,
       keyboardType: TextInputType.streetAddress,
       validator: (val) => FieldValidator(_strings).cityValidator(val),
       onChanged: (val) => entities.city = val,
+      descriptionText: "Город",
     );
   }
 
   Widget _address() {
     return ServiceTextField(
       hint: _strings.address,
-      requiredIcon: true,
       keyboardType: TextInputType.streetAddress,
       validator: (val) => FieldValidator(_strings).streetValidator(val),
       onChanged: (val) => entities.address = val,
+      descriptionText: "Адрес",
     );
   }
 
   Widget _price() {
     return ServiceTextField(
       hint: _strings.medicalPrice,
-      requiredIcon: true,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.number,
       onChanged: (val) => entities.price = val,
+      descriptionText: "Стоимость услуги, р",
     );
   }
 
@@ -144,6 +136,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
         entities.dateStart =
             DateFunctions(passedDate: val).dayMonthYearNumbers();
       },
+      descriptionText: "Дата начала лечения",
     );
   }
 }

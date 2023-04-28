@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/messenger/constants/svg_pictures.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 
@@ -32,7 +33,7 @@ class MessageTick extends StatelessWidget {
     Color color = Colors.black;
 
     if (isRead) {
-      asset = SvgPictures.doubleTick;
+      asset = IconLinks.DOUBLE_CHECK_ICON_LINK;
       color = readColor ?? const Color(0XFF5FB9CF);
     } else if (status == MessageStatus.sending ||
         status == MessageStatus.error) {
@@ -43,7 +44,7 @@ class MessageTick extends StatelessWidget {
       color = tickColor ?? const Color(0XFFBBBBBB);
     }
 
-    final iconSize = SizeConfig(context, 11.0).getProportionateScreenHeight;
+    final iconSize = 16.0;
 
     return SvgPicture.asset(
       asset,

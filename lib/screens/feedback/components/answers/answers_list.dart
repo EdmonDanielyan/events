@@ -31,65 +31,62 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final _answersCubit = FeedBackScreen.of(context).feedbackAnswerListCubit;
     scrollBottomLoadMoreCubit =
         FeedBackScreen.of(context).scrollBottomLoadMoreCubit;
 
     linkScreenToCubit(() => loadMore(_answersCubit));
-
     return BlocBuilder<FeedbackAnswerListCubit, FeedbackAnswerListCubitState>(
       bloc: _answersCubit,
       builder: (BuildContext context, state) {
         if (state.state == FeedbackAnswerListCubitStateEnums.LOADING) {
           _answersCubit.fetch();
-          return _loadingWidget(context);
+          return CustomCircularProgressIndicator();
         } else if (state.state == FeedbackAnswerListCubitStateEnums.SUCCESS) {
-          return _listWidget(
-            state.data,
-            _answersCubit,
-            () => loadMore(_answersCubit),
+          return SingleChildScrollView(
+            controller:
+            FeedBackScreen.of(context).scrollBottomLoadMoreCubit.scrollController,
+            child: Container(
+              width: size.width,
+              child: _listWidget(
+                state.data,
+                _answersCubit,
+                    () => loadMore(_answersCubit),
+              ),
+            ),
           );
         } else if (state.state == FeedbackAnswerListCubitStateEnums.ERROR) {
           return ErrorLoadingWidget(
               errorMsg: localizationInstance.errorLoadingQuestions);
         }
 
-        return SizedBox();
+        return const SizedBox.shrink();
       },
-    );
-  }
-
-  Widget _loadingWidget(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: CustomCircularProgressIndicator(),
     );
   }
 
   Widget _listWidget(List<ManagementAnswer> answers,
       FeedbackAnswerListCubit cubit, Function loadMore) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        children: [
-          ListView.builder(
-            shrinkWrap: true,
-            controller: ScrollController(keepScrollOffset: false),
-            itemCount: answers.length,
-            itemBuilder: (BuildContext context, int index) => AnswerWidget(
-              index: index,
-              item: answers[index],
-            ),
+    return Column(
+      children: [
+        ListView.builder(
+          shrinkWrap: true,
+          controller: ScrollController(keepScrollOffset: false),
+          itemCount: answers.length,
+          itemBuilder: (BuildContext context, int index) => AnswerWidget(
+            index: index,
+            item: answers[index],
           ),
-          if (currentPage(cubit.pagination.pageNumber) == 1 &&
-              cubit.pagination.next) ...[
-            LoadMoreBtn(
-              onPressed: () => loadMore(),
-              text: localizationInstance.allAnswers,
-            ),
-          ],
+        ),
+        if (currentPage(cubit.pagination.pageNumber) == 1 &&
+            cubit.pagination.next) ...[
+          LoadMoreBtn(
+            onPressed: () => loadMore(),
+            text: localizationInstance.allAnswers,
+          ),
         ],
-      ),
+      ],
     );
   }
 }

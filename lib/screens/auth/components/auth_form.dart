@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
@@ -22,19 +24,24 @@ class AuthForm extends StatelessWidget {
           TextFormField(
             decoration: InputDecoration(
               labelText: _strings.login,
-              labelStyle: TextStyle(
-                fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+              labelStyle: FontStyles.rubikP2(color: Palette.textBlack50),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Palette.text20Grey),
               ),
-              border: OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Palette.text20Grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Palette.text20Grey),
+              ),
               fillColor: Colors.white,
               filled: true,
-              errorStyle: TextStyle(
-                fontSize: SizeConfig(context, 12).getProportionateScreenHeight,
-              ),
+              errorStyle: FontStyles.rubikP3Medium(color: Palette.redF1C),
             ),
-            style: TextStyle(
-              fontSize: SizeConfig(context, 15).getProportionateScreenHeight,
-            ),
+            style: FontStyles.rubikP2(color: Palette.textBlack),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
             initialValue: AuthScreen.of(context).authCubit.login,
@@ -42,7 +49,7 @@ class AuthForm extends StatelessWidget {
               authCubit.login = login;
             },
           ),
-          SizedBox(height: size.height * 0.03),
+          const SizedBox(height: 24.0),
           AuthPasswordField(authCubit: authCubit),
         ],
       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/elevated_full_width_button.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/main_page/events_and_announcements_block_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/events_and_announcements_block_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -8,6 +10,7 @@ import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/main/components/announcements_list.dart';
 import 'package:ink_mobile/screens/main/components/events_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
 
 import '../main_screen.dart';
 
@@ -40,13 +43,16 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
                   children: [
                     getNavigationRow(context, 'events'),
                     EventsList(),
-                    SizedBox(height: 15),
-                    ElevatedFullWidthButton(
+                    const SizedBox(height: 15.0),
+                    DefaultButton(
                       title: _strings.allEvents,
                       onTap: () {
                         Navigator.pushNamed(context, '/events_list');
                       },
-                    )
+                      buttonColor: Palette.transparent,
+                      borderColor: Palette.greenE4A,
+                      textColor: Palette.greenE4A,
+                    ),
                   ],
                 ),
               );
@@ -63,12 +69,15 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
                     getNavigationRow(context, 'announcements'),
                     AnnouncementsList(),
                     SizedBox(height: 15),
-                    ElevatedFullWidthButton(
+                    DefaultButton(
                       title: _strings.allAnnouncements,
                       onTap: () {
                         Navigator.pushNamed(context, '/announcements_list');
                       },
-                    )
+                      buttonColor: Palette.transparent,
+                      borderColor: Palette.greenE4A,
+                      textColor: Palette.greenE4A,
+                    ),
                   ],
                 ),
               );
@@ -80,7 +89,7 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
 
   Widget getNavigationRow(BuildContext context, String checked) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.only(left: 20),
       height: SizeConfig(context, 34).getProportionateScreenHeight,
       child: Row(
         children: getNavRowItemList(context: context, checkedItem: checked),
@@ -107,23 +116,27 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
 
     getNavRowButtons().forEach((element) {
       if (checkedItem == element.code) {
-        navRowItemList.add(Container(
-          padding: EdgeInsets.only(right: 30),
-          child: getNavRowItem(
+        navRowItemList.add(
+          Container(
+            padding: EdgeInsets.only(right: 30),
+            child: getNavRowItem(
+                context: context,
+                title: element.title,
+                onTap: element.onPressed,
+                checked: true),
+          ),
+        );
+      } else {
+        navRowItemList.add(
+          Container(
+            padding: EdgeInsets.only(right: 30),
+            child: getNavRowItem(
               context: context,
               title: element.title,
-              onPressed: element.onPressed,
-              checked: true),
-        ));
-      } else {
-        navRowItemList.add(Container(
-          padding: EdgeInsets.only(right: 30),
-          child: getNavRowItem(
-            context: context,
-            title: element.title,
-            onPressed: element.onPressed,
+              onTap: element.onPressed,
+            ),
           ),
-        ));
+        );
       }
     });
 
@@ -133,32 +146,20 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
   Widget getNavRowItem(
       {required BuildContext context,
       required String title,
-      required void Function()? onPressed,
+      required void Function()? onTap,
       bool checked = false}) {
-    FontWeight fontWeight = FontWeight.w400;
-    Color color = Theme.of(context).colorScheme.secondary;
-
-    if (checked) {
-      fontWeight = FontWeight.bold;
-      color = Colors.black;
-      onPressed = null;
-    }
-
     return Container(
-        alignment: Alignment.topLeft,
-        child: TextButton(
-            style: ButtonStyle(
-              padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero),
-            ),
-            child: Text(
-              title,
-              style: TextStyle(
-                  fontSize:
-                      SizeConfig(context, 24).getProportionateScreenHeight,
-                  fontWeight: fontWeight,
-                  color: color),
-            ),
-            onPressed: onPressed));
+      alignment: Alignment.topLeft,
+      child: InkWell(
+        child: Text(
+          title,
+          style: FontStyles.rubikH2(
+            color: checked ? Palette.greenE4A : Palette.textBlack,
+          ),
+        ),
+        onTap: checked ? null : onTap,
+      ),
+    );
   }
 }
 

@@ -55,7 +55,7 @@ class ChatCardWrapper extends StatelessWidget {
         },
         onDismissed: onDismissed,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(bottom: 24.0),
           child: Column(
             children: [
               if (chat.isSingle) ...[

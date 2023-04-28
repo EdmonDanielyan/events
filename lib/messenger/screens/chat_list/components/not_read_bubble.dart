@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 
@@ -9,17 +11,21 @@ class NotReadBubbble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7.5, vertical: 4.0),
+      constraints: BoxConstraints(
+        minWidth: 20.0
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.0),
       decoration: BoxDecoration(
-        color: const Color(0XFF5FB9CF),
-        borderRadius: BorderRadius.circular(30.0),
+        color: Palette.blue9CF,
+        borderRadius: BorderRadius.circular(10.0),
       ),
-      child: GoogleText(
-        "$count",
-        textAlign: TextAlign.center,
-        color: Colors.white,
-        fontSize: SizeConfig(context, 10).getProportionateScreenHeight,
-      ),
+      height: 20.0,
+      child: Center(
+        child: Text(
+          "$count",
+          style: FontStyles.rubikP3Medium(color: Palette.white),
+        ),
+      )
     );
   }
 }

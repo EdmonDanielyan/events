@@ -1,20 +1,29 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
+import 'package:ink_mobile/cubit/logout/logout_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
 import 'package:ink_mobile/cubit/profile/sources/fetch/network.dart';
 import 'package:ink_mobile/cubit/profile/sources/thank/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/extensions/get_user_success.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
+import 'package:ink_mobile/messenger/providers/app_token.dart';
+import 'package:ink_mobile/messenger/providers/messenger.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/models/user_data.dart';
+import 'package:ink_mobile/providers/local_pin_provider.dart';
+import 'package:ink_mobile/providers/secure_storage.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 @injectable
 class ProfileCubit extends Cubit<ProfileState> {
@@ -90,5 +99,20 @@ class ProfileCubit extends Cubit<ProfileState> {
       UserProfileData? data,
       String? errorMessage}) {
     emit(ProfileState(type: type, data: data, errorMessage: errorMessage));
+  }
+
+  Future<void> exit(BuildContext context) async {
+    await getIt<LogoutCubit>().logout();
+    getIt<AppTokenProvider>().deleteToken();
+    getIt<LocalPinProvider>().removePin();
+    getIt<SecureStorage>().deleteAll();
+    getIt<MessengerProvider>().dispose();
+    getIt<CachedChatsCubit>().clean();
+    Token.deleteTokens();
+    FlutterSecureStorage().deleteAll();
+    OneSignal.shared.removeExternalUserId();
+
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushReplacementNamed(context, '/init');
   }
 }

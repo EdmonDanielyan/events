@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ink_mobile/models/user_data.dart';
@@ -17,7 +19,7 @@ class Contacts extends StatelessWidget {
     if (contacts != null) {
       return getContactsWidget(context);
     } else {
-      return Container();
+      return const SizedBox.shrink();
     }
   }
 
@@ -26,38 +28,50 @@ class Contacts extends StatelessWidget {
         contacts!.mobilePhone != null ||
         contacts!.workMobilePhone != null ||
         contacts!.email != null) {
-      return Container(
-        margin: EdgeInsets.only(top: 24),
+      return Padding(
+        padding: EdgeInsets.only(top: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SectionTitle(
+              title: _strings.contacts,
+            ),
             Container(
-              child: SectionTitle(
-                title: _strings.contacts,
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: Palette.text20Grey),
+                  bottom: BorderSide(color: Palette.text20Grey),
+                ),
+              ),
+              child: Column(
+                children: getContactWidgetRows(context),
               ),
             ),
-            Column(children: getContactWidgetRows(context))
           ],
         ),
       );
     } else {
-      return Container();
+      return const SizedBox.shrink();
     }
   }
 
   List<Widget> getContactWidgetRows(BuildContext context) {
     List<Widget> contactRows = [];
 
-    getRowsInfo(context).forEach((element) {
-      if (element['value'] != null) {
-        contactRows.add(ContactsRow(
-          title: element['title'],
-          value: element['value'],
-          icon: element['icon'],
-          type: element['type'],
-        ));
-      }
-    });
+    getRowsInfo(context).forEach(
+      (element) {
+        if (element['value'] != null) {
+          contactRows.add(
+            ContactsRow(
+              title: element['title'],
+              value: element['value'],
+              icon: element['icon'],
+              type: element['type'],
+            ),
+          );
+        }
+      },
+    );
 
     return contactRows;
   }
@@ -67,33 +81,45 @@ class Contacts extends StatelessWidget {
       {
         'title': _strings.workPhone,
         'value': contacts!.workPhone,
-        'icon': SvgPicture.asset('assets/images/work_phone.svg'),
+        'icon': SvgPicture.asset(
+          IconLinks.PHONE_ICON,
+          width: 20.0,
+          height: 20.0,
+          color: Palette.white,
+        ),
         'type': 'none'
       },
       {
         'title': _strings.workMobilePhone,
         'value': contacts!.workMobilePhone,
-        'icon': Icon(
-          Icons.phone,
-          size: 30,
-          color: Theme.of(context).primaryColor,
+        'icon': SvgPicture.asset(
+          IconLinks.SMARTPHONE_ICON,
+          width: 20.0,
+          height: 20.0,
+          color: Palette.white,
         ),
         'type': 'call'
       },
       {
         'title': _strings.mobilePhone,
         'value': contacts!.mobilePhone,
-        'icon': Icon(
-          Icons.phone_iphone,
-          size: 30,
-          color: Theme.of(context).primaryColor,
+        'icon': SvgPicture.asset(
+          IconLinks.SMARTPHONE_ICON,
+          width: 20.0,
+          height: 20.0,
+          color: Palette.white,
         ),
         'type': 'call'
       },
       {
         'title': 'Email',
         'value': contacts!.email,
-        'icon': SvgPicture.asset('assets/images/mail_at.svg'),
+        'icon': SvgPicture.asset(
+          IconLinks.MAIL_ICON,
+          width: 20.0,
+          height: 20.0,
+          color: Palette.white,
+        ),
         'type': 'email'
       },
     ];

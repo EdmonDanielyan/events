@@ -15,8 +15,6 @@
                 "-t",
                 "./lib/dev_main.dart"
             ]
-<<<<<<< HEAD
-=======
         },
         {
             "name": "prod",
@@ -29,7 +27,6 @@
                 "-t",
                 "./lib/prod_main.dart"
             ]
->>>>>>> develop
         }
     ]
 }

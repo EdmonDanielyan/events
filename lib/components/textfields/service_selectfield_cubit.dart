@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -16,6 +18,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
   final Widget Function(Selectfield, bool)? subWidget;
   final String? Function(String?)? validator;
   final void Function(List<Selectfield>) onChanged;
+  final String? descriptionText;
   const ServiceSelectFieldCubit({
     Key? key,
     required this.cubit,
@@ -25,6 +28,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
     this.validator,
     required this.items,
     required this.onChanged,
+    this.descriptionText,
   }) : super(key: key);
 
   Future<void> showModalOptions(BuildContext context) async {
@@ -51,7 +55,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
         child: Stack(
           alignment: Alignment.centerLeft,
           children: [
-            _textfieldWidget(),
+            _textFieldWidget(),
             _listContainer(context, _size),
           ],
         ),
@@ -103,38 +107,52 @@ class ServiceSelectFieldCubit extends StatelessWidget {
     );
   }
 
-  Widget _textfieldWidget() {
+  Widget _textFieldWidget() {
     return BlocConsumer<SelectfieldCubit, SelectfieldCubitState>(
       bloc: cubit,
       listener: (BuildContext context, state) {
         onChanged(state.items);
       },
       builder: (BuildContext context, state) {
-        return TextFormField(
-          style: TextStyle(
-              fontSize: SizeConfig(context, 12).getProportionateScreenHeight),
-          autovalidateMode: state.validateMode,
-          validator: validator,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(
-                fontSize: SizeConfig(context, 12).getProportionateScreenHeight),
-            hintText: state.items.length < 1 ? hint : "",
-            hintStyle: TextStyle(
-              fontSize: SizeConfig(context, 14.0).getProportionateScreenHeight,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (descriptionText != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Text(
+                  descriptionText!,
+                  style: FontStyles.rubikP1Medium(color: Palette.textBlack),
+                ),
+              ),
+            TextFormField(
+              style: FontStyles.rubikP2(color: Palette.textBlack),
+              autovalidateMode: state.validateMode,
+              validator: validator,
+              decoration: InputDecoration(
+                hintText: state.items.length < 1 ? hint : "",
+                hintStyle: FontStyles.rubikP2(color: Palette.textBlack50),
+                errorStyle: TextStyle(
+                  fontSize:
+                      SizeConfig(context, 13.0).getProportionateScreenHeight,
+                ),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Palette.text20Grey),
+                    borderRadius: BorderRadius.circular(8.0)),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Palette.text20Grey),
+                    borderRadius: BorderRadius.circular(8.0)),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                ),
+                suffixIcon: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: Palette.greenE4A,
+                  size: SizeConfig(context, 19.0).getProportionateScreenHeight,
+                ),
+              ),
             ),
-            errorStyle: TextStyle(
-              fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
-            ),
-            border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).primaryColor),
-            ),
-            suffixIcon: Icon(
-              Icons.keyboard_arrow_down,
-              color: Colors.grey,
-              size: SizeConfig(context, 19.0).getProportionateScreenHeight,
-            ),
-          ),
+          ],
         );
       },
     );

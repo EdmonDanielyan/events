@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -35,7 +37,7 @@ class _BodyState extends State<Body> {
       onRefresh: () async {
         widget.cubit.refresh();
       },
-      color: Colors.green,
+      color: Palette.greenE4A,
       displacement: 20,
       child: BlocBuilder<AnnouncementsListCubit, AnnouncementsListState>(
         bloc: widget.cubit,
@@ -45,37 +47,27 @@ class _BodyState extends State<Body> {
               {
                 List<AnnouncementsListElement> items =
                     _getAnnouncementsWidgetList(state.data!);
-                return Container(
-                  color: Color(0xfff9f9f9),
-                  child: SingleChildScrollView(
-                    controller: _controller,
+                return SingleChildScrollView(
+                  controller: _controller,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    color: Colors.white,
                     child: Column(
                       children: [
                         Container(
-                            color: Colors.white,
-                            padding: EdgeInsets.only(
-                                left: 20, right: 20, top: 24, bottom: 20),
-                            child: Row(
-                              children: [
-                                Text(
-                                  localizationInstance.announcements,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: SizeConfig(context, 20)
-                                        .getProportionateScreenHeight,
-                                  ),
-                                )
-                              ],
-                            )),
-                        Container(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            controller:
-                                ScrollController(keepScrollOffset: false),
-                            itemCount: items.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                items[index],
-                          ),
+                            padding: EdgeInsets.symmetric(vertical: 32),
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              localizationInstance.announcements,
+                              style: FontStyles.rubikH2(color: Palette.textBlack),
+                            ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          controller: ScrollController(keepScrollOffset: false),
+                          itemCount: items.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              items[index],
                         )
                       ],
                     ),
