@@ -17,6 +17,7 @@ import 'components/chat_info_btn.dart';
 import 'components/chat_info_top.dart';
 import 'components/divider.dart';
 import 'components/header.dart';
+import 'components/notifications_btn.dart';
 import 'components/participant_card.dart';
 
 class ChatInfoScreen extends StatefulWidget {
@@ -108,24 +109,24 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                           subDescription: "Участников: ${paricipants.length}",
                         ),
                 ),
-                // const SizedBox(height: 20.0),
-                // const ChatInfoDivider(),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(
-                //     horizontal: _horizontalPadding,
-                //     vertical: 5.0,
-                //   ),
-                //   child: Column(
-                //     children: [
-                //       NotificationsBtn(
-                //         cachedChatsCubit: widget.cachedChatsCubit,
-                //         notificationsDisabledChatsCubit: notificationsCubit,
-                //         chatId: chat.id,
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // const ChatInfoDivider(),
+                const SizedBox(height: 20.0),
+                const ChatInfoDivider(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: _horizontalPadding,
+                    vertical: 5.0,
+                  ),
+                  child: Column(
+                    children: [
+                      NotificationsBtn(
+                        cachedChatsCubit: widget.cachedChatsCubit,
+                        notificationsDisabledChatsCubit: notificationsCubit,
+                        chatId: chat.id,
+                      ),
+                    ],
+                  ),
+                ),
+                const ChatInfoDivider(),
                 const SizedBox(height: 20.0),
                 const ChatInfoDivider(),
                 ChatInfoBtn(
