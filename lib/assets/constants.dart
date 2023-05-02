@@ -31,8 +31,11 @@ class IconLinks {
   static const String ATTACHMENT_ICON = "assets/svg/attachment.svg";
   static const String CLOSE_ICON = "assets/svg/close.svg";
   static const String SUN_ICON = "assets/svg/sun.svg";
+  static const String PLANE_ICON = "assets/svg/plane.svg";
   static const String PHOTO_ICON = "assets/svg/photo.svg";
   static const String MAIL_ICON = "assets/svg/mail.svg";
   static const String PHONE_ICON = "assets/svg/phone.svg";
   static const String SMARTPHONE_ICON = "assets/svg/smartphone.svg";
+  static const String TANK_ICON = "assets/svg/tank.svg";
+  static const String TANKER_ICON = "assets/svg/tanker.svg";
 }

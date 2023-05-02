@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/components/textfields/service_btn.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
@@ -221,7 +223,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
 
               Padding(
                 padding: const EdgeInsets.all(6.0),
-                child: str.contains('Отсутствие')? Icon(Icons.sunny,color: Colors.black,):Icon(Icons.airplanemode_on_outlined,color: Colors.white,),
+                child: str.contains('Отсутствие')? SvgPicture.asset(IconLinks.SUN_ICON,):SvgPicture.asset(IconLinks.PLANE_ICON,color: Colors.white,),
               )
             ],
           ));

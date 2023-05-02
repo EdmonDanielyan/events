@@ -28,8 +28,8 @@ class VotesBar extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   IconLinks.BARREL_SVG_LINK,
-                  height: 32.0,
-                  width: 32.0,
+                  height: 30.0,
+                  width: 30.0,
                   color: Palette.greenE4A,
                 ),
                 const SizedBox(width: 8.0,),
@@ -52,9 +52,9 @@ class VotesBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(
-                  IconLinks.BARREL_SVG_LINK,
-                  height: 32.0,
-                  width: 32.0,
+                  IconLinks.TANK_ICON,
+                  height: 30.0,
+                  width: 30.0,
                   color: Palette.greenE4A,
                 ),
                 const SizedBox(width: 8.0,),
@@ -77,7 +77,7 @@ class VotesBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(
-                  IconLinks.BARREL_SVG_LINK,
+                  IconLinks.TANKER_ICON,
                   height: 32.0,
                   width: 32.0,
                   color: Palette.greenE4A,
