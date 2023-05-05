@@ -212,7 +212,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/contactsNotFound"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /news:
         get:
             tags:
@@ -267,7 +267,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/newsNotFound"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /news/{id}:
         get:
             tags:
@@ -295,7 +295,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/newsNotFound"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /news/comments/{id}:
         get:
             tags:
@@ -323,7 +323,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/commentsNotFound"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /news/postcomment:
         post:
             tags:
@@ -349,7 +349,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/postCommentParamsFail"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /news/like/{id}:
         get:
             tags:
@@ -371,7 +371,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/newsLikeSuccess"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /news/comments/like/{id}:
         get:
             tags:
@@ -393,7 +393,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/commentLikeSuccess"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /announcements:
         get:
             tags:
@@ -431,7 +431,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/announcementsNotFound"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /announcements/{id}:
         get:
             tags:
@@ -467,7 +467,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/announcementsNotFound"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /user:
         get:
             tags:
@@ -481,7 +481,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/getUserSuccess"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /users:
         post:
             tags:
@@ -500,7 +500,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/getUsersSuccess"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /keys:
         get:
             tags:
@@ -514,7 +514,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/getKeysSuccess"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /keys/{id}:
         get:
             tags:
@@ -542,7 +542,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/getUserFail"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /user/caninquire:
         get:
             tags:
@@ -556,7 +556,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/canInquire"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /user/getreferenceautofill:
         get:
             tags:
@@ -570,7 +570,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/referenceAutoFill"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
 
     /user/{id}:
         get:
@@ -599,7 +599,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/getUserFail"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /user/movements:
         get:
             tags:
@@ -619,7 +619,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/movementsFail"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /search:
         get:
             tags:
@@ -645,7 +645,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/emptySearch"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /thank/{id}:
         get:
             tags:
@@ -679,7 +679,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/thankSelf"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /events:
         get:
             tags:
@@ -717,7 +717,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/eventsNotFound"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /events/{id}:
         get:
             tags:
@@ -753,7 +753,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/eventsNotFound"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /events/addeventmember/{id}:
         get:
             tags:
@@ -781,7 +781,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/alreadyEventMember"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /events/removeeventmember/{id}:
         get:
             tags:
@@ -828,7 +828,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/birthdaysNotFound"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /user/orderreference:
         post:
             tags:
@@ -854,7 +854,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/orderReferenceFail"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /user/orderdms:
         post:
             tags:
@@ -880,7 +880,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/orderDMSFail"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /publications:
         get:
             tags:
@@ -910,7 +910,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/getPublications"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /user/transpontorderform:
         get:
             tags:
@@ -924,7 +924,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/getTransportOrderForm"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /user/referenceorderform:
         get:
             tags:
@@ -938,7 +938,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/getReferenceOrderForm"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /user/getfeedbacktags:
         get:
             tags:
@@ -952,7 +952,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/feedbackTagsList"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /user/getquestions:
         get:
             tags:
@@ -982,7 +982,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/questionsList"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /user/sendfeedback:
         post:
             tags:
@@ -1008,7 +1008,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/sendFeedbackFail"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
     /user/ordertransport:
         post:
             tags:
@@ -1034,7 +1034,7 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/orderTransportFail"
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
 
     /snippets:
         get:
@@ -1161,7 +1161,83 @@ paths:
                 - bearerAuth: [ ]
 
 
+    /config/notifications:
+        get:
+            operationId: getAllNotificationsState
+            tags:
+                - Global
+            summary: Все уведомления
+            description: Получение полного списка подписок на уведомления по всем источникам
+            responses:
+                200:
+                    description: Список подписок
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/NotificationFullList"
 
+    /config/notifications/{channel}/{targetId}:
+        parameters:
+            - name: channel
+              in: path
+              description: Тип события для подписки. На старте только для чатов
+              required: true
+              schema:
+                  type: string
+                  enum:
+                      - chat
+            - name: targetId
+              in: path
+              description: Id подписки
+              required: true
+              schema:
+                  type: string
+        get:
+            operationId: getNotificationSub
+            tags:
+                - Global
+            summary: Получить подписку на чат
+            description: Получение состояния подписки на уведомления о сообщениях в чате
+            responses:
+                200:
+                    description: Состояние подписки
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/NotificationSubState"
+        post:
+            operationId: setNotificationSub
+            tags:
+                - Global
+            summary: Изменить подписку на чат
+            description: Изменить подписку на уведомления о сообщениях в чате
+            parameters:
+                - name: value
+                  in: query
+                  schema:
+                      type: boolean
+                      nullable: true
+                      required: true
+            responses:
+                200:
+                    description: Состояние подписки после изменения
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/NotificationSubState"
+        delete:
+            operationId: resetNotificationSub
+            tags:
+                - Global
+            summary: Сбросить уведомления
+            description: Сбросить подписку на уведомления в состояние "по умолчанию"
+            responses:
+                200:
+                    description: Состояние подписки после изменения
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/NotificationSubState"
 
 components:
     schemas:
@@ -3196,7 +3272,7 @@ components:
                 date_end:
                     type: string
                     example: "01.05.2020"
-                files:
+                files[]:
                     type: array
                     items:
                         type: string
@@ -3282,7 +3358,7 @@ components:
                 tags:
                     type: string
                     example: "Риски, COVID-19"
-                files:
+                files[]:
                     type: array
                     items:
                         type: string
@@ -3342,7 +3418,7 @@ components:
                 route:
                     type: string
                     example: "Список пунктов маршрута"
-                files:
+                files[]:
                     type: array
                     items:
                         type: string
@@ -3622,6 +3698,59 @@ components:
                   properties:
                       data:
                           $ref: "#/components/schemas/GlobalSettings"
+
+
+        NotificationSubState:
+            description: 'Сотяние подписки на единичное уведомлениие'
+            type: object
+            properties:
+                value:
+                    type: boolean
+                    nullable: true
+                    required: true
+                    description: 'TRUE - подписан. FALSE - не подписан. NULL - по умолчанию.'
+
+
+        NotificationSubList:
+            description: >
+                Список подписок на уведомления определённого типа.
+                Подписки со значением "по умолчанию" не выводятся.
+                Ключ - ID истоника уведомлений (напр. чата). Значение - состояние подписки.
+                Значение с ключом "_default" - состояние по умолчанию для группы.
+                Для чатов ключи:
+                * просто число - ID группового чата
+                * system - канал уведомлений
+                * число с префиксом u - ID собеседника для приватного
+            type: array
+            nullable: false
+            items:
+                type: boolean
+
+
+        NotificationFullList:
+            description: 'Список ВСЕХ подписок на уведомления. Ключи - группы уведомлений. '
+            type: object
+            properties:
+                chats:
+                    $ref: '#/components/schemas/NotificationSubList'
+
+
+        singleNotificationConfigResultBody:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+                - type: object
+                  properties:
+                      data:
+                          $ref: "#/components/schemas/NotificationSubState"
+
+        allNotificationsConfigResultBody:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+                - type: object
+                  properties:
+                      data:
+                          $ref: "#/components/schemas/NotificationFullList"
+
 
     securitySchemes:
         bearerAuth:

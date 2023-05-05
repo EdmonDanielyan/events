@@ -132,7 +132,7 @@ class EventData extends Data {
         pictureLink: property.detailPicture,
         isMember: property.isMember,
         isActual: property.isActual,
-        placesAvailable: property.placesAvailable,
+        placesAvailable: property.placesAvailable
     );
   }
 

@@ -9,6 +9,8 @@ part of serializers;
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AddEventMember.serializer)
+      ..add(AllNotificationsConfigResultBody.serializer)
+      ..add(AllNotificationsConfigResultBodyAllOf.serializer)
       ..add(AlreadyEventMember.serializer)
       ..add(AlreadyThanked.serializer)
       ..add(AnnouncementProperty.serializer)
@@ -76,6 +78,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(NewsPropertyById.serializer)
       ..add(NotEventMember.serializer)
       ..add(NotFound.serializer)
+      ..add(NotificationFullList.serializer)
+      ..add(NotificationSubState.serializer)
       ..add(OrderDMS.serializer)
       ..add(OrderDMSFail.serializer)
       ..add(OrderDMSSuccess.serializer)
@@ -103,6 +107,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(SendFeedbackFail.serializer)
       ..add(SendFeedbackSuccess.serializer)
       ..add(ServerError.serializer)
+      ..add(SingleNotificationConfigResultBody.serializer)
+      ..add(SingleNotificationConfigResultBodyAllOf.serializer)
       ..add(SinglePageResponseData.serializer)
       ..add(SinglePageSuccessResponseBody.serializer)
       ..add(SinglePageSuccessResponseBodyAllOf.serializer)
@@ -167,6 +173,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UserProperties)]),
           () => new ListBuilder<UserProperties>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(bool)]),
+          () => new ListBuilder<bool>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(int)]),
           () => new ListBuilder<int>()))

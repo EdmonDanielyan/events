@@ -13,6 +13,7 @@ class NotificationsDisabledChatsCubit
   void add(int chatId) {
     final newChatIds = Set<int>.from(state.chatIds)..add(chatId);
     emit(state.copyWith(chatIds: newChatIds));
+    ///todo off notification
   }
 
   void remove(int chatId) {

@@ -129,8 +129,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
     return DateInputField(
       controller: TextEditingController(),
       title: _strings.medicalDateStart,
-      firstDate: DateTime.now().subtract(Duration(days: 3)),
-      lastDate: DateTime.now().add(Duration(days: 7)),
+      firstDate: DateTime.now(),
       validator: (val) => val!.length <= 8 ? _strings.fillTheField : null,
       onChanged: (val) {
         entities.dateStart =

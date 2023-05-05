@@ -2,6 +2,8 @@
 README.md
 analysis_options.yaml
 doc/AddEventMember.md
+doc/AllNotificationsConfigResultBody.md
+doc/AllNotificationsConfigResultBodyAllOf.md
 doc/AlreadyEventMember.md
 doc/AlreadyThanked.md
 doc/AnnouncementProperty.md
@@ -76,6 +78,8 @@ doc/NewsProperty.md
 doc/NewsPropertyById.md
 doc/NotEventMember.md
 doc/NotFound.md
+doc/NotificationFullList.md
+doc/NotificationSubState.md
 doc/OrderDMS.md
 doc/OrderDMSFail.md
 doc/OrderDMSSuccess.md
@@ -105,6 +109,8 @@ doc/SearchApi.md
 doc/SendFeedbackFail.md
 doc/SendFeedbackSuccess.md
 doc/ServerError.md
+doc/SingleNotificationConfigResultBody.md
+doc/SingleNotificationConfigResultBodyAllOf.md
 doc/SinglePageResponseData.md
 doc/SinglePageSuccessResponseBody.md
 doc/SinglePageSuccessResponseBodyAllOf.md
@@ -140,6 +146,8 @@ lib/auth/auth.dart
 lib/auth/basic_auth.dart
 lib/auth/oauth.dart
 lib/model/add_event_member.dart
+lib/model/all_notifications_config_result_body.dart
+lib/model/all_notifications_config_result_body_all_of.dart
 lib/model/already_event_member.dart
 lib/model/already_thanked.dart
 lib/model/announcement_property.dart
@@ -207,6 +215,8 @@ lib/model/news_property.dart
 lib/model/news_property_by_id.dart
 lib/model/not_event_member.dart
 lib/model/not_found.dart
+lib/model/notification_full_list.dart
+lib/model/notification_sub_state.dart
 lib/model/order_dms.dart
 lib/model/order_dms_fail.dart
 lib/model/order_dms_success.dart
@@ -234,6 +244,8 @@ lib/model/required_success.dart
 lib/model/send_feedback_fail.dart
 lib/model/send_feedback_success.dart
 lib/model/server_error.dart
+lib/model/single_notification_config_result_body.dart
+lib/model/single_notification_config_result_body_all_of.dart
 lib/model/single_page_response_data.dart
 lib/model/single_page_success_response_body.dart
 lib/model/single_page_success_response_body_all_of.dart

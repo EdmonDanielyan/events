@@ -14,6 +14,8 @@ import 'package:built_value/json_object.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
 import 'package:main_api_client/model/add_event_member.dart';
+import 'package:main_api_client/model/all_notifications_config_result_body.dart';
+import 'package:main_api_client/model/all_notifications_config_result_body_all_of.dart';
 import 'package:main_api_client/model/already_event_member.dart';
 import 'package:main_api_client/model/already_thanked.dart';
 import 'package:main_api_client/model/announcement_property.dart';
@@ -81,6 +83,8 @@ import 'package:main_api_client/model/news_property.dart';
 import 'package:main_api_client/model/news_property_by_id.dart';
 import 'package:main_api_client/model/not_event_member.dart';
 import 'package:main_api_client/model/not_found.dart';
+import 'package:main_api_client/model/notification_full_list.dart';
+import 'package:main_api_client/model/notification_sub_state.dart';
 import 'package:main_api_client/model/order_dms.dart';
 import 'package:main_api_client/model/order_dms_fail.dart';
 import 'package:main_api_client/model/order_dms_success.dart';
@@ -108,6 +112,8 @@ import 'package:main_api_client/model/required_success.dart';
 import 'package:main_api_client/model/send_feedback_fail.dart';
 import 'package:main_api_client/model/send_feedback_success.dart';
 import 'package:main_api_client/model/server_error.dart';
+import 'package:main_api_client/model/single_notification_config_result_body.dart';
+import 'package:main_api_client/model/single_notification_config_result_body_all_of.dart';
 import 'package:main_api_client/model/single_page_response_data.dart';
 import 'package:main_api_client/model/single_page_success_response_body.dart';
 import 'package:main_api_client/model/single_page_success_response_body_all_of.dart';
@@ -128,6 +134,8 @@ part 'serializers.g.dart';
 
 @SerializersFor(const [
   AddEventMember,
+  AllNotificationsConfigResultBody,
+  AllNotificationsConfigResultBodyAllOf,
   AlreadyEventMember,
   AlreadyThanked,
   AnnouncementProperty,
@@ -195,6 +203,8 @@ part 'serializers.g.dart';
   NewsPropertyById,
   NotEventMember,
   NotFound,
+  NotificationFullList,
+  NotificationSubState,
   OrderDMS,
   OrderDMSFail,
   OrderDMSSuccess,
@@ -222,6 +232,8 @@ part 'serializers.g.dart';
   SendFeedbackFail,
   SendFeedbackSuccess,
   ServerError,
+  SingleNotificationConfigResultBody,
+  SingleNotificationConfigResultBodyAllOf,
   SinglePageResponseData,
   SinglePageSuccessResponseBody,
   SinglePageSuccessResponseBodyAllOf,

@@ -75,8 +75,12 @@ Class | Method | HTTP request | Description
 *EventsApi* | [**eventsRemoveeventmemberIdGet**](doc//EventsApi.md#eventsremoveeventmemberidget) | **get** /events/removeeventmember/{id} | Удалить текущего пользователя как участника события
 *EventsApi* | [**getEventById**](doc//EventsApi.md#geteventbyid) | **get** /events/{id} | Получить информацию о событии по ID
 *EventsApi* | [**getEvents**](doc//EventsApi.md#getevents) | **get** /events | Метод получения событий
+*GlobalApi* | [**getAllNotificationsState**](doc//GlobalApi.md#getallnotificationsstate) | **get** /config/notifications | Все уведомления
+*GlobalApi* | [**getNotificationSub**](doc//GlobalApi.md#getnotificationsub) | **get** /config/notifications/{channel}/{targetId} | Получить подписку на чат
 *GlobalApi* | [**getSettings**](doc//GlobalApi.md#getsettings) | **get** /settings | Настройки приложения
 *GlobalApi* | [**getSnippetsList**](doc//GlobalApi.md#getsnippetslist) | **get** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
+*GlobalApi* | [**resetNotificationSub**](doc//GlobalApi.md#resetnotificationsub) | **delete** /config/notifications/{channel}/{targetId} | Сбросить уведомления
+*GlobalApi* | [**setNotificationSub**](doc//GlobalApi.md#setnotificationsub) | **post** /config/notifications/{channel}/{targetId} | Изменить подписку на чат
 *NewsApi* | [**getNews**](doc//NewsApi.md#getnews) | **get** /news | Получение списка новостей
 *NewsApi* | [**newsCommentsIdGet**](doc//NewsApi.md#newscommentsidget) | **get** /news/comments/{id} | Получение комментариев к новости по ID
 *NewsApi* | [**newsCommentsLikeIdGet**](doc//NewsApi.md#newscommentslikeidget) | **get** /news/comments/like/{id} | Поблагодарить комментарий
@@ -108,6 +112,8 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [AddEventMember](doc//AddEventMember.md)
+ - [AllNotificationsConfigResultBody](doc//AllNotificationsConfigResultBody.md)
+ - [AllNotificationsConfigResultBodyAllOf](doc//AllNotificationsConfigResultBodyAllOf.md)
  - [AlreadyEventMember](doc//AlreadyEventMember.md)
  - [AlreadyThanked](doc//AlreadyThanked.md)
  - [AnnouncementProperty](doc//AnnouncementProperty.md)
@@ -175,6 +181,8 @@ Class | Method | HTTP request | Description
  - [NewsPropertyById](doc//NewsPropertyById.md)
  - [NotEventMember](doc//NotEventMember.md)
  - [NotFound](doc//NotFound.md)
+ - [NotificationFullList](doc//NotificationFullList.md)
+ - [NotificationSubState](doc//NotificationSubState.md)
  - [OrderDMS](doc//OrderDMS.md)
  - [OrderDMSFail](doc//OrderDMSFail.md)
  - [OrderDMSSuccess](doc//OrderDMSSuccess.md)
@@ -202,6 +210,8 @@ Class | Method | HTTP request | Description
  - [SendFeedbackFail](doc//SendFeedbackFail.md)
  - [SendFeedbackSuccess](doc//SendFeedbackSuccess.md)
  - [ServerError](doc//ServerError.md)
+ - [SingleNotificationConfigResultBody](doc//SingleNotificationConfigResultBody.md)
+ - [SingleNotificationConfigResultBodyAllOf](doc//SingleNotificationConfigResultBodyAllOf.md)
  - [SinglePageResponseData](doc//SinglePageResponseData.md)
  - [SinglePageSuccessResponseBody](doc//SinglePageSuccessResponseBody.md)
  - [SinglePageSuccessResponseBodyAllOf](doc//SinglePageSuccessResponseBodyAllOf.md)
