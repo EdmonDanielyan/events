@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/cached/notifications_disabled_chats/network.dart';
 import 'package:ink_mobile/messenger/cubits/cached/notifications_disabled_chats/notifications_disabled_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/notifications_disabled_chats/notifications_disabled_chats_state.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
@@ -34,8 +35,10 @@ class NotificationsBtn extends StatelessWidget {
             onTap: () {
               if (contains) {
                 notificationsDisabledChatsCubit.remove(chatId);
+                DisabledNotificationsChatNetworkRequest(chatID: chatId.toString(),value: true)().then((value) => print(value)).onError((error, stackTrace) => print(error));
               } else {
                 notificationsDisabledChatsCubit.add(chatId);
+                DisabledNotificationsChatNetworkRequest(chatID: chatId.toString(),value: false)().then((value) => print(value)).onError((error, stackTrace) => print(error));
               }
             },
             child: ParticipantCard(
