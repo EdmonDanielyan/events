@@ -107,7 +107,7 @@ class CustomBottomSheetChild extends StatelessWidget {
                           ),
                         ),
                       )
-                    : const SizedBox(),
+                    : const SizedBox.shrink(),
                 Align(
                   alignment: Alignment.centerRight,
                   child: ActionBtn(

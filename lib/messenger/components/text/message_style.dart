@@ -4,9 +4,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 
-import 'package:flutter_bbcode/flutter_bbcode.dart';
-
-
 class MessageText extends StatelessWidget {
   final String str;
   final double? fontSize;
@@ -30,27 +27,15 @@ class MessageText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      child:
-      // BBCodeText(
-      //   data: str,
-      //   stylesheet: defaultBBStylesheet(
-      //     textStyle: TextStyle(fontStyle: fontStyle ,fontWeight: fontWeight, color: color, overflow: textOverflow, fontSize: fontSize),
-      //   ).replaceTag(UrlTag(onTap: (url){
-      //     launchUrl(Uri.parse(url));
-      //   })),
-      // )
-
-      Html(
-        shrinkWrap: true,
-        data: str.replaceAll("[B]", "").replaceAll("[/B]", ""),
-        onLinkTap: (_url ,con,__,___){
-          launchUrl(_url!,context: context);
-        },
-        style: {
-          '#': Style(fontSize: FontSize(fontSize ?? 13),fontWeight: fontWeight, maxLines: maxLines,color: color, textOverflow: textOverflow, textAlign: textAlign, fontStyle: fontStyle),
-        },
-      ),
+    return Html(
+      shrinkWrap: true,
+      data: str.replaceAll("[B]", "").replaceAll("[/B]", ""),
+      onLinkTap: (_url ,con,__,___){
+        launchUrl(_url!,context: context);
+      },
+      style: {
+        '#': Style(fontSize: FontSize(fontSize ?? 13),fontWeight: fontWeight, maxLines: maxLines,color: color, textOverflow: textOverflow, textAlign: textAlign, fontStyle: fontStyle),
+      },
     );
   }
 }

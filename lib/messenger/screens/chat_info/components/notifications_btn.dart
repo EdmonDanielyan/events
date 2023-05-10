@@ -51,7 +51,7 @@ class NotificationsBtn extends StatelessWidget {
                   size: SizeConfig(context, 22).getProportionateScreenHeight,
                 ),
               ),
-              divider: const SizedBox(),
+              divider: const SizedBox.shrink(),
               title: GoogleText(
                 contains ? "Включить уведомления" : "Выключить уведомления",
                 fontWeight: FontWeight.bold,

@@ -22,7 +22,7 @@ class CustomDismissible extends StatelessWidget {
     return Material(
       child: Dismissible(
         key: uniqueKey,
-        background: const SizedBox(),
+        background: const SizedBox.shrink(),
         direction: DismissDirection.endToStart,
         secondaryBackground: const Icon(Icons.delete, color: Colors.red),
         confirmDismiss: confirmDismiss,

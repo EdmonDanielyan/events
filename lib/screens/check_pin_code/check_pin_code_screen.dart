@@ -106,7 +106,7 @@ class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
             bloc: _unlockingViaBio,
             builder: (context, state) {
               if (state.enable) {
-                return const SizedBox();
+                return const SizedBox.shrink();
               }
 
               return BlocBuilder<BoolCubit, BoolState>(
@@ -157,7 +157,7 @@ class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
                               );
                             }
 
-                            return const SizedBox();
+                            return const SizedBox.shrink();
                           },
                         ),
                       ],

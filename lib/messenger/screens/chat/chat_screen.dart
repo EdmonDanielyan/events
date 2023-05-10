@@ -279,7 +279,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                       cachedChatsCubit: widget.cachedChatsCubit,
                       builder: (context, state, chat) {
                         if (chat == null) {
-                          return const SizedBox();
+                          return const SizedBox.shrink();
                         }
                         return ChatSearchTextfield(
                           onUp: () {
@@ -298,7 +298,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                 );
               }
 
-              return const SizedBox();
+              return const SizedBox.shrink();
             },
           ),
           Expanded(
@@ -318,7 +318,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                         widget.cachedChatsCubit
                             .selectChatById(selectedChat!.id);
                       }
-                      return const SizedBox();
+                      return const SizedBox.shrink();
                     }
                     chat = chat.copyWith(
                       messages: hiddenMessagesCubit.filter(chat.messages),
@@ -335,7 +335,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                           selectedMessages,
                           builder: (context, selectedMessagesState) {
                             if (messages.isEmpty) {
-                              return SizedBox();
+                              return const SizedBox.shrink();
                             }
 
                             return GroupedList<Message, int>(
@@ -430,7 +430,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             cachedChatsCubit: widget.cachedChatsCubit,
             builder: (context, state, chat) {
               if (chat == null) {
-                return const SizedBox();
+                return const SizedBox.shrink();
               }
               if(chat.type.name != 'notifications')
                 return MessageBottomCard(

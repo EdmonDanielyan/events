@@ -118,7 +118,7 @@ class _UsersPickerScreenState extends State<UsersPickerScreen> {
                                 );
                               }
 
-                              return const SizedBox();
+                              return const SizedBox.shrink();
                             },
                           ),
                           BlocBuilder<ChatUsersPickerCubit,

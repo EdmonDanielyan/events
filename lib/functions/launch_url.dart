@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/functions/errors.dart';
 import 'package:url_launcher/url_launcher.dart' as urlLaucnher;
 
@@ -8,20 +9,22 @@ Future<void> launchUrl(String url, {bool formatUrl = true, BuildContext? context
     if(url.contains("USER_ID")) {
       if(context != null){
         var _id = int.tryParse(url.substring(url.indexOf('=')+1,url.length)) ;
-        if (_id == null) showErrorDialog('Не удалось перейти по внешней ссылке');
-        else Navigator.pushNamed(
-            context, "/personal", arguments: {'id': _id});
+        if (_id == null) {
+          showErrorDialog('Не удалось перейти по внешней ссылке');
+        } else {
+          Navigator.pushNamed(context, "/personal", arguments: {'id': _id});
+        }
         return;
       }
     }
 
     if (!url.contains("http")) {
       if(url[0] == "/"){
-        url = 'https://portal.irkutskoil.ru' + url;
+        url = UrlsConfig.defaultUrl + url;
         urlLaucnher.launchUrl(Uri.parse(url),mode: urlLaucnher.LaunchMode.externalApplication );
         return;
       } else if(url.contains('/')){
-        url = 'https://portal.irkutskoil.ru/' + url;
+        url = UrlsConfig.defaultUrl + url;
         urlLaucnher.launchUrl(Uri.parse(url),mode: urlLaucnher.LaunchMode.externalApplication );
         return;
       }

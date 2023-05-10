@@ -129,7 +129,7 @@ class Body extends StatelessWidget {
 
   Widget getOtherUserLoadedWidget(context, ProfileState state) {
     final user = state.data;
-    if (user == null) return SizedBox();
+    if (user == null) return const SizedBox.shrink();
 
     return Container(
         child: Background(

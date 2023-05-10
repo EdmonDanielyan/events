@@ -26,7 +26,7 @@ class MessageTick extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (type == MessageType.info) {
-      return const SizedBox();
+      return const SizedBox.shrink();
     }
 
     String asset = "";

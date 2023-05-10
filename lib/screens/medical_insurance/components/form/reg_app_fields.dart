@@ -81,7 +81,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
       );
     }
 
-    return SizedBox();
+    return const SizedBox.shrink();
   }
 
   Widget _hospitalName() {

@@ -1,6 +1,7 @@
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/constants/app_metrics_events.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/screens/service_list/components/service_list_item.dart';
@@ -61,22 +62,22 @@ class ServiceListElement extends StatelessWidget {
   _metrica(){
     switch(item.link) {
       case '/feedback':
-        AppMetrica.reportEvent('вход пользователя в раздел «Обратная связь»');
+        AppMetricsEvents().feedbackEvent();
         break;
       case '/references':
-        AppMetrica.reportEvent('вход пользователя в раздел «Заказ справок»');
+        AppMetricsEvents().referencesEvent();
         break;
       case '/medical_insurance':
-        AppMetrica.reportEvent('вход пользователя в раздел «Оформление ДМС»');
+        AppMetricsEvents().medicalInsuranceEvent();
         break;
       case '/social_package':
-        AppMetrica.reportEvent('вход пользователя в раздел «Социальный пакет»');
+        AppMetricsEvents().socialPackageEvent();
         break;
       case '/personnel_movements':
-        AppMetrica.reportEvent('вход пользователя в раздел «Кадровые перемещения»');
+        AppMetricsEvents().personnelMovementsEvent();
         break;
       case '/birthdays':
-        AppMetrica.reportEvent('вход пользователя в раздел «Дни рождения»');
+        AppMetricsEvents().birthdaysEvent();
         break;
     }
   }

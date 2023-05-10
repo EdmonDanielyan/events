@@ -31,7 +31,7 @@ class _SymptomsRbState extends State<SymptomsRb> {
                 widget.entities.isSymptomsORVI = val!;
               })),
             ),
-            Expanded(flex: 1,child: SizedBox())
+            Expanded(flex: 1,child: const SizedBox.shrink())
           ],
         ),
         

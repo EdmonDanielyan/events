@@ -132,7 +132,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
                                 );
                               },
                             )
-                          : SizedBox(),
+                          : const SizedBox.shrink(),
                       /* Дни рождения в ближайшие дни*/
                       state.birthdaysOther!.length > 0
                           ? BirthdaysListViewBuilder(
@@ -144,7 +144,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
                                 );
                               },
                             )
-                          : SizedBox(),
+                          : const SizedBox.shrink(),
                     ],
                   ),
                 );

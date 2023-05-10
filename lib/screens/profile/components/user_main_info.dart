@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/components/textfields/service_btn.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/profile/components/photo_preview_page.dart';
 import 'package:intl/intl.dart';
@@ -23,7 +24,8 @@ class UserMainInfo extends StatefulWidget {
       this.userName,
       this.userPosition,
       this.pathToAvatar,
-      this.isOtherUser, this.absenceUser})
+      this.isOtherUser,
+      this.absenceUser})
       : super(key: key);
 
   @override
@@ -42,12 +44,12 @@ class _UserMainInfoState extends State<UserMainInfo> {
     textFormFocus = FocusNode();
     super.initState();
   }
+
   @override
   void dispose() {
     textFormFocus.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -73,84 +75,82 @@ class _UserMainInfoState extends State<UserMainInfo> {
           tileMode: TileMode.decal,
         ),
       ),
-      child:  Column(
+      child: Column(
+        children: [
+          Container(
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      SizeConfig(context, 65).getProportionateScreenHeight),
+                  color: Colors.grey.withOpacity(0.2)),
+              padding: EdgeInsets.all(5),
+              child: Container(
+                child: CachedCircleAvatar(
+                  avatarWidth:
+                      SizeConfig(context, 140).getProportionateScreenHeight,
+                  avatarHeight:
+                      SizeConfig(context, 140).getProportionateScreenHeight,
+                  url: widget.pathToAvatar ?? "",
+                ),
+              ),
+            ),
+            margin: EdgeInsets.only(
+                top: SizeConfig(context, 50).getProportionateScreenHeight,
+                bottom: SizeConfig(context, 21).getProportionateScreenHeight),
+          ),
+          Container(
+            width: size.width * 0.90,
+            child: Center(
+                child: Column(
               children: [
-                Container(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            SizeConfig(context, 65)
-                                .getProportionateScreenHeight),
-                        color: Colors.grey.withOpacity(0.2)),
-                    padding: EdgeInsets.all(5),
-                    child: Container(
-                      child: CachedCircleAvatar(
-                        avatarWidth: SizeConfig(context, 140)
+                GestureDetector(
+                  //onTapDown: (_)=> _enableEdit(),
+                  behavior: HitTestBehavior.translucent,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: TextFormField(
+                      controller: fioFieldC,
+                      readOnly: !isEditing,
+                      focusNode: textFormFocus,
+                      autofocus: true,
+                      maxLines: 2,
+                      cursorColor: Theme.of(context).primaryColorLight,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        overflow: TextOverflow.visible,
+                        color: Colors.white,
+                        fontStyle: FontStyle.normal,
+                        fontSize: SizeConfig(context, 20)
                             .getProportionateScreenHeight,
-                        avatarHeight: SizeConfig(context, 140)
-                            .getProportionateScreenHeight,
-                        url: widget.pathToAvatar ?? "",
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textInputAction: TextInputAction.go,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        isCollapsed: true,
                       ),
                     ),
                   ),
-                  margin: EdgeInsets.only(
-                      top: SizeConfig(context, 50).getProportionateScreenHeight,
-                      bottom:
-                          SizeConfig(context, 21).getProportionateScreenHeight),
                 ),
-                Container(
-                  width: size.width * 0.90,
-                  child: Center(
-                      child: Column(
-                    children: [
-                      GestureDetector(
-                        //onTapDown: (_)=> _enableEdit(),
-                        behavior: HitTestBehavior.translucent,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 20.0),
-                          child: TextFormField(
-                            controller: fioFieldC,
-                            readOnly: !isEditing,
-                            focusNode: textFormFocus,
-                            autofocus: true,
-                            maxLines: 2,
-                            cursorColor: Theme.of(context).primaryColorLight,
-                            textAlign: TextAlign.center,
-                            style:  TextStyle(
-                              overflow: TextOverflow.visible,
-                              color: Colors.white,
-                              fontStyle: FontStyle.normal,
-                              fontSize: SizeConfig(context, 20)
-                                  .getProportionateScreenHeight,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textInputAction: TextInputAction.go,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              isCollapsed: true,
-                            ),
-                          ),
-                        ),
-                      ),
-                      // if(isEditing)
-                      //   Padding(
-                      //     padding: const EdgeInsets.only(top: 10.0),
-                      //     child: ServiceBtn(
-                      //         txt: 'Сохранить',
-                      //         onPressed: (){
-                      //           setState((){
-                      //             isEditing = false;
-                      //           });
-                      //         }),
-                      //   )
-                    ],
-                  )),
-                ),
-                getUserPositionWidget(context),
-                getInfoAbsenceUser()
+                // if(isEditing)
+                //   Padding(
+                //     padding: const EdgeInsets.only(top: 10.0),
+                //     child: ServiceBtn(
+                //         txt: 'Сохранить',
+                //         onPressed: (){
+                //           setState((){
+                //             isEditing = false;
+                //           });
+                //         }),
+                //   )
               ],
-            ),
-          );
+            )),
+          ),
+          getUserPositionWidget(context),
+          getInfoAbsenceUser()
+        ],
+      ),
+    );
   }
 
   String getFullName() {
@@ -191,43 +191,58 @@ class _UserMainInfoState extends State<UserMainInfo> {
                 ),
               )));
     } else {
-      return Container();
+      return const SizedBox.shrink();
     }
   }
 
   Widget getInfoAbsenceUser() {
-    String str = widget.absenceUser ?? '' ;
+    String str = widget.absenceUser ?? '';
 
-    if(str != ''){
+    if (str != '') {
       return Container(
-          margin: EdgeInsets.only(top:20,left: 20,right: 20),
-          padding: EdgeInsets.all(2),
-          decoration: BoxDecoration(
-            color: str.contains('Отсутствие')? Color(0xFFEBB300) : Color(0xFF6E3255),
-            // border: Border.all(
-            //     style: BorderStyle.solid,
-            //     width: 1.0
-            // ),
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16),
-                bottomRight: Radius.circular(16)
+        margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+        padding: EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          color: str.contains('Отсутствие')
+              ? Palette.yellow300
+              : Palette.purple255,
+          // border: Border.all(
+          //     style: BorderStyle.solid,
+          //     width: 1.0
+          // ),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 6.0),
+                child: Text(
+                  str,
+                  style: TextStyle(
+                      color: (!str.contains('Отсутствие'))
+                          ? Palette.white
+                          : Palette.textBlack),
+                ),
+              ),
             ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-               Expanded(child: Padding(
-                 padding: const EdgeInsets.only(left: 6.0),
-                 child: Text(str,style: TextStyle(color: (!str.contains('Отсутствие'))?  Colors.white: Colors.black),),
-               )),
-
-              Padding(
-                padding: const EdgeInsets.all(6.0),
-                child: str.contains('Отсутствие')? SvgPicture.asset(IconLinks.SUN_ICON,):SvgPicture.asset(IconLinks.PLANE_ICON,color: Colors.white,),
-              )
-            ],
-          ));
-    } else return SizedBox();
+            Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: str.contains('Отсутствие')
+                  ? SvgPicture.asset(
+                      IconLinks.SUN_ICON,
+                    )
+                  : SvgPicture.asset(
+                      IconLinks.PLANE_ICON,
+                      color: Colors.white,
+                    ),
+            )
+          ],
+        ),
+      );
+    } else
+      return const SizedBox.shrink();
   }
 }
-

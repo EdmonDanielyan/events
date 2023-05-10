@@ -12,7 +12,7 @@ class CustomDismissible extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Dismissible(
-        background: const SizedBox(),
+        background: const SizedBox.shrink(),
         direction: DismissDirection.endToStart,
         secondaryBackground: Icon(Icons.delete, color: Colors.red),
         confirmDismiss: confirmDismiss,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/constants/app_metrics_events.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
@@ -31,7 +32,7 @@ class _BodyState extends State<Body> {
     super.initState();
     widget.cubit.pagination.clear();
     widget.cubit.emitState(type: NewsListStateType.LOADING);
-    AppMetrica.reportEvent('вход пользователя в раздел «Новости»');
+    AppMetricsEvents().newsEvent();
   }
 
   @override

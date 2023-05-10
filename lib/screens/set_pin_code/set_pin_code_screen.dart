@@ -74,7 +74,7 @@ class _SetPinCodeScreenState extends State<SetPinCodeScreen> {
                       controller: _controller,
                       focusNode: focusNode,
                       errorBuilder: (str, str2) {
-                        if (str2 == _pinCode1) return const SizedBox();
+                        if (str2 == _pinCode1) return const SizedBox.shrink();
 
                         return Padding(
                           padding: const EdgeInsets.all(8.0),

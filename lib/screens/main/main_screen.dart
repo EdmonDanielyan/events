@@ -63,7 +63,7 @@ class MainScreenState extends State<MainScreen>
     return Scaffold(
       appBar: InkAppBar(
         context,
-        leading: const SizedBox(),
+        leading: const SizedBox.shrink(),
         showPersonalPageLink: true,
       ),
       body: Body(),

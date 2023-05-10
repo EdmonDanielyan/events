@@ -42,7 +42,8 @@ dependencies:
     shimmer: ">=2.0.0 <3.0.0"
 
     ###modal_bottom_sheet: ^2.1.2
-    modal_bottom_sheet: ^2.1.2
+    modal_bottom_sheet: 3.0.0-pre
+
  #   git:
   #     url: https://github.com/followthemoney1/modal_bottom_sheet.git
    #    ref: main

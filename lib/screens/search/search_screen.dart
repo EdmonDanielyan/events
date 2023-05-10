@@ -1,6 +1,7 @@
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar.dart';
+import 'package:ink_mobile/constants/app_metrics_events.dart';
 import 'package:ink_mobile/screens/search/components/body.dart';
 import 'package:ink_mobile/cubit/search/search_cubit.dart';
 
@@ -16,7 +17,7 @@ class _SearchScreenState extends State<SearchScreen>
     with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
-    AppMetrica.reportEvent('вход пользователя в раздел «Поиск»');
+    AppMetricsEvents().searchEvent();
     super.initState();
   }
   @override
@@ -25,7 +26,7 @@ class _SearchScreenState extends State<SearchScreen>
     return Scaffold(
       appBar: InkAppBar(
         context,
-        leading: const SizedBox(),
+        leading: const SizedBox.shrink(),
         showPersonalPageLink: true,
           title: "Поиск по порталу",
       ),
