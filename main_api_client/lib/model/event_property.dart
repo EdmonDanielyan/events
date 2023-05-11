@@ -66,7 +66,9 @@ abstract class EventProperty
   static void _initializeBuilder(EventPropertyBuilder b) => b
     ..detailText = 'null'
     ..detailPicture = 'null'
-    ..isMember = false;
+    ..isMember = false
+    ..isActual = false
+    ..placesAvailable = false;
 
   factory EventProperty([void updates(EventPropertyBuilder b)]) =
       _$EventProperty;

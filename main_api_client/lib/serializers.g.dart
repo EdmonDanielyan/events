@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // @dart=2.6
 
-part of serializers;
+part of 'serializers.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
