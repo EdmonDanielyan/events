@@ -2552,6 +2552,14 @@ components:
                     type: boolean
                     example: false
                     default: false
+                is_actual:
+                    type: boolean
+                    example: false
+                    default: false
+                places_available:
+                    type: boolean
+                    example: false
+                    default: false
             required:
                 - id
                 - title
@@ -3278,7 +3286,7 @@ components:
                 date_end:
                     type: string
                     example: "01.05.2020"
-                files[]:
+                files:
                     type: array
                     items:
                         type: string
@@ -3364,7 +3372,7 @@ components:
                 tags:
                     type: string
                     example: "Риски, COVID-19"
-                files[]:
+                files:
                     type: array
                     items:
                         type: string
@@ -3424,7 +3432,7 @@ components:
                 route:
                     type: string
                     example: "Список пунктов маршрута"
-                files[]:
+                files:
                     type: array
                     items:
                         type: string

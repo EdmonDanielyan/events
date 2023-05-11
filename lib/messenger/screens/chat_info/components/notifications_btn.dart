@@ -35,10 +35,10 @@ class NotificationsBtn extends StatelessWidget {
             onTap: () {
               if (contains) {
                 notificationsDisabledChatsCubit.remove(chatId);
-                DisabledNotificationsChatNetworkRequest(chatID: chatId.toString(),value: true)().then((value) => print(value)).onError((error, stackTrace) => print(error));
+                DisabledNotificationsChatNetworkRequest(chatID: chatId.toString(),value: true)();
               } else {
                 notificationsDisabledChatsCubit.add(chatId);
-                DisabledNotificationsChatNetworkRequest(chatID: chatId.toString(),value: false)().then((value) => print(value)).onError((error, stackTrace) => print(error));
+                DisabledNotificationsChatNetworkRequest(chatID: chatId.toString(),value: false)();
               }
             },
             child: ParticipantCard(
