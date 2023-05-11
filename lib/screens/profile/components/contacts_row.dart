@@ -3,7 +3,6 @@ import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 
-import '../../../messenger/functions/size_config.dart';
 
 class ContactsRow extends StatelessWidget {
   final Widget icon;

@@ -4,7 +4,6 @@ import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/components/highlight_text.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/search/data.dart';
 
 class SearchItemUser extends StatelessWidget {

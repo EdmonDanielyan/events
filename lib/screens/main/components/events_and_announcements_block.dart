@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/components/buttons/elevated_full_width_button.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/main_page/events_and_announcements_block_cubit.dart';

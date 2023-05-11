@@ -3,8 +3,6 @@ import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
-import '../../../messenger/functions/size_config.dart';
-
 class AuthHint extends StatelessWidget {
   const AuthHint({Key? key}) : super(key: key);
 

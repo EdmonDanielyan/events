@@ -6,7 +6,6 @@ import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
-import '../../../messenger/functions/size_config.dart';
 import 'section_title.dart';
 
 class Diagnostics extends StatefulWidget {

@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class SearchContainer extends StatelessWidget {
   final String label;

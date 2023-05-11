@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
-
-import 'package:flutter_bbcode/flutter_bbcode.dart';
 
 
 class MessageText extends StatelessWidget {

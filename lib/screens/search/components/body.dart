@@ -5,7 +5,6 @@ import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/search/data.dart';
 import 'package:ink_mobile/models/search/search_query.dart';
 import 'package:ink_mobile/screens/search/components/background.dart';

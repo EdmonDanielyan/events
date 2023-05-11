@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar.dart';
-import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 

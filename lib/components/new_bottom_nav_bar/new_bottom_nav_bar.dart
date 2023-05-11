@@ -6,7 +6,6 @@ import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/functions/textfield_utils.dart';
 import 'package:ink_mobile/setup.dart';
 
-import '../../messenger/functions/size_config.dart';
 import 'cubit/new_bottom_nav_bar_cubit.dart';
 
 class NewBottomNavBar extends StatefulWidget {

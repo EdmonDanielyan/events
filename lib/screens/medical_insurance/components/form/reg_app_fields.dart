@@ -8,10 +8,8 @@ import 'package:ink_mobile/core/masks/input_formatters.dart';
 import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/selectfield.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
-import 'package:ink_mobile/screens/medical_insurance/components/form/symptoms_rb.dart';
 
 import '../../../../components/date_input_field.dart';
 import '../../../../messenger/utils/date_functions.dart';

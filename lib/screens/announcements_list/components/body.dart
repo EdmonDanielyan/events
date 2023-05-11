@@ -8,7 +8,6 @@ import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/screens/announcements_list/components/announcements_list_element.dart';
 

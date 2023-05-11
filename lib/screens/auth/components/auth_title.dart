@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class AuthTitle extends StatelessWidget {
   const AuthTitle({Key? key}) : super(key: key);

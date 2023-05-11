@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/components/text/message_style.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 

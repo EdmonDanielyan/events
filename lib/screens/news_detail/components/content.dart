@@ -4,7 +4,6 @@ import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/html.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/components/buttons/default_button.dart';
 
 class Content extends StatefulWidget {

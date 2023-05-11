@@ -1175,7 +1175,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/NotificationFullList"
-
+            security:
+                - bearerAuth: [ ]
     /config/notifications/{channel}/{targetId}:
         parameters:
             - name: channel
@@ -1205,6 +1206,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/NotificationSubState"
+            security:
+                - bearerAuth: [ ]
         post:
             operationId: setNotificationSub
             tags:
@@ -1225,6 +1228,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/NotificationSubState"
+            security:
+                - bearerAuth: [ ]
         delete:
             operationId: resetNotificationSub
             tags:
@@ -1238,7 +1243,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/NotificationSubState"
-
+            security:
+                - bearerAuth: [ ]
 components:
     schemas:
         registerParams:

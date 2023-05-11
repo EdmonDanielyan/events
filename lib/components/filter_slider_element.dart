@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class FilterSliderElement extends StatelessWidget {
   final String title;
