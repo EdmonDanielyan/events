@@ -92,14 +92,14 @@ class _$EventPropertySerializer implements StructuredSerializer<EventProperty> {
     value = object.isActual;
     if (value != null) {
       result
-        ..add('is_actual')
+        ..add('is_member')
         ..add(
             serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     value = object.placesAvailable;
     if (value != null) {
       result
-        ..add('places_available')
+        ..add('is_member')
         ..add(
             serializers.serialize(value, specifiedType: const FullType(bool)));
     }
@@ -158,11 +158,11 @@ class _$EventPropertySerializer implements StructuredSerializer<EventProperty> {
           result.isMember = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
           break;
-        case 'is_actual':
+        case 'is_member':
           result.isActual = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
           break;
-        case 'places_available':
+        case 'is_member':
           result.placesAvailable = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
           break;

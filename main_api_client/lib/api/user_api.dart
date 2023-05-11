@@ -897,7 +897,7 @@ class UserApi {
       if (dateEnd != null)
         r'date_end': parameterToString(_serializers, dateEnd),
       if (filesLeftSquareBracketRightSquareBracket != null)
-        r'files[]': filesLeftSquareBracketRightSquareBracket
+        r'files[]': filesLeftSquareBracketRightSquareBracket,
     };
     bodyData = FormData.fromMap(formData);
 
