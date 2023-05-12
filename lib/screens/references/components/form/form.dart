@@ -180,6 +180,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       initialValue: widget.referencesPageCubit.autofill.fio,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.fio = val,
+      focusNode: FocusNode(),
     );
   }
 
@@ -189,6 +190,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       initialValue: widget.referencesPageCubit.autofill.position,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.position = val,
+      focusNode: FocusNode(),
     );
   }
 
@@ -198,6 +200,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       initialValue: widget.referencesPageCubit.autofill.department,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.department = val,
+      focusNode: FocusNode(),
     );
   }
 
@@ -206,6 +209,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       hint: _strings.childFullName,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.fioChildren = val,
+      focusNode: FocusNode(),
     );
   }
 
@@ -226,6 +230,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       onChanged: (val) => entities.phone = val,
       keyboardType: TextInputType.phone,
       inputFormatters: [mask],
+      focusNode: FocusNode(),
     );
   }
 
@@ -247,6 +252,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       onChanged: (val) => entities.address = val,
       keyboardType: TextInputType.streetAddress,
       autocorrect: false,
+      focusNode: FocusNode(),
     );
   }
 
@@ -257,6 +263,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       onChanged: (val) => entities.postCode = val,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.number,
+      focusNode: FocusNode(),
     );
   }
 
@@ -292,6 +299,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       hint: _strings.toSubmitFor,
       validator: (val) => val!.length < 2 ? _strings.fillTheField : null,
       onChanged: (val) => entities.toProvideIn = val,
+      focusNode: FocusNode(),
     );
   }
 
@@ -301,6 +309,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       validator: (val) => val!.length < 1 ? _strings.fillTheField : null,
       onChanged: (val) => entities.period = val,
       inputFormatters: [InputFormatters().lettersNumbersOnly],
+      focusNode: FocusNode(),
     );
   }
 

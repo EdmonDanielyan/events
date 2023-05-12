@@ -9,7 +9,6 @@ import 'package:ink_mobile/components/buttons/default_button.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/feedback/components/select_file_dialog.dart';
 import 'package:path/path.dart';
 import '../../functions/errors.dart';

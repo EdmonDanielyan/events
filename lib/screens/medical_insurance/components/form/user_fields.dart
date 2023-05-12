@@ -91,6 +91,7 @@ class _MedicalInsuranceFormUserFieldsState
       autocorrect: false,
       onChanged: (val) => widget.entities.fio = val,
       descriptionText: "Ваше ФИО",
+      focusNode: FocusNode(),
     );
   }
 
@@ -114,6 +115,7 @@ class _MedicalInsuranceFormUserFieldsState
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => widget.entities.position = val,
       descriptionText: "Должность",
+      focusNode: FocusNode(),
     );
   }
 
@@ -128,6 +130,7 @@ class _MedicalInsuranceFormUserFieldsState
       keyboardType: TextInputType.phone,
       inputFormatters: [mask],
       descriptionText: "Номер телефона",
+      focusNode: FocusNode(),
     );
   }
 
@@ -140,6 +143,7 @@ class _MedicalInsuranceFormUserFieldsState
       autocorrect: false,
       onChanged: (val) => widget.entities.email = val,
       descriptionText: "Эл. почта",
+      focusNode: FocusNode(),
     );
   }
 }

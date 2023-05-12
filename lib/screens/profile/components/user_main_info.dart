@@ -1,15 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
-import 'package:ink_mobile/components/textfields/service_btn.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
-import 'package:ink_mobile/screens/profile/components/photo_preview_page.dart';
-import 'package:intl/intl.dart';
 
 class UserMainInfo extends StatefulWidget {
   final String? userName;

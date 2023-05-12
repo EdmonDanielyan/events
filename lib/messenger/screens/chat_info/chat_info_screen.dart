@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/bottom_sheet/bottom_sheet.dart';
 import 'package:ink_mobile/messenger/components/dismissible/custom_dismissible.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
@@ -46,7 +47,7 @@ class ChatInfoScreen extends StatefulWidget {
 }
 
 class _ChatInfoScreenState extends State<ChatInfoScreen> {
-  final notificationsCubit = getIt<NotificationsDisabledChatsCubit>();
+  final notificationsCubit = getIt<ToggleNotificationsChatsCubit>();
 
   void _onChatEdit(BuildContext context, Chat chat) {
     CustomBottomSheet(
@@ -109,23 +110,23 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                           subDescription: "Участников: ${paricipants.length}",
                         ),
                 ),
-                // const SizedBox(height: 20.0),
-                // const ChatInfoDivider(),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(
-                //     horizontal: _horizontalPadding,
-                //     vertical: 5.0,
-                //   ),
-                //   child: Column(
-                //     children: [
-                //       NotificationsBtn(
-                //         cachedChatsCubit: widget.cachedChatsCubit,
-                //         notificationsDisabledChatsCubit: notificationsCubit,
-                //         chatId: chat.id,
-                //       ),
-                //     ],
-                //   ),
-                // ),
+                const SizedBox(height: 20.0),
+                const ChatInfoDivider(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: _horizontalPadding,
+                    vertical: 5.0,
+                  ),
+                  child: Column(
+                    children: [
+                      NotificationsBtn(
+                        cachedChatsCubit: widget.cachedChatsCubit,
+                        toggleNotificationsChatsCubit: notificationsCubit,
+                        chatId: chat.id,
+                      ),
+                    ],
+                  ),
+                ),
                 const ChatInfoDivider(),
                 const SizedBox(height: 20.0),
                 const ChatInfoDivider(),
@@ -142,7 +143,7 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                   const ChatInfoDivider(),
                   ChatInfoBtn(
                     title: "Покинуть чат",
-                    color: const Color(0XFFD75F50),
+                    color: Palette.redF50,
                     padding: const EdgeInsets.symmetric(
                         horizontal: _horizontalPadding),
                     onPressed: widget.onDelete != null

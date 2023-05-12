@@ -1,4 +1,3 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar.dart';
 import 'package:ink_mobile/constants/app_metrics_events.dart';

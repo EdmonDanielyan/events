@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/list_element_divider.dart';
-import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/main_page/events_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/events_list_state.dart';
 import 'package:ink_mobile/models/event_data.dart';

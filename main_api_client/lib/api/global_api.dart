@@ -55,7 +55,12 @@ class GlobalApi {
         method: 'get'.toUpperCase(),
         headers: headerParams,
         extra: <String, dynamic>{
-          'secure': <Map<String, String>>[],
+          'secure': <Map<String, String>>[
+            {
+              'type': 'http',
+              'name': 'bearerAuth',
+            },
+          ],
           if (extra != null) ...extra,
         },
         validateStatus: validateStatus,
@@ -125,7 +130,12 @@ class GlobalApi {
         method: 'get'.toUpperCase(),
         headers: headerParams,
         extra: <String, dynamic>{
-          'secure': <Map<String, String>>[],
+          'secure': <Map<String, String>>[
+            {
+              'type': 'http',
+              'name': 'bearerAuth',
+            },
+          ],
           if (extra != null) ...extra,
         },
         validateStatus: validateStatus,
@@ -339,7 +349,12 @@ class GlobalApi {
         method: 'delete'.toUpperCase(),
         headers: headerParams,
         extra: <String, dynamic>{
-          'secure': <Map<String, String>>[],
+          'secure': <Map<String, String>>[
+            {
+              'type': 'http',
+              'name': 'bearerAuth',
+            },
+          ],
           if (extra != null) ...extra,
         },
         validateStatus: validateStatus,
@@ -411,7 +426,12 @@ class GlobalApi {
         method: 'post'.toUpperCase(),
         headers: headerParams,
         extra: <String, dynamic>{
-          'secure': <Map<String, String>>[],
+          'secure': <Map<String, String>>[
+            {
+              'type': 'http',
+              'name': 'bearerAuth',
+            },
+          ],
           if (extra != null) ...extra,
         },
         validateStatus: validateStatus,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 
-import '../../../messenger/functions/size_config.dart';
 
 class SectionTitle extends StatelessWidget {
   final String title;

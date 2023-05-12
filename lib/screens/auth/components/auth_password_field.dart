@@ -7,7 +7,6 @@ import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
 
-import '../../../messenger/functions/size_config.dart';
 
 class AuthPasswordField extends StatefulWidget {
   final AuthCubit authCubit;

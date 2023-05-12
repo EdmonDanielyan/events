@@ -18,6 +18,8 @@ Name | Type | Description | Notes
 **detailText** | **String** |  | [default to 'null']
 **detailPicture** | **String** |  | [default to 'null']
 **isMember** | **bool** |  | [optional] [default to false]
+**isActual** | **bool** |  | [optional] [default to false]
+**placesAvailable** | **bool** |  | [optional] [default to false]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

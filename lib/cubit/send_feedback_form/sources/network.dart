@@ -27,7 +27,7 @@ class SendFeedbackFormNetworkRequest extends SendFeedbackFormDependency {
           entities!.getTagsListString().join(", "),
           fio: entities!.name,
           contacts: entities!.email,
-          filesLeftSquareBracketRightSquareBracket: entities!.files.length > 0
+          files: entities!.files.length > 0
               ? getFilesAsBuiltList(entities!.files)
               : null,
         )

@@ -70,7 +70,6 @@ class _AuthButtonsState extends State<AuthButtons> {
   Widget build(BuildContext context) {
     authCubit = AuthScreen.of(context).authCubit;
     _bottomNavBar = AuthScreen.of(context).newBottomNavBarCubit;
-    Size size = MediaQuery.of(context).size;
 
     return SafeArea(
       child: Column(

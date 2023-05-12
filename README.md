@@ -36,6 +36,26 @@
 2. Добавьте директорию .dart_tool/flutter_gen/ в исходники проекта
 
 
+### API generation
+
+Перед генерацией необходимо получить у бэкенда актуальный specification.yaml и заменить им файл ./tools/specification.yaml
+
+Для генерации необходимых API методов необходимо запустить скрипт ./tools/generate-main-api.sh
+
+В случае возникновения ошибок необходимо обратить внимание на файл ./main_api_client/pubspec.yaml
+Зависимость build_runner должна быть настолько свежей, насколько это возможожно 
+Также был обнаружен факт перезаписывания данного файла, чему виной файл ./tools/dart-dio-custom/pubspec.mustache
+Поэтому стоит следить и за версией build_runner в данном файле 
+
+После генерации возникают ошибки следующего плана:
+error: The argument type 'BuiltList<Uint8List>' can't be assigned to the parameter type 'List<int>'
+В такого рода строках
+r'files': MultipartFile.fromBytes(files, filename: r'files'),
+Для решения ошибок достаточно преобразовать данную строку в
+r'files': files,
+Править автосгенерированные файлы - нехорошо, но альтернативы пока нет :(
+
+
 ### OneSignal
 
 Настройка Flutter, согласно официальной документации https://documentation.onesignal.com/docs/flutter-sdk-setup

@@ -33,7 +33,7 @@ class HighlightText extends StatelessWidget {
       );
     } else {
       return EasyRichText(
-        txt.removemoji,
+        txt.removEmoji,
         caseSensitive: false,
         defaultStyle: textStyle,
         overflow: overflow,

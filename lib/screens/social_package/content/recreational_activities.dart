@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:html/dom.dart' as dom;
-import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
-import 'package:ink_mobile/functions/launch_url.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/screens/social_package/content/error_widget.dart';
 import 'package:ink_mobile/screens/social_package/content/social_package_widget.dart';
 
 class RecreationalActivities extends StatefulWidget {
@@ -17,30 +13,14 @@ class _RecreationalActivitiesState extends State<RecreationalActivities> {
 
   @override
   Widget build(BuildContext context) {
-    final _strings = localizationInstance;
     return SocialPackageWidget(
-      errorWidget: _oldTextWidget(),
+      errorWidget: SocialPackageErrorWidget(
+        data: defaultText,
+      ),
     );
   }
 
-  Widget _oldTextWidget() {
-    return CustomLayoutBuilder(
-      builder: (context, constraint, isTablet) {
-        return Container(
-          child: Html(
-             style: isTablet
-                  ? {
-                      "body": Style(
-                        fontSize: FontSize(24.0),
-                      ),
-                      "h3": Style(fontSize: FontSize(26.0),)
-                    }
-                  : {},
-              onLinkTap: (String? url, RenderContext context,
-                  Map<String, String> attributes, dom.Element? element) {
-                launchUrl(url!);
-              },
-              data: '''
+  String get defaultText => '''
                  <h3>&nbsp;<b><span style="color: #00736a;">Тренажерный зал Oil Gym</span></b> </h3>
         <p>
         	 Тренажерный зал Oil Gym находится в цокольном этаже башни "А" офиса компании в&nbsp; г. Иркутске (БЦ "Астра").
@@ -113,9 +93,5 @@ class _RecreationalActivitiesState extends State<RecreationalActivities> {
         </p>
         <p>
         	 Подробнее о группах здоровья (в том числе расписание) -&nbsp; в разделе "<a href="https://portal.irkutskoil.ru/sport/"><b><u>Спорт</u></b></a>".&nbsp;
-                '''),
-        );
-      }
-    );
-  }
+                ''';
 }

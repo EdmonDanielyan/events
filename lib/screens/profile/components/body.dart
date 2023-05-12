@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ink_mobile/assets/constants.dart';
-import 'package:ink_mobile/components/buttons/default_button.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
-import 'package:ink_mobile/components/menu_sheet/menu_sheet.dart';
-import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/user_data.dart';
-import 'package:ink_mobile/screens/profile/components/about_my_field.dart';
 import 'package:ink_mobile/screens/profile/components/awards.dart';
 import 'package:ink_mobile/screens/profile/components/background.dart';
 import 'package:ink_mobile/screens/profile/components/basic_information.dart';
@@ -115,7 +108,7 @@ class Body extends StatelessWidget {
             Contacts(contacts: user.contacts),
             BasicInformation(info: user.basicInformation),
             if(user.absence!=null) BasicInfoRow(title: 'Статус', value: user.absence!),
-            if(user.shift_man!=null)BasicInfoRow(title: 'Сменщик', value: user.shift_man!),
+            if(user.shiftMan!=null)BasicInfoRow(title: 'Сменщик', value: user.shiftMan!),
             Diagnostics(logFile: logFile),
             ProfileSecuritySection(),
             /// todo AboutMyField
@@ -149,7 +142,7 @@ class Body extends StatelessWidget {
                 info: user.basicInformation,
               ),
               if(user.absence!=null) BasicInfoRow(title: 'Статус', value: user.absence!),
-              if(user.shift_man!=null)BasicInfoRow(title: 'Сменщик', value: user.shift_man!),
+              if(user.shiftMan!=null)BasicInfoRow(title: 'Сменщик', value: user.shiftMan!),
               //будет поле о пользователе без возможности редактировать
             ],
           );

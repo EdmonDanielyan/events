@@ -17,7 +17,7 @@ class AvatarPlaceholder extends StatelessWidget {
       backgroundColor: Colors.blue,
       foregroundImage: null,
       child: GoogleText(
-        FancyText(RemoveEmoji().removemoji(text)).cutName().toUpperCase(),
+        FancyText(RemoveEmoji().clean(text)).cutName().toUpperCase(),
         color: Colors.white,
       ),
     );

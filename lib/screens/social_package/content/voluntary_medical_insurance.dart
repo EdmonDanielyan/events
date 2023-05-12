@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:html/dom.dart' as dom;
-import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
-import 'package:ink_mobile/functions/launch_url.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/screens/social_package/content/error_widget.dart';
 import 'package:ink_mobile/screens/social_package/content/social_package_widget.dart';
 
 class VoluntaryMedicalInsurance extends StatefulWidget {
@@ -18,35 +14,14 @@ class _VoluntaryMedicalInsuranceState extends State<VoluntaryMedicalInsurance> {
 
   @override
   Widget build(BuildContext context) {
-    final _strings = localizationInstance;
     return SocialPackageWidget(
-      errorWidget: _oldTextWidget(),
+      errorWidget: SocialPackageErrorWidget(
+        data: defaultText,
+      ),
     );
   }
 
-  Widget _oldTextWidget() {
-    return CustomLayoutBuilder(
-      builder: (context, constraint, isTablet) {
-        return Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(bottom: BorderSide(color: Color(0xFFE5E5E5)))),
-          child: Html(
-              style: isTablet
-                  ? {
-                      "body": Style(
-                        fontSize: FontSize(24.0),
-                      ),
-                      "h3": Style(
-                        fontSize: FontSize(26.0),
-                      )
-                    }
-                  : {},
-              onLinkTap: (String? url, RenderContext context,
-                  Map<String, String> attributes, dom.Element? element) {
-                launchUrl(url!);
-              },
-              data: '''
+  String get defaultText => '''
         <p style="background: white;">
          <span style="color: #40403b;">ООО «ИНК» в рамках системы ДМС сотрудничает с страховой компанией: АО "СОГАЗ".</span>
         </p>
@@ -175,9 +150,5 @@ class _VoluntaryMedicalInsuranceState extends State<VoluntaryMedicalInsurance> {
         <p>
          <a href="https://portal.irkutskoil.ru/upload/medialibrary/d42/d428701873c4da4b101c075d5b54731c.pdf" title="Программа АльфаТелемед ВИП.pdf"></a>
         </p>
-                '''),
-        );
-      }
-    );
-  }
+                ''';
 }

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:html/dom.dart' as dom;
-import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
-import 'package:ink_mobile/functions/launch_url.dart';
+import 'package:ink_mobile/screens/social_package/content/error_widget.dart';
 import 'package:ink_mobile/screens/social_package/content/social_package_widget.dart';
 
 class AnniversaryBonus extends StatefulWidget {
@@ -17,33 +14,13 @@ class _AnniversaryBonusState extends State<AnniversaryBonus> {
   @override
   Widget build(BuildContext context) {
     return SocialPackageWidget(
-      errorWidget: _oldTextWidget(),
+      errorWidget: SocialPackageErrorWidget(
+        data: defaultText,
+      ),
     );
   }
 
-  Widget _oldTextWidget() {
-    return CustomLayoutBuilder(
-        builder: (context, constraint, isTablet) {
-        return Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(bottom: BorderSide(color: Color(0xFFE5E5E5)))),
-          child: Html(
-              style: isTablet
-                  ? {
-                      "body": Style(
-                        fontSize: FontSize(24.0),
-                      ),
-                      "h4": Style(
-                        fontSize: FontSize(24.0),
-                      )
-                    }
-                  : {},
-              onLinkTap: (String? url, RenderContext context,
-                  Map<String, String> attributes, dom.Element? element) {
-                launchUrl(url!);
-              },
-              data: '''
+  String get defaultText => '''
         <h4> <b>Единовременная выплата к юбилейным датам</b> </h4>
         <p>
         	 Работникам может быть произведена единовременная выплата по случаю юбилея (<i>юбилейными считаются даты, начиная с 50 лет, кратные пяти: 50, 55, 60 и т.д.</i>).
@@ -86,9 +63,5 @@ class _AnniversaryBonusState extends State<AnniversaryBonus> {
         <p>
         	 Марина Константинова, ведущий специалист отдела социальных программ <br>
         	 тел. 9060, <a href="mailto:konstantinova_me@irkutskoil.ru">konstantinova_me@irkutskoil.ru</a><br>
-                '''),
-        );
-      }
-    );
-  }
+                ''';
 }
