@@ -32,7 +32,7 @@ class AnnouncementsDetailScreen extends StatelessWidget {
       appBar: InkAppBar(
         context,
         showPersonalPageLink: true,
-        title: localizationInstance.announcements,
+        title: _strings.announcements,
       ),
       backgroundColor: Palette.white,
       body: BlocBuilder<AnnouncementCubit, AnnouncementsDetailState>(

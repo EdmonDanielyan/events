@@ -1,29 +1,28 @@
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/messenger/cubits/cached/notifications_disabled_chats/network.dart';
+import 'package:ink_mobile/models/token.dart';
 
 import '../chat_users_picker/chat_users_picker_cubit.dart';
 import 'notifications_disabled_chats_state.dart';
 
 @singleton
-class NotificationsDisabledChatsCubit
+class ToggleNotificationsChatsCubit
     extends HydratedCubit<NotificationsDisabledChatsState> {
-  NotificationsDisabledChatsCubit()
+  ToggleNotificationsChatsCubit()
       : super(const NotificationsDisabledChatsState(chatIds: {}));
 
-  void add(int chatId) {
-    final newChatIds = Set<int>.from(state.chatIds)..add(chatId);
-    emit(state.copyWith(chatIds: newChatIds));
-
+  Future<void> toggleNotification(int chatId, bool disableValue) async {
+    await Token.setNewTokensIfExpired();
+    Set<int> observingChats = Set<int>.from(state.chatIds);
+    disableValue ? observingChats.remove(chatId) : observingChats.add(chatId);
+    ToggleNotificationsChatNetworkRequest(
+        chatID: chatId.toString(), value: disableValue)();
+    emit(state.copyWith(chatIds: observingChats));
   }
 
-  void remove(int chatId) {
-    final newChatIds = Set<int>.from(state.chatIds)..remove(chatId);
-    emit(state.copyWith(chatIds: newChatIds));
-  }
+  bool isChatNotificationsEnabled(int chatId) => state.chatIds.contains(chatId);
 
-  bool contains(int chatId) {
-    return state.chatIds.contains(chatId);
-  }
 
   @override
   NotificationsDisabledChatsState? fromJson(Map<String, dynamic> json) =>

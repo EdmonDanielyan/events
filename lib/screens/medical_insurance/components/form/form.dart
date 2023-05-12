@@ -135,6 +135,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
       inputFormatters: [InputFormatters().lettersNumbersOnly],
       maxLines: 4,
       descriptionText: "Комментарий",
+      focusNode: FocusNode(),
     );
   }
 

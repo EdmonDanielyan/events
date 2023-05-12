@@ -75,6 +75,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
               if (item2.title == item.title) item.description = val;
           },
           maxLines: 2,
+          focusNode: FocusNode(),
         ),
       );
     }
@@ -89,6 +90,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
       inputFormatters: [InputFormatters().lettersNumbersOnly],
       onChanged: (val) => entities.hospitalName = val,
       descriptionText: "Название клиники",
+      focusNode: FocusNode(),
     );
   }
 
@@ -99,6 +101,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
       validator: (val) => FieldValidator(_strings).cityValidator(val),
       onChanged: (val) => entities.city = val,
       descriptionText: "Город",
+      focusNode: FocusNode(),
     );
   }
 
@@ -109,6 +112,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
       validator: (val) => FieldValidator(_strings).streetValidator(val),
       onChanged: (val) => entities.address = val,
       descriptionText: "Адрес",
+      focusNode: FocusNode(),
     );
   }
 
@@ -120,6 +124,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
       keyboardType: TextInputType.number,
       onChanged: (val) => entities.price = val,
       descriptionText: "Стоимость услуги, р",
+      focusNode: FocusNode(),
     );
   }
 

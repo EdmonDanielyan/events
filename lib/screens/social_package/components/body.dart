@@ -26,6 +26,7 @@ class _BodyState extends State<Body> {
 
     final _strings = localizationInstance;
 
+    // TODO: remove if we get all necessary social package items
     List<SocialPackageListItem> items = [
       SocialPackageListItem(
           title: _strings.voluntaryMedicalInsurance,

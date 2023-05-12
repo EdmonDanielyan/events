@@ -53,11 +53,11 @@ abstract class EventProperty
   bool get isMember;
 
   @nullable
-  @BuiltValueField(wireName: r'is_member')
+  @BuiltValueField(wireName: r'is_actual')
   bool get isActual;
 
   @nullable
-  @BuiltValueField(wireName: r'is_member')
+  @BuiltValueField(wireName: r'places_available')
   bool get placesAvailable;
 
   // Boilerplate code needed to wire-up generated code

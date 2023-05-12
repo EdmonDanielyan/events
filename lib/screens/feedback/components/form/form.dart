@@ -70,6 +70,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
                     hint: "${_strings.fullnameHint} ${_strings.notRequired}",
                     onChanged: (val) => entities.name = val,
                     descriptionText: localizationInstance.optionalInitials,
+                    focusNode: FocusNode(),
                   ),
                 ),
                 Text(
@@ -86,6 +87,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
                     autocorrect: false,
                     onChanged: (val) => entities.email = val,
                     descriptionText: localizationInstance.optionalEmail,
+                    focusNode: FocusNode(),
                   ),
                 ),
                 ServiceTextField(
@@ -94,6 +96,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
                   keyboardType: TextInputType.multiline,
                   onChanged: (val) => entities.question = val,
                   descriptionText: localizationInstance.yourQuestion,
+                  focusNode: FocusNode(),
                 ),
                 const SizedBox(height: 24.0,),
                 PickFiles(
