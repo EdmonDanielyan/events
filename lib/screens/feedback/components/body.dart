@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/screens/feedback/components/answers/answers_list.dart';
 import 'package:ink_mobile/screens/feedback/components/feadback_navigation_header.dart';
 import 'package:ink_mobile/screens/feedback/components/form/form.dart';
 
-import '../feedback_screen.dart';
-import 'management_feedback.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);

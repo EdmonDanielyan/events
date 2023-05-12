@@ -6,7 +6,6 @@ import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:intl/intl.dart';
 
-import '../../../messenger/functions/size_config.dart';
 
 class AnnouncementsListElement extends StatelessWidget {
   final AnnouncementData announcement;

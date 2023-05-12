@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:html/dom.dart' as dom;
-import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
-import 'package:ink_mobile/functions/launch_url.dart';
-import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/screens/social_package/content/error_widget.dart';
 import 'package:ink_mobile/screens/social_package/content/social_package_widget.dart';
 
 class FinancialAid extends StatefulWidget {
@@ -17,31 +13,15 @@ class _FinancialAidState extends State<FinancialAid> {
 
   @override
   Widget build(BuildContext context) {
-    final _strings = localizationInstance;
     return SocialPackageWidget(
-      errorWidget: _oldTextWidget(),
+      errorWidget: SocialPackageErrorWidget(
+        data: defaultText,
+      ),
     );
   }
 
-  Widget _oldTextWidget() {
-    return CustomLayoutBuilder(
-      builder: (context, constraint, isTablet) {
-        return Container(
-          child: Html(
-            style: isTablet
-                      ? {
-                          "body": Style(
-                            fontSize: FontSize(24.0),
-                          ),
-                        "h3": Style(fontSize: FontSize(26.0),)
-                        }
-                      : {},
-              onLinkTap: (String? url, RenderContext context,
-                  Map<String, String> attributes, dom.Element? element) {
-                launchUrl(url!);
-              },
-              data: '''
-                  <div>
+  String get defaultText => '''
+                <div>
          <b>Материальная помощь </b>- разовая выплата, предоставляемая сотруднику по решению руководства Компании. Размер материальной помощи определен Положением о гарантиях и компенсациях сотрудникам ООО «ИНК» и составляет <b>25 000 (Двадцать пять тысяч) рублей</b>.
         </div>
         <h3><span style="color: #00736a;">Формы заявлений на предоставление материальной помощи (в формате .doc):</span> </h3>
@@ -136,9 +116,5 @@ class _FinancialAidState extends State<FinancialAid> {
         <p>
         	 &nbsp;Ведущий специалист отдела социальных программ – Марина Константинова, тел. 9060, <a href="mailto:konstantinova_me@irkutskoil.ru">konstantinova_me@irkutskoil.ru</a>
         </p>
-                '''),
-        );
-      }
-    );
-  }
+              ''';
 }

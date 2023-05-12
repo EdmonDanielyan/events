@@ -7,9 +7,7 @@ import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
-import 'package:ink_mobile/screens/announcements_detail/components/background.dart';
 import 'package:intl/intl.dart';
 
 class Body extends StatefulWidget {

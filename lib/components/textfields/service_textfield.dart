@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ink_mobile/components/textfields/required_icon.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 
@@ -19,7 +18,7 @@ class ServiceTextField extends StatelessWidget {
   final int maxLines;
   final AutovalidateMode autoValidateMode;
   final String? descriptionText;
-  FocusNode? focusNode;
+  final FocusNode? focusNode;
   ServiceTextField({
     Key? key,
     this.hint = "",
@@ -39,7 +38,6 @@ class ServiceTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    focusNode ??= FocusNode();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

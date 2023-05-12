@@ -4,8 +4,6 @@ import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/messenger/constants/svg_pictures.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 
-import '../../../functions/size_config.dart';
-
 class MessageTick extends StatelessWidget {
   final MessageStatus status;
   final bool isRead;

@@ -42,7 +42,7 @@ dependencies:
     shimmer: ">=2.0.0 <3.0.0"
 
     ###modal_bottom_sheet: ^2.1.2
-    modal_bottom_sheet: ^2.1.2
+    modal_bottom_sheet: 3.0.0-pre
  #   git:
   #     url: https://github.com/followthemoney1/modal_bottom_sheet.git
    #    ref: main
@@ -107,7 +107,7 @@ dev_dependencies:
     flutter_test:
         sdk: flutter
     mocktail: ^0.3.0
-    build_runner: ^2.1.7
+    build_runner: 2.3.3
     injectable_generator:
     moor_generator: ^4.6.0+1
     yaml:

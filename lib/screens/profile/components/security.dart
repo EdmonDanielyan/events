@@ -5,7 +5,6 @@ import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
-import '../../../messenger/functions/size_config.dart';
 import 'section_title.dart';
 
 class ProfileSecuritySection extends StatefulWidget {

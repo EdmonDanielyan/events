@@ -2,12 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ink_mobile/components/ink_drop_down.dart';
 import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/components/textfields/pick_files.dart';
 import 'package:ink_mobile/components/textfields/service_btn.dart';
-import 'package:ink_mobile/components/textfields/service_selectfield_cubit.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
@@ -72,6 +70,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
                     hint: "${_strings.fullnameHint} ${_strings.notRequired}",
                     onChanged: (val) => entities.name = val,
                     descriptionText: localizationInstance.optionalInitials,
+                    focusNode: FocusNode(),
                   ),
                 ),
                 Text(
@@ -88,6 +87,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
                     autocorrect: false,
                     onChanged: (val) => entities.email = val,
                     descriptionText: localizationInstance.optionalEmail,
+                    focusNode: FocusNode(),
                   ),
                 ),
                 ServiceTextField(
@@ -96,6 +96,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
                   keyboardType: TextInputType.multiline,
                   onChanged: (val) => entities.question = val,
                   descriptionText: localizationInstance.yourQuestion,
+                  focusNode: FocusNode(),
                 ),
                 const SizedBox(height: 24.0,),
                 PickFiles(

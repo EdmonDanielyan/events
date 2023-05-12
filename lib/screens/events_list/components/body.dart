@@ -11,7 +11,6 @@ import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/screens/events_list/components/events_list_element.dart';
 import 'package:ink_mobile/screens/events_list/components/events_list_empty_state.dart';
 
-import '../../../messenger/functions/size_config.dart';
 
 class Body extends StatelessWidget {
   final EventsListCubit cubit;

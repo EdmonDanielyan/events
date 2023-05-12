@@ -6,7 +6,6 @@ import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/get_section/get_section_cubit.dart';
 import 'package:ink_mobile/cubit/get_section/get_section_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/screens/social_package/components/social_package_list_element.dart';
 import 'package:ink_mobile/screens/social_package/components/social_package_list_item.dart';
 
@@ -27,6 +26,7 @@ class _BodyState extends State<Body> {
 
     final _strings = localizationInstance;
 
+    // TODO: remove if we get all necessary social package items
     List<SocialPackageListItem> items = [
       SocialPackageListItem(
           title: _strings.voluntaryMedicalInsurance,

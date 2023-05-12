@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -42,8 +43,8 @@ class Body extends StatelessWidget {
                     /* Предыдущей должности показываем что она "Старая" */
                     if (index == 1) {
                       label = PersonnelMovementLabel(
-                          background: Color(0x50D75F50),
-                          color: Color(0xFFD75F50),
+                          background: Palette.redF50WithAlpha,
+                          color: Palette.redF50,
                           title: _strings.oldPosition.toUpperCase());
                     }
 

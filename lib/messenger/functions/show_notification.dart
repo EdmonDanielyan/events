@@ -30,9 +30,9 @@ class ShowNotification {
       return;
     }
 
-    final disabledChats = getIt<NotificationsDisabledChatsCubit>();
+    final disabledChats = getIt<ToggleNotificationsChatsCubit>();
 
-    if (disabledChats.contains(message.chatId)) {
+    if (disabledChats.isChatNotificationsEnabled(message.chatId)) {
       return;
     }
 

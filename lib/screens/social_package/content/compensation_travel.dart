@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:html/dom.dart' as dom;
-import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
-import 'package:ink_mobile/functions/launch_url.dart';
+import 'package:ink_mobile/screens/social_package/content/error_widget.dart';
 import 'package:ink_mobile/screens/social_package/content/social_package_widget.dart';
 
 class CompensationTravel extends StatefulWidget {
@@ -17,28 +14,13 @@ class _CompensationTravelState extends State<CompensationTravel> {
   @override
   Widget build(BuildContext context) {
     return SocialPackageWidget(
-      errorWidget: _oldTextWidget(),
+      errorWidget: SocialPackageErrorWidget(
+        data: defaultText,
+      ),
     );
   }
 
-  Widget _oldTextWidget() {
-    return CustomLayoutBuilder(
-      builder: (context, constraint, isTablet) {
-        return Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(bottom: BorderSide(color: Color(0xFFE5E5E5)))),
-          child: Html(
-              style:  isTablet ? {
-                "body": Style(
-                  fontSize: FontSize(24.0),
-
-                ) } : {},
-              onLinkTap: (String? url, RenderContext context,
-                  Map<String, String> attributes, dom.Element? element) {
-                launchUrl(url!);
-              },
-              data: '''
+  String get defaultText => '''
         <p>
         	 Работники ООО «ИНК», работающие в районах Крайнего Севера и/или в приравненных к ним местностях, имеют право на компенсацию один раз в два года за счет средств ООО «ИНК» расходов по оплате стоимости проезда этих работников и провоза их багажа или также стоимости проезда членов семьи и провоза их багажа в пределах территории Российской Федерации от места жительства (пребывания) к месту использования ежегодного оплачиваемого отпуска этих работников и обратно (<i>далее по тексту также «компенсация расходов»</i>).
         </p>
@@ -47,9 +29,5 @@ class _CompensationTravelState extends State<CompensationTravel> {
         </p>
         <p>
          <i>Подробные условия, порядок оформления и размер компенсации определён в разделе 2.10 <u><a href="https://portal.irkutskoil.ru/documents/download.php?id=186125">Положения о гарантиях и компенсациях</a></u>.</i>
-              '''),
-        );
-      }
-    );
-  }
+              ''';
 }

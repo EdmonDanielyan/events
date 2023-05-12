@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
-import 'package:ink_mobile/constants/palette.dart';
-import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/functions/launch_url.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
-import '../../../messenger/functions/size_config.dart';
 
 class DefaultLinkButton extends StatelessWidget {
   final Color txtColor;
