@@ -37,10 +37,7 @@ class OtherUserPageHeader extends StatelessWidget {
             Align(
                 alignment: AlignmentDirectional.topCenter,
                 child: UserMainInfo(
-                  userLastName: user.lastName,
-                  userName: user.name,
-                  userPosition: user.workPosition,
-                  pathToAvatar: user.pathToAvatar,
+                  user: user,
                   isOtherUser: true,
                 )),
             Positioned.fill(
