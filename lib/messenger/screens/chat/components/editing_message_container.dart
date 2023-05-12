@@ -18,7 +18,7 @@ class EditingMessageContainer extends StatelessWidget {
       bloc: editingMessage,
       builder: (context, state) {
         if (state == null) {
-          return const SizedBox();
+          return const SizedBox.shrink();
         }
 
         return Container(

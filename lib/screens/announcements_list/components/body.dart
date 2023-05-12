@@ -1,8 +1,8 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/constants/app_metrics_events.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dart';
@@ -27,7 +27,7 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
     _controller.addListener(_onScroll);
-    AppMetrica.reportEvent('вход пользователя в раздел «Объявления»');
+    AppMetricsEvents().announcementsEvent();
   }
 
   @override
@@ -54,12 +54,12 @@ class _BodyState extends State<Body> {
                     child: Column(
                       children: [
                         Container(
-                            padding: EdgeInsets.symmetric(vertical: 32),
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              localizationInstance.announcements,
-                              style: FontStyles.rubikH2(color: Palette.textBlack),
-                            ),
+                          padding: EdgeInsets.symmetric(vertical: 32),
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            localizationInstance.announcements,
+                            style: FontStyles.rubikH2(color: Palette.textBlack),
+                          ),
                         ),
                         ListView.builder(
                           shrinkWrap: true,

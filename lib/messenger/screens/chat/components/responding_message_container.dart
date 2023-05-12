@@ -18,7 +18,7 @@ class RespondingMessageContainer extends StatelessWidget {
       bloc: respondingMessage,
       builder: (context, state) {
         if (state == null) {
-          return const SizedBox();
+          return const SizedBox.shrink();
         }
 
         return Container(

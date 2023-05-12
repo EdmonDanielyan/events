@@ -14,6 +14,7 @@ class Palette {
   static Color redF1C = Color(0xFFCB2F1C);
   static Color redF50 = Color(0xFFD75F50);
   static Color redF50WithAlpha = Color(0x50D75F50);
+  static Color purple255 = Color(0xFF6E3255);
 
   static Color blue9CF = Color(0xFF5FB9CF);
 

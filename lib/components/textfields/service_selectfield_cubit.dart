@@ -82,7 +82,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
           initialValue: state.items,
           searchable: false,
           fontsize: SizeConfig(context, 14).getProportionateScreenHeight,
-          title: SizedBox(),
+          title: const SizedBox.shrink(),
           controlAffinity: ListTileControlAffinity.trailing,
           subWidget: subWidget,
           itemsTextStyle: TextStyle(
@@ -184,7 +184,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
   Widget _selectedContainer(BuildContext context, String name, int index) {
     int maxElements = 3;
     if (index + 1 > maxElements) {
-      return SizedBox();
+      return const SizedBox.shrink();
     } else if (index + 1 > maxElements - 1) {
       name = "...";
     }

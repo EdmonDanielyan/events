@@ -80,7 +80,7 @@ class ParticipantCard extends StatelessWidget {
                                 .getProportionateScreenHeight,
                           ),
                     ),
-                    trailingWidget ?? const SizedBox(),
+                    trailingWidget ?? const SizedBox.shrink(),
                     if (trailing.isNotEmpty) ...[
                       const SizedBox(width: 10.0),
                       GoogleText(

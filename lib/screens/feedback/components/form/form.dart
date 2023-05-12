@@ -33,13 +33,14 @@ class ManagementFeedbackForm extends StatefulWidget {
 
 class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
   late ManagementFeedbackFormValidator _validator;
-  late ManagementFeedbackFormEntities entities =
+  final ManagementFeedbackFormEntities entities =
       ManagementFeedbackFormEntities();
 
   final _formKey = GlobalKey<FormState>();
   late SendManagementFormCubit sendManagementFormCubit;
-  late SelectfieldCubit selectfieldCubit;
-  late int referenceId = 0 ;
+  late SelectfieldCubit selectFieldCubit;
+  int referenceId = 0;
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey<PickFilesState> _pickFilesKey = GlobalKey<PickFilesState>();
@@ -50,11 +51,11 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
     sendManagementFormCubit =
         FeedBackScreen.of(context).sendManagementFormCubit;
 
-    selectfieldCubit = FeedBackScreen.of(context).selectfieldCubit;
+    selectFieldCubit = FeedBackScreen.of(context).selectfieldCubit;
 
     return SingleChildScrollView(
       controller:
-      FeedBackScreen.of(context).scrollBottomLoadMoreCubit.scrollController,
+          FeedBackScreen.of(context).scrollBottomLoadMoreCubit.scrollController,
       child: Container(
         width: size.width,
         child: Padding(
@@ -98,10 +99,13 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
                   descriptionText: localizationInstance.yourQuestion,
                   focusNode: FocusNode(),
                 ),
-                const SizedBox(height: 24.0,),
+                const SizedBox(
+                  height: 24.0,
+                ),
                 PickFiles(
                   key: _pickFilesKey,
-                  onSuccesfullyPicked: (List<File> files) => entities.files = files,
+                  onSuccesfullyPicked: (List<File> files) =>
+                      entities.files = files,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24.0),
@@ -114,7 +118,9 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
                   _strings.companyRight,
                   style: FontStyles.rubikP2(color: Palette.textBlack50),
                 ),
-                const SizedBox(height: 24.0,),
+                const SizedBox(
+                  height: 24.0,
+                ),
                 _btnWidget(_formKey, _pickFilesKey, entities),
               ],
             ),
@@ -124,11 +130,10 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
     );
   }
 
-
-
   Widget _selectAddresseesWidget(
       {required ManagementFeedbackFormEntities entities}) {
     final tagsListCubit = FeedBackScreen.of(context).tagsListCubit;
+    final size = MediaQuery.of(context).size;
     return BlocBuilder<TagsListCubit, TagsListCubitState>(
       bloc: tagsListCubit,
       builder: (BuildContext context, state) {
@@ -138,25 +143,34 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
 
         List<Selectfield> getItems =
             state.state == TagsListCubitStateEnums.SUCCESS ? state.data : [];
-        List<String> _items = [];
-        getItems.forEach((e) => _items.add(e.title));
+        List<String> _items = getItems.map((e) => e.title).toList();
 
         return IgnorePointer(
           ignoring: state.data.length < 1,
           child: DropdownButtonFormField<String>(
             hint: Text("${localizationInstance.topic}"),
-            items: _items.map((str) => DropdownMenuItem<String>(
-              value: str,
-              child: SizedBox(width: MediaQuery.of(context).size.width * 0.75,
-                child: Text(str, overflow: TextOverflow.visible,),
-              )
-            )).toList(),
+            items: _items
+                .map(
+                  (str) => DropdownMenuItem<String>(
+                    value: str,
+                    child: SizedBox(
+                      width: size.width * 0.75,
+                      child: Text(
+                        str,
+                        overflow: TextOverflow.visible,
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
             onChanged: (value) {
-              entities.toWhom = getItems.where((element) => element.title == value).toList();
+              entities.toWhom =
+                  getItems.where((element) => element.title == value).toList();
             },
-            decoration: InputDecoration(border: OutlineInputBorder(borderSide: BorderSide(color: Colors.black54,width: 1))),
+            decoration: InputDecoration(
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black54, width: 1))),
           ),
-
         );
       },
     );
@@ -174,7 +188,8 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
         }
         if (state.state == BtnCubitStateEnums.SUCCESS) {
           clearForm(formKey: key, pickFilesKey: pickFilesKey);
-          Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+          Navigator.of(context, rootNavigator: true).push(
+            MaterialPageRoute(
               fullscreenDialog: true,
               builder: (context) {
                 return SuccessScreen(
@@ -187,7 +202,9 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
                     Navigator.of(screenContext).pop();
                   },
                 );
-              }));
+              },
+            ),
+          );
         }
       },
       builder: (BuildContext context, state) {
@@ -212,6 +229,6 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
       required GlobalKey<PickFilesState> pickFilesKey}) {
     pickFilesKey.currentState!.clearAll();
     formKey.currentState!.reset();
-    selectfieldCubit.clear();
+    selectFieldCubit.clear();
   }
 }

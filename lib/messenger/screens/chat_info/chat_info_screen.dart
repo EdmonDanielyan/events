@@ -67,7 +67,7 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
       cachedChatsCubit: widget.cachedChatsCubit,
       builder: (context, state, chat) {
         if (chat == null) {
-          return const SizedBox();
+          return const SizedBox.shrink();
         }
 
         List<User> paricipants = chat.participants;
@@ -207,9 +207,6 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                                     child: ParticipantCard(
                                       user: user ?? _currentUser,
                                       trailing: isOwner ? "Создатель" : "",
-                                      divider: paricipants.length - 1 == index
-                                          ? const SizedBox()
-                                          : null,
                                       onlineCubit: widget.onlineCubit,
                                       cachedChatsCubit: widget.cachedChatsCubit,
                                     ),

@@ -13,7 +13,7 @@ class NavBarIndicator extends StatelessWidget {
       cachedChatsCubit: cachedChatsCubit,
       builder: (context, state) {
         int notReadMessages = cachedChatsCubit.notReadMsgsOfAllChats();
-        if (notReadMessages == 0) return SizedBox();
+        if (notReadMessages == 0) return const SizedBox.shrink();
         return Positioned(
           top: 1.0,
           right: 0.0,

@@ -104,7 +104,7 @@ class ServicesBottomNavBarItem extends NavBottomNavBarItem {
 class MenuBottomNavBarItem extends NavBottomNavBarItem {
   String icon = 'assets/svg/menu.svg';
   String label = localizationInstance.menu;
-  Widget screen = SizedBox();
+  Widget screen = const SizedBox.shrink();
 
   void onTap(BuildContext context, Function onChanged, int index) {
     showMaterialModalBottomSheet(

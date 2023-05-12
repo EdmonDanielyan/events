@@ -136,34 +136,39 @@ class EventDetailScreen extends StatelessWidget {
                 event.title ?? '',
                 style: TextStyle(
                   fontSize:
-                  SizeConfig(context, 20.0).getProportionateScreenHeight,
+                      SizeConfig(context, 20.0).getProportionateScreenHeight,
                   fontWeight: FontWeight.bold,
                 ),
               )),
-            Divider(
-              color: Color(0xFFE5E5E5),
-              thickness: 2,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: CustomHtml(data: event.detailText),
-            ),
-            Container(
-              padding: EdgeInsets.only(bottom: 30, top: 20),
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: ((event.isActual ?? true) && (event.placesAvailable ?? true))?
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: DefaultButton(
-                    title: isMember
-                        ? _strings.nowParticipatingInTheEvent
-                        : _strings.iWillParticipate,
-                    borderColor: isMember ? Palette.text20Grey : Palette.greenE4A,
-                    textColor: isMember ? Palette.text20Grey : Palette.greenE4A,
-                    onTap: isMember ? null : () => eventDetailCubit.invite(event.id!),
-                  ),
-                ) :SizedBox(),
-            ),
+          Divider(
+            color: Color(0xFFE5E5E5),
+            thickness: 2,
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: CustomHtml(data: event.detailText),
+          ),
+          Container(
+            padding: EdgeInsets.only(bottom: 30, top: 20),
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            child: ((event.isActual ?? true) && (event.placesAvailable ?? true))
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: DefaultButton(
+                      title: isMember
+                          ? _strings.nowParticipatingInTheEvent
+                          : _strings.iWillParticipate,
+                      borderColor:
+                          isMember ? Palette.text20Grey : Palette.greenE4A,
+                      textColor:
+                          isMember ? Palette.text20Grey : Palette.greenE4A,
+                      onTap: isMember
+                          ? null
+                          : () => eventDetailCubit.invite(event.id!),
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          ),
         ],
       ),
     );

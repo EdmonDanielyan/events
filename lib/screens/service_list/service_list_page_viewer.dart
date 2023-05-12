@@ -80,7 +80,7 @@ class ServiceListPageViewerState extends State<ServiceListPageViewer> {
         selectfieldCubit: widget.selectfieldCubitFeedback,
         scrollBottomLoadMoreCubit: widget.scrollBottomLoadMoreCubit,
         appBar: appBar(context, _strings.feedback),
-        bottomNavigationBar: SizedBox(),
+        bottomNavigationBar: const SizedBox.shrink(),
       ),
     );
   }

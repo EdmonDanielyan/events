@@ -1,6 +1,6 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
+import 'package:ink_mobile/constants/app_metrics_events.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
@@ -32,7 +32,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    AppMetrica.reportEvent('вход пользователя в раздел «Личный кабинет»');
+    AppMetricsEvents().profileEvent();
   }
 
   @override

@@ -93,7 +93,7 @@ class CustomBottomSheetChild extends StatelessWidget {
                     onPressed: () => _onCancel(context),
                   ),
                 ),
-                title != null ? titleWidget() : SizedBox(),
+                title != null ? titleWidget() : const SizedBox.shrink(),
                 Align(
                   alignment: Alignment.centerRight,
                   child: actionBtn(

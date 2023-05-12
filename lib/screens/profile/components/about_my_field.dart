@@ -76,7 +76,7 @@ class _AboutMyFieldState extends State<AboutMyField> {
                               });
                             },
                           )
-                        : SizedBox()),
+                        : const SizedBox.shrink()),
                 minLines: 1,
                 maxLines: 10,
               ),

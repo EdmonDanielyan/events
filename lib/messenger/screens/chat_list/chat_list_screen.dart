@@ -1,7 +1,7 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:ink_mobile/constants/app_metrics_events.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/hidden_chats/hidden_chats_cubit.dart';
@@ -52,7 +52,7 @@ class _ChatListState extends State<ChatList> {
   @override
   void initState() {
     super.initState();
-    AppMetrica.reportEvent('вход пользователя в раздел «Сообщения»');
+    AppMetricsEvents().messageEvent();
     Future.delayed(Duration.zero, () {
       _addListener();
     });
