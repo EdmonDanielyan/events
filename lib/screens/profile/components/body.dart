@@ -8,7 +8,6 @@ import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
-import 'package:ink_mobile/models/absence.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/awards.dart';
 import 'package:ink_mobile/screens/profile/components/background.dart';

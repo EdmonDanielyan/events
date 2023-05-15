@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../messenger/functions/size_config.dart';
-
 class Award extends StatelessWidget {
   final AwardsItem award;
   const Award({Key? key, required this.award}) : super(key: key);

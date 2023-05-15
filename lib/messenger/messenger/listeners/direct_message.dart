@@ -66,7 +66,7 @@ class DirectMessageListener extends Listener {
       )();
       chatsCubit.addChats([oppositeChat]);
 
-      FetchPartcipants(oppositeChat.participants).call();
+      FetchParticipants(oppositeChat.participants).call();
     }
   }
 

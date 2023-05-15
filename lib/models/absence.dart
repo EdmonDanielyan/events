@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 enum AbsenceReason { vacation, businessTrip }
 
 class Absence {
