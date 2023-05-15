@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 enum AbsenceReason { vacation, businessTrip }
 
 class Absence {
@@ -33,4 +35,9 @@ class Absence {
     AbsenceReason.businessTrip: "Командировка",
     AbsenceReason.vacation: "Отсутствие (отпуск основной)",
   };
+
+  String? get getAbsenceReasonText => Absence.absenceReasonsMap[this.reason];
+
+  bool get isNotEmpty =>
+      this.reason != null && this.from != null && this.to != null;
 }

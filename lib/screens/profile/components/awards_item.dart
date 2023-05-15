@@ -9,11 +9,7 @@ class Award extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: SizeConfig(context, 65).getProportionateScreenHeight,
-      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-      child: getWidgetByExtension(context),
-    );
+    return getWidgetByExtension(context);
   }
 
   Widget getWidgetByExtension(BuildContext context) {
@@ -25,17 +21,17 @@ class Award extends StatelessWidget {
     if (extension == '.svg') {
       return SvgPicture.asset(
         this.award.link,
-        width: SizeConfig(context, 25).getProportionateScreenHeight,
-        height: SizeConfig(context, 25).getProportionateScreenHeight,
+        width: 64.0,
+        height: 64.0,
       );
     } else if (imageExtensions.contains(extension)) {
       return Image.asset(
         this.award.link,
-        width: SizeConfig(context, 25).getProportionateScreenHeight,
-        height: SizeConfig(context, 25).getProportionateScreenHeight,
+        width: 64.0,
+        height: 64.0,
       );
     } else {
-      return Container();
+      return const SizedBox.shrink();
     }
   }
 }

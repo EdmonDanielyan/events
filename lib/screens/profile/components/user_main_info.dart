@@ -7,6 +7,7 @@ import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/absence.dart';
 import 'package:ink_mobile/models/user_data.dart';
+import 'package:intl/intl.dart';
 
 class UserMainInfo extends StatefulWidget {
   final UserProfileData user;
@@ -53,7 +54,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
         children: [
           Container(
             margin: EdgeInsets.only(
-                top: SizeConfig(context, 50).getProportionateScreenHeight,
+                top: 16.0,
                 bottom: SizeConfig(context, 21).getProportionateScreenHeight),
             child: Container(
               decoration: BoxDecoration(
@@ -72,7 +73,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
               ),
             ),
           ),
-          Container(
+          SizedBox(
             width: size.width * 0.90,
             child: Center(
               child: Column(
@@ -80,22 +81,19 @@ class _UserMainInfoState extends State<UserMainInfo> {
                   GestureDetector(
                     //onTapDown: (_)=> _enableEdit(),
                     behavior: HitTestBehavior.translucent,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: TextFormField(
-                        controller: fioFieldC,
-                        readOnly: !isEditing,
-                        focusNode: textFormFocus,
-                        autofocus: true,
-                        maxLines: 2,
-                        cursorColor: Theme.of(context).primaryColorLight,
-                        textAlign: TextAlign.center,
-                        style: FontStyles.rubikH3(color: Palette.textBlack),
-                        textInputAction: TextInputAction.go,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          isCollapsed: true,
-                        ),
+                    child: TextFormField(
+                      controller: fioFieldC,
+                      readOnly: !isEditing,
+                      focusNode: textFormFocus,
+                      autofocus: true,
+                      maxLines: 2,
+                      cursorColor: Theme.of(context).primaryColorLight,
+                      textAlign: TextAlign.center,
+                      style: FontStyles.rubikH3(color: Palette.textBlack),
+                      textInputAction: TextInputAction.go,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        isCollapsed: true,
                       ),
                     ),
                   ),
@@ -132,16 +130,11 @@ class _UserMainInfoState extends State<UserMainInfo> {
 
   Widget getUserPositionWidget(BuildContext context) {
     if (user.workPosition != null) {
-      return Padding(
-        padding: EdgeInsets.only(top: 10),
-        child: Opacity(
-          opacity: 0.7,
-          child: Text(
-            user.workPosition!.toUpperCase(),
-            textAlign: TextAlign.center,
-            style: FontStyles.rubikP3Medium(color: Palette.textBlack),
-          ),
-        ),
+      return Text(
+        user.workPosition!,
+        textAlign: TextAlign.center,
+        style:
+            FontStyles.rubikP3Medium(color: Palette.textBlack.withOpacity(0.7)),
       );
     } else {
       return const SizedBox.shrink();
@@ -149,11 +142,11 @@ class _UserMainInfoState extends State<UserMainInfo> {
   }
 
   Widget getInfoAbsenceUser() {
-    if (user.absence != null) {
+    if (user.absence != null && user.absence!.isNotEmpty) {
       bool isVacation = user.absence!.reason == AbsenceReason.vacation;
       return Container(
         margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-        padding: EdgeInsets.all(2),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 14.0),
         decoration: BoxDecoration(
           color: isVacation ? Palette.yellow300 : Palette.purple255,
           borderRadius: BorderRadius.only(
@@ -164,24 +157,29 @@ class _UserMainInfoState extends State<UserMainInfo> {
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(left: 6.0),
+                padding: const EdgeInsets.only(
+                  left: 4.0,
+                  top: 4.0,
+                  bottom: 4.0,
+                ),
                 child: Text(
-                  Absence.absenceReasonsMap[user.absence!.reason] ?? "",
+                  "${user.absence!.getAbsenceReasonText ?? ""} c ${DateFormat('dd.MM.yyyy').format(user.absence!.from!)} по ${DateFormat('dd.MM.yyyy').format(user.absence!.to!)}",
                   style: FontStyles.rubikP3Medium(
                       color: isVacation ? Palette.textBlack : Palette.white),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: isVacation
-                  ? SvgPicture.asset(
-                      IconLinks.SUN_ICON,
-                    )
-                  : SvgPicture.asset(
-                      IconLinks.PLANE_ICON,
-                      color: Colors.white,
-                    ),
+            isVacation
+                ? SvgPicture.asset(
+              IconLinks.SUN_ICON,
+              height: 24.0,
+              width: 24.0,
+            )
+                : SvgPicture.asset(
+              IconLinks.PLANE_ICON,
+              color: Colors.white,
+              height: 24.0,
+              width: 24.0,
             )
           ],
         ),

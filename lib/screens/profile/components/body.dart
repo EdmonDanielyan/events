@@ -8,6 +8,7 @@ import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
+import 'package:ink_mobile/models/absence.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/awards.dart';
 import 'package:ink_mobile/screens/profile/components/background.dart';
@@ -102,10 +103,16 @@ class Body extends StatelessWidget {
             Awards(awards: user.awards),
             Contacts(contacts: user.contacts),
             BasicInformation(info: user.basicInformation),
-            //if(user.absence!=null)
-            BasicInfoRow(title: 'Статус', value: "dfsdfsdfsd"),
-            //if(user.shiftMan!=null)
-            BasicInfoRow(title: 'Сменщик', value: "dfsdfsdfsd"),
+            if (user.absence != null)
+              BasicInfoRow(
+                title: 'Статус',
+                value: user.absence!.getAbsenceReasonText ?? "",
+              ),
+            if (user.shiftMan != null)
+              BasicInfoRow(
+                title: 'Сменщик',
+                value: user.shiftMan!,
+              ),
             Diagnostics(logFile: logFile),
             ProfileSecuritySection(),
 

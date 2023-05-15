@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/user_main_info.dart';
 import 'package:ink_mobile/screens/profile/components/votes_bar.dart';
@@ -23,38 +24,27 @@ class PersonalPageHeader extends StatelessWidget {
       margin: const EdgeInsetsDirectional.only(bottom: 1.0),
       child: Column(
         children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Align(
-                alignment: AlignmentDirectional.topCenter,
-                child: UserMainInfo(
-                  user: user,
-                  isOtherUser: false,
-
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 32.0, left: 20.0),
+              child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Palette.greenE4A,
+                  size: SizeConfig(context, 24)
+                      .getProportionateScreenHeight,
                 ),
+                onPressed: () => Navigator.of(context).pop(),
               ),
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment(-0.98, -0.7),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.white,
-                      size: SizeConfig(context, 24)
-                          .getProportionateScreenHeight,
-                    ),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: VotesBar(
-              votes: user.votes,
             ),
+          ),
+          UserMainInfo(
+            user: user,
+            isOtherUser: false,
+          ),
+          VotesBar(
+            votes: user.votes,
           ),
         ],
       ),
