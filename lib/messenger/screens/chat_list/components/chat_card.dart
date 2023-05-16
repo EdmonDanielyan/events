@@ -52,17 +52,14 @@ class ChatCard extends StatelessWidget {
               onlineCubit,
               userId: chat.getFirstNotMyId(cachedChatsCubit.myId),
               builder: (context, onlineState, user) {
-                ChatBadge chatBadge = ChatBadge.none;
                 String iconLink = "";
                 Color backgroundColor = Palette.white;
                 switch (chatBadge) {
                   case ChatBadge.vacation:
-                    chatBadge = ChatBadge.vacation;
                     iconLink = IconLinks.SUN_ICON;
                     backgroundColor = Palette.yellow300;
                     break;
                   case ChatBadge.businessTrip:
-                    chatBadge = ChatBadge.businessTrip;
                     iconLink = IconLinks.PLANE_ICON;
                     backgroundColor = Palette.purple255;
                     break;
