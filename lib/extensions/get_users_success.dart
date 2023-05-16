@@ -11,10 +11,9 @@ extension GetUserSuccessExt on Response<GetUsersSuccess> {
         this.data?.data.asMap().values.map((e) => e.asMap).toList();
 
     if (userDataMap != null) {
-      final list = userDataMap
+      return userDataMap
           .map((e) => UserProfileData.getUserFromResponse(e!))
           .toList();
-      return list;
     } else {
       throw UnknownErrorException();
     }

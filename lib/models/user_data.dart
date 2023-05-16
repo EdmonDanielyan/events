@@ -81,6 +81,7 @@ class UserProfileData {
       absence: userData['absence'] != null
           ? Absence.fromMap(userData['absence'])
           : null,
+      // TODO: add shiftMan model
       shiftMan: userData['shift_man'] != null
           ? userData['shift_man']['text']
           : null,
