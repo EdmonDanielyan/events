@@ -28,19 +28,24 @@ class ChatInfoTop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ChatBadge chatBadge = ChatBadge.none;
+    String iconLink = "";
+    Color backgroundColor = Palette.white;
     if (absence != null) {
       switch (absence!.reason) {
         case AbsenceReason.vacation:
           chatBadge = ChatBadge.vacation;
+          iconLink = IconLinks.SUN_ICON;
+          backgroundColor = Palette.yellow300;
           break;
         case AbsenceReason.businessTrip:
           chatBadge = ChatBadge.businessTrip;
+          iconLink = IconLinks.PLANE_ICON;
+          backgroundColor = Palette.purple255;
           break;
         default:
           break;
       }
     }
-    bool isVacation = chatBadge == ChatBadge.vacation;
     return Row(
       children: [
         GestureDetector(
@@ -48,12 +53,12 @@ class ChatInfoTop extends StatelessWidget {
           child: Badge(
             isLabelVisible: chatBadge != ChatBadge.none,
             label: SvgPicture.asset(
-              isVacation ? IconLinks.SUN_ICON : IconLinks.PLANE_ICON,
-              color: Colors.white,
+              iconLink,
+              color: Palette.white,
               height: 12.0,
               width: 12.0,
             ),
-            backgroundColor: isVacation ? Palette.yellow300 : Palette.purple255,
+            backgroundColor: backgroundColor,
             smallSize: 20.0,
             largeSize: 20.0,
             alignment: AlignmentDirectional(0.0, 0.0),

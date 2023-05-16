@@ -36,7 +36,7 @@ class Absence {
     AbsenceReason.vacation: "Отсутствие (отпуск основной)",
   };
 
-  String? get getAbsenceReasonText => Absence.absenceReasonsMap[this.reason];
+  String get getAbsenceReasonText => Absence.absenceReasonsMap[this.reason] ?? "";
 
   bool get isNotEmpty =>
       this.reason != null && this.from != null && this.to != null;

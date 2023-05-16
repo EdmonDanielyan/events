@@ -36,73 +36,68 @@ class ChatCardWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.none,
-      child: InkWell(
-        onTap: onTap,
-        child: CustomDismissible(
-          uniqueKey: UniqueKey(),
-          confirmDismiss: (direction) async {
-            CustomAlertCancel(
-              context,
-              title: localizationInstance.delete,
-              body: localizationInstance.deleteChatHint,
-              onSubmit: () async {
-                if (onDismissed != null) {
-                  onDismissed!(direction);
-                }
-                Navigator.of(context).pop();
-              },
-            ).call();
+    return InkWell(
+      onTap: onTap,
+      child: CustomDismissible(
+        uniqueKey: UniqueKey(),
+        confirmDismiss: (direction) async {
+          CustomAlertCancel(
+            context,
+            title: localizationInstance.delete,
+            body: localizationInstance.deleteChatHint,
+            onSubmit: () async {
+              onDismissed?.call(direction);
+              Navigator.of(context).pop();
+            },
+          ).call();
 
-            return false;
-          },
-          onDismissed: onDismissed,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 24.0),
-            child: Column(
-              children: [
-                if (chat.isSingle)
-                  CachedUserBuilder(
-                    cachedUsersCubit: cachedUsersCubit,
-                    userId: chat.getFirstNotMyId(cachedChatsCubit.myId),
-                    builder: (context, state, user) {
-                      ChatBadge chatBadge = ChatBadge.none;
-                      if (user != null && user.absence != null) {
-                        switch (user.absence!.reason) {
-                          case AbsenceReason.vacation:
-                            chatBadge = ChatBadge.vacation;
-                            break;
-                          case AbsenceReason.businessTrip:
-                            chatBadge = ChatBadge.businessTrip;
-                            break;
-                          default:
-                            break;
-                        }
+          return false;
+        },
+        onDismissed: onDismissed,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 24.0),
+          child: Column(
+            children: [
+              if (chat.isSingle)
+                CachedUserBuilder(
+                  cachedUsersCubit: cachedUsersCubit,
+                  userId: chat.getFirstNotMyId(cachedChatsCubit.myId),
+                  builder: (context, state, user) {
+                    ChatBadge chatBadge = ChatBadge.none;
+                    if (user != null && user.absence != null) {
+                      switch (user.absence!.reason) {
+                        case AbsenceReason.vacation:
+                          chatBadge = ChatBadge.vacation;
+                          break;
+                        case AbsenceReason.businessTrip:
+                          chatBadge = ChatBadge.businessTrip;
+                          break;
+                        default:
+                          break;
                       }
-                      return ChatCard(
-                        chat: chat,
-                        onlineCubit: onlineCubit,
-                        cachedChatsCubit: cachedChatsCubit,
-                        notReadMsgs: unreadMsgsCount,
-                        chatName: user?.name,
-                        chatAvatar: user?.avatarUrl,
-                        chatBadge: chatBadge,
-                      );
-                    },
-                  ),
-                if (!chat.isSingle)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: ChatCard(
+                    }
+                    return ChatCard(
                       chat: chat,
                       onlineCubit: onlineCubit,
                       cachedChatsCubit: cachedChatsCubit,
                       notReadMsgs: unreadMsgsCount,
-                    ),
+                      chatName: user?.name,
+                      chatAvatar: user?.avatarUrl,
+                      chatBadge: chatBadge,
+                    );
+                  },
+                ),
+              if (!chat.isSingle)
+                Padding(
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: ChatCard(
+                    chat: chat,
+                    onlineCubit: onlineCubit,
+                    cachedChatsCubit: cachedChatsCubit,
+                    notReadMsgs: unreadMsgsCount,
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
         ),
       ),

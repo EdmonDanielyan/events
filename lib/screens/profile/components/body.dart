@@ -147,10 +147,10 @@ class Body extends StatelessWidget {
                     BasicInformation(
                       info: user.basicInformation,
                     ),
-                    //if(user.absence!=null)
-                    BasicInfoRow(title: 'Статус', value: "dfsdfsdfsd"),
-                    //if(user.shiftMan!=null)
-                    BasicInfoRow(title: 'Сменщик', value: "dfsdfsdfsd"),
+                    if(user.absence!=null)
+                      BasicInfoRow(title: 'Статус', value: user.absence!.getAbsenceReasonText),
+                    if(user.shiftMan!=null)
+                      BasicInfoRow(title: 'Сменщик', value: user.shiftMan!),
                     //будет поле о пользователе без возможности редактировать
                   ],
                 );

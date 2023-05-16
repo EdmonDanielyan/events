@@ -52,18 +52,32 @@ class ChatCard extends StatelessWidget {
               onlineCubit,
               userId: chat.getFirstNotMyId(cachedChatsCubit.myId),
               builder: (context, onlineState, user) {
-                bool isVacation = chatBadge == ChatBadge.vacation;
+                ChatBadge chatBadge = ChatBadge.none;
+                String iconLink = "";
+                Color backgroundColor = Palette.white;
+                switch (chatBadge) {
+                  case ChatBadge.vacation:
+                    chatBadge = ChatBadge.vacation;
+                    iconLink = IconLinks.SUN_ICON;
+                    backgroundColor = Palette.yellow300;
+                    break;
+                  case ChatBadge.businessTrip:
+                    chatBadge = ChatBadge.businessTrip;
+                    iconLink = IconLinks.PLANE_ICON;
+                    backgroundColor = Palette.purple255;
+                    break;
+                  default:
+                    break;
+                }
                 return Badge(
                   isLabelVisible: chatBadge != ChatBadge.none,
                   label: SvgPicture.asset(
-                    isVacation ? IconLinks.SUN_ICON : IconLinks.PLANE_ICON,
-                    color: Colors.white,
+                    iconLink,
+                    color: Palette.white,
                     height: 12.0,
                     width: 12.0,
                   ),
-                  backgroundColor: isVacation
-                      ? Palette.yellow300
-                      : Palette.purple255,
+                  backgroundColor: backgroundColor,
                   smallSize: 20.0,
                   largeSize: 20.0,
                   alignment: AlignmentDirectional(0.0, 0.0),
