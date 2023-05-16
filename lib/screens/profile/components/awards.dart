@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/awards_item.dart';
+import 'package:ink_mobile/screens/profile/components/section_title.dart';
 
 import '../../../messenger/functions/size_config.dart';
 
@@ -23,33 +24,49 @@ class Awards extends StatelessWidget {
     List<Award> awardsList = this.getAwards();
 
     if (awardsList.isNotEmpty) {
-      return Container(
-          width: size.width,
-          margin: EdgeInsets.only(top: 20),
-          child: Column(
-            children: [
-              Container(
-                width: size.width,
-                height: SizeConfig(context, 90).getProportionateScreenHeight,
-                decoration: BoxDecoration(
+      return Column(
+        children: [
+          SectionTitle(
+            title: "Статусы",
+          ),
+          Container(
+            width: size.width,
+            child: Column(
+              children: [
+                Container(
+                  width: size.width,
+                  height: SizeConfig(context, 90).getProportionateScreenHeight,
+                  padding: EdgeInsets.only(left: 20.0),
+                  decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border(
                       top: BorderSide(color: Colors.grey.shade400, width: 0.5),
                       bottom:
                           BorderSide(color: Colors.grey.shade400, width: 0.5),
-                    )),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Row(
-                      children: getAwards(),
                     ),
                   ),
-                ),
-              )
-            ],
-          ));
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: getAwards().length,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        children: getAwards(),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return index == getAwards().length - 1
+                          ? const SizedBox.shrink()
+                          : const SizedBox(
+                              width: 20.0,
+                            );
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      );
     } else {
       return const SizedBox.shrink();
     }

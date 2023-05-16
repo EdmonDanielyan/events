@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class Background extends StatelessWidget {
   final Widget child;
-  const Background({Key? key, required this.child}) : super(key: key);
+  final Color? color;
+  const Background({Key? key, required this.child, this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class Background extends StatelessWidget {
       height: size.height,
       width: size.width,
       child: child,
-      decoration: BoxDecoration(color: Color(0xFFF9F9F9)),
+      decoration: BoxDecoration(color: color ?? Color(0xFFF9F9F9)),
     );
   }
 }

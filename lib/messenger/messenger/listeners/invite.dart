@@ -25,7 +25,7 @@ class InviteListener extends Listener {
       if (getChat == null) {
         chatsCubit.addChats([model.chat]);
 
-        FetchPartcipants(model.chat.participants).call();
+        FetchParticipants(model.chat.participants).call();
       }
       getIt<CustomInviteListener>().emitTrigger(model);
     }

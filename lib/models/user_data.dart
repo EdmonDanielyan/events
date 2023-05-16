@@ -1,3 +1,5 @@
+import 'package:ink_mobile/models/absence.dart';
+
 class UserProfileData {
   int id;
   String? lastName;
@@ -9,7 +11,7 @@ class UserProfileData {
   UserAwards? awards;
   UserContacts? contacts;
   UserBasicInfo? basicInformation;
-  String? absence;
+  Absence? absence;
   String? shiftMan;
 
   UserProfileData(
@@ -22,8 +24,8 @@ class UserProfileData {
       this.awards,
       this.contacts,
       this.basicInformation,
-      this.absence ,
-      this.shiftMan ,
+      this.absence,
+      this.shiftMan,
       required this.canBeThanked});
 
   UserProfileData copyWith({
@@ -36,7 +38,7 @@ class UserProfileData {
     UserVotes? votes,
     UserAwards? awards,
     UserContacts? contacts,
-    String? absence,
+    Absence? absence,
     String? shiftMan,
     UserBasicInfo? basicInformation,
   }) {
@@ -58,27 +60,31 @@ class UserProfileData {
 
   static UserProfileData getUserFromResponse(Map userData) {
     return UserProfileData(
-        id: userData['id'] ?? 0,
-        lastName: userData['last_name'],
-        name: userData['name'],
-        workPosition: userData['work_position'],
-        pathToAvatar: userData['avatar'],
-        votes: userData['barrels'] != null
-            ? UserVotes.getUserVotesFromMap(userData['barrels'])
-            : null,
-        awards: userData['awards'] != null
-            ? UserAwards.getUserAwardsFromMap(userData['awards'])
-            : null,
-        contacts: userData['contacts'] != null
-            ? UserContacts.getUserContactsFromMap(userData['contacts'])
-            : null,
-        basicInformation: userData['basic_information'] != null
-            ? UserBasicInfo.getUserBasicInfoFromMap(
-                userData['basic_information'])
-            : null,
-        canBeThanked: userData['canBeThanked'],
-        absence: userData['absence'],
-        shiftMan: userData['shift_man'],
+      id: userData['id'] ?? 0,
+      lastName: userData['last_name'],
+      name: userData['name'],
+      workPosition: userData['work_position'],
+      pathToAvatar: userData['avatar'],
+      votes: userData['barrels'] != null
+          ? UserVotes.getUserVotesFromMap(userData['barrels'])
+          : null,
+      awards: userData['awards'] != null
+          ? UserAwards.getUserAwardsFromMap(userData['awards'])
+          : null,
+      contacts: userData['contacts'] != null
+          ? UserContacts.getUserContactsFromMap(userData['contacts'])
+          : null,
+      basicInformation: userData['basic_information'] != null
+          ? UserBasicInfo.getUserBasicInfoFromMap(userData['basic_information'])
+          : null,
+      canBeThanked: userData['canBeThanked'],
+      absence: userData['absence'] != null
+          ? Absence.fromMap(userData['absence'])
+          : null,
+      // TODO: add shiftMan model
+      shiftMan: userData['shift_man'] != null
+          ? userData['shift_man']['text']
+          : null,
     );
   }
 }
@@ -157,7 +163,12 @@ class UserBasicInfo {
   String? office;
   String? birthday;
 
-  UserBasicInfo({this.organization, this.department, this.address, this.office, this.birthday});
+  UserBasicInfo(
+      {this.organization,
+      this.department,
+      this.address,
+      this.office,
+      this.birthday});
 
   static UserBasicInfo getUserBasicInfoFromMap(Map userBasicInfoMap) {
     return new UserBasicInfo(

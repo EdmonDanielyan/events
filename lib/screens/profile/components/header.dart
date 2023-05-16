@@ -4,8 +4,6 @@ import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/user_main_info.dart';
 import 'package:ink_mobile/screens/profile/components/votes_bar.dart';
 
-import '../../../messenger/functions/size_config.dart';
-
 class PersonalPageHeader extends StatelessWidget {
   final UserProfileData user;
 
@@ -20,63 +18,32 @@ class PersonalPageHeader extends StatelessWidget {
     // borderRadius: BorderRadius.only( bottomLeft:..., bottomRight: ...),
     // you will get an error "A borderRadius can only be given for a uniform Border."
     return Container(
-      decoration: BoxDecoration(
-        color: Palette.text20Grey,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(32.0),
-          bottomRight: Radius.circular(32.0),
-        ),
-      ),
-      child: Container(
-        padding: EdgeInsets.only(bottom: 32.0),
-        margin: const EdgeInsetsDirectional.only(bottom: 1.0),
-        decoration: BoxDecoration(
-          color: Palette.white,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(32.0),
-            bottomRight: Radius.circular(32.0),
-          ),
-        ),
-        child: Column(
-          children: [
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Align(
-                  alignment: AlignmentDirectional.topCenter,
-                  child: UserMainInfo(
-                    userLastName: user.lastName,
-                    userName: user.name,
-                    userPosition: user.workPosition,
-                    pathToAvatar: user.pathToAvatar,
-                    isOtherUser: false,
-
-                  ),
+      padding: EdgeInsets.only(bottom: 32.0),
+      margin: const EdgeInsetsDirectional.only(bottom: 1.0),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 32.0, left: 20.0),
+              child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Palette.greenE4A,
+                  size: 32.0,
                 ),
-                Positioned.fill(
-                  child: Align(
-                    alignment: Alignment(-0.98, -0.7),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: SizeConfig(context, 24)
-                            .getProportionateScreenHeight,
-                      ),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: VotesBar(
-                votes: user.votes,
+                onPressed: () => Navigator.of(context).pop(),
               ),
             ),
-          ],
-        ),
+          ),
+          UserMainInfo(
+            user: user,
+            isOtherUser: false,
+          ),
+          VotesBar(
+            votes: user.votes,
+          ),
+        ],
       ),
     );
   }

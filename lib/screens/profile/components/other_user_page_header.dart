@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/constants/codes.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/other_user_votes_bar.dart';
 import 'package:ink_mobile/screens/profile/components/thanks_button.dart';
 import 'package:ink_mobile/screens/profile/components/user_main_info.dart';
 import 'package:ink_mobile/screens/profile/components/write_btn.dart';
-
-import '../../../messenger/functions/size_config.dart';
 
 class OtherUserPageHeader extends StatelessWidget {
   final UserProfileData user;
@@ -33,39 +32,33 @@ class OtherUserPageHeader extends StatelessWidget {
               bottom: BorderSide(color: Colors.grey.shade400, width: 0.5))),
       child: Column(
         children: [
-          Stack(clipBehavior: Clip.none, children: [
-            Align(
-                alignment: AlignmentDirectional.topCenter,
-                child: UserMainInfo(
-                  userLastName: user.lastName,
-                  userName: user.name,
-                  userPosition: user.workPosition,
-                  pathToAvatar: user.pathToAvatar,
-                  isOtherUser: true,
-                )),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment(-0.98, -0.7),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                    size: SizeConfig(context, 22).getProportionateScreenHeight,
-                  ),
-                  onPressed: () => Navigator.of(context).pop(),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 32.0, left: 20.0),
+              child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Palette.greenE4A,
+                  size: 32.0,
                 ),
+                onPressed: () => Navigator.of(context).pop(),
               ),
             ),
-            if (showWriteBtn) ...[
-              WriteBtn(
-                user: User(
-                  id: user.id,
-                  name: "${user.lastName ?? ""} ${user.name ?? ""}".trim(),
-                  avatarUrl: user.pathToAvatar ?? "",
-                ),
+          ),
+          UserMainInfo(
+            user: user,
+            isOtherUser: true,
+          ),
+          if (showWriteBtn) ...[
+            WriteBtn(
+              user: User(
+                id: user.id,
+                name: "${user.lastName ?? ""} ${user.name ?? ""}".trim(),
+                avatarUrl: user.pathToAvatar ?? "",
               ),
-            ],
-          ]),
+            ),
+          ],
           Container(
             margin: EdgeInsets.only(top: 30, bottom: 20, left: 20, right: 20),
             child: OtherUserVotesBar(votes: user.votes),

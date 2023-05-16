@@ -6,9 +6,9 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/setup.dart';
 
-class FetchPartcipants {
+class FetchParticipants {
   final List<User> users;
-  const FetchPartcipants(this.users);
+  const FetchParticipants(this.users);
 
   Future<void> call() async {
     if (users.isNotEmpty) {
@@ -25,11 +25,14 @@ class FetchPartcipants {
       List<UserProfileData> userData = response.mapResponse();
 
       final users = userData
-          .map((user) => User(
-                id: user.id,
-                name: "${user.lastName ?? ""} ${user.name ?? ""}".trim(),
-                avatarUrl: user.pathToAvatar ?? "",
-              ))
+          .map(
+            (user) => User(
+              id: user.id,
+              name: "${user.lastName ?? ""} ${user.name ?? ""}".trim(),
+              avatarUrl: user.pathToAvatar ?? "",
+              absence: user.absence,
+            ),
+          )
           .toList();
       if (users.isNotEmpty) {
         for (final u in users) {

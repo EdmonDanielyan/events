@@ -94,7 +94,7 @@ class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.only(right: 20.0, left: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -186,11 +186,11 @@ class _ChatListState extends State<ChatList> {
                               final _currentChat = _chats[index];
                               _currentChat.sortMessagesByTime();
 
-                              final _notReadMsgs =
+                              final _unreadMsgs =
                                   cubit.notReadMsgsOfChat(_currentChat.id);
 
                               return ChatCardWrapper(
-                                notReadMsgs: _notReadMsgs,
+                                unreadMsgsCount: _unreadMsgs,
                                 highlightValue: searchState.value,
                                 cachedChatsCubit: cubit,
                                 chat: _currentChat,

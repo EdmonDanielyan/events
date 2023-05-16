@@ -2,25 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
+import 'package:ink_mobile/models/absence.dart';
+import 'package:ink_mobile/models/user_data.dart';
+import 'package:intl/intl.dart';
 
 class UserMainInfo extends StatefulWidget {
-  final String? userName;
-  final String? userLastName;
-  final String? userPosition;
-  final String? pathToAvatar;
+  final UserProfileData user;
   final bool? isOtherUser;
-  final String? absenceUser;
-  UserMainInfo(
-      {Key? key,
-      this.userLastName,
-      this.userName,
-      this.userPosition,
-      this.pathToAvatar,
-      this.isOtherUser,
-      this.absenceUser})
-      : super(key: key);
+  UserMainInfo({
+    Key? key,
+    required this.user,
+    this.isOtherUser,
+  }) : super(key: key);
 
   @override
   State<UserMainInfo> createState() => _UserMainInfoState();
@@ -45,6 +41,8 @@ class _UserMainInfoState extends State<UserMainInfo> {
     super.dispose();
   }
 
+  UserProfileData get user => widget.user;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -52,26 +50,12 @@ class _UserMainInfoState extends State<UserMainInfo> {
       padding: EdgeInsets.only(
           bottom: SizeConfig(context, 55).getProportionateScreenHeight),
       width: size.width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.elliptical(600, 50),
-          bottomRight: Radius.elliptical(600, 50),
-        ),
-        image: DecorationImage(
-          image: AssetImage("assets/images/personal_background_line.png"),
-          fit: BoxFit.cover,
-        ),
-        gradient: LinearGradient(
-          colors: [Theme.of(context).primaryColor, const Color(0xFF182B23)],
-          begin: FractionalOffset.centerLeft,
-          end: FractionalOffset.centerRight,
-          stops: [0.0, 1.0],
-          tileMode: TileMode.decal,
-        ),
-      ),
       child: Column(
         children: [
           Container(
+            margin: EdgeInsets.only(
+                top: 16.0,
+                bottom: SizeConfig(context, 21).getProportionateScreenHeight),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(
@@ -84,24 +68,19 @@ class _UserMainInfoState extends State<UserMainInfo> {
                       SizeConfig(context, 140).getProportionateScreenHeight,
                   avatarHeight:
                       SizeConfig(context, 140).getProportionateScreenHeight,
-                  url: widget.pathToAvatar ?? "",
+                  url: user.pathToAvatar ?? "",
                 ),
               ),
             ),
-            margin: EdgeInsets.only(
-                top: SizeConfig(context, 50).getProportionateScreenHeight,
-                bottom: SizeConfig(context, 21).getProportionateScreenHeight),
           ),
-          Container(
+          SizedBox(
             width: size.width * 0.90,
             child: Center(
-                child: Column(
-              children: [
-                GestureDetector(
-                  //onTapDown: (_)=> _enableEdit(),
-                  behavior: HitTestBehavior.translucent,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    //onTapDown: (_)=> _enableEdit(),
+                    behavior: HitTestBehavior.translucent,
                     child: TextFormField(
                       controller: fioFieldC,
                       readOnly: !isEditing,
@@ -110,14 +89,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
                       maxLines: 2,
                       cursorColor: Theme.of(context).primaryColorLight,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        overflow: TextOverflow.visible,
-                        color: Colors.white,
-                        fontStyle: FontStyle.normal,
-                        fontSize: SizeConfig(context, 20)
-                            .getProportionateScreenHeight,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: FontStyles.rubikH3(color: Palette.textBlack),
                       textInputAction: TextInputAction.go,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -125,20 +97,9 @@ class _UserMainInfoState extends State<UserMainInfo> {
                       ),
                     ),
                   ),
-                ),
-                // if(isEditing)
-                //   Padding(
-                //     padding: const EdgeInsets.only(top: 10.0),
-                //     child: ServiceBtn(
-                //         txt: 'Сохранить',
-                //         onPressed: (){
-                //           setState((){
-                //             isEditing = false;
-                //           });
-                //         }),
-                //   )
-              ],
-            )),
+                ],
+              ),
+            ),
           ),
           getUserPositionWidget(context),
           getInfoAbsenceUser()
@@ -149,11 +110,11 @@ class _UserMainInfoState extends State<UserMainInfo> {
 
   String getFullName() {
     List nameComponents = [];
-    if (widget.userLastName != null) {
-      nameComponents.add(widget.userLastName);
+    if (user.lastName != null) {
+      nameComponents.add(user.lastName);
     }
-    if (widget.userName != null) {
-      nameComponents.add(widget.userName);
+    if (user.name != null) {
+      nameComponents.add(user.name);
     }
     return nameComponents.join(' ');
   }
@@ -168,42 +129,26 @@ class _UserMainInfoState extends State<UserMainInfo> {
   // }
 
   Widget getUserPositionWidget(BuildContext context) {
-    if (widget.userPosition != null) {
-      return Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Opacity(
-              opacity: 0.7,
-              child: Text(
-                widget.userPosition!.toUpperCase(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFFFFFFFF),
-                  fontSize:
-                      SizeConfig(context, 12).getProportionateScreenHeight,
-                  fontWeight: FontWeight.bold,
-                  height: 1.4,
-                ),
-              )));
+    if (user.workPosition != null) {
+      return Text(
+        user.workPosition!,
+        textAlign: TextAlign.center,
+        style:
+            FontStyles.rubikP3Medium(color: Palette.textBlack.withOpacity(0.7)),
+      );
     } else {
       return const SizedBox.shrink();
     }
   }
 
   Widget getInfoAbsenceUser() {
-    String str = widget.absenceUser ?? '';
-
-    if (str != '') {
+    if (user.absence != null && user.absence!.isNotEmpty) {
+      bool isVacation = user.absence!.reason == AbsenceReason.vacation;
       return Container(
         margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-        padding: EdgeInsets.all(2),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 14.0),
         decoration: BoxDecoration(
-          color: str.contains('Отсутствие')
-              ? Palette.yellow300
-              : Palette.purple255,
-          // border: Border.all(
-          //     style: BorderStyle.solid,
-          //     width: 1.0
-          // ),
+          color: isVacation ? Palette.yellow300 : Palette.purple255,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
         ),
@@ -212,31 +157,34 @@ class _UserMainInfoState extends State<UserMainInfo> {
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(left: 6.0),
+                padding: const EdgeInsets.only(
+                  left: 4.0,
+                  top: 4.0,
+                  bottom: 4.0,
+                ),
                 child: Text(
-                  str,
-                  style: TextStyle(
-                      color: (!str.contains('Отсутствие'))
-                          ? Palette.white
-                          : Palette.textBlack),
+                  "${user.absence!.getAbsenceReasonText ?? ""} c ${DateFormat('dd.MM.yyyy').format(user.absence!.from!)} по ${DateFormat('dd.MM.yyyy').format(user.absence!.to!)}",
+                  style: FontStyles.rubikP3Medium(
+                      color: isVacation ? Palette.textBlack : Palette.white),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: str.contains('Отсутствие')
-                  ? SvgPicture.asset(
-                      IconLinks.SUN_ICON,
-                    )
-                  : SvgPicture.asset(
-                      IconLinks.PLANE_ICON,
-                      color: Colors.white,
-                    ),
+            isVacation
+                ? SvgPicture.asset(
+              IconLinks.SUN_ICON,
+              height: 24.0,
+              width: 24.0,
+            )
+                : SvgPicture.asset(
+              IconLinks.PLANE_ICON,
+              color: Colors.white,
+              height: 24.0,
+              width: 24.0,
             )
           ],
         ),
       );
-    } else
-      return const SizedBox.shrink();
+    }
+    return const SizedBox.shrink();
   }
 }

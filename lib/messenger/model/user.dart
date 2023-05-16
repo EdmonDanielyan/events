@@ -1,27 +1,32 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:ink_mobile/models/absence.dart';
 import 'package:ink_mobile/models/user_data.dart';
 
 class User extends Equatable {
   final int id;
   final String name;
   final String avatarUrl;
+  final Absence? absence;
   const User({
     this.id = 0,
     this.name = '',
     this.avatarUrl = '',
+    this.absence,
   });
 
   User copyWith({
     int? id,
     String? name,
     String? avatarUrl,
+    Absence? absence,
   }) {
     return User(
       id: id ?? this.id,
       name: name ?? this.name,
       avatarUrl: avatarUrl ?? this.avatarUrl,
+      absence: absence ?? this.absence,
     );
   }
 
@@ -30,6 +35,7 @@ class User extends Equatable {
       'id': id,
       'name': name,
       'avatarUrl': avatarUrl,
+      'absence': absence,
     };
   }
 
@@ -38,6 +44,7 @@ class User extends Equatable {
       id: map['id']?.toInt() ?? 0,
       name: map['name'] ?? '',
       avatarUrl: map['avatarUrl'] ?? '',
+      absence: map['absence'] != null ? Absence.fromMap(map['absence']) : null,
     );
   }
 
@@ -47,10 +54,10 @@ class User extends Equatable {
 
   factory User.fromUserProfileData(UserProfileData userData) {
     return User(
-      id: userData.id,
-      name: "${userData.name ?? "" } ${userData.lastName ?? "" }",
-      avatarUrl: userData.pathToAvatar ?? "",
-    );
+        id: userData.id,
+        name: "${userData.name ?? ""} ${userData.lastName ?? ""}",
+        avatarUrl: userData.pathToAvatar ?? "",
+        absence: userData.absence);
   }
 
   @override

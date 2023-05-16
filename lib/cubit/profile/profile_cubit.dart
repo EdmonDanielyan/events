@@ -28,9 +28,15 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(ProfileState(type: ProfileStateType.LOADING));
 
-  Future<void> fetchUser(int? userId) async {
+  Future<void> fetchUser(BuildContext context) async {
     try {
       await Token.setNewTokensIfExpired();
+      Map? arg = ModalRoute.of(context)!.settings.arguments as Map?;
+      int? userId;
+
+      if (arg != null && arg.isNotEmpty) {
+        userId = arg['id'];
+      }
       final response =
           await getIt<ProfileFetchNetworkRequest>(param1: userId)();
       print(response);

@@ -35,7 +35,7 @@ class FetchChats {
             }
           }
 
-          FetchPartcipants(participants).call();
+          FetchParticipants(participants).call();
         }
       },
     ).call();

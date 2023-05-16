@@ -70,7 +70,7 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
           return const SizedBox.shrink();
         }
 
-        List<User> paricipants = chat.participants;
+        List<User> participants = chat.participants;
         return Scaffold(
           appBar: ChatInfoAppBar(
             onEdit: chat.isOwner(widget.cachedChatsCubit.myId) && chat.isGroup
@@ -100,6 +100,7 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                                   ? () =>
                                       widget.openUser(user.id, true, context)
                                   : null,
+                              absence: user?.absence,
                             );
                           },
                         )
@@ -107,7 +108,7 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                           url: chat.avatarUrl,
                           name: chat.name,
                           description: chat.description,
-                          subDescription: "Участников: ${paricipants.length}",
+                          subDescription: "Участников: ${participants.length}",
                         ),
                 ),
                 const SizedBox(height: 20.0),
@@ -175,11 +176,11 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                           ),
                         ],
                         ListView.builder(
-                          itemCount: paricipants.length,
+                          itemCount: participants.length,
                           shrinkWrap: true,
                           controller: ScrollController(keepScrollOffset: false),
                           itemBuilder: (context, index) {
-                            final _currentUser = paricipants[index];
+                            final _currentUser = participants[index];
                             final isOwner = _currentUser.id == chat.ownerId;
 
                             return CachedUserBuilder(
