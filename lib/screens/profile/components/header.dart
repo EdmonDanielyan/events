@@ -4,8 +4,6 @@ import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/user_main_info.dart';
 import 'package:ink_mobile/screens/profile/components/votes_bar.dart';
 
-import '../../../messenger/functions/size_config.dart';
-
 class PersonalPageHeader extends StatelessWidget {
   final UserProfileData user;
 
@@ -32,8 +30,7 @@ class PersonalPageHeader extends StatelessWidget {
                 icon: Icon(
                   Icons.arrow_back_ios,
                   color: Palette.greenE4A,
-                  size: SizeConfig(context, 24)
-                      .getProportionateScreenHeight,
+                  size: 32.0,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               ),

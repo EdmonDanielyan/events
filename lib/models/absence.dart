@@ -17,7 +17,7 @@ class Absence {
           .firstWhere((element) => element.value == data["reason"])
           .key,
       from: DateTime.tryParse(data["from"]),
-      to: DateTime.tryParse(data["from"]),
+      to: DateTime.tryParse(data["to"]),
     );
   }
 
@@ -28,6 +28,8 @@ class Absence {
       "to": to.toString(),
     };
   }
+
+  Map<String, dynamic> toJson() => toMap();
 
   static Map<AbsenceReason, String> absenceReasonsMap = {
     AbsenceReason.businessTrip: "Командировка",

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/cached_avatar/cached_avatar.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
+import 'package:ink_mobile/messenger/constants/enums.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
+import 'package:ink_mobile/models/absence.dart';
 
 class ChatInfoTop extends StatelessWidget {
   final String url;
@@ -9,6 +14,7 @@ class ChatInfoTop extends StatelessWidget {
   final String description;
   final String subDescription;
   final void Function()? onTap;
+  final Absence? absence;
   const ChatInfoTop({
     Key? key,
     required this.url,
@@ -16,20 +22,47 @@ class ChatInfoTop extends StatelessWidget {
     this.description = "",
     this.subDescription = "",
     this.onTap,
+    this.absence,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    ChatBadge chatBadge = ChatBadge.none;
+    if (absence != null) {
+      switch (absence!.reason) {
+        case AbsenceReason.vacation:
+          chatBadge = ChatBadge.vacation;
+          break;
+        case AbsenceReason.businessTrip:
+          chatBadge = ChatBadge.businessTrip;
+          break;
+        default:
+          break;
+      }
+    }
+    bool isVacation = chatBadge == ChatBadge.vacation;
     return Row(
       children: [
         GestureDetector(
           onTap: onTap,
-          child: CachedCircleAvatar(
-            url: url,
-            name: name,
-            avatarHeight:
-                SizeConfig(context, 60.0).getProportionateScreenHeight,
-            avatarWidth: SizeConfig(context, 60.0).getProportionateScreenHeight,
+          child: Badge(
+            isLabelVisible: chatBadge != ChatBadge.none,
+            label: SvgPicture.asset(
+              isVacation ? IconLinks.SUN_ICON : IconLinks.PLANE_ICON,
+              color: Colors.white,
+              height: 12.0,
+              width: 12.0,
+            ),
+            backgroundColor: isVacation ? Palette.yellow300 : Palette.purple255,
+            smallSize: 20.0,
+            largeSize: 20.0,
+            alignment: AlignmentDirectional(0.0, 0.0),
+            child: CachedCircleAvatar(
+              url: url,
+              name: name,
+              avatarHeight: 68.0,
+              avatarWidth: 68.0,
+            ),
           ),
         ),
         SizedBox(width: SizeConfig(context, 13.0).getProportionateScreenHeight),

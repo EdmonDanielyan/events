@@ -81,7 +81,9 @@ class UserProfileData {
       absence: userData['absence'] != null
           ? Absence.fromMap(userData['absence'])
           : null,
-      shiftMan: userData['shift_man'],
+      shiftMan: userData['shift_man'] != null
+          ? userData['shift_man']['text']
+          : null,
     );
   }
 }
