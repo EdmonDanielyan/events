@@ -63,13 +63,9 @@ class Body extends StatelessWidget {
         builder: (context, state) {
           switch (state.type) {
             case ProfileStateType.LOADED:
-              {
-                return getLoadedStateWidget(context, state);
-              }
-
             case ProfileStateType.OTHER_USER_LOADED:
               {
-                return getOtherUserLoadedWidget(context, state);
+                return getLoadedStateWidget(context, state);
               }
 
             case ProfileStateType.LOADING:
@@ -95,68 +91,37 @@ class Body extends StatelessWidget {
     final logFile = ProfileScreen.of(context).widget.logFile;
     return Background(
       color: Palette.white,
-      child: SingleChildScrollView(
-        controller: _scrollController,
-        physics: AlwaysScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            PersonalPageHeader(user: user),
-            Awards(awards: user.awards),
-            Contacts(contacts: user.contacts),
-            BasicInformation(info: user.basicInformation),
-            if (user.absence != null)
-              BasicInfoRow(
-                title: 'Статус',
-                value: user.absence!.getAbsenceReasonText ?? "",
-              ),
-            if (user.shiftMan != null)
-              BasicInfoRow(
-                title: 'Сменщик',
-                value: user.shiftMan!,
-              ),
-            Diagnostics(logFile: logFile),
-            ProfileSecuritySection(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              if (state.type == ProfileStateType.LOADED)
+                PersonalPageHeader(user: user),
+              if (state.type == ProfileStateType.OTHER_USER_LOADED)
+                OtherUserPageHeader(user: user),
+              Awards(awards: user.awards),
+              Contacts(contacts: user.contacts),
+              BasicInformation(info: user.basicInformation),
+              if (user.absence != null)
+                BasicInfoRow(
+                  title: 'Статус',
+                  value: user.absence!.getAbsenceReasonText,
+                ),
+              if (user.shiftMan != null)
+                BasicInfoRow(
+                  title: 'Сменщик',
+                  value: user.shiftMan!,
+                ),
+              Diagnostics(logFile: logFile),
+              ProfileSecuritySection(),
 
-            /// todo AboutMyField
-            // AboutMyField(user: user, scrollController: _scrollController,)
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget getOtherUserLoadedWidget(context, ProfileState state) {
-    final user = state.data;
-    if (user == null) return const SizedBox.shrink();
-    return Background(
-      color: Palette.white,
-      child: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            OtherUserPageHeader(user: user),
-            Awards(awards: user.awards),
-            CustomLayoutBuilder(
-              builder: (context, constraints, isTablet) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Contacts(
-                      contacts: user.contacts,
-                    ),
-                    BasicInformation(
-                      info: user.basicInformation,
-                    ),
-                    if(user.absence!=null)
-                      BasicInfoRow(title: 'Статус', value: user.absence!.getAbsenceReasonText),
-                    if(user.shiftMan!=null)
-                      BasicInfoRow(title: 'Сменщик', value: user.shiftMan!),
-                    //будет поле о пользователе без возможности редактировать
-                  ],
-                );
-              },
-            )
-          ],
+              /// todo AboutMyField
+              // AboutMyField(user: user, scrollController: _scrollController,)
+            ],
+          ),
         ),
       ),
     );

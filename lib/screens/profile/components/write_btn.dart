@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
@@ -24,43 +28,19 @@ class WriteBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      bottom: -5,
-      left: 0,
-      right: 0,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: ElevatedButton(
-          onPressed: () => _write(context),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: Theme.of(context).primaryColor,
-            elevation: 10.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
-          ),
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.mail,
-                  size: SizeConfig(context, 24).getProportionateScreenHeight,
-                ),
-                const SizedBox(width: 10.0),
-                Text(
-                  localizationInstance.writeHint,
-                  style: TextStyle(
-                    fontSize:
-                        SizeConfig(context, 17).getProportionateScreenHeight,
-                  ),
-                ),
-              ],
-            ),
+    // to prevent scaling
+    return Center(
+      child: FittedBox(
+        child: DefaultButton(
+          onTap: () => _write(context),
+          title: localizationInstance.writeHint,
+          buttonColor: Palette.greenE4A,
+          textColor: Palette.white,
+          suffixIcon: SvgPicture.asset(
+            IconLinks.CHAT_OPEN_ICON,
+            height: 20.0,
+            width: 20.0,
+            color: Palette.white,
           ),
         ),
       ),

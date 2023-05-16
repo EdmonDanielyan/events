@@ -21,25 +21,20 @@ class BasicInfoRow extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
       width: size.width,
-      child: Padding(
-        padding: EdgeInsets.only(left: 20, top: 20, bottom: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: FontStyles.rubikP3Medium(color: Palette.textBlack50),
-            ),
-            Text(
-              value,
-              style: FontStyles.rubikP1(color: Palette.textBlack),
-            ),
-          ],
-        ),
+      margin: const EdgeInsets.only(bottom: 24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: FontStyles.rubikP3Medium(color: Palette.textBlack50),
+          ),
+          Text(
+            value,
+            style: FontStyles.rubikP1(color: Palette.textBlack),
+          ),
+        ],
       ),
     );
   }

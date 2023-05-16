@@ -25,7 +25,7 @@ class PersonalPageHeader extends StatelessWidget {
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
-              padding: const EdgeInsets.only(top: 32.0, left: 20.0),
+              padding: const EdgeInsets.only(top: 32.0),
               child: IconButton(
                 icon: Icon(
                   Icons.arrow_back_ios,

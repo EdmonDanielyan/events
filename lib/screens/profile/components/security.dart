@@ -20,62 +20,43 @@ class _ProfileSecuritySectionState extends State<ProfileSecuritySection> {
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    return getSendLogsButonWidget(context);
+    return getSendLogsButtonWidget(context);
   }
 
-  Widget getSendLogsButonWidget(context) {
+  Widget getSendLogsButtonWidget(context) {
     Size size = MediaQuery.of(context).size;
-    return CustomLayoutBuilder(
-      builder: (context, constraints, isTablet) {
-        return Container(
-          width: size.width,
-          margin: EdgeInsets.only(top: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SectionTitle(title: _strings.security),
-              Column(
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0, bottom: 24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SectionTitle(title: _strings.security),
+          SizedBox(
+            height: 52.0,
+            width: size.width,
+            child: InkWell(
+              onTap: () => Navigator.of(context).pushNamed("/set_pin"),
+              child: Row(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border(
-                        top:
-                            BorderSide(color: Colors.grey.shade400, width: 0.5),
-                        bottom:
-                            BorderSide(color: Colors.grey.shade400, width: 0.5),
-                      ),
-                    ),
-                    height: 52.0,
-                    width: size.width,
-                    padding: const EdgeInsets.only(left: 20.0, right: 32.0),
-                    child: InkWell(
-                      onTap: () => Navigator.of(context).pushNamed("/set_pin"),
-                      child: Row(
-                        children: [
-                          Text(
-                            _strings.setPinCode,
-                            style: FontStyles.rubikP1(color: Palette.textBlack),
-                          ),
-                          const Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16.0),
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              size: 20.0,
-                              color: Palette.greenE4A,
-                            ),
-                          ),
-                        ],
-                      ),
+                  Text(
+                    _strings.setPinCode,
+                    style: FontStyles.rubikP1(color: Palette.textBlack),
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 24.0),
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20.0,
+                      color: Palette.greenE4A,
                     ),
                   ),
                 ],
-              )
-            ],
-          ),
-        );
-      },
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

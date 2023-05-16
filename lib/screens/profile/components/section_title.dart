@@ -9,16 +9,9 @@ class SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          padding: EdgeInsets.only(left: 20, bottom: 8),
-          child: Text(
-            title.toUpperCase(),
-            style: FontStyles.rubikP2Medium(color: Palette.text20Grey),
-          ),
-        ),
-      ],
+    return Text(
+      title.toUpperCase(),
+      style: FontStyles.rubikP2Medium(color: Palette.text20Grey),
     );
   }
 }
