@@ -102,23 +102,20 @@ class _BodyState extends State<Body> {
                         txt: _strings.confPolicy,
                         link: ImportantUrls.policyConf,
                       ),
-                      if (currentEnv == Environment.dev) ...[
-                        SizedBox(height: 10.0,),
-                        Stack(
-                          alignment: AlignmentDirectional.center,
-                          children: [
-                            Center(
-                              child: Text(
-                                widget.packageInfo.version,
-                                style: TextStyle(
-                                    color: Colors.grey[400],
-                                    fontSize: isTablet ? 17.0 : 13),
-                              ),
+                      SizedBox(height: 10.0,),
+                      Stack(
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Center(
+                            child: Text(
+                              widget.packageInfo.version,
+                              style: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontSize: isTablet ? 17.0 : 13),
                             ),
-                          ],
-                        ),
-                      ]
-
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

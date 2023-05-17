@@ -22,6 +22,7 @@ flutter packages pub run build_runner build --delete-conflicting-outputs
 
 if [ "$platform" == "android" ]; then
   building apk "$env"
+  building aab "$env"
 elif [ "$platform" == "ios" ]; then
   building ipa "$env"
 elif [ "$platform" == "all" ]; then
