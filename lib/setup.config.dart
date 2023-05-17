@@ -427,8 +427,8 @@ Future<_i1.GetIt> $initGetIt(
     preResolve: true,
   );
   gh.factory<String>(
-    () => tokenDataInjectorModule.userId,
-    instanceName: 'userId',
+    () => tokenDataInjectorModule.messengerAuthPassword,
+    instanceName: 'messengerAuthPassword',
   );
   gh.factory<String>(
     () => tokenDataInjectorModule.localDatabasePassword,
@@ -443,12 +443,12 @@ Future<_i1.GetIt> $initGetIt(
     instanceName: 'natsToken',
   );
   gh.factory<String>(
-    () => tokenDataInjectorModule.messengerAuthPassword,
-    instanceName: 'messengerAuthPassword',
-  );
-  gh.factory<String>(
     () => tokenDataInjectorModule.messengerAuthLogin,
     instanceName: 'messengerAuthLogin',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.userId,
+    instanceName: 'userId',
   );
   gh.factory<String>(
     () => testLogFilePathInjector.logFile,
