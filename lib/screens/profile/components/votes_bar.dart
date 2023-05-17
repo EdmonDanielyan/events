@@ -16,7 +16,7 @@ class VotesBar extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SizedBox(
-      height: SizeConfig(context, 50).getProportionateScreenHeight,
+      height: 32.0,
       width: size.width,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

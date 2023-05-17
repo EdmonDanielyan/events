@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
@@ -14,40 +18,17 @@ class ThanksButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     final ProfileCubit userCubit = ProfileScreen.of(context).profileCubit;
-    return Column(
-      children: [
-        Divider(
-          thickness: 1,
-          indent: 15,
-          endIndent: 15,
-        ),
-        Container(
-          child: TextButton(
-            onPressed: () {
-              userCubit.thanks(userId);
-            },
-            child: Container(
-              padding: EdgeInsets.only(
-                bottom: 1,
-              ),
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(
-                color: Theme.of(context).primaryColor,
-                width: 1.0,
-              ))),
-              child: Text(
-                _strings.thank,
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize:
-                      SizeConfig(context, 17).getProportionateScreenHeight,
-                ),
-              ),
-            ),
-          ),
-        )
-      ],
+    return DefaultButton(
+      onTap: () => userCubit.thanks(userId),
+      title: _strings.thank,
+      borderColor: Palette.greenE4A,
+      textColor: Palette.greenE4A,
+      suffixIcon: SvgPicture.asset(
+        IconLinks.BARREL_SVG_LINK,
+        height: 20.0,
+        width: 20.0,
+        color: Palette.greenE4A,
+      ),
     );
   }
 }

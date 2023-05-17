@@ -27,50 +27,37 @@ class _DiagnosticsState extends State<Diagnostics> {
 
   Widget getSendLogsButtonWidget(context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width,
-      margin: EdgeInsets.only(top: 24),
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SectionTitle(
             title: _strings.diagnostics,
           ),
-          Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                    top: BorderSide(color: Colors.grey.shade400, width: 0.5),
-                    bottom: BorderSide(color: Colors.grey.shade400, width: 0.5),
+          SizedBox(
+            height: 52.0,
+            width: size.width,
+            child: InkWell(
+              onTap: () => launchUrl(UrlsConfig.supportUrl),
+              child: Row(
+                children: [
+                  Text(
+                    "Обратиться в техподдержку",
+                    style: FontStyles.rubikP1(color: Palette.textBlack),
                   ),
-                ),
-                height: 52.0,
-                width: size.width,
-                padding: const EdgeInsets.only(left: 20.0, right: 32.0),
-                child: InkWell(
-                  onTap: () => launchUrl(UrlsConfig.supportUrl),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Обратиться в техподдержку",
-                        style: FontStyles.rubikP1(color: Palette.textBlack),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        child: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 20.0,
-                          color: Palette.greenE4A,
-                        ),
-                      ),
-                    ],
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 24.0),
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20.0,
+                      color: Palette.greenE4A,
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ],
       ),

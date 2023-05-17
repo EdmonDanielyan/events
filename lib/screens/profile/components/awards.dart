@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/awards_item.dart';
 import 'package:ink_mobile/screens/profile/components/section_title.dart';
@@ -24,52 +25,40 @@ class Awards extends StatelessWidget {
     List<Award> awardsList = this.getAwards();
 
     if (awardsList.isNotEmpty) {
-      return Column(
-        children: [
-          SectionTitle(
-            title: "Статусы",
-          ),
-          Container(
-            width: size.width,
-            child: Column(
-              children: [
-                Container(
-                  width: size.width,
-                  height: SizeConfig(context, 90).getProportionateScreenHeight,
-                  padding: EdgeInsets.only(left: 20.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      top: BorderSide(color: Colors.grey.shade400, width: 0.5),
-                      bottom:
-                          BorderSide(color: Colors.grey.shade400, width: 0.5),
-                    ),
-                  ),
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: getAwards().length,
-                    itemBuilder: (context, index) {
-                      return Row(
-                        children: getAwards(),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return index == getAwards().length - 1
-                          ? const SizedBox.shrink()
-                          : const SizedBox(
-                              width: 20.0,
-                            );
-                    },
-                  ),
-                )
-              ],
+      return Padding(
+        padding: const EdgeInsets.only(top: 32.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SectionTitle(
+              title: "Статусы",
             ),
-          ),
-        ],
+            Container(
+              width: size.width,
+              height: SizeConfig(context, 90).getProportionateScreenHeight,
+              padding: EdgeInsets.only(left: 20.0),
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: getAwards().length,
+                itemBuilder: (context, index) {
+                  return Row(
+                    children: getAwards(),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return index == getAwards().length - 1
+                      ? const SizedBox.shrink()
+                      : const SizedBox(
+                          width: 20.0,
+                        );
+                },
+              ),
+            ),
+          ],
+        ),
       );
-    } else {
-      return const SizedBox.shrink();
     }
+    return const SizedBox.shrink();
   }
 
   List<Award> getAwards() {

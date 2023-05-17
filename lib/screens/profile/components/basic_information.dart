@@ -17,9 +17,8 @@ class BasicInformation extends StatelessWidget {
     _strings = localizationInstance;
     if (info != null) {
       return getBasicInfoWidget(context);
-    } else {
-      return Container();
     }
+    return const SizedBox.shrink();
   }
 
   Widget getBasicInfoWidget(context) {
@@ -28,35 +27,21 @@ class BasicInformation extends StatelessWidget {
         info!.birthday != null ||
         info!.office != null ||
         info!.department != null) {
-      Size size = MediaQuery.of(context).size;
-      return CustomLayoutBuilder(
-        builder: (context, constraints, isTablet) {
-          return Container(
-            width: size.width,
-            margin: EdgeInsets.only(top: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SectionTitle(
-                  title: _strings.mainInformation,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: Palette.text20Grey),
-                      bottom: BorderSide(color: Palette.text20Grey),
-                    ),
-                  ),
-                  child: Column(children: getBasicInfoWidgetRows()),
-                ),
-              ],
+      return Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SectionTitle(
+              title: _strings.mainInformation,
             ),
-          );
-        },
+            const SizedBox(height: 24.0,),
+            ...getBasicInfoWidgetRows(),
+          ],
+        ),
       );
-    } else {
-      return const SizedBox.shrink();
     }
+    return const SizedBox.shrink();
   }
 
   List<Widget> getBasicInfoWidgetRows() {

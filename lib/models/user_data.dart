@@ -28,6 +28,8 @@ class UserProfileData {
       this.shiftMan,
       required this.canBeThanked});
 
+  String get fullName => "${name ?? ""} ${lastName ?? ""}";
+
   UserProfileData copyWith({
     int? id,
     String? lastName,

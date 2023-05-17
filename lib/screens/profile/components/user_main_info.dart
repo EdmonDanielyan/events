@@ -5,16 +5,20 @@ import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
+import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/absence.dart';
 import 'package:ink_mobile/models/user_data.dart';
+import 'package:ink_mobile/screens/profile/components/write_btn.dart';
 import 'package:intl/intl.dart';
 
 class UserMainInfo extends StatefulWidget {
   final UserProfileData user;
+  final bool showWriteButton;
   final bool? isOtherUser;
   UserMainInfo({
     Key? key,
     required this.user,
+    this.showWriteButton = false,
     this.isOtherUser,
   }) : super(key: key);
 
@@ -47,63 +51,61 @@ class _UserMainInfoState extends State<UserMainInfo> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.only(
-          bottom: SizeConfig(context, 55).getProportionateScreenHeight),
+      padding: EdgeInsets.only(bottom: 24.0),
       width: size.width,
       child: Column(
         children: [
-          Container(
-            margin: EdgeInsets.only(
-                top: 16.0,
-                bottom: SizeConfig(context, 21).getProportionateScreenHeight),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                      SizeConfig(context, 65).getProportionateScreenHeight),
-                  color: Colors.grey.withOpacity(0.2)),
-              padding: EdgeInsets.all(5),
-              child: Container(
-                child: CachedCircleAvatar(
-                  avatarWidth:
-                      SizeConfig(context, 140).getProportionateScreenHeight,
-                  avatarHeight:
-                      SizeConfig(context, 140).getProportionateScreenHeight,
-                  url: user.pathToAvatar ?? "",
-                ),
+          getUserAvatar(),
+          getUserFullName(),
+          const SizedBox(
+            height: 8.0,
+          ),
+          getUserPositionWidget(),
+          if (widget.showWriteButton) ...[
+            const SizedBox(
+              height: 24.0,
+            ),
+            WriteBtn(
+              user: User(
+                id: user.id,
+                name: "${user.lastName ?? ""} ${user.name ?? ""}".trim(),
+                avatarUrl: user.pathToAvatar ?? "",
               ),
             ),
+          ],
+          const SizedBox(
+            height: 32.0,
           ),
-          SizedBox(
-            width: size.width * 0.90,
-            child: Center(
-              child: Column(
-                children: [
-                  GestureDetector(
-                    //onTapDown: (_)=> _enableEdit(),
-                    behavior: HitTestBehavior.translucent,
-                    child: TextFormField(
-                      controller: fioFieldC,
-                      readOnly: !isEditing,
-                      focusNode: textFormFocus,
-                      autofocus: true,
-                      maxLines: 2,
-                      cursorColor: Theme.of(context).primaryColorLight,
-                      textAlign: TextAlign.center,
-                      style: FontStyles.rubikH3(color: Palette.textBlack),
-                      textInputAction: TextInputAction.go,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        isCollapsed: true,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          getUserPositionWidget(context),
           getInfoAbsenceUser()
         ],
+      ),
+    );
+  }
+
+  Text getUserFullName() {
+    return Text(
+      user.fullName,
+      style: FontStyles.rubikH3(color: Palette.textBlack),
+      maxLines: 2,
+    );
+  }
+
+  Widget getUserAvatar() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 16.0,
+        bottom: 24.0,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Palette.text5Grey,
+        ),
+        child: CachedCircleAvatar(
+          avatarWidth: 164.0,
+          avatarHeight: 164.0,
+          url: user.pathToAvatar ?? "",
+        ),
       ),
     );
   }
@@ -119,16 +121,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
     return nameComponents.join(' ');
   }
 
-  // void _enableEdit() {
-  //   if(isEditing != true) {
-  //     setState(() {
-  //       isEditing = true;
-  //     });
-  //     FocusScope.of(context).requestFocus(textFormFocus);
-  //   }
-  // }
-
-  Widget getUserPositionWidget(BuildContext context) {
+  Widget getUserPositionWidget() {
     if (user.workPosition != null) {
       return Text(
         user.workPosition!,
@@ -143,14 +136,34 @@ class _UserMainInfoState extends State<UserMainInfo> {
 
   Widget getInfoAbsenceUser() {
     if (user.absence != null && user.absence!.isNotEmpty) {
-      bool isVacation = user.absence!.reason == AbsenceReason.vacation;
+      Color backgroundColor = Palette.white;
+      Color textColor = Palette.white;
+      Color iconColor = Palette.white;
+      String iconLink = "";
+      switch (user.absence!.reason) {
+        case AbsenceReason.vacation:
+          backgroundColor = Palette.yellow300;
+          textColor = Palette.textBlack;
+          iconLink = IconLinks.SUN_ICON;
+          iconColor = Palette.textBlack;
+          break;
+        case AbsenceReason.businessTrip:
+          backgroundColor = Palette.purple255;
+          textColor = Palette.white;
+          iconLink = IconLinks.PLANE_ICON;
+          iconColor = Palette.white;
+          break;
+        default:
+          break;
+      }
       return Container(
-        margin: EdgeInsets.only(top: 20, left: 20, right: 20),
         padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 14.0),
         decoration: BoxDecoration(
-          color: isVacation ? Palette.yellow300 : Palette.purple255,
+          color: backgroundColor,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
+            topLeft: Radius.circular(16),
+            bottomRight: Radius.circular(16),
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -163,23 +176,18 @@ class _UserMainInfoState extends State<UserMainInfo> {
                   bottom: 4.0,
                 ),
                 child: Text(
-                  "${user.absence!.getAbsenceReasonText ?? ""} c ${DateFormat('dd.MM.yyyy').format(user.absence!.from!)} по ${DateFormat('dd.MM.yyyy').format(user.absence!.to!)}",
+                  "${user.absence!.getAbsenceReasonText} c ${DateFormat('dd.MM.yyyy').format(user.absence!.from!)} по ${DateFormat('dd.MM.yyyy').format(user.absence!.to!)}",
                   style: FontStyles.rubikP3Medium(
-                      color: isVacation ? Palette.textBlack : Palette.white),
+                    color: textColor,
+                  ),
                 ),
               ),
             ),
-            isVacation
-                ? SvgPicture.asset(
-              IconLinks.SUN_ICON,
+            SvgPicture.asset(
+              iconLink,
               height: 24.0,
               width: 24.0,
-            )
-                : SvgPicture.asset(
-              IconLinks.PLANE_ICON,
-              color: Colors.white,
-              height: 24.0,
-              width: 24.0,
+              color: iconColor,
             )
           ],
         ),

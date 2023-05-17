@@ -38,4 +38,5 @@ class IconLinks {
   static const String SMARTPHONE_ICON = "assets/svg/smartphone.svg";
   static const String TANK_ICON = "assets/svg/tank.svg";
   static const String TANKER_ICON = "assets/svg/tanker.svg";
+  static const String CHAT_OPEN_ICON = "assets/svg/chatOpen.svg";
 }

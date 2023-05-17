@@ -18,9 +18,8 @@ class Contacts extends StatelessWidget {
     _strings = localizationInstance;
     if (contacts != null) {
       return getContactsWidget(context);
-    } else {
-      return const SizedBox.shrink();
     }
+    return const SizedBox.shrink();
   }
 
   getContactsWidget(BuildContext context) {
@@ -29,24 +28,15 @@ class Contacts extends StatelessWidget {
         contacts!.workMobilePhone != null ||
         contacts!.email != null) {
       return Padding(
-        padding: EdgeInsets.only(top: 24),
+        padding: EdgeInsets.only(top: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SectionTitle(
               title: _strings.contacts,
             ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Palette.text20Grey),
-                  bottom: BorderSide(color: Palette.text20Grey),
-                ),
-              ),
-              child: Column(
-                children: getContactWidgetRows(context),
-              ),
-            ),
+            const SizedBox(height: 24.0,),
+            ...getContactWidgetRows(context),
           ],
         ),
       );
