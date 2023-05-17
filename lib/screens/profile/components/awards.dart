@@ -28,6 +28,7 @@ class Awards extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(top: 32.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SectionTitle(
               title: "Статусы",
