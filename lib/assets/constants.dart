@@ -39,4 +39,10 @@ class IconLinks {
   static const String TANK_ICON = "assets/svg/tank.svg";
   static const String TANKER_ICON = "assets/svg/tanker.svg";
   static const String CHAT_OPEN_ICON = "assets/svg/chatOpen.svg";
+  static const String TICK_ICON = "assets/svg/tick.svg";
+  static const String EDIT_ICON = "assets/svg/edit.svg";
+  static const String SOUND_ICON = "assets/svg/sound.svg";
+  static const String MUTE_ICON = "assets/svg/mute.svg";
+  static const String FIRE_ICON = "assets/svg/fire.svg";
+  static const String USER_ADD_ICON = "assets/svg/userAdd.svg";
 }

@@ -13,12 +13,14 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
   final BuildContext context;
   final Widget? leading;
   final String? title;
+  final List<Widget>? actions;
   const InkAppBar(
     this.context, {
     Key? key,
     this.showPersonalPageLink = false,
     this.leading,
     this.title,
+    this.actions,
   }) : super(key: key);
 
   @override
@@ -44,19 +46,11 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
                   onPressed: () => Navigator.of(context).maybePop(),
                 );
               } else {
-                return Container();
+                return const SizedBox.shrink();
               }
             },
           ),
       flexibleSpace: Container(
-        child: SvgPicture.asset(
-          'assets/images/appbar_lines.svg',
-          semanticsLabel: 'appbar Line',
-          height: MediaQuery.of(context).size.height *
-              MediaQuery.of(context).devicePixelRatio,
-          width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
-        ),
         decoration: BoxDecoration(
           gradient: LinearGradient(
               colors: [Theme.of(context).primaryColor, const Color(0xFF182B23)],
@@ -64,6 +58,14 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
               end: FractionalOffset.centerRight,
               stops: [0.0, 1.0],
               tileMode: TileMode.decal),
+        ),
+        child: SvgPicture.asset(
+          'assets/images/appbar_lines.svg',
+          semanticsLabel: 'appbar Line',
+          height: MediaQuery.of(context).size.height *
+              MediaQuery.of(context).devicePixelRatio,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
         ),
       ),
       title: title != null
@@ -92,11 +94,11 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
               ],
             ),
       centerTitle: true,
-      actions: getActions(context),
+      actions: actions ?? getActions(),
     );
   }
 
-  List<Widget> getActions(BuildContext context) {
+  List<Widget> getActions() {
     List<Widget> actions = [];
 
     if (showPersonalPageLink) {

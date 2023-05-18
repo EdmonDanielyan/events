@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class UserPickerRadio extends StatefulWidget {
@@ -12,32 +15,33 @@ class UserPickerRadio extends StatefulWidget {
 }
 
 class _UserPickerRadioState extends State<UserPickerRadio> {
-  void _onTap() {
-    if (widget.onTap != null) {
-      widget.onTap!(!widget.enabled);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.enabled) {
-      return InkWell(
-        child: Icon(
-          Icons.check_circle,
-          color: Colors.lightBlue[300],
-          size: SizeConfig(context, 22).getProportionateScreenHeight,
-        ),
-        onTap: _onTap,
-      );
-    }
-
+    bool enabled = widget.enabled;
     return InkWell(
-      child: Icon(
-        Icons.circle_outlined,
-        color: Colors.grey,
-        size: SizeConfig(context, 22).getProportionateScreenHeight,
+      child: Container(
+        height: 20.0,
+        width: 20.0,
+        padding: EdgeInsets.all(2.0),
+        decoration: BoxDecoration(
+          color: enabled ? Palette.greenE4A : Palette.transparent,
+          borderRadius: BorderRadius.circular(4.0),
+          border: Border.all(
+            color: Palette.text20Grey,
+            width: enabled ? 0.0 : 1.0,
+          ),
+        ),
+        child: enabled
+          ? SvgPicture.asset(
+          IconLinks.TICK_ICON,
+          height: 16.0,
+          width: 16.0,
+          color: Palette.white,
+        )
+            : null,
       ),
-      onTap: _onTap,
+      onTap: () => widget.onTap?.call(!widget.enabled),
     );
   }
 }

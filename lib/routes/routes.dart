@@ -10,6 +10,9 @@ import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
+import 'package:ink_mobile/messenger/screens/users_picker/users_picker_screen.dart';
 import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/screens/announcements_detail/announcements_detail_screen.dart';
 import 'package:ink_mobile/screens/announcements_list/announcements_list_screen.dart';
@@ -46,7 +49,6 @@ import 'package:ink_mobile/setup.dart';
 import '../cubit/main_page/announcements_list_cubit.dart';
 
 class MainRoutes {
-
   static String initScreenKey = "/init";
   static String appLayerScreenKey = "/app_layer";
   static String welcomeScreenKey = "/welcome";
@@ -64,7 +66,8 @@ class MainRoutes {
   static String personnelMovementsScreenKey = "/personnel_movements";
   static String socialPackageScreenKey = "/social_package";
   static String socialPackageDetailsScreenKey = "/social_package_details";
-  static String voluntaryMedicalInsuranceScreenKey = "/voluntary_medical_insurance";
+  static String voluntaryMedicalInsuranceScreenKey =
+      "/voluntary_medical_insurance";
   static String accidentInsuranceScreenKey = "/accident_insurance";
   static String financialAidScreenKey = "/financial_aid";
   static String childrenRestScreenKey = "/children_rest";
@@ -75,6 +78,7 @@ class MainRoutes {
   static String setPinScreenKey = "/set_pin";
   static String anniversaryBonusScreenKey = "/anniversary_bonus";
   static String compensationTravelScreenKey = "/compensation_travel";
+  static String usersPickerScreenKey = "/users_picker";
 
   static Map<String, Widget Function(BuildContext)> routes = {
     '/init': (BuildContext context) => InitPage(
@@ -143,5 +147,9 @@ class MainRoutes {
     '/set_pin': (BuildContext context) => SetPinCodeScreen(),
     '/anniversary_bonus': (BuildContext context) => AnniversaryBonus(),
     '/compensation_travel': (BuildContext context) => CompensationTravel(),
+    '/users_picker': (BuildContext context) => UsersPickerScreen(
+          onlineCubit: getIt<OnlineCubit>(),
+          cachedChatsCubit: getIt<CachedChatsCubit>(),
+        ),
   };
 }

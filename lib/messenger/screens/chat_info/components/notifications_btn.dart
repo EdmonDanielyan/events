@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
@@ -29,33 +32,31 @@ class NotificationsBtn extends StatelessWidget {
         NotificationsDisabledChatsState>(
       bloc: toggleNotificationsChatsCubit,
       builder: (context, state) {
-        bool isEnabled = toggleNotificationsChatsCubit.isChatNotificationsEnabled(chatId);
+        bool isEnabled =
+            toggleNotificationsChatsCubit.isChatNotificationsEnabled(chatId);
 
-        return GestureDetector(
-          onTap: () {
-            toggleNotificationsChatsCubit.toggleNotification(chatId, isEnabled);
-          },
-          child: ParticipantCard(
-            user: const User(),
-            avatarWidget: Container(
-              decoration: BoxDecoration(
-                color: Palette.redF50,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(25.0),
+        return InkWell(
+          onTap: () => toggleNotificationsChatsCubit.toggleNotification(
+            chatId,
+            isEnabled,
+          ),
+          child: SizedBox(
+            width: double.infinity,
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  isEnabled ? IconLinks.MUTE_ICON : IconLinks.SOUND_ICON,
+                  height: 24.0,
+                  width: 24.0,
+                  color: Palette.greenE4A,
                 ),
-              ),
-              child: Icon(
-                isEnabled ? Icons.volume_up_rounded : Icons.volume_off_rounded,
-                color: Palette.white,
-                size: SizeConfig(context, 22).getProportionateScreenHeight,
-              ),
+                const SizedBox(width: 12.0),
+                Text(
+                  isEnabled ? "Вкл. уведомления" : "Выкл. уведомления",
+                  style: FontStyles.rubikP1(color: Palette.textBlack),
+                ),
+              ],
             ),
-            divider: const SizedBox.shrink(),
-            title: GoogleText(
-              isEnabled ? "Включить уведомления" : "Выключить уведомления",
-              fontWeight: FontWeight.bold,
-            ),
-            cachedChatsCubit: cachedChatsCubit,
           ),
         );
       },
