@@ -57,9 +57,11 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
+        setProperty("archivesBaseName", "INK-$versionName($versionCode)")
     }
 
     flavorDimensions "app"
+
     productFlavors {
         prod {
             dimension "app"
