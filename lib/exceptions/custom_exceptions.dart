@@ -1,4 +1,5 @@
-import 'package:ink_mobile/assets/constants.dart';
+
+import '../constants/error_messages.dart';
 
 //todo: снести всю иерархию классов
 

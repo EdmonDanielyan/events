@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ink_mobile/constants/error_messages.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/cubit/auth/sources/network.dart';
 import 'package:ink_mobile/cubit/auth/auth_state.dart';
@@ -31,7 +32,7 @@ class AuthCubit extends Cubit<AuthState> {
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       if (error.exception is UnknownErrorException) {
-        emitError((error.exception as UnknownErrorException).message);
+        emitError(ErrorMessages.AUTH_ERROR_MESSAGE);
       } else {
         emitError(error.msg);
       }

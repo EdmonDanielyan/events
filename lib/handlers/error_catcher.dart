@@ -1,4 +1,4 @@
-import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/error_messages.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/functions/errors.dart';
 import 'package:ink_mobile/handlers/error_handlers.dart';
