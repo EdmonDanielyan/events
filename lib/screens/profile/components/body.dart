@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
-import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
@@ -111,13 +110,21 @@ class Body extends StatelessWidget {
                   value: user.absence!.getAbsenceReasonText,
                 ),
               if (user.shiftMan != null)
-                BasicInfoRow(
-                  title: 'Сменщик',
-                  value: user.shiftMan!,
+                InkWell(
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    "/personal",
+                    arguments: {
+                      "id": user.shiftMan!.id,
+                    },
+                  ),
+                  child: BasicInfoRow(
+                    title: 'Сменщик',
+                    value: user.shiftMan!.fullName,
+                  ),
                 ),
               Diagnostics(logFile: logFile),
               ProfileSecuritySection(),
-
               /// todo AboutMyField
               // AboutMyField(user: user, scrollController: _scrollController,)
             ],
