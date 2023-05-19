@@ -1,4 +1,5 @@
 import 'package:ink_mobile/models/absence.dart';
+import 'package:ink_mobile/models/shift_man.dart';
 
 class UserProfileData {
   int id;
@@ -12,7 +13,7 @@ class UserProfileData {
   UserContacts? contacts;
   UserBasicInfo? basicInformation;
   Absence? absence;
-  String? shiftMan;
+  ShiftMan? shiftMan;
 
   UserProfileData(
       {required this.id,
@@ -41,7 +42,7 @@ class UserProfileData {
     UserAwards? awards,
     UserContacts? contacts,
     Absence? absence,
-    String? shiftMan,
+    ShiftMan? shiftMan,
     UserBasicInfo? basicInformation,
   }) {
     return UserProfileData(
@@ -83,9 +84,8 @@ class UserProfileData {
       absence: userData['absence'] != null
           ? Absence.fromMap(userData['absence'])
           : null,
-      // TODO: add shiftMan model
       shiftMan: userData['shift_man'] != null
-          ? userData['shift_man']['text']
+          ? ShiftMan.fromMap(userData['shift_man'])
           : null,
     );
   }
