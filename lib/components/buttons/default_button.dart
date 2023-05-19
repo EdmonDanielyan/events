@@ -13,6 +13,7 @@ class DefaultButton extends StatelessWidget {
   final Widget? suffixIcon;
   final double? height;
   final double? width;
+  final bool enabled;
 
   const DefaultButton({
     Key? key,
@@ -26,12 +27,13 @@ class DefaultButton extends StatelessWidget {
     this.suffixIcon,
     this.height,
     this.width,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: enabled ? onTap : null,
       child: Container(
         height: height,
         width: width,

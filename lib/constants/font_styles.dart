@@ -24,12 +24,14 @@ class FontStyles {
         fontSize: 14,
         color: color ?? Palette.textBlack,
         decoration: decoration,
+        height: 1.42
       );
 
   static rubikP2Medium({Color? color}) => GoogleFonts.rubik(
         fontWeight: FontWeight.w500,
         fontSize: 14,
         color: color ?? Palette.textBlack,
+        height: 1.42,
       );
 
   static rubikP3({Color? color}) => GoogleFonts.rubik(

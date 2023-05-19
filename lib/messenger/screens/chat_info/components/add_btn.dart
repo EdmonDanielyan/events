@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
@@ -15,30 +19,16 @@ class ChatInfoAddBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (onPressed != null) {
-          onPressed!(context);
-        }
-      },
-      child: ParticipantCard(
-        user: const User(),
-        avatarWidget: Container(
-          decoration: const BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.all(Radius.circular(25.0)),
-          ),
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 26.0,
-          ),
-        ),
-        title: const GoogleText(
-          "Добавить пользователя",
-          fontWeight: FontWeight.bold,
-        ),
-        cachedChatsCubit: cachedChatsCubit,
+    return DefaultButton(
+      onTap: () => onPressed?.call(context),
+      title: "Добавить участников",
+      borderColor: Palette.greenE4A,
+      textColor: Palette.greenE4A,
+      suffixIcon: SvgPicture.asset(
+        IconLinks.USER_ADD_ICON,
+        height: 20.0,
+        width: 20.0,
+        color: Palette.greenE4A,
       ),
     );
   }

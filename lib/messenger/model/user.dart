@@ -9,11 +9,13 @@ class User extends Equatable {
   final String name;
   final String avatarUrl;
   final Absence? absence;
+  final String? workPosition;
   const User({
     this.id = 0,
     this.name = '',
     this.avatarUrl = '',
     this.absence,
+    this.workPosition,
   });
 
   User copyWith({
@@ -21,12 +23,14 @@ class User extends Equatable {
     String? name,
     String? avatarUrl,
     Absence? absence,
+    String? workPosition,
   }) {
     return User(
       id: id ?? this.id,
       name: name ?? this.name,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       absence: absence ?? this.absence,
+      workPosition: workPosition ?? this.workPosition,
     );
   }
 
@@ -36,6 +40,7 @@ class User extends Equatable {
       'name': name,
       'avatarUrl': avatarUrl,
       'absence': absence,
+      'work_position': workPosition,
     };
   }
 
@@ -45,6 +50,7 @@ class User extends Equatable {
       name: map['name'] ?? '',
       avatarUrl: map['avatarUrl'] ?? '',
       absence: map['absence'] != null ? Absence.fromMap(map['absence']) : null,
+      workPosition: map['work_position'],
     );
   }
 
@@ -54,14 +60,17 @@ class User extends Equatable {
 
   factory User.fromUserProfileData(UserProfileData userData) {
     return User(
-        id: userData.id,
-        name: "${userData.name ?? ""} ${userData.lastName ?? ""}",
-        avatarUrl: userData.pathToAvatar ?? "",
-        absence: userData.absence);
+      id: userData.id,
+      name: "${userData.name ?? ""} ${userData.lastName ?? ""}",
+      avatarUrl: userData.pathToAvatar ?? "",
+      absence: userData.absence,
+      workPosition: userData.workPosition,
+    );
   }
 
   @override
-  String toString() => 'User(id: $id, name: $name, avatarUrl: $avatarUrl)';
+  String toString() =>
+      'User(id: $id, name: $name, avatarUrl: $avatarUrl, absence: ${absence?.reason ?? ""}, work position: $workPosition)';
 
   @override
   List<Object> get props => [id, name, avatarUrl];

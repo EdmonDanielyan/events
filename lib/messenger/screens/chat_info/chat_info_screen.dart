@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/bottom_sheet/bottom_sheet.dart';
 import 'package:ink_mobile/messenger/components/dismissible/custom_dismissible.dart';
@@ -72,20 +73,23 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
 
         List<User> participants = chat.participants;
         return Scaffold(
+          backgroundColor: Palette.white,
           appBar: ChatInfoAppBar(
             onEdit: chat.isOwner(widget.cachedChatsCubit.myId) && chat.isGroup
                 ? () => _onChatEdit(context, chat)
                 : null,
           ),
-          backgroundColor: const Color(0XFFF9F9F9),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: _horizontalPadding, vertical: 15.0),
-                  child: chat.isSingle
+          body: Padding(
+            padding: const EdgeInsets.only(
+              top: 32.0,
+              right: 20.0,
+              left: 20.0,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  chat.isSingle
                       ? CachedUserBuilder(
                           cachedUsersCubit: widget.cachedUsersCubit,
                           userId: chat
@@ -110,121 +114,93 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                           description: chat.description,
                           subDescription: "Участников: ${participants.length}",
                         ),
-                ),
-                const SizedBox(height: 20.0),
-                const ChatInfoDivider(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: _horizontalPadding,
-                    vertical: 5.0,
+                  const SizedBox(height: 32.0),
+                  NotificationsBtn(
+                    cachedChatsCubit: widget.cachedChatsCubit,
+                    toggleNotificationsChatsCubit: notificationsCubit,
+                    chatId: chat.id,
                   ),
-                  child: Column(
-                    children: [
-                      NotificationsBtn(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: const ChatInfoDivider(),
+                  ),
+                  ChatInfoBtn(
+                    title: "Очистить историю",
+                    color: const Color(0XFF5FB9CF),
+                    onTap: () => widget.onClean?.call(context, chat),
+                  ),
+                  if (chat.isGroup) ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: const ChatInfoDivider(),
+                    ),
+                    ChatInfoBtn(
+                      title: "Покинуть чат",
+                      color: Palette.redF50,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: _horizontalPadding),
+                      onTap: () => widget.onDelete?.call(context, chat),
+                    ),
+                  ],
+                  if (chat.isGroup) ...[
+                    const SizedBox(height: 32.0),
+                    Text(
+                      "Участники ${chat.participants.length}",
+                      style: FontStyles.rubikP1Medium(color: Palette.textBlack),
+                    ),
+                    if (chat.isOwner(widget.cachedChatsCubit.myId)) ...[
+                      const SizedBox(height: 16.0),
+                      ChatInfoAddBtn(
+                        onPressed: (_) =>
+                            widget.onAddUser?.call(context, chat),
                         cachedChatsCubit: widget.cachedChatsCubit,
-                        toggleNotificationsChatsCubit: notificationsCubit,
-                        chatId: chat.id,
                       ),
                     ],
-                  ),
-                ),
-                const ChatInfoDivider(),
-                const SizedBox(height: 20.0),
-                const ChatInfoDivider(),
-                ChatInfoBtn(
-                  title: "Очистить чат",
-                  color: const Color(0XFF5FB9CF),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: _horizontalPadding),
-                  onPressed: widget.onClean != null
-                      ? () => widget.onClean!(context, chat)
-                      : null,
-                ),
-                if (chat.isGroup) ...[
-                  const ChatInfoDivider(),
-                  ChatInfoBtn(
-                    title: "Покинуть чат",
-                    color: Palette.redF50,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: _horizontalPadding),
-                    onPressed: widget.onDelete != null
-                        ? () => widget.onDelete!(context, chat)
-                        : null,
-                  ),
-                ],
-                const ChatInfoDivider(),
-                const SizedBox(height: 20.0),
-                if (chat.isGroup) ...[
-                  const Padding(
-                    padding: EdgeInsets.only(left: _horizontalPadding),
-                    child: ChatInfoHeader("Участники"),
-                  ),
-                  const SizedBox(height: 20.0),
-                  const ChatInfoDivider(),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: _horizontalPadding, top: 10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (chat.isOwner(widget.cachedChatsCubit.myId)) ...[
-                          ChatInfoAddBtn(
-                            onPressed: widget.onAddUser != null
-                                ? (_) => widget.onAddUser!(context, chat)
-                                : null,
-                            cachedChatsCubit: widget.cachedChatsCubit,
-                          ),
-                        ],
-                        ListView.builder(
-                          itemCount: participants.length,
-                          shrinkWrap: true,
-                          controller: ScrollController(keepScrollOffset: false),
-                          itemBuilder: (context, index) {
-                            final _currentUser = participants[index];
-                            final isOwner = _currentUser.id == chat.ownerId;
+                    const SizedBox(height: 16.0),
+                    ListView.builder(
+                      itemCount: participants.length,
+                      shrinkWrap: true,
+                      controller: ScrollController(keepScrollOffset: false),
+                      itemBuilder: (context, index) {
+                        final _currentUser = participants[index];
+                        final isOwner = _currentUser.id == chat.ownerId;
 
-                            return CachedUserBuilder(
-                              userId: _currentUser.id,
-                              cachedUsersCubit: widget.cachedUsersCubit,
-                              builder: (context, state, user) {
-                                return CustomDismissible(
-                                  uniqueKey: ValueKey(_currentUser.id),
-                                  onDismissed: !isOwner &&
-                                          chat.ownerId ==
-                                              widget.cachedChatsCubit.myId
-                                      ? (_) {
-                                          if (widget.onRemoveParticipant !=
-                                              null) {
-                                            widget.onRemoveParticipant!(context,
-                                                user ?? _currentUser, chat);
-                                          }
-                                        }
-                                      : null,
-                                  child: GestureDetector(
-                                    onTap: () => widget.openUser(
-                                        (user ?? _currentUser).id,
-                                        false,
-                                        context),
-                                    child: ParticipantCard(
-                                      user: user ?? _currentUser,
-                                      trailing: isOwner ? "Создатель" : "",
-                                      onlineCubit: widget.onlineCubit,
-                                      cachedChatsCubit: widget.cachedChatsCubit,
-                                    ),
-                                  ),
-                                );
-                              },
+                        return CachedUserBuilder(
+                          userId: _currentUser.id,
+                          cachedUsersCubit: widget.cachedUsersCubit,
+                          builder: (context, state, user) {
+                            return CustomDismissible(
+                              uniqueKey: ValueKey(_currentUser.id),
+                              onDismissed: !isOwner &&
+                                  chat.ownerId ==
+                                      widget.cachedChatsCubit.myId
+                                  ? (_) {
+                                if (widget.onRemoveParticipant !=
+                                    null) {
+                                  widget.onRemoveParticipant!(context,
+                                      user ?? _currentUser, chat);
+                                }
+                              }
+                                  : null,
+                              child: InkWell(
+                                onTap: () => widget.openUser(
+                                    (user ?? _currentUser).id,
+                                    false,
+                                    context),
+                                child: ParticipantCard(
+                                  user: user ?? _currentUser,
+                                  onlineCubit: widget.onlineCubit,
+                                  cachedChatsCubit: widget.cachedChatsCubit,
+                                ),
+                              ),
                             );
                           },
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  ),
-                  const SizedBox(height: 2.0),
-                  const ChatInfoDivider(),
+                  ],
                 ],
-                const SizedBox(height: 20.0),
-              ],
+              ),
             ),
           ),
         );

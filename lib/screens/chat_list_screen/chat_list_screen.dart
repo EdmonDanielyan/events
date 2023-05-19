@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/components/app_bars/ink_app_bar.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/constants/aseets.dart';
@@ -13,6 +14,7 @@ import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/messenger/screens/chat/opener.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/chat_list_screen.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
+import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
 
 import '../../messenger/cubits/cached/chat_users_picker/chat_users_picker_cubit.dart';
@@ -71,38 +73,19 @@ class _ChatListScreenState extends State<ChatListScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: InkAppBarWithText(
+      appBar: InkAppBar(
         context,
         title: "Сообщения",
         actions: [
           IconButton(
             onPressed: () {
               createChat.setNew("");
-              CustomBottomSheet(
-                context: context,
-                child: UsersPickerScreen(
-                  submitTxtCubit: createChat,
-                  onChange: (users) {
-                    createChat.setNew(
-                      users.isEmpty
-                          ? ""
-                          : users.length > 1
-                              ? "Создать группу"
-                              : "Написать",
-                    );
-                  },
-                  onSubmit: (_context, users) {
-                    Navigator.of(_context).pop();
-                    _createChat(users, context);
-                  },
-                  onlineCubit: onlineCubit,
-                  cachedChatsCubit: chatsCubit,
-                ),
-              );
+              Navigator.pushNamed(context, MainRoutes.usersPickerScreenKey);
             },
             icon: SvgPicture.asset(EDIT_BTN_ICON, color: Colors.white),
           ),
         ],
+        leading: const SizedBox.shrink(),
       ),
       body: Column(
         children: [

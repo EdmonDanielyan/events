@@ -31,7 +31,7 @@ class _UsersPickerListState extends State<UsersPickerList> {
           controller: controller,
           itemBuilder: (context, index) {
             return Padding(
-              padding: const EdgeInsets.only(right: 5.0, bottom: 5.0),
+              padding: const EdgeInsets.only(bottom: 5.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
