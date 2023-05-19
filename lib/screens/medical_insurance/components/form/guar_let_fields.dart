@@ -38,6 +38,7 @@ class MedicalInsuranceGuarLetFields extends StatelessWidget {
             DateFunctions(passedDate: val).dayMonthYearNumbers();
       },
       descriptionText: "Крайний срок продления",
+      firstDate: DateTime.now(),
     );
   }
 }
