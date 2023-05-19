@@ -9,20 +9,10 @@ class BirthdayAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.topCenter,
-      margin: EdgeInsets.only(left: 15, top: 8, bottom: 8, right: 10),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, '/personal',
-              arguments: {'id': birthday.id});
-        },
-        child: CachedCircleAvatar(
-          url: birthday.pathToAvatar ?? "",
-          avatarWidth: SizeConfig(context, 55).getProportionateScreenHeight,
-          avatarHeight: SizeConfig(context, 55).getProportionateScreenHeight,
-        ),
-      ),
+    return CachedCircleAvatar(
+      url: birthday.pathToAvatar ?? "",
+      avatarWidth: SizeConfig(context, 55).getProportionateScreenHeight,
+      avatarHeight: SizeConfig(context, 55).getProportionateScreenHeight,
     );
   }
 }

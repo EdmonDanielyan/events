@@ -35,4 +35,5 @@ class IconLinks {
   static const String MUTE_ICON = "assets/svg/mute.svg";
   static const String FIRE_ICON = "assets/svg/fire.svg";
   static const String USER_ADD_ICON = "assets/svg/userAdd.svg";
+  static const String GIFT_ICON = "assets/svg/gift.svg";
 }

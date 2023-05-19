@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
@@ -42,46 +46,47 @@ class BirthdayTodayElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: index == 0 ? const EdgeInsets.symmetric(vertical: 3.0) : null,
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, '/personal',
+            arguments: {'id': birthday.id});
+      },
       child: IntrinsicHeight(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            BirthdayAvatar(birthday: birthday),
+            Badge(
+              child: BirthdayAvatar(birthday: birthday),
+              smallSize: 20.0,
+              largeSize: 20.0,
+              alignment: AlignmentDirectional(0.0, -4.0),
+              backgroundColor: Palette.blue9CF,
+              label: SvgPicture.asset(
+                IconLinks.CAKE_ICON_LINK,
+                color: Palette.white,
+                height: 12.0,
+                width: 12.0,
+              ),
+            ),
+            const SizedBox(
+              width: 12.0,
+            ),
             Expanded(
-              child: Container(
-                color: Colors.white,
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 5.0),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(bottom: 5),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/personal',
-                              arguments: {'id': birthday.id});
-                        },
-                        child: Text(
-                          birthday.name ?? '',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: SizeConfig(context, 14.0)
-                                .getProportionateScreenHeight,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                    BirthdayBody(birthday: birthday),
-                  ],
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    birthday.name ?? '',
+                    style: FontStyles.rubikP2Medium(color: Palette.textBlack),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  BirthdayBody(birthday: birthday),
+                ],
               ),
             ),
             if (birthday.id != JwtPayload.myId) ...[
+              const SizedBox(width: 12.0),
               BirthdayCongratulate(
                 onTap: () => _congratulate(context),
               ),

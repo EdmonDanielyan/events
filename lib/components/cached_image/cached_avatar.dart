@@ -40,8 +40,7 @@ class CachedCircleAvatar extends StatelessWidget {
                   },
                   imageBuilder: (context, image) {
                     return CircleAvatar(
-                      radius:
-                          SizeConfig(context, 30).getProportionateScreenHeight,
+                      radius: 48.0,
                       foregroundImage: image,
                     );
                   },

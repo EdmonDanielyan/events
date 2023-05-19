@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/palette.dart';
 
 import '../../../constants/aseets.dart';
 import '../../../localization/i18n/i18n.dart';
@@ -14,30 +16,19 @@ class BirthdayCongratulate extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(9.0),
-        margin: const EdgeInsets.only(right: 1.0),
-        color: Theme.of(context).primaryColor,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 12),
-            SizedBox(
-              width: SizeConfig(context, 35).getProportionateScreenHeight,
-              height: SizeConfig(context, 32.0).getProportionateScreenHeight,
-              child: SvgPicture.asset(GIFT_ICON_SVG, color: Colors.white),
-            ),
-            const SizedBox(height: 3.0),
-            Text(
-              localizationInstance.congratulate,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: SizeConfig(context, 10).getProportionateScreenHeight,
-              ),
-            ),
-            const SizedBox(height: 12),
-          ],
+        height: SizeConfig(context, 55).getProportionateScreenHeight,
+        width: SizeConfig(context, 55).getProportionateScreenHeight,
+        padding: EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+          color: Palette.transparent,
+          shape: BoxShape.circle,
+          border: Border.all(color: Palette.greenE4A),
         ),
-      ),
+        child: SvgPicture.asset(
+          IconLinks.GIFT_ICON,
+          color: Palette.greenE4A,
+        ),
+    ),
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 
 class BirthdayBody extends StatelessWidget {
@@ -7,29 +9,18 @@ class BirthdayBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.bottomLeft,
-      child: RichText(
-        text: TextSpan(
-          children: [
-            if (birthday.city != null && birthday.city!.trim().isNotEmpty) ...[
-              TextSpan(
-                text: birthday.city,
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-              ),
-              TextSpan(
-                text: '. ',
-                style: TextStyle(color: Colors.black),
-              ),
-            ],
-            TextSpan(
-              text: birthday.workPosition,
-              style: TextStyle(color: Colors.black),
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          birthday.workPosition ?? "",
+          style: FontStyles.rubikP3(color: Palette.textBlack50),
         ),
-      ),
+        Text(
+          "${birthday.city?.trim() ?? ""}",
+          style: FontStyles.rubikP3(color: Palette.textBlack50),
+        ),
+      ],
     );
   }
 }
