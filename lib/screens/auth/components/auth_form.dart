@@ -9,7 +9,12 @@ import 'auth_password_field.dart';
 
 class AuthForm extends StatelessWidget {
   final AuthCubit authCubit;
-  const AuthForm({Key? key, required this.authCubit}) : super(key: key);
+  final bool hasError;
+  const AuthForm({
+    Key? key,
+    required this.authCubit,
+    this.hasError = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +31,15 @@ class AuthForm extends StatelessWidget {
               labelStyle: FontStyles.rubikP2(color: Palette.textBlack50),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: Palette.text20Grey),
+                borderSide: BorderSide(color: hasError ? Palette.redF1C : Palette.text20Grey),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: Palette.text20Grey),
+                borderSide: BorderSide(color: hasError ? Palette.redF1C : Palette.text20Grey),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: Palette.text20Grey),
+                borderSide: BorderSide(color: hasError ? Palette.redF1C : Palette.text20Grey),
               ),
               fillColor: Colors.white,
               filled: true,
@@ -45,11 +50,12 @@ class AuthForm extends StatelessWidget {
             validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
             initialValue: AuthScreen.of(context).authCubit.login,
             onChanged: (login) {
+              authCubit.clearErrors();
               authCubit.login = login;
             },
           ),
           const SizedBox(height: 24.0),
-          AuthPasswordField(authCubit: authCubit),
+          AuthPasswordField(authCubit: authCubit, hasError: hasError,),
         ],
       ),
     );

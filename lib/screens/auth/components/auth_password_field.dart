@@ -10,9 +10,11 @@ import 'package:ink_mobile/screens/auth/auth_screen.dart';
 
 class AuthPasswordField extends StatefulWidget {
   final AuthCubit authCubit;
+  final bool hasError;
   const AuthPasswordField({
     Key? key,
     required this.authCubit,
+    this.hasError = false,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
 
     return TextFormField(
       onChanged: (value) {
+        widget.authCubit.clearErrors();
         widget.authCubit.password = value;
       },
       initialValue: AuthScreen.of(context).authCubit.password,
@@ -47,15 +50,15 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
         errorStyle: FontStyles.rubikP3Medium(color: Palette.redF1C),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: Palette.text20Grey),
+          borderSide: BorderSide(color: widget.hasError ? Palette.redF1C : Palette.text20Grey),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: Palette.text20Grey),
+          borderSide: BorderSide(color: widget.hasError ? Palette.redF1C : Palette.text20Grey),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: Palette.text20Grey),
+          borderSide: BorderSide(color: widget.hasError ? Palette.redF1C : Palette.text20Grey),
         ),
         fillColor: Colors.white,
         filled: true,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/loader/custom_circular_progress_indicator.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
 import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
@@ -18,8 +19,13 @@ import 'package:logging/logging.dart';
 
 class AuthButtons extends StatefulWidget {
   final GlobalKey<FormState> formKey;
+  final String? errorMessage;
 
-  const AuthButtons({Key? key, required this.formKey}) : super(key: key);
+  const AuthButtons({
+    Key? key,
+    required this.formKey,
+    this.errorMessage,
+  }) : super(key: key);
 
   @override
   State<AuthButtons> createState() => _AuthButtonsState();
@@ -59,10 +65,6 @@ class _AuthButtonsState extends State<AuthButtons> {
       }
     }).onError((FormatException e, s) {
       logger.severe('Error during auth', e, s);
-      SimpleCustomSnackbar(
-          context: context,
-          txt: e.message,
-          duration: const Duration(seconds: 10));
     });
   }
 
@@ -75,6 +77,13 @@ class _AuthButtonsState extends State<AuthButtons> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          if (widget.errorMessage != null) ...[
+            Text(
+              widget.errorMessage!,
+              style: FontStyles.rubikP3Medium(color: Palette.redF1C),
+            ),
+            const SizedBox(height: 20.0,),
+          ],
           btnWidget(context),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 32.0),
@@ -111,8 +120,7 @@ class _AuthButtonsState extends State<AuthButtons> {
               DefaultButton(
                 title: localizationInstance.registration,
                 onTap: () {
-                  launchUrl(
-                      'https://portal.irkutskoil.ru/login/?act=register');
+                  launchUrl('https://portal.irkutskoil.ru/login/?act=register');
                 },
                 buttonColor: Palette.transparent,
                 textColor: Palette.greenE4A,
