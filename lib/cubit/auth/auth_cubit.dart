@@ -6,6 +6,7 @@ import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/cubit/auth/sources/network.dart';
 import 'package:ink_mobile/cubit/auth/auth_state.dart';
 import 'package:dio/dio.dart';
+import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/setup.dart';
@@ -29,7 +30,11 @@ class AuthCubit extends Cubit<AuthState> {
       throw FormatException(localizationInstance.noConnectionError);
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
-      emitError(error.msg);
+      if (error.exception is UnknownErrorException) {
+        emitError((error.exception as UnknownErrorException).message);
+      } else {
+        emitError(error.msg);
+      }
       throw error.exception;
     } on Exception catch (_) {
       emitError(localizationInstance.unknownError);
@@ -39,6 +44,10 @@ class AuthCubit extends Cubit<AuthState> {
 
   void emitError(String errorMsg) {
     emitState(type: AuthStateType.ERROR, errorMessage: errorMsg);
+  }
+
+  void clearErrors() {
+    emitState(type: AuthStateType.LOADED, errorMessage: null);
   }
 
   emitState({required AuthStateType type, String? errorMessage}) {
