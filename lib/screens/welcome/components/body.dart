@@ -31,6 +31,7 @@ class _BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
     return CustomLayoutBuilder(
       builder: (context, constraints, isTablet) {
+        bool isIOS = defaultTargetPlatform == TargetPlatform.iOS;
         return Background(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -69,40 +70,32 @@ class _BodyState extends State<Body> {
                         textColor: Palette.white,
                       ),
                       const SizedBox(height: 20.0),
-
-                      defaultTargetPlatform == TargetPlatform.iOS?
                       DefaultButton(
-                        title: 'Инструкция по входу',
-                        onTap: () {
-                          launchUrl(
-                              UrlsConfig.signInInstructionUrl,
-                              formatUrl: false);
-                        },
-                        textColor: Palette.white,
-                        borderColor: Palette.white,
-                      )
-                      : DefaultButton(
-                        title: _strings.registration,
-                        onTap: () {
-                          launchUrl(
-                              'https://portal.irkutskoil.ru/login/?act=register');
-                        },
-                        isTablet: isTablet,
-                        buttonColor: Palette.transparent,
+                        title: isIOS
+                            ? _strings.signInInstructions
+                            : _strings.registration,
+                        onTap: () => isIOS
+                            ? launchUrl(UrlsConfig.signInInstructionUrl,
+                            formatUrl: false)
+                            : launchUrl(
+                            'https://portal.irkutskoil.ru/login/?act=register'),
+                        buttonColor: isIOS ? null : Palette.transparent,
                         textColor: Palette.white,
                         borderColor: Palette.white,
                       ),
                       const SizedBox(height: 24.0),
-                      if(defaultTargetPlatform != TargetPlatform.iOS) ...[
-                        DefaultLinkButton(link: UrlsConfig.signInInstructionUrl),
+                      if (isIOS) ...[
+                        DefaultLinkButton(
+                            link: UrlsConfig.signInInstructionUrl),
                         SizedBox(height: 10.0),
                       ],
-
                       DefaultLinkButton(
                         txt: _strings.confPolicy,
                         link: ImportantUrls.policyConf,
                       ),
-                      SizedBox(height: 10.0,),
+                      SizedBox(
+                        height: 10.0,
+                      ),
                       Stack(
                         alignment: AlignmentDirectional.center,
                         children: [

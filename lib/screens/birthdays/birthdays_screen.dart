@@ -4,6 +4,8 @@ import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_cubit.dart';
 import 'package:ink_mobile/cubit/birthdays/birthdays_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
@@ -25,7 +27,7 @@ class BirthdaysScreen extends StatefulWidget {
 }
 
 class _BirthdaysScreenState extends State<BirthdaysScreen> {
-  final uiCuibt = getIt<BirthdaysCubit>();
+  final uiCubit = getIt<BirthdaysCubit>();
 
   void _setUsersToCache(BirthdaysState state) {
     List<User> users = [];
@@ -52,7 +54,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
   @override
   void initState() {
     super.initState();
-    uiCuibt.load();
+    uiCubit.load();
   }
 
   @override
@@ -60,6 +62,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
     final _strings = localizationInstance;
 
     return Scaffold(
+      backgroundColor: Palette.white,
       appBar: InkAppBarWithText(
         context,
         title: _strings.birthdays,
@@ -70,7 +73,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
             _setUsersToCache(state);
           }
         },
-        bloc: uiCuibt,
+        bloc: uiCubit,
         builder: (context, state) {
           switch (state.type) {
             case (BirthdaysStateType.EMPTY):
@@ -88,64 +91,75 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
 
             case (BirthdaysStateType.LOADED):
               {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 25),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                            bottom:
-                                BorderSide(width: 1, color: Color(0xFFE5E5E5)),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 8,
-                                child: Text(
-                                  _strings.birthdays,
-                                  style: TextStyle(
-                                    fontSize: SizeConfig(context, 24.0)
-                                        .getProportionateScreenHeight,
-                                    fontWeight: FontWeight.bold,
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 32.0,
+                    horizontal: 20.0,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /* Дни рождения сегодня*/
+                        state.birthdaysToday!.length > 0
+                            ? BirthdaysListViewBuilder(
+                                title: RichText(
+                                  text: TextSpan(
+                                    style: FontStyles.rubikH4(),
+                                    children: [
+                                      TextSpan(
+                                        text: _strings.congratulate_people,
+                                        style: FontStyles.rubikH4(
+                                            color: Palette.textBlack),
+                                      ),
+                                      TextSpan(
+                                        text: _strings.birthday_people,
+                                        style: FontStyles.rubikH4(
+                                            color: Palette.blue9CF),
+                                      ),
+                                    ],
                                   ),
-                                )),
-                            Expanded(
-                              flex: 1,
-                              child: Image.asset("assets/images/balloon.png"),
-                            )
-                          ],
-                        ),
-                      ),
-                      /* Дни рождения сегодня*/
-                      state.birthdaysToday!.length > 0
-                          ? BirthdaysListViewBuilder(
-                              title: _strings.today.toUpperCase(),
-                              itemCount: state.birthdaysToday!.length,
-                              itemBuilder: (index) {
-                                return BirthdayTodayElement(
-                                  index: index,
-                                  birthday: state.birthdaysToday![index],
-                                );
-                              },
-                            )
-                          : const SizedBox.shrink(),
-                      /* Дни рождения в ближайшие дни*/
-                      state.birthdaysOther!.length > 0
-                          ? BirthdaysListViewBuilder(
-                              title: _strings.inComingDays.toUpperCase(),
-                              itemCount: state.birthdaysOther!.length,
-                              itemBuilder: (index) {
-                                return BirthdayOtherDaysElement(
-                                  birthday: state.birthdaysOther![index],
-                                );
-                              },
-                            )
-                          : const SizedBox.shrink(),
-                    ],
+                                ),
+                                itemCount: state.birthdaysToday!.length,
+                                itemBuilder: (index) {
+                                  return BirthdayTodayElement(
+                                    index: index,
+                                    birthday: state.birthdaysToday![index],
+                                  );
+                                },
+                                divider: Divider(
+                                  thickness: 1,
+                                  height: 64.0,
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                        /* Дни рождения в ближайшие дни*/
+                        if (uiCubit.hasBirthdaysSoon) ...[
+                          Text(
+                            _strings.inComingDays,
+                            style: FontStyles.rubikH4(color: Palette.textBlack),
+                          ),
+                          const SizedBox(
+                            height: 16.0,
+                          ),
+                          if (state.firstDayBirthdays?.isNotEmpty == true)
+                            soonBirthdaysList(
+                              birthdays: state.firstDayBirthdays!,
+                              needDivider: true,
+                            ),
+                          if (state.secondDayBirthdays?.isNotEmpty == true)
+                            soonBirthdaysList(
+                              birthdays: state.secondDayBirthdays!,
+                              needDivider: true,
+                            ),
+                          if (state.thirdDayBirthdays?.isNotEmpty == true)
+                            soonBirthdaysList(
+                              birthdays: state.thirdDayBirthdays!,
+                              needDivider: false,
+                            ),
+                        ],
+                      ],
+                    ),
                   ),
                 );
               }
@@ -158,7 +172,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
             case (BirthdaysStateType.ERROR):
               {
                 return ErrorRefreshButton(
-                  onTap: () => uiCuibt.load(),
+                  onTap: () => uiCubit.load(),
                   text: state.errorMessage!,
                 );
               }
@@ -166,6 +180,28 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
         },
       ),
       bottomNavigationBar: const NewBottomNavBar(),
+    );
+  }
+
+  Widget soonBirthdaysList(
+      {required List<BirthdayData> birthdays, required bool needDivider}) {
+    return BirthdaysListViewBuilder(
+      title: Text(
+        birthdays.first.birthdayString ?? "",
+        style: FontStyles.rubikP1Medium(color: Palette.greenE4A),
+      ),
+      itemCount: birthdays.length,
+      itemBuilder: (index) {
+        return BirthdayOtherDaysElement(
+          birthday: birthdays[index],
+        );
+      },
+      divider: needDivider
+          ? Divider(
+              thickness: 1,
+              height: 48.0,
+            )
+          : const SizedBox.shrink(),
     );
   }
 }

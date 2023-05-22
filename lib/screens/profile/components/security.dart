@@ -37,6 +37,7 @@ class _ProfileSecuritySectionState extends State<ProfileSecuritySection> {
             child: InkWell(
               onTap: () => Navigator.of(context).pushNamed("/set_pin"),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     _strings.setPinCode,

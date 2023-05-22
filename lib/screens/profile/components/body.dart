@@ -84,7 +84,7 @@ class Body extends StatelessWidget {
     );
   }
 
-  Widget getLoadedStateWidget(context, ProfileState state) {
+  Widget getLoadedStateWidget(BuildContext context, ProfileState state) {
     final ScrollController _scrollController = ScrollController();
     UserProfileData user = state.data!;
     final logFile = ProfileScreen.of(context).widget.logFile;
@@ -124,6 +124,7 @@ class Body extends StatelessWidget {
                   ),
                 ),
               Diagnostics(logFile: logFile),
+              if (state.type == ProfileStateType.LOADED)
               ProfileSecuritySection(),
               /// todo AboutMyField
               // AboutMyField(user: user, scrollController: _scrollController,)

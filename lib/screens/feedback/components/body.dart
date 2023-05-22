@@ -14,6 +14,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   int currentIndex = 0;
+  final pageController = PageController();
 
   bool get isFirstPageActive => currentIndex == 0;
 
@@ -27,9 +28,16 @@ class _BodyState extends State<Body> {
           FeedbackNavigationHeader(
             askQuestionColor: isFirstPageActive ? Palette.textBlack : Palette.text20Grey,
             answersColor: isFirstPageActive ? Palette.text20Grey : Palette.textBlack,
+            onTap: (index) {
+              setState(() {
+                currentIndex = index;
+                pageController.jumpToPage(currentIndex);
+              });
+            },
           ),
           Expanded(
             child: PageView(
+              controller: pageController,
               onPageChanged: (index) {
                 setState(() {
                   currentIndex = index;

@@ -26,7 +26,7 @@ class ChatBody extends StatelessWidget {
             text: title,
             maxLines: 1,
             term: highlightValue,
-            textStyle: FontStyles.rubikP2(color: Palette.textBlack50),
+            textStyle: FontStyles.rubikP2(color: Palette.greenE4A),
             strutStyle: const StrutStyle(forceStrutHeight: true),
             textStyleHighlight: FontStyles.rubikP2(color: Palette.greenE4A),
             overflow: TextOverflow.ellipsis,
