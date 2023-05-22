@@ -33,6 +33,7 @@ class _NewBottomNavBarState extends State<NewBottomNavBar>
       bloc: _cubit,
       builder: (BuildContext context, int currentIndex) {
         return BottomNavigationBar(
+          backgroundColor: Palette.white,
           currentIndex: currentIndex,
           selectedItemColor:
               widget.showActive ? Palette.greenE4A : Palette.textBlack50,
