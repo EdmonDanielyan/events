@@ -4,11 +4,13 @@ class BirthdaysListViewBuilder extends StatelessWidget {
   final Widget? title;
   final itemCount;
   final Widget Function(int) itemBuilder;
+  final Widget divider;
   const BirthdaysListViewBuilder({
     Key? key,
     required this.title,
     required this.itemCount,
     required this.itemBuilder,
+    required this.divider,
   }) : super(key: key);
 
   @override
@@ -30,10 +32,7 @@ class BirthdaysListViewBuilder extends StatelessWidget {
               children: [
                 itemBuilder(index),
                 index == (itemCount - 1)
-                    ? Divider(
-                        thickness: 1,
-                  height: 64.0,
-                      )
+                    ? divider
                     : const SizedBox(
                         height: 16.0,
                       )

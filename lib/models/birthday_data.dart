@@ -7,16 +7,19 @@ class BirthdayData {
   String? name;
   String? workPosition;
   String? city;
-  String? birthday;
+  DateTime? birthday;
+  String? birthdayString;
   String? pathToAvatar;
 
-  BirthdayData(
-      {required this.id,
-      required this.name,
-      required this.workPosition,
-      required this.city,
-      this.pathToAvatar,
-      this.birthday});
+  BirthdayData({
+    required this.id,
+    required this.name,
+    required this.workPosition,
+    required this.city,
+    this.pathToAvatar,
+    this.birthdayString,
+    this.birthday,
+  });
 
   factory BirthdayData.fromResponse(UserProperties userData) {
     return BirthdayData(
@@ -24,7 +27,8 @@ class BirthdayData {
         name: "${userData.lastName ?? ""} ${userData.name ?? ""}".trim(),
         workPosition: userData.workPosition,
         city: userData.workCity,
-        birthday: userData.birthdayString,
+        birthday: userData.birthday,
+        birthdayString: userData.birthdayString,
         pathToAvatar: userData.avatar);
   }
 }

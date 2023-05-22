@@ -131,7 +131,7 @@ class ChatCard extends StatelessWidget {
                         chat.messages.isNotEmpty ? chat.messages.last.body : "",
                         title: chat.isGroup && chat.messages.isNotEmpty
                             ? isByMe(chat.messages.last)
-                                ? "Я:"
+                                ? "Вы:"
                                 : "${chat.messages.last.owner.name}:"
                             : "",
                         highlightValue: highlightValue,

@@ -27,7 +27,7 @@ class BirthdaysScreen extends StatefulWidget {
 }
 
 class _BirthdaysScreenState extends State<BirthdaysScreen> {
-  final uiCuibt = getIt<BirthdaysCubit>();
+  final uiCubit = getIt<BirthdaysCubit>();
 
   void _setUsersToCache(BirthdaysState state) {
     List<User> users = [];
@@ -54,7 +54,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
   @override
   void initState() {
     super.initState();
-    uiCuibt.load();
+    uiCubit.load();
   }
 
   @override
@@ -73,7 +73,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
             _setUsersToCache(state);
           }
         },
-        bloc: uiCuibt,
+        bloc: uiCubit,
         builder: (context, state) {
           switch (state.type) {
             case (BirthdaysStateType.EMPTY):
@@ -114,8 +114,8 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
                                       ),
                                       TextSpan(
                                         text: _strings.birthday_people,
-                                        style:
-                                        FontStyles.rubikH4(color: Palette.blue9CF),
+                                        style: FontStyles.rubikH4(
+                                            color: Palette.blue9CF),
                                       ),
                                     ],
                                   ),
@@ -127,23 +127,37 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
                                     birthday: state.birthdaysToday![index],
                                   );
                                 },
+                                divider: Divider(
+                                  thickness: 1,
+                                  height: 64.0,
+                                ),
                               )
                             : const SizedBox.shrink(),
                         /* Дни рождения в ближайшие дни*/
-                        state.birthdaysOther!.length > 0
-                            ? BirthdaysListViewBuilder(
-                                title: Text(
-                                    _strings.inComingDays,
-                                  style: FontStyles.rubikH4(color: Palette.textBlack),
-                                ),
-                                itemCount: state.birthdaysOther!.length,
-                                itemBuilder: (index) {
-                                  return BirthdayOtherDaysElement(
-                                    birthday: state.birthdaysOther![index],
-                                  );
-                                },
-                              )
-                            : const SizedBox.shrink(),
+                        if (uiCubit.hasBirthdaysSoon) ...[
+                          Text(
+                            _strings.inComingDays,
+                            style: FontStyles.rubikH4(color: Palette.textBlack),
+                          ),
+                          const SizedBox(
+                            height: 16.0,
+                          ),
+                          if (state.firstDayBirthdays?.isNotEmpty == true)
+                            soonBirthdaysList(
+                              birthdays: state.firstDayBirthdays!,
+                              needDivider: true,
+                            ),
+                          if (state.secondDayBirthdays?.isNotEmpty == true)
+                            soonBirthdaysList(
+                              birthdays: state.secondDayBirthdays!,
+                              needDivider: true,
+                            ),
+                          if (state.thirdDayBirthdays?.isNotEmpty == true)
+                            soonBirthdaysList(
+                              birthdays: state.thirdDayBirthdays!,
+                              needDivider: false,
+                            ),
+                        ],
                       ],
                     ),
                   ),
@@ -158,7 +172,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
             case (BirthdaysStateType.ERROR):
               {
                 return ErrorRefreshButton(
-                  onTap: () => uiCuibt.load(),
+                  onTap: () => uiCubit.load(),
                   text: state.errorMessage!,
                 );
               }
@@ -166,6 +180,28 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
         },
       ),
       bottomNavigationBar: const NewBottomNavBar(),
+    );
+  }
+
+  Widget soonBirthdaysList(
+      {required List<BirthdayData> birthdays, required bool needDivider}) {
+    return BirthdaysListViewBuilder(
+      title: Text(
+        birthdays.first.birthdayString ?? "",
+        style: FontStyles.rubikP1Medium(color: Palette.greenE4A),
+      ),
+      itemCount: birthdays.length,
+      itemBuilder: (index) {
+        return BirthdayOtherDaysElement(
+          birthday: birthdays[index],
+        );
+      },
+      divider: needDivider
+          ? Divider(
+              thickness: 1,
+              height: 48.0,
+            )
+          : const SizedBox.shrink(),
     );
   }
 }

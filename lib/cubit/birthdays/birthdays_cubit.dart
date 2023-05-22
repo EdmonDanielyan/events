@@ -12,16 +12,22 @@ import 'package:dio/dio.dart';
 import 'package:ink_mobile/setup.dart';
 
 import 'package:ink_mobile/extensions/birthday_success.dart';
+import 'package:ink_mobile/utils/date_comparison_util.dart';
 
 @LazySingleton()
 class BirthdaysCubit extends Cubit<BirthdaysState> {
   BirthdaysCubit() : super(BirthdaysState(type: BirthdaysStateType.LOADING));
+
+  List<BirthdayData>? firstDayBirthdays;
+  List<BirthdayData>? secondDayBirthdays;
+  List<BirthdayData>? thirdDayBirthdays;
 
   Future<void> load() async {
     try {
       await Token.setNewTokensIfExpired();
       final response = await getIt<BirthdaysNetworkRequest>()();
       final mapResponse = response.mapResponse();
+      sortBirthdays(mapResponse.birthdaysOther);
       emitSuccess(mapResponse.birthdaysToday, mapResponse.birthdaysOther);
     } on DioError catch (e) {
       final _errorHandler = DioErrorHandler(e: e);
@@ -44,6 +50,9 @@ class BirthdaysCubit extends Cubit<BirthdaysState> {
         type: BirthdaysStateType.LOADED,
         birthdaysToday: birthdaysToday,
         birthdaysOther: birthdaysOther,
+        firstDayBirthdays: firstDayBirthdays,
+        secondDayBirthdays: secondDayBirthdays,
+        thirdDayBirthdays: thirdDayBirthdays,
       ),
     );
   }
@@ -75,4 +84,32 @@ class BirthdaysCubit extends Cubit<BirthdaysState> {
   void refresh() {
     emit(BirthdaysState(type: BirthdaysStateType.LOADING));
   }
+
+  void sortBirthdays(List<BirthdayData> birthdays) {
+    List<DateTime?> birthdaysDates = birthdays.map((e) => e.birthday).toList();
+    if (birthdaysDates.every((birthdaysDate) => birthdaysDate != null)) {
+      final minBirthdayDate = birthdaysDates.reduce((current, next) =>
+          DateOnlyCompare().compareDateWithoutYear(current!, next!)
+              ? current
+              : next)!;
+      firstDayBirthdays = birthdays
+          .where((birthday) => DateOnlyCompare()
+              .isSameDateWithoutYear(birthday.birthday!, minBirthdayDate))
+          .toList();
+      secondDayBirthdays = birthdays
+          .where((birthday) => DateOnlyCompare().isSameDateWithoutYear(
+              birthday.birthday!, minBirthdayDate.add(Duration(days: 1))))
+          .toList();
+      thirdDayBirthdays = birthdays
+          .where((birthday) => DateOnlyCompare().isSameDateWithoutYear(
+              birthday.birthday!, minBirthdayDate.add(Duration(days: 2))))
+          .toList();
+      print("end");
+    }
+  }
+
+  bool get hasBirthdaysSoon =>
+      state.firstDayBirthdays != null ||
+      state.secondDayBirthdays != null ||
+      state.thirdDayBirthdays != null;
 }

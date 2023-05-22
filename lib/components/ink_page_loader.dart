@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/palette.dart';
 
 import 'loader/awesome_loader.dart';
 
@@ -11,7 +12,7 @@ class InkPageLoader extends StatelessWidget {
       child: SizedBox.square(
         dimension: 50.0,
         child: AwesomeLoader(
-          color: Theme.of(context).primaryColor,
+          color: Palette.greenE4A,
         ),
       ),
     );
