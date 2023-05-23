@@ -4,14 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
-import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/notifications_disabled_chats/notifications_disabled_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/notifications_disabled_chats/notifications_disabled_chats_state.dart';
-import 'package:ink_mobile/messenger/model/user.dart';
-import 'package:ink_mobile/messenger/screens/chat_info/components/participant_card.dart';
-
-import '../../../functions/size_config.dart';
 
 class NotificationsBtn extends StatelessWidget {
   final void Function(BuildContext)? onPressed;

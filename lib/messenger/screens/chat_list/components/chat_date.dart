@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/date_functions.dart';
+import 'package:intl/intl.dart';
 
 class ChatDate extends StatelessWidget {
   final DateTime dateTime;
@@ -10,7 +11,7 @@ class ChatDate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      DateFunctions(dateTime).minutesHoursDayMonthYearHuman(),
+      DateFormat("dd.MM").format(dateTime),
       style: FontStyles.rubikP3(color: Palette.textBlack50),
     );
   }

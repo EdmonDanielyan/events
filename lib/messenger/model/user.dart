@@ -10,12 +10,14 @@ class User extends Equatable {
   final String avatarUrl;
   final Absence? absence;
   final String? workPosition;
+  final DateTime? birthday;
   const User({
     this.id = 0,
     this.name = '',
     this.avatarUrl = '',
     this.absence,
     this.workPosition,
+    this.birthday,
   });
 
   User copyWith({
@@ -24,6 +26,7 @@ class User extends Equatable {
     String? avatarUrl,
     Absence? absence,
     String? workPosition,
+    DateTime? birthday,
   }) {
     return User(
       id: id ?? this.id,
@@ -31,6 +34,7 @@ class User extends Equatable {
       avatarUrl: avatarUrl ?? this.avatarUrl,
       absence: absence ?? this.absence,
       workPosition: workPosition ?? this.workPosition,
+      birthday: birthday ?? this.birthday,
     );
   }
 
@@ -41,6 +45,7 @@ class User extends Equatable {
       'avatarUrl': avatarUrl,
       'absence': absence,
       'work_position': workPosition,
+      'birthday': birthday.toString(),
     };
   }
 
@@ -51,6 +56,7 @@ class User extends Equatable {
       avatarUrl: map['avatarUrl'] ?? '',
       absence: map['absence'] != null ? Absence.fromMap(map['absence']) : null,
       workPosition: map['work_position'],
+      birthday: map['birthday'],
     );
   }
 
@@ -70,7 +76,7 @@ class User extends Equatable {
 
   @override
   String toString() =>
-      'User(id: $id, name: $name, avatarUrl: $avatarUrl, absence: ${absence?.reason ?? ""}, work position: $workPosition)';
+      'User(id: $id, name: $name, avatarUrl: $avatarUrl, absence: ${absence?.reason ?? ""}, work position: $workPosition), birthday: $birthday';
 
   @override
   List<Object> get props => [id, name, avatarUrl];
