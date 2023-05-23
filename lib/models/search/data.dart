@@ -1,3 +1,5 @@
+import 'package:ink_mobile/models/absence.dart';
+
 abstract class SearchData {
   int id;
 
@@ -27,11 +29,15 @@ class UsersSearchData extends SearchData {
   String fullName;
   String avatar;
   String workPosition;
+  Absence? absence;
+  DateTime? birthday;
 
   UsersSearchData({
     required id,
     required this.fullName,
     required this.avatar,
     required this.workPosition,
+    this.absence,
+    this.birthday,
   }) : super(id: id);
 }

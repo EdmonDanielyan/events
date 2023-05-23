@@ -18,6 +18,20 @@ class ChatBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return RichText(
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+      text: TextSpan(children: [
+        TextSpan(
+          text: "$title ",
+          style: FontStyles.rubikP2(color: Palette.greenE4A),
+        ),
+        TextSpan(
+          text: body,
+          style: FontStyles.rubikP2(color: Palette.textBlack50),
+        ),
+      ]),
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

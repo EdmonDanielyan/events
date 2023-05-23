@@ -105,53 +105,43 @@ class ChatCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: ChatName(
-                        chatName ?? chat.name,
-                        highlightValue: highlightValue,
-                      ),
-                    ),
-                    const SizedBox(width: 8.0),
-                    if (chat.messages.isNotEmpty) ...[
-                      ChatDate(chat.messages.last.createdAt),
-                    ],
-                  ],
+                ChatName(
+                  chatName ?? chat.name,
+                  highlightValue: highlightValue,
                 ),
                 const SizedBox(
                   height: 4.0,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: ChatBody(
-                        chat.messages.isNotEmpty ? chat.messages.last.body : "",
-                        title: chat.isGroup && chat.messages.isNotEmpty
-                            ? isByMe(chat.messages.last)
-                                ? "Вы:"
-                                : "${chat.messages.last.owner.name}:"
-                            : "",
-                        highlightValue: highlightValue,
-                      ),
-                    ),
-                    const SizedBox(width: 3.0),
-                    if (notReadMsgs > 0) NotReadBubbble(notReadMsgs),
-                    if (notReadMsgs < 1 && chat.messages.isNotEmpty)
-                      MessageTick(
-                        chat.messages.last.status,
-                        isRead: chat.messages.last.isReadByOthers,
-                        type: chat.messages.last.type,
-                        readColor: Palette.blue9CF,
-                      ),
-                  ],
+                ChatBody(
+                  chat.messages.isNotEmpty ? chat.messages.last.body : "",
+                  title: chat.isGroup && chat.messages.isNotEmpty
+                      ? isByMe(chat.messages.last)
+                          ? "Вы:"
+                          : "${chat.messages.last.owner.name}:"
+                      : "",
+                  highlightValue: highlightValue,
                 ),
                 const SizedBox(height: 12.0),
                 const ChatDivider(),
               ],
             ),
+          ),
+          const SizedBox(width: 8.0,),
+          Column(
+            children: [
+              if (chat.messages.isNotEmpty) ...[
+                ChatDate(chat.messages.last.createdAt),
+              ],
+              const SizedBox(height: 8.0,),
+              if (notReadMsgs > 0) NotReadBubbble(notReadMsgs),
+              if (notReadMsgs < 1 && chat.messages.isNotEmpty)
+                MessageTick(
+                  chat.messages.last.status,
+                  isRead: chat.messages.last.isReadByOthers,
+                  type: chat.messages.last.type,
+                  readColor: Palette.blue9CF,
+                ),
+            ],
           ),
         ],
       ),

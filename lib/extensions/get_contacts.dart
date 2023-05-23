@@ -2,6 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
+import 'package:ink_mobile/models/absence.dart';
 import 'package:main_api_client/model/get_contacts.dart';
 
 extension GetContactsExt on Response<GetContacts> {
@@ -22,8 +23,13 @@ extension GetContactsExt on Response<GetContacts> {
         id: item['id'],
         name: "$lastName $name".trim(),
         avatarUrl: item["photo"] ?? "",
-        absence: item["absence"],
+        absence: item["absence"] != null
+            ? Absence.fromMap(item["absence"])
+            : null,
         workPosition: item["work_position"],
+        birthday: item["birthday"] != null
+            ? DateTime.tryParse(item["birthday"])
+            : null,
       );
 
       if (hideIds != null && hideIds.contains(user.id)) continue;
