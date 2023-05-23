@@ -9,15 +9,22 @@ import '../../../messenger/functions/size_config.dart';
 
 class BirthdayCongratulate extends StatelessWidget {
   final void Function()? onTap;
-  const BirthdayCongratulate({Key? key, this.onTap}) : super(key: key);
+  final double? height;
+  final double? width;
+  const BirthdayCongratulate({
+    Key? key,
+    this.onTap,
+    this.height,
+    this.width,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: SizeConfig(context, 55).getProportionateScreenHeight,
-        width: SizeConfig(context, 55).getProportionateScreenHeight,
+        height: height ?? SizeConfig(context, 55).getProportionateScreenHeight,
+        width: width ?? SizeConfig(context, 55).getProportionateScreenHeight,
         padding: EdgeInsets.all(12.0),
         decoration: BoxDecoration(
           color: Palette.transparent,
@@ -28,7 +35,7 @@ class BirthdayCongratulate extends StatelessWidget {
           IconLinks.GIFT_ICON,
           color: Palette.greenE4A,
         ),
-    ),
+      ),
     );
   }
 }

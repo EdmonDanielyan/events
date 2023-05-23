@@ -5,6 +5,8 @@ import 'package:ink_mobile/components/highlight_text.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/models/search/data.dart';
+import 'package:ink_mobile/screens/birthdays/components/congratulate.dart';
+import 'package:ink_mobile/utils/date_comparison_util.dart';
 
 class SearchItemUser extends StatelessWidget {
   final UsersSearchData user;
@@ -39,12 +41,14 @@ class SearchItemUser extends StatelessWidget {
                       user.fullName,
                       overflow: TextOverflow.clip,
                       maxLines: 2,
-                      defaultStyle: FontStyles.rubikP2Medium(color: Palette.textBlack),
+                      defaultStyle:
+                          FontStyles.rubikP2Medium(color: Palette.textBlack),
                       caseSensitive: false,
                       patternList: [
                         EasyRichTextPattern(
                           targetString: RegExp.escape(query),
-                          style: FontStyles.rubikP2Medium(color: Palette.blue9CF),
+                          style:
+                              FontStyles.rubikP2Medium(color: Palette.blue9CF),
                         ),
                       ],
                     ),
@@ -53,14 +57,25 @@ class SearchItemUser extends StatelessWidget {
                       HighlightText(
                         txt: user.workPosition,
                         highlightTxt: query,
-                        textStyle: FontStyles.rubikP3(color: Palette.textBlack50),
+                        textStyle:
+                            FontStyles.rubikP3(color: Palette.textBlack50),
                         maxLines: 4,
                       ),
                     ],
                   ],
                 ),
               ),
-            )
+            ),
+            if (user.birthday != null &&
+                DateOnlyCompare()
+                    .isSameDateWithoutYear(user.birthday!, DateTime.now()))
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: BirthdayCongratulate(
+                  height: 44.0,
+                  width: 44.0,
+                ),
+              ),
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:ink_mobile/models/absence.dart';
 import 'package:ink_mobile/models/search/data.dart';
 
 class SearchModel {
@@ -45,6 +46,12 @@ class SearchModelListView {
           fullName: "${user['lastname'] ?? ""} ${user['name'] ?? ""}".trim(),
           avatar: user["avatar"] ?? "",
           workPosition: user["work_position"] ?? "",
+          absence: user["absence"] != null
+              ? Absence.fromMap(user["avatar"])
+              : null,
+          birthday: user["birthday"] != null
+              ? DateTime.tryParse(user["birthday"])
+              : null,
         ),
       );
     });
