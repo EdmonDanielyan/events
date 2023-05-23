@@ -194,8 +194,8 @@ Future<_i1.GetIt> $initGetIt(
     environmentFilter,
   );
   final tokenDataInjectorModule = _$TokenDataInjectorModule();
-  final logFilePathInjector = _$LogFilePathInjector();
   final testLogFilePathInjector = _$TestLogFilePathInjector();
+  final logFilePathInjector = _$LogFilePathInjector();
   gh.factory<_i3.AnnouncementCubit>(() => _i3.AnnouncementCubit());
   gh.factoryParam<_i4.AnnouncementsDetailNetworkRequest, int?, dynamic>((
     announcementId,
@@ -417,33 +417,6 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i104.StaffMovementsNetworkRequest>(
       _i104.StaffMovementsNetworkRequest());
   gh.factory<String>(
-    () => tokenDataInjectorModule.messengerAuthPassword,
-    instanceName: 'messengerAuthPassword',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.messengerAuthLogin,
-    instanceName: 'messengerAuthLogin',
-  );
-  await gh.factoryAsync<String>(
-    () => logFilePathInjector.logFile,
-    instanceName: 'logFile',
-    registerFor: {
-      _test,
-      _prod,
-      _dev,
-    },
-    preResolve: true,
-  );
-  gh.factory<String>(
-    () => testLogFilePathInjector.logFile,
-    instanceName: 'logFile',
-    registerFor: {_unitTest},
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.userId,
-    instanceName: 'userId',
-  );
-  gh.factory<String>(
     () => tokenDataInjectorModule.localDatabasePassword,
     instanceName: 'localDatabasePassword',
   );
@@ -454,6 +427,33 @@ Future<_i1.GetIt> $initGetIt(
   gh.factory<String>(
     () => tokenDataInjectorModule.natsToken,
     instanceName: 'natsToken',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.messengerAuthPassword,
+    instanceName: 'messengerAuthPassword',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.messengerAuthLogin,
+    instanceName: 'messengerAuthLogin',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.userId,
+    instanceName: 'userId',
+  );
+  gh.factory<String>(
+    () => testLogFilePathInjector.logFile,
+    instanceName: 'logFile',
+    registerFor: {_unitTest},
+  );
+  await gh.factoryAsync<String>(
+    () => logFilePathInjector.logFile,
+    instanceName: 'logFile',
+    registerFor: {
+      _test,
+      _prod,
+      _dev,
+    },
+    preResolve: true,
   );
   gh.singleton<_i105.TagsListCubit>(_i105.TagsListCubit());
   gh.singleton<_i106.TagsListNetworkRequest>(_i106.TagsListNetworkRequest());

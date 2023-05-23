@@ -33,7 +33,7 @@ class Absence {
 
   static Map<AbsenceReason, String> absenceReasonsMap = {
     AbsenceReason.businessTrip: "Командировка",
-    AbsenceReason.vacation: "Отсутствие (отпуск основной)",
+    AbsenceReason.vacation: "Отпуск основной",
   };
 
   String get getAbsenceReasonText => Absence.absenceReasonsMap[this.reason] ?? "";
