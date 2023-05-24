@@ -1,6 +1,7 @@
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/messenger/cubits/cached/hidden_chats/hidden_chats_cubit.dart';
+import 'package:ink_mobile/messenger/handler/fetch/chats.dart';
 import 'package:ink_mobile/setup.dart';
 import '../../../model/chat.dart';
 import '../../../model/message.dart';
@@ -11,7 +12,9 @@ import 'package:collection/collection.dart';
 
 @singleton
 class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
-  CachedChatsCubit() : super(const CachedChatsState(me: User()));
+  CachedChatsCubit()
+      : super(const CachedChatsState(
+            type: CachedChatsStateType.LOADING, me: User()));
 
   List<Chat> get chats => state.chats;
   List<Chat> get selectedChats => state.selectedChats;
@@ -40,6 +43,11 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
 
       _updateChats(newChats);
     }
+  }
+
+  Future<void> fetchChats() async {
+    emit(state.copyWith(type: CachedChatsStateType.LOADING));
+    await FetchChats().call();
   }
 
   void fixChats() {
@@ -90,14 +98,14 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
 
   void addChats(List<Chat> items) {
     final newChats = List<Chat>.from(chats)..addAll(items);
-    emit(state.copyWith(chats: newChats));
+    emit(state.copyWith(chats: newChats, type: CachedChatsStateType.LOADED));
     toSet();
   }
 
   void removeChatById(int id) {
     final newChats = List<Chat>.from(chats)
       ..removeWhere((element) => element.id == id);
-    emit(state.copyWith(chats: newChats));
+    emit(state.copyWith(chats: newChats, type: CachedChatsStateType.LOADED));
   }
 
   void updateChatById(Chat item, int id) {
@@ -157,11 +165,11 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
   }
 
   void _updateChats(List<Chat> chats) {
-    emit(state.copyWith(chats: chats));
+    emit(state.copyWith(chats: chats, type: CachedChatsStateType.LOADED));
   }
 
   void _updateSelectedChats(List<Chat> chats) {
-    emit(state.copyWith(selectedChats: chats));
+    emit(state.copyWith(selectedChats: chats, type: CachedChatsStateType.LOADED));
   }
 
   void cleanChat(int id) {

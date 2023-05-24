@@ -3,25 +3,33 @@ import 'dart:convert';
 import '../../../model/chat.dart';
 import '../../../model/user.dart';
 
+enum CachedChatsStateType { LOADING, LOADED, ERROR, }
+
+
 class CachedChatsState {
   final List<Chat> chats;
   final List<Chat> selectedChats;
   final User me;
+  final CachedChatsStateType type;
+
   const CachedChatsState({
     this.chats = const [],
     this.selectedChats = const [],
     required this.me,
+    required this.type,
   });
 
   CachedChatsState copyWith({
     List<Chat>? chats,
     List<Chat>? selectedChats,
     User? me,
+    CachedChatsStateType? type,
   }) {
     return CachedChatsState(
       chats: chats ?? this.chats,
       selectedChats: selectedChats ?? this.selectedChats,
       me: me ?? this.me,
+      type: type ?? this.type,
     );
   }
 
@@ -39,6 +47,7 @@ class CachedChatsState {
       selectedChats:
           List<Chat>.from(map['selectedChats']?.map((x) => Chat.fromMap(x))),
       me: User.fromMap(map['me']),
+      type: CachedChatsStateType.LOADED,
     );
   }
 
