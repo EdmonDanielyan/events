@@ -5,7 +5,6 @@ import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
-import 'package:ink_mobile/models/absence.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/write_btn.dart';
 import 'package:intl/intl.dart';
@@ -27,14 +26,13 @@ class UserMainInfo extends StatefulWidget {
 
 class _UserMainInfoState extends State<UserMainInfo> {
   TextEditingController fioFieldC = TextEditingController();
-  late FocusNode textFormFocus;
+  FocusNode textFormFocus = FocusNode();
   bool isEditing = false;
   late bool isOtherUser = widget.isOtherUser ?? true;
 
   @override
   void initState() {
     fioFieldC.text = getFullName();
-    textFormFocus = FocusNode();
     super.initState();
   }
 
@@ -139,22 +137,12 @@ class _UserMainInfoState extends State<UserMainInfo> {
       Color textColor = Palette.white;
       Color iconColor = Palette.white;
       String iconLink = "";
-      switch (user.absence!.reason) {
-        case AbsenceReason.vacation:
-          backgroundColor = Palette.yellow300;
-          textColor = Palette.textBlack;
-          iconLink = IconLinks.SUN_ICON;
-          iconColor = Palette.textBlack;
-          break;
-        case AbsenceReason.businessTrip:
-          backgroundColor = Palette.purple255;
-          textColor = Palette.white;
-          iconLink = IconLinks.PLANE_ICON;
-          iconColor = Palette.white;
-          break;
-        default:
-          break;
-      }
+
+      iconLink = user.absence!.isBusinessTrip ? IconLinks.PLANE_ICON : IconLinks.SUN_ICON;
+      backgroundColor = user.absence!.isBusinessTrip ? Palette.purple255 : Palette.yellow300;
+      textColor = user.absence!.isBusinessTrip ? Palette.white : Palette.textBlack;
+      iconColor = user.absence!.isBusinessTrip ? Palette.white : Palette.textBlack;
+
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 14.0),
         decoration: BoxDecoration(
@@ -175,7 +163,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
                   bottom: 4.0,
                 ),
                 child: Text(
-                  "${user.absence!.getAbsenceReasonText} c ${DateFormat('dd.MM.yyyy').format(user.absence!.from!)} по ${DateFormat('dd.MM.yyyy').format(user.absence!.to!)}",
+                  "${user.absence!.reason} c ${DateFormat('dd.MM.yyyy').format(user.absence!.from!)} по ${DateFormat('dd.MM.yyyy').format(user.absence!.to!)}",
                   style: FontStyles.rubikP3Medium(
                     color: textColor,
                   ),

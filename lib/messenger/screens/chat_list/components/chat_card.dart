@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/components/avatar_with_badge.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/cached_avatar/cached_avatar.dart';
-import 'package:ink_mobile/messenger/constants/enums.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
+import 'package:ink_mobile/models/absence.dart';
 
 import 'chat_body.dart';
 import 'chat_date.dart';
@@ -25,7 +24,7 @@ class ChatCard extends StatelessWidget {
   final int notReadMsgs;
   final String? chatName;
   final String? chatAvatar;
-  final ChatBadge chatBadge;
+  final Absence? absence;
   const ChatCard({
     Key? key,
     required this.chat,
@@ -35,7 +34,7 @@ class ChatCard extends StatelessWidget {
     required this.notReadMsgs,
     this.chatName,
     this.chatAvatar,
-    this.chatBadge = ChatBadge.none,
+    this.absence,
   }) : super(key: key);
 
   bool isByMe(Message message) => message.isByMe(cachedChatsCubit.myId);
@@ -52,42 +51,14 @@ class ChatCard extends StatelessWidget {
               onlineCubit,
               userId: chat.getFirstNotMyId(cachedChatsCubit.myId),
               builder: (context, onlineState, user) {
-                String iconLink = "";
-                Color backgroundColor = Palette.white;
-                switch (chatBadge) {
-                  case ChatBadge.vacation:
-                    iconLink = IconLinks.SUN_ICON;
-                    backgroundColor = Palette.yellow300;
-                    break;
-                  case ChatBadge.businessTrip:
-                    iconLink = IconLinks.PLANE_ICON;
-                    backgroundColor = Palette.purple255;
-                    break;
-                  default:
-                    break;
-                }
-                return Badge(
-                  isLabelVisible: chatBadge != ChatBadge.none,
-                  label: SvgPicture.asset(
-                    iconLink,
-                    color: Palette.white,
-                    height: 12.0,
-                    width: 12.0,
-                  ),
-                  backgroundColor: backgroundColor,
-                  smallSize: 20.0,
-                  largeSize: 20.0,
-                  alignment: AlignmentDirectional(0.0, 0.0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: CachedCircleAvatar(
-                      url: chatAvatar ?? chat.avatarUrl,
-                      name: chatName ?? chat.name,
-                      indicator: user != null,
-                      avatarHeight: 52.0,
-                      avatarWidth: 52.0,
-                    ),
-                  ),
+                return AvatarWithBadge(
+                  avatarHeight: 52.0,
+                  avatarWidth: 52.0,
+                  url: chatAvatar ?? chat.avatarUrl,
+                  name: chatName ?? chat.name,
+                  indicator: user != null,
+                  padding: const EdgeInsets.only(left: 4.0),
+                  absence: absence,
                 );
               },
               cachedChatsCubit: cachedChatsCubit,
@@ -126,13 +97,17 @@ class ChatCard extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 8.0,),
+          const SizedBox(
+            width: 8.0,
+          ),
           Column(
             children: [
               if (chat.messages.isNotEmpty) ...[
                 ChatDate(chat.messages.last.createdAt),
               ],
-              const SizedBox(height: 8.0,),
+              const SizedBox(
+                height: 8.0,
+              ),
               if (notReadMsgs > 0) NotReadBubbble(notReadMsgs),
               if (notReadMsgs < 1 && chat.messages.isNotEmpty)
                 MessageTick(

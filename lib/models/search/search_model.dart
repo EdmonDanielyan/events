@@ -47,7 +47,7 @@ class SearchModelListView {
           avatar: user["avatar"] ?? "",
           workPosition: user["work_position"] ?? "",
           absence: user["absence"] != null
-              ? Absence.fromMap(user["avatar"])
+              ? Absence.fromMap(user["absence"])
               : null,
           birthday: user["birthday"] != null
               ? DateTime.tryParse(user["birthday"])

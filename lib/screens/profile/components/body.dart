@@ -107,7 +107,7 @@ class Body extends StatelessWidget {
               if (user.absence != null)
                 BasicInfoRow(
                   title: 'Статус',
-                  value: user.absence!.getAbsenceReasonText,
+                  value: user.absence!.reason ?? "",
                 ),
               if (user.shiftMan != null)
                 InkWell(
