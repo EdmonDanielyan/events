@@ -287,7 +287,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                           }
                           return Padding(
                             padding: const EdgeInsets.only(top: 16.0),
-                            child: ChatSearchTextfield(
+                            child: ChatSearchTextField(
                               onUp: () {
                                 searchMessagesCubit.toPrevious();
                                 _scrollToCurrentSearchItem();

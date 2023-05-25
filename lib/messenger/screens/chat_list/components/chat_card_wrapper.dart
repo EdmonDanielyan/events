@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/alert/alert_cancel.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/components/dismissible/custom_dismissible.dart';
-import 'package:ink_mobile/messenger/constants/enums.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/cached_user_builder.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/chat_card.dart';
-import 'package:ink_mobile/models/absence.dart';
 
 class ChatCardWrapper extends StatelessWidget {
   final CachedChatsCubit cachedChatsCubit;
@@ -63,19 +61,6 @@ class ChatCardWrapper extends StatelessWidget {
                   cachedUsersCubit: cachedUsersCubit,
                   userId: chat.getFirstNotMyId(cachedChatsCubit.myId),
                   builder: (context, state, user) {
-                    ChatBadge chatBadge = ChatBadge.none;
-                    if (user != null && user.absence != null) {
-                      switch (user.absence!.reason) {
-                        case AbsenceReason.vacation:
-                          chatBadge = ChatBadge.vacation;
-                          break;
-                        case AbsenceReason.businessTrip:
-                          chatBadge = ChatBadge.businessTrip;
-                          break;
-                        default:
-                          break;
-                      }
-                    }
                     return ChatCard(
                       chat: chat,
                       onlineCubit: onlineCubit,
@@ -83,7 +68,7 @@ class ChatCardWrapper extends StatelessWidget {
                       notReadMsgs: unreadMsgsCount,
                       chatName: user?.name,
                       chatAvatar: user?.avatarUrl,
-                      chatBadge: chatBadge,
+                      absence: user?.absence,
                     );
                   },
                 ),

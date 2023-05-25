@@ -1,6 +1,6 @@
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
+import 'package:ink_mobile/components/avatar_with_badge.dart';
 import 'package:ink_mobile/components/highlight_text.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
@@ -26,10 +26,12 @@ class SearchItemUser extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CachedCircleAvatar(
+            AvatarWithBadge(
               url: user.avatar,
               avatarHeight: 44.0,
               avatarWidth: 44.0,
+              absence: user.absence,
+              birthday: user.birthday,
             ),
             Expanded(
               child: Container(

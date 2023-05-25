@@ -1,9 +1,10 @@
-enum AbsenceReason { vacation, businessTrip }
 
 class Absence {
-  AbsenceReason? reason;
+  String? reason;
   DateTime? from;
   DateTime? to;
+
+  String _businessTripString = "Командировка";
 
   Absence({
     required this.reason,
@@ -13,9 +14,7 @@ class Absence {
 
   factory Absence.fromMap(Map<String, dynamic> data) {
     return Absence(
-      reason: absenceReasonsMap.entries
-          .firstWhere((element) => element.value == data["reason"])
-          .key,
+      reason: data["reason"],
       from: DateTime.tryParse(data["from"]),
       to: DateTime.tryParse(data["to"]),
     );
@@ -23,7 +22,7 @@ class Absence {
 
   Map<String, dynamic> toMap() {
     return {
-      "reason": reason?.name,
+      "reason": reason,
       "from": from.toString(),
       "to": to.toString(),
     };
@@ -31,12 +30,7 @@ class Absence {
 
   Map<String, dynamic> toJson() => toMap();
 
-  static Map<AbsenceReason, String> absenceReasonsMap = {
-    AbsenceReason.businessTrip: "Командировка",
-    AbsenceReason.vacation: "Отпуск основной",
-  };
-
-  String get getAbsenceReasonText => Absence.absenceReasonsMap[this.reason] ?? "";
+  bool get isBusinessTrip => this.reason == _businessTripString;
 
   bool get isNotEmpty =>
       this.reason != null && this.from != null && this.to != null;
