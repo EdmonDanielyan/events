@@ -3,8 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
-import 'package:ink_mobile/messenger/components/text/google_style.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class ChatInfoBtn extends StatelessWidget {
   final String title;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/awards_item.dart';
 import 'package:ink_mobile/screens/profile/components/section_title.dart';

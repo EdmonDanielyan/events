@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/important_urls.dart';
@@ -13,7 +12,6 @@ import 'package:ink_mobile/providers/package_info.dart';
 import 'package:ink_mobile/screens/auth/components/sign_in_instructions.dart';
 import 'package:ink_mobile/components/buttons/default_button.dart';
 import 'package:ink_mobile/screens/welcome/components/background.dart';
-import 'package:ink_mobile/setup.dart';
 
 class Body extends StatefulWidget {
   final PackageInfoProvider packageInfo;

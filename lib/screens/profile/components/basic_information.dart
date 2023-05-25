@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
-import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/basic_information_row.dart';

@@ -3,8 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/constants/palette.dart';
 
-import '../../../constants/aseets.dart';
-import '../../../localization/i18n/i18n.dart';
 import '../../../messenger/functions/size_config.dart';
 
 class BirthdayCongratulate extends StatelessWidget {

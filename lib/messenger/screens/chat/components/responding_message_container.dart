@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/cubits/custom/message_cubit.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
@@ -21,25 +25,31 @@ class RespondingMessageContainer extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Container(
-          padding: const EdgeInsets.only(top: 15.0, bottom: 15.0, left: 13.0),
+        return Padding(
+          padding: EdgeInsets.only(bottom: 20.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SvgPicture.asset(
+                IconLinks.REPLY_ICON,
+                color: Palette.textBlack50,
+                height: 28.0,
+                width: 28.0,
+              ),
+              const SizedBox(width: 8.0),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GoogleText(
-                      "${state.owner.name}:",
+                    Text(
+                      state.owner.name,
                       maxLines: 1,
-                      fontSize:
-                          SizeConfig(context, 9.5).getProportionateScreenHeight,
+                      style: FontStyles.rubikP3Medium(color: Palette.greenE4A),
                     ),
-                    GoogleText(
+                    Text(
                       state.body,
                       maxLines: 1,
-                      color: Colors.grey,
+                      style: FontStyles.rubikP2(color: Palette.textBlack50),
                     ),
                   ],
                 ),
@@ -49,7 +59,8 @@ class RespondingMessageContainer extends StatelessWidget {
                 onTap: () => respondingMessage.set(null),
                 child: Icon(
                   Icons.close,
-                  size: SizeConfig(context, 20).getProportionateScreenHeight,
+                  size: 28,
+                  color: Palette.greenE4A,
                 ),
               ),
               const SizedBox(width: 5.0),

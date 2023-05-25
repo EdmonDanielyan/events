@@ -12,12 +12,12 @@ class ToggleNotificationsChatsCubit
   ToggleNotificationsChatsCubit()
       : super(const NotificationsDisabledChatsState(chatIds: {}));
 
-  Future<void> toggleNotification(int chatId, bool disableValue) async {
+  Future<void> toggleNotification(int chatId, bool isChatNotificationsEnabled) async {
     await Token.setNewTokensIfExpired();
     Set<int> observingChats = Set<int>.from(state.chatIds);
-    disableValue ? observingChats.remove(chatId) : observingChats.add(chatId);
-    ToggleNotificationsChatNetworkRequest(
-        chatID: chatId.toString(), value: disableValue)();
+    isChatNotificationsEnabled ? observingChats.remove(chatId) : observingChats.add(chatId);
+    await ToggleNotificationsChatNetworkRequest(
+        chatID: chatId.toString(), value: !isChatNotificationsEnabled).call();
     emit(state.copyWith(chatIds: observingChats));
   }
 

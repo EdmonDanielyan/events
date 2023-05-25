@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
-import 'package:ink_mobile/messenger/components/highlight_text/highlight_text.dart';
-
-import '../../../functions/size_config.dart';
 
 class ChatBody extends StatelessWidget {
   final String body;
@@ -21,43 +18,18 @@ class ChatBody extends StatelessWidget {
     return RichText(
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
-      text: TextSpan(children: [
-        TextSpan(
-          text: "$title ",
-          style: FontStyles.rubikP2(color: Palette.greenE4A),
-        ),
-        TextSpan(
-          text: body,
-          style: FontStyles.rubikP2(color: Palette.textBlack50),
-        ),
-      ]),
-    );
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (title.length > 1) ...[
-          SubstringHighlight(
-            text: title,
-            maxLines: 1,
-            term: highlightValue,
-            textStyle: FontStyles.rubikP2(color: Palette.greenE4A),
-            strutStyle: const StrutStyle(forceStrutHeight: true),
-            textStyleHighlight: FontStyles.rubikP2(color: Palette.greenE4A),
-            overflow: TextOverflow.ellipsis,
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: "$title ",
+            style: FontStyles.rubikP2(color: Palette.greenE4A),
           ),
-          SizedBox(
-              height: SizeConfig(context, 3.0).getProportionateScreenHeight)
+          TextSpan(
+            text: body,
+            style: FontStyles.rubikP2(color: Palette.textBlack50),
+          ),
         ],
-        SubstringHighlight(
-          text: body,
-          maxLines: 1,
-          term: highlightValue,
-          textStyle: FontStyles.rubikP2(color: Palette.textBlack50),
-          strutStyle: const StrutStyle(forceStrutHeight: true),
-          textStyleHighlight: FontStyles.rubikP2(color: Palette.greenE4A),
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
+      ),
     );
   }
 }

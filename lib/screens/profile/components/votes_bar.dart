@@ -5,7 +5,6 @@ import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/models/user_data.dart';
 
-import '../../../messenger/functions/size_config.dart';
 
 class VotesBar extends StatelessWidget {
   final UserVotes? votes;

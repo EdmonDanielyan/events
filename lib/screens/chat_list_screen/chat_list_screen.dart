@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar.dart';
-import 'package:ink_mobile/components/app_bars/ink_app_bar_with_text.dart';
-import 'package:ink_mobile/components/bottom_sheet.dart';
 import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
@@ -21,7 +19,6 @@ import '../../messenger/cubits/cached/chat_users_picker/chat_users_picker_cubit.
 import '../../messenger/cubits/cached/users/cached_users_cubit.dart';
 import '../../messenger/cubits/custom/online_cubit/online_cubit.dart';
 import '../../messenger/model/chat.dart';
-import '../../messenger/screens/users_picker/users_picker_screen.dart';
 
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({Key? key}) : super(key: key);

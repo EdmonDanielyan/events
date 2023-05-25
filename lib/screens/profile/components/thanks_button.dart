@@ -6,7 +6,6 @@ import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 
-import '../../../messenger/functions/size_config.dart';
 import '../profile_screen.dart';
 
 class ThanksButton extends StatelessWidget {

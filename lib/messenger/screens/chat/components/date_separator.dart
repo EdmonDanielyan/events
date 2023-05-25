@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/messenger/components/text/google_style.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/date_functions.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class DateSeparator extends StatelessWidget {
   final DateTime dateTime;
@@ -11,14 +11,15 @@ class DateSeparator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        margin: const EdgeInsets.only(top: 10.0, bottom: 5.0),
+        margin: const EdgeInsets.symmetric(vertical: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
+          color: Palette.text5Grey,
         ),
-        child: GoogleText(
+        child: Text(
           DateFunctions(dateTime).dayMonthYearHuman(),
-          fontSize: SizeConfig(context, 10.0).getProportionateScreenHeight,
-          fontWeight: FontWeight.bold,
+          style: FontStyles.rubikP3(color: Palette.textBlack50),
         ),
       ),
     );

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/message_cubit.dart';
 import 'package:ink_mobile/messenger/functions/create_message.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/textfield.dart';
@@ -12,7 +14,6 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'editing_message_container.dart';
 import 'responding_message_container.dart';
-import 'send_btn.dart';
 
 class MessageBottomCard extends StatefulWidget {
   final TextEditingController textEditingController;
@@ -85,15 +86,16 @@ class _MessageBottomCardState extends State<MessageBottomCard> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        padding: const EdgeInsets.all(7.0),
         decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: Colors.grey[200]!.withOpacity(0.8),
-              width: 1.0,
-            ),
-          ),
+          boxShadow: [
+            BoxShadow(
+                offset: Offset(0.0, 0.0),
+                blurRadius: 24,
+                color: Palette.text5Grey,
+                blurStyle: BlurStyle.outer)
+          ],
         ),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -109,24 +111,22 @@ class _MessageBottomCardState extends State<MessageBottomCard> {
                     focusNode: widget.focusNode,
                   ),
                 ),
-                const SizedBox(width: 8.0),
+                const SizedBox(width: 16.0),
                 BlocBuilder<MessageCubit, Message?>(
                   bloc: widget.editingMessage,
                   builder: (context, state) {
-                    return MessageSendBtn(
-                      onPressed: () =>
+                    return InkWell(
+                      onTap: () =>
                           state != null ? _onEdit(state) : _onSend(),
-                      icon: state != null
-                          ? Icon(
-                              Icons.check,
-                              size: SizeConfig(context, 20)
-                                  .getProportionateScreenHeight,
-                            )
-                          : Icon(
-                              Icons.send_rounded,
-                              size: SizeConfig(context, 20)
-                                  .getProportionateScreenHeight,
-                            ),
+                      child: SvgPicture.asset(
+                        state != null
+                            ? IconLinks.TICK_ICON
+                            : IconLinks.SEND_ICON,
+                        height: 28.0,
+                        width: 28.0,
+                        color: Palette.greenE4A,
+                      ),
+
                     );
                   },
                 ),
