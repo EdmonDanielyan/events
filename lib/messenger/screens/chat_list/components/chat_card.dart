@@ -139,7 +139,7 @@ class ChatCard extends StatelessWidget {
                   chat.messages.last.status,
                   isRead: chat.messages.last.isReadByOthers,
                   type: chat.messages.last.type,
-                  readColor: Palette.blue9CF,
+                  color: Palette.blue9CF,
                 ),
             ],
           ),

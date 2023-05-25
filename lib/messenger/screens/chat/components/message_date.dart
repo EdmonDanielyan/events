@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ink_mobile/messenger/components/text/google_style.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/date_functions.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 
 class MessageDate extends StatelessWidget {
   final DateTime dateTime;
@@ -14,11 +14,13 @@ class MessageDate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GoogleText(
+    return Text(
       DateFunctions(dateTime).hourMinute(),
-      fontSize: SizeConfig(context, 9.5).getProportionateScreenHeight,
-      color: isByMe ? const Color(0XFFFFFFFF) : const Color(0XFF1D2126),
-      fontWeight: FontWeight.w300,
+      style: FontStyles.rubikP3(
+        color: isByMe
+            ? Palette.white.withOpacity(0.5)
+            : Palette.text20Grey,
+      ),
     );
   }
 }

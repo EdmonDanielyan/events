@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:ink_mobile/constants/codes.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/grouped_list/grouped_list.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/hidden_messages/hidden_messages_cubit.dart';
@@ -254,6 +255,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Palette.white,
       appBar: ChatAppBar(
         selectedMessagesCubit: selectedMessages,
         cachedChatsCubit: widget.cachedChatsCubit,
@@ -266,166 +268,174 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SearchBuilder(
-            searchMessagesCubit,
-            builder: (context, searchState) {
-              if (searchState.enabled) {
-                return WillPopScope(
-                  onWillPop: () async {
-                    searchMessagesCubit.enable(false);
-                    return false;
-                  },
-                  child: ChatBuilder(
-                      cachedChatsCubit: widget.cachedChatsCubit,
-                      builder: (context, state, chat) {
-                        if (chat == null) {
-                          return const SizedBox.shrink();
-                        }
-                        return ChatSearchTextfield(
-                          onUp: () {
-                            searchMessagesCubit.toPrevious();
-                            _scrollToCurrentSearchItem();
-                          },
-                          onDown: () {
-                            searchMessagesCubit.toNext();
-                            _scrollToCurrentSearchItem();
-                          },
-                          onFieldSubmitted: (str) =>
-                              _onSearch(str, chat.messages),
-                          onClose: () => searchMessagesCubit.enable(false),
-                        );
-                      }),
-                );
-              }
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SearchBuilder(
+              searchMessagesCubit,
+              builder: (context, searchState) {
+                if (searchState.enabled) {
+                  return WillPopScope(
+                    onWillPop: () async {
+                      searchMessagesCubit.enable(false);
+                      return false;
+                    },
+                    child: ChatBuilder(
+                        cachedChatsCubit: widget.cachedChatsCubit,
+                        builder: (context, state, chat) {
+                          if (chat == null) {
+                            return const SizedBox.shrink();
+                          }
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 16.0),
+                            child: ChatSearchTextfield(
+                              onUp: () {
+                                searchMessagesCubit.toPrevious();
+                                _scrollToCurrentSearchItem();
+                              },
+                              onDown: () {
+                                searchMessagesCubit.toNext();
+                                _scrollToCurrentSearchItem();
+                              },
+                              onFieldSubmitted: (str) =>
+                                  _onSearch(str, chat.messages),
+                              onClose: () => searchMessagesCubit.enable(false),
+                            ),
+                          );
+                        }),
+                  );
+                }
 
-              return const SizedBox.shrink();
-            },
+                return const SizedBox.shrink();
+              },
+            ),
           ),
           Expanded(
             child: HiddenMessagesBuilder(
               hiddenMessagesCubit,
               builder: (context, hiddenMessagesState) {
-                return ChatBuilder(
-                  cachedChatsCubit: widget.cachedChatsCubit,
-                  listener: (context, state, chat) {
-                    if (chat != null && chat.messages.isNotEmpty) {
-                      widget.readMessage(chat.messages.last);
-                    }
-                  },
-                  builder: (context, state, chat) {
-                    if (chat == null) {
-                      if (selectedChat != null) {
-                        widget.cachedChatsCubit
-                            .selectChatById(selectedChat!.id);
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: ChatBuilder(
+                    cachedChatsCubit: widget.cachedChatsCubit,
+                    listener: (context, state, chat) {
+                      if (chat != null && chat.messages.isNotEmpty) {
+                        widget.readMessage(chat.messages.last);
                       }
-                      return const SizedBox.shrink();
-                    }
-                    chat = chat.copyWith(
-                      messages: hiddenMessagesCubit.filter(chat.messages),
-                    );
-                    chat.sortMessagesByTime();
+                    },
+                    builder: (context, state, chat) {
+                      if (chat == null) {
+                        if (selectedChat != null) {
+                          widget.cachedChatsCubit
+                              .selectChatById(selectedChat!.id);
+                        }
+                        return const SizedBox.shrink();
+                      }
+                      chat = chat.copyWith(
+                        messages: hiddenMessagesCubit.filter(chat.messages),
+                      );
+                      chat.sortMessagesByTime();
 
-                    final messages = chat.messages.reversed.toList();
+                      final messages = chat.messages.reversed.toList();
 
-                    return BlocBuilder<SearchSelectCubit<Message>,
-                        SearchSelectState<Message>>(
-                      bloc: searchMessagesCubit,
-                      builder: (context, searchState) {
-                        return SelectedMessagesBuilder(
-                          selectedMessages,
-                          builder: (context, selectedMessagesState) {
-                            if (messages.isEmpty) {
-                              return const SizedBox.shrink();
-                            }
+                      return BlocBuilder<SearchSelectCubit<Message>,
+                          SearchSelectState<Message>>(
+                        bloc: searchMessagesCubit,
+                        builder: (context, searchState) {
+                          return SelectedMessagesBuilder(
+                            selectedMessages,
+                            builder: (context, selectedMessagesState) {
+                              if (messages.isEmpty) {
+                                return const SizedBox.shrink();
+                              }
 
-                            return GroupedList<Message, int>(
-                              items: messages,
-                              reverse: true,
-                              itemPositionsListener: itemPositionsListener,
-                              controller: itemScrollController,
-                              groupBy: (msg) => DateTime(msg.createdAt.year,
-                                      msg.createdAt.month, msg.createdAt.day)
-                                  .millisecondsSinceEpoch,
-                              header: (msg) => DateSeparator(
-                                dateTime: msg.createdAt,
-                              ),
-                              itemBuilder: (context, index) {
-                                final _currentMessage = messages[index];
+                              return GroupedList<Message, int>(
+                                items: messages,
+                                reverse: true,
+                                itemPositionsListener: itemPositionsListener,
+                                controller: itemScrollController,
+                                groupBy: (msg) => DateTime(msg.createdAt.year,
+                                        msg.createdAt.month, msg.createdAt.day)
+                                    .millisecondsSinceEpoch,
+                                header: (msg) => DateSeparator(
+                                  dateTime: msg.createdAt,
+                                ),
+                                itemBuilder: (context, index) {
+                                  final _currentMessage = messages[index];
 
-                                if (_currentMessage.isInfo) {
-                                  return MessageInfoCard(_currentMessage);
-                                }
+                                  if (_currentMessage.isInfo) {
+                                    return MessageInfoCard(_currentMessage);
+                                  }
 
-                                scrollIndexes.add(
-                                    _currentMessage.id.toString(), index);
+                                  scrollIndexes.add(
+                                      _currentMessage.id.toString(), index);
 
-                                bool isMyMessage = _currentMessage.owner.id ==
-                                    widget.cachedChatsCubit.myId;
+                                  bool isMyMessage = _currentMessage.owner.id ==
+                                      widget.cachedChatsCubit.myId;
 
-                                return SwipeTo(
-                                  onLeftSwipe: isMyMessage
-                                      ? () => _onRespond(_currentMessage)
-                                      : null,
-                                  onRightSwipe: isMyMessage
-                                      ? null
-                                      : () => _onRespond(_currentMessage),
-                                  child: MessageCard(
-                                    selectOnTap:
-                                        selectedMessagesState.isNotEmpty,
-                                    onSelected: (selected) =>
-                                        _onSelected(selected, _currentMessage),
-                                    cachedChatsCubit: widget.cachedChatsCubit,
-                                    message: _currentMessage,
-                                    onDelete: widget.onMessageDelete != null
-                                        ? (context) => widget.onMessageDelete!(
-                                            context, [_currentMessage], chat!)
+                                  return SwipeTo(
+                                    onLeftSwipe: isMyMessage
+                                        ? () => _onRespond(_currentMessage)
                                         : null,
-                                    onEdit: (context) =>
-                                        _onEdit(_currentMessage),
-                                    onRespond: (context) =>
-                                        _onRespond(_currentMessage),
-                                    selected: selectedMessagesState
-                                        .contains(_currentMessage),
-                                    searchSelected: searchState.enabled &&
-                                        searchMessagesCubit
-                                            .isSelected(_currentMessage),
-                                    cachedUsersCubit: widget.cachedUsersCubit,
-                                    onGoTo: (context) {
-                                      Future.delayed(
-                                          Duration(milliseconds: 200), () {
-                                        Map<String, dynamic> args = {
-                                          'id': _currentMessage.owner.id
-                                        };
+                                    onRightSwipe: isMyMessage
+                                        ? null
+                                        : () => _onRespond(_currentMessage),
+                                    child: MessageCard(
+                                      selectOnTap:
+                                          selectedMessagesState.isNotEmpty,
+                                      onSelected: (selected) =>
+                                          _onSelected(selected, _currentMessage),
+                                      cachedChatsCubit: widget.cachedChatsCubit,
+                                      message: _currentMessage,
+                                      onDelete: widget.onMessageDelete != null
+                                          ? (context) => widget.onMessageDelete!(
+                                              context, [_currentMessage], chat!)
+                                          : null,
+                                      onEdit: (context) =>
+                                          _onEdit(_currentMessage),
+                                      onRespond: (context) =>
+                                          _onRespond(_currentMessage),
+                                      selected: selectedMessagesState
+                                          .contains(_currentMessage),
+                                      searchSelected: searchState.enabled &&
+                                          searchMessagesCubit
+                                              .isSelected(_currentMessage),
+                                      cachedUsersCubit: widget.cachedUsersCubit,
+                                      onGoTo: (context) {
+                                        Future.delayed(
+                                            Duration(milliseconds: 200), () {
+                                          Map<String, dynamic> args = {
+                                            'id': _currentMessage.owner.id
+                                          };
 
-                                        if (chat?.isSingle == true) {
-                                          final oppositeUserId =
-                                              chat?.getFirstNotMyId(
-                                                  widget.cachedChatsCubit.myId);
+                                          if (chat?.isSingle == true) {
+                                            final oppositeUserId =
+                                                chat?.getFirstNotMyId(
+                                                    widget.cachedChatsCubit.myId);
 
-                                          if (oppositeUserId ==
-                                              _currentMessage.owner.id) {
-                                            args[HIDE_WRITE_BTN] = true;
+                                            if (oppositeUserId ==
+                                                _currentMessage.owner.id) {
+                                              args[HIDE_WRITE_BTN] = true;
+                                            }
                                           }
-                                        }
-                                        Navigator.pushNamed(
-                                            context, "/personal",
-                                            arguments: args);
-                                      });
-                                    },
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        );
-                      },
-                    );
-                  },
+                                          Navigator.pushNamed(
+                                              context, "/personal",
+                                              arguments: args);
+                                        });
+                                      },
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
                 );
               },
             ),
           ),
-          //),
           ChatBuilder(
             cachedChatsCubit: widget.cachedChatsCubit,
             builder: (context, state, chat) {

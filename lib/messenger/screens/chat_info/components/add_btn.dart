@@ -3,10 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/buttons/default_button.dart';
 import 'package:ink_mobile/constants/palette.dart';
-import 'package:ink_mobile/messenger/components/text/google_style.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
-import 'package:ink_mobile/messenger/model/user.dart';
-import 'package:ink_mobile/messenger/screens/chat_info/components/participant_card.dart';
 
 class ChatInfoAddBtn extends StatelessWidget {
   final void Function(BuildContext)? onPressed;

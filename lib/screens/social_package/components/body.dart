@@ -80,7 +80,7 @@ class _BodyState extends State<Body> {
                     child: Container(
                       padding: EdgeInsets.symmetric(
                           horizontal: Body._horizontalPadding),
-                      color: Colors.white,
+                      color: Palette.white,
                       width: size.width,
                       child: ListView.separated(
                         separatorBuilder: (context, index) {
@@ -92,6 +92,7 @@ class _BodyState extends State<Body> {
                             title: pages[index].name,
                             link: pages[index].url,
                             id: pages[index].id.toString(),
+                            iconUrl: "",
                           );
                         },
                       ),

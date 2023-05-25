@@ -47,7 +47,7 @@ class NotificationsBtn extends StatelessWidget {
                 ),
                 const SizedBox(width: 12.0),
                 Text(
-                  isEnabled ? "Вкл. уведомления" : "Выкл. уведомления",
+                  isEnabled ? "Выкл. уведомления" : "Вкл. уведомления",
                   style: FontStyles.rubikP1(color: Palette.textBlack),
                 ),
               ],

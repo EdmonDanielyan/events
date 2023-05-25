@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/cached_image/avatar_indicator.dart';
 import 'package:ink_mobile/functions/files.dart';
-import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 import 'avatar_placeholder.dart';

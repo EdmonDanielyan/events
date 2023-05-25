@@ -24,7 +24,8 @@ class FontStyles {
         fontSize: 14,
         color: color ?? Palette.textBlack,
         decoration: decoration,
-        height: 1.42
+        height: 1.42,
+
       );
 
   static rubikP2Medium({Color? color}) => GoogleFonts.rubik(

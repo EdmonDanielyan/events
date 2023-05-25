@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
-import 'package:ink_mobile/messenger/functions/date_functions.dart';
 import 'package:intl/intl.dart';
 
 class ChatDate extends StatelessWidget {

@@ -31,32 +31,27 @@ class _MessageRespondWrapperState extends State<MessageRespondWrapper> {
   @override
   Widget build(BuildContext context) {
     if (respondedMessage != null) {
-      return Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CachedUserBuilder(
-              cachedUsersCubit: widget.cachedUsersCubit,
-              userId: respondedMessage!.owner.id,
-              builder: (context, userState, user) {
-                return RespondContainer(
-                  isByMe: isByMe,
-                  body: respondedMessage!.body,
-                  name: user?.name ?? "Пересланное сообщение",
-                );
-              },
-            ),
-            const SizedBox(height: 2.0),
-            widget.child,
-            const SizedBox(height: 7.0),
-          ],
-        ),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CachedUserBuilder(
+            cachedUsersCubit: widget.cachedUsersCubit,
+            userId: respondedMessage!.owner.id,
+            builder: (context, userState, user) {
+              return RespondContainer(
+                isByMe: isByMe,
+                body: respondedMessage!.body,
+                name: user?.name ?? "Пересланное сообщение",
+              );
+            },
+          ),
+          const SizedBox(height: 4.0),
+          widget.child,
+          const SizedBox(height: 4.0),
+        ],
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 9.0),
-      child: widget.child,
-    );
+    return widget.child;
   }
 }

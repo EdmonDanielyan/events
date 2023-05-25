@@ -3,8 +3,6 @@ import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/screens/birthdays/components/birthday_body.dart';
-
-import '../../../messenger/functions/size_config.dart';
 import 'birthday_avatar.dart';
 
 class BirthdayOtherDaysElement extends StatelessWidget {

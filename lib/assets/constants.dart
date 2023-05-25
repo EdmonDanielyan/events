@@ -36,4 +36,6 @@ class IconLinks {
   static const String FIRE_ICON = "assets/svg/fire.svg";
   static const String USER_ADD_ICON = "assets/svg/userAdd.svg";
   static const String GIFT_ICON = "assets/svg/gift.svg";
+  static const String SEND_ICON = "assets/svg/send.svg";
+  static const String REPLY_ICON = "assets/svg/reply.svg";
 }

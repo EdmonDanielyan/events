@@ -18,7 +18,6 @@ import 'components/add_btn.dart';
 import 'components/chat_info_btn.dart';
 import 'components/chat_info_top.dart';
 import 'components/divider.dart';
-import 'components/header.dart';
 import 'components/notifications_btn.dart';
 import 'components/participant_card.dart';
 
