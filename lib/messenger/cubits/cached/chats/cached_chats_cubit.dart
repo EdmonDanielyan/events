@@ -2,6 +2,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/messenger/cubits/cached/hidden_chats/hidden_chats_cubit.dart';
 import 'package:ink_mobile/messenger/handler/fetch/chats.dart';
+import 'package:ink_mobile/messenger/handler/fetch/messages.dart';
 import 'package:ink_mobile/setup.dart';
 import '../../../model/chat.dart';
 import '../../../model/message.dart';
@@ -43,6 +44,21 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
 
       _updateChats(newChats);
     }
+  }
+
+  Future<void> fetchMessages({
+    required int chatID,
+    required int offset,
+    Function(List<Message>)? callback,
+    required int count,
+  }) async {
+    emit(state.copyWith(type: CachedChatsStateType.LOADING));
+    await FetchMessages(
+      chatID,
+      offset: offset,
+      count: count,
+      successCallback: callback,
+    ).call();
   }
 
   Future<void> fetchChats() async {
