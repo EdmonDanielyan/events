@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/constants/codes.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/grouped_list/grouped_list.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_state.dart';
 import 'package:ink_mobile/messenger/cubits/cached/hidden_messages/hidden_messages_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/app_state/app_state.dart';
@@ -17,7 +19,6 @@ import 'package:ink_mobile/messenger/cubits/custom/search_select_cubit/search_se
 import 'package:ink_mobile/messenger/functions/close_notification.dart';
 import 'package:ink_mobile/messenger/functions/paginator.dart';
 import 'package:ink_mobile/messenger/functions/scroll_indexes.dart';
-import 'package:ink_mobile/messenger/handler/fetch/messages.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/app_bar.dart';
@@ -84,6 +85,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   Message? lastMessage;
 
+  CachedChatsCubit get cachedChatsCubit => widget.cachedChatsCubit;
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
@@ -122,10 +125,12 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           }
           if (items.first.itemLeadingEdge > 0.0) {
             if (getSelectedChat != null) {
-              _fetchMessages(
-                  chatID: getSelectedChat!.id,
-                  offset: _paginator.newMessagesOffset,
-                  callback: fetchNextPart);
+              cachedChatsCubit.fetchMessages(
+                chatID: getSelectedChat!.id,
+                offset: _paginator.newMessagesOffset,
+                callback: fetchNextPart,
+                count: _paginator.limit,
+              );
             }
           }
         }
@@ -144,10 +149,12 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           .firstWhereOrNull((message) => message.id == lastMessage?.id);
       if (alreadyFetchedMessage == null && fetchedMessages.isNotEmpty) {
         _paginator.newMessagesOffset += _paginator.limit;
-        _fetchMessages(
-            chatID: getSelectedChat!.id,
-            offset: _paginator.newMessagesOffset,
-            callback: fetchNextPart);
+        cachedChatsCubit.fetchMessages(
+          chatID: getSelectedChat!.id,
+          offset: _paginator.newMessagesOffset,
+          callback: fetchNextPart,
+          count: _paginator.limit,
+        );
       } else {
         lastMessage = getSelectedChat!.messages.last;
         _paginator.newMessagesOffset = 0;
@@ -162,33 +169,21 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       if (showLoading) {
         EasyLoading.show();
       }
-      _fetchMessages(
-          chatID: chat.id,
-          offset: _paginator.page,
-          callback: (msgs) {
-            _paginator.block = false;
-            _paginator.page = _paginator.page + _paginator.limit;
-            if (msgs.length < _paginator.limit) {
-              _paginator.block = true;
-            }
-          });
+      cachedChatsCubit.fetchMessages(
+        chatID: chat.id,
+        offset: _paginator.page,
+        callback: (msgs) {
+          _paginator.block = false;
+          _paginator.page = _paginator.page + _paginator.limit;
+          if (msgs.length < _paginator.limit) {
+            _paginator.block = true;
+          }
+        },
+        count: _paginator.limit,
+      );
       EasyLoading.dismiss();
       lastMessage = getSelectedChat?.messages.last;
     }
-  }
-
-  Future<void> _fetchMessages({
-    required int chatID,
-    required int offset,
-    Function(List<Message>)? callback,
-    int? count,
-  }) async {
-    await FetchMessages(
-      chatID,
-      offset: offset,
-      count: count ?? _paginator.limit,
-      successCallback: callback,
-    ).call();
   }
 
   @override
@@ -309,129 +304,138 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               },
             ),
           ),
+          ChatBuilder(
+              cachedChatsCubit: widget.cachedChatsCubit,
+              builder: (context, state, chat) {
+                if (state.type == CachedChatsStateType.LOADING) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: const InkPageLoader(),
+                  );
+                }
+                return const SizedBox.shrink();
+              }),
           Expanded(
             child: HiddenMessagesBuilder(
               hiddenMessagesCubit,
               builder: (context, hiddenMessagesState) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: ChatBuilder(
-                    cachedChatsCubit: widget.cachedChatsCubit,
-                    listener: (context, state, chat) {
-                      if (chat != null && chat.messages.isNotEmpty) {
-                        widget.readMessage(chat.messages.last);
+                return ChatBuilder(
+                  cachedChatsCubit: widget.cachedChatsCubit,
+                  listener: (context, state, chat) {
+                    if (chat != null && chat.messages.isNotEmpty) {
+                      widget.readMessage(chat.messages.last);
+                    }
+                  },
+                  builder: (context, state, chat) {
+                    if (chat == null) {
+                      if (selectedChat != null) {
+                        widget.cachedChatsCubit
+                            .selectChatById(selectedChat!.id);
                       }
-                    },
-                    builder: (context, state, chat) {
-                      if (chat == null) {
-                        if (selectedChat != null) {
-                          widget.cachedChatsCubit
-                              .selectChatById(selectedChat!.id);
-                        }
-                        return const SizedBox.shrink();
-                      }
-                      chat = chat.copyWith(
-                        messages: hiddenMessagesCubit.filter(chat.messages),
-                      );
-                      chat.sortMessagesByTime();
+                      return const SizedBox.shrink();
+                    }
+                    chat = chat.copyWith(
+                      messages: hiddenMessagesCubit.filter(chat.messages),
+                    );
+                    chat.sortMessagesByTime();
 
-                      final messages = chat.messages.reversed.toList();
+                    final messages = chat.messages.reversed.toList();
 
-                      return BlocBuilder<SearchSelectCubit<Message>,
-                          SearchSelectState<Message>>(
-                        bloc: searchMessagesCubit,
-                        builder: (context, searchState) {
-                          return SelectedMessagesBuilder(
-                            selectedMessages,
-                            builder: (context, selectedMessagesState) {
-                              if (messages.isEmpty) {
-                                return const SizedBox.shrink();
-                              }
+                    return BlocBuilder<SearchSelectCubit<Message>,
+                        SearchSelectState<Message>>(
+                      bloc: searchMessagesCubit,
+                      builder: (context, searchState) {
+                        return SelectedMessagesBuilder(
+                          selectedMessages,
+                          builder: (context, selectedMessagesState) {
+                            if (messages.isEmpty) {
+                              return const SizedBox.shrink();
+                            }
 
-                              return GroupedList<Message, int>(
-                                items: messages,
-                                reverse: true,
-                                itemPositionsListener: itemPositionsListener,
-                                controller: itemScrollController,
-                                groupBy: (msg) => DateTime(msg.createdAt.year,
-                                        msg.createdAt.month, msg.createdAt.day)
-                                    .millisecondsSinceEpoch,
-                                header: (msg) => DateSeparator(
-                                  dateTime: msg.createdAt,
-                                ),
-                                itemBuilder: (context, index) {
-                                  final _currentMessage = messages[index];
+                            return GroupedList<Message, int>(
+                              items: messages,
+                              reverse: true,
+                              itemPositionsListener: itemPositionsListener,
+                              controller: itemScrollController,
+                              groupBy: (msg) => DateTime(msg.createdAt.year,
+                                      msg.createdAt.month, msg.createdAt.day)
+                                  .millisecondsSinceEpoch,
+                              header: (msg) => DateSeparator(
+                                dateTime: msg.createdAt,
+                              ),
+                              itemBuilder: (context, index) {
+                                final _currentMessage = messages[index];
 
-                                  if (_currentMessage.isInfo) {
-                                    return MessageInfoCard(_currentMessage);
-                                  }
+                                if (_currentMessage.isInfo) {
+                                  return MessageInfoCard(_currentMessage);
+                                }
 
-                                  scrollIndexes.add(
-                                      _currentMessage.id.toString(), index);
+                                scrollIndexes.add(
+                                    _currentMessage.id.toString(), index);
 
-                                  bool isMyMessage = _currentMessage.owner.id ==
-                                      widget.cachedChatsCubit.myId;
+                                bool isMyMessage = _currentMessage.owner.id ==
+                                    widget.cachedChatsCubit.myId;
 
-                                  return SwipeTo(
-                                    onLeftSwipe: isMyMessage
-                                        ? () => _onRespond(_currentMessage)
+                                return SwipeTo(
+                                  isMyMessage: isMyMessage,
+                                  onLeftSwipe: isMyMessage
+                                      ? () => _onRespond(_currentMessage)
+                                      : null,
+                                  onRightSwipe: isMyMessage
+                                      ? null
+                                      : () => _onRespond(_currentMessage),
+                                  child: MessageCard(
+                                    selectOnTap:
+                                        selectedMessagesState.isNotEmpty,
+                                    onSelected: (selected) =>
+                                        _onSelected(selected, _currentMessage),
+                                    cachedChatsCubit: widget.cachedChatsCubit,
+                                    message: _currentMessage,
+                                    onDelete: widget.onMessageDelete != null
+                                        ? (context) => widget.onMessageDelete!(
+                                            context, [_currentMessage], chat!)
                                         : null,
-                                    onRightSwipe: isMyMessage
-                                        ? null
-                                        : () => _onRespond(_currentMessage),
-                                    child: MessageCard(
-                                      selectOnTap:
-                                          selectedMessagesState.isNotEmpty,
-                                      onSelected: (selected) =>
-                                          _onSelected(selected, _currentMessage),
-                                      cachedChatsCubit: widget.cachedChatsCubit,
-                                      message: _currentMessage,
-                                      onDelete: widget.onMessageDelete != null
-                                          ? (context) => widget.onMessageDelete!(
-                                              context, [_currentMessage], chat!)
-                                          : null,
-                                      onEdit: (context) =>
-                                          _onEdit(_currentMessage),
-                                      onRespond: (context) =>
-                                          _onRespond(_currentMessage),
-                                      selected: selectedMessagesState
-                                          .contains(_currentMessage),
-                                      searchSelected: searchState.enabled &&
-                                          searchMessagesCubit
-                                              .isSelected(_currentMessage),
-                                      cachedUsersCubit: widget.cachedUsersCubit,
-                                      onGoTo: (context) {
-                                        Future.delayed(
-                                            Duration(milliseconds: 200), () {
-                                          Map<String, dynamic> args = {
-                                            'id': _currentMessage.owner.id
-                                          };
+                                    onEdit: (context) =>
+                                        _onEdit(_currentMessage),
+                                    onRespond: (context) =>
+                                        _onRespond(_currentMessage),
+                                    selected: selectedMessagesState
+                                        .contains(_currentMessage),
+                                    searchSelected: searchState.enabled &&
+                                        searchMessagesCubit
+                                            .isSelected(_currentMessage),
+                                    cachedUsersCubit: widget.cachedUsersCubit,
+                                    onGoTo: (context) {
+                                      Future.delayed(
+                                          Duration(milliseconds: 200), () {
+                                        Map<String, dynamic> args = {
+                                          'id': _currentMessage.owner.id
+                                        };
 
-                                          if (chat?.isSingle == true) {
-                                            final oppositeUserId =
-                                                chat?.getFirstNotMyId(
-                                                    widget.cachedChatsCubit.myId);
+                                        if (chat?.isSingle == true) {
+                                          final oppositeUserId =
+                                              chat?.getFirstNotMyId(
+                                                  widget.cachedChatsCubit.myId);
 
-                                            if (oppositeUserId ==
-                                                _currentMessage.owner.id) {
-                                              args[HIDE_WRITE_BTN] = true;
-                                            }
+                                          if (oppositeUserId ==
+                                              _currentMessage.owner.id) {
+                                            args[HIDE_WRITE_BTN] = true;
                                           }
-                                          Navigator.pushNamed(
-                                              context, "/personal",
-                                              arguments: args);
-                                        });
-                                      },
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                  ),
+                                        }
+                                        Navigator.pushNamed(
+                                            context, "/personal",
+                                            arguments: args);
+                                      });
+                                    },
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
                 );
               },
             ),
@@ -442,19 +446,19 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               if (chat == null) {
                 return const SizedBox.shrink();
               }
-              if(chat.type.name != 'notifications')
+              if (chat.type.name != 'notifications')
                 return MessageBottomCard(
-                cachedChatsCubit: widget.cachedChatsCubit,
-                onMessageSend: widget.onMessageSend,
-                chat: chat,
-                editingMessage: editingMessage,
-                textEditingController: textEditingController,
-                focusNode: focusNode,
-                onMessageEdit: widget.onMessageEdit,
-                respondingMessage: respondingMessage,
-                cachedUsersCubit: widget.cachedUsersCubit,
-                scrollController: itemScrollController,
-              );
+                  cachedChatsCubit: widget.cachedChatsCubit,
+                  onMessageSend: widget.onMessageSend,
+                  chat: chat,
+                  editingMessage: editingMessage,
+                  textEditingController: textEditingController,
+                  focusNode: focusNode,
+                  onMessageEdit: widget.onMessageEdit,
+                  respondingMessage: respondingMessage,
+                  cachedUsersCubit: widget.cachedUsersCubit,
+                  scrollController: itemScrollController,
+                );
               return SizedBox(height: 30);
             },
           ),

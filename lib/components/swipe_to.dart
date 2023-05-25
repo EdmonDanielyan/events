@@ -12,6 +12,7 @@ class SwipeTo extends StatefulWidget {
   final double offsetDx;
   final Function()? onRightSwipe;
   final Function()? onLeftSwipe;
+  final bool isMyMessage;
 
   const SwipeTo({
     Key? key,
@@ -26,6 +27,7 @@ class SwipeTo extends StatefulWidget {
     this.iconColor,
     this.animationDuration = const Duration(milliseconds: 150),
     this.offsetDx = 0.3,
+    this.isMyMessage = false,
   }) : super(key: key);
 
   @override
@@ -72,7 +74,6 @@ class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
   }
 
   void _runAnimation({required bool onRight}) {
-
     _animation = Tween(
       begin: const Offset(0.0, 0.0),
       end: Offset(onRight ? widget.offsetDx : -widget.offsetDx, 0.0),
@@ -117,7 +118,8 @@ class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
         }
       },
       child: Stack(
-        alignment: Alignment.center,
+        alignment:
+            widget.isMyMessage ? Alignment.centerRight : Alignment.centerLeft,
         fit: StackFit.passthrough,
         children: [
           Row(
@@ -132,7 +134,7 @@ class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
                       widget.iconOnRightSwipe,
                       size: widget.iconSize,
                       color:
-                      widget.iconColor ?? Theme.of(context).iconTheme.color,
+                          widget.iconColor ?? Theme.of(context).iconTheme.color,
                     ),
               ),
               AnimatedOpacity(
@@ -144,7 +146,7 @@ class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
                       widget.iconOnLeftSwipe,
                       size: widget.iconSize,
                       color:
-                      widget.iconColor ?? Theme.of(context).iconTheme.color,
+                          widget.iconColor ?? Theme.of(context).iconTheme.color,
                     ),
               ),
             ],
