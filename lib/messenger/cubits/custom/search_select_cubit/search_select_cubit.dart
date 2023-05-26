@@ -5,6 +5,8 @@ class SearchSelectCubit<T> extends Cubit<SearchSelectState<T>> {
   SearchSelectCubit() : super(SearchSelectState(items: []));
 
   int get currentIndex => state.currentIndex;
+  int get itemsLength => items.length;
+
   List<T> get items => state.items;
 
   bool isSelected(T item) {

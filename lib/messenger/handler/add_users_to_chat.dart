@@ -14,7 +14,7 @@ class AddUsersToChatHandler {
       final chatsCubit = getIt<CachedChatsCubit>();
       List<User> participants = List.from(chat.participants)..addAll(users);
       chatsCubit.updateChatById(
-          chat.copyWith(participants: participants.toSet().toList()), chat.id);
+          chat.copyWith(participants: participants.toSet().toList()));
     }
   }
 }

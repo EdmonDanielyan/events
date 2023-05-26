@@ -38,7 +38,7 @@ class AppBarWithText extends StatelessWidget with PreferredSizeWidget {
               if (Navigator.of(appBarContext).canPop()) {
                 return const AppBarBackBtn();
               } else {
-                return Container();
+                return const SizedBox.shrink();
               }
             },
           ),

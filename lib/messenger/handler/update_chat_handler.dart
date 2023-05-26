@@ -18,7 +18,6 @@ class UpdateChatHandler {
           avatarUrl: chat.avatarUrl,
           description: chat.description,
         ),
-        chat.id,
       );
     }
   }

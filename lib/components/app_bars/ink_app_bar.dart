@@ -13,14 +13,18 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
   final BuildContext context;
   final Widget? leading;
   final String? title;
+  final Widget? titleWidget;
   final List<Widget>? actions;
+  final Widget? image;
   const InkAppBar(
     this.context, {
     Key? key,
     this.showPersonalPageLink = false,
     this.leading,
     this.title,
+    this.titleWidget,
     this.actions,
+    this.image,
   }) : super(key: key);
 
   @override
@@ -32,6 +36,34 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget? displayingTitle = titleWidget;
+    if (title != null) {
+      displayingTitle ??= Text(
+        title!,
+        textAlign: TextAlign.center,
+        style: FontStyles.rubikP1(color: Palette.white),
+      );
+    } else {
+      displayingTitle ??= Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            'assets/images/logo.svg',
+            semanticsLabel: 'INK Logo',
+            width: SizeConfig(context, 28).getProportionateScreenHeight,
+          ),
+          const SizedBox(width: 10.0),
+          Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text(
+              localizationInstance.appName,
+              style: FontStyles.rubikP1(color: Palette.white),
+            ),
+          ),
+        ],
+      );
+    }
     return AppBar(
       leading: leading ??
           Builder(
@@ -59,40 +91,17 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
               stops: [0.0, 1.0],
               tileMode: TileMode.decal),
         ),
-        child: SvgPicture.asset(
-          'assets/images/appbar_lines.svg',
-          semanticsLabel: 'appbar Line',
-          height: MediaQuery.of(context).size.height *
-              MediaQuery.of(context).devicePixelRatio,
-          width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
-        ),
-      ),
-      title: title != null
-          ? Text(
-              title!,
-              textAlign: TextAlign.center,
-              style: FontStyles.rubikP1(color: Palette.white),
-            )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  'assets/images/logo.svg',
-                  semanticsLabel: 'INK Logo',
-                  width: SizeConfig(context, 28).getProportionateScreenHeight,
-                ),
-                const SizedBox(width: 10.0),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                    localizationInstance.appName,
-                    style: FontStyles.rubikP1(color: Palette.white),
-                  ),
-                ),
-              ],
+        child: image ??
+            SvgPicture.asset(
+              'assets/images/appbar_lines.svg',
+              semanticsLabel: 'appbar Line',
+              height: MediaQuery.of(context).size.height *
+                  MediaQuery.of(context).devicePixelRatio,
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.cover,
             ),
+      ),
+      title: displayingTitle,
       centerTitle: true,
       actions: actions ?? getActions(),
     );

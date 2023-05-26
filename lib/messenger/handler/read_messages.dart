@@ -39,7 +39,7 @@ class ReadMessagesHandler {
             messages: List<Message>.from([])..addAll(messages),
           );
 
-          chatsCubit.updateChatById(newChat, chat.id);
+          chatsCubit.updateChatById(newChat);
         }
       }
     }

@@ -28,7 +28,7 @@ class UpdateMessagesHandler {
         }
       }
 
-      chatsCubit.updateChatById(chat.copyWith(messages: newMessages), chat.id);
+      chatsCubit.updateChatById(chat.copyWith(messages: newMessages));
     }
   }
 }

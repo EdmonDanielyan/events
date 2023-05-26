@@ -6,9 +6,13 @@ import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/message_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/custom/search_select_cubit/search_select_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/custom/search_select_cubit/search_select_state.dart';
 import 'package:ink_mobile/messenger/functions/create_message.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
+import 'package:ink_mobile/messenger/screens/chat/components/builder.dart';
+import 'package:ink_mobile/messenger/screens/chat/components/search_textfield.dart';
 import 'package:ink_mobile/messenger/screens/chat/components/textfield.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -19,6 +23,7 @@ class MessageBottomCard extends StatefulWidget {
   final TextEditingController textEditingController;
   final Chat chat;
   final CachedChatsCubit cachedChatsCubit;
+  final SearchSelectCubit searchMessagesCubit;
   final void Function(Message, Chat) onMessageSend;
   final MessageCubit editingMessage;
   final FocusNode focusNode;
@@ -26,12 +31,18 @@ class MessageBottomCard extends StatefulWidget {
   final MessageCubit respondingMessage;
   final CachedUsersCubit cachedUsersCubit;
   final ItemScrollController scrollController;
+  final void Function() scrollToCurrentSearchItem;
+  final void Function(String, List<Message>) onSearch;
+
   const MessageBottomCard({
     Key? key,
     required this.textEditingController,
     required this.chat,
     required this.cachedChatsCubit,
+    required this.searchMessagesCubit,
     required this.onMessageSend,
+    required this.scrollToCurrentSearchItem,
+    required this.onSearch,
     required this.editingMessage,
     required this.focusNode,
     required this.onMessageEdit,
@@ -45,6 +56,8 @@ class MessageBottomCard extends StatefulWidget {
 }
 
 class _MessageBottomCardState extends State<MessageBottomCard> {
+  SearchSelectCubit get searchMessagesCubit => widget.searchMessagesCubit;
+
   void _onSend() {
     final bool isResponse = widget.respondingMessage.message != null;
 
@@ -95,45 +108,90 @@ class _MessageBottomCardState extends State<MessageBottomCard> {
                 blurStyle: BlurStyle.outer)
           ],
         ),
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            EditingMessageContainer(editingMessage: widget.editingMessage),
-            RespondingMessageContainer(
-              respondingMessage: widget.respondingMessage,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: ChatTextField(
-                    textEditingController: widget.textEditingController,
-                    focusNode: widget.focusNode,
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                BlocBuilder<MessageCubit, Message?>(
-                  bloc: widget.editingMessage,
-                  builder: (context, state) {
-                    return InkWell(
-                      onTap: () =>
-                          state != null ? _onEdit(state) : _onSend(),
-                      child: SvgPicture.asset(
-                        state != null
-                            ? IconLinks.TICK_ICON
-                            : IconLinks.SEND_ICON,
-                        height: 28.0,
-                        width: 28.0,
-                        color: Palette.greenE4A,
-                      ),
-
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
+        padding: const EdgeInsets.only(
+          right: 16.0,
+          left: 16.0,
+          bottom: 16.0,
         ),
+        child: BlocBuilder<SearchSelectCubit, SearchSelectState>(
+          bloc: widget.searchMessagesCubit,
+          builder: (context, state) {
+            bool isSearching = state.enabled;
+            return WillPopScope(
+              onWillPop: () async {
+                searchMessagesCubit.state.enabled
+                    ? searchMessagesCubit.enable(false)
+                    : Navigator.pop(context);
+                return false;
+              },
+              child: isSearching
+                  ? ChatBuilder(
+                      cachedChatsCubit: widget.cachedChatsCubit,
+                      builder: (context, state, chat) {
+                        if (chat == null) {
+                          return const SizedBox.shrink();
+                        }
+                        return ChatSearchTextField(
+                          onUp: () {
+                            searchMessagesCubit.toPrevious();
+                            widget.scrollToCurrentSearchItem();
+                          },
+                          onDown: () {
+                            searchMessagesCubit.toNext();
+                            widget.scrollToCurrentSearchItem();
+                          },
+                          onFieldSubmitted: (str) =>
+                              widget.onSearch(str, chat.messages),
+                          onClose: () => searchMessagesCubit.enable(false),
+                          currentIndex: searchMessagesCubit.currentIndex,
+                          itemsLength: searchMessagesCubit.itemsLength,
+                        );
+                      },
+                    )
+                  : _chatField(),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _chatField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          EditingMessageContainer(editingMessage: widget.editingMessage),
+          RespondingMessageContainer(
+            respondingMessage: widget.respondingMessage,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: ChatTextField(
+                  textEditingController: widget.textEditingController,
+                  focusNode: widget.focusNode,
+                ),
+              ),
+              const SizedBox(width: 16.0),
+              BlocBuilder<MessageCubit, Message?>(
+                bloc: widget.editingMessage,
+                builder: (context, state) {
+                  return InkWell(
+                    onTap: () => state != null ? _onEdit(state) : _onSend(),
+                    child: SvgPicture.asset(
+                      state != null ? IconLinks.TICK_ICON : IconLinks.SEND_ICON,
+                      height: 28.0,
+                      width: 28.0,
+                      color: Palette.greenE4A,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

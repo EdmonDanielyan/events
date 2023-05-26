@@ -263,58 +263,18 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: SearchBuilder(
-              searchMessagesCubit,
-              builder: (context, searchState) {
-                if (searchState.enabled) {
-                  return WillPopScope(
-                    onWillPop: () async {
-                      searchMessagesCubit.enable(false);
-                      return false;
-                    },
-                    child: ChatBuilder(
-                        cachedChatsCubit: widget.cachedChatsCubit,
-                        builder: (context, state, chat) {
-                          if (chat == null) {
-                            return const SizedBox.shrink();
-                          }
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            child: ChatSearchTextField(
-                              onUp: () {
-                                searchMessagesCubit.toPrevious();
-                                _scrollToCurrentSearchItem();
-                              },
-                              onDown: () {
-                                searchMessagesCubit.toNext();
-                                _scrollToCurrentSearchItem();
-                              },
-                              onFieldSubmitted: (str) =>
-                                  _onSearch(str, chat.messages),
-                              onClose: () => searchMessagesCubit.enable(false),
-                            ),
-                          );
-                        }),
-                  );
-                }
-
-                return const SizedBox.shrink();
-              },
-            ),
-          ),
           BlocBuilder<CachedChatsCubit, CachedChatsState>(
-              bloc: widget.cachedChatsCubit,
-              builder: (context, state) {
-                if (state.type == CachedChatsStateType.LOADING) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: const InkPageLoader(),
-                  );
-                }
-                return const SizedBox.shrink();
-              }),
+            bloc: widget.cachedChatsCubit,
+            builder: (context, state) {
+              if (state.type == CachedChatsStateType.LOADING) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: const InkPageLoader(),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
           Expanded(
             child: HiddenMessagesBuilder(
               hiddenMessagesCubit,
@@ -449,6 +409,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               if (chat.type.name != 'notifications')
                 return MessageBottomCard(
                   cachedChatsCubit: widget.cachedChatsCubit,
+                  searchMessagesCubit: searchMessagesCubit,
                   onMessageSend: widget.onMessageSend,
                   chat: chat,
                   editingMessage: editingMessage,
@@ -458,6 +419,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                   respondingMessage: respondingMessage,
                   cachedUsersCubit: widget.cachedUsersCubit,
                   scrollController: itemScrollController,
+                  scrollToCurrentSearchItem: _scrollToCurrentSearchItem,
+                  onSearch: _onSearch,
                 );
               return SizedBox(height: 30);
             },

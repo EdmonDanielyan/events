@@ -70,8 +70,7 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
   void fixChats() {
     for (final chat in chats) {
       if (chat.isSingle && chat.ownerId == 0) {
-        updateChatById(
-            chat.copyWith(ownerId: chat.getFirstNotMyId(myId)), chat.id);
+        updateChatById(chat.copyWith(ownerId: chat.getFirstNotMyId(myId)));
       }
     }
   }
@@ -125,9 +124,9 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
     emit(state.copyWith(chats: newChats, type: CachedChatsStateType.LOADED));
   }
 
-  void updateChatById(Chat item, int id) {
-    _updateChats(_updateChatById(item, id, chats));
-    _updateSelectedChats(_updateChatById(item, id, selectedChats));
+  void updateChatById(Chat item) {
+    _updateChats(_updateChatById(item, item.id, chats));
+    _updateSelectedChats(_updateChatById(item, item.id, selectedChats));
   }
 
   List<Chat> _updateChatById(Chat item, int id, List<Chat> chats) {
@@ -317,7 +316,7 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
         chat.messages[msgIndex] = message;
       }
 
-      updateChatById(chat, chat.id);
+      updateChatById(chat);
     }
   }
 
@@ -336,7 +335,7 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
         }
       }
 
-      updateChatById(chat, chat.id);
+      updateChatById(chat);
     }
   }
 
@@ -351,7 +350,6 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
               chat.copyWith(
                 messages: List<Message>.from(storedChat.messages),
               ),
-              storedChat.id,
             );
           }
           updateMessagesByChatId(chat.messages, chat.id);
