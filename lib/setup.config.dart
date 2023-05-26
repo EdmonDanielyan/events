@@ -417,10 +417,6 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i104.StaffMovementsNetworkRequest>(
       _i104.StaffMovementsNetworkRequest());
   gh.factory<String>(
-    () => tokenDataInjectorModule.localDatabasePassword,
-    instanceName: 'localDatabasePassword',
-  );
-  gh.factory<String>(
     () => tokenDataInjectorModule.deviceVirtualId,
     instanceName: 'deviceVirtualId',
   );
@@ -439,6 +435,10 @@ Future<_i1.GetIt> $initGetIt(
   gh.factory<String>(
     () => tokenDataInjectorModule.userId,
     instanceName: 'userId',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.localDatabasePassword,
+    instanceName: 'localDatabasePassword',
   );
   gh.factory<String>(
     () => testLogFilePathInjector.logFile,
