@@ -304,9 +304,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               },
             ),
           ),
-          ChatBuilder(
-              cachedChatsCubit: widget.cachedChatsCubit,
-              builder: (context, state, chat) {
+          BlocBuilder<CachedChatsCubit, CachedChatsState>(
+              bloc: widget.cachedChatsCubit,
+              builder: (context, state) {
                 if (state.type == CachedChatsStateType.LOADING) {
                   return Padding(
                     padding: const EdgeInsets.only(top: 8.0),

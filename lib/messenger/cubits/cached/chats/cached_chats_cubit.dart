@@ -59,6 +59,7 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
       count: count,
       successCallback: callback,
     ).call();
+    emit(state.copyWith(type: CachedChatsStateType.LOADED));
   }
 
   Future<void> fetchChats() async {
