@@ -24,7 +24,6 @@ class GetChatsService {
         response.data != null) {
       List<Chat> chats = [];
       if (response.data!.isNotEmpty) {
-        print("There is at least one chat!");
         for (final chat in response.data!) {
           print(chat.toString());
           chats.add(chat.toLocal(myId: myId));

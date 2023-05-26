@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/palette.dart';
 
 class CustomDismissible extends StatelessWidget {
   final Future<bool?> Function(DismissDirection)? confirmDismiss;
@@ -20,6 +21,7 @@ class CustomDismissible extends StatelessWidget {
     }
 
     return Material(
+      color: Palette.white,
       child: Dismissible(
         key: uniqueKey,
         background: const SizedBox.shrink(),

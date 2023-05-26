@@ -150,16 +150,21 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                     if (chat.isOwner(widget.cachedChatsCubit.myId)) ...[
                       const SizedBox(height: 16.0),
                       ChatInfoAddBtn(
-                        onPressed: (_) =>
-                            widget.onAddUser?.call(context, chat),
+                        onPressed: (_) => widget.onAddUser?.call(context, chat),
                         cachedChatsCubit: widget.cachedChatsCubit,
                       ),
                     ],
                     const SizedBox(height: 16.0),
-                    ListView.builder(
+                    ListView.separated(
                       itemCount: participants.length,
                       shrinkWrap: true,
                       controller: ScrollController(keepScrollOffset: false),
+                      separatorBuilder: (context, index) {
+                        return Divider(
+                          color: Palette.text5Grey,
+                          height: 32.0,
+                        );
+                      },
                       itemBuilder: (context, index) {
                         final _currentUser = participants[index];
                         final isOwner = _currentUser.id == chat.ownerId;
@@ -171,21 +176,17 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                             return CustomDismissible(
                               uniqueKey: ValueKey(_currentUser.id),
                               onDismissed: !isOwner &&
-                                  chat.ownerId ==
-                                      widget.cachedChatsCubit.myId
-                                  ? (_) {
-                                if (widget.onRemoveParticipant !=
-                                    null) {
-                                  widget.onRemoveParticipant!(context,
-                                      user ?? _currentUser, chat);
-                                }
-                              }
+                                      chat.ownerId ==
+                                          widget.cachedChatsCubit.myId
+                                  ? (_) => widget.onRemoveParticipant?.call(
+                                        context,
+                                        user ?? _currentUser,
+                                        chat,
+                                      )
                                   : null,
                               child: InkWell(
                                 onTap: () => widget.openUser(
-                                    (user ?? _currentUser).id,
-                                    false,
-                                    context),
+                                    (user ?? _currentUser).id, false, context),
                                 child: ParticipantCard(
                                   user: user ?? _currentUser,
                                   onlineCubit: widget.onlineCubit,

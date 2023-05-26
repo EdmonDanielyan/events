@@ -31,6 +31,7 @@ class FetchParticipants {
               name: "${user.lastName ?? ""} ${user.name ?? ""}".trim(),
               avatarUrl: user.pathToAvatar ?? "",
               absence: user.absence,
+              workPosition: user.workPosition,
             ),
           )
           .toList();
