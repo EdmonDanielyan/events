@@ -12,11 +12,9 @@ import 'package:ink_mobile/messenger/handler/senders/remove_participant_sender_h
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/messenger/screens/chat/opener.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/chat_list_screen.dart';
-import 'package:ink_mobile/messenger/screens/users_picker/users_picker_screen.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:ink_mobile/messenger/components/bottom_sheet/bottom_sheet.dart';
 import '../../messenger/cubits/cached/chat_users_picker/chat_users_picker_cubit.dart';
 import '../../messenger/cubits/cached/users/cached_users_cubit.dart';
 import '../../messenger/cubits/custom/online_cubit/online_cubit.dart';

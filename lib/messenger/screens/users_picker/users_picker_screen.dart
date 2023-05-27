@@ -4,7 +4,6 @@ import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/string_cubit.dart';
-import 'package:ink_mobile/messenger/handler/create_chat.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/messenger/screens/users_picker/body.dart';
@@ -38,16 +37,6 @@ class _UsersPickerScreenState extends State<UsersPickerScreen> {
   OnlineCubit get onlineCubit => widget.onlineCubit;
   final cachedUsersCubit = getIt<CachedUsersCubit>();
   final createChat = StringCubit("Написать");
-
-  void _createChat(List<User> users, BuildContext context) {
-    CreateChatHandler(
-      users,
-      context,
-      chatsCubit: chatsCubit,
-      onlineCubit: onlineCubit,
-      cachedUsersCubit: cachedUsersCubit,
-    ).call();
-  }
 
   @override
   Widget build(BuildContext context) {
