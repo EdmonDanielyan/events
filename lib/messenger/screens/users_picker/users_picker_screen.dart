@@ -74,8 +74,7 @@ class _UsersPickerScreenState extends State<UsersPickerScreen> {
           if (widget.onSubmit != null) {
             widget.onSubmit!(_context, users);
           } else {
-            Navigator.of(_context).pop();
-            _createChat(users, _context);
+            Navigator.of(_context).pop(users);
           }
         },
         onlineCubit: onlineCubit,
