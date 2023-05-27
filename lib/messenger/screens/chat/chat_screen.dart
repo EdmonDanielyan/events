@@ -32,8 +32,6 @@ import 'package:ink_mobile/setup.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../components/swipe_to.dart';
 import 'components/bottom_card.dart';
-import 'components/search_builder.dart';
-import 'components/search_textfield.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:collection/collection.dart';
 

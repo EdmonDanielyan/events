@@ -34,12 +34,10 @@ class UsersPickerScreen extends StatefulWidget {
 }
 
 class _UsersPickerScreenState extends State<UsersPickerScreen> {
-
   CachedChatsCubit get chatsCubit => widget.cachedChatsCubit;
   OnlineCubit get onlineCubit => widget.onlineCubit;
   final cachedUsersCubit = getIt<CachedUsersCubit>();
-  final createChat = StringCubit("");
-
+  final createChat = StringCubit("Написать");
 
   void _createChat(List<User> users, BuildContext context) {
     CreateChatHandler(
@@ -59,19 +57,26 @@ class _UsersPickerScreenState extends State<UsersPickerScreen> {
         title: "Выбор собеседников",
       ),
       body: Body(
-        submitTxtCubit: createChat,
+        submitTxtCubit: widget.submitTxtCubit ?? createChat,
         onChange: (users) {
-          createChat.setNew(
-            users.isEmpty
-                ? ""
-                : users.length > 1
-                    ? "Создать группу"
-                    : "Написать",
-          );
+          if (widget.onChange != null) {
+            widget.onChange!(users);
+          } else {
+            widget.submitTxtCubit?.setNew(
+              users.length > 1 ? "Создать группу" : "Написать",
+            );
+            createChat.setNew(
+              users.length > 1 ? "Создать группу" : "Написать",
+            );
+          }
         },
         onSubmit: (_context, users) {
-          Navigator.of(_context).pop();
-          _createChat(users, context);
+          if (widget.onSubmit != null) {
+            widget.onSubmit!(_context, users);
+          } else {
+            Navigator.of(_context).pop();
+            _createChat(users, _context);
+          }
         },
         onlineCubit: onlineCubit,
         cachedChatsCubit: chatsCubit,

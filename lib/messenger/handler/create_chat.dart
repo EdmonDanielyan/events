@@ -54,7 +54,7 @@ class CreateChatHandler {
 
   Future<void> _makeRequest(Chat chat) async {
     EasyLoading.show();
-    await CreatChatService(
+    await CreateChatService(
       chat,
       successCallback: (chatApi, token) {
         final newChat = chatApi.copyWith(
@@ -86,7 +86,7 @@ class CreateChatHandler {
         chatsCubit,
         onlineCubit: onlineCubit,
         cachedUsersCubit: cachedUsersCubit,
-      )();
+      ).call();
     }
   }
 }
