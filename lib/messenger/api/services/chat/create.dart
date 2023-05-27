@@ -4,11 +4,11 @@ import 'package:ink_mobile/messenger/cubits/custom/rest_cubit/rest_api_service_c
 import 'package:ink_mobile/messenger/cubits/custom/rest_cubit/rest_api_service_state.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 
-class CreatChatService {
+class CreateChatService {
   final Chat chat;
   final void Function(Chat, String)? successCallback;
   final int myId;
-  const CreatChatService(this.chat, {this.successCallback, required this.myId});
+  const CreateChatService(this.chat, {this.successCallback, required this.myId});
 
   Future<void> call() async {
     final service = RestApiServiceCubit(RestApiServiceState(load: _request));

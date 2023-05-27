@@ -56,7 +56,6 @@ class DirectMessageListener extends Listener {
           messages: List.from(chat.messages)
             ..map((e) => e.copyWith(chatId: chatId)).toList(),
         ),
-        chat.id,
       );
     } else {
       final oppositeChat = CreateOppositeChat(

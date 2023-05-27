@@ -21,7 +21,7 @@ class RemoveUsersFromChatHandler {
         participants.removeWhere((element) => element.id == user.id);
       }
       chatsCubit.updateChatById(
-          chat.copyWith(participants: participants), chat.id);
+          chat.copyWith(participants: participants));
     }
   }
 }

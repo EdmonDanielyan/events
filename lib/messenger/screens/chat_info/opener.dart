@@ -81,6 +81,7 @@ class ChatInfoOpener {
         onlineCubit: onlineCubit,
         cachedChatsCubit: cachedChatsCubit,
         chat: chat,
+        onChange: (users) => (){},
       ),
     );
   }

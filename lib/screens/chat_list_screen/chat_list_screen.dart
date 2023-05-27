@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/app_bars/ink_app_bar.dart';
-import 'package:ink_mobile/constants/aseets.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/chat_person_list/chat_person_list_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/string_cubit.dart';
@@ -11,10 +12,11 @@ import 'package:ink_mobile/messenger/handler/senders/remove_participant_sender_h
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/messenger/screens/chat/opener.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/chat_list_screen.dart';
+import 'package:ink_mobile/messenger/screens/users_picker/users_picker_screen.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/setup.dart';
-
+import 'package:ink_mobile/messenger/components/bottom_sheet/bottom_sheet.dart';
 import '../../messenger/cubits/cached/chat_users_picker/chat_users_picker_cubit.dart';
 import '../../messenger/cubits/cached/users/cached_users_cubit.dart';
 import '../../messenger/cubits/custom/online_cubit/online_cubit.dart';
@@ -66,23 +68,37 @@ class _ChatListScreenState extends State<ChatListScreen>
     ).call();
   }
 
+  void _onCreateChat() {
+    createChat.setNew("");
+    Navigator.pushNamed(context, MainRoutes.usersPickerScreenKey).then((users) {
+      if (users is List<User>) _createChat(users, context);
+    });
+    //     .then((value) => ChatScreenOpener(
+    //   context,
+    //   chat.id,
+    //   chatsCubit,
+    //   onlineCubit: onlineCubit,
+    //   cachedUsersCubit: cachedUsersCubit,
+    // ).call(););
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: _onCreateChat,
+        child: SvgPicture.asset(
+          IconLinks.EDIT_ICON,
+          color: Palette.white,
+        ),
+        backgroundColor: Palette.greenE4A,
+      ),
       appBar: InkAppBar(
         context,
         title: "Сообщения",
-        actions: [
-          IconButton(
-            onPressed: () {
-              createChat.setNew("");
-              Navigator.pushNamed(context, MainRoutes.usersPickerScreenKey);
-            },
-            icon: SvgPicture.asset(EDIT_BTN_ICON, color: Colors.white),
-          ),
-        ],
         leading: const SizedBox.shrink(),
+        showPersonalPageLink: true,
       ),
       body: Column(
         children: [

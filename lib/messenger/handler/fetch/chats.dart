@@ -1,5 +1,6 @@
 import 'package:ink_mobile/messenger/api/services/chat/get.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
+import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/handler/fetch/participant.dart';
 import 'package:ink_mobile/messenger/model/chat.dart';
 import 'package:ink_mobile/messenger/providers/messenger.dart';
@@ -15,27 +16,33 @@ class FetchChats {
 
   Future<void> call() async {
     final chatsCubit = getIt<CachedChatsCubit>();
+    final usersCubit = getIt<CachedUsersCubit>();
     final messengerProvider = getIt<MessengerProvider>();
     await GetChatsService(
       offset,
       count,
       myId: chatsCubit.myId,
-      successCallback: (chats, token) {
+      successCallback: (chats, token) async {
         chatsCubit.updateFetchedChats(chats);
         if (successCallback != null) {
           successCallback!(chats);
         }
 
         if (chats.isNotEmpty) {
-          List<User> participants = [];
           for (final chat in chats) {
+            List<User> participants = [];
             participants.addAll(chat.participants);
             if (!messengerProvider.isListiningToChat(chat.id)) {
               messengerProvider.subscribeToChat(chat.id);
             }
+            await FetchParticipants(participants).call();
+            List<int> participantsIds = participants.map((e) => e.id).toList();
+            participants = usersCubit.users
+                .where((user) => participantsIds.contains(user.id))
+                .toList();
+            chatsCubit
+                .updateChatById(chat.copyWith(participants: participants));
           }
-
-          FetchParticipants(participants).call();
         }
       },
     ).call();

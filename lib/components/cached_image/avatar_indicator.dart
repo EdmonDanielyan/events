@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/palette.dart';
 
 class AvatarIndicator extends StatelessWidget {
   final double indicatorSize;
@@ -15,10 +16,9 @@ class AvatarIndicator extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(25.0),
         ),
-        padding: const EdgeInsets.all(2.0),
         child: Icon(
           Icons.circle,
-          color: Colors.green[800],
+          color: Palette.greenE4A,
           size: indicatorSize,
         ),
       ),
