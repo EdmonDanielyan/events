@@ -54,6 +54,13 @@ class _$WebViewPageSerializer implements StructuredSerializer<WebViewPage> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.iconUrl;
+    if (value != null) {
+      result
+        ..add('iconUrl')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -88,6 +95,10 @@ class _$WebViewPageSerializer implements StructuredSerializer<WebViewPage> {
           result.url = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'iconUrl':
+          result.iconUrl = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -106,11 +117,14 @@ class _$WebViewPage extends WebViewPage {
   final String name;
   @override
   final String url;
+  @override
+  final String iconUrl;
 
   factory _$WebViewPage([void Function(WebViewPageBuilder) updates]) =>
       (new WebViewPageBuilder()..update(updates))._build();
 
-  _$WebViewPage._({this.type, this.id, this.code, this.name, this.url})
+  _$WebViewPage._(
+      {this.type, this.id, this.code, this.name, this.url, this.iconUrl})
       : super._();
 
   @override
@@ -128,7 +142,8 @@ class _$WebViewPage extends WebViewPage {
         id == other.id &&
         code == other.code &&
         name == other.name &&
-        url == other.url;
+        url == other.url &&
+        iconUrl == other.iconUrl;
   }
 
   @override
@@ -139,6 +154,7 @@ class _$WebViewPage extends WebViewPage {
     _$hash = $jc(_$hash, code.hashCode);
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, url.hashCode);
+    _$hash = $jc(_$hash, iconUrl.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -150,7 +166,8 @@ class _$WebViewPage extends WebViewPage {
           ..add('id', id)
           ..add('code', code)
           ..add('name', name)
-          ..add('url', url))
+          ..add('url', url)
+          ..add('iconUrl', iconUrl))
         .toString();
   }
 }
@@ -178,6 +195,10 @@ class WebViewPageBuilder implements Builder<WebViewPage, WebViewPageBuilder> {
   String get url => _$this._url;
   set url(String url) => _$this._url = url;
 
+  String _iconUrl;
+  String get iconUrl => _$this._iconUrl;
+  set iconUrl(String iconUrl) => _$this._iconUrl = iconUrl;
+
   WebViewPageBuilder() {
     WebViewPage._initializeBuilder(this);
   }
@@ -190,6 +211,7 @@ class WebViewPageBuilder implements Builder<WebViewPage, WebViewPageBuilder> {
       _code = $v.code;
       _name = $v.name;
       _url = $v.url;
+      _iconUrl = $v.iconUrl;
       _$v = null;
     }
     return this;
@@ -212,7 +234,12 @@ class WebViewPageBuilder implements Builder<WebViewPage, WebViewPageBuilder> {
   _$WebViewPage _build() {
     final _$result = _$v ??
         new _$WebViewPage._(
-            type: type, id: id, code: code, name: name, url: url);
+            type: type,
+            id: id,
+            code: code,
+            name: name,
+            url: url,
+            iconUrl: iconUrl);
     replace(_$result);
     return _$result;
   }

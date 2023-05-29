@@ -92,7 +92,7 @@ class _BodyState extends State<Body> {
                             title: pages[index].name,
                             link: pages[index].url,
                             id: pages[index].id.toString(),
-                            iconUrl: "",
+                            iconUrl: pages[index].iconUrl,
                           );
                         },
                       ),

@@ -61,6 +61,13 @@ class _$TextPageSerializer implements StructuredSerializer<TextPage> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.iconUrl;
+    if (value != null) {
+      result
+        ..add('iconUrl')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -99,6 +106,10 @@ class _$TextPageSerializer implements StructuredSerializer<TextPage> {
           result.detail = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'iconUrl':
+          result.iconUrl = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -119,12 +130,20 @@ class _$TextPage extends TextPage {
   final String preview;
   @override
   final String detail;
+  @override
+  final String iconUrl;
 
   factory _$TextPage([void Function(TextPageBuilder) updates]) =>
       (new TextPageBuilder()..update(updates))._build();
 
   _$TextPage._(
-      {this.type, this.id, this.code, this.name, this.preview, this.detail})
+      {this.type,
+      this.id,
+      this.code,
+      this.name,
+      this.preview,
+      this.detail,
+      this.iconUrl})
       : super._();
 
   @override
@@ -143,7 +162,8 @@ class _$TextPage extends TextPage {
         code == other.code &&
         name == other.name &&
         preview == other.preview &&
-        detail == other.detail;
+        detail == other.detail &&
+        iconUrl == other.iconUrl;
   }
 
   @override
@@ -155,6 +175,7 @@ class _$TextPage extends TextPage {
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, preview.hashCode);
     _$hash = $jc(_$hash, detail.hashCode);
+    _$hash = $jc(_$hash, iconUrl.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -167,7 +188,8 @@ class _$TextPage extends TextPage {
           ..add('code', code)
           ..add('name', name)
           ..add('preview', preview)
-          ..add('detail', detail))
+          ..add('detail', detail)
+          ..add('iconUrl', iconUrl))
         .toString();
   }
 }
@@ -199,6 +221,10 @@ class TextPageBuilder implements Builder<TextPage, TextPageBuilder> {
   String get detail => _$this._detail;
   set detail(String detail) => _$this._detail = detail;
 
+  String _iconUrl;
+  String get iconUrl => _$this._iconUrl;
+  set iconUrl(String iconUrl) => _$this._iconUrl = iconUrl;
+
   TextPageBuilder() {
     TextPage._initializeBuilder(this);
   }
@@ -212,6 +238,7 @@ class TextPageBuilder implements Builder<TextPage, TextPageBuilder> {
       _name = $v.name;
       _preview = $v.preview;
       _detail = $v.detail;
+      _iconUrl = $v.iconUrl;
       _$v = null;
     }
     return this;
@@ -239,7 +266,8 @@ class TextPageBuilder implements Builder<TextPage, TextPageBuilder> {
             code: code,
             name: name,
             preview: preview,
-            detail: detail);
+            detail: detail,
+            iconUrl: iconUrl);
     replace(_$result);
     return _$result;
   }

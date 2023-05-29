@@ -61,6 +61,13 @@ class _$PageSerializer implements StructuredSerializer<Page> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.iconUrl;
+    if (value != null) {
+      result
+        ..add('iconUrl')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.url;
     if (value != null) {
       result
@@ -106,6 +113,10 @@ class _$PageSerializer implements StructuredSerializer<Page> {
           result.detail = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'iconUrl':
+          result.iconUrl = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'url':
           result.url = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -131,6 +142,8 @@ class _$Page extends Page {
   @override
   final String detail;
   @override
+  final String iconUrl;
+  @override
   final String url;
 
   factory _$Page([void Function(PageBuilder) updates]) =>
@@ -143,6 +156,7 @@ class _$Page extends Page {
       this.name,
       this.preview,
       this.detail,
+      this.iconUrl,
       this.url})
       : super._();
 
@@ -163,6 +177,7 @@ class _$Page extends Page {
         name == other.name &&
         preview == other.preview &&
         detail == other.detail &&
+        iconUrl == other.iconUrl &&
         url == other.url;
   }
 
@@ -175,6 +190,7 @@ class _$Page extends Page {
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, preview.hashCode);
     _$hash = $jc(_$hash, detail.hashCode);
+    _$hash = $jc(_$hash, iconUrl.hashCode);
     _$hash = $jc(_$hash, url.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -189,6 +205,7 @@ class _$Page extends Page {
           ..add('name', name)
           ..add('preview', preview)
           ..add('detail', detail)
+          ..add('iconUrl', iconUrl)
           ..add('url', url))
         .toString();
   }
@@ -221,6 +238,10 @@ class PageBuilder implements Builder<Page, PageBuilder> {
   String get detail => _$this._detail;
   set detail(String detail) => _$this._detail = detail;
 
+  String _iconUrl;
+  String get iconUrl => _$this._iconUrl;
+  set iconUrl(String iconUrl) => _$this._iconUrl = iconUrl;
+
   String _url;
   String get url => _$this._url;
   set url(String url) => _$this._url = url;
@@ -238,6 +259,7 @@ class PageBuilder implements Builder<Page, PageBuilder> {
       _name = $v.name;
       _preview = $v.preview;
       _detail = $v.detail;
+      _iconUrl = $v.iconUrl;
       _url = $v.url;
       _$v = null;
     }
@@ -267,6 +289,7 @@ class PageBuilder implements Builder<Page, PageBuilder> {
             name: name,
             preview: preview,
             detail: detail,
+            iconUrl: iconUrl,
             url: url);
     replace(_$result);
     return _$result;
