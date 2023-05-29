@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 
 class Absence {
   String? reason;
@@ -15,8 +16,12 @@ class Absence {
   factory Absence.fromMap(Map<String, dynamic> data) {
     return Absence(
       reason: data["reason"],
-      from: DateTime.tryParse(data["from"]),
-      to: DateTime.tryParse(data["to"]),
+      from: data["from"] != null
+          ? DateFormat('yyyy-MM-dd').parse(data["from"])
+          : null,
+      to: data["to"] != null
+          ? DateFormat('yyyy-MM-dd').parse(data["to"])
+          : null,
     );
   }
 
