@@ -71,13 +71,6 @@ class _ChatListScreenState extends State<ChatListScreen>
     Navigator.pushNamed(context, MainRoutes.usersPickerScreenKey).then((users) {
       if (users is List<User>) _createChat(users, context);
     });
-    //     .then((value) => ChatScreenOpener(
-    //   context,
-    //   chat.id,
-    //   chatsCubit,
-    //   onlineCubit: onlineCubit,
-    //   cachedUsersCubit: cachedUsersCubit,
-    // ).call(););
   }
 
   @override
