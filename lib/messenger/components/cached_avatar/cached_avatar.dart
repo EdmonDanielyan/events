@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/validators/validators/text_validator.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 import '../../functions/size_config.dart';
@@ -11,7 +12,7 @@ class CachedCircleAvatar extends StatelessWidget {
   final double? avatarWidth;
   final double? avatarHeight;
   final String name;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final Duration fadeInDuration;
   final bool indicator;
   final double indicatorSize;
@@ -21,7 +22,7 @@ class CachedCircleAvatar extends StatelessWidget {
     this.avatarWidth,
     this.avatarHeight,
     this.name = "",
-    this.backgroundColor = Colors.blue,
+    this.backgroundColor,
     this.fadeInDuration = const Duration(milliseconds: 300),
     this.indicator = false,
     this.indicatorSize = 12.0,
@@ -32,22 +33,24 @@ class CachedCircleAvatar extends StatelessWidget {
     Widget _child;
 
     final validator = TextValidator(url);
+    final color = backgroundColor ?? Palette.greenE4A;
     if (validator.hasHttp() && validator.isStringUrl()) {
       _child = OptimizedCacheImage(
         imageUrl: url,
         fadeInDuration: fadeInDuration,
         fit: BoxFit.cover,
         placeholder: (context, url) =>
-            AvatarPlaceholder(text: name, backgroundColor: backgroundColor),
+            AvatarPlaceholder(text: name, backgroundColor: color),
         errorWidget: (context, url, error) {
           return AvatarPlaceholder(
             text: name,
-            backgroundColor: backgroundColor,
+            backgroundColor: color,
           );
         },
         imageBuilder: (context, image) {
           return CircleAvatar(
-            backgroundColor: backgroundColor,
+            backgroundColor: color,
+            foregroundColor: color,
             radius: 30,
             foregroundImage: image,
           );
@@ -55,9 +58,9 @@ class CachedCircleAvatar extends StatelessWidget {
       );
     } else if (validator.isStringUrl()) {
       _child =
-          AvatarFile(url: url, backgroundColor: backgroundColor, text: name);
+          AvatarFile(url: url, backgroundColor: color, text: name);
     } else {
-      _child = AvatarPlaceholder(text: name, backgroundColor: backgroundColor);
+      _child = AvatarPlaceholder(text: name, backgroundColor: color,);
     }
 
     return Stack(

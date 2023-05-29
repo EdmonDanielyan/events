@@ -14,7 +14,7 @@ class AvatarPlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: 30,
-      backgroundColor: Colors.blue,
+      backgroundColor: backgroundColor,
       foregroundImage: null,
       child: GoogleText(
         FancyText(RemoveEmoji().clean(text)).cutName().toUpperCase(),

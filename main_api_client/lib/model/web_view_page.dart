@@ -31,6 +31,10 @@ abstract class WebViewPage implements Built<WebViewPage, WebViewPageBuilder> {
   @BuiltValueField(wireName: r'url')
   String get url;
 
+  @nullable
+  @BuiltValueField(wireName: r'iconUrl')
+  String get iconUrl;
+
   // Boilerplate code needed to wire-up generated code
   WebViewPage._();
 

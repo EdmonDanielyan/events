@@ -35,6 +35,10 @@ abstract class TextPage implements Built<TextPage, TextPageBuilder> {
   @BuiltValueField(wireName: r'detail')
   String get detail;
 
+  @nullable
+  @BuiltValueField(wireName: r'iconUrl')
+  String get iconUrl;
+
   // Boilerplate code needed to wire-up generated code
   TextPage._();
 

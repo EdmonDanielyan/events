@@ -38,6 +38,10 @@ abstract class Page implements Built<Page, PageBuilder> {
   String get detail;
 
   @nullable
+  @BuiltValueField(wireName: r'iconUrl')
+  String get iconUrl;
+
+  @nullable
   @BuiltValueField(wireName: r'url')
   String get url;
 

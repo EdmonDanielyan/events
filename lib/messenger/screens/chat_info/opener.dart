@@ -70,18 +70,19 @@ class ChatInfoOpener {
   }
 
   void _onAddUser(BuildContext context, Chat chat) {
-    CustomBottomSheet(
-      context: context,
-      child: UsersPickerScreen(
-        submitTxtCubit: StringCubit("Добавить"),
-        onSubmit: (_context, users) {
-          Navigator.of(_context).pop();
-          InviteChatSenderHandler(chat, cachedChatsCubit.myId, users).call();
-        },
-        onlineCubit: onlineCubit,
-        cachedChatsCubit: cachedChatsCubit,
-        chat: chat,
-        onChange: (users) => (){},
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => UsersPickerScreen(
+          submitTxtCubit: StringCubit("Добавить"),
+          onSubmit: (_context, users) {
+            Navigator.of(_context).pop();
+            InviteChatSenderHandler(chat, cachedChatsCubit.myId, users).call();
+          },
+          onlineCubit: onlineCubit,
+          cachedChatsCubit: cachedChatsCubit,
+          chat: chat,
+          onChange: (users) => (){},
+        ),
       ),
     );
   }

@@ -3589,7 +3589,11 @@ components:
                 detail:
                     type: string
                     example: "полный текст для вывода на детальной станице"
-
+                iconUrl:
+                    type: string
+                    example: https://example.com/upload/icon/1.png
+                    nullable: true
+                    format: uri
         WebViewPage:
             type: object
             required:
@@ -3614,7 +3618,11 @@ components:
                 url:
                     type: string
                     example: "https://portal.ink.ru/agreement_page.html"
-
+                iconUrl:
+                    type: string
+                    example: https://example.com/upload/icon/1.png
+                    nullable: true
+                    format: uri
         PageSection:
             type: object
             properties:

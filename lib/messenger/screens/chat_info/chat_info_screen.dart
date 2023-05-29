@@ -83,6 +83,7 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
               top: 32.0,
               right: 20.0,
               left: 20.0,
+              bottom: 16.0
             ),
             child: SingleChildScrollView(
               child: Column(
