@@ -85,6 +85,7 @@ class _ChatListScreenState extends State<ChatListScreen>
         ),
         backgroundColor: Palette.greenE4A,
       ),
+      backgroundColor: Palette.white,
       appBar: InkAppBar(
         context,
         title: "Сообщения",

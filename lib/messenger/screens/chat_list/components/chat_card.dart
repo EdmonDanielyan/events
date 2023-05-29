@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/avatar_with_badge.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/cached_avatar/cached_avatar.dart';
@@ -41,6 +42,10 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String displayingChatName = chatName ?? chat.name;
+    if (chat.isNotifications) {
+      displayingChatName = displayingChatName.toUpperCase();
+    }
     return SizedBox(
       height: 56.0,
       child: Row(
@@ -55,7 +60,7 @@ class ChatCard extends StatelessWidget {
                   avatarHeight: 52.0,
                   avatarWidth: 52.0,
                   url: chatAvatar ?? chat.avatarUrl,
-                  name: chatName ?? chat.name,
+                  name: displayingChatName,
                   indicator: user != null,
                   padding: const EdgeInsets.only(left: 4.0),
                   absence: absence,
@@ -64,12 +69,27 @@ class ChatCard extends StatelessWidget {
               cachedChatsCubit: cachedChatsCubit,
             ),
           ],
-          if (!chat.isSingle)
+          if (chat.isGroup)
             CachedCircleAvatar(
               url: chatAvatar ?? chat.avatarUrl,
-              name: chatName ?? chat.name,
+              name: displayingChatName,
               avatarHeight: 52.0,
               avatarWidth: 52.0,
+              backgroundColor: Palette.greenE4A,
+            ),
+          if (chat.isNotifications)
+            Container(
+              height: 52.0,
+              width: 52.0,
+              decoration: BoxDecoration(
+                color: Palette.greenE4A,
+                borderRadius: BorderRadius.circular(48.0),
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  'assets/images/logo.svg',
+                ),
+              ),
             ),
           const SizedBox(width: 15.0),
           Expanded(
@@ -77,7 +97,7 @@ class ChatCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ChatName(
-                  chatName ?? chat.name,
+                  displayingChatName,
                   highlightValue: highlightValue,
                 ),
                 const SizedBox(
