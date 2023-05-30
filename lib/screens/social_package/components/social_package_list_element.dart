@@ -30,16 +30,23 @@ class SocialPackageListElement extends StatelessWidget {
         child: Row(
           children: [
             iconUrl.isNotEmpty
-                ? SvgPicture.network(
+                ? Image.network(
                     iconUrl,
                     width: 24.0,
                     height: 24.0,
                     color: Palette.greenE4A,
+                    errorBuilder: (context, _, __) {
+                      return const SizedBox.square(
+                        dimension: 24.0,
+                      );
+                    },
                   )
                 : const SizedBox.square(
                     dimension: 24.0,
                   ),
-            const SizedBox(width: 12.0,),
+            const SizedBox(
+              width: 12.0,
+            ),
             Expanded(
               child: Text(
                 title,
@@ -48,7 +55,9 @@ class SocialPackageListElement extends StatelessWidget {
                 maxLines: 3,
               ),
             ),
-            const SizedBox(width: 24.0,),
+            const SizedBox(
+              width: 24.0,
+            ),
             Icon(
               Icons.arrow_forward_ios,
               size: 16.0,
