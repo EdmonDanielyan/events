@@ -80,40 +80,43 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
           ),
           body: Padding(
             padding: const EdgeInsets.only(
-              top: 32.0,
-              right: 20.0,
-              left: 20.0,
-              bottom: 16.0
-            ),
+                top: 32.0, right: 20.0, left: 20.0, bottom: 16.0),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  chat.isSingle
-                      ? CachedUserBuilder(
-                          cachedUsersCubit: widget.cachedUsersCubit,
-                          userId: chat
-                              .getFirstNotMyId(widget.cachedChatsCubit.myId),
-                          builder: (context, state, user) {
-                            return ChatInfoTop(
-                              url: user?.avatarUrl ?? chat.avatarUrl,
-                              name: user?.name ?? chat.name,
-                              description: chat.description,
-                              subDescription: "",
-                              onTap: user != null
-                                  ? () =>
-                                      widget.openUser(user.id, true, context)
-                                  : null,
-                              absence: user?.absence,
-                            );
-                          },
-                        )
-                      : ChatInfoTop(
-                          url: chat.avatarUrl,
-                          name: chat.name,
+                  if (chat.isSingle)
+                    CachedUserBuilder(
+                      cachedUsersCubit: widget.cachedUsersCubit,
+                      userId:
+                          chat.getFirstNotMyId(widget.cachedChatsCubit.myId),
+                      builder: (context, state, user) {
+                        return ChatInfoTop(
+                          url: user?.avatarUrl ?? chat.avatarUrl,
+                          name: user?.name ?? chat.name,
                           description: chat.description,
-                          subDescription: "Участников: ${participants.length}",
-                        ),
+                          subDescription: "",
+                          onTap: user != null
+                              ? () => widget.openUser(user.id, true, context)
+                              : null,
+                          absence: user?.absence,
+                        );
+                      },
+                    ),
+                  if (chat.isGroup)
+                    ChatInfoTop(
+                      url: chat.avatarUrl,
+                      name: chat.name,
+                      description: chat.description,
+                      subDescription: "Участников: ${participants.length}",
+                    ),
+                  if (chat.isNotifications)
+                    ChatInfoTop(
+                      url: chat.avatarUrl,
+                      name: chat.name.toUpperCase(),
+                      description: chat.description,
+                      subDescription: "Участников: ${participants.length}",
+                    ),
                   const SizedBox(height: 32.0),
                   NotificationsBtn(
                     cachedChatsCubit: widget.cachedChatsCubit,
