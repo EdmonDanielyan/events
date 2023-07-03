@@ -51,6 +51,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
       padding: EdgeInsets.only(bottom: 24.0),
       width: size.width,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           getUserAvatar(),
           getUserFullName(),
@@ -79,11 +80,14 @@ class _UserMainInfoState extends State<UserMainInfo> {
     );
   }
 
-  Text getUserFullName() {
-    return Text(
-      user.fullName,
-      style: FontStyles.rubikH3(color: Palette.textBlack),
-      maxLines: 2,
+  Widget getUserFullName() {
+    return Center(
+      child: Text(
+        user.fullName,
+        style: FontStyles.rubikH3(color: Palette.textBlack),
+        maxLines: 2,
+        textAlign: TextAlign.center,
+      ),
     );
   }
 

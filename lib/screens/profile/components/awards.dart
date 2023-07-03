@@ -32,17 +32,14 @@ class Awards extends StatelessWidget {
             SectionTitle(
               title: "Статусы",
             ),
-            Container(
+            SizedBox(
               width: size.width,
               height: SizeConfig(context, 90).getProportionateScreenHeight,
-              padding: EdgeInsets.only(left: 20.0),
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: getAwards().length,
+                itemCount: awardsList.length,
                 itemBuilder: (context, index) {
-                  return Row(
-                    children: getAwards(),
-                  );
+                  return awardsList[index];
                 },
                 separatorBuilder: (context, index) {
                   return index == getAwards().length - 1
