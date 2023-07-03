@@ -99,12 +99,30 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     cachedChatsCubit: cachedChatsCubit,
                                   ),
                                 if (!chat.isSingle)
-                                  AvatarWithBadge(
-                                    avatarHeight: 32.0,
-                                    avatarWidth: 32.0,
-                                    url: chat.avatarUrl,
-                                    name: chat.name,
-                                  ),
+                                  if (chat.isNotifications)
+                                    Container(
+                                      height: 32.0,
+                                      width: 32.0,
+                                      decoration: BoxDecoration(
+                                        color: Palette.greenE4A,
+                                        borderRadius:
+                                            BorderRadius.circular(48.0),
+                                      ),
+                                      child: Center(
+                                        child: SvgPicture.asset(
+                                          IconLinks.LOGO_ICON,
+                                          height: 20.0,
+                                          width: 20.0,
+                                        ),
+                                      ),
+                                    )
+                                  else
+                                    AvatarWithBadge(
+                                      avatarHeight: 32.0,
+                                      avatarWidth: 32.0,
+                                      url: chat.avatarUrl,
+                                      name: chat.name,
+                                    ),
                                 const SizedBox(width: 8.0),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +135,9 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                                         return Text(
                                           chat.isSingle
                                               ? user?.name ?? ""
-                                              : chat.name,
+                                              : chat.isNotifications
+                                                  ? chat.name.toUpperCase()
+                                                  : chat.name,
                                           maxLines: 1,
                                           style: FontStyles.rubikP3Medium(
                                               color: Palette.white),
