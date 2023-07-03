@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/components/avatar_with_badge.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/cached_avatar/cached_avatar.dart';
@@ -87,7 +88,9 @@ class ChatCard extends StatelessWidget {
               ),
               child: Center(
                 child: SvgPicture.asset(
-                  'assets/images/logo.svg',
+                  IconLinks.LOGO_ICON,
+                  height: 32.0,
+                  width: 32.0,
                 ),
               ),
             ),
