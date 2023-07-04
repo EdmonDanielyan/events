@@ -74,10 +74,7 @@ class EventsList extends StatelessWidget {
           eventsWidgetList.addAll(
             [
               EventsListElement(event: element),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: ListElementDivider(),
-              ),
+              ListElementDivider(),
             ],
           );
         },

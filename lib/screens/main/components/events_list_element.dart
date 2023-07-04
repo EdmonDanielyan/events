@@ -22,51 +22,47 @@ class EventsListElement extends StatelessWidget {
         Navigator.pushNamed(context, '/event_detail',
             arguments: {'id': event.id});
       },
-      child: Container(
-        color: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          children: [
-            Container(
-              width: size.width,
-              clipBehavior: Clip.hardEdge,
-              height: SizeConfig(context, 180.0).getProportionateScreenHeight,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: event.pictureLink == null
-                  ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
-                      fit: BoxFit.fitWidth)
-                  : Image.network(
-                      event.pictureLink!,
-                      fit: BoxFit.fitWidth,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
-                            fit: BoxFit.fitWidth);
-                      },
-                    ),
+      child: Column(
+        children: [
+          Container(
+            width: size.width,
+            clipBehavior: Clip.hardEdge,
+            height: SizeConfig(context, 180.0).getProportionateScreenHeight,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
             ),
-            Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Container(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    _getEventTimeAndPlace(),
-                    style: FontStyles.rubikP2(color: Palette.textBlack50),
-                    textAlign: TextAlign.start,
+            child: event.pictureLink == null
+                ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
+                    fit: BoxFit.fitWidth)
+                : Image.network(
+                    event.pictureLink!,
+                    fit: BoxFit.fitWidth,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
+                          fit: BoxFit.fitWidth);
+                    },
                   ),
-                )),
-            Container(
-              margin: EdgeInsets.only(top: 8, bottom: 5),
-              alignment: Alignment.topLeft,
-              child: Text(
-                event.title ?? '',
-                style: FontStyles.rubikH4(color: Palette.textBlack),
-                textAlign: TextAlign.start,
-              ),
-            )
-          ],
-        ),
+          ),
+          Container(
+              margin: EdgeInsets.only(top: 20),
+              child: Container(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  _getEventTimeAndPlace(),
+                  style: FontStyles.rubikP2(color: Palette.textBlack50),
+                  textAlign: TextAlign.start,
+                ),
+              )),
+          Container(
+            margin: EdgeInsets.only(top: 8, bottom: 5),
+            alignment: Alignment.topLeft,
+            child: Text(
+              event.title ?? '',
+              style: FontStyles.rubikH4(color: Palette.textBlack),
+              textAlign: TextAlign.start,
+            ),
+          )
+        ],
       ),
     );
   }

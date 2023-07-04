@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_state.dart';
+import 'package:ink_mobile/cubit/events_detail/sources/cancel/network.dart';
 import 'package:ink_mobile/cubit/events_detail/sources/fetch/network.dart';
 import 'package:ink_mobile/cubit/events_detail/sources/invite/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
@@ -37,14 +38,19 @@ class EventDetailCubit extends Cubit<EventsDetailState> {
     }
   }
 
-  Future<void> invite(int eventId) async {
+  Future<void> changeParticipationStatus(int eventId) async {
     try {
-      emitSuccess(state.data!.copyWith(isMember: !state.data!.isMember!));
-      await Token.setNewTokensIfExpired();
-      await getIt<EventInviteNetworkRequest>(param1: eventId).call();
+      if (state.data != null && state.data!.isMember != null) {
+        await Token.setNewTokensIfExpired();
+        if (state.data!.isMember!) {
+          await getIt<EventCancelNetworkRequest>(param1: eventId).call();
+        } else {
+          await getIt<EventInviteNetworkRequest>(param1: eventId).call();
+        }
+        emitSuccess(state.data!.copyWith(isMember: !state.data!.isMember!));
+      }
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
-
       emitError(error.msg);
       throw error.exception;
     } on Exception catch (_) {
