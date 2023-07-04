@@ -144,31 +144,34 @@ class EventDetailScreen extends StatelessWidget {
             color: Color(0xFFE5E5E5),
             thickness: 2,
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: CustomHtml(data: event.detailText),
           ),
           Container(
             padding: EdgeInsets.only(bottom: 30, top: 20),
             margin: EdgeInsets.symmetric(horizontal: 20),
-            child: ((event.isActual ?? true) && (event.placesAvailable ?? true))
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: DefaultButton(
-                      title: isMember
-                          ? _strings.nowParticipatingInTheEvent
-                          : _strings.iWillParticipate,
-                      borderColor:
-                          isMember ? Palette.text20Grey : Palette.greenE4A,
-                      textColor:
-                          isMember ? Palette.text20Grey : Palette.greenE4A,
-                      onTap: isMember
-                          ? null
-                          : () => eventDetailCubit.invite(event.id!),
-                    ),
-                  )
+            child: ((event.isActual ?? true) &&
+                (event.placesAvailable ?? true))
+                ? DefaultButton(
+              title: isMember
+                  ? _strings.cancelParticipating
+                  : _strings.iWillParticipate,
+              borderColor:
+              isMember ? Palette.redF1C : Palette.greenE4A,
+              textColor: isMember ? Palette.redF1C : Palette.white,
+              buttonColor:
+              isMember ? Palette.white : Palette.greenE4A,
+              onTap: () => eventDetailCubit
+                  .changeParticipationStatus(event.id!),
+            )
                 : const SizedBox.shrink(),
           ),
+          // BlocBuilder<EventDetailCubit, EventsDetailState>(
+          //     bloc: eventDetailCubit,
+          //     builder: (context, state) {
+          //       return ;
+          //     }),
         ],
       ),
     );
