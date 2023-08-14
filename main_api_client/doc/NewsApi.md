@@ -9,6 +9,8 @@ All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**commentDelete**](NewsApi.md#commentDelete) | **delete** /comment/{id} | Удалить комментарий
+[**commentUpdate**](NewsApi.md#commentUpdate) | **patch** /comment/{id} | Изменить комментарий
 [**getNews**](NewsApi.md#getNews) | **get** /news | Получение списка новостей
 [**newsCommentsIdGet**](NewsApi.md#newsCommentsIdGet) | **get** /news/comments/{id} | Получение комментариев к новости по ID
 [**newsCommentsLikeIdGet**](NewsApi.md#newsCommentsLikeIdGet) | **get** /news/comments/like/{id} | Поблагодарить комментарий
@@ -16,6 +18,96 @@ Method | HTTP request | Description
 [**newsLikeIdGet**](NewsApi.md#newsLikeIdGet) | **get** /news/like/{id} | Поблагодарить новость
 [**newsPostcommentPost**](NewsApi.md#newsPostcommentPost) | **post** /news/postcomment | Создание нового комментария
 
+
+# **commentDelete**
+> NewsLikeSuccess commentDelete(id)
+
+Удалить комментарий
+
+### Example 
+```dart
+import 'package:main_api_client/api.dart';
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
+
+var api_instance = new NewsApi();
+var id = 789; // int | id комментария
+
+try { 
+    var result = api_instance.commentDelete(id);
+    print(result);
+} catch (e) {
+    print('Exception when calling NewsApi->commentDelete: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **int**| id комментария | 
+
+### Return type
+
+[**NewsLikeSuccess**](NewsLikeSuccess.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **commentUpdate**
+> NewsLikeSuccess commentUpdate(id, patchComment)
+
+Изменить комментарий
+
+### Example 
+```dart
+import 'package:main_api_client/api.dart';
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
+
+var api_instance = new NewsApi();
+var id = 789; // int | id комментария
+var patchComment = new PatchComment(); // PatchComment | Информация для создания обновления
+
+try { 
+    var result = api_instance.commentUpdate(id, patchComment);
+    print(result);
+} catch (e) {
+    print('Exception when calling NewsApi->commentUpdate: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **int**| id комментария | 
+ **patchComment** | [**PatchComment**](PatchComment.md)| Информация для создания обновления | [optional] 
+
+### Return type
+
+[**NewsLikeSuccess**](NewsLikeSuccess.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getNews**
 > GetNews getNews(filter, pageNumber, countOnPage)

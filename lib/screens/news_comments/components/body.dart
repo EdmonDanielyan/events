@@ -23,6 +23,7 @@ class _BodyState extends State<Body> {
   late AppLocalizations _strings;
   int countLoad = 0;
   ScrollController controller = ScrollController();
+  int? newsId;
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +46,11 @@ class _BodyState extends State<Body> {
                   widget.newsCommentsCubit.focusNode.unfocus();
                   var arg = ModalRoute.of(context)!.settings.arguments as Map;
 
-                  var newsId;
                   if (arg.isNotEmpty) {
                     newsId = arg['id'];
                   }
 
-                  widget.newsCommentsCubit.load(newsId);
+                  widget.newsCommentsCubit.load(newsId!);
                   return InkPageLoader();
                 }
 
@@ -111,6 +111,15 @@ class _BodyState extends State<Body> {
   }
 
   List<Widget> _buildComments(NewsCommentsData data) {
+
+    if (newsId == null) {
+      var arg = ModalRoute.of(context)!.settings.arguments as Map;
+
+      if (arg.isNotEmpty) {
+        newsId = arg['id'];
+      }
+    }
+
     List<Widget> comments = [];
 
     data.comments?.forEach((comment) {
@@ -128,6 +137,7 @@ class _BodyState extends State<Body> {
           barrelsCount: comment.barrels,
           dateTime: comment.timeCreate,
           newsCommentsCubit: widget.newsCommentsCubit,
+          newsId: newsId!,
         ),
       );
 
@@ -150,6 +160,7 @@ class _BodyState extends State<Body> {
               barrelsCount: childrenComment.barrels,
               dateTime: childrenComment.timeCreate,
               newsCommentsCubit: widget.newsCommentsCubit,
+              newsId: newsId!,
             ),
           ),
         );

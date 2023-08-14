@@ -28,7 +28,11 @@ doc/CommentsNotFound.md
 doc/ContactsApi.md
 doc/ContactsNotFound.md
 doc/ContactsProperty.md
+doc/ContactsPropertyAbsence.md
 doc/ContentApi.md
+doc/DirectoryApi.md
+doc/DirectoryMeta.md
+doc/DirectoryMetaSelect.md
 doc/EmptySearch.md
 doc/EventProperty.md
 doc/EventsApi.md
@@ -76,6 +80,7 @@ doc/NewsLikeSuccess.md
 doc/NewsNotFound.md
 doc/NewsProperty.md
 doc/NewsPropertyById.md
+doc/NewsTab.md
 doc/NotEventMember.md
 doc/NotFound.md
 doc/NotificationFullList.md
@@ -87,8 +92,14 @@ doc/OrderReferenceFail.md
 doc/OrderReferenceSuccess.md
 doc/OrderTransportFail.md
 doc/OrderTransportSuccess.md
+doc/Organisation.md
+doc/OrganisationDirectory.md
+doc/OrganisationDirectoryAllOf.md
+doc/OrganisationDirectoryResponseBody.md
+doc/OrganisationDirectoryResponseBodyAllOf.md
 doc/Page.md
 doc/PageSection.md
+doc/PatchComment.md
 doc/PostComment.md
 doc/PostCommentParamsFail.md
 doc/PostCommentSuccess.md
@@ -126,6 +137,7 @@ doc/ThankSelf.md
 doc/TransportForm.md
 doc/UserApi.md
 doc/UserNotFound.md
+doc/UserProfileBadge.md
 doc/UserProperties.md
 doc/WebViewPage.md
 lib/api.dart
@@ -133,6 +145,7 @@ lib/api/announcements_api.dart
 lib/api/auth_api.dart
 lib/api/contacts_api.dart
 lib/api/content_api.dart
+lib/api/directory_api.dart
 lib/api/events_api.dart
 lib/api/global_api.dart
 lib/api/news_api.dart
@@ -169,6 +182,9 @@ lib/model/comment_parent.dart
 lib/model/comments_not_found.dart
 lib/model/contacts_not_found.dart
 lib/model/contacts_property.dart
+lib/model/contacts_property_absence.dart
+lib/model/directory_meta.dart
+lib/model/directory_meta_select.dart
 lib/model/empty_search.dart
 lib/model/event_property.dart
 lib/model/events_not_found.dart
@@ -213,6 +229,7 @@ lib/model/news_like_success.dart
 lib/model/news_not_found.dart
 lib/model/news_property.dart
 lib/model/news_property_by_id.dart
+lib/model/news_tab.dart
 lib/model/not_event_member.dart
 lib/model/not_found.dart
 lib/model/notification_full_list.dart
@@ -224,8 +241,14 @@ lib/model/order_reference_fail.dart
 lib/model/order_reference_success.dart
 lib/model/order_transport_fail.dart
 lib/model/order_transport_success.dart
+lib/model/organisation.dart
+lib/model/organisation_directory.dart
+lib/model/organisation_directory_all_of.dart
+lib/model/organisation_directory_response_body.dart
+lib/model/organisation_directory_response_body_all_of.dart
 lib/model/page.dart
 lib/model/page_section.dart
+lib/model/patch_comment.dart
 lib/model/post_comment.dart
 lib/model/post_comment_params_fail.dart
 lib/model/post_comment_success.dart
@@ -259,6 +282,7 @@ lib/model/thank_by_id.dart
 lib/model/thank_self.dart
 lib/model/transport_form.dart
 lib/model/user_not_found.dart
+lib/model/user_profile_badge.dart
 lib/model/user_properties.dart
 lib/model/web_view_page.dart
 lib/serializers.dart

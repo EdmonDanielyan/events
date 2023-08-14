@@ -37,6 +37,9 @@ import 'package:main_api_client/model/comment_parent.dart';
 import 'package:main_api_client/model/comments_not_found.dart';
 import 'package:main_api_client/model/contacts_not_found.dart';
 import 'package:main_api_client/model/contacts_property.dart';
+import 'package:main_api_client/model/contacts_property_absence.dart';
+import 'package:main_api_client/model/directory_meta.dart';
+import 'package:main_api_client/model/directory_meta_select.dart';
 import 'package:main_api_client/model/empty_search.dart';
 import 'package:main_api_client/model/event_property.dart';
 import 'package:main_api_client/model/events_not_found.dart';
@@ -81,6 +84,7 @@ import 'package:main_api_client/model/news_like_success.dart';
 import 'package:main_api_client/model/news_not_found.dart';
 import 'package:main_api_client/model/news_property.dart';
 import 'package:main_api_client/model/news_property_by_id.dart';
+import 'package:main_api_client/model/news_tab.dart';
 import 'package:main_api_client/model/not_event_member.dart';
 import 'package:main_api_client/model/not_found.dart';
 import 'package:main_api_client/model/notification_full_list.dart';
@@ -92,8 +96,14 @@ import 'package:main_api_client/model/order_reference_fail.dart';
 import 'package:main_api_client/model/order_reference_success.dart';
 import 'package:main_api_client/model/order_transport_fail.dart';
 import 'package:main_api_client/model/order_transport_success.dart';
+import 'package:main_api_client/model/organisation.dart';
+import 'package:main_api_client/model/organisation_directory.dart';
+import 'package:main_api_client/model/organisation_directory_all_of.dart';
+import 'package:main_api_client/model/organisation_directory_response_body.dart';
+import 'package:main_api_client/model/organisation_directory_response_body_all_of.dart';
 import 'package:main_api_client/model/page.dart';
 import 'package:main_api_client/model/page_section.dart';
+import 'package:main_api_client/model/patch_comment.dart';
 import 'package:main_api_client/model/post_comment.dart';
 import 'package:main_api_client/model/post_comment_params_fail.dart';
 import 'package:main_api_client/model/post_comment_success.dart';
@@ -127,6 +137,7 @@ import 'package:main_api_client/model/thank_by_id.dart';
 import 'package:main_api_client/model/thank_self.dart';
 import 'package:main_api_client/model/transport_form.dart';
 import 'package:main_api_client/model/user_not_found.dart';
+import 'package:main_api_client/model/user_profile_badge.dart';
 import 'package:main_api_client/model/user_properties.dart';
 import 'package:main_api_client/model/web_view_page.dart';
 
@@ -157,6 +168,9 @@ part 'serializers.g.dart';
   CommentsNotFound,
   ContactsNotFound,
   ContactsProperty,
+  ContactsPropertyAbsence,
+  DirectoryMeta,
+  DirectoryMetaSelect,
   EmptySearch,
   EventProperty,
   EventsNotFound,
@@ -201,6 +215,7 @@ part 'serializers.g.dart';
   NewsNotFound,
   NewsProperty,
   NewsPropertyById,
+  NewsTab,
   NotEventMember,
   NotFound,
   NotificationFullList,
@@ -212,8 +227,14 @@ part 'serializers.g.dart';
   OrderReferenceSuccess,
   OrderTransportFail,
   OrderTransportSuccess,
+  Organisation,
+  OrganisationDirectory,
+  OrganisationDirectoryAllOf,
+  OrganisationDirectoryResponseBody,
+  OrganisationDirectoryResponseBodyAllOf,
   Page,
   PageSection,
+  PatchComment,
   PostComment,
   PostCommentParamsFail,
   PostCommentSuccess,
@@ -247,6 +268,7 @@ part 'serializers.g.dart';
   ThankSelf,
   TransportForm,
   UserNotFound,
+  UserProfileBadge,
   UserProperties,
   WebViewPage,
 ])

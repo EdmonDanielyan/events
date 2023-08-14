@@ -27,9 +27,6 @@ class SendFeedbackFormNetworkRequest extends SendFeedbackFormDependency {
           entities!.getTagsListString().join(", "),
           fio: entities!.name,
           contacts: entities!.email,
-          files: entities!.files.length > 0
-              ? getFilesAsBuiltList(entities!.files)
-              : null,
         )
         .timeout(const Duration(minutes: 5));
 

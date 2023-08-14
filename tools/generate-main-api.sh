@@ -9,9 +9,9 @@ java -jar openapi-generator-cli.jar generate -i $url -g dart-dio -o $dir -c $con
 cd $dir
 flutter clean
 flutter pub get
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 dart format $dir
 #for generate ./lib/setup.config file
 cd ..
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 

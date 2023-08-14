@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **firstName** | **String** |  | 
 **secondName** | **String** |  | 
 **birthday** | **String** |  | 
+**organisationId** | **num** | ID организации, справочник /directory/organisation. | [optional] 
 **workPosition** | **String** |  | 
 **phone** | **String** |  | 
 **email** | **String** |  | 

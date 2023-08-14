@@ -63,6 +63,42 @@ class _$ContactsPropertySerializer
         ..add(
             serializers.serialize(value, specifiedType: const FullType(bool)));
     }
+    value = object.workPosition;
+    if (value != null) {
+      result
+        ..add('work_position')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.city;
+    if (value != null) {
+      result
+        ..add('city')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.street;
+    if (value != null) {
+      result
+        ..add('street')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.birthday;
+    if (value != null) {
+      result
+        ..add('birthday')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
+    }
+    value = object.absence;
+    if (value != null) {
+      result
+        ..add('absence')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                BuiltList, const [const FullType(ContactsPropertyAbsence)])));
+    }
     return result;
   }
 
@@ -102,6 +138,28 @@ class _$ContactsPropertySerializer
           result.isMobileUser = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
           break;
+        case 'work_position':
+          result.workPosition = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'city':
+          result.city = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'street':
+          result.street = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'birthday':
+          result.birthday = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime;
+          break;
+        case 'absence':
+          result.absence.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(ContactsPropertyAbsence)
+              ])) as BuiltList<Object>);
+          break;
       }
     }
 
@@ -122,6 +180,16 @@ class _$ContactsProperty extends ContactsProperty {
   final String photo;
   @override
   final bool isMobileUser;
+  @override
+  final String workPosition;
+  @override
+  final String city;
+  @override
+  final String street;
+  @override
+  final DateTime birthday;
+  @override
+  final BuiltList<ContactsPropertyAbsence> absence;
 
   factory _$ContactsProperty(
           [void Function(ContactsPropertyBuilder) updates]) =>
@@ -133,7 +201,12 @@ class _$ContactsProperty extends ContactsProperty {
       this.name,
       this.secondName,
       this.photo,
-      this.isMobileUser})
+      this.isMobileUser,
+      this.workPosition,
+      this.city,
+      this.street,
+      this.birthday,
+      this.absence})
       : super._();
 
   @override
@@ -153,7 +226,12 @@ class _$ContactsProperty extends ContactsProperty {
         name == other.name &&
         secondName == other.secondName &&
         photo == other.photo &&
-        isMobileUser == other.isMobileUser;
+        isMobileUser == other.isMobileUser &&
+        workPosition == other.workPosition &&
+        city == other.city &&
+        street == other.street &&
+        birthday == other.birthday &&
+        absence == other.absence;
   }
 
   @override
@@ -165,6 +243,11 @@ class _$ContactsProperty extends ContactsProperty {
     _$hash = $jc(_$hash, secondName.hashCode);
     _$hash = $jc(_$hash, photo.hashCode);
     _$hash = $jc(_$hash, isMobileUser.hashCode);
+    _$hash = $jc(_$hash, workPosition.hashCode);
+    _$hash = $jc(_$hash, city.hashCode);
+    _$hash = $jc(_$hash, street.hashCode);
+    _$hash = $jc(_$hash, birthday.hashCode);
+    _$hash = $jc(_$hash, absence.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -177,7 +260,12 @@ class _$ContactsProperty extends ContactsProperty {
           ..add('name', name)
           ..add('secondName', secondName)
           ..add('photo', photo)
-          ..add('isMobileUser', isMobileUser))
+          ..add('isMobileUser', isMobileUser)
+          ..add('workPosition', workPosition)
+          ..add('city', city)
+          ..add('street', street)
+          ..add('birthday', birthday)
+          ..add('absence', absence))
         .toString();
   }
 }
@@ -210,6 +298,28 @@ class ContactsPropertyBuilder
   bool get isMobileUser => _$this._isMobileUser;
   set isMobileUser(bool isMobileUser) => _$this._isMobileUser = isMobileUser;
 
+  String _workPosition;
+  String get workPosition => _$this._workPosition;
+  set workPosition(String workPosition) => _$this._workPosition = workPosition;
+
+  String _city;
+  String get city => _$this._city;
+  set city(String city) => _$this._city = city;
+
+  String _street;
+  String get street => _$this._street;
+  set street(String street) => _$this._street = street;
+
+  DateTime _birthday;
+  DateTime get birthday => _$this._birthday;
+  set birthday(DateTime birthday) => _$this._birthday = birthday;
+
+  ListBuilder<ContactsPropertyAbsence> _absence;
+  ListBuilder<ContactsPropertyAbsence> get absence =>
+      _$this._absence ??= new ListBuilder<ContactsPropertyAbsence>();
+  set absence(ListBuilder<ContactsPropertyAbsence> absence) =>
+      _$this._absence = absence;
+
   ContactsPropertyBuilder() {
     ContactsProperty._initializeBuilder(this);
   }
@@ -223,6 +333,11 @@ class ContactsPropertyBuilder
       _secondName = $v.secondName;
       _photo = $v.photo;
       _isMobileUser = $v.isMobileUser;
+      _workPosition = $v.workPosition;
+      _city = $v.city;
+      _street = $v.street;
+      _birthday = $v.birthday;
+      _absence = $v.absence?.toBuilder();
       _$v = null;
     }
     return this;
@@ -243,14 +358,32 @@ class ContactsPropertyBuilder
   ContactsProperty build() => _build();
 
   _$ContactsProperty _build() {
-    final _$result = _$v ??
-        new _$ContactsProperty._(
-            id: id,
-            lastName: lastName,
-            name: name,
-            secondName: secondName,
-            photo: photo,
-            isMobileUser: isMobileUser);
+    _$ContactsProperty _$result;
+    try {
+      _$result = _$v ??
+          new _$ContactsProperty._(
+              id: id,
+              lastName: lastName,
+              name: name,
+              secondName: secondName,
+              photo: photo,
+              isMobileUser: isMobileUser,
+              workPosition: workPosition,
+              city: city,
+              street: street,
+              birthday: birthday,
+              absence: _absence?.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'absence';
+        _absence?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'ContactsProperty', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

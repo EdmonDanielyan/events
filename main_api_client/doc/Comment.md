@@ -18,6 +18,8 @@ Name | Type | Description | Notes
 **likes** | **int** |  | [optional] 
 **likedByUser** | **bool** |  | [optional] 
 **avatar** | **String** |  | [optional] 
+**allowEdit** | **bool** |  | [optional] 
+**allowDelete** | **bool** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

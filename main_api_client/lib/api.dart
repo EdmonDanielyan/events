@@ -17,6 +17,7 @@ import 'package:main_api_client/api/announcements_api.dart';
 import 'package:main_api_client/api/auth_api.dart';
 import 'package:main_api_client/api/contacts_api.dart';
 import 'package:main_api_client/api/content_api.dart';
+import 'package:main_api_client/api/directory_api.dart';
 import 'package:main_api_client/api/events_api.dart';
 import 'package:main_api_client/api/global_api.dart';
 import 'package:main_api_client/api/news_api.dart';
@@ -109,6 +110,14 @@ class MainApiClient {
     */
   ContentApi getContentApi() {
     return ContentApi(dio, serializers);
+  }
+
+  /**
+    * Get DirectoryApi instance, base route and serializer can be overridden by a given but be careful,
+    * by doing that all interceptors will not be executed
+    */
+  DirectoryApi getDirectoryApi() {
+    return DirectoryApi(dio, serializers);
   }
 
   /**

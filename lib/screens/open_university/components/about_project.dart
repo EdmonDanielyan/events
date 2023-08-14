@@ -102,7 +102,6 @@ class AboutProject extends StatelessWidget {
 </p>''',
               onLinkTap: (
                 String? url,
-                RenderContext context,
                 Map<String, String> attributes,
                 _,
               ) {

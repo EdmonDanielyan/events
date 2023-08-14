@@ -5,6 +5,8 @@
 
 // ignore_for_file: unused_import
 
+import 'package:main_api_client/model/contacts_property_absence.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -36,6 +38,26 @@ abstract class ContactsProperty
   @BuiltValueField(wireName: r'is_mobile_user')
   bool get isMobileUser;
 
+  @nullable
+  @BuiltValueField(wireName: r'work_position')
+  String get workPosition;
+
+  @nullable
+  @BuiltValueField(wireName: r'city')
+  String get city;
+
+  @nullable
+  @BuiltValueField(wireName: r'street')
+  String get street;
+
+  @nullable
+  @BuiltValueField(wireName: r'birthday')
+  DateTime get birthday;
+
+  @nullable
+  @BuiltValueField(wireName: r'absence')
+  BuiltList<ContactsPropertyAbsence> get absence;
+
   // Boilerplate code needed to wire-up generated code
   ContactsProperty._();
 
@@ -43,7 +65,10 @@ abstract class ContactsProperty
     ..name = 'null'
     ..secondName = 'null'
     ..photo = 'null'
-    ..isMobileUser = false;
+    ..isMobileUser = false
+    ..workPosition = 'null'
+    ..city = 'null'
+    ..street = 'null';
 
   factory ContactsProperty([void updates(ContactsPropertyBuilder b)]) =
       _$ContactsProperty;

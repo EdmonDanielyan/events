@@ -25,7 +25,8 @@ class ThankApi {
   ///
   ///
   Future<Response<ThankById>> thankIdGet(
-    int id, {
+    int id,
+    int heart, {
     CancelToken cancelToken,
     Map<String, dynamic> headers,
     Map<String, dynamic> extra,
@@ -41,6 +42,7 @@ class ThankApi {
     };
     dynamic bodyData;
 
+    queryParams[r'heart'] = heart;
     queryParams.removeWhere((key, dynamic value) => value == null);
     headerParams.removeWhere((key, dynamic value) => value == null);
 

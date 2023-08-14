@@ -32,6 +32,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(CommentsNotFound.serializer)
       ..add(ContactsNotFound.serializer)
       ..add(ContactsProperty.serializer)
+      ..add(ContactsPropertyAbsence.serializer)
+      ..add(DirectoryMeta.serializer)
+      ..add(DirectoryMetaSelect.serializer)
       ..add(EmptySearch.serializer)
       ..add(EventProperty.serializer)
       ..add(EventsNotFound.serializer)
@@ -76,6 +79,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(NewsNotFound.serializer)
       ..add(NewsProperty.serializer)
       ..add(NewsPropertyById.serializer)
+      ..add(NewsTab.serializer)
       ..add(NotEventMember.serializer)
       ..add(NotFound.serializer)
       ..add(NotificationFullList.serializer)
@@ -87,8 +91,14 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(OrderReferenceSuccess.serializer)
       ..add(OrderTransportFail.serializer)
       ..add(OrderTransportSuccess.serializer)
+      ..add(Organisation.serializer)
+      ..add(OrganisationDirectory.serializer)
+      ..add(OrganisationDirectoryAllOf.serializer)
+      ..add(OrganisationDirectoryResponseBody.serializer)
+      ..add(OrganisationDirectoryResponseBodyAllOf.serializer)
       ..add(Page.serializer)
       ..add(PageSection.serializer)
+      ..add(PatchComment.serializer)
       ..add(PostComment.serializer)
       ..add(PostCommentParamsFail.serializer)
       ..add(PostCommentSuccess.serializer)
@@ -123,6 +133,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ThankSelf.serializer)
       ..add(TransportForm.serializer)
       ..add(UserNotFound.serializer)
+      ..add(UserProfileBadge.serializer)
       ..add(UserProperties.serializer)
       ..add(WebViewPage.serializer)
       ..addBuilderFactory(
@@ -132,6 +143,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(CommentParent)]),
           () => new ListBuilder<CommentParent>())
       ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(ContactsPropertyAbsence)]),
+          () => new ListBuilder<ContactsPropertyAbsence>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(FeedbackForm)]),
           () => new ListBuilder<FeedbackForm>())
       ..addBuilderFactory(
@@ -140,6 +155,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(MovementsObject)]),
           () => new ListBuilder<MovementsObject>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Organisation)]),
+          () => new ListBuilder<Organisation>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Organisation)]),
+          () => new ListBuilder<Organisation>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Page)]),
           () => new ListBuilder<Page>())
@@ -167,6 +188,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TransportForm)]),
           () => new ListBuilder<TransportForm>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(UserProfileBadge)]),
+          () => new ListBuilder<UserProfileBadge>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UserProperties)]),
           () => new ListBuilder<UserProperties>())

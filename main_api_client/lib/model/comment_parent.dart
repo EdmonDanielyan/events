@@ -58,6 +58,14 @@ abstract class CommentParent
   @BuiltValueField(wireName: r'avatar')
   String get avatar;
 
+  @nullable
+  @BuiltValueField(wireName: r'allow_edit')
+  bool get allowEdit;
+
+  @nullable
+  @BuiltValueField(wireName: r'allow_delete')
+  bool get allowDelete;
+
   // Boilerplate code needed to wire-up generated code
   CommentParent._();
 

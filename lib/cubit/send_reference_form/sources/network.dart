@@ -28,10 +28,6 @@ class SendReferenceFormNetworkRequest
             address: entities!.entities.address,
             period: entities!.entities.period,
             destination: entities!.entities.toProvideIn,
-            files:
-                entities!.entities.files.length > 0
-                    ? getFilesAsBuiltList(entities!.entities.files)
-                    : null,
             num_: entities!.entities.quantity,
             child: entities!.entities.fioChildren,
             dateStart:

@@ -14,6 +14,11 @@ Name | Type | Description | Notes
 **secondName** | **String** |  | [default to 'null']
 **photo** | **String** |  | [default to 'null']
 **isMobileUser** | **bool** |  | [default to false]
+**workPosition** | **String** |  | [optional] [default to 'null']
+**city** | **String** |  | [optional] [default to 'null']
+**street** | **String** |  | [optional] [default to 'null']
+**birthday** | [**DateTime**](DateTime.md) |  | [optional] 
+**absence** | [**BuiltList<ContactsPropertyAbsence>**](ContactsPropertyAbsence.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

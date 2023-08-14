@@ -23,7 +23,7 @@ class MessageText extends StatelessWidget {
       child: Html(
         shrinkWrap: true,
         data: str.replaceAll("[B]", "").replaceAll("[/B]", ""),
-        onLinkTap: (_url ,con,__,___){
+        onLinkTap: (_url ,con,__,){
           launchUrl(_url!,context: context);
         },
         style: {

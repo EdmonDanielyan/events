@@ -4,16 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
+import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/cubit/news_comments/sources/comment/network.dart';
+import 'package:ink_mobile/cubit/news_comments/sources/delete_comment/network.dart';
+import 'package:ink_mobile/cubit/news_comments/sources/edit_comment/network.dart';
 import 'package:ink_mobile/cubit/news_comments/sources/fetch/network.dart';
 import 'package:ink_mobile/cubit/news_comments/sources/like/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
+import 'package:ink_mobile/extensions/list_news_item_data.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/comment_data.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/new_comment_entities.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:main_api_client/model/patch_comment.dart';
 import 'news_comments_state.dart';
 import 'package:ink_mobile/extensions/get_comments_by_id.dart';
 import 'package:ink_mobile/extensions/list_comment_data.dart';
@@ -23,6 +28,8 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
   TextEditingController commentInputController = TextEditingController();
   FocusNode focusNode = FocusNode();
   int? answerId;
+  bool isEditing = false;
+  int? editingCommentId;
 
   NewsCommentsCubit()
       : super(NewsCommentState(type: NewsCommentStateType.LOADING));
@@ -60,6 +67,47 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       await getIt<NewsCommentsAddNetworkRequest>(param1: comment)();
       clear();
       emitState(type: NewsCommentStateType.LOADING);
+      return;
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.other) throw NoConnectionException();
+    } on TimeoutException catch (_) {
+      throw NoConnectionException();
+    }
+  }
+
+  Future<void> updateComment(int commentId) async {
+    try {
+      final commentStr = commentInputController.text;
+      commentInputController.text = "";
+      await Token.setNewTokensIfExpired();
+      final comment =
+      EditingCommentEntities(id: commentId, text: commentStr);
+
+      await getIt<NewsCommentsEditNetworkRequest>(param1: comment)();
+      editingCommentId = null;
+      isEditing = false;
+      emitState(type: NewsCommentStateType.LOADING);
+      return;
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.other) throw NoConnectionException();
+    } on TimeoutException catch (_) {
+      throw NoConnectionException();
+    }
+  }
+
+  Future<void> deleteComment(int commentId, int newsId) async {
+    try {
+      await Token.setNewTokensIfExpired();
+
+      await getIt<NewsCommentsDeleteNetworkRequest>(param1: commentId)();
+      emitState(type: NewsCommentStateType.LOADING);
+      final NewsBlockCubit newsBlockCubit = getIt<NewsBlockCubit>();
+      final getItem = newsBlockCubit.state.data.getItem(newsId);
+      final newItem =
+      getItem?.copyWith(commentCount: (getItem.commentCount ?? 0) - 1);
+      if(newItem != null) {
+        newsBlockCubit.updateItem(newItem);
+      }
       return;
     } on DioError catch (e) {
       if (e.type == DioErrorType.other) throw NoConnectionException();

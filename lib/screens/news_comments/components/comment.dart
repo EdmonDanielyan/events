@@ -23,6 +23,7 @@ class Comment extends StatefulWidget {
     required this.barrelsCount,
     required this.dateTime,
     required this.newsCommentsCubit,
+    required this.newsId,
   }) : super(key: key);
 
   final int id;
@@ -34,6 +35,7 @@ class Comment extends StatefulWidget {
   final int barrelsCount;
   final DateTime dateTime;
   final NewsCommentsCubit newsCommentsCubit;
+  final int newsId;
 
   @override
   _CommentState createState() => _CommentState(barrelChecked, barrelsCount);
@@ -179,7 +181,14 @@ class _CommentState extends State<Comment> {
                     ],
                   ))
             ],
-          )
+          ),
+          if (JwtPayload.myId == widget.authorId)
+            Row(
+              children: [
+                TextButton(onPressed: _onEditButtonTap, child: Text("Редактировать")),
+                TextButton(onPressed: () => _onDeleteButtonTap(widget.newsId), child: Text("Удалить")),
+              ],
+            ),
         ],
       ),
     );
@@ -195,6 +204,23 @@ class _CommentState extends State<Comment> {
         TextPosition(offset: _cubit.commentInputController.text.length));
     _cubit.answerId = widget.id;
     _cubit.focusNode.requestFocus();
+  }
+
+  void _onEditButtonTap() {
+    final _cubit = widget.newsCommentsCubit;
+
+    _cubit.commentInputController.text = widget.text;
+    _cubit.commentInputController.selection = TextSelection.fromPosition(
+        TextPosition(offset: _cubit.commentInputController.text.length));
+
+    _cubit.isEditing = true;
+    _cubit.editingCommentId = widget.id;
+    _cubit.focusNode.requestFocus();
+  }
+
+  void _onDeleteButtonTap(int newId) {
+    final _cubit = widget.newsCommentsCubit;
+    _cubit.deleteComment(widget.id, newId);
   }
 
   Future<void> _onLike(BuildContext context) async {

@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 
 # **thankIdGet**
-> ThankById thankIdGet(id)
+> ThankById thankIdGet(id, heart)
 
 Поблагодарить
 
@@ -26,9 +26,10 @@ import 'package:main_api_client/api.dart';
 
 var api_instance = new ThankApi();
 var id = 789; // int | ID user to thank
+var heart = 789; // int | ID категории (сердечка)
 
 try { 
-    var result = api_instance.thankIdGet(id);
+    var result = api_instance.thankIdGet(id, heart);
     print(result);
 } catch (e) {
     print('Exception when calling ThankApi->thankIdGet: $e\n');
@@ -40,6 +41,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID user to thank | 
+ **heart** | **int**| ID категории (сердечка) | 
 
 ### Return type
 

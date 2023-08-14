@@ -86,6 +86,20 @@ class _$CommentSerializer implements StructuredSerializer<Comment> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.allowEdit;
+    if (value != null) {
+      result
+        ..add('allow_edit')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.allowDelete;
+    if (value != null) {
+      result
+        ..add('allow_delete')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     return result;
   }
 
@@ -140,6 +154,14 @@ class _$CommentSerializer implements StructuredSerializer<Comment> {
           result.avatar = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'allow_edit':
+          result.allowEdit = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
+        case 'allow_delete':
+          result.allowDelete = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -168,6 +190,10 @@ class _$Comment extends Comment {
   final bool likedByUser;
   @override
   final String avatar;
+  @override
+  final bool allowEdit;
+  @override
+  final bool allowDelete;
 
   factory _$Comment([void Function(CommentBuilder) updates]) =>
       (new CommentBuilder()..update(updates))._build();
@@ -182,7 +208,9 @@ class _$Comment extends Comment {
       this.userLastName,
       this.likes,
       this.likedByUser,
-      this.avatar})
+      this.avatar,
+      this.allowEdit,
+      this.allowDelete})
       : super._();
 
   @override
@@ -205,7 +233,9 @@ class _$Comment extends Comment {
         userLastName == other.userLastName &&
         likes == other.likes &&
         likedByUser == other.likedByUser &&
-        avatar == other.avatar;
+        avatar == other.avatar &&
+        allowEdit == other.allowEdit &&
+        allowDelete == other.allowDelete;
   }
 
   @override
@@ -221,6 +251,8 @@ class _$Comment extends Comment {
     _$hash = $jc(_$hash, likes.hashCode);
     _$hash = $jc(_$hash, likedByUser.hashCode);
     _$hash = $jc(_$hash, avatar.hashCode);
+    _$hash = $jc(_$hash, allowEdit.hashCode);
+    _$hash = $jc(_$hash, allowDelete.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -237,7 +269,9 @@ class _$Comment extends Comment {
           ..add('userLastName', userLastName)
           ..add('likes', likes)
           ..add('likedByUser', likedByUser)
-          ..add('avatar', avatar))
+          ..add('avatar', avatar)
+          ..add('allowEdit', allowEdit)
+          ..add('allowDelete', allowDelete))
         .toString();
   }
 }
@@ -285,6 +319,14 @@ class CommentBuilder implements Builder<Comment, CommentBuilder> {
   String get avatar => _$this._avatar;
   set avatar(String avatar) => _$this._avatar = avatar;
 
+  bool _allowEdit;
+  bool get allowEdit => _$this._allowEdit;
+  set allowEdit(bool allowEdit) => _$this._allowEdit = allowEdit;
+
+  bool _allowDelete;
+  bool get allowDelete => _$this._allowDelete;
+  set allowDelete(bool allowDelete) => _$this._allowDelete = allowDelete;
+
   CommentBuilder() {
     Comment._initializeBuilder(this);
   }
@@ -302,6 +344,8 @@ class CommentBuilder implements Builder<Comment, CommentBuilder> {
       _likes = $v.likes;
       _likedByUser = $v.likedByUser;
       _avatar = $v.avatar;
+      _allowEdit = $v.allowEdit;
+      _allowDelete = $v.allowDelete;
       _$v = null;
     }
     return this;
@@ -333,7 +377,9 @@ class CommentBuilder implements Builder<Comment, CommentBuilder> {
             userLastName: userLastName,
             likes: likes,
             likedByUser: likedByUser,
-            avatar: avatar);
+            avatar: avatar,
+            allowEdit: allowEdit,
+            allowDelete: allowDelete);
     replace(_$result);
     return _$result;
   }

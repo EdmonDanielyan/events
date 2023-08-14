@@ -27,7 +27,7 @@ class SocialPackageErrorWidget extends StatelessWidget {
           "h3": Style(fontSize: FontSize(26.0),),
 
         },
-        onLinkTap: (String? url, RenderContext context,
+        onLinkTap: (String? url,
             Map<String, String> attributes, dom.Element? element) {
           launchUrl(url!);
         },

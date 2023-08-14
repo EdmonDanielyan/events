@@ -31,6 +31,11 @@ abstract class OrderDMS implements Built<OrderDMS, OrderDMSBuilder> {
   @BuiltValueField(wireName: r'birthday')
   String get birthday;
 
+  /// ID организации, справочник /directory/organisation.
+  @nullable
+  @BuiltValueField(wireName: r'organisation_id')
+  num get organisationId;
+
   @nullable
   @BuiltValueField(wireName: r'work_position')
   String get workPosition;

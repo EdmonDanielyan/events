@@ -21,6 +21,8 @@ tags:
       description: Контент
     - name: Global
       description: Глобальные данные приложения
+    - name: Directory
+      description: Справочники
 
 paths:
     /auth/login:
@@ -394,6 +396,52 @@ paths:
                                 $ref: "#/components/schemas/commentLikeSuccess"
             security:
                 - bearerAuth: [ ]
+
+    /comment/{id}:
+        parameters:
+            - name: id
+              in: path
+              description: id комментария
+              required: true
+              schema:
+                  type: integer
+                  format: int64
+        patch:
+            operationId: commentUpdate
+            summary: Изменить комментарий
+            tags:
+                - News
+            requestBody:
+                description: Информация для создания обновления
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/patchComment"
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/newsLikeSuccess"
+            security:
+                - bearerAuth: [ ]
+
+        delete:
+            operationId: commentDelete
+            summary: Удалить комментарий
+            tags:
+                - News
+            responses:
+                200:
+                    description: Успешное выполнение
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/newsLikeSuccess"
+            security:
+                - bearerAuth: [ ]
+
     /announcements:
         get:
             tags:
@@ -659,6 +707,13 @@ paths:
                       type: integer
                       format: int64
                   required: true
+                - name: heart
+                  in: query
+                  description: ID категории (сердечка)
+                  schema:
+                      type: integer
+                      format: int64
+                  required: true
             responses:
                 200:
                     description: Успешное выполнение
@@ -861,7 +916,9 @@ paths:
                 - User
             summary: Метод для заказа ДМС
             requestBody:
-                description: Данные для заказа полиса
+                description: >
+                    Данные для заказа полиса.  
+                    Если в автозаполнении указан organisation_id, то выбор организации должен быть заблокирован
                 content:
                     application/json:
                         schema:
@@ -1175,8 +1232,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/NotificationFullList"
-            security:
-                - bearerAuth: [ ]
+
     /config/notifications/{channel}/{targetId}:
         parameters:
             - name: channel
@@ -1206,8 +1262,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/NotificationSubState"
-            security:
-                - bearerAuth: [ ]
         post:
             operationId: setNotificationSub
             tags:
@@ -1228,8 +1282,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/NotificationSubState"
-            security:
-                - bearerAuth: [ ]
         delete:
             operationId: resetNotificationSub
             tags:
@@ -1243,8 +1295,28 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/NotificationSubState"
-            security:
-                - bearerAuth: [ ]
+
+    /directory/organisation:
+        get:
+            operationId: getOrganisationDirectory
+            tags:
+                - Directory
+            summary: Справочник организаций
+            description: Получение полного справочника организаций для использования в формах
+            responses:
+                200:
+                    description: Данные справочника
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/organisationDirectoryResponseBody"
+                default:
+                    description: Ошибка
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/RequiredError"
+
 components:
     schemas:
         registerParams:
@@ -1451,6 +1523,7 @@ components:
                                 - barrels
                         awards:
                             type: object
+                            deprecated: true
                             properties:
                                 gold_tanker:
                                     type: boolean
@@ -1465,6 +1538,11 @@ components:
                                 - gold_tanker
                                 - gold_tanker_2019
                                 - team
+                        badges:
+                            type: array
+                            description: Расширенное поле статусов, заменяет поле awards
+                            items:
+                                $ref: '#/components/schemas/UserProfileBadge'
                         contacts:
                             type: object
                             properties:
@@ -1583,6 +1661,48 @@ components:
                         - awards
                         - contacts
                         - basic_information
+
+        UserProfileBadge:
+            description: Статус/бейдж/награда
+            type: object
+            properties:
+                code:
+                    type: string
+                    description: Символьный код (ниже первого уровня не уникальный)
+                name:
+                    type: string
+                    description: Название
+                group:
+                    type: string
+                    description: Группа (например на доске почёта награды разбиты по категориям)
+                icon:
+                    type: string
+                    description: Имя ассета иконки
+                    nullable: true
+                svg:
+                    type: string
+                    description: Полный код иконки в svg. Используется, если поле icon не задано.
+                count:
+                    type: number
+                    description: Количество, если задано отображается рябом с бейджем
+                label:
+                    type: string
+                    description: Короткая текстовая подпись вместо количества (пока не используется)
+                link:
+                    type: string
+                    description: Ссылка для перехода на описание статуса (пока не используется)
+                extra:
+                    type: object
+                    description: Доп. данные для уникальных случаев
+                subs:
+                    type: array
+                    description: Датализация для "составных" статусов
+                    items:
+                        $ref: '#/components/schemas/UserProfileBadge'
+            required:
+                - code
+                - name
+                - icon
 
         getUsersSuccess:
             allOf:
@@ -1993,6 +2113,10 @@ components:
                             type: array
                             items:
                                 $ref: "#/components/schemas/newsProperty"
+                        tabs:
+                            type: array
+                            items:
+                                $ref: "#/components/schemas/newsTab"
                     required:
                         - news
                         - total_count
@@ -2052,6 +2176,35 @@ components:
                 - second_name
                 - photo
                 - is_mobile_user
+
+        newsTab:
+            type: object
+            description: Рубрика новостей
+            properties:
+                code:
+                    type: string
+                    description: Символьный код для последующего запроса фильтрованных результатов
+                    example: "information_sport"
+                title:
+                    type: string
+                    description: Отображаемое название
+                    example: "Спорт"
+                    minLength: 1
+                    maxLength: 255
+                visible:
+                    type: boolean
+                    description: Отображать ли в списке табов.
+                    nullable: true
+                    default: null
+                new:
+                    type: integer
+                    format: int32
+                    description: Количество непрочитанных записей (зарезервировано, пока не реализовано).
+                    nullable: true
+                    default: null
+            required:
+                - code
+                - title
 
         newsPropertyById:
             type: object
@@ -2233,6 +2386,12 @@ components:
                     type: string
                     nullable: true
                     example: "http://example.com/upload/uf/83b/T_Q_5bZLc8.jpg"
+                allow_edit:
+                    type: boolean
+                    nullable: true
+                allow_delete:
+                    type: boolean
+                    nullable: true
             required:
                 - id
                 - date_create
@@ -2279,6 +2438,15 @@ components:
                     type: integer
                 parent_id:
                     type: integer
+                text:
+                    type: string
+            required:
+                - news_id
+                - text
+                - parent_id
+        patchComment:
+            type: object
+            properties:
                 text:
                     type: string
             required:
@@ -2552,14 +2720,6 @@ components:
                     type: boolean
                     example: false
                     default: false
-                is_actual:
-                    type: boolean
-                    example: false
-                    default: false
-                places_available:
-                    type: boolean
-                    example: false
-                    default: false
             required:
                 - id
                 - title
@@ -2786,6 +2946,51 @@ components:
                     nullable: false
                     example: true
                     default: false
+                work_position:
+                    type: string
+                    nullable: true
+                    default: null
+                city:
+                    type: string
+                    nullable: true
+                    default: null
+                street:
+                    type: string
+                    nullable: true
+                    default: null
+                birthday:
+                    type: string
+                    nullable: true
+                    format: date-time
+                    example: "2021-03-24T17:52:38Z"
+                absence:
+                    type: array
+                    nullable: true
+                    items:
+                        type: object
+                        properties:
+                            user_id:
+                                type: integer
+                                nullable: false
+                                example: 123
+                            reason:
+                                type: string
+                                nullable: false
+                                example: 'Командировка'
+                            type:
+                                type: string
+                                nullable: true
+                                example: [ 'командировка', 'отпуск' ]
+                            from:
+                                type: string
+                                nullable: false
+                                format: date-time
+                                example: "2021-03-24T17:52:38Z"
+                            to:
+                                type: string
+                                nullable: false
+                                format: date-time
+                                example: "2021-03-24T17:52:38Z"
             required:
                 - id
                 - login
@@ -2980,6 +3185,47 @@ components:
                                         minLength: 1
                                         maxLength: 255
                                         example: "http://example.com/upload/uf/68b/user_3.png"
+                                    city:
+                                        type: string
+                                        nullable: true
+                                        default: null
+                                    street:
+                                        type: string
+                                        nullable: true
+                                        default: null
+                                    birthday:
+                                        type: string
+                                        nullable: true
+                                        format: date-time
+                                        example: "2021-03-24T17:52:38Z"
+                                    absence:
+                                        type: array
+                                        nullable: true
+                                        items:
+                                            type: object
+                                            properties:
+                                                user_id:
+                                                    type: integer
+                                                    nullable: false
+                                                    example: 123
+                                                reason:
+                                                    type: string
+                                                    nullable: false
+                                                    example: 'Командировка'
+                                                type:
+                                                    type: string
+                                                    nullable: true
+                                                    example: [ 'командировка', 'отпуск' ]
+                                                from:
+                                                    type: string
+                                                    nullable: false
+                                                    format: date-time
+                                                    example: "2021-03-24T17:52:38Z"
+                                                to:
+                                                    type: string
+                                                    nullable: false
+                                                    format: date-time
+                                                    example: "2021-03-24T17:52:38Z"
                         query:
                             type: string
                             nullable: true
@@ -3181,6 +3427,10 @@ components:
                 birthday:
                     type: string
                     example: '01.01.1969'
+                organisation_id:
+                    type: number
+                    description: ID организации, справочник /directory/organisation.
+                    example: 24762
                 work_position:
                     type: string
                     example: 'Слесарь ЭВМ'
@@ -3286,7 +3536,7 @@ components:
                 date_end:
                     type: string
                     example: "01.05.2020"
-                files:
+                files[]:
                     type: array
                     items:
                         type: string
@@ -3372,7 +3622,7 @@ components:
                 tags:
                     type: string
                     example: "Риски, COVID-19"
-                files:
+                files[]:
                     type: array
                     items:
                         type: string
@@ -3432,7 +3682,7 @@ components:
                 route:
                     type: string
                     example: "Список пунктов маршрута"
-                files:
+                files[]:
                     type: array
                     items:
                         type: string
@@ -3594,6 +3844,7 @@ components:
                     example: https://example.com/upload/icon/1.png
                     nullable: true
                     format: uri
+
         WebViewPage:
             type: object
             required:
@@ -3623,6 +3874,7 @@ components:
                     example: https://example.com/upload/icon/1.png
                     nullable: true
                     format: uri
+
         PageSection:
             type: object
             properties:
@@ -3773,6 +4025,86 @@ components:
                       data:
                           $ref: "#/components/schemas/NotificationFullList"
 
+
+        Organisation:
+            type: object
+            properties:
+                id:
+                    type: number
+                    description: ID
+                name:
+                    type: string
+                    description: Название
+                code:
+                    type: string
+                    description: Символьный код
+                sort:
+                    type: string
+                    description: Индекс сортировки
+                inn:
+                    type: string
+                    description: ИНН
+                zup:
+                    type: string
+                    description: ЗУП
+                link:
+                    type: string
+                    description: Ссылка на детальную информацию (на сайте)
+                hidden:
+                    type: boolean
+                    description: Скрыт в орг. структуре
+                dativeFio:
+                    type: string
+                    description: ФИО руководителя
+                dativePosition:
+                    type: string
+                    description: Должность руководителя
+
+        OrganisationList:
+            type: array
+            items:
+                $ref: "#/components/schemas/Organisation"
+
+
+        DirectoryMeta:
+            type: object
+            properties:
+                select:
+                    $ref: "#/components/schemas/DirectoryMetaSelect"
+
+        DirectoryMetaSelect:
+            type: object
+            description: Параметры по умолчанию для отображения в списках выбора
+            properties:
+                valueField:
+                    type: number
+                    description: Поле значения
+                labelField:
+                    type: string
+                    description: Поле подписи
+                parentDirectory:
+                    type: string
+                    description: Родительский справочник
+                parentKey:
+                    type: string
+                    description: Поля с внешним ключом
+
+        OrganisationDirectory:
+            allOf:
+                - $ref: "#/components/schemas/DirectoryMeta"
+                - type: object
+                  properties:
+                      items:
+                          $ref: "#/components/schemas/OrganisationList"
+
+
+        organisationDirectoryResponseBody:
+            allOf:
+                - $ref: "#/components/schemas/RequiredSuccess"
+                - type: object
+                  properties:
+                      data:
+                          $ref: "#/components/schemas/OrganisationDirectory"
 
     securitySchemes:
         bearerAuth:

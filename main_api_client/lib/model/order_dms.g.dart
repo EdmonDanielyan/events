@@ -55,6 +55,12 @@ class _$OrderDMSSerializer implements StructuredSerializer<OrderDMS> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.organisationId;
+    if (value != null) {
+      result
+        ..add('organisation_id')
+        ..add(serializers.serialize(value, specifiedType: const FullType(num)));
+    }
     value = object.workPosition;
     if (value != null) {
       result
@@ -208,6 +214,10 @@ class _$OrderDMSSerializer implements StructuredSerializer<OrderDMS> {
           result.birthday = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'organisation_id':
+          result.organisationId = serializers.deserialize(value,
+              specifiedType: const FullType(num)) as num;
+          break;
         case 'work_position':
           result.workPosition = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -295,6 +305,8 @@ class _$OrderDMS extends OrderDMS {
   @override
   final String birthday;
   @override
+  final num organisationId;
+  @override
   final String workPosition;
   @override
   final String phone;
@@ -338,6 +350,7 @@ class _$OrderDMS extends OrderDMS {
       this.firstName,
       this.secondName,
       this.birthday,
+      this.organisationId,
       this.workPosition,
       this.phone,
       this.email,
@@ -373,6 +386,7 @@ class _$OrderDMS extends OrderDMS {
         firstName == other.firstName &&
         secondName == other.secondName &&
         birthday == other.birthday &&
+        organisationId == other.organisationId &&
         workPosition == other.workPosition &&
         phone == other.phone &&
         email == other.email &&
@@ -400,6 +414,7 @@ class _$OrderDMS extends OrderDMS {
     _$hash = $jc(_$hash, firstName.hashCode);
     _$hash = $jc(_$hash, secondName.hashCode);
     _$hash = $jc(_$hash, birthday.hashCode);
+    _$hash = $jc(_$hash, organisationId.hashCode);
     _$hash = $jc(_$hash, workPosition.hashCode);
     _$hash = $jc(_$hash, phone.hashCode);
     _$hash = $jc(_$hash, email.hashCode);
@@ -429,6 +444,7 @@ class _$OrderDMS extends OrderDMS {
           ..add('firstName', firstName)
           ..add('secondName', secondName)
           ..add('birthday', birthday)
+          ..add('organisationId', organisationId)
           ..add('workPosition', workPosition)
           ..add('phone', phone)
           ..add('email', email)
@@ -472,6 +488,11 @@ class OrderDMSBuilder implements Builder<OrderDMS, OrderDMSBuilder> {
   String _birthday;
   String get birthday => _$this._birthday;
   set birthday(String birthday) => _$this._birthday = birthday;
+
+  num _organisationId;
+  num get organisationId => _$this._organisationId;
+  set organisationId(num organisationId) =>
+      _$this._organisationId = organisationId;
 
   String _workPosition;
   String get workPosition => _$this._workPosition;
@@ -554,6 +575,7 @@ class OrderDMSBuilder implements Builder<OrderDMS, OrderDMSBuilder> {
       _firstName = $v.firstName;
       _secondName = $v.secondName;
       _birthday = $v.birthday;
+      _organisationId = $v.organisationId;
       _workPosition = $v.workPosition;
       _phone = $v.phone;
       _email = $v.email;
@@ -598,6 +620,7 @@ class OrderDMSBuilder implements Builder<OrderDMS, OrderDMSBuilder> {
             firstName: firstName,
             secondName: secondName,
             birthday: birthday,
+            organisationId: organisationId,
             workPosition: workPosition,
             phone: phone,
             email: email,

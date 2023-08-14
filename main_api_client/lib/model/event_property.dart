@@ -52,23 +52,13 @@ abstract class EventProperty
   @BuiltValueField(wireName: r'is_member')
   bool get isMember;
 
-  @nullable
-  @BuiltValueField(wireName: r'is_actual')
-  bool get isActual;
-
-  @nullable
-  @BuiltValueField(wireName: r'places_available')
-  bool get placesAvailable;
-
   // Boilerplate code needed to wire-up generated code
   EventProperty._();
 
   static void _initializeBuilder(EventPropertyBuilder b) => b
     ..detailText = 'null'
     ..detailPicture = 'null'
-    ..isMember = false
-    ..isActual = false
-    ..placesAvailable = false;
+    ..isMember = false;
 
   factory EventProperty([void updates(EventPropertyBuilder b)]) =
       _$EventProperty;

@@ -71,6 +71,7 @@ Class | Method | HTTP request | Description
 *ContentApi* | [**getPagesSection**](doc//ContentApi.md#getpagessection) | **get** /pages/sections/{code} | Получить список страниц раздела. Например, список страниц для раздела \&quot;социальная ответственность\&quot;.
 *ContentApi* | [**getPagesSectionsList**](doc//ContentApi.md#getpagessectionslist) | **get** /pages/sections | Получить список разделов страниц.
 *ContentApi* | [**getSnippetsList**](doc//ContentApi.md#getsnippetslist) | **get** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
+*DirectoryApi* | [**getOrganisationDirectory**](doc//DirectoryApi.md#getorganisationdirectory) | **get** /directory/organisation | Справочник организаций
 *EventsApi* | [**eventsAddeventmemberIdGet**](doc//EventsApi.md#eventsaddeventmemberidget) | **get** /events/addeventmember/{id} | Добавить текущего пользователя как участника события
 *EventsApi* | [**eventsRemoveeventmemberIdGet**](doc//EventsApi.md#eventsremoveeventmemberidget) | **get** /events/removeeventmember/{id} | Удалить текущего пользователя как участника события
 *EventsApi* | [**getEventById**](doc//EventsApi.md#geteventbyid) | **get** /events/{id} | Получить информацию о событии по ID
@@ -81,6 +82,8 @@ Class | Method | HTTP request | Description
 *GlobalApi* | [**getSnippetsList**](doc//GlobalApi.md#getsnippetslist) | **get** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
 *GlobalApi* | [**resetNotificationSub**](doc//GlobalApi.md#resetnotificationsub) | **delete** /config/notifications/{channel}/{targetId} | Сбросить уведомления
 *GlobalApi* | [**setNotificationSub**](doc//GlobalApi.md#setnotificationsub) | **post** /config/notifications/{channel}/{targetId} | Изменить подписку на чат
+*NewsApi* | [**commentDelete**](doc//NewsApi.md#commentdelete) | **delete** /comment/{id} | Удалить комментарий
+*NewsApi* | [**commentUpdate**](doc//NewsApi.md#commentupdate) | **patch** /comment/{id} | Изменить комментарий
 *NewsApi* | [**getNews**](doc//NewsApi.md#getnews) | **get** /news | Получение списка новостей
 *NewsApi* | [**newsCommentsIdGet**](doc//NewsApi.md#newscommentsidget) | **get** /news/comments/{id} | Получение комментариев к новости по ID
 *NewsApi* | [**newsCommentsLikeIdGet**](doc//NewsApi.md#newscommentslikeidget) | **get** /news/comments/like/{id} | Поблагодарить комментарий
@@ -135,6 +138,9 @@ Class | Method | HTTP request | Description
  - [CommentsNotFound](doc//CommentsNotFound.md)
  - [ContactsNotFound](doc//ContactsNotFound.md)
  - [ContactsProperty](doc//ContactsProperty.md)
+ - [ContactsPropertyAbsence](doc//ContactsPropertyAbsence.md)
+ - [DirectoryMeta](doc//DirectoryMeta.md)
+ - [DirectoryMetaSelect](doc//DirectoryMetaSelect.md)
  - [EmptySearch](doc//EmptySearch.md)
  - [EventProperty](doc//EventProperty.md)
  - [EventsNotFound](doc//EventsNotFound.md)
@@ -179,6 +185,7 @@ Class | Method | HTTP request | Description
  - [NewsNotFound](doc//NewsNotFound.md)
  - [NewsProperty](doc//NewsProperty.md)
  - [NewsPropertyById](doc//NewsPropertyById.md)
+ - [NewsTab](doc//NewsTab.md)
  - [NotEventMember](doc//NotEventMember.md)
  - [NotFound](doc//NotFound.md)
  - [NotificationFullList](doc//NotificationFullList.md)
@@ -190,8 +197,14 @@ Class | Method | HTTP request | Description
  - [OrderReferenceSuccess](doc//OrderReferenceSuccess.md)
  - [OrderTransportFail](doc//OrderTransportFail.md)
  - [OrderTransportSuccess](doc//OrderTransportSuccess.md)
+ - [Organisation](doc//Organisation.md)
+ - [OrganisationDirectory](doc//OrganisationDirectory.md)
+ - [OrganisationDirectoryAllOf](doc//OrganisationDirectoryAllOf.md)
+ - [OrganisationDirectoryResponseBody](doc//OrganisationDirectoryResponseBody.md)
+ - [OrganisationDirectoryResponseBodyAllOf](doc//OrganisationDirectoryResponseBodyAllOf.md)
  - [Page](doc//Page.md)
  - [PageSection](doc//PageSection.md)
+ - [PatchComment](doc//PatchComment.md)
  - [PostComment](doc//PostComment.md)
  - [PostCommentParamsFail](doc//PostCommentParamsFail.md)
  - [PostCommentSuccess](doc//PostCommentSuccess.md)
@@ -225,6 +238,7 @@ Class | Method | HTTP request | Description
  - [ThankSelf](doc//ThankSelf.md)
  - [TransportForm](doc//TransportForm.md)
  - [UserNotFound](doc//UserNotFound.md)
+ - [UserProfileBadge](doc//UserProfileBadge.md)
  - [UserProperties](doc//UserProperties.md)
  - [WebViewPage](doc//WebViewPage.md)
 
