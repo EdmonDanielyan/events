@@ -10,6 +10,7 @@ class UserProfileData {
   bool canBeThanked;
   UserVotes? votes;
   UserAwards? awards;
+  List<UserBadges>? badges;
   UserContacts? contacts;
   UserBasicInfo? basicInformation;
   Absence? absence;
@@ -23,6 +24,7 @@ class UserProfileData {
       this.pathToAvatar,
       this.votes,
       this.awards,
+      this.badges,
       this.contacts,
       this.basicInformation,
       this.absence,
@@ -40,6 +42,7 @@ class UserProfileData {
     bool? canBeThanked,
     UserVotes? votes,
     UserAwards? awards,
+    List<UserBadges>? badges,
     UserContacts? contacts,
     Absence? absence,
     ShiftMan? shiftMan,
@@ -54,6 +57,7 @@ class UserProfileData {
       canBeThanked: canBeThanked ?? this.canBeThanked,
       votes: votes ?? this.votes,
       awards: awards ?? this.awards,
+      badges: badges ?? this.badges,
       contacts: contacts ?? this.contacts,
       absence: absence ?? this.absence,
       shiftMan: shiftMan ?? this.shiftMan,
@@ -73,6 +77,9 @@ class UserProfileData {
           : null,
       awards: userData['awards'] != null
           ? UserAwards.getUserAwardsFromMap(userData['awards'])
+          : null,
+      badges: userData['badges'] != null
+          ? UserBadges.getUserBadgesFromMap(userData['badges'])
           : null,
       contacts: userData['contacts'] != null
           ? UserContacts.getUserContactsFromMap(userData['contacts'])
@@ -136,6 +143,35 @@ class UserAwards {
         goldenTanker: userAwardsMap['gold_tanker'] ?? false,
         goldenTanker2019: userAwardsMap['gold_tanker_2019'] ?? false,
         team: userAwardsMap['team'] ?? false);
+  }
+}
+
+class UserBadges {
+  String code;
+  String name;
+  String icon;
+  int count;
+
+  UserBadges({
+    this.code = "",
+    this.name = "",
+    this.icon = "",
+    this.count = 0,
+  });
+
+  static List<UserBadges> getUserBadgesFromMap(List userBadgesList) {
+    List<UserBadges> userBadges = [];
+
+    userBadgesList.forEach((element) {
+      userBadges.add(UserBadges(
+        code: element['code'] ?? "",
+        name: element['name'] ?? "",
+        icon: element['icon'] ?? "",
+        count: element['count'] ?? 0,
+      ));
+    });
+
+    return userBadges;
   }
 }
 

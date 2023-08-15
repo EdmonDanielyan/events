@@ -6,7 +6,7 @@ import 'package:ink_mobile/screens/profile/components/section_title.dart';
 import '../../../messenger/functions/size_config.dart';
 
 class Awards extends StatelessWidget {
-  final UserAwards? awards;
+  final List<UserBadges>? awards;
   const Awards({Key? key, required this.awards}) : super(key: key);
 
   @override
@@ -59,17 +59,10 @@ class Awards extends StatelessWidget {
 
   List<Award> getAwards() {
     List<Award> awardsList = [];
-
-    if (awards!.goldenTanker) {
-      awardsList.add(Award(award: AwardsItems.tanker));
-    }
-
-    if (awards!.goldenTanker2019) {
-      awardsList.add(Award(award: AwardsItems.tanker));
-    }
-
-    if (awards!.team) {
-      awardsList.add(Award(award: AwardsItems.greenLeaf));
+    if (awards != null) {
+      for (UserBadges badge in awards!) {
+        awardsList.add(Award(award: badge));
+      }
     }
 
     return awardsList;

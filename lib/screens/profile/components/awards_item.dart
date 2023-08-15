@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ink_mobile/models/user_data.dart';
 
 class Award extends StatelessWidget {
-  final AwardsItem award;
+  final UserBadges award;
   const Award({Key? key, required this.award}) : super(key: key);
 
   @override
@@ -11,38 +12,26 @@ class Award extends StatelessWidget {
   }
 
   Widget getWidgetByExtension(BuildContext context) {
-    int dotPosition = this.award.link.lastIndexOf('.');
-    String extension = this.award.link.substring(dotPosition);
-
-    List<String> imageExtensions = ['.png', '.jpg', '.jpeg'];
-
-    if (extension == '.svg') {
-      return SvgPicture.asset(
-        this.award.link,
-        width: 64.0,
-        height: 64.0,
-      );
-    } else if (imageExtensions.contains(extension)) {
-      return Image.asset(
-        this.award.link,
-        width: 64.0,
-        height: 64.0,
-      );
-    } else {
-      return const SizedBox.shrink();
-    }
+    int dotPosition = this.award.icon.lastIndexOf('.');
+    String extension = this.award.icon.substring(dotPosition);
+    bool isSvg = extension == '.svg';
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        if (isSvg)
+          SvgPicture.network(
+            this.award.icon,
+            width: 64.0,
+            height: 64.0,
+          ),
+        if (!isSvg)
+          Image.network(
+            this.award.icon,
+            width: 64.0,
+            height: 64.0,
+          ),
+        Text(this.award.count.toString()),
+      ],
+    );
   }
-}
-
-class AwardsItems {
-  static const AwardsItem tanker =
-      AwardsItem('assets/images/award_golden_tanker.svg');
-  static const AwardsItem greenLeaf =
-      AwardsItem('assets/images/award_green_leaf.svg');
-}
-
-class AwardsItem {
-  final String link;
-
-  const AwardsItem(String link) : link = link;
 }

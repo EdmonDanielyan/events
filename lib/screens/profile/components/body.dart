@@ -101,7 +101,7 @@ class Body extends StatelessWidget {
                 PersonalPageHeader(user: user),
               if (state.type == ProfileStateType.OTHER_USER_LOADED)
                 OtherUserPageHeader(user: user),
-              Awards(awards: user.awards),
+              Awards(awards: user.badges),
               Contacts(contacts: user.contacts),
               BasicInformation(info: user.basicInformation),
               if (user.absence != null)
