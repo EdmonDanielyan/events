@@ -3,12 +3,13 @@ import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 
-class DefaultTextField extends StatelessWidget {
+class DefaultTextField extends StatefulWidget {
   final String hint;
   final void Function(String)? onChanged;
   final Widget? icon;
   final FocusNode focusNode;
-  const DefaultTextField({
+
+  DefaultTextField({
     Key? key,
     required this.focusNode,
     this.onChanged,
@@ -17,16 +18,24 @@ class DefaultTextField extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<DefaultTextField> createState() => _DefaultTextFieldState();
+}
+
+class _DefaultTextFieldState extends State<DefaultTextField> {
+
+  final controller = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
           border: Border.all(
-              color: focusNode.hasFocus
+              color: widget.focusNode.hasFocus
                   ? Palette.greenE4A
                   : Palette.text20Grey),
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
-            if (focusNode.hasFocus)
+            if (widget.focusNode.hasFocus)
               BoxShadow(
                 color: Palette.greenE4A.withOpacity(0.25),
                 blurRadius: 8.0,
@@ -34,27 +43,38 @@ class DefaultTextField extends StatelessWidget {
               ),
           ]),
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+        padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: Row(
           children: [
             Expanded(
-              child: NativeTextInput(
-                focusNode: focusNode,
-                onChanged: onChanged,
+              child: TextField(
+                controller: controller,
+                focusNode: widget.focusNode,
+                onChanged: widget.onChanged,
                 maxLines: 1,
                 textCapitalization: TextCapitalization.sentences,
-                placeholder: hint,
-                iosOptions: IosOptions(
-                  placeholderStyle:
-                      FontStyles.rubikP2(color: Palette.textBlack50),
+                decoration: InputDecoration(
+                  border: InputBorder.none
                 ),
+                //placeholder: widget.hint,
+                // iosOptions: IosOptions(
+                //   placeholderStyle:
+                //       FontStyles.rubikP2(color: Palette.textBlack50),
+                // ),
                 style: FontStyles.rubikP2(color: Palette.textBlack),
-                placeholderColor: Palette.textBlack50,
+                //placeholderColor: Palette.textBlack50,
               ),
             ),
-            if (icon != null) ...[
+            InkWell(
+              onTap: () {
+                controller.text = '';
+                widget.onChanged?.call('');
+              },
+              child: Icon(Icons.close),
+            ),
+            if (widget.icon != null) ...[
               const SizedBox(width: 10.0),
-              icon!,
+              widget.icon!,
             ],
           ],
         ),

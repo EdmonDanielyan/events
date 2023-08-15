@@ -39,6 +39,7 @@ class _SearchFieldState extends State<SearchField> {
 
   @override
   Widget build(BuildContext context) {
+
     return DefaultTextField(
       focusNode: _textFieldFocus,
       hint: _hintText,
