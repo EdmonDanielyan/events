@@ -1,28 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/filter_slider_element.dart';
+import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:collection/collection.dart';
 
+import '../../../cubit/main_page/news_block_state.dart';
 import '../../../messenger/functions/size_config.dart';
+import '../../../models/filter_item.dart';
+import '../main_screen.dart';
 
 class NewsFilterSlider extends StatelessWidget {
   const NewsFilterSlider({Key? key}) : super(key: key);
 
   static late AppLocalizations _strings;
+  static late NewsBlockCubit newsCubit;
 
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    return Container(
-      height: SizeConfig(context, 28.0).getProportionateScreenHeight,
-      margin: EdgeInsets.only(top: 8.0),
-      child: getFilterListView(),
+    newsCubit = MainScreen.of(context).newsBlockCubit;
+    return BlocBuilder<NewsBlockCubit, NewsBlockState>(
+        bloc: newsCubit,
+      builder: (context, state) {
+        return Container(
+          height: SizeConfig(context, 28.0).getProportionateScreenHeight,
+          margin: EdgeInsets.only(top: 8.0),
+          child: getFilterListView(state.tabs ?? [ ]),
+        );
+      }
     );
   }
 
-  ListView getFilterListView() {
-    List<FilterItem> items = _getFilterItems();
-
+  ListView getFilterListView(List<FilterItem> items) {
+    final filterItems = items.toList();
+    filterItems.removeWhere(((tab) => tab.code == 'main'));
     return ListView.separated(
         addAutomaticKeepAlives: false,
         physics: AlwaysScrollableScrollPhysics(),
@@ -32,16 +45,16 @@ class NewsFilterSlider extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return FilterSliderElement(
-            title: items[index].title,
+            title: filterItems[index].title,
             onTap: () {
-              if (items[index].code == 'open_university') {
+              if (filterItems[index].code == 'open_university') {
                 Navigator.pushNamed(context, '/open_university');
               } else {
                 Navigator.pushNamed(context, '/news_list',
-                    arguments: {'filter': items[index].code});
+                    arguments: {'filter': filterItems[index].code});
               }
             },
-            isSelected: items[index].code == 'news',
+            isSelected: filterItems[index].code == 'news',
             selectedColor: Colors.white,
             selectedTextStyle: TextStyle(
               fontSize:
@@ -54,7 +67,7 @@ class NewsFilterSlider extends StatelessWidget {
         separatorBuilder: (context, index) {
           return Container(margin: EdgeInsets.only(right: 10.0));
         },
-        itemCount: items.length);
+        itemCount: filterItems.length);
   }
 
   List<FilterItem> _getFilterItems() {
@@ -70,11 +83,4 @@ class NewsFilterSlider extends StatelessWidget {
       FilterItem(title: '# ${_strings.openUniversity}', code: 'open_university')
     ];
   }
-}
-
-class FilterItem {
-  final String title;
-  final String code;
-
-  const FilterItem({required this.title, required this.code});
 }

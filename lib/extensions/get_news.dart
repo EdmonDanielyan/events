@@ -6,6 +6,8 @@ import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
 import 'package:main_api_client/model/get_news.dart';
 
+import '../models/filter_item.dart';
+
 extension GetNewsExt on Response<GetNews> {
   Pagination<NewsItemData> mapResponse(Pagination<NewsItemData> pagination) {
     Map? list = this.data?.data.asMap;
@@ -23,6 +25,20 @@ extension GetNewsExt on Response<GetNews> {
       pagination.pageNumber++;
 
       return pagination;
+    } else {
+      throw UnknownErrorException();
+    }
+  }
+}
+
+extension GetTabsExt on Response<GetNews> {
+  List<FilterItem> mapTabsFromResponse() {
+    Map? list = this.data?.data.asMap;
+
+    if (list != null) {
+      final _newList = FilterItem.getListFromResponse(list[0]);
+
+      return _newList;
     } else {
       throw UnknownErrorException();
     }

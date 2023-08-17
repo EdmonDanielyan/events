@@ -13,6 +13,8 @@ import 'package:dio/dio.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/extensions/get_news.dart';
 
+import '../../models/filter_item.dart';
+
 @singleton
 class NewsBlockCubit extends Cubit<NewsBlockState> {
   NewsBlockCubit() : super(NewsBlockState(type: NewsBlockStateType.LOADING));
@@ -20,14 +22,30 @@ class NewsBlockCubit extends Cubit<NewsBlockState> {
   Pagination<NewsItemData> pagination =
       Pagination<NewsItemData>(countOnPage: 5);
 
+  List<FilterItem> _tabs = [];
+
+  List<FilterItem> _mapFilterItems(Map? tabsMap) {
+    final List? tabsList = tabsMap?["tabs"];
+    if (tabsList != null) {
+      List<FilterItem> tabs = [];
+      tabsList.forEach((element) {
+        tabs.add(FilterItem.fromMap(element));
+      });
+      return tabs;
+    } else {
+      return [];
+    }
+  }
+
   Future<void> fetchNews() async {
     try {
       await Token.setNewTokensIfExpired();
 
       final response = await getIt<NewsListNetworkRequest>(
           param1: pagination, param2: "main")();
+      _tabs = _mapFilterItems(response.data?.data.asMap);
       final mapResponse = response.mapResponse(pagination);
-      emitSuccess(mapResponse.items);
+      emitSuccess(items: mapResponse.items, tabs: _tabs);
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 
@@ -48,7 +66,7 @@ class NewsBlockCubit extends Cubit<NewsBlockState> {
           items.add(item);
         }
       }
-      emitSuccess(items);
+      emitSuccess(items: items);
     }
   }
 
@@ -64,19 +82,26 @@ class NewsBlockCubit extends Cubit<NewsBlockState> {
     return null;
   }
 
-  void emitSuccess(List<NewsItemData> items) {
-    emitState(type: NewsBlockStateType.LOADED, data: items);
+  void emitSuccess({List<NewsItemData>? items, List<FilterItem>? tabs}) {
+    emitState(
+      type: NewsBlockStateType.LOADED,
+      data: items,
+      tabs: tabs,
+    );
   }
 
   void emitError(String errorMsg) {
     emitState(type: NewsBlockStateType.ERROR, errorMessage: errorMsg);
   }
 
-  void emitState(
-      {required NewsBlockStateType type,
-      List<NewsItemData>? data,
-      String? errorMessage}) {
-    emit(NewsBlockState(type: type, data: data, errorMessage: errorMessage));
+  void emitState({
+    required NewsBlockStateType type,
+    List<NewsItemData>? data,
+    List<FilterItem>? tabs,
+    String? errorMessage,
+  }) {
+    emit(NewsBlockState(
+        type: type, data: data, tabs: tabs, errorMessage: errorMessage));
   }
 
   void refresh() {
