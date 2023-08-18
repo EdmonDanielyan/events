@@ -150,13 +150,13 @@ class UserBadges {
   String code;
   String name;
   String icon;
-  int count;
+  int? count;
 
   UserBadges({
     this.code = "",
     this.name = "",
     this.icon = "",
-    this.count = 0,
+    this.count,
   });
 
   static List<UserBadges> getUserBadgesFromMap(List userBadgesList) {
@@ -167,7 +167,7 @@ class UserBadges {
         code: element['code'] ?? "",
         name: element['name'] ?? "",
         icon: element['icon'] ?? "",
-        count: element['count'] ?? 0,
+        count: element['count'],
       ));
     });
 

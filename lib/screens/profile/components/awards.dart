@@ -60,7 +60,9 @@ class Awards extends StatelessWidget {
   List<Award> getAwards() {
     List<Award> awardsList = [];
     if (awards != null) {
-      for (UserBadges badge in awards!) {
+      final notNullAwards = awards!.toList();
+      notNullAwards.removeWhere((award) => award.count == null);
+      for (UserBadges badge in notNullAwards) {
         awardsList.add(Award(award: badge));
       }
     }
