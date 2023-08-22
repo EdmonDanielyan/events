@@ -30,7 +30,7 @@ class Award extends StatelessWidget {
             width: 64.0,
             height: 64.0,
           ),
-        Text(this.award.count.toString()),
+        Text(this.award.count.toString() == "null" ? "" : this.award.count.toString()),
       ],
     );
   }
