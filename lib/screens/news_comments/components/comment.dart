@@ -11,6 +11,9 @@ import 'package:intl/intl.dart';
 import 'package:ink_mobile/extensions/int_extension.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:flutter_html/flutter_html.dart';
+//import 'package:url_launcher/url_launcher.dart';
+
 class Comment extends StatefulWidget {
   const Comment({
     Key? key,
@@ -101,11 +104,18 @@ class _CommentState extends State<Comment> {
                                   fontWeight: FontWeight.bold),
                             )),
                       ),
-                      BBCodeText(
+
+                      Html(
+                          data: widget.text.replaceAll("src=\"/upload",
+                              "style='max-width=100px; max-height=100px;' src=\"https://portal.irkutskoil.ru/upload")
+                      ),
+
+                      /*BBCodeText(
                           data: widget.text,
                           stylesheet: defaultBBStylesheet()
                             ..replaceTag(
-                                CustomColorTag(defaultColor: _textColor))),
+                                CustomColorTag(defaultColor: _textColor))),*/
+
                       Container(
                         child: Row(
                           children: [
