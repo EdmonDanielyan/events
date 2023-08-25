@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
+import 'package:ink_mobile/components/textfields/service_disabled_textfield.dart';
 import 'package:ink_mobile/core/masks/textfield_masks.dart';
 import 'package:ink_mobile/core/validator/field_validator.dart';
 import 'package:ink_mobile/cubit/autofill/get_autofill.dart';
@@ -30,6 +33,10 @@ class _MedicalInsuranceFormUserFieldsState
   TextEditingController emailController = TextEditingController();
   TextEditingController birthdayController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+
+  // TODO: CHECK
+  TextEditingController organisationController = TextEditingController();
+
   GetAutofill getAutofill = GetAutofill();
 
   Future<void> loadData() async {
@@ -40,6 +47,10 @@ class _MedicalInsuranceFormUserFieldsState
     widget.entities.position = getAutofill.autofill.position;
     emailController.text = getAutofill.autofill.email;
     widget.entities.email = getAutofill.autofill.email;
+
+    // TODO: CHECK
+    organisationController.text = getAutofill.autofill.organisation.isEmpty ? 'ООО "ИНК"': getAutofill.autofill.organisation;
+    widget.entities.organisation = getAutofill.autofill.organisation.isEmpty ? 'ООО "ИНК"': getAutofill.autofill.organisation;
 
     if (getAutofill.autofill.birthday.isNotEmpty) {
       final birthday = DateTime.tryParse(getAutofill.autofill.birthday);
@@ -79,6 +90,8 @@ class _MedicalInsuranceFormUserFieldsState
         _mobilePhoneWidget(),
         SizedBox(height: 20),
         _emailWidget(),
+        SizedBox(height: 20),
+        _organisationWidget(),
       ],
     );
   }
@@ -91,6 +104,18 @@ class _MedicalInsuranceFormUserFieldsState
       autocorrect: false,
       onChanged: (val) => widget.entities.fio = val,
       descriptionText: "Ваше ФИО",
+      focusNode: FocusNode(),
+    );
+  }
+
+  Widget _organisationWidget() {
+    return ServiceDisabledTextField(
+      controller: organisationController,
+      hint: "Организация",
+      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
+      autocorrect: false,
+      onChanged: (val) => widget.entities.organisation = val,
+      descriptionText: "Организация",
       focusNode: FocusNode(),
     );
   }

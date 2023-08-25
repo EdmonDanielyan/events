@@ -19,6 +19,9 @@ class CustomDMSParamsBuilder {
   final String hospitalName;
   final String city;
   final String address;
+
+  // TODO: CHECK
+  //final String organization;
   final String price;
   final String dateStart;
   final String dateTo;
@@ -41,6 +44,8 @@ class CustomDMSParamsBuilder {
     required this.hospitalName,
     required this.city,
     required this.address,
+    // TODO: CHECK
+    //required this.organization,
     required this.price,
     required this.dateStart,
     required this.dateTo,
@@ -72,6 +77,8 @@ class CustomDMSParamsBuilder {
     builder.clinic = hospitalName;
     builder.city = city;
     builder.address = address;
+    //TODO: CHECK
+    //builder.organization = organization;
     builder.money = price;
     builder.date = dateStart;
     builder.dateTo = dateTo;

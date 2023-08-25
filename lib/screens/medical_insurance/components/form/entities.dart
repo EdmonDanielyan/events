@@ -11,6 +11,8 @@ class MedicalInsuranceFormEntities {
   String hospitalName;
   String city;
   String address;
+  // TODO: CHECK
+  String organisation;
   String price;
   String dateStart;
   String additionalText;
@@ -28,6 +30,8 @@ class MedicalInsuranceFormEntities {
     this.hospitalName = "",
     this.city = "",
     this.address = "",
+    // TODO: CHECK
+    this.organisation = "",
     this.price = "",
     this.dateStart = "",
     this.additionalText = "",

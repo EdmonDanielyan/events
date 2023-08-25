@@ -12,13 +12,13 @@
 		1546ABA529714F5B004E36CB /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1546ABA429714F5B004E36CB /* NotificationService.swift */; };
 		1546ABA929714F5B004E36CB /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1546ABA229714F5B004E36CB /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		194C340527873B5D00584FE9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 194C340427873B5D00584FE9 /* GoogleService-Info.plist */; };
-		195943A01F4B2B89A6717252 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AAB969ECCC1A8E4FCF158A /* Pods_OneSignalNotificationServiceExtension.framework */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
-		6F5D9E8C12AC560419B4E25F /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127E24E4E78CE60036B2B25D /* Pods_Runner.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
+		74F86C1F3C4DD5E676DC01DD /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CF2102CA86DA158298F52B8 /* Pods_OneSignalNotificationServiceExtension.framework */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		D6CE7ADBD4E848D1043E0DFE /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52281D209A84DE425D238AE4 /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,8 +56,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		10633791B4AB238F37E46500 /* Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig"; sourceTree = "<group>"; };
-		127E24E4E78CE60036B2B25D /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		031889A4FF8841CAE91D50EA /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		0BF226E7CD0BFD9934A70DCC /* Pods-Runner.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-dev.xcconfig"; sourceTree = "<group>"; };
+		0FF764686BBAB3BD148156CF /* Pods-Runner.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-prod.xcconfig"; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		1546ABA229714F5B004E36CB /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,18 +66,20 @@
 		1546ABA629714F5B004E36CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		19028EAF2786081B0058219E /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		194C340427873B5D00584FE9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		1DFA5ED40D8C0869DD7033C7 /* Pods-Runner.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-dev.xcconfig"; sourceTree = "<group>"; };
-		2D5F2F0BAD543EF0BC33782B /* Pods-Runner.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-prod.xcconfig"; sourceTree = "<group>"; };
-		35C791C4D551213F7A339BE3 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
-		39564F83FA5ABA8575E1FD32 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+		262350A7009C2A471D86FA00 /* Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig"; sourceTree = "<group>"; };
+		2CF2102CA86DA158298F52B8 /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3529CE3130B59EE6372F236C /* Pods-Runner.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-dev.xcconfig"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
-		4C5FC02CF68625AC648CEEE9 /* Pods-Runner.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-dev.xcconfig"; sourceTree = "<group>"; };
-		5D2F4307EE6CE345C1C605BD /* Pods-OneSignalNotificationServiceExtension.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.profile.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.profile.xcconfig"; sourceTree = "<group>"; };
-		73343B0C0CA52D7CBF34305E /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		52281D209A84DE425D238AE4 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5714A308A663E5FF54E27334 /* Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig"; sourceTree = "<group>"; };
+		6500BB778CAFB243F5E6618F /* Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig"; sourceTree = "<group>"; };
+		73498285BDA64EDCEE906D44 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
-		903B9E1112623A1C46000B1B /* Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig"; sourceTree = "<group>"; };
+		867CCCDF3566A95C14478E69 /* Pods-OneSignalNotificationServiceExtension.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.profile.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.profile.xcconfig"; sourceTree = "<group>"; };
+		925FC782AEB2ADD61CC11C93 /* Pods-Runner.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-dev.xcconfig"; sourceTree = "<group>"; };
+		95A7C972F75659702631D1EB /* Pods-Runner.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,19 +87,16 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AC69B6FA4352CAFA6DCA2BDC /* Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig"; sourceTree = "<group>"; };
-		AFFDA796986D8D8CF0894D8D /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
-		B0A2CDD1C85B611323632D27 /* Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig"; sourceTree = "<group>"; };
-		BB93C6CD4D0591F9D64B1E78 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		BC6C7DBB6C369A975F8E4896 /* Pods-Runner.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-prod.xcconfig"; sourceTree = "<group>"; };
-		BE47C1367BA245D66DED63B4 /* Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig"; sourceTree = "<group>"; };
+		9D943749AED1F78F89656183 /* Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig"; sourceTree = "<group>"; };
+		BE138D1275FC99212402EA1B /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		C3C8958242913C07623EEC43 /* Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig"; sourceTree = "<group>"; };
 		CA81B85E27BA7090001195A0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
 		CA81B85F27BA7090001195A0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		CF154854E4F544DEEABE4A3E /* Pods-Runner.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-prod.xcconfig"; sourceTree = "<group>"; };
-		D13330210FBE1848106132B9 /* Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig"; sourceTree = "<group>"; };
-		D3AAB969ECCC1A8E4FCF158A /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5B83884C12F06A1607E694D /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		D5D94EB5222F70F65BAC5005 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		D642375D7C81A872ECD5764D /* Pods-Runner.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-dev.xcconfig"; sourceTree = "<group>"; };
+		D7AFC40A1C1AABA1F9FA17D0 /* Pods-Runner.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-prod.xcconfig"; sourceTree = "<group>"; };
+		F1FAFFE85959203BA1AF02F8 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		F8BD00910C2A6173190D5A1A /* Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				195943A01F4B2B89A6717252 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
+				74F86C1F3C4DD5E676DC01DD /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,7 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F5D9E8C12AC560419B4E25F /* Pods_Runner.framework in Frameworks */,
+				D6CE7ADBD4E848D1043E0DFE /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +148,7 @@
 				97C146EF1CF9000F007C117D /* Products */,
 				ABF27AC78340CF4503A272B5 /* Pods */,
 				D5D94EB5222F70F65BAC5005 /* GoogleService-Info.plist */,
-				C7EA8E811341EB84772C0CA3 /* Frameworks */,
+				E1CB7A3AF0B2A508E4842F26 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -181,33 +181,33 @@
 		ABF27AC78340CF4503A272B5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				BB93C6CD4D0591F9D64B1E78 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
-				903B9E1112623A1C46000B1B /* Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig */,
-				D13330210FBE1848106132B9 /* Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig */,
-				73343B0C0CA52D7CBF34305E /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
-				10633791B4AB238F37E46500 /* Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig */,
-				AC69B6FA4352CAFA6DCA2BDC /* Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig */,
-				5D2F4307EE6CE345C1C605BD /* Pods-OneSignalNotificationServiceExtension.profile.xcconfig */,
-				B0A2CDD1C85B611323632D27 /* Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig */,
-				BE47C1367BA245D66DED63B4 /* Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig */,
-				35C791C4D551213F7A339BE3 /* Pods-Runner.debug.xcconfig */,
-				2D5F2F0BAD543EF0BC33782B /* Pods-Runner.debug-prod.xcconfig */,
-				D642375D7C81A872ECD5764D /* Pods-Runner.debug-dev.xcconfig */,
-				AFFDA796986D8D8CF0894D8D /* Pods-Runner.release.xcconfig */,
-				BC6C7DBB6C369A975F8E4896 /* Pods-Runner.release-prod.xcconfig */,
-				4C5FC02CF68625AC648CEEE9 /* Pods-Runner.release-dev.xcconfig */,
-				39564F83FA5ABA8575E1FD32 /* Pods-Runner.profile.xcconfig */,
-				CF154854E4F544DEEABE4A3E /* Pods-Runner.profile-prod.xcconfig */,
-				1DFA5ED40D8C0869DD7033C7 /* Pods-Runner.profile-dev.xcconfig */,
+				F1FAFFE85959203BA1AF02F8 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				9D943749AED1F78F89656183 /* Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig */,
+				6500BB778CAFB243F5E6618F /* Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig */,
+				031889A4FF8841CAE91D50EA /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
+				F8BD00910C2A6173190D5A1A /* Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig */,
+				C3C8958242913C07623EEC43 /* Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig */,
+				867CCCDF3566A95C14478E69 /* Pods-OneSignalNotificationServiceExtension.profile.xcconfig */,
+				5714A308A663E5FF54E27334 /* Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig */,
+				262350A7009C2A471D86FA00 /* Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig */,
+				BE138D1275FC99212402EA1B /* Pods-Runner.debug.xcconfig */,
+				95A7C972F75659702631D1EB /* Pods-Runner.debug-prod.xcconfig */,
+				925FC782AEB2ADD61CC11C93 /* Pods-Runner.debug-dev.xcconfig */,
+				73498285BDA64EDCEE906D44 /* Pods-Runner.release.xcconfig */,
+				0FF764686BBAB3BD148156CF /* Pods-Runner.release-prod.xcconfig */,
+				0BF226E7CD0BFD9934A70DCC /* Pods-Runner.release-dev.xcconfig */,
+				D5B83884C12F06A1607E694D /* Pods-Runner.profile.xcconfig */,
+				D7AFC40A1C1AABA1F9FA17D0 /* Pods-Runner.profile-prod.xcconfig */,
+				3529CE3130B59EE6372F236C /* Pods-Runner.profile-dev.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		C7EA8E811341EB84772C0CA3 /* Frameworks */ = {
+		E1CB7A3AF0B2A508E4842F26 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D3AAB969ECCC1A8E4FCF158A /* Pods_OneSignalNotificationServiceExtension.framework */,
-				127E24E4E78CE60036B2B25D /* Pods_Runner.framework */,
+				2CF2102CA86DA158298F52B8 /* Pods_OneSignalNotificationServiceExtension.framework */,
+				52281D209A84DE425D238AE4 /* Pods_Runner.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -219,7 +219,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1546ABAE29714F5B004E36CB /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
 			buildPhases = (
-				3B84030AA93519124D1D765F /* [CP] Check Pods Manifest.lock */,
+				38492BE9657DEA87F6F0DD34 /* [CP] Check Pods Manifest.lock */,
 				1546AB9E29714F5B004E36CB /* Sources */,
 				1546AB9F29714F5B004E36CB /* Frameworks */,
 				1546ABA029714F5B004E36CB /* Resources */,
@@ -237,7 +237,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
-				F53EF5A3D4DD55580501A3A4 /* [CP] Check Pods Manifest.lock */,
+				36E4F0A38523A3C064A7C868 /* [CP] Check Pods Manifest.lock */,
 				9740EEB61CF901F6004384FC /* Run Script */,
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
@@ -245,7 +245,7 @@
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				1546ABAA29714F5B004E36CB /* Embed Foundation Extensions */,
-				89D764BCBC5725BB22C8B25D /* [CP] Embed Pods Frameworks */,
+				CBEE4100EE8FC6EF341A0D70 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -320,22 +320,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3B06AD1E1E4923F5004D2608 /* Thin Binary */ = {
+		36E4F0A38523A3C064A7C868 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
+			inputFileListPaths = (
 			);
-			name = "Thin Binary";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Runner-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
-		3B84030AA93519124D1D765F /* [CP] Check Pods Manifest.lock */ = {
+		38492BE9657DEA87F6F0DD34 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -357,22 +364,20 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		89D764BCBC5725BB22C8B25D /* [CP] Embed Pods Frameworks */ = {
+		3B06AD1E1E4923F5004D2608 /* Thin Binary */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			inputPaths = (
 			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			name = "Thin Binary";
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
 		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -389,26 +394,21 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
 		};
-		F53EF5A3D4DD55580501A3A4 /* [CP] Check Pods Manifest.lock */ = {
+		CBEE4100EE8FC6EF341A0D70 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Runner-checkManifestLockResult.txt",
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -531,7 +531,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -545,7 +545,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -559,7 +559,7 @@
 		};
 		15293D4E298A911100ECB0AD /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D13330210FBE1848106132B9 /* Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig */;
+			baseConfigurationReference = 6500BB778CAFB243F5E6618F /* Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -569,7 +569,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -582,7 +582,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.dev.OneSignalServiceNotificationExtention;
@@ -662,7 +662,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -676,7 +676,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -689,7 +689,7 @@
 		};
 		15293D51298A916600ECB0AD /* Release-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AC69B6FA4352CAFA6DCA2BDC /* Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig */;
+			baseConfigurationReference = C3C8958242913C07623EEC43 /* Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -699,7 +699,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -712,7 +712,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.dev.OneSignalServiceNotificationExtention;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -787,7 +787,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -801,7 +801,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -814,7 +814,7 @@
 		};
 		15293D54298A916900ECB0AD /* Profile-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BE47C1367BA245D66DED63B4 /* Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig */;
+			baseConfigurationReference = 262350A7009C2A471D86FA00 /* Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -824,7 +824,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -837,7 +837,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.dev.OneSignalServiceNotificationExtention;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -851,7 +851,7 @@
 		};
 		1546ABAB29714F5B004E36CB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB93C6CD4D0591F9D64B1E78 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			baseConfigurationReference = F1FAFFE85959203BA1AF02F8 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -861,7 +861,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -874,7 +874,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.OneSignalServiceNotificationExtention;
@@ -891,7 +891,7 @@
 		};
 		1546ABAC29714F5B004E36CB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 73343B0C0CA52D7CBF34305E /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			baseConfigurationReference = 031889A4FF8841CAE91D50EA /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -901,7 +901,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -914,7 +914,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.OneSignalServiceNotificationExtention;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -928,7 +928,7 @@
 		};
 		1546ABAD29714F5B004E36CB /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5D2F4307EE6CE345C1C605BD /* Pods-OneSignalNotificationServiceExtension.profile.xcconfig */;
+			baseConfigurationReference = 867CCCDF3566A95C14478E69 /* Pods-OneSignalNotificationServiceExtension.profile.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -938,7 +938,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -951,7 +951,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.OneSignalServiceNotificationExtention;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1031,7 +1031,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -1045,7 +1045,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1059,7 +1059,7 @@
 		};
 		1563996C29B7286B00FD51CF /* Debug-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 903B9E1112623A1C46000B1B /* Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig */;
+			baseConfigurationReference = 9D943749AED1F78F89656183 /* Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1069,7 +1069,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1082,7 +1082,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.OneSignalServiceNotificationExtention;
@@ -1162,7 +1162,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -1176,7 +1176,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1189,7 +1189,7 @@
 		};
 		1563996F29B7287A00FD51CF /* Release-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 10633791B4AB238F37E46500 /* Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig */;
+			baseConfigurationReference = F8BD00910C2A6173190D5A1A /* Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1199,7 +1199,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1212,7 +1212,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.OneSignalServiceNotificationExtention;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1287,7 +1287,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -1301,7 +1301,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1314,7 +1314,7 @@
 		};
 		1563997229B7288100FD51CF /* Profile-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0A2CDD1C85B611323632D27 /* Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig */;
+			baseConfigurationReference = 5714A308A663E5FF54E27334 /* Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1324,7 +1324,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1337,7 +1337,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal.OneSignalServiceNotificationExtention;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1412,7 +1412,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -1426,7 +1426,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1558,7 +1558,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -1572,7 +1572,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1596,7 +1596,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 191;
+				CURRENT_PROJECT_VERSION = 193;
 				DEVELOPMENT_TEAM = Q47Y5J478F;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -1610,7 +1610,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.91;
+				MARKETING_VERSION = 1.2.93;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.irkutskoil.portal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

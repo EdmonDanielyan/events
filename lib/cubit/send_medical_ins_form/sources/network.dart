@@ -36,6 +36,9 @@ class SendMedicalInsFormNetworkRequest
                 name: entities!.fio,
                 birthday: entities!.birthDate,
                 position: entities!.position,
+                
+                // TODO: CHECK
+                //organization: entities!.organization,
                 phone: entities!.phone,
                 email: entities!.email,
                 additionalInformation: entities!.additionalText,

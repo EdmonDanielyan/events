@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ink_mobile/components/textfields/service_selectfield_cubit.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
+import 'package:ink_mobile/components/textfields/service_disabled_textfield.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/core/lists/medical_services.dart';
 import 'package:ink_mobile/core/masks/input_formatters.dart';
@@ -43,6 +44,8 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
         SizedBox(height: 20),
         _address(),
         SizedBox(height: 20),
+        //_organisation(),
+        //SizedBox(height: 20),
         _price(),
         SizedBox(height: 20),
         _dateStart(context),
@@ -60,6 +63,17 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
           entities.services.length < 1 ? _strings.fillTheField : null,
       onChanged: (val) => entities.services = val,
       descriptionText: "Тип услуги",
+    );
+  }
+
+  Widget _organisation() {
+    return ServiceDisabledTextField(
+      hint: "Организация",
+      keyboardType: TextInputType.streetAddress,
+      validator: (val) => FieldValidator(_strings).cityValidator(val),
+      onChanged: (val) => entities.organisation = val,
+      descriptionText: "Организация",
+      focusNode: FocusNode(),
     );
   }
 
