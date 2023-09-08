@@ -25,6 +25,10 @@
             <action android:name="android.intent.action.SEND"/>
             <data android:mimeType="*/*"/>
         </intent>
+
+        <package android:name="com.whatsapp" />
+        <package android:name="org.telegram.messenger" />
+
     </queries>
     <application
             android:name="${applicationName}"

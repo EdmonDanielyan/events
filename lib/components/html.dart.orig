@@ -15,22 +15,23 @@ class CustomHtml extends StatelessWidget {
     return HtmlWidget(
       data ?? "",
       textStyle: FontStyles.rubikP1(),
-
       onTapUrl: (url) async {
-
+      
+	// TODO: CHECK
+      showErrorDialog('!!!' + url);
+      
         if (isStringHttpUrl(url)) {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) => WebviewScreen(url),
             ),
           );
-        } else { //"https://t.me/+3lUJGgfRxa42YzRi"
-            launchUrl(url, context: context);
+        } else {
+          launchUrl(url, context: context);
         }
 
         return true;
       },
-
       customStylesBuilder: (element) {
         if (element.localName == "a") {
           return {
