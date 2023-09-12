@@ -24,8 +24,9 @@ class ServiceListElement extends StatelessWidget {
       },
       child: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.only(left: 22.0, right: 32.0, top: 16.0, bottom: 16.0),
-        height: 60,
+        padding:
+            EdgeInsets.only(left: 22.0, right: 32.0, top: 21.0, bottom: 21.0),
+        height: 70,
         child: Row(
           children: [
             SvgPicture.asset(
@@ -58,8 +59,9 @@ class ServiceListElement extends StatelessWidget {
       ),
     );
   }
-  _metrica(){
-    switch(item.link) {
+
+  _metrica() {
+    switch (item.link) {
       case '/feedback':
         AppMetricsEvents().feedbackEvent();
         break;

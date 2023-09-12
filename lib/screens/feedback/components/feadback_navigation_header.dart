@@ -15,14 +15,14 @@ class FeedbackNavigationHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 32.0),
-      child: Row(
-        children: [
-          InkWell(
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: InkWell(
             onTap: () => onTap(0),
-            child: SizedBox(
-              width: size.width * 0.4,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 22, bottom: 5, left: 20),
               child: Text(
                 "Задать вопрос",
                 style: FontStyles.rubikH2(
@@ -31,10 +31,12 @@ class FeedbackNavigationHeader extends StatelessWidget {
               ),
             ),
           ),
-          InkWell(
+        ),
+        Expanded(
+          child: InkWell(
             onTap: () => onTap(1),
-            child: SizedBox(
-              width: size.width * 0.4,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20, top: 5, bottom: 5),
               child: Text(
                 "Ответы на вопросы",
                 style: FontStyles.rubikH2(
@@ -43,8 +45,43 @@ class FeedbackNavigationHeader extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
+
+
+
+//  Padding(
+//       padding:
+//           const EdgeInsets.only(left: 20.0, right: 20.0, top: 22, bottom: 5),
+//       child: Row(
+//         children: [
+//           InkWell(
+//             onTap: () => onTap(0),
+//             child: SizedBox(
+//               width: size.width * 0.4,
+//               child: Text(
+//                 "Задать вопрос",
+//                 style: FontStyles.rubikH2(
+//                   color: askQuestionColor,
+//                 ),
+//               ),
+//             ),
+//           ),
+//           InkWell(
+//             onTap: () => onTap(1),
+//             child: SizedBox(
+//               width: size.width * 0.4,
+//               child: Text(
+//                 "Ответы на вопросы",
+//                 style: FontStyles.rubikH2(
+//                   color: answersColor,
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );

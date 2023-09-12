@@ -16,10 +16,13 @@ class Body extends StatelessWidget {
 
     return Container(
       width: size.width,
-      padding: EdgeInsets.only(top: 10),
       child: ListView.separated(
         separatorBuilder: (context, index) {
-          return Divider(color: Palette.text20Grey);
+          return Divider(
+            color: Palette.text20Grey,
+            height: 1,
+            thickness: 1,
+          );
         },
         itemCount: items.length,
         itemBuilder: (context, index) {
