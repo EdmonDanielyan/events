@@ -36,7 +36,7 @@ class FeedbackNavigationHeader extends StatelessWidget {
           child: InkWell(
             onTap: () => onTap(1),
             child: Padding(
-              padding: const EdgeInsets.only(right: 20, top: 5, bottom: 5),
+              padding: const EdgeInsets.only(top: 22, bottom: 5, right: 20),
               child: Text(
                 "Ответы на вопросы",
                 style: FontStyles.rubikH2(

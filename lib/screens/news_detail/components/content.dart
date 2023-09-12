@@ -46,6 +46,7 @@ class _ContentState extends State<Content> {
           mainAxisSize: MainAxisSize.min,
           children: [
             CustomHtml(data: widget.text),
+            SizedBox(height: 22),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
