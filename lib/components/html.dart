@@ -5,7 +5,6 @@ import 'package:ink_mobile/functions/files.dart';
 import '../functions/launch_url.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
-
 class CustomHtml extends StatelessWidget {
   final String? data;
   const CustomHtml({Key? key, this.data}) : super(key: key);
@@ -15,22 +14,26 @@ class CustomHtml extends StatelessWidget {
     return HtmlWidget(
       data ?? "",
       textStyle: FontStyles.rubikP1(),
-
       onTapUrl: (url) async {
-
-        if (isStringHttpUrl(url)) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) => WebviewScreen(url),
-            ),
-          );
-        } else { //"https://t.me/+3lUJGgfRxa42YzRi"
-            launchUrl(url, context: context);
+        if (url.contains('apple') ||
+            url.contains('play.google') ||
+            url.contains('t.me')) {
+          launchUrl(url);
+        } else {
+          if (isStringHttpUrl(url)) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) => WebviewScreen(url),
+              ),
+            );
+          } else {
+            //"https://t.me/+3lUJGgfRxa42YzRi"
+            launchUrl(url);
+          }
         }
 
         return true;
       },
-
       customStylesBuilder: (element) {
         if (element.localName == "a") {
           return {
