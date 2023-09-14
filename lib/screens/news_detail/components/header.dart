@@ -1,5 +1,6 @@
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ink_mobile/components/video_player/video_player.dart';
 import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
@@ -32,6 +33,10 @@ class _HeaderState extends State<Header> {
               BetterPlayerDataSource(BetterPlayerDataSourceType.network, link);
           final _controller = BetterPlayerController(
             BetterPlayerConfiguration(
+              deviceOrientationsAfterFullScreen: [
+                DeviceOrientation.portraitDown,
+                DeviceOrientation.portraitUp
+              ],
               controlsConfiguration: BetterPlayerControlsConfiguration(
                 playerTheme: BetterPlayerTheme.material,
                 enableSkips: false,
@@ -80,9 +85,13 @@ class _HeaderState extends State<Header> {
 
   @override
   Widget build(BuildContext context) {
+    print('метод build');
+
     List<Widget> slider = List<Widget>.from(videoWidgets)
       ..addAll(getImagesContainer(widget.imageLinks))
       ..toSet();
+    print('слайдер');
+    print(slider);
 
     return SizedBox(
       height: SizeConfig(context, 270).getProportionateScreenHeight,
