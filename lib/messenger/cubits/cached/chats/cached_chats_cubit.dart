@@ -185,7 +185,8 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
   }
 
   void _updateSelectedChats(List<Chat> chats) {
-    emit(state.copyWith(selectedChats: chats, type: CachedChatsStateType.LOADED));
+    emit(state.copyWith(
+        selectedChats: chats, type: CachedChatsStateType.LOADED));
   }
 
   void cleanChat(int id) {
@@ -201,9 +202,20 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
   List<Chat> searchChats(String query) {
     query = query.toLowerCase();
     List<Chat> searchedChats = [];
-
+    bool nameContains = false;
     for (var chat in chats) {
-      final nameContains = chat.name.toLowerCase().contains(query);
+      if (chat.participants.length == 1) {
+        nameContains = chat.name.toLowerCase().contains(query);
+      } else {
+        //chat.name в диалоге с бека приходит пустым, добавил такое решение
+        List<User> dialog = chat.participants;
+        for (var user in dialog) {
+          if (user.id != me.id) {
+            nameContains = user.name.toLowerCase().contains(query);
+          }
+        }
+      }
+
       final descriptionContains =
           chat.description.toLowerCase().contains(query);
 
@@ -219,7 +231,6 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
         searchedChats.add(chat);
       }
     }
-
     return searchedChats;
   }
 

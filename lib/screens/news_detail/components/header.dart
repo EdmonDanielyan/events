@@ -85,13 +85,9 @@ class _HeaderState extends State<Header> {
 
   @override
   Widget build(BuildContext context) {
-    print('метод build');
-
     List<Widget> slider = List<Widget>.from(videoWidgets)
       ..addAll(getImagesContainer(widget.imageLinks))
       ..toSet();
-    print('слайдер');
-    print(slider);
 
     return SizedBox(
       height: SizeConfig(context, 270).getProportionateScreenHeight,

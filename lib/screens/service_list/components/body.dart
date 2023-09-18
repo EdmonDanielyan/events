@@ -16,18 +16,21 @@ class Body extends StatelessWidget {
 
     return Container(
       width: size.width,
-      child: ListView.separated(
-        separatorBuilder: (context, index) {
-          return Divider(
-            color: Palette.text20Grey,
-            height: 1,
-            thickness: 1,
-          );
-        },
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return ServiceListElement(item: items[index]);
-        },
+      child: ScrollConfiguration(
+        behavior: ScrollBehavior().copyWith(overscroll: false),
+        child: ListView.separated(
+          separatorBuilder: (context, index) {
+            return Divider(
+              color: Palette.text20Grey,
+              height: 1,
+              thickness: 1,
+            );
+          },
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            return ServiceListElement(item: items[index]);
+          },
+        ),
       ),
     );
   }

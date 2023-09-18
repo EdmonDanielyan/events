@@ -3,11 +3,13 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'delivery_list.dart';
 
 enum ReferencesType {
+  employmentRecord,
+  laborActivity,
   employmentCenter,
   visa,
-  sickLeave,
-  income2ndfl,
   income,
+  // sickLeave,
+  income2ndfl,
   childAllowance,
   childAllowanceOneAndHalfYears,
   fifo,
@@ -15,21 +17,37 @@ enum ReferencesType {
   averageEarnings,
   payrollAccount,
   fundsWithholding,
-  laborActivity,
-  employmentRecord
 }
 
 class ReferencesList {
   ReferencesList();
 
-  ReferencesItem employmentCenter() => ReferencesItem(
-      title: localizationInstance.refEmploymentCenter,
-      referencesType: 'employment_center',
+  ReferencesItem employmentRecord() => ReferencesItem(
+      title: localizationInstance.refEmploymentRecord,
+      referencesType: 'employment_record',
       deliveryList: [
-        DeliveryType.BUH,
+        DeliveryType.OK_UK,
+        DeliveryType.OK_IRK,
         DeliveryType.INKTKRS,
         DeliveryType.POST
       ],
+      fields: ReferencesField());
+
+  ReferencesItem laborActivity() => ReferencesItem(
+      title: localizationInstance.refLaborActivity,
+      referencesType: 'labor_activity',
+      deliveryList: [
+        DeliveryType.OK_UK,
+        DeliveryType.OK_IRK,
+        DeliveryType.INKTKRS,
+        DeliveryType.POST
+      ],
+      fields: ReferencesField());
+
+  ReferencesItem employmentCenter() => ReferencesItem(
+      title: localizationInstance.refEmploymentCenter,
+      referencesType: 'employment_center',
+      deliveryList: [DeliveryType.BUH, DeliveryType.INKTKRS, DeliveryType.POST],
       fields: ReferencesField(quantity: true),
       description: localizationInstance.productionTimeReferInfo);
   ReferencesItem visa() => ReferencesItem(
@@ -42,15 +60,18 @@ class ReferencesList {
         DeliveryType.POST
       ],
       fields: ReferencesField());
-  ReferencesItem sickLeave() => ReferencesItem(
-      title: localizationInstance.refSickLeave,
-      referencesType: 'sick_leave',
-      deliveryList: [
-        DeliveryType.BUH,
-        DeliveryType.INKTKRS,
-        DeliveryType.POST
-      ],
-      fields: ReferencesField(quantity: true));
+
+  ReferencesItem income() => ReferencesItem(
+        title: localizationInstance.refIncome,
+        referencesType: 'income',
+        deliveryList: [
+          DeliveryType.BUH,
+          DeliveryType.INKTKRS,
+          DeliveryType.POST
+        ],
+        fields: ReferencesField(period: true, toProvideIn: true),
+        description: localizationInstance.productionTimeReferInfo,
+      );
   ReferencesItem income2ndfl() => ReferencesItem(
         title: localizationInstance.refIncome2ndfl,
         referencesType: 'income_2ndfl',
@@ -63,17 +84,7 @@ class ReferencesList {
             ReferencesField(period: true, toProvideIn: true, quantity: true),
         description: localizationInstance.productionTimeReferInfo,
       );
-  ReferencesItem income() => ReferencesItem(
-        title: localizationInstance.refIncome,
-        referencesType: 'income',
-        deliveryList: [
-          DeliveryType.BUH,
-          DeliveryType.INKTKRS,
-          DeliveryType.POST
-        ],
-        fields: ReferencesField(period: true, toProvideIn: true),
-        description: localizationInstance.productionTimeReferInfo,
-      );
+
   ReferencesItem childAllowance() => ReferencesItem(
         title: localizationInstance.refChildAllowance,
         referencesType: 'child_allowance',
@@ -108,6 +119,12 @@ class ReferencesList {
         DeliveryType.POST
       ],
       fields: ReferencesField(periodFrom: true, periodTo: true));
+  // ReferencesItem sickLeave() => ReferencesItem(
+  //     title: localizationInstance.refSickLeave,
+  //     referencesType: 'sick_leave',
+  //     deliveryList: [DeliveryType.BUH, DeliveryType.INKTKRS, DeliveryType.POST],
+  //     fields: ReferencesField(quantity: true));
+
   ReferencesItem workAtCompany() => ReferencesItem(
       title: localizationInstance.refWorkAtCompany,
       referencesType: 'work_at_company',
@@ -154,45 +171,29 @@ class ReferencesList {
             ReferencesField(period: true, toProvideIn: true, quantity: true),
         description: localizationInstance.productionTimeReferInfo,
       );
-  ReferencesItem laborActivity() => ReferencesItem(
-      title: localizationInstance.refLaborActivity,
-      referencesType: 'labor_activity',
-      deliveryList: [
-        DeliveryType.OK_UK,
-        DeliveryType.OK_IRK,
-        DeliveryType.INKTKRS,
-        DeliveryType.POST
-      ],
-      fields: ReferencesField());
-  ReferencesItem employmentRecord() => ReferencesItem(
-      title: localizationInstance.refEmploymentRecord,
-      referencesType: 'employment_record',
-      deliveryList: [
-        DeliveryType.OK_UK,
-        DeliveryType.OK_IRK,
-        DeliveryType.INKTKRS,
-        DeliveryType.POST
-      ],
-      fields: ReferencesField());
 
   ReferencesItem? getReferencesItem(ReferencesType type) {
     switch (type) {
+      case ReferencesType.employmentRecord:
+        return employmentRecord();
+      case ReferencesType.laborActivity:
+        return laborActivity();
       case ReferencesType.employmentCenter:
         return employmentCenter();
       case ReferencesType.visa:
         return visa();
-      case ReferencesType.sickLeave:
-        return sickLeave();
-      case ReferencesType.income2ndfl:
-        return income2ndfl();
       case ReferencesType.income:
         return income();
+      case ReferencesType.income2ndfl:
+        return income2ndfl();
       case ReferencesType.childAllowance:
         return childAllowance();
       case ReferencesType.childAllowanceOneAndHalfYears:
         return childAllowanceOneAndHalfYears();
       case ReferencesType.fifo:
         return fifo();
+      // case ReferencesType.sickLeave:
+      //   return sickLeave();
       case ReferencesType.workAtCompany:
         return workAtCompany();
       case ReferencesType.averageEarnings:
@@ -201,10 +202,6 @@ class ReferencesList {
         return payrollAccount();
       case ReferencesType.fundsWithholding:
         return fundsWithholding();
-      case ReferencesType.laborActivity:
-        return laborActivity();
-      case ReferencesType.employmentRecord:
-        return employmentRecord();
       default:
         return null;
     }
