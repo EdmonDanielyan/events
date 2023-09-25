@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ink_mobile/components/video_player/video_player.dart';
 import 'package:ink_mobile/constants/aseets.dart';
+import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 import 'package:shimmer/shimmer.dart';
@@ -12,7 +13,11 @@ class Header extends StatefulWidget {
   final List<String>? imageLinks;
   final List<String>? videoLinks;
 
-  const Header({Key? key, this.imageLinks, this.videoLinks}) : super(key: key);
+  const Header({
+    Key? key,
+    this.imageLinks,
+    this.videoLinks,
+  }) : super(key: key);
 
   @override
   _HeaderState createState() => _HeaderState();
@@ -25,30 +30,34 @@ class _HeaderState extends State<Header> {
   @override
   void initState() {
     super.initState();
-
     if (widget.videoLinks != null && widget.videoLinks!.isNotEmpty) {
       for (final link in widget.videoLinks!) {
         if (link.isNotEmpty && link.contains("mp4")) {
-          BetterPlayerDataSource betterPlayerDataSource =
-              BetterPlayerDataSource(BetterPlayerDataSourceType.network, link);
-          final _controller = BetterPlayerController(
-            BetterPlayerConfiguration(
-              deviceOrientationsAfterFullScreen: [
-                DeviceOrientation.portraitDown,
-                DeviceOrientation.portraitUp
-              ],
-              controlsConfiguration: BetterPlayerControlsConfiguration(
-                playerTheme: BetterPlayerTheme.material,
-                enableSkips: false,
+          if (mapCachedPlayerControllers.containsKey(link)) {
+            betterPlayerControllers.add(mapCachedPlayerControllers[link]!);
+            videoWidgets.add(CustomVideoPlayer(
+                controller: mapCachedPlayerControllers[link]!));
+          } else {
+            BetterPlayerDataSource betterPlayerDataSource =
+                BetterPlayerDataSource(
+                    BetterPlayerDataSourceType.network, link);
+            final _controller = BetterPlayerController(
+              BetterPlayerConfiguration(
+                deviceOrientationsAfterFullScreen: [
+                  DeviceOrientation.portraitDown,
+                  DeviceOrientation.portraitUp
+                ],
+                controlsConfiguration: BetterPlayerControlsConfiguration(
+                  playerTheme: BetterPlayerTheme.material,
+                  enableSkips: false,
+                ),
+                fit: BoxFit.contain,
               ),
-              fit: BoxFit.contain,
-            ),
-            betterPlayerDataSource: betterPlayerDataSource,
-          );
-          betterPlayerControllers.add(_controller);
-          videoWidgets.add(
-            CustomVideoPlayer(controller: _controller),
-          );
+              betterPlayerDataSource: betterPlayerDataSource,
+            );
+            betterPlayerControllers.add(_controller);
+            videoWidgets.add(CustomVideoPlayer(controller: _controller));
+          }
         }
       }
     }
@@ -63,6 +72,7 @@ class _HeaderState extends State<Header> {
 
   void _disposeAllVideos() {
     if (betterPlayerControllers.isNotEmpty) {
+      mapCachedPlayerControllers.clear();
       for (final video in betterPlayerControllers) {
         video.dispose();
       }

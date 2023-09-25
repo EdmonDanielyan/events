@@ -1,9 +1,14 @@
+import 'package:better_player/better_player.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/errors/dio_error_handler.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_state.dart';
+import 'package:ink_mobile/cubit/news_detail/sources/fetch/network.dart';
 import 'package:ink_mobile/cubit/news_list/sources/network.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
+import 'package:ink_mobile/extensions/get_news_by_id.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/news_data.dart';
@@ -14,6 +19,8 @@ import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/extensions/get_news.dart';
 
 import '../../models/filter_item.dart';
+
+Map<String, BetterPlayerController> mapCachedPlayerControllers = {};
 
 @singleton
 class NewsBlockCubit extends Cubit<NewsBlockState> {
@@ -40,12 +47,51 @@ class NewsBlockCubit extends Cubit<NewsBlockState> {
   Future<void> fetchNews() async {
     try {
       await Token.setNewTokensIfExpired();
-
       final response = await getIt<NewsListNetworkRequest>(
           param1: pagination, param2: "main")();
       _tabs = _mapFilterItems(response.data?.data.asMap);
       final mapResponse = response.mapResponse(pagination);
       emitSuccess(items: mapResponse.items, tabs: _tabs);
+      for (var item in mapResponse.items) {
+        final responseItemData =
+            await getIt<NewsDetailNetworkRequest>(param1: item.id)();
+        final responseItemVideoLinks =
+            responseItemData.mapResponse().videoLinks;
+        if (responseItemVideoLinks != null) {
+          if (responseItemVideoLinks.isNotEmpty) {
+            if (mapCachedPlayerControllers
+                .containsKey(responseItemVideoLinks.first)) {
+            } else {
+              BetterPlayerDataSource dataSource = BetterPlayerDataSource(
+                  BetterPlayerDataSourceType.network,
+                  responseItemVideoLinks.first,
+                  cacheConfiguration: BetterPlayerCacheConfiguration(
+                      useCache: true,
+                      maxCacheFileSize: 7 * 1024 * 1024,
+                      maxCacheSize: 7 * 1024 * 1024),
+                  bufferingConfiguration: BetterPlayerBufferingConfiguration(
+                      maxBufferMs: 200000,
+                      bufferForPlaybackAfterRebufferMs: 25000));
+
+              BetterPlayerController _controller = BetterPlayerController(
+                  BetterPlayerConfiguration(
+                    deviceOrientationsAfterFullScreen: [
+                      DeviceOrientation.portraitDown,
+                      DeviceOrientation.portraitUp
+                    ],
+                    controlsConfiguration: BetterPlayerControlsConfiguration(
+                      playerTheme: BetterPlayerTheme.material,
+                      enableSkips: false,
+                    ),
+                    fit: BoxFit.contain,
+                  ),
+                  betterPlayerDataSource: dataSource);
+              mapCachedPlayerControllers['${responseItemVideoLinks.first}'] =
+                  _controller;
+            }
+          }
+        }
+      }
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 
