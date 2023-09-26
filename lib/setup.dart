@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 
 import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/cubit/boot/boot_cubit.dart';
+import 'package:ink_mobile/cubit/main_page/video_links_service.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/providers/notifications.dart';
 import 'package:ink_mobile/providers/package_info.dart';
@@ -55,4 +56,5 @@ Future<void> setup() async {
       return true;
     };
   await getIt<PackageInfoProvider>().load();
+  getIt.registerLazySingleton<IVideoLinksService>(() => VideoLinksService());
 }

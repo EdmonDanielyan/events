@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:ink_mobile/components/video_player/video_player.dart';
 import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
+import 'package:ink_mobile/cubit/main_page/video_links_service.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
+import 'package:ink_mobile/setup.dart';
 import 'package:optimized_cached_image/optimized_cached_image.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -26,17 +28,20 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
   List<Widget> videoWidgets = [];
   List<BetterPlayerController> betterPlayerControllers = [];
+  final mapService = getIt<IVideoLinksService>();
 
   @override
   void initState() {
     super.initState();
+    print(mapService.mapLinks);
     if (widget.videoLinks != null && widget.videoLinks!.isNotEmpty) {
       for (final link in widget.videoLinks!) {
         if (link.isNotEmpty && link.contains("mp4")) {
-          if (mapCachedPlayerControllers.containsKey(link)) {
-            betterPlayerControllers.add(mapCachedPlayerControllers[link]!);
-            videoWidgets.add(CustomVideoPlayer(
-                controller: mapCachedPlayerControllers[link]!));
+          if (mapService.mapLinks.containsKey(link)) {
+            betterPlayerControllers.add(mapService.mapLinks[link]!);
+            videoWidgets
+                .add(CustomVideoPlayer(controller: mapService.mapLinks[link]!));
+            mapService.removeFromMap(link);
           } else {
             BetterPlayerDataSource betterPlayerDataSource =
                 BetterPlayerDataSource(
@@ -66,13 +71,11 @@ class _HeaderState extends State<Header> {
   @override
   void dispose() {
     _disposeAllVideos();
-
     super.dispose();
   }
 
   void _disposeAllVideos() {
     if (betterPlayerControllers.isNotEmpty) {
-      mapCachedPlayerControllers.clear();
       for (final video in betterPlayerControllers) {
         video.dispose();
       }
