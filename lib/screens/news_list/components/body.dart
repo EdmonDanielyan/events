@@ -5,12 +5,14 @@ import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/constants/app_metrics_events.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
+import 'package:ink_mobile/cubit/main_page/video_links_service.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/news_list/components/news_list_element.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/setup.dart';
 
 class Body extends StatefulWidget {
   final NewsListCubit cubit;
@@ -22,6 +24,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  final mapService = getIt<IVideoLinksService>();
   final ScrollController _controller = ScrollController();
   static late AppLocalizations _strings;
 
@@ -63,7 +66,7 @@ class _BodyState extends State<Body> {
             case (NewsListStateType.LOADED):
               {
                 List<NewsItemData> newsList = state.data!;
-
+                mapService.fetchVideoLinks(newsList);
                 return _getLoadedStateWidget(newsList);
               }
 
