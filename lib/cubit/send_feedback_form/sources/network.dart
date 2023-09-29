@@ -3,7 +3,6 @@
 import 'package:dio/src/response.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/screens/feedback/components/form/entities.dart';
 import 'package:ink_mobile/setup.dart';

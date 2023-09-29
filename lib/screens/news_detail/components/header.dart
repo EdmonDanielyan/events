@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ink_mobile/components/video_player/video_player.dart';
 import 'package:ink_mobile/constants/aseets.dart';
-import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/cubit/main_page/video_links_service.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/setup.dart';

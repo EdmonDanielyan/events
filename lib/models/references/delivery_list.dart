@@ -1,7 +1,7 @@
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/references/reference_list.dart';
 
-enum DeliveryType { BUH, OK_IRK, OK_UK, INKTKRS, POST }
+enum DeliveryType { BUH, OK_IRK, OK_UK, INKTKRS, POST, EMAIL }
 
 class DeliveryList {
   DeliveryList();
@@ -17,6 +17,8 @@ class DeliveryList {
       deliveryType: 'INKTKRS');
   DeliveryItem post() => DeliveryItem(
       title: localizationInstance.deliveryMethodPostMail, deliveryType: 'POST');
+  DeliveryItem email() => DeliveryItem(
+      title: localizationInstance.deliveryMethodEmail, deliveryType: 'EMAIL');
 
   DeliveryItem? getDeliveryItem(DeliveryType type) {
     switch (type) {
@@ -30,6 +32,8 @@ class DeliveryList {
         return inktkrs();
       case DeliveryType.POST:
         return post();
+      case DeliveryType.EMAIL:
+        return email();
       default:
         return null;
     }

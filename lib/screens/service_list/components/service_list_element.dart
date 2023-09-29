@@ -25,7 +25,7 @@ class ServiceListElement extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         padding:
-            EdgeInsets.only(left: 22.0, right: 32.0, top: 21.0, bottom: 21.0),
+            EdgeInsets.only(left: 22.0, right: 32.0, top: 22.0, bottom: 22.0),
         height: 70,
         child: Row(
           children: [

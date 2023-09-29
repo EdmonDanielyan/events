@@ -67,6 +67,7 @@
 	"deliveryMethodOkUk": "INK HR department office in Ust-Kut",
 	"deliveryMethodPostMail": "By post mail",
 	"deliveryMethodSecurityUk": "Security post in Ust-Kut",
+	"deliveryMethodEmail": "By email",
 	"department": "Department",
 	"description": "Description",
 	"diagnostics": "Diagnostics",

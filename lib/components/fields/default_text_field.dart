@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 
@@ -22,7 +21,6 @@ class DefaultTextField extends StatefulWidget {
 }
 
 class _DefaultTextFieldState extends State<DefaultTextField> {
-
   final controller = TextEditingController();
 
   @override
@@ -53,9 +51,7 @@ class _DefaultTextFieldState extends State<DefaultTextField> {
                 onChanged: widget.onChanged,
                 maxLines: 1,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: InputDecoration(
-                  border: InputBorder.none
-                ),
+                decoration: InputDecoration(border: InputBorder.none),
                 //placeholder: widget.hint,
                 // iosOptions: IosOptions(
                 //   placeholderStyle:

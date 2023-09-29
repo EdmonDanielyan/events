@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,7 +38,6 @@ class ProfileCubit extends Cubit<ProfileState> {
       }
       final response =
           await getIt<ProfileFetchNetworkRequest>(param1: userId)();
-      print(response);
       UserProfileData userData = response.mapResponse();
 
       JwtPayload? authUser = await Token.getJwtPayloadObject();
@@ -78,7 +76,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  Future<void> saveFAboutMy({userId, required String value} ) async {
+  Future<void> saveFAboutMy({userId, required String value}) async {
     //написать запрос к api для сохранение поля "о себе "
     //emitSuccessUser(state.data!.copyWith(aboutMy: value));
   }

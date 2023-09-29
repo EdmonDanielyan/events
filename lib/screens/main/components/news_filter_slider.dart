@@ -4,7 +4,6 @@ import 'package:ink_mobile/components/filter_slider_element.dart';
 import 'package:ink_mobile/cubit/main_page/news_block_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:collection/collection.dart';
 
 import '../../../cubit/main_page/news_block_state.dart';
 import '../../../messenger/functions/size_config.dart';
@@ -23,14 +22,13 @@ class NewsFilterSlider extends StatelessWidget {
     newsCubit = MainScreen.of(context).newsBlockCubit;
     return BlocBuilder<NewsBlockCubit, NewsBlockState>(
         bloc: newsCubit,
-      builder: (context, state) {
-        return Container(
-          height: SizeConfig(context, 28.0).getProportionateScreenHeight,
-          margin: EdgeInsets.only(top: 8.0),
-          child: getFilterListView(state.tabs ?? [ ]),
-        );
-      }
-    );
+        builder: (context, state) {
+          return Container(
+            height: SizeConfig(context, 28.0).getProportionateScreenHeight,
+            margin: EdgeInsets.only(top: 8.0),
+            child: getFilterListView(state.tabs ?? []),
+          );
+        });
   }
 
   ListView getFilterListView(List<FilterItem> items) {
@@ -57,8 +55,7 @@ class NewsFilterSlider extends StatelessWidget {
             isSelected: filterItems[index].code == 'news',
             selectedColor: Colors.white,
             selectedTextStyle: TextStyle(
-              fontSize:
-                  SizeConfig(context, 15.0).getProportionateScreenHeight,
+              fontSize: SizeConfig(context, 15.0).getProportionateScreenHeight,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),

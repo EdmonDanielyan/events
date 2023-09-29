@@ -47,7 +47,7 @@ class ReferencesList {
   ReferencesItem employmentCenter() => ReferencesItem(
       title: localizationInstance.refEmploymentCenter,
       referencesType: 'employment_center',
-      deliveryList: [DeliveryType.BUH, DeliveryType.INKTKRS, DeliveryType.POST],
+      deliveryList: [DeliveryType.BUH, DeliveryType.POST, DeliveryType.EMAIL],
       fields: ReferencesField(quantity: true),
       description: localizationInstance.productionTimeReferInfo);
   ReferencesItem visa() => ReferencesItem(
@@ -64,22 +64,14 @@ class ReferencesList {
   ReferencesItem income() => ReferencesItem(
         title: localizationInstance.refIncome,
         referencesType: 'income',
-        deliveryList: [
-          DeliveryType.BUH,
-          DeliveryType.INKTKRS,
-          DeliveryType.POST
-        ],
+        deliveryList: [DeliveryType.BUH, DeliveryType.POST, DeliveryType.EMAIL],
         fields: ReferencesField(period: true, toProvideIn: true),
         description: localizationInstance.productionTimeReferInfo,
       );
   ReferencesItem income2ndfl() => ReferencesItem(
         title: localizationInstance.refIncome2ndfl,
         referencesType: 'income_2ndfl',
-        deliveryList: [
-          DeliveryType.BUH,
-          DeliveryType.INKTKRS,
-          DeliveryType.POST
-        ],
+        deliveryList: [DeliveryType.BUH, DeliveryType.POST, DeliveryType.EMAIL],
         fields:
             ReferencesField(period: true, toProvideIn: true, quantity: true),
         description: localizationInstance.productionTimeReferInfo,
@@ -138,11 +130,7 @@ class ReferencesList {
   ReferencesItem averageEarnings() => ReferencesItem(
         title: localizationInstance.refAverageEarnings,
         referencesType: 'average_earnings',
-        deliveryList: [
-          DeliveryType.BUH,
-          DeliveryType.INKTKRS,
-          DeliveryType.POST
-        ],
+        deliveryList: [DeliveryType.BUH, DeliveryType.POST, DeliveryType.EMAIL],
         fields:
             ReferencesField(period: true, toProvideIn: true, quantity: true),
         description: localizationInstance.productionTimeReferInfo,
@@ -150,11 +138,7 @@ class ReferencesList {
   ReferencesItem payrollAccount() => ReferencesItem(
         title: localizationInstance.refPayrollAccount,
         referencesType: 'payroll_account',
-        deliveryList: [
-          DeliveryType.BUH,
-          DeliveryType.INKTKRS,
-          DeliveryType.POST
-        ],
+        deliveryList: [DeliveryType.BUH, DeliveryType.POST, DeliveryType.EMAIL],
         fields:
             ReferencesField(period: true, toProvideIn: true, quantity: true),
         description: localizationInstance.productionTimeReferInfo,
@@ -162,11 +146,7 @@ class ReferencesList {
   ReferencesItem fundsWithholding() => ReferencesItem(
         title: localizationInstance.refFundsWithholding,
         referencesType: 'funds_withholding',
-        deliveryList: [
-          DeliveryType.BUH,
-          DeliveryType.INKTKRS,
-          DeliveryType.POST
-        ],
+        deliveryList: [DeliveryType.BUH, DeliveryType.POST, DeliveryType.EMAIL],
         fields:
             ReferencesField(period: true, toProvideIn: true, quantity: true),
         description: localizationInstance.productionTimeReferInfo,

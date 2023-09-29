@@ -1,9 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/date_input_field.dart';
 import 'package:ink_mobile/components/fields/number_select_form_field.dart';
 import 'package:ink_mobile/components/ink_drop_down.dart';
@@ -12,25 +12,33 @@ import 'package:ink_mobile/components/snackbar/custom_snackbar.dart';
 import 'package:ink_mobile/components/textfields/pick_files.dart';
 import 'package:ink_mobile/components/textfields/service_btn.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
+import 'package:ink_mobile/constants/font_styles.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/core/cubit/btn/btn_state.dart';
 import 'package:ink_mobile/core/masks/input_formatters.dart';
 import 'package:ink_mobile/core/masks/textfield_masks.dart';
 import 'package:ink_mobile/core/validator/field_validator.dart';
+import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
+import 'package:ink_mobile/cubit/profile/profile_state.dart';
 import 'package:ink_mobile/cubit/references/references_cubit.dart';
 import 'package:ink_mobile/cubit/send_reference_form/send_form_cubit.dart';
 import 'package:ink_mobile/functions/parser.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
+import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
+import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/references/delivery_list.dart';
 import 'package:ink_mobile/models/references/reference_list.dart';
+import 'package:ink_mobile/models/user_data.dart';
+import 'package:ink_mobile/screens/profile/profile_screen.dart';
 import 'package:ink_mobile/screens/references/components/form/entities.dart';
 import 'package:ink_mobile/screens/references/components/form/validator.dart';
 import 'package:ink_mobile/screens/service_list/service_list_page_viewer.dart';
+import 'package:ink_mobile/setup.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ReferencesForm extends StatefulWidget {
   final ReferencesPageCubit referencesPageCubit;
   final SendReferenceFormCubit sendReferenceFormCubit;
-
   final bool isTablet;
   const ReferencesForm({
     Key? key,
@@ -56,8 +64,10 @@ class _ReferencesFormState extends State<ReferencesForm> {
   late ReferencesItem currentReferenceItem;
   late DeliveryItem? deliveryItem;
   late ReferencesFormValidator validatorMixin;
-
+  bool showEmail = false;
+  String email = '';
   int stage = 1;
+  final emailService = getIt<ProfileCubit>();
 
   void setStage(int newStage) {
     if (stage != newStage) {
@@ -128,7 +138,12 @@ class _ReferencesFormState extends State<ReferencesForm> {
               ],
               if (currentReferenceItem.fields.delivery) ...[
                 SizedBox(height: 20),
-                deliveryMethodWidget(),
+                deliveryMethodWidget(context),
+                showEmail
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: deliveryMethod(context))
+                    : const SizedBox()
               ],
               if (deliveryAddress) ...[
                 SizedBox(height: 20),
@@ -234,16 +249,59 @@ class _ReferencesFormState extends State<ReferencesForm> {
     );
   }
 
-  Widget deliveryMethodWidget() => InkDropDown(
-        hint: _strings.deliveryMethod,
-        items: deliveryList.getDeliveryItemsList(currentReferenceItem),
-        selectedIndex: entities.deliveryType,
-        onChanged: (int index) {
-          setState(() {
-            entities.deliveryType = index;
-          });
-        },
-      );
+  Widget deliveryMethodWidget(BuildContext context) {
+    return InkDropDown(
+      hint: _strings.deliveryMethod,
+      items: deliveryList.getDeliveryItemsList(currentReferenceItem),
+      selectedIndex: entities.deliveryType,
+      onChanged: (int index) {
+        setState(() {
+          deliveryList.getDeliveryItemsList(currentReferenceItem)[index] ==
+                  localizationInstance.deliveryMethodEmail
+              ? showEmail = true
+              : showEmail = false;
+          entities.deliveryType = index;
+        });
+      },
+    );
+  }
+
+  Widget deliveryMethod(BuildContext context) {
+    return BlocConsumer<ProfileCubit, ProfileState>(
+      listener: (context, state) {
+        if (state.data != null) {
+          final user = User(
+            id: state.data!.id,
+            name: "${state.data!.lastName ?? ""} ${state.data!.name ?? ""}",
+            avatarUrl: state.data!.pathToAvatar ?? "",
+            absence: state.data!.absence,
+          );
+          getIt<CachedUsersCubit>().removeAndAddUser(user, user.id);
+        }
+      },
+      bloc: emailService,
+      builder: (context, state) {
+        switch (state.type) {
+          case ProfileStateType.LOADED:
+          case ProfileStateType.OTHER_USER_LOADED:
+            {
+              return getLoadedStateWidget(context, state);
+            }
+
+          case ProfileStateType.LOADING:
+            {
+              emailService.fetchUser(context);
+              return const SizedBox();
+            }
+
+          case ProfileStateType.ERROR:
+            {
+              return _getErrorStateWidget(context, state);
+            }
+        }
+      },
+    );
+  }
 
   Widget deliveryAddressWidget() {
     return ServiceTextField(
@@ -343,6 +401,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       bloc: widget.sendReferenceFormCubit,
       listener: (BuildContext context, state) {
         if (state.state == BtnCubitStateEnums.ERROR) {
+          print('error');
           SimpleCustomSnackbar(context: context, txt: state.message);
         }
         if (state.state == BtnCubitStateEnums.SUCCESS) {
@@ -361,6 +420,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
           return ServiceBtn(
             onPressed: () async {
               if (validatorMixin.validateForm(context, entities)) {
+                print('валидная отправка');
                 final sent = await widget.sendReferenceFormCubit.send(
                   entities: entities,
                   referencesItem: currentReferenceItem,
@@ -391,5 +451,24 @@ class _ReferencesFormState extends State<ReferencesForm> {
       _pickFilesKey.currentState!.clearAll();
     }
     setState(() {});
+  }
+
+  Widget _getErrorStateWidget(BuildContext context, ProfileState state) {
+    final cubit = ProfileScreen.of(context).profileCubit;
+
+    return ErrorRefreshButton(
+      onTap: cubit.refresh,
+      text: state.errorMessage!,
+    );
+  }
+
+  Widget getLoadedStateWidget(BuildContext context, ProfileState state) {
+    UserProfileData user = state.data!;
+    String email = 'Email: ';
+    String userEmail = user.contacts?.email ?? '';
+    return Text(
+      email + userEmail,
+      style: FontStyles.rubikP2(color: Palette.textBlack),
+    );
   }
 }

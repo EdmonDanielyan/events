@@ -69,6 +69,7 @@
 	"deliveryMethodOkUk": "Отдел кадрового администрирования офис ИНК в г. Усть-Кут",
 	"deliveryMethodPostMail": "Почтой по адресу",
 	"deliveryMethodSecurityUk": "Пост охраны в г. Усть-Куте",
+	"deliveryMethodEmail": "На email",
 	"department": "Подразделение",
 	"description": "Описание",
 	"diagnostics": "Диагностика",
