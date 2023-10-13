@@ -60,7 +60,7 @@ dependencies:
     flutter_linkify: ^5.0.2
     flutter_keyboard_visibility: ^5.2.0
     flutter_local_notifications: ^9.9.1
-    logging: ^1.0.2
+    logging: ^1.1.0
     local_auth: ^1.1.11
     remove_emoji: ^0.0.6
     uuid: ^3.0.6
@@ -75,8 +75,8 @@ dependencies:
     hydrated_bloc: ^8.1.0
     socket_io_client: ^1.0.2
     scrollable_positioned_list: ^0.3.2
-    logger: ^1.1.0
-    flutter_logs: ^2.1.5
+    # logger: ^1.1.0
+    # flutter_logs: ^2.1.5
     flutter_easyloading: ^3.0.3
     equatable: ^2.0.3
     better_player:
@@ -97,7 +97,7 @@ dependencies:
     contacts_service: ^0.6.3
     permission_handler: ^10.2.0
     geolocator: ^9.0.2
-
+    app_links: ^3.4.5
     pull_to_refresh: ^2.0.0
     firebase_core: ^2.6.1
     url_launcher: ^6.1.10

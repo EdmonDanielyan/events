@@ -1,4 +1,6 @@
 PODS:
+  - app_links (0.0.1):
+    - Flutter
   - appmetrica_plugin (1.4.0):
     - Flutter
     - YandexMobileMetrica (~> 4.4)
@@ -61,6 +63,8 @@ PODS:
   - FirebaseCoreInternal (10.14.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - Flutter (1.0.0)
+  - flutter_email_sender (0.0.1):
+    - Flutter
   - flutter_image_compress (1.0.0):
     - Flutter
     - Mantle
@@ -73,9 +77,6 @@ PODS:
     - Flutter
   - flutter_local_notifications (0.0.1):
     - Flutter
-  - flutter_logs (0.0.1):
-    - Flutter
-    - ZIPFoundation
   - flutter_native_splash (0.0.1):
     - Flutter
   - flutter_native_text_input (2.2.0):
@@ -177,9 +178,9 @@ PODS:
   - YandexMobileMetrica/Static/Core (4.5.2)
   - YandexMobileMetrica/Static/Crashes (4.5.2):
     - YandexMobileMetrica/Static/Core
-  - ZIPFoundation (0.9.11)
 
 DEPENDENCIES:
+  - app_links (from `.symlinks/plugins/app_links/ios`)
   - appmetrica_plugin (from `.symlinks/plugins/appmetrica_plugin/ios`)
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - better_player (from `.symlinks/plugins/better_player/ios`)
@@ -188,11 +189,11 @@ DEPENDENCIES:
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
+  - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
   - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
   - flutter_jailbreak_detection (from `.symlinks/plugins/flutter_jailbreak_detection/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
-  - flutter_logs (from `.symlinks/plugins/flutter_logs/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_native_text_input (from `.symlinks/plugins/flutter_native_text_input/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
@@ -235,9 +236,10 @@ SPEC REPOS:
     - SDWebImageWebPCoder
     - SwiftyGif
     - YandexMobileMetrica
-    - ZIPFoundation
 
 EXTERNAL SOURCES:
+  app_links:
+    :path: ".symlinks/plugins/app_links/ios"
   appmetrica_plugin:
     :path: ".symlinks/plugins/appmetrica_plugin/ios"
   audio_session:
@@ -254,6 +256,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
     :path: Flutter
+  flutter_email_sender:
+    :path: ".symlinks/plugins/flutter_email_sender/ios"
   flutter_image_compress:
     :path: ".symlinks/plugins/flutter_image_compress/ios"
   flutter_jailbreak_detection:
@@ -262,8 +266,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
-  flutter_logs:
-    :path: ".symlinks/plugins/flutter_logs/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   flutter_native_text_input:
@@ -300,6 +302,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  app_links: 5ef33d0d295a89d9d16bb81b0e3b0d5f70d6c875
   appmetrica_plugin: b0478d4c863b48972294e26a2d5d1db8d30a9a2d
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
   better_player: 2406bfe8175203c7a46fa15f9d778d73b12e1646
@@ -314,11 +317,11 @@ SPEC CHECKSUMS:
   FirebaseCore: f86a1394906b97ac445ae49c92552a9425831bed
   FirebaseCoreInternal: d558159ee6cc4b823c2296ecc193de9f6d9a5bb3
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_email_sender: 02d7443217d8c41483223627972bfdc09f74276b
   flutter_image_compress: 5a5e9aee05b6553048b8df1c3bc456d0afaac433
   flutter_jailbreak_detection: c5bf66ff6c0c4230769b6ba0bd63eb6ac4148a76
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
-  flutter_logs: 5d0dca26963e0f30b11a995a764744ef77d5d428
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   flutter_native_text_input: 246da758e5a2e744774aa839a1a21902e0e84ceb
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
@@ -351,7 +354,6 @@ SPEC CHECKSUMS:
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
-  ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
 PODFILE CHECKSUM: b7db3736aa27c4ec7c135cd2563e46735cff85da
 
