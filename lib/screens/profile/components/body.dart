@@ -35,8 +35,8 @@ class Body extends StatelessWidget {
       },
       leadingScrollIndicatorVisible: false,
       trailingScrollIndicatorVisible: false,
-      triggerMode: IndicatorTriggerMode.onEdge,
-      trigger: IndicatorTrigger.bothEdges,
+      triggerMode: IndicatorTriggerMode.anywhere,
+      trigger: IndicatorTrigger.leadingEdge,
       builder: MaterialIndicatorDelegate(
         builder: (BuildContext context, IndicatorController controller) {
           return Icon(

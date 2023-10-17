@@ -11,11 +11,10 @@ abstract class IVideoLinksService {
   set mapLinks(Map<String, BetterPlayerController> value);
   void addToMap(String key, BetterPlayerController value);
   void removeFromMap(String key);
-  Future<void> fetchVideoLinks(List<NewsItemData> listNews);
+  void fetchVideoLinks(List<NewsItemData> listNews);
 }
 
 class VideoLinksService implements IVideoLinksService {
-  Set<String> oldLinks = {};
   Map<String, BetterPlayerController> _mapLinks = {};
 
   @override
@@ -39,27 +38,24 @@ class VideoLinksService implements IVideoLinksService {
   }
 
   @override
-  Future<void> fetchVideoLinks(List<NewsItemData> listNews) async {
+  void fetchVideoLinks(List<NewsItemData> listNews) async {
     for (var item in listNews) {
       final responseItemData =
           await getIt<NewsDetailNetworkRequest>(param1: item.id)();
       final responseItemVideoLinks = responseItemData.mapResponse().videoLinks;
       if (responseItemVideoLinks != null) {
         if (responseItemVideoLinks.isNotEmpty) {
-          if (mapLinks.containsKey(responseItemVideoLinks.first) ||
-              oldLinks.contains(responseItemVideoLinks.first)) {
+          if (mapLinks.containsKey(responseItemVideoLinks.first)) {
           } else {
             BetterPlayerDataSource dataSource = BetterPlayerDataSource(
                 BetterPlayerDataSourceType.network,
                 responseItemVideoLinks.first,
                 cacheConfiguration: BetterPlayerCacheConfiguration(
                     useCache: true,
-                    maxCacheFileSize: 7 * 1024 * 1024,
-                    maxCacheSize: 7 * 1024 * 1024,
-                    preCacheSize: 3 * 1024 * 1024),
+                    maxCacheFileSize: 5 * 1024 * 1024,
+                    maxCacheSize: 5 * 1024 * 1024),
                 bufferingConfiguration: BetterPlayerBufferingConfiguration(
-                  minBufferMs: 10000,
-                  maxBufferMs: 20000,
+                  maxBufferMs: 200000,
                 ));
             BetterPlayerController _controller = BetterPlayerController(
                 BetterPlayerConfiguration(
@@ -74,14 +70,7 @@ class VideoLinksService implements IVideoLinksService {
                   fit: BoxFit.contain,
                 ),
                 betterPlayerDataSource: dataSource);
-            if (mapLinks.length >= 2) {
-              mapLinks.remove(mapLinks.keys.first);
-              addToMap('${responseItemVideoLinks.first}', _controller);
-              oldLinks.add('${responseItemVideoLinks.first}');
-            } else {
-              addToMap('${responseItemVideoLinks.first}', _controller);
-              oldLinks.add('${responseItemVideoLinks.first}');
-            }
+            addToMap('${responseItemVideoLinks.first}', _controller);
           }
         }
       }

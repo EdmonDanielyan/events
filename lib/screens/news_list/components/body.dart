@@ -66,7 +66,7 @@ class _BodyState extends State<Body> {
             case (NewsListStateType.LOADED):
               {
                 List<NewsItemData> newsList = state.data!;
-                mapService.fetchVideoLinks(newsList);
+                // mapService.fetchVideoLinks(newsList);
                 return _getLoadedStateWidget(newsList);
               }
 

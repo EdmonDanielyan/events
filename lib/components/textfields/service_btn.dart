@@ -4,6 +4,7 @@ import '../../messenger/functions/size_config.dart';
 
 class ServiceBtn extends StatelessWidget {
   final void Function()? onPressed;
+
   final String txt;
   const ServiceBtn({Key? key, required this.onPressed, required this.txt})
       : super(key: key);
@@ -13,7 +14,7 @@ class ServiceBtn extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
       width: size.width,
-      margin: const EdgeInsets.symmetric(horizontal: 20.0),
+      // margin: const EdgeInsets.symmetric(horizontal: 20.0),
       child: TextButton(
         onPressed: onPressed,
         child: Text(
