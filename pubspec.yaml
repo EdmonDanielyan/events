@@ -48,7 +48,7 @@ dependencies:
    #    ref: main
     #   path: modal_bottom_sheet
 
-
+    flutter_email_sender: ^6.0.2
     device_info_plus: ^4.0.0
     package_info_plus: ^1.4.2
     multi_select_flutter:

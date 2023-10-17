@@ -7,9 +7,8 @@ class DeepLinkHandler {
   static BuildContext? currentContext;
   static final logger = new Logger('DEEPLINK-NAV');
 
-  static void catchLink(String url, BuildContext context) {
-    if (context != null) {
-      currentContext = context;
+  static void catchLink(String url) {
+    if (currentContext != null) {
       navigateToScreen(url);
     } else {}
   }
@@ -17,60 +16,128 @@ class DeepLinkHandler {
   static void navigateToScreen(String url) {
     List<String> pathParts =
         url.replaceFirst(UrlsConfig.defaultUrl, "").split("/");
-    switch (pathParts[0]) {
-      case "news":
-        if (pathParts.length == 1) {
-          NavigationMethods.openNewsList(currentContext!);
-        } else {
-          NavigationMethods.openNewsDetail(
-            currentContext!,
-            int.parse(pathParts[1]),
-          );
-        }
-        break;
+    pathParts.removeWhere((item) => item == '');
+    switch (pathParts.elementAt(0)) {
       case "events":
         if (pathParts.length == 1) {
           NavigationMethods.openEventsList(currentContext!);
+          break;
         } else {
-          NavigationMethods.openEventDetail(
-            currentContext!,
-            int.parse(pathParts[1]),
-          );
-        }
-        break;
+          switch (pathParts.elementAt(1)) {
+            TODO: // Добавить id объявления на беке
+            case "ads":
+              NavigationMethods.openAnnouncementsList(currentContext!);
+              break;
+            case "news":
+              if (pathParts.length == 2) {
+                NavigationMethods.openNewsList(currentContext!);
+                break;
+              } else {
+                NavigationMethods.openNewsDetail(
+                  currentContext!,
+                  int.parse(pathParts.elementAt(2)),
+                );
+                break;
+              }
+            case "reg":
+              //События с регистрацией, пока заглушка(events/reg/...)
+              NavigationMethods.openEventsList(currentContext!);
+              break;
 
-      case "announcements":
-        if (pathParts.length == 1) {
-          NavigationMethods.openAnnouncementsList(currentContext!);
-        } else {
-          NavigationMethods.openAnnouncementDetail(
-            currentContext!,
-            int.parse(pathParts[1]),
-          );
+            // Разделы новстей
+
+            // Устойчивое развитие
+            case "development_ink":
+              //Поиск новости по ID
+              if (pathParts.length == 3) {
+                String id =
+                    pathParts.elementAt(2).replaceAll('?ELEMENT_ID=', '');
+                NavigationMethods.openNewsDetail(
+                  currentContext!,
+                  int.parse(id),
+                );
+                break;
+              } else {
+                NavigationMethods.openNewsList(currentContext!,
+                    arguments: {'filter': 'stable_development'});
+                break;
+              }
+            case "heading":
+              // Информационные технологии
+              if (pathParts.elementAt(2) == "240922") {
+                // Узнать путь для апишки, ошибка запроса, information_ms, literacy
+
+                NavigationMethods.openNewsList(currentContext!,
+                    arguments: {'filter': 'information_ms'});
+                break;
+              } else {
+                // Культура безопасности
+                // Узнать путь для апишки, ошибка запроса information_ms, literacy
+                NavigationMethods.openNewsList(currentContext!,
+                    arguments: {'filter': 'literacy'});
+                break;
+              }
+
+            case "news-idea":
+              if (pathParts.length == 3) {
+                NavigationMethods.openNewsDetail(
+                  currentContext!,
+                  int.parse(pathParts.elementAt(2)),
+                );
+                break;
+              } else {
+                NavigationMethods.openNewsList(currentContext!,
+                    arguments: {'filter': 'news-idea'});
+                break;
+              }
+            default:
+              break;
+          }
         }
         break;
-      case "chat_with":
-        NavigationMethods.openChatByUserID(
-          currentContext!,
-          int.parse(pathParts[1]),
-        );
-        break;
-      case "notifications":
-        NavigationMethods.openNotificationChat(currentContext!);
-        break;
-      case "chat":
-        if (pathParts.length == 1) {
-          logger.finest('TODO: Open meddenger');
-          // TODO: открыть мессенждер
-        } else {
-          NavigationMethods.openChatByID(
+      // Волонтерское движеие
+      case "volunteer":
+        //Поиск новости по ID
+        if (pathParts.length == 3) {
+          NavigationMethods.openNewsDetail(
             currentContext!,
-            int.parse(pathParts[1]),
+            int.parse(pathParts.elementAt(2)),
           );
-          logger.finest('TODO:  Open chat ' + pathParts[1]);
+          break;
+        } else {
+          NavigationMethods.openNewsList(currentContext!,
+              arguments: {'filter': 'volunteer_news'});
+          break;
         }
-        break;
+      // Спорт
+      case "sport":
+        //Поиск новости по ID
+        if (pathParts.length == 3) {
+          NavigationMethods.openNewsDetail(
+            currentContext!,
+            int.parse(pathParts.elementAt(2)),
+          );
+          break;
+        } else {
+          NavigationMethods.openNewsList(currentContext!,
+              arguments: {'filter': 'information_sport'});
+          break;
+        }
+      case "search":
+        if (pathParts.length == 2) {
+          NavigationMethods.openSearch(currentContext!);
+          break;
+        } else {
+          if (pathParts.elementAt(2).length <= 16) {
+            NavigationMethods.openSearch(currentContext!);
+            break;
+          } else {
+            //Открыть поиск с введеным значением
+            break;
+          }
+        }
       default:
+        NavigationMethods.backToMainScreen(currentContext!);
         break;
     }
   }

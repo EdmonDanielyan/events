@@ -114,4 +114,9 @@ class NavigationMethods {
       cachedUsersCubit: getIt<CachedUsersCubit>(),
     )();
   }
+
+  static void openSearch(BuildContext context) {
+    backToMainScreen(context);
+    getIt<NewBottomNavBarCubit>().goToPage(NavBarItems.search);
+  }
 }

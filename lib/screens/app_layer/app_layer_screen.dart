@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
@@ -20,7 +19,7 @@ class AppLayerScreen extends StatefulWidget {
 
 class _AppLayerScreenState extends State<AppLayerScreen>
     with NewBottomNavBarMixin, Loggable {
-  final _navigatorKey = GlobalKey<NavigatorState>();
+  // final _navigatorKey = GlobalKey<NavigatorState>();
   StreamSubscription<Uri>? _linkSubscription;
   late AppLinks _appLinks;
 
@@ -30,6 +29,8 @@ class _AppLayerScreenState extends State<AppLayerScreen>
     if (!PushTapHandler.isSubscribed) {
       PushTapHandler.subscribe();
     }
+    PushTapHandler.currentContext = context;
+    DeepLinkHandler.currentContext = context;
     initDeepLinks();
   }
 
@@ -37,21 +38,24 @@ class _AppLayerScreenState extends State<AppLayerScreen>
     _appLinks = AppLinks();
     final appLink = await _appLinks.getInitialAppLink();
     if (appLink != null) {
-      DeepLinkHandler.catchLink(appLink.toString(), context);
+      DeepLinkHandler.catchLink(
+        appLink.toString(),
+      );
     }
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
-      DeepLinkHandler.catchLink(appLink.toString(), context);
+      DeepLinkHandler.catchLink(
+        appLink.toString(),
+      );
     });
   }
 
-  void openAppLink(Uri uri) {
-    _navigatorKey.currentState?.pushNamed(uri.fragment);
-  }
+  // void openAppLink(Uri uri) {
+  //   _navigatorKey.currentState?.pushNamed(uri.fragment);
+  // }
 
   @override
   void dispose() {
     _linkSubscription?.cancel();
-
     super.dispose();
   }
 

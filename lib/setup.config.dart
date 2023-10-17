@@ -439,22 +439,6 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i107.StaffMovementsNetworkRequest>(
       _i107.StaffMovementsNetworkRequest());
   gh.factory<String>(
-    () => tokenDataInjectorModule.deviceVirtualId,
-    instanceName: 'deviceVirtualId',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.natsToken,
-    instanceName: 'natsToken',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.messengerAuthPassword,
-    instanceName: 'messengerAuthPassword',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.messengerAuthLogin,
-    instanceName: 'messengerAuthLogin',
-  );
-  gh.factory<String>(
     () => tokenDataInjectorModule.userId,
     instanceName: 'userId',
   );
@@ -474,8 +458,24 @@ Future<_i1.GetIt> $initGetIt(
     preResolve: true,
   );
   gh.factory<String>(
+    () => tokenDataInjectorModule.messengerAuthPassword,
+    instanceName: 'messengerAuthPassword',
+  );
+  gh.factory<String>(
     () => tokenDataInjectorModule.localDatabasePassword,
     instanceName: 'localDatabasePassword',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.deviceVirtualId,
+    instanceName: 'deviceVirtualId',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.natsToken,
+    instanceName: 'natsToken',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.messengerAuthLogin,
+    instanceName: 'messengerAuthLogin',
   );
   gh.singleton<_i108.TagsListCubit>(_i108.TagsListCubit());
   gh.singleton<_i109.TagsListNetworkRequest>(_i109.TagsListNetworkRequest());
