@@ -119,4 +119,15 @@ class NavigationMethods {
     backToMainScreen(context);
     getIt<NewBottomNavBarCubit>().goToPage(NavBarItems.search);
   }
+
+  static void openSearchWithMessage(BuildContext context) {
+    backToMainScreen(context);
+    getIt<NewBottomNavBarCubit>().goToPage(NavBarItems.search);
+  }
+
+  static void openUserPageById(BuildContext context, int userID) {
+    openNewsList(context);
+    final userKey = "/personal";
+    Navigator.of(context).pushNamed(userKey, arguments: {"id": userID});
+  }
 }

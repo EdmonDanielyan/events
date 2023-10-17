@@ -19,7 +19,6 @@ class AppLayerScreen extends StatefulWidget {
 
 class _AppLayerScreenState extends State<AppLayerScreen>
     with NewBottomNavBarMixin, Loggable {
-  // final _navigatorKey = GlobalKey<NavigatorState>();
   StreamSubscription<Uri>? _linkSubscription;
   late AppLinks _appLinks;
 
@@ -44,14 +43,10 @@ class _AppLayerScreenState extends State<AppLayerScreen>
     }
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
       DeepLinkHandler.catchLink(
-        appLink.toString(),
+        uri.toString(),
       );
     });
   }
-
-  // void openAppLink(Uri uri) {
-  //   _navigatorKey.currentState?.pushNamed(uri.fragment);
-  // }
 
   @override
   void dispose() {

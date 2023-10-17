@@ -66,18 +66,18 @@ class DeepLinkHandler {
               // Информационные технологии
               if (pathParts.elementAt(2) == "240922") {
                 // Узнать путь для апишки, ошибка запроса, information_ms, literacy
-
-                NavigationMethods.openNewsList(currentContext!,
-                    arguments: {'filter': 'information_ms'});
+                NavigationMethods.backToMainScreen(currentContext!);
+                // NavigationMethods.openNewsList(currentContext!,
+                //     arguments: {'filter': 'information_ms'});
                 break;
               } else {
                 // Культура безопасности
                 // Узнать путь для апишки, ошибка запроса information_ms, literacy
-                NavigationMethods.openNewsList(currentContext!,
-                    arguments: {'filter': 'literacy'});
+                NavigationMethods.backToMainScreen(currentContext!);
+                // NavigationMethods.openNewsList(currentContext!,
+                //     arguments: {'filter': 'literacy'});
                 break;
               }
-
             case "news-idea":
               if (pathParts.length == 3) {
                 NavigationMethods.openNewsDetail(
@@ -91,6 +91,7 @@ class DeepLinkHandler {
                 break;
               }
             default:
+              NavigationMethods.backToMainScreen(currentContext!);
               break;
           }
         }
@@ -124,17 +125,45 @@ class DeepLinkHandler {
           break;
         }
       case "search":
-        if (pathParts.length == 2) {
+        if (pathParts.length == 1) {
           NavigationMethods.openSearch(currentContext!);
           break;
         } else {
-          if (pathParts.elementAt(2).length <= 16) {
+          if (pathParts.elementAt(1).length <= 16) {
             NavigationMethods.openSearch(currentContext!);
             break;
           } else {
-            NavigationMethods.openSearch(currentContext!);
+            String encodeUrl(String encodedUrl) {
+              Uri uri = Uri.parse(encodedUrl);
+              String query = uri.query;
+
+              var params = <String, String>{};
+              query.split('&').forEach((param) {
+                var p = param.split('=');
+                params[p[0]] = Uri.decodeFull(p[1]);
+              });
+
+              return params['q'].toString();
+            }
+
+            String textForSearch = encodeUrl(pathParts.elementAt(1));
+
+            NavigationMethods.openSearchWithMessage(currentContext!);
             break;
           }
+        }
+      case "personal":
+        //Поиск новости по ID
+        if (pathParts.length == 2) {
+          String id = pathParts.elementAt(1).replaceAll('?USER_ID=', '');
+          NavigationMethods.openUserPageById(
+            currentContext!,
+            int.parse(id),
+          );
+          break;
+        } else {
+          NavigationMethods.backToMainScreen(currentContext!);
+          break;
         }
       default:
         NavigationMethods.backToMainScreen(currentContext!);

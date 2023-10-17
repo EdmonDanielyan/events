@@ -35,7 +35,7 @@ class Body extends StatelessWidget {
       },
       leadingScrollIndicatorVisible: false,
       trailingScrollIndicatorVisible: false,
-      triggerMode: IndicatorTriggerMode.anywhere,
+      triggerMode: IndicatorTriggerMode.onEdge,
       trigger: IndicatorTrigger.bothEdges,
       builder: MaterialIndicatorDelegate(
         builder: (BuildContext context, IndicatorController controller) {
@@ -125,7 +125,8 @@ class Body extends StatelessWidget {
                 ),
               Diagnostics(logFile: logFile),
               if (state.type == ProfileStateType.LOADED)
-              ProfileSecuritySection(),
+                ProfileSecuritySection(),
+
               /// todo AboutMyField
               // AboutMyField(user: user, scrollController: _scrollController,)
             ],
