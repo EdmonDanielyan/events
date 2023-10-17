@@ -132,7 +132,7 @@ class DeepLinkHandler {
             NavigationMethods.openSearch(currentContext!);
             break;
           } else {
-            //Открыть поиск с введеным значением
+            NavigationMethods.openSearch(currentContext!);
             break;
           }
         }
