@@ -27,39 +27,36 @@ class _DiagnosticsState extends State<Diagnostics> {
 
   Widget getSendLogsButtonWidget(context) {
     Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionTitle(
-            title: _strings.diagnostics,
-          ),
-          SizedBox(
-            height: 52.0,
-            width: size.width,
-            child: InkWell(
-              onTap: () => launchUrl(UrlsConfig.supportUrl),
-              child: Row(
-                children: [
-                  Text(
-                    "Обратиться в техподдержку",
-                    style: FontStyles.rubikP1(color: Palette.textBlack),
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24.0),
-                    child: Icon(
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SectionTitle(title: _strings.diagnostics),
+            SizedBox(
+              height: 52.0,
+              width: size.width,
+              child: InkWell(
+                onTap: () => launchUrl(UrlsConfig.supportUrl),
+                child: Row(
+                  children: [
+                    Text(
+                      "Обратиться в техподдержку",
+                      style: FontStyles.rubikP1(color: Palette.textBlack),
+                    ),
+                    const Spacer(),
+                    Icon(
                       Icons.arrow_forward_ios,
                       size: 20.0,
                       color: Palette.greenE4A,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

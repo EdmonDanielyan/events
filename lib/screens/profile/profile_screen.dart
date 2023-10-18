@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/constants/app_metrics_events.dart';
 import 'package:ink_mobile/constants/codes.dart';
@@ -37,11 +38,13 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Body(userCubit: profileCubit),
-      bottomNavigationBar: bottomNavBar(context),
-      backgroundColor: Palette.white,
-    );
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: Scaffold(
+          body: Body(userCubit: profileCubit),
+          bottomNavigationBar: bottomNavBar(context),
+          backgroundColor: Palette.white,
+        ));
   }
 
   Widget? bottomNavBar(BuildContext context) {

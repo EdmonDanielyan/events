@@ -24,46 +24,48 @@ class Awards extends StatelessWidget {
     List<Award> awardsList = this.getAwards();
 
     if (awardsList.isNotEmpty) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 32.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SectionTitle(
-              title: "Статусы",
-            ),
-            SizedBox(
-              width: size.width,
-              height: SizeConfig(context, 90).getProportionateScreenHeight,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: awardsList.length,
-                itemBuilder: (context, index) {
-                  return awardsList[index];
-                },
-                separatorBuilder: (context, index) {
-                  return index == getAwards().length - 1
-                      ? const SizedBox.shrink()
-                      : const SizedBox(
-                          width: 20.0,
-                        );
-                },
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 32.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SectionTitle(
+                title: "Статусы",
               ),
-            ),
-          ],
+              SizedBox(
+                width: size.width,
+                height: SizeConfig(context, 90).getProportionateScreenHeight,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: awardsList.length,
+                  itemBuilder: (context, index) {
+                    return awardsList[index];
+                  },
+                  separatorBuilder: (context, index) {
+                    return index == getAwards().length - 1
+                        ? const SizedBox.shrink()
+                        : const SizedBox(
+                            width: 20.0,
+                          );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
-    return const SizedBox.shrink();
+    return SliverToBoxAdapter(child: const SizedBox.shrink());
   }
 
   List<Award> getAwards() {
     List<Award> awardsList = [];
     if (awards != null) {
       final notNullAwards = awards!.toList();
-      
+
       // notNullAwards.removeWhere((award) => award.count == null);
-      
+
       for (UserBadges badge in notNullAwards) {
         awardsList.add(Award(award: badge));
       }

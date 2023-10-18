@@ -16,6 +16,8 @@ import 'package:ink_mobile/screens/profile/components/contacts.dart';
 import 'package:ink_mobile/screens/profile/components/header.dart';
 import 'package:ink_mobile/screens/profile/components/other_user_page_header.dart';
 import 'package:ink_mobile/screens/profile/components/security.dart';
+import 'package:ink_mobile/screens/profile/components/user_main_info.dart';
+import 'package:ink_mobile/screens/profile/components/votes_bar.dart';
 import 'package:ink_mobile/setup.dart';
 
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
@@ -92,25 +94,29 @@ class Body extends StatelessWidget {
       color: Palette.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: SingleChildScrollView(
+        child: CustomScrollView(
           controller: _scrollController,
           physics: AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              if (state.type == ProfileStateType.LOADED)
-                PersonalPageHeader(user: user),
-              if (state.type == ProfileStateType.OTHER_USER_LOADED)
-                OtherUserPageHeader(user: user),
-              Awards(awards: user.badges),
-              Contacts(contacts: user.contacts),
-              BasicInformation(info: user.basicInformation),
-              if (user.absence != null)
-                BasicInfoRow(
+          slivers: [
+            if (state.type == ProfileStateType.LOADED)
+              PersonalPageHeader(user: user),
+            UserMainInfo(user: user),
+            VotesBar(votes: user.votes),
+            // if (state.type == ProfileStateType.OTHER_USER_LOADED)
+            //   OtherUserPageHeader(user: user),
+            Awards(awards: user.badges),
+            Contacts(contacts: user.contacts),
+            BasicInformation(info: user.basicInformation),
+            if (user.absence != null)
+              SliverToBoxAdapter(
+                child: BasicInfoRow(
                   title: 'Статус',
                   value: user.absence!.reason ?? "",
                 ),
-              if (user.shiftMan != null)
-                InkWell(
+              ),
+            if (user.shiftMan != null)
+              SliverToBoxAdapter(
+                child: InkWell(
                   onTap: () => Navigator.pushNamed(
                     context,
                     "/personal",
@@ -123,14 +129,14 @@ class Body extends StatelessWidget {
                     value: user.shiftMan!.fullName,
                   ),
                 ),
-              Diagnostics(logFile: logFile),
-              if (state.type == ProfileStateType.LOADED)
-                ProfileSecuritySection(),
+              ),
 
-              /// todo AboutMyField
-              // AboutMyField(user: user, scrollController: _scrollController,)
-            ],
-          ),
+            Diagnostics(logFile: logFile),
+            if (state.type == ProfileStateType.LOADED) ProfileSecuritySection(),
+
+            /// todo AboutMyField
+            // AboutMyField(user: user, scrollController: _scrollController,)
+          ],
         ),
       ),
     );

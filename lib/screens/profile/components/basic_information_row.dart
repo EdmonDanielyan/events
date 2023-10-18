@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 
-
 class BasicInfoRow extends StatelessWidget {
   final String title;
   final String value;

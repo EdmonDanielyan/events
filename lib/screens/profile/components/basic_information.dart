@@ -16,7 +16,7 @@ class BasicInformation extends StatelessWidget {
     if (info != null) {
       return getBasicInfoWidget(context);
     }
-    return const SizedBox.shrink();
+    return SliverToBoxAdapter(child: const SizedBox.shrink());
   }
 
   Widget getBasicInfoWidget(context) {
@@ -25,21 +25,25 @@ class BasicInformation extends StatelessWidget {
         info!.birthday != null ||
         info!.office != null ||
         info!.department != null) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SectionTitle(
-              title: _strings.mainInformation,
-            ),
-            const SizedBox(height: 24.0,),
-            ...getBasicInfoWidgetRows(),
-          ],
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SectionTitle(
+                title: _strings.mainInformation,
+              ),
+              const SizedBox(
+                height: 24.0,
+              ),
+              ...getBasicInfoWidgetRows(),
+            ],
+          ),
         ),
       );
     }
-    return const SizedBox.shrink();
+    return SliverToBoxAdapter(child: const SizedBox.shrink());
   }
 
   List<Widget> getBasicInfoWidgetRows() {
@@ -48,6 +52,7 @@ class BasicInformation extends StatelessWidget {
     getRowsInfo().forEach(
       (element) {
         if (element['value'] != null) {
+          print('basic info row');
           widgetRows.add(
             BasicInfoRow(
               title: element['title'],
@@ -67,6 +72,7 @@ class BasicInformation extends StatelessWidget {
       {'title': _strings.address, 'value': info!.address},
       {'title': _strings.office, 'value': info!.office},
       {'title': _strings.birthday, 'value': info!.birthday},
+
       /// todo дополнительные поля в "Основоной информации"
       //{'title': 'Осталось на питание', 'value': "{0-3000} руб "},
       //{'title': 'Результаты тестов на ковид', 'value': "{ЗДОРОВ / COVID}"},

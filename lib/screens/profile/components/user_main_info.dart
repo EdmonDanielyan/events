@@ -47,35 +47,35 @@ class _UserMainInfoState extends State<UserMainInfo> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      padding: EdgeInsets.only(bottom: 24.0),
-      width: size.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          getUserAvatar(),
-          getUserFullName(),
-          const SizedBox(
-            height: 8.0,
-          ),
-          getUserPositionWidget(),
-          if (widget.showWriteButton) ...[
-            const SizedBox(
-              height: 24.0,
-            ),
-            WriteBtn(
-              user: User(
-                id: user.id,
-                name: "${user.lastName ?? ""} ${user.name ?? ""}".trim(),
-                avatarUrl: user.pathToAvatar ?? "",
+    return SliverToBoxAdapter(
+      child: Container(
+        // padding: EdgeInsets.only(bottom: 24.0),
+        width: size.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // getUserAvatar(),
+            // getUserFullName(),
+            // const SizedBox(height: 8.0),
+            getUserPositionWidget(),
+            if (widget.showWriteButton) ...[
+              const SizedBox(
+                height: 24.0,
               ),
+              WriteBtn(
+                user: User(
+                  id: user.id,
+                  name: "${user.lastName ?? ""} ${user.name ?? ""}".trim(),
+                  avatarUrl: user.pathToAvatar ?? "",
+                ),
+              ),
+            ],
+            const SizedBox(
+              height: 32.0,
             ),
+            getInfoAbsenceUser()
           ],
-          const SizedBox(
-            height: 32.0,
-          ),
-          getInfoAbsenceUser()
-        ],
+        ),
       ),
     );
   }
@@ -142,10 +142,15 @@ class _UserMainInfoState extends State<UserMainInfo> {
       Color iconColor = Palette.white;
       String iconLink = "";
 
-      iconLink = user.absence!.isBusinessTrip ? IconLinks.PLANE_ICON : IconLinks.SUN_ICON;
-      backgroundColor = user.absence!.isBusinessTrip ? Palette.purple255 : Palette.yellow300;
-      textColor = user.absence!.isBusinessTrip ? Palette.white : Palette.textBlack;
-      iconColor = user.absence!.isBusinessTrip ? Palette.white : Palette.textBlack;
+      iconLink = user.absence!.isBusinessTrip
+          ? IconLinks.PLANE_ICON
+          : IconLinks.SUN_ICON;
+      backgroundColor =
+          user.absence!.isBusinessTrip ? Palette.purple255 : Palette.yellow300;
+      textColor =
+          user.absence!.isBusinessTrip ? Palette.white : Palette.textBlack;
+      iconColor =
+          user.absence!.isBusinessTrip ? Palette.white : Palette.textBlack;
 
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 14.0),

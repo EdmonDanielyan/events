@@ -19,7 +19,7 @@ class Contacts extends StatelessWidget {
     if (contacts != null) {
       return getContactsWidget(context);
     }
-    return const SizedBox.shrink();
+    return SliverToBoxAdapter(child: const SizedBox.shrink());
   }
 
   getContactsWidget(BuildContext context) {
@@ -27,17 +27,21 @@ class Contacts extends StatelessWidget {
         contacts!.mobilePhone != null ||
         contacts!.workMobilePhone != null ||
         contacts!.email != null) {
-      return Padding(
-        padding: EdgeInsets.only(top: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SectionTitle(
-              title: _strings.contacts,
-            ),
-            const SizedBox(height: 24.0,),
-            ...getContactWidgetRows(context),
-          ],
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: EdgeInsets.only(top: 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SectionTitle(
+                title: _strings.contacts,
+              ),
+              const SizedBox(
+                height: 24.0,
+              ),
+              ...getContactWidgetRows(context),
+            ],
+          ),
         ),
       );
     } else {

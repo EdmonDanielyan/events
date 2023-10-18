@@ -24,38 +24,38 @@ class _ProfileSecuritySectionState extends State<ProfileSecuritySection> {
 
   Widget getSendLogsButtonWidget(context) {
     Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0, bottom: 24.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionTitle(title: _strings.security),
-          SizedBox(
-            height: 52.0,
-            width: size.width,
-            child: InkWell(
-              onTap: () => Navigator.of(context).pushNamed("/set_pin"),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _strings.setPinCode,
-                    style: FontStyles.rubikP1(color: Palette.textBlack),
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24.0),
-                    child: Icon(
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: 16.0,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SectionTitle(title: _strings.security),
+            SizedBox(
+              height: 52.0,
+              width: size.width,
+              child: InkWell(
+                onTap: () => Navigator.of(context).pushNamed("/set_pin"),
+                child: Row(
+                  children: [
+                    Text(
+                      _strings.setPinCode,
+                      style: FontStyles.rubikP1(color: Palette.textBlack),
+                    ),
+                    const Spacer(),
+                    Icon(
                       Icons.arrow_forward_ios,
                       size: 20.0,
                       color: Palette.greenE4A,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
