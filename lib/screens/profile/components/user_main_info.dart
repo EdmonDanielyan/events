@@ -47,34 +47,37 @@ class _UserMainInfoState extends State<UserMainInfo> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SliverToBoxAdapter(
-      child: Container(
-        // padding: EdgeInsets.only(bottom: 24.0),
-        width: size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // getUserAvatar(),
-            // getUserFullName(),
-            // const SizedBox(height: 8.0),
-            getUserPositionWidget(),
-            if (widget.showWriteButton) ...[
-              const SizedBox(
-                height: 24.0,
-              ),
-              WriteBtn(
-                user: User(
-                  id: user.id,
-                  name: "${user.lastName ?? ""} ${user.name ?? ""}".trim(),
-                  avatarUrl: user.pathToAvatar ?? "",
+    return SliverPadding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      sliver: SliverToBoxAdapter(
+        child: Container(
+          // padding: EdgeInsets.only(bottom: 24.0),
+          width: size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // getUserAvatar(),
+              // getUserFullName(),
+              // const SizedBox(height: 8.0),
+              getUserPositionWidget(),
+              if (widget.showWriteButton) ...[
+                const SizedBox(
+                  height: 24.0,
                 ),
+                WriteBtn(
+                  user: User(
+                    id: user.id,
+                    name: "${user.lastName ?? ""} ${user.name ?? ""}".trim(),
+                    avatarUrl: user.pathToAvatar ?? "",
+                  ),
+                ),
+              ],
+              const SizedBox(
+                height: 32.0,
               ),
+              getInfoAbsenceUser()
             ],
-            const SizedBox(
-              height: 32.0,
-            ),
-            getInfoAbsenceUser()
-          ],
+          ),
         ),
       ),
     );

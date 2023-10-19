@@ -27,20 +27,23 @@ class Contacts extends StatelessWidget {
         contacts!.mobilePhone != null ||
         contacts!.workMobilePhone != null ||
         contacts!.email != null) {
-      return SliverToBoxAdapter(
-        child: Padding(
-          padding: EdgeInsets.only(top: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SectionTitle(
-                title: _strings.contacts,
-              ),
-              const SizedBox(
-                height: 24.0,
-              ),
-              ...getContactWidgetRows(context),
-            ],
+      return SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        sliver: SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SectionTitle(
+                  title: _strings.contacts,
+                ),
+                const SizedBox(
+                  height: 24.0,
+                ),
+                ...getContactWidgetRows(context),
+              ],
+            ),
           ),
         ),
       );

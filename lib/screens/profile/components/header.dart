@@ -11,50 +11,62 @@ class PersonalPageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // it's the only method to make circle grey border only at the bottom
-    // if you try to use
-    // border: Border.only(bottom:...)
-    // and
-    // borderRadius: BorderRadius.only( bottomLeft:..., bottomRight: ...),
-    // you will get an error "A borderRadius can only be given for a uniform Border."
-    return SliverAppBar(
-      backgroundColor: Palette.white,
-      leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back_ios,
-          color: Palette.greenE4A,
-          size: 32.0,
+    return SliverLayoutBuilder(builder: (BuildContext context, constraints) {
+      final scrolledValue = constraints.scrollOffset;
+      double spaceBarTitleOpacity = 1;
+      double appBarTitleOpacity = 0;
+      if (scrolledValue <= 130) {
+        spaceBarTitleOpacity = 1;
+        appBarTitleOpacity = 0;
+      } else {
+        if (scrolledValue >= 180) {
+          spaceBarTitleOpacity = 0;
+          appBarTitleOpacity = 1;
+        } else {
+          spaceBarTitleOpacity = 1 - (scrolledValue - 130) / 50;
+          appBarTitleOpacity = (scrolledValue - 130) / 50;
+        }
+      }
+      return SliverAppBar(
+        backgroundColor: Palette.white,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Palette.greenE4A,
+            size: 32.0,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
         ),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
-      pinned: true,
-      expandedHeight: 240.0,
-      flexibleSpace: FlexibleSpaceBar(
-        // collapseMode: CollapseMode.pin,
-        expandedTitleScale: 1,
-        title: getUserFullName(),
-        background: Stack(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Center(
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Palette.text5Grey,
-                  ),
-                  child: CachedCircleAvatar(
-                    avatarWidth: 164.0,
-                    avatarHeight: 164.0,
-                    url: user.pathToAvatar ?? "",
+        pinned: true,
+        expandedHeight: 240.0,
+        flexibleSpace: FlexibleSpaceBar(
+          centerTitle: true,
+          collapseMode: CollapseMode.pin,
+          expandedTitleScale: 1,
+          title: titleBar(spaceBarTitleOpacity, appBarTitleOpacity),
+          background: Stack(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Palette.text5Grey,
+                    ),
+                    child: CachedCircleAvatar(
+                      avatarWidth: 164.0,
+                      avatarHeight: 164.0,
+                      url: user.pathToAvatar ?? "",
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget getUserAvatar() {
@@ -83,6 +95,32 @@ class PersonalPageHeader extends StatelessWidget {
       style: FontStyles.rubikH3(color: Palette.textBlack),
       maxLines: 2,
       textAlign: TextAlign.center,
+    );
+  }
+
+  Widget titleBar(double opacitySpaceBar, double opacityAppBar) {
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        Opacity(
+          opacity: opacitySpaceBar,
+          child: Text(
+            user.fullName,
+            style: FontStyles.rubikH3(color: Palette.textBlack),
+            maxLines: 2,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Opacity(
+          opacity: opacityAppBar,
+          child: Text(
+            user.name ?? user.fullName,
+            style: FontStyles.rubikH3(color: Palette.textBlack),
+            maxLines: 1,
+            textAlign: TextAlign.center,
+          ),
+        )
+      ],
     );
   }
 }

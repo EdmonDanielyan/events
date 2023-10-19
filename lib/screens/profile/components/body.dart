@@ -92,52 +92,57 @@ class Body extends StatelessWidget {
     final logFile = ProfileScreen.of(context).widget.logFile;
     return Background(
       color: Palette.white,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: CustomScrollView(
-          controller: _scrollController,
-          physics: AlwaysScrollableScrollPhysics(),
-          slivers: [
-            if (state.type == ProfileStateType.LOADED)
-              PersonalPageHeader(user: user),
-            UserMainInfo(user: user),
-            VotesBar(votes: user.votes),
-            // if (state.type == ProfileStateType.OTHER_USER_LOADED)
-            //   OtherUserPageHeader(user: user),
-            Awards(awards: user.badges),
-            Contacts(contacts: user.contacts),
-            BasicInformation(info: user.basicInformation),
-            if (user.absence != null)
-              SliverToBoxAdapter(
+      child: CustomScrollView(
+        controller: _scrollController,
+        physics: AlwaysScrollableScrollPhysics(),
+        slivers: [
+          if (state.type == ProfileStateType.LOADED)
+            PersonalPageHeader(user: user),
+
+          UserMainInfo(user: user),
+          VotesBar(votes: user.votes),
+          // if (state.type == ProfileStateType.OTHER_USER_LOADED)
+          //   OtherUserPageHeader(user: user),
+          Awards(awards: user.badges),
+          Contacts(contacts: user.contacts),
+          BasicInformation(info: user.basicInformation),
+          if (user.absence != null)
+            SliverToBoxAdapter(
+              child: BasicInfoRow(
+                title: 'Статус',
+                value: user.absence!.reason ?? "",
+              ),
+            ),
+          if (user.shiftMan != null)
+            SliverToBoxAdapter(
+              child: InkWell(
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  "/personal",
+                  arguments: {
+                    "id": user.shiftMan!.id,
+                  },
+                ),
                 child: BasicInfoRow(
-                  title: 'Статус',
-                  value: user.absence!.reason ?? "",
+                  title: 'Сменщик',
+                  value: user.shiftMan!.fullName,
                 ),
               ),
-            if (user.shiftMan != null)
-              SliverToBoxAdapter(
-                child: InkWell(
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    "/personal",
-                    arguments: {
-                      "id": user.shiftMan!.id,
-                    },
-                  ),
-                  child: BasicInfoRow(
-                    title: 'Сменщик',
-                    value: user.shiftMan!.fullName,
-                  ),
-                ),
-              ),
+            ),
 
-            Diagnostics(logFile: logFile),
-            if (state.type == ProfileStateType.LOADED) ProfileSecuritySection(),
+          Diagnostics(logFile: logFile),
+          if (state.type == ProfileStateType.LOADED) ProfileSecuritySection(),
+          SliverToBoxAdapter(
+            child: Container(
+              width: 40,
+              height: 300,
+              color: Colors.green,
+            ),
+          )
 
-            /// todo AboutMyField
-            // AboutMyField(user: user, scrollController: _scrollController,)
-          ],
-        ),
+          /// todo AboutMyField
+          // AboutMyField(user: user, scrollController: _scrollController,)
+        ],
       ),
     );
   }

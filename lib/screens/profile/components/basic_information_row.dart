@@ -21,7 +21,9 @@ class BasicInfoRow extends StatelessWidget {
 
     return Container(
       width: size.width,
-      margin: const EdgeInsets.only(bottom: 24.0),
+      margin: const EdgeInsets.only(
+        bottom: 24.0,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

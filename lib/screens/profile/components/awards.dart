@@ -24,34 +24,37 @@ class Awards extends StatelessWidget {
     List<Award> awardsList = this.getAwards();
 
     if (awardsList.isNotEmpty) {
-      return SliverToBoxAdapter(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 32.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SectionTitle(
-                title: "Статусы",
-              ),
-              SizedBox(
-                width: size.width,
-                height: SizeConfig(context, 90).getProportionateScreenHeight,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: awardsList.length,
-                  itemBuilder: (context, index) {
-                    return awardsList[index];
-                  },
-                  separatorBuilder: (context, index) {
-                    return index == getAwards().length - 1
-                        ? const SizedBox.shrink()
-                        : const SizedBox(
-                            width: 20.0,
-                          );
-                  },
+      return SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        sliver: SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 32.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SectionTitle(
+                  title: "Статусы",
                 ),
-              ),
-            ],
+                SizedBox(
+                  width: size.width,
+                  height: SizeConfig(context, 90).getProportionateScreenHeight,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: awardsList.length,
+                    itemBuilder: (context, index) {
+                      return awardsList[index];
+                    },
+                    separatorBuilder: (context, index) {
+                      return index == getAwards().length - 1
+                          ? const SizedBox.shrink()
+                          : const SizedBox(
+                              width: 20.0,
+                            );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
