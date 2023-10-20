@@ -401,7 +401,6 @@ class _ReferencesFormState extends State<ReferencesForm> {
       bloc: widget.sendReferenceFormCubit,
       listener: (BuildContext context, state) {
         if (state.state == BtnCubitStateEnums.ERROR) {
-          print('error');
           SimpleCustomSnackbar(context: context, txt: state.message);
         }
         if (state.state == BtnCubitStateEnums.SUCCESS) {
@@ -420,7 +419,6 @@ class _ReferencesFormState extends State<ReferencesForm> {
           return ServiceBtn(
             onPressed: () async {
               if (validatorMixin.validateForm(context, entities)) {
-                print('валидная отправка');
                 final sent = await widget.sendReferenceFormCubit.send(
                   entities: entities,
                   referencesItem: currentReferenceItem,

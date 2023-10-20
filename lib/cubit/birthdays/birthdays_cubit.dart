@@ -104,7 +104,6 @@ class BirthdaysCubit extends Cubit<BirthdaysState> {
           .where((birthday) => DateOnlyCompare().isSameDateWithoutYear(
               birthday.birthday!, minBirthdayDate.add(Duration(days: 2))))
           .toList();
-      print("end");
     }
   }
 

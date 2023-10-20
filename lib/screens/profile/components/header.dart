@@ -47,7 +47,7 @@ class PersonalPageHeader extends StatelessWidget {
           background: Stack(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.only(top: 30),
                 child: Center(
                   child: Container(
                     decoration: BoxDecoration(

@@ -32,7 +32,6 @@ class _HeaderState extends State<Header> {
   @override
   void initState() {
     super.initState();
-    print(mapService.mapLinks);
     if (widget.videoLinks != null && widget.videoLinks!.isNotEmpty) {
       for (final link in widget.videoLinks!) {
         if (link.isNotEmpty && link.contains("mp4")) {

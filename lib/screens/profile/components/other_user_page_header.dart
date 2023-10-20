@@ -50,7 +50,7 @@ class OtherUserPageHeader extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         pinned: true,
-        expandedHeight: 240.0,
+        expandedHeight: 250.0,
         flexibleSpace: FlexibleSpaceBar(
           centerTitle: true,
           collapseMode: CollapseMode.pin,
@@ -59,7 +59,7 @@ class OtherUserPageHeader extends StatelessWidget {
           background: Stack(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.only(top: 30),
                 child: Center(
                   child: Container(
                     decoration: BoxDecoration(

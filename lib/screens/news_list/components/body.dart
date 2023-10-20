@@ -66,8 +66,8 @@ class _BodyState extends State<Body> {
             case (NewsListStateType.LOADED):
               {
                 List<NewsItemData> newsList = state.data!;
-                // mapService.fetchVideoLinks(newsList);
-                return _getLoadedStateWidget(newsList);
+
+                return _getLoadedStateWidget(newsList, widget.cubit.filter);
               }
 
             case (NewsListStateType.ERROR):
@@ -98,7 +98,7 @@ class _BodyState extends State<Body> {
     return InkPageLoader();
   }
 
-  Widget _getLoadedStateWidget(List<NewsItemData> newsList) {
+  Widget _getLoadedStateWidget(List<NewsItemData> newsList, String title) {
     List<Widget> items = _getNewsWidgetList(newsList);
     return Container(
       color: Palette.white,
@@ -114,7 +114,7 @@ class _BodyState extends State<Body> {
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  _strings.news,
+                  titles['$title'] ?? _strings.news,
                   style: FontStyles.rubikH2(color: Palette.textBlack),
                 ),
               ),
@@ -137,4 +137,14 @@ class _BodyState extends State<Body> {
       text: state.errorMessage!,
     );
   }
+
+  static final Map<String, String> titles = {
+    'news': _strings.allNews,
+    'stable_development': _strings.sustainableDevelopment,
+    'safety': _strings.safety,
+    'it': _strings.it,
+    'volunteer_news': _strings.volunteerNews,
+    'information_sport': _strings.sportNews,
+    'news-idea': _strings.newsIdea,
+  };
 }

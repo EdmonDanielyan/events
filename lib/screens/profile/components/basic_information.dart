@@ -55,7 +55,6 @@ class BasicInformation extends StatelessWidget {
     getRowsInfo().forEach(
       (element) {
         if (element['value'] != null) {
-          print('basic info row');
           widgetRows.add(
             BasicInfoRow(
               title: element['title'],
