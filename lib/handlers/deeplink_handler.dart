@@ -66,16 +66,13 @@ class DeepLinkHandler {
               // Информационные технологии
               if (pathParts.elementAt(2) == "240922") {
                 // Узнать путь для апишки, ошибка запроса, information_ms, literacy
-                NavigationMethods.backToMainScreen(currentContext!);
-                // NavigationMethods.openNewsList(currentContext!,
-                //     arguments: {'filter': 'information_ms'});
+                NavigationMethods.openNewsList(currentContext!,
+                    arguments: {'filter': 'it'});
                 break;
               } else {
                 // Культура безопасности
-                // Узнать путь для апишки, ошибка запроса information_ms, literacy
-                NavigationMethods.backToMainScreen(currentContext!);
-                // NavigationMethods.openNewsList(currentContext!,
-                //     arguments: {'filter': 'literacy'});
+                NavigationMethods.openNewsList(currentContext!,
+                    arguments: {'filter': 'safety'});
                 break;
               }
             case "news-idea":
