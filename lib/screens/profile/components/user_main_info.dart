@@ -83,36 +83,36 @@ class _UserMainInfoState extends State<UserMainInfo> {
     );
   }
 
-  Widget getUserFullName() {
-    return Center(
-      child: Text(
-        user.fullName,
-        style: FontStyles.rubikH3(color: Palette.textBlack),
-        maxLines: 2,
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
+  // Widget getUserFullName() {
+  //   return Center(
+  //     child: Text(
+  //       user.fullName,
+  //       style: FontStyles.rubikH3(color: Palette.textBlack),
+  //       maxLines: 2,
+  //       textAlign: TextAlign.center,
+  //     ),
+  //   );
+  // }
 
-  Widget getUserAvatar() {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 16.0,
-        bottom: 24.0,
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Palette.text5Grey,
-        ),
-        child: CachedCircleAvatar(
-          avatarWidth: 164.0,
-          avatarHeight: 164.0,
-          url: user.pathToAvatar ?? "",
-        ),
-      ),
-    );
-  }
+  // Widget getUserAvatar() {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(
+  //       top: 16.0,
+  //       bottom: 24.0,
+  //     ),
+  //     child: Container(
+  //       decoration: BoxDecoration(
+  //         shape: BoxShape.circle,
+  //         color: Palette.text5Grey,
+  //       ),
+  //       child: CachedCircleAvatar(
+  //         avatarWidth: 164.0,
+  //         avatarHeight: 164.0,
+  //         url: user.pathToAvatar ?? "",
+  //       ),
+  //     ),
+  //   );
+  // }
 
   String getFullName() {
     List nameComponents = [];
@@ -155,40 +155,43 @@ class _UserMainInfoState extends State<UserMainInfo> {
       iconColor =
           user.absence!.isBusinessTrip ? Palette.white : Palette.textBlack;
 
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 14.0),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16),
-            bottomRight: Radius.circular(16),
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 24),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 14.0),
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16),
+              bottomRight: Radius.circular(16),
+            ),
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 4.0,
-                  top: 4.0,
-                  bottom: 4.0,
-                ),
-                child: Text(
-                  "${user.absence!.reason} c ${DateFormat('dd.MM.yyyy').format(user.absence!.from!)} по ${DateFormat('dd.MM.yyyy').format(user.absence!.to!)}",
-                  style: FontStyles.rubikP3Medium(
-                    color: textColor,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 4.0,
+                    top: 4.0,
+                    bottom: 4.0,
+                  ),
+                  child: Text(
+                    "${user.absence!.reason} c ${DateFormat('dd.MM.yyyy').format(user.absence!.from!)} по ${DateFormat('dd.MM.yyyy').format(user.absence!.to!)}",
+                    style: FontStyles.rubikP3Medium(
+                      color: textColor,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SvgPicture.asset(
-              iconLink,
-              height: 24.0,
-              width: 24.0,
-              color: iconColor,
-            )
-          ],
+              SvgPicture.asset(
+                iconLink,
+                height: 24.0,
+                width: 24.0,
+                color: iconColor,
+              )
+            ],
+          ),
         ),
       );
     }

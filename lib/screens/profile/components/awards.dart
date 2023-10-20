@@ -28,7 +28,7 @@ class Awards extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         sliver: SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.only(top: 32.0),
+            padding: const EdgeInsets.only(top: 24.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

@@ -16,6 +16,7 @@ import 'package:ink_mobile/screens/profile/components/contacts.dart';
 import 'package:ink_mobile/screens/profile/components/header.dart';
 import 'package:ink_mobile/screens/profile/components/other_user_page_header.dart';
 import 'package:ink_mobile/screens/profile/components/security.dart';
+import 'package:ink_mobile/screens/profile/components/thanks_button.dart';
 import 'package:ink_mobile/screens/profile/components/user_main_info.dart';
 import 'package:ink_mobile/screens/profile/components/votes_bar.dart';
 import 'package:ink_mobile/setup.dart';
@@ -98,19 +99,35 @@ class Body extends StatelessWidget {
         slivers: [
           if (state.type == ProfileStateType.LOADED)
             PersonalPageHeader(user: user),
+          if (state.type == ProfileStateType.LOADED) UserMainInfo(user: user),
+          if (state.type == ProfileStateType.LOADED)
+            VotesBar(votes: user.votes),
+          if (state.type == ProfileStateType.OTHER_USER_LOADED)
+            OtherUserPageHeader(user: user),
+          if (state.type == ProfileStateType.OTHER_USER_LOADED)
+            UserAdditionalHeader(user: user),
+          if (state.type == ProfileStateType.OTHER_USER_LOADED)
+            VotesBar(votes: user.votes),
+          if (state.type == ProfileStateType.OTHER_USER_LOADED)
+            user.canBeThanked
+                ? SliverPadding(
+                    padding: EdgeInsets.only(
+                        top: 24, left: 20, right: 20, bottom: 12),
+                    sliver: SliverToBoxAdapter(
+                        child: ThanksButton(userId: user.id)))
+                : SliverToBoxAdapter(child: const SizedBox.shrink()),
 
-          UserMainInfo(user: user),
-          VotesBar(votes: user.votes),
-          // if (state.type == ProfileStateType.OTHER_USER_LOADED)
-          //   OtherUserPageHeader(user: user),
           Awards(awards: user.badges),
           Contacts(contacts: user.contacts),
           BasicInformation(info: user.basicInformation),
           if (user.absence != null)
-            SliverToBoxAdapter(
-              child: BasicInfoRow(
-                title: 'Статус',
-                value: user.absence!.reason ?? "",
+            SliverPadding(
+              padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
+              sliver: SliverToBoxAdapter(
+                child: BasicInfoRow(
+                  title: 'Статус',
+                  value: user.absence!.reason ?? "",
+                ),
               ),
             ),
           if (user.shiftMan != null)
@@ -132,13 +149,6 @@ class Body extends StatelessWidget {
 
           Diagnostics(logFile: logFile),
           if (state.type == ProfileStateType.LOADED) ProfileSecuritySection(),
-          SliverToBoxAdapter(
-            child: Container(
-              width: 40,
-              height: 300,
-              color: Colors.green,
-            ),
-          )
 
           /// todo AboutMyField
           // AboutMyField(user: user, scrollController: _scrollController,)
