@@ -26,7 +26,7 @@ class NewsFilterSlider extends StatelessWidget {
           return Container(
             height: SizeConfig(context, 28.0).getProportionateScreenHeight,
             margin: EdgeInsets.only(top: 8.0),
-            child: getFilterListView(state.tabs ?? []),
+            child: getFilterListView(state.tabs ?? _getFilterItems()),
           );
         });
   }
@@ -68,16 +68,17 @@ class NewsFilterSlider extends StatelessWidget {
   }
 
   List<FilterItem> _getFilterItems() {
-    return [
+    return <FilterItem>[
+      // FilterItem(title: _strings.allNews, code: 'main'),
       FilterItem(title: _strings.allNews, code: 'news'),
       FilterItem(
-          title: '# ${_strings.sustainableDevelopment}',
-          code: 'stable_development'),
-      FilterItem(title: '# ${_strings.volunteerNews}', code: 'volunteer_news'),
-      FilterItem(title: '# ${_strings.sportNews}', code: 'information_sport'),
-      FilterItem(title: '# ${_strings.msNews}', code: 'information_ms'),
-      FilterItem(title: "# ${_strings.newsIdea}", code: 'news-idea'),
-      FilterItem(title: '# ${_strings.openUniversity}', code: 'open_university')
+          title: _strings.sustainableDevelopment, code: 'stable_development'),
+      FilterItem(title: _strings.safety, code: 'safety'),
+      FilterItem(title: _strings.it, code: 'it'),
+      FilterItem(title: _strings.volunteerNews, code: 'volunteer_news'),
+      FilterItem(title: _strings.sportNews, code: 'information_sport'),
+      FilterItem(title: _strings.newsIdea, code: 'news-idea'),
+      // FilterItem(title: '# ${_strings.openUniversity}', code: 'open_university')
     ];
   }
 }
