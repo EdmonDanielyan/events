@@ -38,7 +38,7 @@ class PersonalPageHeader extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         pinned: true,
-        expandedHeight: 240.0,
+        expandedHeight: 250.0,
         flexibleSpace: FlexibleSpaceBar(
           centerTitle: true,
           collapseMode: CollapseMode.pin,
