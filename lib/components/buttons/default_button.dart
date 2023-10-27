@@ -14,6 +14,7 @@ class DefaultButton extends StatelessWidget {
   final double? height;
   final double? width;
   final bool enabled;
+  final bool? onlyIcon;
 
   const DefaultButton({
     Key? key,
@@ -28,6 +29,7 @@ class DefaultButton extends StatelessWidget {
     this.height,
     this.width,
     this.enabled = true,
+    this.onlyIcon,
   }) : super(key: key);
 
   @override
@@ -39,29 +41,32 @@ class DefaultButton extends StatelessWidget {
         width: width,
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
         decoration: BoxDecoration(
-          color: buttonColor ?? Palette.transparent,
-          borderRadius: BorderRadius.circular(64.0),
-          border: Border.all(
-            color: borderColor ?? Palette.transparent,
-          )
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (prefixIcon != null)...[
-              prefixIcon!,
-              const SizedBox(width: 8.0,)
-              ],
-            Text(
-              title,
-              style: FontStyles.rubikP1Medium(color: textColor),
-            ),
-            if (suffixIcon != null)...[
-              const SizedBox(width: 8.0),
-              suffixIcon!,
-            ],
-          ],
-        ),
+            color: buttonColor ?? Palette.transparent,
+            borderRadius: BorderRadius.circular(64.0),
+            border: Border.all(
+              color: borderColor ?? Palette.transparent,
+            )),
+        child: onlyIcon == null
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (prefixIcon != null) ...[
+                    prefixIcon!,
+                    const SizedBox(
+                      width: 8.0,
+                    )
+                  ],
+                  Text(
+                    title,
+                    style: FontStyles.rubikP1Medium(color: textColor),
+                  ),
+                  if (suffixIcon != null) ...[
+                    const SizedBox(width: 8.0),
+                    suffixIcon!,
+                  ],
+                ],
+              )
+            : Center(child: prefixIcon),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/utils/date_functions.dart';
 import 'package:ink_mobile/models/event_data.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../messenger/functions/size_config.dart';
 
@@ -61,7 +62,7 @@ class EventsListElement extends StatelessWidget {
               style: FontStyles.rubikH4(color: Palette.textBlack),
               textAlign: TextAlign.start,
             ),
-          )
+          ),
         ],
       ),
     );

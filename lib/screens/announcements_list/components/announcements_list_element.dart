@@ -5,6 +5,7 @@ import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 class AnnouncementsListElement extends StatelessWidget {
   static const String DEFAULT_PREVIEW_PICTURE_LINK =
@@ -66,10 +67,23 @@ class AnnouncementsListElement extends StatelessWidget {
                       style: FontStyles.rubikP2(color: Palette.textBlack50),
                     ),
                   ),
+                  InkWell(
+                      onTap: () {
+                        Share.share(
+                            'https://portal.irkutskoil.ru/announcements/${announcement.id}/');
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        child: Icon(Icons.share,
+                            size: 16, color: Palette.textBlack50),
+                      )),
                 ],
               ),
             ),
-            Divider(color: Palette.text20Grey, height: 48.0,),
+            Divider(
+              color: Palette.text20Grey,
+              height: 48.0,
+            ),
           ],
         ),
       ),

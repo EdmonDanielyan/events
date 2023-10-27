@@ -23,74 +23,82 @@ class DeepLinkHandler {
           NavigationMethods.openEventsList(currentContext!);
           break;
         } else {
-          switch (pathParts.elementAt(1)) {
-            TODO: // Добавить id объявления на беке
-            case "ads":
-              NavigationMethods.openAnnouncementsList(currentContext!);
-              break;
-            case "news":
-              if (pathParts.length == 2) {
-                NavigationMethods.openNewsList(currentContext!);
+          if ((pathParts.length == 2 &&
+              RegExp(r'^\d+$').hasMatch(pathParts.elementAt(1)))) {
+            NavigationMethods.openEventDetail(
+              currentContext!,
+              int.parse(pathParts.elementAt(1)),
+            );
+            break;
+          } else
+            switch (pathParts.elementAt(1)) {
+              TODO: // Добавить id объявления на беке
+              case "ads":
+                NavigationMethods.openAnnouncementsList(currentContext!);
                 break;
-              } else {
-                NavigationMethods.openNewsDetail(
-                  currentContext!,
-                  int.parse(pathParts.elementAt(2)),
-                );
+              case "news":
+                if (pathParts.length == 2) {
+                  NavigationMethods.openNewsList(currentContext!);
+                  break;
+                } else {
+                  NavigationMethods.openNewsDetail(
+                    currentContext!,
+                    int.parse(pathParts.elementAt(2)),
+                  );
+                  break;
+                }
+              case "reg":
+                //События с регистрацией, пока заглушка(events/reg/...)
+                NavigationMethods.openEventsList(currentContext!);
                 break;
-              }
-            case "reg":
-              //События с регистрацией, пока заглушка(events/reg/...)
-              NavigationMethods.openEventsList(currentContext!);
-              break;
 
-            // Разделы новстей
+              // Разделы новстей
 
-            // Устойчивое развитие
-            case "development_ink":
-              //Поиск новости по ID
-              if (pathParts.length == 3) {
-                String id =
-                    pathParts.elementAt(2).replaceAll('?ELEMENT_ID=', '');
-                NavigationMethods.openNewsDetail(
-                  currentContext!,
-                  int.parse(id),
-                );
+              // Устойчивое развитие
+              case "development_ink":
+                //Поиск новости по ID
+                if (pathParts.length == 3) {
+                  String id =
+                      pathParts.elementAt(2).replaceAll('?ELEMENT_ID=', '');
+                  NavigationMethods.openNewsDetail(
+                    currentContext!,
+                    int.parse(id),
+                  );
+                  break;
+                } else {
+                  NavigationMethods.openNewsList(currentContext!,
+                      arguments: {'filter': 'stable_development'});
+                  break;
+                }
+              case "heading":
+                // Информационные технологии
+                if (pathParts.elementAt(2) == "240922") {
+                  // Узнать путь для апишки, ошибка запроса, information_ms, literacy
+                  NavigationMethods.openNewsList(currentContext!,
+                      arguments: {'filter': 'it'});
+                  break;
+                } else {
+                  // Культура безопасности
+                  NavigationMethods.openNewsList(currentContext!,
+                      arguments: {'filter': 'safety'});
+                  break;
+                }
+              case "news-idea":
+                if (pathParts.length == 3) {
+                  NavigationMethods.openNewsDetail(
+                    currentContext!,
+                    int.parse(pathParts.elementAt(2)),
+                  );
+                  break;
+                } else {
+                  NavigationMethods.openNewsList(currentContext!,
+                      arguments: {'filter': 'news-idea'});
+                  break;
+                }
+              default:
+                NavigationMethods.backToMainScreen(currentContext!);
                 break;
-              } else {
-                NavigationMethods.openNewsList(currentContext!,
-                    arguments: {'filter': 'stable_development'});
-                break;
-              }
-            case "heading":
-              // Информационные технологии
-              if (pathParts.elementAt(2) == "240922") {
-                // Узнать путь для апишки, ошибка запроса, information_ms, literacy
-                NavigationMethods.openNewsList(currentContext!,
-                    arguments: {'filter': 'it'});
-                break;
-              } else {
-                // Культура безопасности
-                NavigationMethods.openNewsList(currentContext!,
-                    arguments: {'filter': 'safety'});
-                break;
-              }
-            case "news-idea":
-              if (pathParts.length == 3) {
-                NavigationMethods.openNewsDetail(
-                  currentContext!,
-                  int.parse(pathParts.elementAt(2)),
-                );
-                break;
-              } else {
-                NavigationMethods.openNewsList(currentContext!,
-                    arguments: {'filter': 'news-idea'});
-                break;
-              }
-            default:
-              NavigationMethods.backToMainScreen(currentContext!);
-              break;
-          }
+            }
         }
         break;
       // Волонтерское движеие
@@ -162,6 +170,25 @@ class DeepLinkHandler {
           NavigationMethods.backToMainScreen(currentContext!);
           break;
         }
+      case "messenger":
+        NavigationMethods.openChatInviteID(
+          currentContext!,
+          int.parse(pathParts.elementAt(1)),
+        );
+        break;
+      case "announcements":
+        NavigationMethods.openAnnouncementDetail(
+          currentContext!,
+          int.parse(pathParts.elementAt(1)),
+        );
+        break;
+      // case "event_detail":
+      //   NavigationMethods.openEventDetail(
+      //     currentContext!,
+      //     int.parse(pathParts.elementAt(1)),
+      //   );
+      //   break;
+
       default:
         NavigationMethods.backToMainScreen(currentContext!);
         break;

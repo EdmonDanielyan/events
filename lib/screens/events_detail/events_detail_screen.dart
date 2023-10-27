@@ -14,6 +14,7 @@ import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/event_data.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../messenger/functions/size_config.dart';
 import '../../messenger/utils/date_functions.dart';
@@ -151,22 +152,32 @@ class EventDetailScreen extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(bottom: 30, top: 20),
             margin: EdgeInsets.symmetric(horizontal: 20),
-            child: ((event.isActual ?? true) &&
-                (event.placesAvailable ?? true))
+            child: ((event.isActual ?? true) && (event.placesAvailable ?? true))
                 ? DefaultButton(
-              title: isMember
-                  ? _strings.cancelParticipating
-                  : _strings.iWillParticipate,
-              borderColor:
-              isMember ? Palette.redF1C : Palette.greenE4A,
-              textColor: isMember ? Palette.redF1C : Palette.white,
-              buttonColor:
-              isMember ? Palette.white : Palette.greenE4A,
-              onTap: () => eventDetailCubit
-                  .changeParticipationStatus(event.id!),
-            )
+                    title: isMember
+                        ? _strings.cancelParticipating
+                        : _strings.iWillParticipate,
+                    borderColor: isMember ? Palette.redF1C : Palette.greenE4A,
+                    textColor: isMember ? Palette.redF1C : Palette.white,
+                    buttonColor: isMember ? Palette.white : Palette.greenE4A,
+                    onTap: () =>
+                        eventDetailCubit.changeParticipationStatus(event.id!),
+                  )
                 : const SizedBox.shrink(),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: DefaultButton(
+              title: 'Поделиться',
+              onTap: () {
+                Share.share('https://portal.irkutskoil.ru/events/${event.id}/');
+              },
+              buttonColor: Palette.transparent,
+              borderColor: Palette.greenE4A,
+              textColor: Palette.greenE4A,
+            ),
+          ),
+          SizedBox(height: 10),
           // BlocBuilder<EventDetailCubit, EventsDetailState>(
           //     bloc: eventDetailCubit,
           //     builder: (context, state) {

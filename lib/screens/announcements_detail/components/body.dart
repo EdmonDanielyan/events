@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
 import 'package:ink_mobile/components/html.dart';
 import 'package:ink_mobile/components/layout_builder/layout_builder.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
@@ -9,6 +10,7 @@ import 'package:ink_mobile/cubit/announcements_list/announcements_list_cubit.dar
 import 'package:ink_mobile/cubit/main_page/announcements_list_cubit.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Body extends StatefulWidget {
   final AnnouncementData announcement;
@@ -60,7 +62,7 @@ class _BodyState extends State<Body> {
                     Text(
                       widget.announcement.dateCreate != null
                           ? DateFormat('dd.MM.yyyy')
-                          .format(widget.announcement.dateCreate!)
+                              .format(widget.announcement.dateCreate!)
                           : '',
                       style: FontStyles.rubikP2(color: Palette.textBlack50),
                     ),
@@ -92,7 +94,19 @@ class _BodyState extends State<Body> {
               ),
               CustomHtml(
                 data: widget.announcement.detailText ?? '',
-              )
+              ),
+              SizedBox(height: 15),
+              DefaultButton(
+                title: 'Поделиться',
+                onTap: () {
+                  Share.share(
+                      'https://portal.irkutskoil.ru/announcements/${widget.announcement.id}/');
+                },
+                buttonColor: Palette.transparent,
+                borderColor: Palette.greenE4A,
+                textColor: Palette.greenE4A,
+              ),
+              SizedBox(height: 10),
             ],
           ),
         );

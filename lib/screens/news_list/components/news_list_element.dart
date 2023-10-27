@@ -7,6 +7,7 @@ import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 class NewsListElement extends StatelessWidget {
   const NewsListElement({Key? key, required this.newsItem}) : super(key: key);
@@ -132,6 +133,17 @@ class NewsListElement extends StatelessWidget {
                             ],
                           ),
                         ),
+                        InkWell(
+                            onTap: () {
+                              Share.share(
+                                  'https://portal.irkutskoil.ru/news/${newsItem.id}/');
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 16, right: 8),
+                              child: Icon(Icons.share,
+                                  size: 16, color: Palette.textBlack50),
+                            )),
                         Expanded(
                           child: Row(
                             mainAxisSize: MainAxisSize.max,

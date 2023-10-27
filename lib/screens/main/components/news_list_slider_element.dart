@@ -5,6 +5,7 @@ import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../messenger/functions/size_config.dart';
 
@@ -120,7 +121,8 @@ class NewsListSliderElement extends StatelessWidget {
                                             newsItem.likeCount != null
                                                 ? newsItem.likeCount.toString()
                                                 : '0',
-                                            style: FontStyles.rubikP2(color: Palette.textBlack50),
+                                            style: FontStyles.rubikP2(
+                                                color: Palette.textBlack50),
                                           ),
                                         )
                                       ],
@@ -146,12 +148,25 @@ class NewsListSliderElement extends StatelessWidget {
                                                 ? newsItem.commentCount
                                                     .toString()
                                                 : '0',
-                                            style: FontStyles.rubikP2(color: Palette.textBlack50),
+                                            style: FontStyles.rubikP2(
+                                                color: Palette.textBlack50),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
+                                  InkWell(
+                                      onTap: () {
+                                        Share.share(
+                                            'https://portal.irkutskoil.ru/news/${newsItem.id}/');
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16, right: 5),
+                                        child: Icon(Icons.share,
+                                            size: 16,
+                                            color: Palette.textBlack50),
+                                      )),
                                   Expanded(
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
@@ -172,7 +187,8 @@ class NewsListSliderElement extends StatelessWidget {
                                                     ? newsItem.viewCount
                                                         .toString()
                                                     : '0',
-                                                style: FontStyles.rubikP2(color: Palette.textBlack50),
+                                                style: FontStyles.rubikP2(
+                                                    color: Palette.textBlack50),
                                               ),
                                             ),
                                           ],

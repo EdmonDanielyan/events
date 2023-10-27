@@ -130,4 +130,13 @@ class NavigationMethods {
     final userKey = "/personal";
     Navigator.of(context).pushNamed(userKey, arguments: {"id": userID});
   }
+
+  static void openChatInviteID(BuildContext context, int chatID) {
+    final chatsCubit = getIt<CachedChatsCubit>();
+    final chat = chatsCubit.state.chats
+        .firstWhereOrNull((selectedChat) => selectedChat.id == chatID);
+    if (chat != null) {
+      _openChat(context, chatID);
+    }
+  }
 }

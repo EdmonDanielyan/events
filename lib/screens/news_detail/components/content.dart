@@ -5,6 +5,7 @@ import 'package:ink_mobile/components/html.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/components/buttons/default_button.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Content extends StatefulWidget {
   final int viewCount;
@@ -62,7 +63,7 @@ class _ContentState extends State<Content> {
                   textColor: Palette.greenE4A,
                   borderColor: Palette.greenE4A,
                   buttonColor: Palette.transparent,
-                  width: MediaQuery.of(context).size.width * 0.42,
+                  width: MediaQuery.of(context).size.width * 0.28,
                   onTap: widget.onLike,
                 ),
                 DefaultButton(
@@ -76,10 +77,24 @@ class _ContentState extends State<Content> {
                   textColor: Palette.greenE4A,
                   borderColor: Palette.greenE4A,
                   buttonColor: Palette.transparent,
-                  width: MediaQuery.of(context).size.width * 0.42,
+                  width: MediaQuery.of(context).size.width * 0.28,
                   onTap: () {
                     Navigator.pushNamed(context, '/news_comment',
                         arguments: {'id': widget.id});
+                  },
+                ),
+                DefaultButton(
+                  onlyIcon: true,
+                  title: '',
+                  prefixIcon:
+                      Icon(Icons.share, size: 20, color: Palette.greenE4A),
+                  textColor: Palette.greenE4A,
+                  borderColor: Palette.greenE4A,
+                  buttonColor: Palette.transparent,
+                  width: MediaQuery.of(context).size.width * 0.28,
+                  onTap: () {
+                    Share.share(
+                        'https://portal.irkutskoil.ru/news/${widget.id}/');
                   },
                 ),
               ],
