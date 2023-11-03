@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ink_mobile/components/buttons/default_button.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/bottom_sheet/bottom_sheet.dart';
@@ -14,6 +15,7 @@ import 'package:ink_mobile/messenger/screens/chat_info/components/app_bar.dart';
 import 'package:ink_mobile/messenger/screens/chat_info/components/edit_screen.dart';
 import 'package:ink_mobile/messenger/screens/chat_list/components/cached_user_builder.dart';
 import 'package:ink_mobile/setup.dart';
+import 'package:share_plus/share_plus.dart';
 import 'components/add_btn.dart';
 import 'components/chat_info_btn.dart';
 import 'components/chat_info_top.dart';
@@ -156,6 +158,22 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                       ChatInfoAddBtn(
                         onPressed: (_) => widget.onAddUser?.call(context, chat),
                         cachedChatsCubit: widget.cachedChatsCubit,
+                      ),
+                      const SizedBox(height: 16.0),
+                      DefaultButton(
+                        onTap: () {
+                          Share.share(
+                              'https://portal.irkutskoil.ru/chats/invite/${chat.id}');
+                        },
+                        title: "Поделиться ссылкой",
+                        borderColor: Palette.greenE4A,
+                        textColor: Palette.greenE4A,
+                        // suffixIcon: SvgPicture.asset(
+                        //   IconLinks.USER_ADD_ICON,
+                        //   height: 20.0,
+                        //   width: 20.0,
+                        //   color: Palette.greenE4A,
+                        // ),
                       ),
                     ],
                     const SizedBox(height: 16.0),

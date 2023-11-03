@@ -170,10 +170,10 @@ class DeepLinkHandler {
           NavigationMethods.backToMainScreen(currentContext!);
           break;
         }
-      case "messenger":
-        NavigationMethods.openChatInviteID(
+      case "chats":
+        NavigationMethods.openChatInviteLink(
           currentContext!,
-          int.parse(pathParts.elementAt(1)),
+          int.parse(pathParts.elementAt(2)),
         );
         break;
       case "announcements":
@@ -182,13 +182,6 @@ class DeepLinkHandler {
           int.parse(pathParts.elementAt(1)),
         );
         break;
-      // case "event_detail":
-      //   NavigationMethods.openEventDetail(
-      //     currentContext!,
-      //     int.parse(pathParts.elementAt(1)),
-      //   );
-      //   break;
-
       default:
         NavigationMethods.backToMainScreen(currentContext!);
         break;
