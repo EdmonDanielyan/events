@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/cubit/profile/sources/fetch/network.dart';
 import 'package:ink_mobile/extensions/get_user_success.dart';
+import 'package:ink_mobile/messenger/api/rest_client/chat/get_list/response.dart';
+import 'package:ink_mobile/messenger/api/rest_client/chat/invite/request.dart';
+import 'package:ink_mobile/messenger/api/rest_client/chat/remove_participant/request.dart';
+import 'package:ink_mobile/messenger/api/rest_client/rest_client.dart';
+import 'package:ink_mobile/messenger/api/services/chat/get_list_handle.dart';
 import 'package:ink_mobile/messenger/functions/create_info_message.dart';
 import 'package:ink_mobile/messenger/handler/create_chat.dart';
 import 'package:ink_mobile/messenger/handler/fetch/chats.dart';
+import 'package:ink_mobile/messenger/handler/senders/invite_chat_link_new.dart';
 import 'package:ink_mobile/messenger/handler/senders/invite_link.dart';
 import 'package:ink_mobile/messenger/handler/senders/send_message_handler.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
@@ -137,24 +143,47 @@ class NavigationMethods {
   }
 
   static void openChatInviteLink(BuildContext context, int chatID) async {
-    String userId = await Token.getUserId();
-    // print(userId);
-    // int.parse(userId);
-    // print(userId);
-    final List<int> users = [int.parse(userId)];
-    await InviteLinkSenderHandler(chatID, users).call();
-    await FetchChats().call();
-    openChatByLink(context, chatID, int.parse(userId));
+    // final response = await const MainApi().client.getChatList();
+    // final chatListResponse =
+    //     GetChatListResponse.fromJson(response as Map<String, dynamic>);
+    // final itog = chatListResponse.data as List<int>;
+    // if (itog.contains(chatID)) {
+    //   openChatByID(context, chatID);
+    // } else {
+    final chatsCubit = getIt<CachedChatsCubit>();
+    await chatsCubit.fetchChats();
+    final response = await chatsCubit.getChatById(chatID);
+    if (response is Chat) {
+      _openChat(context, chatID);
+    } else {
+      // await chatsCubit.fetchChats();
+      // // await FetchChats().call();
+      // final contains = chatsCubit.getChatById(chatID);
+      // final me = chatsCubit.me;
+      // if (contains!.participants.contains(me)) {
+      //   _openChat(context, chatID);
+      // } else {
+      String userId = await Token.getUserId();
+      // print(userId);
+      // int.parse(userId);
+      // print(userId);
+      final List<int> users = [int.parse(userId)];
+      await InviteLinkSenderHandler(chatID, users).call();
+      await chatsCubit.fetchChats();
+      // await FetchChats().call();
+      openChatByLink(context, chatID, int.parse(userId));
+    }
     // await Token.getUserId();
   }
 
   static void openChatByLink(
       BuildContext context, int chatID, int userID) async {
     final chatsCubit = getIt<CachedChatsCubit>();
-    final chat = chatsCubit.state.chats
-        .firstWhereOrNull((selectedChat) => selectedChat.id == chatID);
-    final cachedUsersCubit = getIt<CachedUsersCubit>();
-    User? user = cachedUsersCubit.getUser(userID);
+    final chat = chatsCubit.getChatById(chatID);
+    // final chat = chatsCubit.state.chats
+    //     .firstWhereOrNull((selectedChat) => selectedChat.id == chatID);
+    // final cachedUsersCubit = getIt<CachedUsersCubit>();
+    User? user = chatsCubit.me;
     if (user == null) {
       await Token.setNewTokensIfExpired();
       final response =
@@ -163,44 +192,10 @@ class NavigationMethods {
       user = User.fromUserProfileData(userData);
     }
     if (chat != null) {
-      List<String> participantsNames = [];
-      participantsNames.add(user.name);
-      final Set ids = chat.participants.map((e) => e.id).toSet();
-
-      if (ids.contains(userID)) {
-        final messageBody = participantsNames.first + ' добавлен(а) в чат';
-        final msg = CreateInfoMessage(chatID, messageBody).call();
-        SendMessageHandler([msg], chat).call();
-        _openChat(context, chatID);
-      } else {
-        final messageBody = participantsNames.first + ' добавлен(а) в чат';
-        final msg = CreateInfoMessage(chatID, messageBody).call();
-        SendMessageHandler([msg], chat).call();
-        _openChat(context, chatID);
-      }
+      final messageBody = user.name + ' добавлен в чат';
+      final msg = CreateInfoMessage(chatID, messageBody).call();
+      SendMessageHandler([msg], chat).call();
+      _openChat(context, chatID);
     }
   }
 }
- // InviteChatSenderHandler();
-    // final chatsCubit = getIt<CachedChatsCubit>();
-    // final chat = chatsCubit.state.chats
-    //     .firstWhereOrNull((selectedChat) => selectedChat.id == chatID);
-    // if (chat != null) {
-    //   _openChat(context, chatID);
-    // }
-
-
-// int userIdToFind = 1234;
-
-// bool userFound = false;
-
-// for (User user in list) {
-//   if (user.id == userIdToFind) {
-//     userFound = true;
-//     break;
-//   }
-// }
-
-// if (!userFound) {
-//   // выполняем нужные действия, если пользователь не найден
-// }
