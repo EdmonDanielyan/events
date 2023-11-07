@@ -158,7 +158,7 @@ class NewsListSliderElement extends StatelessWidget {
                                   InkWell(
                                       onTap: () {
                                         Share.share(
-                                            'https://portal.irkutskoil.ru/news/${newsItem.id}/');
+                                            'https://portal.irkutskoil.ru/events/news/${newsItem.id}/');
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.only(

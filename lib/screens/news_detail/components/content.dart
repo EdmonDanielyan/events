@@ -94,7 +94,7 @@ class _ContentState extends State<Content> {
                   width: MediaQuery.of(context).size.width * 0.28,
                   onTap: () {
                     Share.share(
-                        'https://portal.irkutskoil.ru/news/${widget.id}/');
+                        'https://portal.irkutskoil.ru/events/news/${widget.id}/');
                   },
                 ),
               ],
