@@ -113,31 +113,31 @@ class _ReferencesFormState extends State<ReferencesForm> {
             ),
             if (stage == 2) ...[
               if (currentReferenceItem.fields.fio) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 fioWidget(),
               ],
               if (currentReferenceItem.fields.position) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 positionWidget(),
               ],
               if (currentReferenceItem.fields.department) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 departmentWidget(),
               ],
               if (currentReferenceItem.fields.fioChildren) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 childsFioWidget(),
               ],
               if (currentReferenceItem.fields.files) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 fileWidget(),
               ],
               if (currentReferenceItem.fields.phone) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 contactPhoneWidget(),
               ],
               if (currentReferenceItem.fields.delivery) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 deliveryMethodWidget(context),
                 showEmail
                     ? Padding(
@@ -146,41 +146,41 @@ class _ReferencesFormState extends State<ReferencesForm> {
                     : const SizedBox()
               ],
               if (deliveryAddress) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 deliveryAddressWidget(),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 deliveryZipCodeWidget(),
               ],
               if (currentReferenceItem.fields.quantity) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
                   _strings.countInstances,
                   style: TextStyle(fontSize: widget.isTablet ? 18 : 14),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 quantityWidget(),
               ],
               if (currentReferenceItem.fields.toProvideIn) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 toProvideInWidget(),
               ],
               if (currentReferenceItem.fields.period) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 periodWidget(),
               ],
               if (currentReferenceItem.fields.periodFrom) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 periodFromWidget(),
               ],
               if (currentReferenceItem.fields.periodTo) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 periodToWidget(),
               ],
               if (currentReferenceItem.description.length > 0) ...[
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 descriptionWidget(),
               ],
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               btnWidget(context),
             ],
           ],

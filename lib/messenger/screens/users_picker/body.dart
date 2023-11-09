@@ -71,7 +71,6 @@ class _BodyState extends State<Body> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -93,8 +92,8 @@ class _BodyState extends State<Body> {
                           ),
                           child: SearchField(
                             hint: "Поиск",
-                            onChanged: (str) => chatUsersPickerCubit
-                                .onSearch(str, widget.chat),
+                            onChanged: (str) =>
+                                chatUsersPickerCubit.onSearch(str, widget.chat),
                           ),
                         ),
                         BlocBuilder<UsersCubit, List<User>>(
@@ -113,16 +112,15 @@ class _BodyState extends State<Body> {
                           },
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              top: 16.0, bottom: 32.0),
+                          padding:
+                              const EdgeInsets.only(top: 16.0, bottom: 32.0),
                           child: Text(
                             "Выберите собеседника или собеседников, если хотите создать групповой чат",
-                            style: FontStyles.rubikP2(
-                                color: Palette.textBlack50),
+                            style:
+                                FontStyles.rubikP2(color: Palette.textBlack50),
                           ),
                         ),
-                        BlocBuilder<ChatUsersPickerCubit,
-                            ChatUsersPickerState>(
+                        BlocBuilder<ChatUsersPickerCubit, ChatUsersPickerState>(
                           bloc: chatUsersPickerCubit,
                           builder: (context, state) {
                             List<User> users = widget.chat != null
@@ -151,8 +149,7 @@ class _BodyState extends State<Body> {
                                             ?.call(selectedUsers.users);
                                       },
                                       onlineCubit: widget.onlineCubit,
-                                      cachedChatsCubit:
-                                          widget.cachedChatsCubit,
+                                      cachedChatsCubit: widget.cachedChatsCubit,
                                     );
                                   },
                                 );
@@ -171,7 +168,7 @@ class _BodyState extends State<Body> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 76.0,),
+                  const SizedBox(height: 76.0),
                 ],
               );
             },
@@ -181,37 +178,41 @@ class _BodyState extends State<Body> {
           child: Align(
             alignment: Alignment.bottomCenter,
             child: BlocBuilder<StringCubit, String>(
-              bloc: submitTxtCubit,
-              builder: (context, submitTxtState) {
-                return Container(
-                  color: Palette.white,
-                  height: 76.0,
-                  width: double.infinity,
-                  padding: EdgeInsets.all(16.0),
-                  child: BlocBuilder<UsersCubit, List<User>>(
-                    bloc: selectedUsers,
-                    builder: (context, usersState) {
-                      bool usersSelected = usersState.isNotEmpty;
-                      return DefaultButton(
-                        enabled: usersSelected,
-                        onTap: () => widget.onSubmit?.call(context, usersState),
-                        title: submitTxtState,
-                        buttonColor:
-                        usersSelected ? Palette.greenE4A : Palette.text20Grey,
-                        textColor:
-                        usersSelected ? Palette.white : Palette.text20Grey,
-                        suffixIcon: SvgPicture.asset(
-                          IconLinks.EDIT_ICON,
-                          height: 20.0,
-                          width: 20.0,
-                          color:
-                          usersSelected ? Palette.white : Palette.text20Grey,
-                        ),
-                      );
-                    },),
-                );
-              }
-            ),
+                bloc: submitTxtCubit,
+                builder: (context, submitTxtState) {
+                  return Container(
+                    color: Palette.white,
+                    height: 76.0,
+                    width: double.infinity,
+                    padding: EdgeInsets.all(16.0),
+                    child: BlocBuilder<UsersCubit, List<User>>(
+                      bloc: selectedUsers,
+                      builder: (context, usersState) {
+                        bool usersSelected = usersState.isNotEmpty;
+                        return DefaultButton(
+                          enabled: usersSelected,
+                          onTap: () =>
+                              widget.onSubmit?.call(context, usersState),
+                          title: submitTxtState,
+                          buttonColor: usersSelected
+                              ? Palette.greenE4A
+                              : Palette.text20Grey,
+                          textColor: usersSelected
+                              ? Palette.white
+                              : Palette.text20Grey,
+                          suffixIcon: SvgPicture.asset(
+                            IconLinks.EDIT_ICON,
+                            height: 20.0,
+                            width: 20.0,
+                            color: usersSelected
+                                ? Palette.white
+                                : Palette.text20Grey,
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }),
           ),
         )
       ],

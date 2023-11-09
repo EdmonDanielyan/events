@@ -81,7 +81,7 @@ class _AuthButtonsState extends State<AuthButtons> {
               widget.errorMessage!,
               style: FontStyles.rubikP3Medium(color: Palette.redF1C),
             ),
-            const SizedBox(height: 20.0,),
+            const SizedBox(height: 20.0),
           ],
           btnWidget(context),
           Padding(

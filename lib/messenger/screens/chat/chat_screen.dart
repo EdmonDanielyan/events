@@ -420,7 +420,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                   scrollToCurrentSearchItem: _scrollToCurrentSearchItem,
                   onSearch: _onSearch,
                 );
-              return SizedBox(height: 30);
+              return const SizedBox(height: 30);
             },
           ),
         ],

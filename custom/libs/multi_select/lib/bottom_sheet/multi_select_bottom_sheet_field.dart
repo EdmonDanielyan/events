@@ -451,7 +451,7 @@ class __MultiSelectBottomSheetFieldViewState<V>
         ),
         _buildInheritedChipDisplay(),
         widget.state != null && widget.state!.hasError
-            ? SizedBox(height: 5)
+            ? const SizedBox(height: 5)
             : Container(),
         widget.state != null && widget.state!.hasError
             ? Row(

@@ -74,9 +74,9 @@ class _BodyState extends State<Body> {
                             : _strings.registration,
                         onTap: () => isIOS
                             ? launchUrl(UrlsConfig.signInInstructionUrl,
-                            formatUrl: false)
+                                formatUrl: false)
                             : launchUrl(
-                            'https://portal.irkutskoil.ru/login/?act=register'),
+                                'https://portal.irkutskoil.ru/login/?act=register'),
                         buttonColor: isIOS ? null : Palette.transparent,
                         textColor: Palette.white,
                         borderColor: Palette.white,
@@ -85,15 +85,13 @@ class _BodyState extends State<Body> {
                       if (isIOS) ...[
                         DefaultLinkButton(
                             link: UrlsConfig.signInInstructionUrl),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                       ],
                       DefaultLinkButton(
                         txt: _strings.confPolicy,
                         link: ImportantUrls.policyConf,
                       ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
+                      const SizedBox(height: 10.0),
                       Stack(
                         alignment: AlignmentDirectional.center,
                         children: [

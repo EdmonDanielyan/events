@@ -177,12 +177,7 @@ class EventDetailScreen extends StatelessWidget {
               textColor: Palette.greenE4A,
             ),
           ),
-          SizedBox(height: 10),
-          // BlocBuilder<EventDetailCubit, EventsDetailState>(
-          //     bloc: eventDetailCubit,
-          //     builder: (context, state) {
-          //       return ;
-          //     }),
+          const SizedBox(height: 10),
         ],
       ),
     );

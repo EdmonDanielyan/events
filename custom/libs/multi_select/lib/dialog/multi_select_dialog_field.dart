@@ -96,43 +96,43 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
   final FormFieldSetter<List<V>>? onSaved;
   final GlobalKey<FormFieldState>? key;
   FormFieldState<List<V>>? state;
-  
+
   final double fontsize;
 
-  MultiSelectDialogField({
-    required this.items,
-    required this.onConfirm,
-    this.title,
-    this.buttonText,
-    this.buttonIcon,
-    this.listType,
-    this.decoration,
-    this.onSelectionChanged,
-    this.chipDisplay,
-    this.searchable,
-    this.confirmText,
-    this.cancelText,
-    this.barrierColor,
-    this.selectedColor,
-    this.searchHint,
-    this.height,
-    this.colorator,
-    this.backgroundColor,
-    this.unselectedColor,
-    this.searchIcon,
-    this.closeSearchIcon,
-    this.itemsTextStyle,
-    this.searchTextStyle,
-    this.searchHintStyle,
-    this.selectedItemsTextStyle,
-    this.checkColor,
-    this.onSaved,
-    this.validator,
-    this.initialValue,
-    this.autovalidateMode = AutovalidateMode.disabled,
-    this.key,
-    required this.fontsize
-  }) : super(
+  MultiSelectDialogField(
+      {required this.items,
+      required this.onConfirm,
+      this.title,
+      this.buttonText,
+      this.buttonIcon,
+      this.listType,
+      this.decoration,
+      this.onSelectionChanged,
+      this.chipDisplay,
+      this.searchable,
+      this.confirmText,
+      this.cancelText,
+      this.barrierColor,
+      this.selectedColor,
+      this.searchHint,
+      this.height,
+      this.colorator,
+      this.backgroundColor,
+      this.unselectedColor,
+      this.searchIcon,
+      this.closeSearchIcon,
+      this.itemsTextStyle,
+      this.searchTextStyle,
+      this.searchHintStyle,
+      this.selectedItemsTextStyle,
+      this.checkColor,
+      this.onSaved,
+      this.validator,
+      this.initialValue,
+      this.autovalidateMode = AutovalidateMode.disabled,
+      this.key,
+      required this.fontsize})
+      : super(
             key: key,
             onSaved: onSaved,
             validator: validator,
@@ -431,7 +431,7 @@ class __MultiSelectDialogFieldViewState<V>
         ),
         _buildInheritedChipDisplay(),
         widget.state != null && widget.state!.hasError
-            ? SizedBox(height: 5)
+            ? const SizedBox(height: 5)
             : Container(),
         widget.state != null && widget.state!.hasError
             ? Row(

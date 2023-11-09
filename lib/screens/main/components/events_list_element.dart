@@ -44,23 +44,46 @@ class EventsListElement extends StatelessWidget {
                     },
                   ),
           ),
-          Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  _getEventTimeAndPlace(),
-                  style: FontStyles.rubikP2(color: Palette.textBlack50),
-                  textAlign: TextAlign.start,
-                ),
-              )),
-          Container(
-            margin: EdgeInsets.only(top: 8, bottom: 5),
+          const SizedBox(height: 20),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              _getEventTimeAndPlace(),
+              style: FontStyles.rubikP2(color: Palette.textBlack50),
+              textAlign: TextAlign.start,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Align(
             alignment: Alignment.topLeft,
             child: Text(
               event.title ?? '',
               style: FontStyles.rubikH4(color: Palette.textBlack),
               textAlign: TextAlign.start,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Align(
+            alignment: Alignment.centerRight,
+            child: InkWell(
+              onTap: () {
+                Share.share('https://portal.irkutskoil.ru/events/${event.id}/');
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 12, bottom: 12, left: 12),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Поделиться',
+                      style: FontStyles.rubikP1Medium(color: Palette.greenE4A),
+                    ),
+                    const SizedBox(width: 8),
+                    Icon(Icons.share, size: 16, color: Palette.greenE4A),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
