@@ -79,7 +79,8 @@ class AnnouncementsListElement extends StatelessWidget {
                                   'https://portal.irkutskoil.ru/announcements/${announcement.id}/');
                             },
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 8),
                               child: Icon(Icons.share,
                                   size: 16, color: Palette.textBlack50),
                             )),

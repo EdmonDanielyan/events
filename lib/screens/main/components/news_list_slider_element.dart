@@ -164,7 +164,7 @@ class NewsListSliderElement extends StatelessWidget {
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 16, right: 5),
+                                            left: 20, right: 5),
                                         child: Icon(Icons.share,
                                             size: 16,
                                             color: Palette.textBlack50),

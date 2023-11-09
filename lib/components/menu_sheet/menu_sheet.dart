@@ -72,7 +72,8 @@ class _MenuSheetState extends State<MenuSheet> {
       MenuSheetItem(
         title: strings.news,
         onTap: () {
-          Navigator.popAndPushNamed(context, '/news_list');
+          Navigator.popAndPushNamed(context, '/news_list',
+              arguments: {'filter': 'news'});
         },
         icon: SvgPicture.asset(
           IconLinks.NEWS_ICON_LINK,
