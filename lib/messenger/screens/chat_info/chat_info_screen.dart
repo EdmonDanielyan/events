@@ -159,7 +159,7 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                         onPressed: (_) => widget.onAddUser?.call(context, chat),
                         cachedChatsCubit: widget.cachedChatsCubit,
                       ),
-                      const SizedBox(height: 16.0),
+                      const SizedBox(height: 20.0),
                       DefaultButton(
                         onTap: () {
                           Share.share(
@@ -168,12 +168,6 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                         title: "Поделиться ссылкой",
                         borderColor: Palette.greenE4A,
                         textColor: Palette.greenE4A,
-                        // suffixIcon: SvgPicture.asset(
-                        //   IconLinks.USER_ADD_ICON,
-                        //   height: 20.0,
-                        //   width: 20.0,
-                        //   color: Palette.greenE4A,
-                        // ),
                       ),
                     ],
                     const SizedBox(height: 16.0),
