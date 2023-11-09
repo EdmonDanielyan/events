@@ -102,17 +102,13 @@ class _MessageBottomCardState extends State<MessageBottomCard> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-                offset: Offset(0.0, 0.0),
+                offset: const Offset(0.0, 0.0),
                 blurRadius: 24,
                 color: Palette.text5Grey,
                 blurStyle: BlurStyle.outer)
           ],
         ),
-        padding: const EdgeInsets.only(
-          right: 16.0,
-          left: 16.0,
-          bottom: 16.0,
-        ),
+        padding: const EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0),
         child: BlocBuilder<SearchSelectCubit, SearchSelectState>(
           bloc: widget.searchMessagesCubit,
           builder: (context, state) {

@@ -13,7 +13,9 @@ class MessageBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return MessageText(
       text,
-      color: isByMe ? Palette.white : Palette.textBlack,
+      // колор
+      // color: isByMe ? Palette.white : Palette.textBlack,
+      color: isByMe ? Palette.textBlack : Palette.textBlack,
       textOverflow: TextOverflow.ellipsis,
       textAlign: TextAlign.start,
     );

@@ -25,7 +25,8 @@ class MessageTick extends StatelessWidget {
     }
 
     String asset = "";
-    Color color = Palette.white.withOpacity(0.5);
+    // Color color = Palette.white.withOpacity(0.5);
+    // Color color = Palette.text20Grey;
 
     if (isRead) {
       asset = IconLinks.DOUBLE_CHECK_ICON_LINK;

@@ -118,9 +118,7 @@ class ChatCard extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            width: 8.0,
-          ),
+          const SizedBox(width: 8.0),
           Column(
             children: [
               if (chat.messages.isNotEmpty) ...[

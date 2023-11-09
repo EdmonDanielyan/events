@@ -12,7 +12,10 @@ class MessageEditedMark extends StatelessWidget {
     return GoogleText(
       "Ред.",
       fontStyle: FontStyle.italic,
-      color: isByMe ? Colors.white : Colors.black87,
+      // колор
+      //  isByMe ? Colors.white : Colors.black87,
+
+      color: isByMe ? Colors.black87 : Colors.black87,
       fontSize: SizeConfig(context, 9.5).getProportionateScreenHeight,
     );
   }

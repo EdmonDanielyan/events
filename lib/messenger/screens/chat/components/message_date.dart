@@ -18,7 +18,9 @@ class MessageDate extends StatelessWidget {
       DateFunctions(dateTime).hourMinute(),
       style: FontStyles.rubikP3(
         color: isByMe
-            ? Palette.white.withOpacity(0.5)
+            // колор
+            // Palette.white.withOpacity(0.5
+            ? Palette.text20Grey
             : Palette.text20Grey,
       ),
     );

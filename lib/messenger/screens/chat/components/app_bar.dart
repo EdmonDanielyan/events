@@ -110,10 +110,9 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                                       ),
                                       child: Center(
                                         child: SvgPicture.asset(
-                                          IconLinks.LOGO_ICON,
-                                          height: 20.0,
-                                          width: 20.0,
-                                        ),
+                                            IconLinks.LOGO_ICON,
+                                            height: 20.0,
+                                            width: 20.0),
                                       ),
                                     )
                                   else

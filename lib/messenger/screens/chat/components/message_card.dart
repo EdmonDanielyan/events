@@ -54,8 +54,8 @@ class MessageCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: SearchSelected(
-        selected: searchSelected,
-        child: Selectable(
+          selected: searchSelected,
+          child: Selectable(
             onSelected: onSelected,
             selectOnTap: selectOnTap,
             selected: selected,
@@ -63,10 +63,10 @@ class MessageCard extends StatelessWidget {
               message,
               onDelete: onDelete,
               onEdit: cachedChatsCubit.myId == message.owner.id ? onEdit : null,
-              onRespond:
-                  cachedChatsCubit.selectedChats.last.type.name != "notifications"
-                      ? onRespond
-                      : null,
+              onRespond: cachedChatsCubit.selectedChats.last.type.name !=
+                      "notifications"
+                  ? onRespond
+                  : null,
               onGoTo: cachedChatsCubit.myId != message.owner.id &&
                       cachedChatsCubit.selectedChats.last.type.name !=
                           "notifications"
@@ -102,17 +102,20 @@ class MessageCard extends StatelessWidget {
                     ],
                     Container(
                       constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width - 40,
+                        maxWidth: MediaQuery.of(context).size.width - 80,
                       ),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(10.0),
-                          bottomLeft: Radius.circular(isByMe ? 10.0 : 2.0),
-                          topRight: const Radius.circular(10.0),
-                          bottomRight: Radius.circular(isByMe ? 2.0 : 10.0),
-                        ),
-                        color: isByMe ? Palette.greenE4A : Palette.text5Grey,
-                      ),
+                          borderRadius: BorderRadius.only(
+                            topLeft: const Radius.circular(10.0),
+                            bottomLeft: Radius.circular(isByMe ? 10.0 : 2.0),
+                            topRight: const Radius.circular(10.0),
+                            bottomRight: Radius.circular(isByMe ? 2.0 : 10.0),
+                          ),
+                          color:
+                              isByMe ? Palette.myMessageCard : Palette.text5Grey
+                          // колор
+                          // color: isByMe ? Palette.greenE4A : Palette.text5Grey,
+                          ),
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: MessageRespondWrapper(
                         message: message,
@@ -126,8 +129,8 @@ class MessageCard extends StatelessWidget {
                           children: [
                             if (!isByMe) ...[
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0),
                                 child: CachedUserBuilder(
                                   cachedUsersCubit: cachedUsersCubit,
                                   userId: message.owner.id,
@@ -172,7 +175,9 @@ class MessageCard extends StatelessWidget {
                                   MessageTick(
                                     message.status,
                                     isRead: message.isReadByOthers,
-                                    color: Palette.white.withOpacity(0.5),
+                                    color: Palette.text20Grey,
+                                    // колор
+                                    // color: Palette.white.withOpacity(0.5),
                                     type: message.type,
                                   ),
                                 ],
