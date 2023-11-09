@@ -23,7 +23,7 @@ class BirthdayCongratulate extends StatelessWidget {
       child: Container(
         height: height ?? SizeConfig(context, 55).getProportionateScreenHeight,
         width: width ?? SizeConfig(context, 55).getProportionateScreenHeight,
-        padding: EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
           color: Palette.transparent,
           shape: BoxShape.circle,

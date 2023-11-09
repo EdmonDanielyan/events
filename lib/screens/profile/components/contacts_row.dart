@@ -40,9 +40,7 @@ class ContactsRow extends StatelessWidget {
               color: Palette.greenE4A,
             ),
           ),
-          const SizedBox(
-            width: 12.0,
-          ),
+          const SizedBox(width: 12.0),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

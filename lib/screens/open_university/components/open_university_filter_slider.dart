@@ -35,7 +35,7 @@ class _OpenUniversityFilterSliderState
 
     return Container(
         height: 35,
-        margin: EdgeInsets.only(top: 8.0),
+        margin: const EdgeInsets.only(top: 8.0),
         child: Container(child: _getFilterListView(context)));
   }
 
@@ -71,7 +71,7 @@ class _OpenUniversityFilterSliderState
               });
         },
         separatorBuilder: (context, index) {
-          return Container(margin: EdgeInsets.only(right: 10.0));
+          return Container(margin: const EdgeInsets.only(right: 10.0));
         },
         itemCount: items.length);
   }

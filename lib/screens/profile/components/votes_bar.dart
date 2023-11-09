@@ -14,7 +14,7 @@ class VotesBar extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SliverPadding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       sliver: SliverToBoxAdapter(
         child: SizedBox(
           height: 32.0,
@@ -32,9 +32,7 @@ class VotesBar extends StatelessWidget {
                       width: 30.0,
                       color: Palette.greenE4A,
                     ),
-                    const SizedBox(
-                      width: 8.0,
-                    ),
+                    const SizedBox(width: 8.0),
                     Text(
                       votes?.barrels.toString() ?? '0',
                       style: FontStyles.rubikH2Medium(color: Palette.textBlack),
@@ -44,10 +42,7 @@ class VotesBar extends StatelessWidget {
               ),
               SizedBox(
                 height: 32.0,
-                child: VerticalDivider(
-                  color: Palette.text20Grey,
-                  thickness: 2,
-                ),
+                child: VerticalDivider(color: Palette.text20Grey, thickness: 2),
               ),
               Expanded(
                 child: Row(
@@ -59,9 +54,7 @@ class VotesBar extends StatelessWidget {
                       width: 30.0,
                       color: Palette.greenE4A,
                     ),
-                    const SizedBox(
-                      width: 8.0,
-                    ),
+                    const SizedBox(width: 8.0),
                     Text(
                       votes?.reservoir.toString() ?? '0',
                       style: FontStyles.rubikH2Medium(color: Palette.textBlack),
@@ -71,10 +64,7 @@ class VotesBar extends StatelessWidget {
               ),
               SizedBox(
                 height: 32.0,
-                child: VerticalDivider(
-                  color: Palette.text20Grey,
-                  thickness: 2,
-                ),
+                child: VerticalDivider(color: Palette.text20Grey, thickness: 2),
               ),
               Expanded(
                 child: Row(
@@ -86,9 +76,7 @@ class VotesBar extends StatelessWidget {
                       width: 32.0,
                       color: Palette.greenE4A,
                     ),
-                    const SizedBox(
-                      width: 8.0,
-                    ),
+                    const SizedBox(width: 8.0),
                     Text(
                       votes?.tankers.toString() ?? '0',
                       style: FontStyles.rubikH2Medium(color: Palette.textBlack),

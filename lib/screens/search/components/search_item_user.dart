@@ -35,7 +35,7 @@ class SearchItemUser extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                margin: EdgeInsets.only(left: 15),
+                margin: const EdgeInsets.only(left: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

@@ -25,7 +25,7 @@ class NewsFilterSlider extends StatelessWidget {
         builder: (context, state) {
           return Container(
             height: SizeConfig(context, 28.0).getProportionateScreenHeight,
-            margin: EdgeInsets.only(top: 8.0),
+            margin: const EdgeInsets.only(top: 8.0),
             child: getFilterListView(state.tabs ?? _getFilterItems()),
           );
         });
@@ -62,7 +62,7 @@ class NewsFilterSlider extends StatelessWidget {
           );
         },
         separatorBuilder: (context, index) {
-          return Container(margin: EdgeInsets.only(right: 10.0));
+          return Container(margin: const EdgeInsets.only(right: 10.0));
         },
         itemCount: filterItems.length);
   }

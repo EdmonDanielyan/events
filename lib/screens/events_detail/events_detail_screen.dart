@@ -118,9 +118,7 @@ class EventDetailScreen extends StatelessWidget {
                   width: 16.0,
                   color: Palette.textBlack50,
                 ),
-                const SizedBox(
-                  width: 4.0,
-                ),
+                const SizedBox(width: 4.0),
                 Text(
                   event.viewCount != null
                       ? state.data!.viewCount.toString()
@@ -132,7 +130,7 @@ class EventDetailScreen extends StatelessWidget {
           ),
           Container(
               alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(left: 20, right: 50, bottom: 10),
+              padding: const EdgeInsets.only(left: 20, right: 50, bottom: 10),
               child: Text(
                 event.title ?? '',
                 style: TextStyle(
@@ -141,17 +139,14 @@ class EventDetailScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               )),
-          Divider(
-            color: Color(0xFFE5E5E5),
-            thickness: 2,
-          ),
+          const Divider(color: Color(0xFFE5E5E5), thickness: 2),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: CustomHtml(data: event.detailText),
           ),
           Container(
-            padding: EdgeInsets.only(bottom: 30, top: 20),
-            margin: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.only(bottom: 30, top: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
             child: ((event.isActual ?? true) && (event.placesAvailable ?? true))
                 ? DefaultButton(
                     title: isMember

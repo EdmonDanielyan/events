@@ -24,8 +24,8 @@ class ServiceListElement extends StatelessWidget {
       },
       child: Container(
         alignment: Alignment.center,
-        padding:
-            EdgeInsets.only(left: 22.0, right: 32.0, top: 22.0, bottom: 22.0),
+        padding: const EdgeInsets.only(
+            left: 22.0, right: 32.0, top: 22.0, bottom: 22.0),
         height: 70,
         child: Row(
           children: [
@@ -36,7 +36,7 @@ class ServiceListElement extends StatelessWidget {
               color: Palette.greenE4A,
             ),
             Container(
-              margin: EdgeInsets.only(left: 14),
+              margin: const EdgeInsets.only(left: 14),
               child: Text(
                 item.title,
                 style: FontStyles.rubikP1(color: Palette.textBlack),

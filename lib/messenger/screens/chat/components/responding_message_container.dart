@@ -24,7 +24,7 @@ class RespondingMessageContainer extends StatelessWidget {
         }
 
         return Padding(
-          padding: EdgeInsets.only(bottom: 20.0),
+          padding: const EdgeInsets.only(bottom: 20.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

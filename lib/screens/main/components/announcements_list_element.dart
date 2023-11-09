@@ -21,7 +21,7 @@ class AnnouncementsListElement extends StatelessWidget {
       },
       child: Container(
         color: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           children: [
             Container(
@@ -38,7 +38,7 @@ class AnnouncementsListElement extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 8),
+              margin: const EdgeInsets.only(top: 8),
               alignment: Alignment.topLeft,
               child: Text(
                 announcement.title ?? '',
@@ -47,7 +47,7 @@ class AnnouncementsListElement extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 25),
+              margin: const EdgeInsets.only(top: 25),
               child: Row(
                 children: [
                   Container(
@@ -55,7 +55,7 @@ class AnnouncementsListElement extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(right: 3),
+                          margin: const EdgeInsets.only(right: 3),
                           child: SvgPicture.asset(
                             IconLinks.OPENED_EYE_ICON_LINK,
                             height: 16.0,

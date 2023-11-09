@@ -94,8 +94,8 @@ class _ReferencesFormState extends State<ReferencesForm> {
         currentReferenceItem, entities.deliveryType);
 
     return Container(
-      margin: EdgeInsets.only(top: 20, bottom: 20.0),
-      padding: EdgeInsets.symmetric(horizontal: 25),
+      margin: const EdgeInsets.only(top: 20, bottom: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Form(
         key: _key,
         child: Column(

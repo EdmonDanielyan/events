@@ -24,7 +24,7 @@ class NewsListSlider extends StatelessWidget {
             width: double.infinity,
             height: SizeConfig(context, 290.0).getProportionateScreenHeight,
             alignment: AlignmentDirectional.topStart,
-            margin: EdgeInsets.only(top: 20.0),
+            margin: const EdgeInsets.only(top: 20.0),
             clipBehavior: Clip.none,
             child: SingleChildScrollView(
               controller: _controllerOne,
@@ -48,7 +48,7 @@ class NewsListSlider extends StatelessWidget {
     }
 
     return Container(
-      margin: EdgeInsets.only(top: 30),
+      margin: const EdgeInsets.only(top: 30),
       child: CustomPageIndicator(
         controller: _controllerOne,
         count: newsList.length,

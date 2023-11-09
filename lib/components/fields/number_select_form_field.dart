@@ -232,7 +232,7 @@ class NumberSelectFormField extends FormField<String> {
   static Widget _getErrorContainer(FormFieldState<String> field) {
     return (field.errorText != null && field.errorText != '')
         ? Container(
-            margin: EdgeInsets.only(top: 8),
+            margin: const EdgeInsets.only(top: 8),
             child: Text(
               field.errorText!,
               style: TextStyle(color: Colors.red, fontSize: 12),

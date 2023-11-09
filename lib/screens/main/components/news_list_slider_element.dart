@@ -71,8 +71,8 @@ class NewsListSliderElement extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(top: 18.0),
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  margin: const EdgeInsets.only(top: 18.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   width: elementWidth,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +85,7 @@ class NewsListSliderElement extends StatelessWidget {
                         style: FontStyles.rubikP2(color: Palette.textBlack50),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 8),
+                        margin: const EdgeInsets.only(top: 8),
                         child: Text(
                           newsItem.title ?? '',
                           style: FontStyles.rubikH4(color: Palette.textBlack),
@@ -99,7 +99,7 @@ class NewsListSliderElement extends StatelessWidget {
                           children: [
                             Container(
                               alignment: Alignment.bottomCenter,
-                              margin: EdgeInsets.only(bottom: 20),
+                              margin: const EdgeInsets.only(bottom: 20),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -116,7 +116,8 @@ class NewsListSliderElement extends StatelessWidget {
                                         ),
                                         const SizedBox(width: 5.0),
                                         Container(
-                                          margin: EdgeInsets.only(left: 4),
+                                          margin:
+                                              const EdgeInsets.only(left: 4),
                                           child: Text(
                                             newsItem.likeCount != null
                                                 ? newsItem.likeCount.toString()
@@ -129,7 +130,7 @@ class NewsListSliderElement extends StatelessWidget {
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.only(left: 24),
+                                    margin: const EdgeInsets.only(left: 24),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
@@ -142,7 +143,8 @@ class NewsListSliderElement extends StatelessWidget {
                                         ),
                                         const SizedBox(width: 5.0),
                                         Container(
-                                          margin: EdgeInsets.only(left: 4),
+                                          margin:
+                                              const EdgeInsets.only(left: 4),
                                           child: Text(
                                             newsItem.commentCount != null
                                                 ? newsItem.commentCount
@@ -181,7 +183,8 @@ class NewsListSliderElement extends StatelessWidget {
                                               color: Palette.textBlack50,
                                             ),
                                             Container(
-                                              margin: EdgeInsets.only(left: 4),
+                                              margin: const EdgeInsets.only(
+                                                  left: 4),
                                               child: Text(
                                                 newsItem.viewCount != null
                                                     ? newsItem.viewCount

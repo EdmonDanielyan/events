@@ -102,15 +102,13 @@ class _BodyState extends State<Body> {
     List<Widget> items = _getNewsWidgetList(newsList);
     return Container(
       color: Palette.white,
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: SingleChildScrollView(
         controller: _controller,
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 32,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 32),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(

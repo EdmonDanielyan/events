@@ -55,7 +55,7 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
           ),
           const SizedBox(width: 10.0),
           Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Text(
               localizationInstance.appName,
               style: FontStyles.rubikP1(color: Palette.white),
@@ -113,7 +113,7 @@ class InkAppBar extends StatelessWidget with PreferredSizeWidget {
     if (showPersonalPageLink) {
       actions.add(
         Container(
-          margin: EdgeInsets.only(right: 15.0),
+          margin: const EdgeInsets.only(right: 15.0),
           child: InkWell(
             child: SvgPicture.asset(
               IconLinks.USER_ICON_LINK,

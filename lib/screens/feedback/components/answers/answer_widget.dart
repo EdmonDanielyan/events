@@ -19,17 +19,15 @@ class AnswerWidget extends StatelessWidget {
         _customListTile(context, _strings.topic, item.responsible),
         _customListTile(context, _strings.question, item.question),
         _customListTile(context, _strings.answer, item.answer),
-        Divider(),
+        const Divider(),
       ],
     );
   }
 
   Widget _customListTile(BuildContext context, String title, String subtitle) {
     return Container(
-      margin: EdgeInsets.symmetric(
-        vertical: 10.0,
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -40,7 +38,7 @@ class AnswerWidget extends StatelessWidget {
               fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
             ),
           ),
-          SizedBox(height: 5.0),
+          const SizedBox(height: 5.0),
           Text(
             subtitle,
             style: TextStyle(

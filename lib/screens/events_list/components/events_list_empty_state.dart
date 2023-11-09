@@ -11,7 +11,7 @@ class EventsListEmptyState extends StatelessWidget {
     return Container(
       height: 232.0,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
       padding: EdgeInsets.all(24.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(16.0)),
@@ -25,13 +25,17 @@ class EventsListEmptyState extends StatelessWidget {
             height: 81.0,
             width: 81.0,
           ),
-          const SizedBox(height: 24.0,),
+          const SizedBox(
+            height: 24.0,
+          ),
           Text(
             "Ничего не найдено",
             style: FontStyles.rubikP1Medium(),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 4.0,),
+          const SizedBox(
+            height: 4.0,
+          ),
           Text(
             "Пока что у нас нет никаких объявлений для вас",
             style: FontStyles.rubikP1(),

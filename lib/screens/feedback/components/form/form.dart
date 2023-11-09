@@ -59,7 +59,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
       child: Container(
         width: size.width,
         child: Padding(
-          padding: EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -99,9 +99,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
                   descriptionText: localizationInstance.yourQuestion,
                   focusNode: FocusNode(),
                 ),
-                const SizedBox(
-                  height: 24.0,
-                ),
+                const SizedBox(height: 24.0),
                 PickFiles(
                   key: _pickFilesKey,
                   onSuccesfullyPicked: (List<File> files) =>
@@ -118,9 +116,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
                   _strings.companyRight,
                   style: FontStyles.rubikP2(color: Palette.textBlack50),
                 ),
-                const SizedBox(
-                  height: 24.0,
-                ),
+                const SizedBox(height: 24.0),
                 _btnWidget(_formKey, _pickFilesKey, entities),
               ],
             ),

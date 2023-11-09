@@ -38,7 +38,7 @@ class AnnouncementsListElement extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 8),
+              margin: const EdgeInsets.only(top: 8),
               alignment: Alignment.topLeft,
               child: Text(
                 announcement.title ?? '',
@@ -49,7 +49,7 @@ class AnnouncementsListElement extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.bottomLeft,
-              margin: EdgeInsets.only(top: 16.0),
+              margin: const EdgeInsets.only(top: 16.0),
               child: Row(
                 children: [
                   SvgPicture.asset(
@@ -59,7 +59,7 @@ class AnnouncementsListElement extends StatelessWidget {
                     color: Palette.textBlack50,
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 4),
+                    margin: const EdgeInsets.only(left: 4),
                     child: Text(
                       announcement.viewCount != null
                           ? announcement.viewCount.toString()

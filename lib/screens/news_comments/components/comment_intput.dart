@@ -74,7 +74,7 @@ class NewsCommentInput extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 7.0),
+            const SizedBox(width: 7.0),
             GestureDetector(
               onTap: () async {
                 await _onMessageSend(context, newsId);
@@ -84,7 +84,7 @@ class NewsCommentInput extends StatelessWidget {
                   height: SizeConfig(context, 40).getProportionateScreenHeight,
                   child: SvgPicture.asset(SEND_COMMENT_SVG_LINK)),
             ),
-            SizedBox(width: 3.0),
+            const SizedBox(width: 3.0),
           ],
         ),
       ),

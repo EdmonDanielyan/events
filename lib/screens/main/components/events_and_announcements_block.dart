@@ -35,8 +35,9 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
           case EventsAndAnnouncementsBlockStateType.EVENTS:
             {
               return Container(
-                margin: EdgeInsets.only(top: 25),
-                padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
+                margin: const EdgeInsets.only(top: 25),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 30.0, horizontal: 20.0),
                 decoration: BoxDecoration(color: Colors.white),
                 child: Column(
                   children: [
@@ -60,14 +61,15 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
           case EventsAndAnnouncementsBlockStateType.ANNOUNCEMENTS:
             {
               return Container(
-                margin: EdgeInsets.only(top: 25),
-                padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
+                margin: const EdgeInsets.only(top: 25),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 30.0, horizontal: 20.0),
                 decoration: BoxDecoration(color: Colors.white),
                 child: Column(
                   children: [
                     getNavigationRow(context, 'announcements'),
                     AnnouncementsList(),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     DefaultButton(
                       title: _strings.allAnnouncements,
                       onTap: () {
@@ -88,7 +90,7 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
 
   Widget getNavigationRow(BuildContext context, String checked) {
     return Container(
-      padding: EdgeInsets.only(left: 20),
+      padding: const EdgeInsets.only(left: 20),
       height: SizeConfig(context, 34).getProportionateScreenHeight,
       child: Row(
         children: getNavRowItemList(context: context, checkedItem: checked),
@@ -117,7 +119,7 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
       if (checkedItem == element.code) {
         navRowItemList.add(
           Container(
-            padding: EdgeInsets.only(right: 30),
+            padding: const EdgeInsets.only(right: 30),
             child: getNavRowItem(
                 context: context,
                 title: element.title,
@@ -128,7 +130,7 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
       } else {
         navRowItemList.add(
           Container(
-            padding: EdgeInsets.only(right: 30),
+            padding: const EdgeInsets.only(right: 30),
             child: getNavRowItem(
               context: context,
               title: element.title,

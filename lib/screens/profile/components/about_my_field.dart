@@ -47,7 +47,7 @@ class _AboutMyFieldState extends State<AboutMyField> {
                   bottom: BorderSide(color: Colors.grey.shade400, width: 0.5),
                 )),
             child: Padding(
-              padding: EdgeInsets.only(left: 20, top: 20, bottom: 20),
+              padding: const EdgeInsets.only(left: 20, top: 20, bottom: 20),
               child: TextField(
                 controller: _aboutMyFieldC,
                 textInputAction: TextInputAction.go,
@@ -92,8 +92,8 @@ class _AboutMyFieldState extends State<AboutMyField> {
           _aboutMyFieldC.text == text
               ? const SizedBox.shrink()
               : Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: ServiceBtn(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: ServiceBtn(
                     txt: 'Сохранить',
                     onPressed: () {
                       setState(() {
@@ -110,7 +110,7 @@ class _AboutMyFieldState extends State<AboutMyField> {
                       //userCubit.saveFAboutMy(value: _aboutMyFieldC.text);
                     },
                   ),
-              ),
+                ),
         ],
       ),
     );

@@ -11,7 +11,7 @@ import 'package:ink_mobile/screens/personnel_movements/components/personnel_move
 
 class Body extends StatelessWidget {
   final PersonnelMovementsCubit personnelMovementsCubit;
-  
+
 
   const Body({Key? key, required this.personnelMovementsCubit})
       : super(key: key);
@@ -65,7 +65,7 @@ class Body extends StatelessWidget {
                             ),
                           ),
                           child: Container(
-                            margin: EdgeInsets.all(20),
+                            margin: const EdgeInsets.all(20),
                             child: Text(_strings.staffMovements,
                                 style: TextStyle(
                                     fontSize: 35, fontWeight: FontWeight.bold)),
@@ -78,7 +78,7 @@ class Body extends StatelessWidget {
                           itemBuilder: (BuildContext context, int index) =>
                               personnelMovements[index],
                         ),
-                        SizedBox(height: 30)
+                       const SizedBox(height: 30)
                       ],
                     ),
                   );
@@ -106,7 +106,7 @@ class Body extends StatelessWidget {
                 }
             }
           },
-        
+
     );
   }
 }

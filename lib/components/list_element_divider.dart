@@ -5,7 +5,7 @@ class ListElementDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Divider(
+    return const Divider(
       height: 40,
       thickness: 1.0,
       color: Color(0xffe5e5e5),

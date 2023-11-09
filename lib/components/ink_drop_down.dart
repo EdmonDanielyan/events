@@ -51,7 +51,10 @@ class _InkDropDownState extends State<InkDropDown> {
                   ? widget.items[selectedIndex!]
                   : widget.hint,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.black, fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize:
+                      SizeConfig(context, 14).getProportionateScreenHeight),
             ),
           ),
         ),
@@ -108,7 +111,7 @@ class _SelectDialogState extends State<SelectDialog> {
     }
 
     return AlertDialog(
-      contentPadding: EdgeInsets.all(0),
+      contentPadding: const EdgeInsets.all(0),
       content: ConstrainedBox(
         constraints: BoxConstraints(
           maxHeight: MediaQuery.of(context).size.height,

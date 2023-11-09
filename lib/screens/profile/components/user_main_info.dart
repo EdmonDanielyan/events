@@ -48,7 +48,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SliverPadding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       sliver: SliverToBoxAdapter(
         child: Container(
           // padding: EdgeInsets.only(bottom: 24.0),
@@ -61,9 +61,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
               // const SizedBox(height: 8.0),
               getUserPositionWidget(),
               if (widget.showWriteButton) ...[
-                const SizedBox(
-                  height: 24.0,
-                ),
+                const SizedBox(height: 24.0),
                 WriteBtn(
                   user: User(
                     id: user.id,
@@ -72,9 +70,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
                   ),
                 ),
               ],
-              const SizedBox(
-                height: 32.0,
-              ),
+              const SizedBox(height: 32.0),
               getInfoAbsenceUser()
             ],
           ),
@@ -158,7 +154,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
       return Padding(
         padding: const EdgeInsets.only(bottom: 24),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 14.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 14.0),
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.only(

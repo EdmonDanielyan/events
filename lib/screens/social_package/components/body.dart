@@ -84,7 +84,7 @@ class _BodyState extends State<Body> {
                       width: size.width,
                       child: ListView.separated(
                         separatorBuilder: (context, index) {
-                          return Divider(color: Colors.grey);
+                          return const Divider(color: Colors.grey);
                         },
                         itemCount: pages.length,
                         itemBuilder: (context, index) {

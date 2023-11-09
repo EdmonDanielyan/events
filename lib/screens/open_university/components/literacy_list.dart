@@ -81,20 +81,22 @@ class OpenUniversityLiteracyList extends StatelessWidget {
     return CentringWrapper(child: InkPageLoader());
   }
 
-  Widget _getLoadedStateWidget(List<NewsItemData> newsList, BuildContext context) {
+  Widget _getLoadedStateWidget(
+      List<NewsItemData> newsList, BuildContext context) {
     return Container(
       color: Color(0xfff9f9f9),
       child: Column(children: [
         Container(
             // color: Colors.white,
-            padding: EdgeInsets.only(left: 20, right: 20, top: 24, bottom: 20),
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, top: 24, bottom: 20),
             child: Row(
               children: [
-                Text(
-                  _strings.inkLiteracy,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: SizeConfig(context, 24.0)
-                          .getProportionateScreenHeight)),
-                
+                Text(_strings.inkLiteracy,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: SizeConfig(context, 24.0)
+                            .getProportionateScreenHeight)),
               ],
             )),
         Container(child: Column(children: _getNewsWidgetList(newsList)))

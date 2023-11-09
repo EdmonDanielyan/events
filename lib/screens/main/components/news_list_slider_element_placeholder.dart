@@ -51,8 +51,8 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                 ),
                 Expanded(
                     child: Container(
-                        margin: EdgeInsets.only(top: 18.0),
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        margin: const EdgeInsets.only(top: 18.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         width: elementWidth,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +69,7 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(top: 8),
+                              margin: const EdgeInsets.only(top: 8),
                               child: Shimmer.fromColors(
                                 baseColor: Colors.grey.withOpacity(0.5),
                                 highlightColor: Colors.grey.withOpacity(0.2),
@@ -88,7 +88,7 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                                     children: [
                                   Container(
                                       alignment: Alignment.bottomCenter,
-                                      margin: EdgeInsets.only(bottom: 20),
+                                      margin: const EdgeInsets.only(bottom: 20),
                                       child: Row(children: [
                                         Container(
                                             child: Row(children: [
@@ -100,7 +100,8 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                                                   .iconTheme
                                                   .color),
                                           Container(
-                                            margin: EdgeInsets.only(left: 4),
+                                            margin:
+                                                const EdgeInsets.only(left: 4),
                                             child: Shimmer.fromColors(
                                               baseColor:
                                                   Colors.grey.withOpacity(0.5),
@@ -119,15 +120,16 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                                           )
                                         ])),
                                         Container(
-                                            margin: EdgeInsets.only(left: 24),
+                                            margin:
+                                                const EdgeInsets.only(left: 24),
                                             child: Row(children: [
                                               SvgPicture.asset(
                                                   IconLinks.COMMENT_ICON_LINK,
                                                   width: 18,
                                                   height: 16),
                                               Container(
-                                                margin:
-                                                    EdgeInsets.only(left: 4),
+                                                margin: const EdgeInsets.only(
+                                                    left: 4),
                                                 child: Shimmer.fromColors(
                                                   baseColor: Colors.grey
                                                       .withOpacity(0.5),
@@ -157,8 +159,8 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                                                         .VIEW_COUNT_SVG_LINK,
                                                     width: 16),
                                                 Container(
-                                                  margin:
-                                                      EdgeInsets.only(left: 4),
+                                                  margin: const EdgeInsets.only(
+                                                      left: 4),
                                                   child: Shimmer.fromColors(
                                                     baseColor: Colors.grey
                                                         .withOpacity(0.5),

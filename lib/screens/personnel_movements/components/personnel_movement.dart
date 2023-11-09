@@ -18,7 +18,7 @@ class PersonnelMovement extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
           border: Border(
         top: BorderSide(width: 1, color: Color(0xFFE5E5E5)),
@@ -30,12 +30,12 @@ class PersonnelMovement extends StatelessWidget {
             width: size.width,
             color: Colors.white,
             child: Container(
-              margin: EdgeInsets.all(20),
+              margin: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: 5),
+                    margin: const EdgeInsets.only(bottom: 5),
                     child: Row(
                       children: [
                         Text(
@@ -60,20 +60,17 @@ class PersonnelMovement extends StatelessWidget {
               ),
             ),
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          const Divider(height: 1, thickness: 1),
           Container(
             width: size.width,
             color: Colors.white,
             child: Container(
-              margin: EdgeInsets.all(20),
+              margin: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: 5),
+                    margin: const EdgeInsets.only(bottom: 5),
                     child: Row(
                       children: [
                         Text(
@@ -97,20 +94,17 @@ class PersonnelMovement extends StatelessWidget {
               ),
             ),
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          const Divider(height: 1, thickness: 1),
           Container(
             width: size.width,
             color: Colors.white,
             child: Container(
-              margin: EdgeInsets.all(20),
+              margin: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: 5),
+                    margin: const EdgeInsets.only(bottom: 5),
                     child: Row(
                       children: [
                         Text(
@@ -133,20 +127,17 @@ class PersonnelMovement extends StatelessWidget {
               ),
             ),
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          const Divider(height: 1, thickness: 1),
           Container(
             width: size.width,
             color: Colors.white,
             child: Container(
-              margin: EdgeInsets.all(20),
+              margin: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: 5),
+                    margin: const EdgeInsets.only(bottom: 5),
                     child: Row(
                       children: [
                         Text(
@@ -169,20 +160,17 @@ class PersonnelMovement extends StatelessWidget {
               ),
             ),
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          const Divider(height: 1, thickness: 1),
           Container(
             width: size.width,
             color: Colors.white,
             child: Container(
-              margin: EdgeInsets.all(20),
+              margin: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: 5),
+                    margin: const EdgeInsets.only(bottom: 5),
                     child: Row(
                       children: [
                         Text(
@@ -205,20 +193,17 @@ class PersonnelMovement extends StatelessWidget {
               ),
             ),
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          const Divider(height: 1, thickness: 1),
           Container(
             width: size.width,
             color: Colors.white,
             child: Container(
-              margin: EdgeInsets.all(20),
+              margin: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: 5),
+                    margin: const EdgeInsets.only(bottom: 5),
                     child: Row(
                       children: [
                         Text(
@@ -254,8 +239,8 @@ class PersonnelMovement extends StatelessWidget {
               color: label!.background,
               borderRadius: BorderRadius.all(Radius.circular(80)),
             ),
-            margin: EdgeInsets.only(left: 10),
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+            margin: const EdgeInsets.only(left: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
             child: Text(
               label!.title,
               style: TextStyle(
@@ -265,7 +250,7 @@ class PersonnelMovement extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
           )
-        : Container();
+        : const SizedBox();
   }
 }
 

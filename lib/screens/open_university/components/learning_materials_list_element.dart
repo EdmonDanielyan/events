@@ -30,7 +30,8 @@ class LearningMaterialsListElement extends StatelessWidget {
                 border: Border(bottom: BorderSide(color: Color(0xffe5e5e5)))),
             child: Column(children: [
               Container(
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
                   child: Column(
                     children: [
                       Container(
@@ -45,7 +46,7 @@ class LearningMaterialsListElement extends StatelessWidget {
                             textAlign: TextAlign.start,
                           )),
                       Container(
-                          margin: EdgeInsets.only(top: 8),
+                          margin: const EdgeInsets.only(top: 8),
                           alignment: Alignment.topLeft,
                           child: Text(
                             learningMaterial.title ?? '',
@@ -59,13 +60,13 @@ class LearningMaterialsListElement extends StatelessWidget {
                           )),
                       Container(
                           alignment: Alignment.bottomCenter,
-                          margin: EdgeInsets.only(top: 24),
+                          margin: const EdgeInsets.only(top: 24),
                           child: Row(mainAxisSize: MainAxisSize.max, children: [
                             Row(children: [
                               SvgPicture.asset(IconLinks.BARREL_SVG_LINK,
                                   width: 16),
                               Container(
-                                  margin: EdgeInsets.only(left: 4),
+                                  margin: const EdgeInsets.only(left: 4),
                                   child: Text(
                                       learningMaterial.barrels != null
                                           ? learningMaterial.barrels.toString()

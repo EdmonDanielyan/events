@@ -14,7 +14,6 @@ class UserPickerRadio extends StatefulWidget {
 }
 
 class _UserPickerRadioState extends State<UserPickerRadio> {
-
   @override
   Widget build(BuildContext context) {
     bool enabled = widget.enabled;
@@ -22,7 +21,7 @@ class _UserPickerRadioState extends State<UserPickerRadio> {
       child: Container(
         height: 20.0,
         width: 20.0,
-        padding: EdgeInsets.all(2.0),
+        padding: const EdgeInsets.all(2.0),
         decoration: BoxDecoration(
           color: enabled ? Palette.greenE4A : Palette.transparent,
           borderRadius: BorderRadius.circular(4.0),
@@ -32,12 +31,12 @@ class _UserPickerRadioState extends State<UserPickerRadio> {
           ),
         ),
         child: enabled
-          ? SvgPicture.asset(
-          IconLinks.TICK_ICON,
-          height: 16.0,
-          width: 16.0,
-          color: Palette.white,
-        )
+            ? SvgPicture.asset(
+                IconLinks.TICK_ICON,
+                height: 16.0,
+                width: 16.0,
+                color: Palette.white,
+              )
             : null,
       ),
       onTap: () => widget.onTap?.call(!widget.enabled),

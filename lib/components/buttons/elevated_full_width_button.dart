@@ -13,7 +13,7 @@ class ElevatedFullWidthButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3.0),
         width: size.width,
         height: SizeConfig(context, 44.0).getProportionateScreenHeight,
         child: Container(

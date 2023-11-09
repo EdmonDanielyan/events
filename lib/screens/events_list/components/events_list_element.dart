@@ -24,7 +24,7 @@ class EventsListElement extends StatelessWidget {
       },
       child: Container(
         width: size.width,
-        margin: EdgeInsets.only(bottom: 15),
+        margin: const EdgeInsets.only(bottom: 15),
         child: Column(
           children: [
             Container(
@@ -91,9 +91,7 @@ class EventsListElement extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8.0),
-            Divider(
-              color: Palette.text20Grey,
-            )
+            Divider(color: Palette.text20Grey)
           ],
         ),
       ),

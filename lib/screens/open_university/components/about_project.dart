@@ -13,8 +13,8 @@ class AboutProject extends StatelessWidget {
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
     return Container(
-        margin: EdgeInsets.only(bottom: 24),
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        margin: const EdgeInsets.only(bottom: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -161,9 +161,9 @@ class AboutProject extends StatelessWidget {
 
     for (int i = 0; i < _items.length; i++) {
       _widgetList.add(Container(
-        margin: EdgeInsets.only(bottom: 10),
+        margin: const EdgeInsets.only(bottom: 10),
         child: AboutProjectContact(
-          isTablet:isTablet,
+          isTablet: isTablet,
           title: _items[i].title,
           text: _items[i].text,
           type: _items[i].type,

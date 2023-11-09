@@ -10,7 +10,7 @@ class TestScreen extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-          margin: EdgeInsets.only(top: 100, left: 30),
+          margin: const EdgeInsets.only(top: 100, left: 30),
           child: NumberSelectFormField(
             controller: _controller,
             buttonsColor: ButtonsColor(left: Colors.red, right: Colors.green),

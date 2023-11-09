@@ -40,9 +40,7 @@ class HeaderInfo extends StatelessWidget {
               width: 16.0,
               color: Palette.textBlack50,
             ),
-            const SizedBox(
-              width: 4.0,
-            ),
+            const SizedBox(width: 4.0),
             Text(
               viewCount.toString(),
               style: FontStyles.rubikP2(color: Palette.textBlack50),

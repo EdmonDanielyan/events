@@ -16,7 +16,7 @@ class Body extends StatelessWidget {
   final LearningMaterialsListCubit learningMaterialsListCubit;
   final NewsListCubit newsListCubit;
   final OpenUniversityCubit openUniversityCubit;
-  
+
   final bool isTablet;
   Body({
     Key? key,
@@ -24,7 +24,7 @@ class Body extends StatelessWidget {
     required this.learningMaterialsListCubit,
     required this.newsListCubit,
     required this.openUniversityCubit,
-    required this. isTablet,
+    required this.isTablet,
   }) : super(key: key);
   final ScrollController _scrollController = ScrollController();
 
@@ -34,18 +34,18 @@ class Body extends StatelessWidget {
       controller: _scrollController,
       clipBehavior: Clip.none,
       child: Container(
-        margin: EdgeInsets.only(top: 24),
+        margin: const EdgeInsets.only(top: 24),
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: OpenUniversityFilterSlider(
                 selectedFilter: OpenUniversityFilterCodes.about_project,
                 openUniversityCubit: openUniversityCubit,
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 24),
+              margin: const EdgeInsets.only(top: 24),
               child: BlocBuilder<OpenUniversityCubit, OpenUniversityState>(
                   bloc: openUniversityCubit,
                   builder: (context, state) {

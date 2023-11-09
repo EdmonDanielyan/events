@@ -9,7 +9,7 @@ class AnnouncementsListElementPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           children: [
             Container(
@@ -27,7 +27,7 @@ class AnnouncementsListElementPlaceholder extends StatelessWidget {
               ),
             ])),
             Container(
-              margin: EdgeInsets.only(top: 8),
+              margin: const EdgeInsets.only(top: 8),
               alignment: Alignment.topLeft,
               child: Shimmer.fromColors(
                 baseColor: Colors.grey.withOpacity(0.5),
@@ -42,13 +42,13 @@ class AnnouncementsListElementPlaceholder extends StatelessWidget {
               ),
             ),
             Container(
-                margin: EdgeInsets.only(top: 25),
+                margin: const EdgeInsets.only(top: 25),
                 child: Row(
                   children: [
                     Container(
                         child: Row(children: [
                       Container(
-                          margin: EdgeInsets.only(right: 3),
+                          margin: const EdgeInsets.only(right: 3),
                           child: SvgPicture.asset(
                             IconLinks.VIEW_COUNT_SVG_LINK,
                             width: 16,

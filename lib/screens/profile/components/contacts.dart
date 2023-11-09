@@ -38,9 +38,7 @@ class Contacts extends StatelessWidget {
                 SectionTitle(
                   title: _strings.contacts,
                 ),
-                const SizedBox(
-                  height: 24.0,
-                ),
+                const SizedBox(height: 24.0),
                 ...getContactWidgetRows(context),
               ],
             ),

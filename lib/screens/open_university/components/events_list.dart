@@ -44,7 +44,7 @@ class OpenUniversityEventsList extends StatelessWidget {
                 color: Color(0xfff9f9f9),
                 child: Column(children: [
                   Container(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                           left: 20, right: 20, top: 24, bottom: 20),
                       child: Row(
                         children: [

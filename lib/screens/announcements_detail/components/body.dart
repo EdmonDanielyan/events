@@ -55,7 +55,7 @@ class _BodyState extends State<Body> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 32.0, bottom: 16.0),
+                padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -74,9 +74,7 @@ class _BodyState extends State<Body> {
                       width: 16.0,
                       color: Palette.textBlack50,
                     ),
-                    const SizedBox(
-                      width: 4.0,
-                    ),
+                    const SizedBox(width: 4.0),
                     Text(
                       (widget.announcement.viewCount ?? 0).toString(),
                       style: FontStyles.rubikP2(color: Palette.textBlack50),
@@ -88,14 +86,14 @@ class _BodyState extends State<Body> {
                 widget.announcement.title ?? '',
                 style: FontStyles.rubikH3(color: Palette.textBlack),
               ),
-              Divider(
+              const Divider(
                 thickness: 2.0,
                 height: 48.0,
               ),
               CustomHtml(
                 data: widget.announcement.detailText ?? '',
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               DefaultButton(
                 title: 'Поделиться',
                 onTap: () {

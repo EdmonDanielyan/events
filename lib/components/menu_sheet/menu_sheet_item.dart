@@ -31,7 +31,7 @@ class MenuSheetItem extends StatelessWidget {
         padding: EdgeInsets.only(
             top: SizeConfig(context, 13).getProportionateScreenHeight),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -39,7 +39,7 @@ class MenuSheetItem extends StatelessWidget {
                 children: [
                   icon,
                   Container(
-                    margin: EdgeInsets.only(left: 15),
+                    margin: const EdgeInsets.only(left: 15),
                     child: Text(
                       title,
                       style: FontStyles.rubikP1(color: Palette.textBlack),

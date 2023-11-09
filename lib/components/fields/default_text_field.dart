@@ -41,7 +41,7 @@ class _DefaultTextFieldState extends State<DefaultTextField> {
               ),
           ]),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Row(
           children: [
             Expanded(

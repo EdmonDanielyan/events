@@ -300,7 +300,7 @@ class __MultiSelectChipFieldViewState<V>
                           _showSearch
                               ? Expanded(
                                   child: Container(
-                                    padding: EdgeInsets.only(left: 10),
+                                    padding: const EdgeInsets.only(left: 10),
                                     child: TextField(
                                       style: widget.searchTextStyle,
                                       decoration: InputDecoration(
@@ -364,7 +364,7 @@ class __MultiSelectChipFieldViewState<V>
                                   },
                                 )
                               : Padding(
-                                  padding: EdgeInsets.all(18),
+                                  padding: const EdgeInsets.all(18),
                                 ),
                         ],
                       ),
@@ -373,7 +373,7 @@ class __MultiSelectChipFieldViewState<V>
               widget.scroll
                   ? Container(
                       padding: widget.itemBuilder == null
-                          ? EdgeInsets.symmetric(horizontal: 5)
+                          ? const EdgeInsets.symmetric(horizontal: 5)
                           : null,
                       width: MediaQuery.of(context).size.width,
                       height: widget.height ??
@@ -413,7 +413,7 @@ class __MultiSelectChipFieldViewState<V>
                   : Container(
                       height: widget.height,
                       alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Wrap(
                         children: widget.itemBuilder != null
                             ? _items
@@ -451,7 +451,7 @@ class __MultiSelectChipFieldViewState<V>
 
   Widget _buildItem(MultiSelectItem<V?> item) {
     return Container(
-      margin: EdgeInsets.all(0),
+      margin: const EdgeInsets.all(0),
       padding: const EdgeInsets.all(2.0),
       child: ChoiceChip(
         shape: widget.chipShape as OutlinedBorder? ??

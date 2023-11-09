@@ -10,7 +10,7 @@ class EventsListElementPlaceholder extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           children: [
             Container(
@@ -30,7 +30,7 @@ class EventsListElementPlaceholder extends StatelessWidget {
               ),
             ),
             Container(
-                margin: EdgeInsets.only(top: 20),
+                margin: const EdgeInsets.only(top: 20),
                 child: Container(
                   alignment: Alignment.topLeft,
                   child: Shimmer.fromColors(
@@ -46,7 +46,7 @@ class EventsListElementPlaceholder extends StatelessWidget {
                   ),
                 )),
             Container(
-              margin: EdgeInsets.only(top: 8, bottom: 5),
+              margin: const EdgeInsets.only(top: 8, bottom: 5),
               alignment: Alignment.topLeft,
               child: Shimmer.fromColors(
                 baseColor: Colors.grey.withOpacity(0.5),

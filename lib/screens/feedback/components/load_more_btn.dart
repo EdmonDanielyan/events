@@ -14,7 +14,7 @@ class LoadMoreBtn extends StatelessWidget {
     return SizedBox(
       width: size.width,
       child: Container(
-        margin: EdgeInsets.all(10.0),
+        margin: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),

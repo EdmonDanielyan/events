@@ -19,9 +19,7 @@ class BirthdaysListViewBuilder extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (title != null) title!,
-        const SizedBox(
-          height: 16.0,
-        ),
+        const SizedBox(height: 16.0),
         ListView.builder(
           shrinkWrap: true,
           controller: ScrollController(keepScrollOffset: false),
@@ -33,9 +31,7 @@ class BirthdaysListViewBuilder extends StatelessWidget {
                 itemBuilder(index),
                 index == (itemCount - 1)
                     ? divider
-                    : const SizedBox(
-                        height: 16.0,
-                      )
+                    : const SizedBox(height: 16.0)
               ],
             );
           },

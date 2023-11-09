@@ -8,7 +8,7 @@ class BirthdayTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 25),
+      margin: const EdgeInsets.only(left: 25),
       child: Text(
         str.toUpperCase(),
         style: TextStyle(

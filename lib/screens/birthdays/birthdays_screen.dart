@@ -93,9 +93,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
               {
                 return Padding(
                   padding: const EdgeInsets.symmetric(
-                    vertical: 32.0,
-                    horizontal: 20.0,
-                  ),
+                      vertical: 32.0, horizontal: 20.0),
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +125,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
                                     birthday: state.birthdaysToday![index],
                                   );
                                 },
-                                divider: Divider(
+                                divider: const Divider(
                                   thickness: 1,
                                   height: 64.0,
                                 ),
@@ -197,7 +195,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
         );
       },
       divider: needDivider
-          ? Divider(
+          ? const Divider(
               thickness: 1,
               height: 48.0,
             )

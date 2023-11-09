@@ -103,9 +103,7 @@ class ChatCard extends StatelessWidget {
                   displayingChatName,
                   highlightValue: highlightValue,
                 ),
-                const SizedBox(
-                  height: 4.0,
-                ),
+                const SizedBox(height: 4.0),
                 ChatBody(
                   chat.messages.isNotEmpty ? chat.messages.last.body : "",
                   title: chat.isGroup && chat.messages.isNotEmpty

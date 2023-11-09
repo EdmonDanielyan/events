@@ -111,7 +111,7 @@ class Body extends StatelessWidget {
           if (state.type == ProfileStateType.OTHER_USER_LOADED)
             user.canBeThanked
                 ? SliverPadding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                         top: 24, left: 20, right: 20, bottom: 12),
                     sliver: SliverToBoxAdapter(
                         child: ThanksButton(userId: user.id)))
@@ -122,7 +122,7 @@ class Body extends StatelessWidget {
           BasicInformation(info: user.basicInformation),
           if (user.absence != null)
             SliverPadding(
-              padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 20),
               sliver: SliverToBoxAdapter(
                 child: BasicInfoRow(
                   title: 'Статус',

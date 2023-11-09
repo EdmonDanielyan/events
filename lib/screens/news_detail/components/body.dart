@@ -91,8 +91,8 @@ class Body extends StatelessWidget {
                       Container(
                         width: size.width,
                         color: Colors.white,
-                        padding:
-                            EdgeInsets.only(left: 20.0, right: 20.0, bottom: 24.0),
+                        padding: const EdgeInsets.only(
+                            left: 20.0, right: 20.0, bottom: 24.0),
                         child: Text(
                           newsItem.title ?? '',
                           style: FontStyles.rubikH3(color: Palette.textBlack),

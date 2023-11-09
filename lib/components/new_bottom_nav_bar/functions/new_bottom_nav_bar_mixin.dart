@@ -55,7 +55,7 @@ class NewBottomNavBarMixin {
         children: [
           Container(
             height: iconHeight,
-            margin: EdgeInsets.only(bottom: 4.0),
+            margin: const EdgeInsets.only(bottom: 4.0),
             child: SvgPicture.asset(
               item.icon,
               height: iconHeight,
@@ -75,7 +75,7 @@ class NewBottomNavBarMixin {
               children: [
                 Container(
                   height: activeIconHeight,
-                  margin: EdgeInsets.only(bottom: 4.0),
+                  margin: const EdgeInsets.only(bottom: 4.0),
                   child: SvgPicture.asset(
                     item.icon,
                     height: activeIconHeight,

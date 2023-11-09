@@ -29,7 +29,7 @@ class _SelectFileDialogState extends State<SelectFileDialog> {
         padding: EdgeInsets.symmetric(horizontal: _horizontalPadding),
         child: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             iconTextWidget(
               icon: Icon(
                 Icons.image,
@@ -49,7 +49,7 @@ class _SelectFileDialogState extends State<SelectFileDialog> {
               text: _strings.allFiles,
               onTap: widget.onFiles,
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
           ],
         ),
       ),
@@ -64,12 +64,12 @@ class _SelectFileDialogState extends State<SelectFileDialog> {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 5.0),
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             icon,
-            SizedBox(width: 10.0),
+            const SizedBox(width: 10.0),
             Expanded(
                 child: Text(
               text,

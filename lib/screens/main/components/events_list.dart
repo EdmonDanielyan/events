@@ -25,7 +25,7 @@ class EventsList extends StatelessWidget {
               List<Widget> items = getEventsWidgetList(state.data!);
               if (items.isNotEmpty) {
                 return Container(
-                  margin: EdgeInsets.only(top: 30),
+                  margin: const EdgeInsets.only(top: 30),
                   child: ListView.builder(
                     shrinkWrap: true,
                     controller: ScrollController(keepScrollOffset: false),
@@ -43,7 +43,7 @@ class EventsList extends StatelessWidget {
             {
               eventsCubit.fetchEvents();
               return Container(
-                margin: EdgeInsets.only(top: 30),
+                margin: const EdgeInsets.only(top: 30),
                 child: ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -58,7 +58,7 @@ class EventsList extends StatelessWidget {
             {
               MainScreen.of(context).mainPageCubit.emitErrorState();
 
-              return Container();
+              return const SizedBox();
             }
         }
       },
@@ -74,7 +74,7 @@ class EventsList extends StatelessWidget {
           eventsWidgetList.addAll(
             [
               EventsListElement(event: element),
-              ListElementDivider(),
+              const ListElementDivider(),
             ],
           );
         },

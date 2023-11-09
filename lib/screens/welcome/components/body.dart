@@ -55,7 +55,7 @@ class _BodyState extends State<Body> {
               ),
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(bottom: 48.0),
+                  margin: const EdgeInsets.only(bottom: 48.0),
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,

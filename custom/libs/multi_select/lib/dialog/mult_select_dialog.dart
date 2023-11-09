@@ -83,41 +83,37 @@ class MultiSelectDialog<V> extends StatefulWidget with MultiSelectActions<V> {
   final ListTileControlAffinity controlAffinity;
 
   final Widget Function(V, bool)? subWidget;
-  
+
   final double fontsize;
 
- 
-  
-
-  MultiSelectDialog({
-    required this.items,
-    required this.initialValue,
-    this.title,
-    this.onSelectionChanged,
-    this.controlAffinity = ListTileControlAffinity.leading,
-    this.onItemSelect,
-    this.onConfirm,
-    this.actions,
-    this.subWidget,
-    this.listType,
-    this.searchable,
-    this.confirmText,
-    this.cancelText,
-    this.selectedColor,
-    this.searchHint,
-    this.height,
-    this.colorator,
-    this.backgroundColor,
-    this.unselectedColor,
-    this.searchIcon,
-    this.closeSearchIcon,
-    this.itemsTextStyle,
-    this.searchHintStyle,
-    this.searchTextStyle,
-    this.selectedItemsTextStyle,
-    this.checkColor,
-    required this.fontsize
-  });
+  MultiSelectDialog(
+      {required this.items,
+      required this.initialValue,
+      this.title,
+      this.onSelectionChanged,
+      this.controlAffinity = ListTileControlAffinity.leading,
+      this.onItemSelect,
+      this.onConfirm,
+      this.actions,
+      this.subWidget,
+      this.listType,
+      this.searchable,
+      this.confirmText,
+      this.cancelText,
+      this.selectedColor,
+      this.searchHint,
+      this.height,
+      this.colorator,
+      this.backgroundColor,
+      this.unselectedColor,
+      this.searchIcon,
+      this.closeSearchIcon,
+      this.itemsTextStyle,
+      this.searchHintStyle,
+      this.searchTextStyle,
+      this.selectedItemsTextStyle,
+      this.checkColor,
+      required this.fontsize});
 
   @override
   State<StatefulWidget> createState() => _MultiSelectDialogState<V>(items);
@@ -127,8 +123,6 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
   List<V> _selectedValues = [];
   bool _showSearch = false;
   List<MultiSelectItem<V>> _items;
-  
-
 
   _MultiSelectDialogState(this._items);
 
@@ -141,7 +135,6 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
 
   /// Returns a CheckboxListTile
   Widget _buildListItem(MultiSelectItem<V> item) {
-
     return Theme(
       data: ThemeData(
         unselectedWidgetColor: widget.unselectedColor ?? Colors.black54,
@@ -157,10 +150,16 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
                 : widget.selectedColor,
             title: Text(item.label,
                 style: _selectedValues.contains(item.value)
-                    ? TextStyle.lerp(widget.selectedItemsTextStyle,
-                        TextStyle(fontSize: widget.fontsize), 2,)
-                    : TextStyle.lerp(widget.itemsTextStyle,
-                        TextStyle(fontSize: widget.fontsize), 2,)),
+                    ? TextStyle.lerp(
+                        widget.selectedItemsTextStyle,
+                        TextStyle(fontSize: widget.fontsize),
+                        2,
+                      )
+                    : TextStyle.lerp(
+                        widget.itemsTextStyle,
+                        TextStyle(fontSize: widget.fontsize),
+                        2,
+                      )),
             controlAffinity: widget.controlAffinity,
             onChanged: (checked) {
               setState(() {
@@ -247,7 +246,7 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
                   _showSearch
                       ? Expanded(
                           child: Container(
-                            padding: EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.only(left: 10),
                             child: TextField(
                               style: widget.searchTextStyle,
                               decoration: InputDecoration(
@@ -286,8 +285,8 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
             ),
       contentPadding:
           widget.listType == null || widget.listType == MultiSelectListType.LIST
-              ? EdgeInsets.only(top: 0.0)
-              : EdgeInsets.all(20),
+              ? const EdgeInsets.only(top: 0.0)
+              : const EdgeInsets.all(20),
       content: Container(
         height: widget.height,
         width: MediaQuery.of(context).size.width * 0.8,
@@ -310,7 +309,7 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
           ? widget.actions
           : <Widget>[
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   children: [
                     Expanded(

@@ -10,15 +10,14 @@ class SearchItemText extends StatelessWidget {
   final String route;
   final bool isLastItem;
 
-  const SearchItemText(
-      {Key? key,
-      required this.id,
-      required this.title,
-      required this.query,
-      required this.route,
-      required this.isLastItem,
-      })
-      : super(key: key);
+  const SearchItemText({
+    Key? key,
+    required this.id,
+    required this.title,
+    required this.query,
+    required this.route,
+    required this.isLastItem,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class SearchItemText extends StatelessWidget {
           children: [
             Container(
               alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(bottom: 16.0),
+              margin: const EdgeInsets.only(bottom: 16.0),
               child: EasyRichText(
                 title,
                 caseSensitive: false,
@@ -46,10 +45,10 @@ class SearchItemText extends StatelessWidget {
               ),
             ),
             if (!isLastItem)
-            Divider(
-              color: Palette.text20Grey,
-              thickness: 1,
-            )
+              Divider(
+                color: Palette.text20Grey,
+                thickness: 1,
+              )
           ],
         ),
       ),

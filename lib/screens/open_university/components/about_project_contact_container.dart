@@ -13,7 +13,7 @@ class AboutProjectContact extends StatelessWidget {
       this.title,
       required this.type,
       required this.data,
-      required this. isTablet})
+      required this.isTablet})
       : super(key: key);
 
   final String? title;
@@ -39,8 +39,8 @@ class AboutProjectContact extends StatelessWidget {
       },
       child: Container(
           width: MediaQuery.of(context).size.width,
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
@@ -57,14 +57,16 @@ class AboutProjectContact extends StatelessWidget {
             children: [
               title != null
                   ? Container(
-                      margin: EdgeInsets.only(bottom: 5),
-                      child: Text(title!, style: TextStyle(fontSize:  isTablet ? 18 : 12)),
+                      margin: const EdgeInsets.only(bottom: 5),
+                      child: Text(title!,
+                          style: TextStyle(fontSize: isTablet ? 18 : 12)),
                     )
                   : Container(),
               Text(
                 text,
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: isTablet ? 20 : 16),
+                    color: Theme.of(context).primaryColor,
+                    fontSize: isTablet ? 20 : 16),
               ),
             ],
           )),

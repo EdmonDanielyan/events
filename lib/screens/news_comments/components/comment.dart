@@ -59,7 +59,7 @@ class _CommentState extends State<Comment> {
     _strings = localizationInstance;
 
     return Container(
-      padding: EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 10),
       child: Column(
         children: [
           Row(
@@ -69,7 +69,7 @@ class _CommentState extends State<Comment> {
                   flex: 2,
                   child: Container(
                     alignment: Alignment.topCenter,
-                    margin: EdgeInsets.only(right: 10),
+                    margin: const EdgeInsets.only(right: 10),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(context, '/personal',
@@ -94,7 +94,7 @@ class _CommentState extends State<Comment> {
                               arguments: {'id': widget.authorId});
                         },
                         child: Container(
-                            padding: EdgeInsets.only(bottom: 5),
+                            padding: const EdgeInsets.only(bottom: 5),
                             alignment: Alignment.topLeft,
                             child: Text(
                               widget.name ?? '',
@@ -104,11 +104,9 @@ class _CommentState extends State<Comment> {
                                   fontWeight: FontWeight.bold),
                             )),
                       ),
-
                       Html(
                           data: widget.text.replaceAll("src=\"/upload",
-                              "style='max-width=100px; max-height=100px;' src=\"https://portal.irkutskoil.ru/upload")
-                      ),
+                              "style='max-width=100px; max-height=100px;' src=\"https://portal.irkutskoil.ru/upload")),
 
                       /*BBCodeText(
                           data: widget.text,
@@ -195,8 +193,11 @@ class _CommentState extends State<Comment> {
           if (JwtPayload.myId == widget.authorId)
             Row(
               children: [
-                TextButton(onPressed: _onEditButtonTap, child: Text("Редактировать")),
-                TextButton(onPressed: () => _onDeleteButtonTap(widget.newsId), child: Text("Удалить")),
+                TextButton(
+                    onPressed: _onEditButtonTap, child: Text("Редактировать")),
+                TextButton(
+                    onPressed: () => _onDeleteButtonTap(widget.newsId),
+                    child: Text("Удалить")),
               ],
             ),
         ],

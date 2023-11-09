@@ -87,9 +87,7 @@ class _BodyState extends State<Body> {
                       children: [
                         const SizedBox(height: 16.0),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 16.0,
-                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
                           child: SearchField(
                             hint: "Поиск",
                             onChanged: (str) =>

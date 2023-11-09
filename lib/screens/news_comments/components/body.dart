@@ -67,18 +67,20 @@ class _BodyState extends State<Body> {
                   final commentsCount = state.data!.commentCount;
                   return Container(
                     decoration: BoxDecoration(color: Colors.white),
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                         top: 15, bottom: 25, left: 15, right: 15),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin:
-                              EdgeInsets.only(top: 20, left: 10, bottom: 15),
+                          margin: const EdgeInsets.only(
+                              top: 20, left: 10, bottom: 15),
                           child: Text(
                             "$commentsCount ${Plural(commentsCount).declense(_strings.oneCommentNoun.toUpperCase(), _strings.multipleCommentsNoun.toUpperCase(), _strings.lotOfCommentsNoun.toUpperCase())}",
                             style: TextStyle(
-                                fontSize: SizeConfig(context, 20).getProportionateScreenHeight, fontWeight: FontWeight.w500),
+                                fontSize: SizeConfig(context, 20)
+                                    .getProportionateScreenHeight,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                         MediaQuery.removePadding(
@@ -111,7 +113,6 @@ class _BodyState extends State<Body> {
   }
 
   List<Widget> _buildComments(NewsCommentsData data) {
-
     if (newsId == null) {
       var arg = ModalRoute.of(context)!.settings.arguments as Map;
 
@@ -147,7 +148,7 @@ class _BodyState extends State<Body> {
 
         comments.add(
           Container(
-            margin: EdgeInsets.only(left: 25),
+            margin: const EdgeInsets.only(left: 25),
             child: Comment(
               id: childrenComment.id,
               authorId: childrenComment.authorId,

@@ -20,21 +20,27 @@ class PhotoPreviewPage extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: Icon(Icons.arrow_back_ios),
-                      onPressed: ()=> Navigator.pop(context),
+                      onPressed: () => Navigator.pop(context),
                     ),
                   ],
                 ),
-                if(file != null) ...[
-                    Expanded(child: Image.file(file!,height: 700,)),
-                    Padding(padding: EdgeInsets.all(20),
-                      child: ServiceBtn(
-                        txt: 'Сохранить',
-                        onPressed: (){
-
-                          Navigator.pop(context);
-                        },
-                      ),)]
-                else if(url != null && url != '') Image.network(url!),
+                if (file != null) ...[
+                  Expanded(
+                      child: Image.file(
+                    file!,
+                    height: 700,
+                  )),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: ServiceBtn(
+                      txt: 'Сохранить',
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  )
+                ] else if (url != null && url != '')
+                  Image.network(url!),
               ],
             ),
           ),

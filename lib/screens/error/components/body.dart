@@ -10,7 +10,7 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Background(
         child: SingleChildScrollView(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Container(
         child: Column(
           children: [

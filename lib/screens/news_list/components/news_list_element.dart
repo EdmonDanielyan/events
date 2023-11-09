@@ -24,7 +24,7 @@ class NewsListElement extends StatelessWidget {
       },
       child: Container(
         width: size.width,
-        margin: EdgeInsets.only(bottom: 15),
+        margin: const EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
           color: Colors.white,
         ),
@@ -50,9 +50,7 @@ class NewsListElement extends StatelessWidget {
                     ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(
-                vertical: 16,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: Column(
                 children: [
                   Container(
@@ -67,7 +65,7 @@ class NewsListElement extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 8),
+                    margin: const EdgeInsets.only(top: 8),
                     alignment: Alignment.topLeft,
                     child: Text(
                       newsItem.title ?? '',
@@ -78,7 +76,7 @@ class NewsListElement extends StatelessWidget {
                   ),
                   Container(
                     alignment: Alignment.bottomCenter,
-                    margin: EdgeInsets.only(top: 16),
+                    margin: const EdgeInsets.only(top: 16),
                     child: Row(
                       children: [
                         Container(
@@ -94,7 +92,7 @@ class NewsListElement extends StatelessWidget {
                                     : Palette.textBlack50,
                               ),
                               Container(
-                                margin: EdgeInsets.only(left: 4),
+                                margin: const EdgeInsets.only(left: 4),
                                 child: Text(
                                   newsItem.likeCount != null
                                       ? newsItem.likeCount.toString()
@@ -111,7 +109,7 @@ class NewsListElement extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 24),
+                          margin:const EdgeInsets.only(left: 24),
                           child: Row(
                             children: [
                               SvgPicture.asset(
@@ -121,7 +119,7 @@ class NewsListElement extends StatelessWidget {
                                 color: Palette.textBlack50,
                               ),
                               Container(
-                                margin: EdgeInsets.only(left: 4),
+                                margin: const EdgeInsets.only(left: 4),
                                 child: Text(
                                   newsItem.commentCount != null
                                       ? newsItem.commentCount.toString()
@@ -140,7 +138,7 @@ class NewsListElement extends StatelessWidget {
                             },
                             child: Padding(
                               padding:
-                                  const EdgeInsets.only(left: 16, right: 8),
+                                  const EdgeInsets.only(left: 20, right: 8),
                               child: Icon(Icons.share,
                                   size: 16, color: Palette.textBlack50),
                             )),
@@ -158,7 +156,7 @@ class NewsListElement extends StatelessWidget {
                                     color: Palette.textBlack50,
                                   ),
                                   Container(
-                                    margin: EdgeInsets.only(left: 4),
+                                    margin: const EdgeInsets.only(left: 4),
                                     child: Text(
                                       newsItem.viewCount != null
                                           ? newsItem.viewCount.toString()

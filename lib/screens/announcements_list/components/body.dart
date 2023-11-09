@@ -54,7 +54,7 @@ class _BodyState extends State<Body> {
                     child: Column(
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(vertical: 32),
+                          padding: const EdgeInsets.symmetric(vertical: 32),
                           alignment: Alignment.topLeft,
                           child: Text(
                             localizationInstance.announcements,

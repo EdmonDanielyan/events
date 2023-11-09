@@ -70,7 +70,7 @@ class CustomBottomSheetChild extends StatelessWidget {
       height: height,
       constraints: constraints,
       padding: MediaQuery.of(context).viewInsets,
-      margin: EdgeInsets.only(top: 7),
+      margin: const EdgeInsets.only(top: 7),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,

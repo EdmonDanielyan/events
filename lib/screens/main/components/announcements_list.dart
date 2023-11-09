@@ -24,7 +24,7 @@ class AnnouncementsList extends StatelessWidget {
             {
               List<Widget> items = getAnnouncementsWidgetList(state.data!);
               return Container(
-                margin: EdgeInsets.only(top: 30),
+                margin: const EdgeInsets.only(top: 30),
                 child: ListView.builder(
                   shrinkWrap: true,
                   controller: ScrollController(keepScrollOffset: false),
@@ -39,17 +39,17 @@ class AnnouncementsList extends StatelessWidget {
             {
               announcementsCubit.fetchAnnouncements();
               return Container(
-                  margin: EdgeInsets.only(top: 30),
+                  margin: const EdgeInsets.only(top: 30),
                   child: Column(children: [
-                    AnnouncementsListElementPlaceholder(),
-                    ListElementDivider(),
-                    AnnouncementsListElementPlaceholder(),
-                    ListElementDivider(),
-                    AnnouncementsListElementPlaceholder(),
-                    ListElementDivider(),
-                    AnnouncementsListElementPlaceholder(),
-                    ListElementDivider(),
-                    AnnouncementsListElementPlaceholder(),
+                    const AnnouncementsListElementPlaceholder(),
+                    const ListElementDivider(),
+                    const AnnouncementsListElementPlaceholder(),
+                    const ListElementDivider(),
+                    const AnnouncementsListElementPlaceholder(),
+                    const ListElementDivider(),
+                    const AnnouncementsListElementPlaceholder(),
+                    const ListElementDivider(),
+                    const AnnouncementsListElementPlaceholder(),
                   ]));
             }
 
@@ -72,7 +72,7 @@ class AnnouncementsList extends StatelessWidget {
         AnnouncementsListElement(announcement: element),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: ListElementDivider(),
+          child: const ListElementDivider(),
         )
       ]);
     });
