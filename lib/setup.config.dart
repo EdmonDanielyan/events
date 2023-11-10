@@ -451,6 +451,10 @@ Future<_i1.GetIt> $initGetIt(
     instanceName: 'messengerAuthPassword',
   );
   gh.factory<String>(
+    () => tokenDataInjectorModule.natsToken,
+    instanceName: 'natsToken',
+  );
+  gh.factory<String>(
     () => testLogFilePathInjector.logFile,
     instanceName: 'logFile',
     registerFor: {_unitTest},
@@ -466,16 +470,12 @@ Future<_i1.GetIt> $initGetIt(
     preResolve: true,
   );
   gh.factory<String>(
-    () => tokenDataInjectorModule.localDatabasePassword,
-    instanceName: 'localDatabasePassword',
-  );
-  gh.factory<String>(
     () => tokenDataInjectorModule.deviceVirtualId,
     instanceName: 'deviceVirtualId',
   );
   gh.factory<String>(
-    () => tokenDataInjectorModule.natsToken,
-    instanceName: 'natsToken',
+    () => tokenDataInjectorModule.localDatabasePassword,
+    instanceName: 'localDatabasePassword',
   );
   gh.singleton<_i108.TagsListCubit>(_i108.TagsListCubit());
   gh.singleton<_i109.TagsListNetworkRequest>(_i109.TagsListNetworkRequest());
