@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/cubit/profile/sources/fetch/network.dart';
 import 'package:ink_mobile/extensions/get_user_success.dart';
-import 'package:ink_mobile/messenger/api/rest_client/chat/get_list/response.dart';
-import 'package:ink_mobile/messenger/api/rest_client/chat/invite/request.dart';
-import 'package:ink_mobile/messenger/api/rest_client/chat/remove_participant/request.dart';
-import 'package:ink_mobile/messenger/api/rest_client/rest_client.dart';
-import 'package:ink_mobile/messenger/api/services/chat/get_list_handle.dart';
 import 'package:ink_mobile/messenger/functions/create_info_message.dart';
 import 'package:ink_mobile/messenger/handler/create_chat.dart';
-import 'package:ink_mobile/messenger/handler/fetch/chats.dart';
-import 'package:ink_mobile/messenger/handler/senders/invite_chat_link_new.dart';
 import 'package:ink_mobile/messenger/handler/senders/invite_link.dart';
 import 'package:ink_mobile/messenger/handler/senders/send_message_handler.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
@@ -22,7 +15,6 @@ import '../components/new_bottom_nav_bar/cubit/new_bottom_nav_bar_cubit.dart';
 import '../messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import '../messenger/cubits/cached/users/cached_users_cubit.dart';
 import '../messenger/cubits/custom/online_cubit/online_cubit.dart';
-import '../messenger/handler/senders/invite_chat_sender_handler.dart';
 import '../messenger/model/chat.dart';
 import '../messenger/screens/chat/opener.dart';
 
@@ -143,46 +135,24 @@ class NavigationMethods {
   }
 
   static void openChatInviteLink(BuildContext context, int chatID) async {
-    // final response = await const MainApi().client.getChatList();
-    // final chatListResponse =
-    //     GetChatListResponse.fromJson(response as Map<String, dynamic>);
-    // final itog = chatListResponse.data as List<int>;
-    // if (itog.contains(chatID)) {
-    //   openChatByID(context, chatID);
-    // } else {
     final chatsCubit = getIt<CachedChatsCubit>();
     await chatsCubit.fetchChats();
     final response = await chatsCubit.getChatById(chatID);
     if (response is Chat) {
       _openChat(context, chatID);
     } else {
-      // await chatsCubit.fetchChats();
-      // // await FetchChats().call();
-      // final contains = chatsCubit.getChatById(chatID);
-      // final me = chatsCubit.me;
-      // if (contains!.participants.contains(me)) {
-      //   _openChat(context, chatID);
-      // } else {
       String userId = await Token.getUserId();
-      // print(userId);
-      // int.parse(userId);
-      // print(userId);
       final List<int> users = [int.parse(userId)];
       await InviteLinkSenderHandler(chatID, users).call();
       await chatsCubit.fetchChats();
-      // await FetchChats().call();
       openChatByLink(context, chatID, int.parse(userId));
     }
-    // await Token.getUserId();
   }
 
   static void openChatByLink(
       BuildContext context, int chatID, int userID) async {
     final chatsCubit = getIt<CachedChatsCubit>();
     final chat = chatsCubit.getChatById(chatID);
-    // final chat = chatsCubit.state.chats
-    //     .firstWhereOrNull((selectedChat) => selectedChat.id == chatID);
-    // final cachedUsersCubit = getIt<CachedUsersCubit>();
     User? user = chatsCubit.me;
     if (user == null) {
       await Token.setNewTokensIfExpired();

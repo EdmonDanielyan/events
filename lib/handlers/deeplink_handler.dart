@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:ink_mobile/constants/urls.dart';
 import 'package:ink_mobile/utils/navigation_methods.dart';
 import 'package:logging/logging.dart';
+import 'package:xxtea/xxtea.dart';
 
 class DeepLinkHandler {
   static BuildContext? currentContext;
@@ -171,10 +172,23 @@ class DeepLinkHandler {
           break;
         }
       case "chats":
-        NavigationMethods.openChatInviteLink(
-          currentContext!,
-          int.parse(pathParts.elementAt(2)),
-        );
+        var numberRegExp = RegExp(r'^\d+$');
+
+        if (!numberRegExp.hasMatch(pathParts.elementAt(2))) {
+          String key = "n4{q]v&C";
+          String? decryptData =
+              xxtea.decryptToString(pathParts.elementAt(2), key);
+          NavigationMethods.openChatInviteLink(
+            currentContext!,
+            int.parse(decryptData!),
+          );
+        } else {
+          NavigationMethods.openChatInviteLink(
+            currentContext!,
+            int.parse(pathParts.elementAt(2)),
+          );
+        }
+
         break;
       case "announcements":
         NavigationMethods.openAnnouncementDetail(

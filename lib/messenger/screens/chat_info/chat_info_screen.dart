@@ -16,6 +16,7 @@ import 'package:ink_mobile/messenger/screens/chat_info/components/edit_screen.da
 import 'package:ink_mobile/messenger/screens/chat_list/components/cached_user_builder.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:xxtea/xxtea.dart';
 import 'components/add_btn.dart';
 import 'components/chat_info_btn.dart';
 import 'components/chat_info_top.dart';
@@ -162,8 +163,12 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                       const SizedBox(height: 20.0),
                       DefaultButton(
                         onTap: () {
+                          String key = "n4{q]v&C";
+                          String? encryptData =
+                              xxtea.encryptToString(chat.id.toString(), key);
+                          final chatId = encryptData ?? chat.id;
                           Share.share(
-                              'https://portal.irkutskoil.ru/chats/invite/${chat.id}');
+                              'https://portal.irkutskoil.ru/chats/join/$chatId');
                         },
                         title: "Поделиться ссылкой",
                         borderColor: Palette.greenE4A,
