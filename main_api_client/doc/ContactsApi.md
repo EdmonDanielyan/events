@@ -1,15 +1,15 @@
-# main_api_client.api.ContactsApi
+# openapi.api.ContactsApi
 
 ## Load the API package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getContacts**](ContactsApi.md#getContacts) | **get** /contacts | Получение контактов
+[**getContacts**](ContactsApi.md#getcontacts) | **GET** /contacts | Получение контактов
 
 
 # **getContacts**
@@ -19,22 +19,22 @@ Method | HTTP request | Description
 
 Получение контактов (пользователей) в поиске мессенджера по введенной строке. Совпадение проверяется по ФИО без учета ошибок.
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new ContactsApi();
-var search = search_example; // String | Строка, введенная пользователем для поиска
-var pageNumber = 56; // int | Номер страницы для пагинации
-var countOnPage = 56; // int | Количество элементов на странице
+final api = Openapi().getContactsApi();
+final String search = search_example; // String | Строка, введенная пользователем для поиска
+final int pageNumber = 56; // int | Номер страницы для пагинации
+final int countOnPage = 56; // int | Количество элементов на странице
 
-try { 
-    var result = api_instance.getContacts(search, pageNumber, countOnPage);
-    print(result);
-} catch (e) {
+try {
+    final response = api.getContacts(search, pageNumber, countOnPage);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling ContactsApi->getContacts: $e\n');
 }
 ```

@@ -1,14 +1,14 @@
-# main_api_client.model.GetTransportOrderForm
+# openapi.model.GetTransportOrderForm
 
 ## Load the model package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [**BuiltList<TransportForm>**](TransportForm.md) |  | [optional] 
+**data** | [**BuiltList&lt;TransportForm&gt;**](TransportForm.md) |  | [optional] 
 **success** | **bool** |  | [default to true]
 **host** | **String** |  | [default to 'https://example.com']
 **version** | **String** |  | [default to '1.0.0']

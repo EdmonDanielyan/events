@@ -1,14 +1,14 @@
-# main_api_client.model.MovementsSuccess
+# openapi.model.MovementsSuccess
 
 ## Load the model package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [**BuiltList<MovementsObject>**](MovementsObject.md) |  | [optional] 
+**data** | [**BuiltList&lt;MovementsObject&gt;**](MovementsObject.md) |  | [optional] 
 **success** | **bool** |  | [default to true]
 **host** | **String** |  | [default to 'https://example.com']
 **version** | **String** |  | [default to '1.0.0']

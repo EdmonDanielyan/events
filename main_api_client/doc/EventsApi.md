@@ -1,18 +1,18 @@
-# main_api_client.api.EventsApi
+# openapi.api.EventsApi
 
 ## Load the API package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**eventsAddeventmemberIdGet**](EventsApi.md#eventsAddeventmemberIdGet) | **get** /events/addeventmember/{id} | Добавить текущего пользователя как участника события
-[**eventsRemoveeventmemberIdGet**](EventsApi.md#eventsRemoveeventmemberIdGet) | **get** /events/removeeventmember/{id} | Удалить текущего пользователя как участника события
-[**getEventById**](EventsApi.md#getEventById) | **get** /events/{id} | Получить информацию о событии по ID
-[**getEvents**](EventsApi.md#getEvents) | **get** /events | Метод получения событий
+[**eventsAddeventmemberIdGet**](EventsApi.md#eventsaddeventmemberidget) | **GET** /events/addeventmember/{id} | Добавить текущего пользователя как участника события
+[**eventsRemoveeventmemberIdGet**](EventsApi.md#eventsremoveeventmemberidget) | **GET** /events/removeeventmember/{id} | Удалить текущего пользователя как участника события
+[**getEventById**](EventsApi.md#geteventbyid) | **GET** /events/{id} | Получить информацию о событии по ID
+[**getEvents**](EventsApi.md#getevents) | **GET** /events | Метод получения событий
 
 
 # **eventsAddeventmemberIdGet**
@@ -20,20 +20,20 @@ Method | HTTP request | Description
 
 Добавить текущего пользователя как участника события
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new EventsApi();
-var id = 789; // int | ID события
+final api = Openapi().getEventsApi();
+final int id = 789; // int | ID события
 
-try { 
-    var result = api_instance.eventsAddeventmemberIdGet(id);
-    print(result);
-} catch (e) {
+try {
+    final response = api.eventsAddeventmemberIdGet(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling EventsApi->eventsAddeventmemberIdGet: $e\n');
 }
 ```
@@ -64,20 +64,20 @@ Name | Type | Description  | Notes
 
 Удалить текущего пользователя как участника события
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new EventsApi();
-var id = 789; // int | ID события
+final api = Openapi().getEventsApi();
+final int id = 789; // int | ID события
 
-try { 
-    var result = api_instance.eventsRemoveeventmemberIdGet(id);
-    print(result);
-} catch (e) {
+try {
+    final response = api.eventsRemoveeventmemberIdGet(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling EventsApi->eventsRemoveeventmemberIdGet: $e\n');
 }
 ```
@@ -110,20 +110,20 @@ Name | Type | Description  | Notes
 
 Получить информацию о конкретном событии по ID
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new EventsApi();
-var id = 789; // int | ID события
+final api = Openapi().getEventsApi();
+final int id = 789; // int | ID события
 
-try { 
-    var result = api_instance.getEventById(id);
-    print(result);
-} catch (e) {
+try {
+    final response = api.getEventById(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling EventsApi->getEventById: $e\n');
 }
 ```
@@ -156,21 +156,21 @@ Name | Type | Description  | Notes
 
 Получить информацию о событиях
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new EventsApi();
-var pageNumber = 56; // int | Номер страницы для пагинации
-var countOnPage = 56; // int | Количество элементов на странице
+final api = Openapi().getEventsApi();
+final int pageNumber = 56; // int | Номер страницы для пагинации
+final int countOnPage = 56; // int | Количество элементов на странице
 
-try { 
-    var result = api_instance.getEvents(pageNumber, countOnPage);
-    print(result);
-} catch (e) {
+try {
+    final response = api.getEvents(pageNumber, countOnPage);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling EventsApi->getEvents: $e\n');
 }
 ```

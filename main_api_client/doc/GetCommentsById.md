@@ -1,14 +1,14 @@
-# main_api_client.model.GetCommentsById
+# openapi.model.GetCommentsById
 
 ## Load the model package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [**BuiltList<CommentParent>**](CommentParent.md) |  | [optional] 
+**data** | [**BuiltList&lt;CommentParent&gt;**](CommentParent.md) |  | [optional] 
 **success** | **bool** |  | [default to true]
 **host** | **String** |  | [default to 'https://example.com']
 **version** | **String** |  | [default to '1.0.0']

@@ -1,31 +1,31 @@
-# main_api_client.api.UserApi
+# openapi.api.UserApi
 
 ## Load the API package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**keysGet**](UserApi.md#keysGet) | **get** /keys | Получение ключей шифрования текущего пользователя
-[**keysIdGet**](UserApi.md#keysIdGet) | **get** /keys/{id} | Получение публичного ключа другого пользователя
-[**userBirthdayGet**](UserApi.md#userBirthdayGet) | **get** /user/birthday | 
-[**userCaninquireGet**](UserApi.md#userCaninquireGet) | **get** /user/caninquire | Метод для получения информации может ли пользователь оставлять заявки на справки
-[**userGet**](UserApi.md#userGet) | **get** /user | Получение информации о текущем пользователе
-[**userGetfeedbacktagsGet**](UserApi.md#userGetfeedbacktagsGet) | **get** /user/getfeedbacktags | Возвращает тэги для формы обратной связи
-[**userGetquestionsGet**](UserApi.md#userGetquestionsGet) | **get** /user/getquestions | Возвращает вопросы (обратная связь)
-[**userGetreferenceautofillGet**](UserApi.md#userGetreferenceautofillGet) | **get** /user/getreferenceautofill | Автозаполняемые поля для формы справок
-[**userIdGet**](UserApi.md#userIdGet) | **get** /user/{id} | Получение информации о пользователе по ID
-[**userMovementsGet**](UserApi.md#userMovementsGet) | **get** /user/movements | Получение информации о кадровых перемещениях текущего пользователя
-[**userOrderdmsPost**](UserApi.md#userOrderdmsPost) | **post** /user/orderdms | Метод для заказа ДМС
-[**userOrderreferencePost**](UserApi.md#userOrderreferencePost) | **post** /user/orderreference | Метод для заказа справок
-[**userOrdertransportPost**](UserApi.md#userOrdertransportPost) | **post** /user/ordertransport | Метод для заказа транспорта
-[**userReferenceorderformGet**](UserApi.md#userReferenceorderformGet) | **get** /user/referenceorderform | Возвращает вспомогательные данные для формы заказа транспорта
-[**userSendfeedbackPost**](UserApi.md#userSendfeedbackPost) | **post** /user/sendfeedback | Метод для отправки обратной связи (вопроса руководству)
-[**userTranspontorderformGet**](UserApi.md#userTranspontorderformGet) | **get** /user/transpontorderform | Возвращает вспомогательные данные для формы заказа транспорта
-[**usersPost**](UserApi.md#usersPost) | **post** /users | Получение информации о пользователях
+[**keysGet**](UserApi.md#keysget) | **GET** /keys | Получение ключей шифрования текущего пользователя
+[**keysIdGet**](UserApi.md#keysidget) | **GET** /keys/{id} | Получение публичного ключа другого пользователя
+[**userBirthdayGet**](UserApi.md#userbirthdayget) | **GET** /user/birthday | 
+[**userCaninquireGet**](UserApi.md#usercaninquireget) | **GET** /user/caninquire | Метод для получения информации может ли пользователь оставлять заявки на справки
+[**userGet**](UserApi.md#userget) | **GET** /user | Получение информации о текущем пользователе
+[**userGetfeedbacktagsGet**](UserApi.md#usergetfeedbacktagsget) | **GET** /user/getfeedbacktags | Возвращает тэги для формы обратной связи
+[**userGetquestionsGet**](UserApi.md#usergetquestionsget) | **GET** /user/getquestions | Возвращает вопросы (обратная связь)
+[**userGetreferenceautofillGet**](UserApi.md#usergetreferenceautofillget) | **GET** /user/getreferenceautofill | Автозаполняемые поля для формы справок
+[**userIdGet**](UserApi.md#useridget) | **GET** /user/{id} | Получение информации о пользователе по ID
+[**userMovementsGet**](UserApi.md#usermovementsget) | **GET** /user/movements | Получение информации о кадровых перемещениях текущего пользователя
+[**userOrderdmsPost**](UserApi.md#userorderdmspost) | **POST** /user/orderdms | Метод для заказа ДМС
+[**userOrderreferencePost**](UserApi.md#userorderreferencepost) | **POST** /user/orderreference | Метод для заказа справок
+[**userOrdertransportPost**](UserApi.md#userordertransportpost) | **POST** /user/ordertransport | Метод для заказа транспорта
+[**userReferenceorderformGet**](UserApi.md#userreferenceorderformget) | **GET** /user/referenceorderform | Возвращает вспомогательные данные для формы заказа транспорта
+[**userSendfeedbackPost**](UserApi.md#usersendfeedbackpost) | **POST** /user/sendfeedback | Метод для отправки обратной связи (вопроса руководству)
+[**userTranspontorderformGet**](UserApi.md#usertranspontorderformget) | **GET** /user/transpontorderform | Возвращает вспомогательные данные для формы заказа транспорта
+[**usersPost**](UserApi.md#userspost) | **POST** /users | Получение информации о пользователях
 
 
 # **keysGet**
@@ -33,19 +33,19 @@ Method | HTTP request | Description
 
 Получение ключей шифрования текущего пользователя
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
+final api = Openapi().getUserApi();
 
-try { 
-    var result = api_instance.keysGet();
-    print(result);
-} catch (e) {
+try {
+    final response = api.keysGet();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->keysGet: $e\n');
 }
 ```
@@ -73,20 +73,20 @@ This endpoint does not need any parameter.
 
 Получение публичного ключа другого пользователя
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
-var id = 789; // int | ID пользователя
+final api = Openapi().getUserApi();
+final int id = 789; // int | ID пользователя
 
-try { 
-    var result = api_instance.keysIdGet(id);
-    print(result);
-} catch (e) {
+try {
+    final response = api.keysIdGet(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->keysIdGet: $e\n');
 }
 ```
@@ -117,19 +117,19 @@ Name | Type | Description  | Notes
 
 
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
+final api = Openapi().getUserApi();
 
-try { 
-    var result = api_instance.userBirthdayGet();
-    print(result);
-} catch (e) {
+try {
+    final response = api.userBirthdayGet();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userBirthdayGet: $e\n');
 }
 ```
@@ -157,19 +157,19 @@ This endpoint does not need any parameter.
 
 Метод для получения информации может ли пользователь оставлять заявки на справки
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
+final api = Openapi().getUserApi();
 
-try { 
-    var result = api_instance.userCaninquireGet();
-    print(result);
-} catch (e) {
+try {
+    final response = api.userCaninquireGet();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userCaninquireGet: $e\n');
 }
 ```
@@ -197,19 +197,19 @@ This endpoint does not need any parameter.
 
 Получение информации о текущем пользователе
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
+final api = Openapi().getUserApi();
 
-try { 
-    var result = api_instance.userGet();
-    print(result);
-} catch (e) {
+try {
+    final response = api.userGet();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userGet: $e\n');
 }
 ```
@@ -237,19 +237,19 @@ This endpoint does not need any parameter.
 
 Возвращает тэги для формы обратной связи
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
+final api = Openapi().getUserApi();
 
-try { 
-    var result = api_instance.userGetfeedbacktagsGet();
-    print(result);
-} catch (e) {
+try {
+    final response = api.userGetfeedbacktagsGet();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userGetfeedbacktagsGet: $e\n');
 }
 ```
@@ -277,21 +277,21 @@ This endpoint does not need any parameter.
 
 Возвращает вопросы (обратная связь)
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
-var pageNumber = 56; // int | Номер страницы для пагинации
-var countOnPage = 56; // int | Количество элементов на странице
+final api = Openapi().getUserApi();
+final int pageNumber = 56; // int | Номер страницы для пагинации
+final int countOnPage = 56; // int | Количество элементов на странице
 
-try { 
-    var result = api_instance.userGetquestionsGet(pageNumber, countOnPage);
-    print(result);
-} catch (e) {
+try {
+    final response = api.userGetquestionsGet(pageNumber, countOnPage);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userGetquestionsGet: $e\n');
 }
 ```
@@ -323,19 +323,19 @@ Name | Type | Description  | Notes
 
 Автозаполняемые поля для формы справок
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
+final api = Openapi().getUserApi();
 
-try { 
-    var result = api_instance.userGetreferenceautofillGet();
-    print(result);
-} catch (e) {
+try {
+    final response = api.userGetreferenceautofillGet();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userGetreferenceautofillGet: $e\n');
 }
 ```
@@ -363,20 +363,20 @@ This endpoint does not need any parameter.
 
 Получение информации о пользователе по ID
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
-var id = 789; // int | ID пользователя
+final api = Openapi().getUserApi();
+final int id = 789; // int | ID пользователя
 
-try { 
-    var result = api_instance.userIdGet(id);
-    print(result);
-} catch (e) {
+try {
+    final response = api.userIdGet(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userIdGet: $e\n');
 }
 ```
@@ -407,19 +407,19 @@ Name | Type | Description  | Notes
 
 Получение информации о кадровых перемещениях текущего пользователя
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
+final api = Openapi().getUserApi();
 
-try { 
-    var result = api_instance.userMovementsGet();
-    print(result);
-} catch (e) {
+try {
+    final response = api.userMovementsGet();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userMovementsGet: $e\n');
 }
 ```
@@ -447,20 +447,20 @@ This endpoint does not need any parameter.
 
 Метод для заказа ДМС
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
-var orderDMS = new OrderDMS(); // OrderDMS | Данные для заказа полиса.   Если в автозаполнении указан organisation_id, то выбор организации должен быть заблокирован 
+final api = Openapi().getUserApi();
+final OrderDMS orderDMS = ; // OrderDMS | Данные для заказа полиса.   Если в автозаполнении указан organisation_id, то выбор организации должен быть заблокирован 
 
-try { 
-    var result = api_instance.userOrderdmsPost(orderDMS);
-    print(result);
-} catch (e) {
+try {
+    final response = api.userOrderdmsPost(orderDMS);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userOrderdmsPost: $e\n');
 }
 ```
@@ -491,31 +491,31 @@ Name | Type | Description  | Notes
 
 Метод для заказа справок
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
-var referenceType = referenceType_example; // String | 
-var phone = phone_example; // String | 
-var way = way_example; // String | 
-var postalCode = postalCode_example; // String | 
-var address = address_example; // String | 
-var period = period_example; // String | 
-var destination = destination_example; // String | 
-var num_ = 56; // int | 
-var child = child_example; // String | 
-var dateStart = dateStart_example; // String | 
-var dateEnd = dateEnd_example; // String | 
-var filesLeftSquareBracketRightSquareBracket = [BINARY_DATA_HERE]; // BuiltList<Uint8List> | 
+final api = Openapi().getUserApi();
+final String referenceType = referenceType_example; // String | 
+final String phone = phone_example; // String | 
+final String way = way_example; // String | 
+final String postalCode = postalCode_example; // String | 
+final String address = address_example; // String | 
+final String period = period_example; // String | 
+final String destination = destination_example; // String | 
+final int num_ = 56; // int | 
+final String child = child_example; // String | 
+final String dateStart = dateStart_example; // String | 
+final String dateEnd = dateEnd_example; // String | 
+final BuiltList<MultipartFile> filesLeftSquareBracketRightSquareBracket = /path/to/file.txt; // BuiltList<MultipartFile> | 
 
-try { 
-    var result = api_instance.userOrderreferencePost(referenceType, phone, way, postalCode, address, period, destination, num_, child, dateStart, dateEnd, filesLeftSquareBracketRightSquareBracket);
-    print(result);
-} catch (e) {
+try {
+    final response = api.userOrderreferencePost(referenceType, phone, way, postalCode, address, period, destination, num_, child, dateStart, dateEnd, filesLeftSquareBracketRightSquareBracket);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userOrderreferencePost: $e\n');
 }
 ```
@@ -535,7 +535,7 @@ Name | Type | Description  | Notes
  **child** | **String**|  | [optional] 
  **dateStart** | **String**|  | [optional] 
  **dateEnd** | **String**|  | [optional] 
- **filesLeftSquareBracketRightSquareBracket** | [**BuiltList<Uint8List>**](Uint8List.md)|  | [optional] 
+ **filesLeftSquareBracketRightSquareBracket** | [**BuiltList&lt;MultipartFile&gt;**](MultipartFile.md)|  | [optional] 
 
 ### Return type
 
@@ -557,29 +557,29 @@ Name | Type | Description  | Notes
 
 Метод для заказа транспорта
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
-var fio = fio_example; // String | 
-var phone = phone_example; // String | 
-var status = 56; // int | 
-var date = date_example; // String | 
-var time = time_example; // String | 
-var place = place_example; // String | 
-var howLong = howLong_example; // String | 
-var passengers = passengers_example; // String | 
-var route = route_example; // String | 
-var filesLeftSquareBracketRightSquareBracket = [BINARY_DATA_HERE]; // BuiltList<Uint8List> | 
+final api = Openapi().getUserApi();
+final String fio = fio_example; // String | 
+final String phone = phone_example; // String | 
+final int status = 56; // int | 
+final String date = date_example; // String | 
+final String time = time_example; // String | 
+final String place = place_example; // String | 
+final String howLong = howLong_example; // String | 
+final String passengers = passengers_example; // String | 
+final String route = route_example; // String | 
+final BuiltList<MultipartFile> filesLeftSquareBracketRightSquareBracket = /path/to/file.txt; // BuiltList<MultipartFile> | 
 
-try { 
-    var result = api_instance.userOrdertransportPost(fio, phone, status, date, time, place, howLong, passengers, route, filesLeftSquareBracketRightSquareBracket);
-    print(result);
-} catch (e) {
+try {
+    final response = api.userOrdertransportPost(fio, phone, status, date, time, place, howLong, passengers, route, filesLeftSquareBracketRightSquareBracket);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userOrdertransportPost: $e\n');
 }
 ```
@@ -597,7 +597,7 @@ Name | Type | Description  | Notes
  **howLong** | **String**|  | 
  **passengers** | **String**|  | 
  **route** | **String**|  | 
- **filesLeftSquareBracketRightSquareBracket** | [**BuiltList<Uint8List>**](Uint8List.md)|  | [optional] 
+ **filesLeftSquareBracketRightSquareBracket** | [**BuiltList&lt;MultipartFile&gt;**](MultipartFile.md)|  | [optional] 
 
 ### Return type
 
@@ -619,19 +619,19 @@ Name | Type | Description  | Notes
 
 Возвращает вспомогательные данные для формы заказа транспорта
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
+final api = Openapi().getUserApi();
 
-try { 
-    var result = api_instance.userReferenceorderformGet();
-    print(result);
-} catch (e) {
+try {
+    final response = api.userReferenceorderformGet();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userReferenceorderformGet: $e\n');
 }
 ```
@@ -659,24 +659,24 @@ This endpoint does not need any parameter.
 
 Метод для отправки обратной связи (вопроса руководству)
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
-var question = question_example; // String | 
-var tags = tags_example; // String | 
-var fio = fio_example; // String | 
-var contacts = contacts_example; // String | 
-var filesLeftSquareBracketRightSquareBracket = [BINARY_DATA_HERE]; // BuiltList<Uint8List> | 
+final api = Openapi().getUserApi();
+final String question = question_example; // String | 
+final String tags = tags_example; // String | 
+final String fio = fio_example; // String | 
+final String contacts = contacts_example; // String | 
+final BuiltList<MultipartFile> filesLeftSquareBracketRightSquareBracket = /path/to/file.txt; // BuiltList<MultipartFile> | 
 
-try { 
-    var result = api_instance.userSendfeedbackPost(question, tags, fio, contacts, filesLeftSquareBracketRightSquareBracket);
-    print(result);
-} catch (e) {
+try {
+    final response = api.userSendfeedbackPost(question, tags, fio, contacts, filesLeftSquareBracketRightSquareBracket);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userSendfeedbackPost: $e\n');
 }
 ```
@@ -689,7 +689,7 @@ Name | Type | Description  | Notes
  **tags** | **String**|  | 
  **fio** | **String**|  | [optional] 
  **contacts** | **String**|  | [optional] 
- **filesLeftSquareBracketRightSquareBracket** | [**BuiltList<Uint8List>**](Uint8List.md)|  | [optional] 
+ **filesLeftSquareBracketRightSquareBracket** | [**BuiltList&lt;MultipartFile&gt;**](MultipartFile.md)|  | [optional] 
 
 ### Return type
 
@@ -711,19 +711,19 @@ Name | Type | Description  | Notes
 
 Возвращает вспомогательные данные для формы заказа транспорта
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
+final api = Openapi().getUserApi();
 
-try { 
-    var result = api_instance.userTranspontorderformGet();
-    print(result);
-} catch (e) {
+try {
+    final response = api.userTranspontorderformGet();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->userTranspontorderformGet: $e\n');
 }
 ```
@@ -751,20 +751,20 @@ This endpoint does not need any parameter.
 
 Получение информации о пользователях
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new UserApi();
-var getUsers = new GetUsers(); // GetUsers | 
+final api = Openapi().getUserApi();
+final GetUsers getUsers = ; // GetUsers | 
 
-try { 
-    var result = api_instance.usersPost(getUsers);
-    print(result);
-} catch (e) {
+try {
+    final response = api.usersPost(getUsers);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling UserApi->usersPost: $e\n');
 }
 ```

@@ -1,8 +1,8 @@
-# main_api_client.model.GetNews
+# openapi.model.GetNews
 
 ## Load the model package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 ## Properties

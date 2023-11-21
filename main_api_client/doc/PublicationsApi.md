@@ -1,15 +1,15 @@
-# main_api_client.api.PublicationsApi
+# openapi.api.PublicationsApi
 
 ## Load the API package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**publicationsGet**](PublicationsApi.md#publicationsGet) | **get** /publications | ИНК-Знание - Публикации
+[**publicationsGet**](PublicationsApi.md#publicationsget) | **GET** /publications | ИНК-Знание - Публикации
 
 
 # **publicationsGet**
@@ -17,21 +17,21 @@ Method | HTTP request | Description
 
 ИНК-Знание - Публикации
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new PublicationsApi();
-var pageNumber = 56; // int | Номер страницы для пагинации
-var countOnPage = 56; // int | Количество элементов на странице
+final api = Openapi().getPublicationsApi();
+final int pageNumber = 56; // int | Номер страницы для пагинации
+final int countOnPage = 56; // int | Количество элементов на странице
 
-try { 
-    var result = api_instance.publicationsGet(pageNumber, countOnPage);
-    print(result);
-} catch (e) {
+try {
+    final response = api.publicationsGet(pageNumber, countOnPage);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling PublicationsApi->publicationsGet: $e\n');
 }
 ```

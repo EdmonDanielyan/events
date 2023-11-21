@@ -1,20 +1,20 @@
-# main_api_client.api.GlobalApi
+# openapi.api.GlobalApi
 
 ## Load the API package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getAllNotificationsState**](GlobalApi.md#getAllNotificationsState) | **get** /config/notifications | Все уведомления
-[**getNotificationSub**](GlobalApi.md#getNotificationSub) | **get** /config/notifications/{channel}/{targetId} | Получить подписку на чат
-[**getSettings**](GlobalApi.md#getSettings) | **get** /settings | Настройки приложения
-[**getSnippetsList**](GlobalApi.md#getSnippetsList) | **get** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
-[**resetNotificationSub**](GlobalApi.md#resetNotificationSub) | **delete** /config/notifications/{channel}/{targetId} | Сбросить уведомления
-[**setNotificationSub**](GlobalApi.md#setNotificationSub) | **post** /config/notifications/{channel}/{targetId} | Изменить подписку на чат
+[**getAllNotificationsState**](GlobalApi.md#getallnotificationsstate) | **GET** /config/notifications | Все уведомления
+[**getNotificationSub**](GlobalApi.md#getnotificationsub) | **GET** /config/notifications/{channel}/{targetId} | Получить подписку на чат
+[**getSettings**](GlobalApi.md#getsettings) | **GET** /settings | Настройки приложения
+[**getSnippetsList**](GlobalApi.md#getsnippetslist) | **GET** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
+[**resetNotificationSub**](GlobalApi.md#resetnotificationsub) | **DELETE** /config/notifications/{channel}/{targetId} | Сбросить уведомления
+[**setNotificationSub**](GlobalApi.md#setnotificationsub) | **POST** /config/notifications/{channel}/{targetId} | Изменить подписку на чат
 
 
 # **getAllNotificationsState**
@@ -24,16 +24,16 @@ Method | HTTP request | Description
 
 Получение полного списка подписок на уведомления по всем источникам
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 
-var api_instance = new GlobalApi();
+final api = Openapi().getGlobalApi();
 
-try { 
-    var result = api_instance.getAllNotificationsState();
-    print(result);
-} catch (e) {
+try {
+    final response = api.getAllNotificationsState();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling GlobalApi->getAllNotificationsState: $e\n');
 }
 ```
@@ -63,18 +63,18 @@ No authorization required
 
 Получение состояния подписки на уведомления о сообщениях в чате
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 
-var api_instance = new GlobalApi();
-var channel = channel_example; // String | Тип события для подписки. На старте только для чатов
-var targetId = targetId_example; // String | Id подписки
+final api = Openapi().getGlobalApi();
+final String channel = channel_example; // String | Тип события для подписки. На старте только для чатов
+final String targetId = targetId_example; // String | Id подписки
 
-try { 
-    var result = api_instance.getNotificationSub(channel, targetId);
-    print(result);
-} catch (e) {
+try {
+    final response = api.getNotificationSub(channel, targetId);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling GlobalApi->getNotificationSub: $e\n');
 }
 ```
@@ -106,19 +106,19 @@ No authorization required
 
 Настройки приложения
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new GlobalApi();
+final api = Openapi().getGlobalApi();
 
-try { 
-    var result = api_instance.getSettings();
-    print(result);
-} catch (e) {
+try {
+    final response = api.getSettings();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling GlobalApi->getSettings: $e\n');
 }
 ```
@@ -146,19 +146,19 @@ This endpoint does not need any parameter.
 
 Получить список текстовых фрагментов для использования в интерфейсе.
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new GlobalApi();
+final api = Openapi().getGlobalApi();
 
-try { 
-    var result = api_instance.getSnippetsList();
-    print(result);
-} catch (e) {
+try {
+    final response = api.getSnippetsList();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling GlobalApi->getSnippetsList: $e\n');
 }
 ```
@@ -188,18 +188,18 @@ This endpoint does not need any parameter.
 
 Сбросить подписку на уведомления в состояние \"по умолчанию\"
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 
-var api_instance = new GlobalApi();
-var channel = channel_example; // String | Тип события для подписки. На старте только для чатов
-var targetId = targetId_example; // String | Id подписки
+final api = Openapi().getGlobalApi();
+final String channel = channel_example; // String | Тип события для подписки. На старте только для чатов
+final String targetId = targetId_example; // String | Id подписки
 
-try { 
-    var result = api_instance.resetNotificationSub(channel, targetId);
-    print(result);
-} catch (e) {
+try {
+    final response = api.resetNotificationSub(channel, targetId);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling GlobalApi->resetNotificationSub: $e\n');
 }
 ```
@@ -233,19 +233,19 @@ No authorization required
 
 Изменить подписку на уведомления о сообщениях в чате
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 
-var api_instance = new GlobalApi();
-var channel = channel_example; // String | Тип события для подписки. На старте только для чатов
-var targetId = targetId_example; // String | Id подписки
-var value = true; // bool | 
+final api = Openapi().getGlobalApi();
+final String channel = channel_example; // String | Тип события для подписки. На старте только для чатов
+final String targetId = targetId_example; // String | Id подписки
+final bool value = true; // bool | 
 
-try { 
-    var result = api_instance.setNotificationSub(channel, targetId, value);
-    print(result);
-} catch (e) {
+try {
+    final response = api.setNotificationSub(channel, targetId, value);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling GlobalApi->setNotificationSub: $e\n');
 }
 ```

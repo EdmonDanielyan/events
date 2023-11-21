@@ -1,16 +1,16 @@
-# main_api_client.api.AnnouncementsApi
+# openapi.api.AnnouncementsApi
 
 ## Load the API package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getAnnouncementById**](AnnouncementsApi.md#getAnnouncementById) | **get** /announcements/{id} | Получить информацию об объявлении по ID
-[**getAnnouncements**](AnnouncementsApi.md#getAnnouncements) | **get** /announcements | Получение списка событий
+[**getAnnouncementById**](AnnouncementsApi.md#getannouncementbyid) | **GET** /announcements/{id} | Получить информацию об объявлении по ID
+[**getAnnouncements**](AnnouncementsApi.md#getannouncements) | **GET** /announcements | Получение списка событий
 
 
 # **getAnnouncementById**
@@ -20,20 +20,20 @@ Method | HTTP request | Description
 
 Получить информацию о конкретном объявлении по ID
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new AnnouncementsApi();
-var id = 789; // int | ID объявления
+final api = Openapi().getAnnouncementsApi();
+final int id = 789; // int | ID объявления
 
-try { 
-    var result = api_instance.getAnnouncementById(id);
-    print(result);
-} catch (e) {
+try {
+    final response = api.getAnnouncementById(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling AnnouncementsApi->getAnnouncementById: $e\n');
 }
 ```
@@ -66,21 +66,21 @@ Name | Type | Description  | Notes
 
 Получение списка событий по убыванию даты создания с пагинацией
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new AnnouncementsApi();
-var pageNumber = 56; // int | Номер страницы для пагинации
-var countOnPage = 56; // int | Количество элементов на странице
+final api = Openapi().getAnnouncementsApi();
+final int pageNumber = 56; // int | Номер страницы для пагинации
+final int countOnPage = 56; // int | Количество элементов на странице
 
-try { 
-    var result = api_instance.getAnnouncements(pageNumber, countOnPage);
-    print(result);
-} catch (e) {
+try {
+    final response = api.getAnnouncements(pageNumber, countOnPage);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling AnnouncementsApi->getAnnouncements: $e\n');
 }
 ```

@@ -1,15 +1,15 @@
-# main_api_client.api.SearchApi
+# openapi.api.SearchApi
 
 ## Load the API package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**searchGet**](SearchApi.md#searchGet) | **get** /search | Метод поиска по сотрудниками, объявлениям, событиям, новостям
+[**searchGet**](SearchApi.md#searchget) | **GET** /search | Метод поиска по сотрудниками, объявлениям, событиям, новостям
 
 
 # **searchGet**
@@ -17,20 +17,20 @@ Method | HTTP request | Description
 
 Метод поиска по сотрудниками, объявлениям, событиям, новостям
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new SearchApi();
-var query = query_example; // String | поисковый запрос
+final api = Openapi().getSearchApi();
+final String query = query_example; // String | поисковый запрос
 
-try { 
-    var result = api_instance.searchGet(query);
-    print(result);
-} catch (e) {
+try {
+    final response = api.searchGet(query);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling SearchApi->searchGet: $e\n');
 }
 ```

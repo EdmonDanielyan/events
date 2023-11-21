@@ -1,19 +1,19 @@
-# main_api_client.api.AuthApi
+# openapi.api.AuthApi
 
 ## Load the API package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**auth**](AuthApi.md#auth) | **post** /auth/login | Авторизация
-[**authLogoutPost**](AuthApi.md#authLogoutPost) | **post** /auth/logout | Выход из профиля
-[**authRefreshPost**](AuthApi.md#authRefreshPost) | **post** /auth/refresh | Продление JWT токена по refresh token
-[**authRegisterConfirmPost**](AuthApi.md#authRegisterConfirmPost) | **post** /auth/register/confirm | Подтверждение регистрации по коду из SMS
-[**authRegisterPost**](AuthApi.md#authRegisterPost) | **post** /auth/register | Регистрация
+[**auth**](AuthApi.md#auth) | **POST** /auth/login | Авторизация
+[**authLogoutPost**](AuthApi.md#authlogoutpost) | **POST** /auth/logout | Выход из профиля
+[**authRefreshPost**](AuthApi.md#authrefreshpost) | **POST** /auth/refresh | Продление JWT токена по refresh token
+[**authRegisterConfirmPost**](AuthApi.md#authregisterconfirmpost) | **POST** /auth/register/confirm | Подтверждение регистрации по коду из SMS
+[**authRegisterPost**](AuthApi.md#authregisterpost) | **POST** /auth/register | Регистрация
 
 
 # **auth**
@@ -21,17 +21,17 @@ Method | HTTP request | Description
 
 Авторизация
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 
-var api_instance = new AuthApi();
-var authParams = new AuthParams(); // AuthParams | Информация для авторизации
+final api = Openapi().getAuthApi();
+final AuthParams authParams = ; // AuthParams | Информация для авторизации
 
-try { 
-    var result = api_instance.auth(authParams);
-    print(result);
-} catch (e) {
+try {
+    final response = api.auth(authParams);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling AuthApi->auth: $e\n');
 }
 ```
@@ -62,17 +62,17 @@ No authorization required
 
 Выход из профиля
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 
-var api_instance = new AuthApi();
-var logoutParams = new LogoutParams(); // LogoutParams | 
+final api = Openapi().getAuthApi();
+final LogoutParams logoutParams = ; // LogoutParams | 
 
-try { 
-    var result = api_instance.authLogoutPost(logoutParams);
-    print(result);
-} catch (e) {
+try {
+    final response = api.authLogoutPost(logoutParams);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling AuthApi->authLogoutPost: $e\n');
 }
 ```
@@ -103,17 +103,17 @@ No authorization required
 
 Продление JWT токена по refresh token
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 
-var api_instance = new AuthApi();
-var refreshTokenParams = new RefreshTokenParams(); // RefreshTokenParams | 
+final api = Openapi().getAuthApi();
+final RefreshTokenParams refreshTokenParams = ; // RefreshTokenParams | 
 
-try { 
-    var result = api_instance.authRefreshPost(refreshTokenParams);
-    print(result);
-} catch (e) {
+try {
+    final response = api.authRefreshPost(refreshTokenParams);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling AuthApi->authRefreshPost: $e\n');
 }
 ```
@@ -144,17 +144,17 @@ No authorization required
 
 Подтверждение регистрации по коду из SMS
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 
-var api_instance = new AuthApi();
-var registerConfirmParams = new RegisterConfirmParams(); // RegisterConfirmParams | 
+final api = Openapi().getAuthApi();
+final RegisterConfirmParams registerConfirmParams = ; // RegisterConfirmParams | 
 
-try { 
-    var result = api_instance.authRegisterConfirmPost(registerConfirmParams);
-    print(result);
-} catch (e) {
+try {
+    final response = api.authRegisterConfirmPost(registerConfirmParams);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling AuthApi->authRegisterConfirmPost: $e\n');
 }
 ```
@@ -185,17 +185,17 @@ No authorization required
 
 Регистрация
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 
-var api_instance = new AuthApi();
-var registerParams = new RegisterParams(); // RegisterParams | 
+final api = Openapi().getAuthApi();
+final RegisterParams registerParams = ; // RegisterParams | 
 
-try { 
-    var result = api_instance.authRegisterPost(registerParams);
-    print(result);
-} catch (e) {
+try {
+    final response = api.authRegisterPost(registerParams);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling AuthApi->authRegisterPost: $e\n');
 }
 ```

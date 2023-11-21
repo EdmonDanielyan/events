@@ -1,19 +1,19 @@
-# main_api_client.api.ContentApi
+# openapi.api.ContentApi
 
 ## Load the API package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getPage**](ContentApi.md#getPage) | **get** /pages/pages/{idOrCode} | Получает полный текст страницы.
-[**getPagesList**](ContentApi.md#getPagesList) | **get** /pages/pages | Получает список страниц с не пустыми сивольными кода. Для отладки.
-[**getPagesSection**](ContentApi.md#getPagesSection) | **get** /pages/sections/{code} | Получить список страниц раздела. Например, список страниц для раздела \&quot;социальная ответственность\&quot;.
-[**getPagesSectionsList**](ContentApi.md#getPagesSectionsList) | **get** /pages/sections | Получить список разделов страниц.
-[**getSnippetsList**](ContentApi.md#getSnippetsList) | **get** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
+[**getPage**](ContentApi.md#getpage) | **GET** /pages/pages/{idOrCode} | Получает полный текст страницы.
+[**getPagesList**](ContentApi.md#getpageslist) | **GET** /pages/pages | Получает список страниц с не пустыми сивольными кода. Для отладки.
+[**getPagesSection**](ContentApi.md#getpagessection) | **GET** /pages/sections/{code} | Получить список страниц раздела. Например, список страниц для раздела \&quot;социальная ответственность\&quot;.
+[**getPagesSectionsList**](ContentApi.md#getpagessectionslist) | **GET** /pages/sections | Получить список разделов страниц.
+[**getSnippetsList**](ContentApi.md#getsnippetslist) | **GET** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
 
 
 # **getPage**
@@ -21,20 +21,20 @@ Method | HTTP request | Description
 
 Получает полный текст страницы.
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new ContentApi();
-var idOrCode = idOrCode_example; // String | ID или символьный код страницы
+final api = Openapi().getContentApi();
+final String idOrCode = idOrCode_example; // String | ID или символьный код страницы
 
-try { 
-    var result = api_instance.getPage(idOrCode);
-    print(result);
-} catch (e) {
+try {
+    final response = api.getPage(idOrCode);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling ContentApi->getPage: $e\n');
 }
 ```
@@ -65,19 +65,19 @@ Name | Type | Description  | Notes
 
 Получает список страниц с не пустыми сивольными кода. Для отладки.
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new ContentApi();
+final api = Openapi().getContentApi();
 
-try { 
-    var result = api_instance.getPagesList();
-    print(result);
-} catch (e) {
+try {
+    final response = api.getPagesList();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling ContentApi->getPagesList: $e\n');
 }
 ```
@@ -105,20 +105,20 @@ This endpoint does not need any parameter.
 
 Получить список страниц раздела. Например, список страниц для раздела \"социальная ответственность\".
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new ContentApi();
-var code = code_example; // String | Символьный код раздела
+final api = Openapi().getContentApi();
+final String code = code_example; // String | Символьный код раздела
 
-try { 
-    var result = api_instance.getPagesSection(code);
-    print(result);
-} catch (e) {
+try {
+    final response = api.getPagesSection(code);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling ContentApi->getPagesSection: $e\n');
 }
 ```
@@ -149,19 +149,19 @@ Name | Type | Description  | Notes
 
 Получить список разделов страниц.
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new ContentApi();
+final api = Openapi().getContentApi();
 
-try { 
-    var result = api_instance.getPagesSectionsList();
-    print(result);
-} catch (e) {
+try {
+    final response = api.getPagesSectionsList();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling ContentApi->getPagesSectionsList: $e\n');
 }
 ```
@@ -189,19 +189,19 @@ This endpoint does not need any parameter.
 
 Получить список текстовых фрагментов для использования в интерфейсе.
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new ContentApi();
+final api = Openapi().getContentApi();
 
-try { 
-    var result = api_instance.getSnippetsList();
-    print(result);
-} catch (e) {
+try {
+    final response = api.getSnippetsList();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling ContentApi->getSnippetsList: $e\n');
 }
 ```

@@ -1,14 +1,14 @@
-# main_api_client.model.CommentParent
+# openapi.model.CommentParent
 
 ## Load the model package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**children** | [**BuiltList<Comment>**](Comment.md) |  | [optional] 
+**children** | [**BuiltList&lt;Comment&gt;**](Comment.md) |  | [optional] 
 **id** | **int** |  | 
 **dateCreate** | [**DateTime**](DateTime.md) |  | 
 **authorId** | **int** |  | 

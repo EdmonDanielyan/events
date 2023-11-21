@@ -1,15 +1,15 @@
-# main_api_client.api.DirectoryApi
+# openapi.api.DirectoryApi
 
 ## Load the API package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getOrganisationDirectory**](DirectoryApi.md#getOrganisationDirectory) | **get** /directory/organisation | Справочник организаций
+[**getOrganisationDirectory**](DirectoryApi.md#getorganisationdirectory) | **GET** /directory/organisation | Справочник организаций
 
 
 # **getOrganisationDirectory**
@@ -19,16 +19,16 @@ Method | HTTP request | Description
 
 Получение полного справочника организаций для использования в формах
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 
-var api_instance = new DirectoryApi();
+final api = Openapi().getDirectoryApi();
 
-try { 
-    var result = api_instance.getOrganisationDirectory();
-    print(result);
-} catch (e) {
+try {
+    final response = api.getOrganisationDirectory();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling DirectoryApi->getOrganisationDirectory: $e\n');
 }
 ```

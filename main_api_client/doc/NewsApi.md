@@ -1,22 +1,22 @@
-# main_api_client.api.NewsApi
+# openapi.api.NewsApi
 
 ## Load the API package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 All URIs are relative to *https://portal.irkutskoil.ru/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**commentDelete**](NewsApi.md#commentDelete) | **delete** /comment/{id} | Удалить комментарий
-[**commentUpdate**](NewsApi.md#commentUpdate) | **patch** /comment/{id} | Изменить комментарий
-[**getNews**](NewsApi.md#getNews) | **get** /news | Получение списка новостей
-[**newsCommentsIdGet**](NewsApi.md#newsCommentsIdGet) | **get** /news/comments/{id} | Получение комментариев к новости по ID
-[**newsCommentsLikeIdGet**](NewsApi.md#newsCommentsLikeIdGet) | **get** /news/comments/like/{id} | Поблагодарить комментарий
-[**newsIdGet**](NewsApi.md#newsIdGet) | **get** /news/{id} | Получение информации о новости по ID
-[**newsLikeIdGet**](NewsApi.md#newsLikeIdGet) | **get** /news/like/{id} | Поблагодарить новость
-[**newsPostcommentPost**](NewsApi.md#newsPostcommentPost) | **post** /news/postcomment | Создание нового комментария
+[**commentDelete**](NewsApi.md#commentdelete) | **DELETE** /comment/{id} | Удалить комментарий
+[**commentUpdate**](NewsApi.md#commentupdate) | **PATCH** /comment/{id} | Изменить комментарий
+[**getNews**](NewsApi.md#getnews) | **GET** /news | Получение списка новостей
+[**newsCommentsIdGet**](NewsApi.md#newscommentsidget) | **GET** /news/comments/{id} | Получение комментариев к новости по ID
+[**newsCommentsLikeIdGet**](NewsApi.md#newscommentslikeidget) | **GET** /news/comments/like/{id} | Поблагодарить комментарий
+[**newsIdGet**](NewsApi.md#newsidget) | **GET** /news/{id} | Получение информации о новости по ID
+[**newsLikeIdGet**](NewsApi.md#newslikeidget) | **GET** /news/like/{id} | Поблагодарить новость
+[**newsPostcommentPost**](NewsApi.md#newspostcommentpost) | **POST** /news/postcomment | Создание нового комментария
 
 
 # **commentDelete**
@@ -24,20 +24,20 @@ Method | HTTP request | Description
 
 Удалить комментарий
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new NewsApi();
-var id = 789; // int | id комментария
+final api = Openapi().getNewsApi();
+final int id = 789; // int | id комментария
 
-try { 
-    var result = api_instance.commentDelete(id);
-    print(result);
-} catch (e) {
+try {
+    final response = api.commentDelete(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling NewsApi->commentDelete: $e\n');
 }
 ```
@@ -68,21 +68,21 @@ Name | Type | Description  | Notes
 
 Изменить комментарий
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new NewsApi();
-var id = 789; // int | id комментария
-var patchComment = new PatchComment(); // PatchComment | Информация для создания обновления
+final api = Openapi().getNewsApi();
+final int id = 789; // int | id комментария
+final PatchComment patchComment = ; // PatchComment | Информация для создания обновления
 
-try { 
-    var result = api_instance.commentUpdate(id, patchComment);
-    print(result);
-} catch (e) {
+try {
+    final response = api.commentUpdate(id, patchComment);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling NewsApi->commentUpdate: $e\n');
 }
 ```
@@ -116,22 +116,22 @@ Name | Type | Description  | Notes
 
 Получение списка новостей по убыванию даты с пагинацией
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new NewsApi();
-var filter = filter_example; // String | фильтр для выдачи определенной группы новостей, допустимые значения news, news-idea, volunteer_news, information_sport, information_ms, literacy
-var pageNumber = 56; // int | Номер страницы для пагинации
-var countOnPage = 56; // int | Количество элементов на странице
+final api = Openapi().getNewsApi();
+final String filter = filter_example; // String | фильтр для выдачи определенной группы новостей, допустимые значения news, news-idea, volunteer_news, information_sport, information_ms, literacy
+final int pageNumber = 56; // int | Номер страницы для пагинации
+final int countOnPage = 56; // int | Количество элементов на странице
 
-try { 
-    var result = api_instance.getNews(filter, pageNumber, countOnPage);
-    print(result);
-} catch (e) {
+try {
+    final response = api.getNews(filter, pageNumber, countOnPage);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling NewsApi->getNews: $e\n');
 }
 ```
@@ -164,20 +164,20 @@ Name | Type | Description  | Notes
 
 Получение комментариев к новости по ID
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new NewsApi();
-var id = 789; // int | ID новости
+final api = Openapi().getNewsApi();
+final int id = 789; // int | ID новости
 
-try { 
-    var result = api_instance.newsCommentsIdGet(id);
-    print(result);
-} catch (e) {
+try {
+    final response = api.newsCommentsIdGet(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling NewsApi->newsCommentsIdGet: $e\n');
 }
 ```
@@ -208,20 +208,20 @@ Name | Type | Description  | Notes
 
 Поблагодарить комментарий
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new NewsApi();
-var id = 789; // int | id комментария
+final api = Openapi().getNewsApi();
+final int id = 789; // int | id комментария
 
-try { 
-    var result = api_instance.newsCommentsLikeIdGet(id);
-    print(result);
-} catch (e) {
+try {
+    final response = api.newsCommentsLikeIdGet(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling NewsApi->newsCommentsLikeIdGet: $e\n');
 }
 ```
@@ -252,20 +252,20 @@ Name | Type | Description  | Notes
 
 Получение информации о новости по ID
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new NewsApi();
-var id = 789; // int | ID новости
+final api = Openapi().getNewsApi();
+final int id = 789; // int | ID новости
 
-try { 
-    var result = api_instance.newsIdGet(id);
-    print(result);
-} catch (e) {
+try {
+    final response = api.newsIdGet(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling NewsApi->newsIdGet: $e\n');
 }
 ```
@@ -296,20 +296,20 @@ Name | Type | Description  | Notes
 
 Поблагодарить новость
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new NewsApi();
-var id = 789; // int | id новости
+final api = Openapi().getNewsApi();
+final int id = 789; // int | id новости
 
-try { 
-    var result = api_instance.newsLikeIdGet(id);
-    print(result);
-} catch (e) {
+try {
+    final response = api.newsLikeIdGet(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling NewsApi->newsLikeIdGet: $e\n');
 }
 ```
@@ -340,20 +340,20 @@ Name | Type | Description  | Notes
 
 Создание нового комментария
 
-### Example 
+### Example
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 // TODO Configure HTTP basic authorization: bearerAuth
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-var api_instance = new NewsApi();
-var postComment = new PostComment(); // PostComment | Информация для создания комментария
+final api = Openapi().getNewsApi();
+final PostComment postComment = ; // PostComment | Информация для создания комментария
 
-try { 
-    var result = api_instance.newsPostcommentPost(postComment);
-    print(result);
-} catch (e) {
+try {
+    final response = api.newsPostcommentPost(postComment);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling NewsApi->newsPostcommentPost: $e\n');
 }
 ```

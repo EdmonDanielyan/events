@@ -1,8 +1,8 @@
-# main_api_client.model.BirthdaysSuccess
+# openapi.model.BirthdaysSuccess
 
 ## Load the model package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 ## Properties

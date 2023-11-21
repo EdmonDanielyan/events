@@ -1,8 +1,8 @@
-# main_api_client.model.EventsProperty
+# openapi.model.EventsProperty
 
 ## Load the model package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 ## Properties
@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 **dateFinish** | [**DateTime**](DateTime.md) |  | [optional] 
 **place** | **String** |  | [optional] 
 **viewCount** | **int** |  | 
-**previewPicture** | **String** |  | [optional] [default to 'null']
+**previewPicture** | **String** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

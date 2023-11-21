@@ -1,14 +1,14 @@
-# main_api_client.model.QuestionsList
+# openapi.model.QuestionsList
 
 ## Load the model package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [**BuiltList<QuestionsListData>**](QuestionsListData.md) |  | [optional] 
+**data** | [**BuiltList&lt;QuestionsListData&gt;**](QuestionsListData.md) |  | [optional] 
 **success** | **bool** |  | [default to true]
 **host** | **String** |  | [default to 'https://example.com']
 **version** | **String** |  | [default to '1.0.0']

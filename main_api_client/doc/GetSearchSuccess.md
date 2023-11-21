@@ -1,8 +1,8 @@
-# main_api_client.model.GetSearchSuccess
+# openapi.model.GetSearchSuccess
 
 ## Load the model package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 ## Properties

@@ -1,8 +1,8 @@
-# main_api_client.model.UserProfileBadge
+# openapi.model.UserProfileBadge
 
 ## Load the model package
 ```dart
-import 'package:main_api_client/api.dart';
+import 'package:openapi/api.dart';
 ```
 
 ## Properties
@@ -17,7 +17,7 @@ Name | Type | Description | Notes
 **label** | **String** | Короткая текстовая подпись вместо количества (пока не используется) | [optional] 
 **link** | **String** | Ссылка для перехода на описание статуса (пока не используется) | [optional] 
 **extra** | [**JsonObject**](.md) | Доп. данные для уникальных случаев | [optional] 
-**subs** | [**BuiltList<UserProfileBadge>**](UserProfileBadge.md) | Датализация для \"составных\" статусов | [optional] 
+**subs** | [**BuiltList&lt;UserProfileBadge&gt;**](UserProfileBadge.md) | Датализация для \"составных\" статусов | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
