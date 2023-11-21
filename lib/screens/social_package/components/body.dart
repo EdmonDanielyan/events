@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
@@ -8,6 +8,7 @@ import 'package:ink_mobile/cubit/get_section/get_section_state.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/social_package/components/social_package_list_element.dart';
 import 'package:ink_mobile/screens/social_package/components/social_package_list_item.dart';
+import 'package:openapi/openapi.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -64,6 +65,43 @@ class _BodyState extends State<Body> {
               );
             case GetSectionCubitStateEnums.SUCCESS:
               final pages = state.data;
+              //TODO refactoring after migration
+                String getSocialElementField(Page pag, String returnType) {
+                if (pag.oneOf.value is TextPage) {
+                  TextPage textPage = pag.oneOf.value as TextPage;
+                  switch (returnType) {
+                    case 'name':
+                      return textPage.name;
+                    case 'url':
+                      return '';
+                    case 'id':
+                      return textPage.id.toString();
+
+                    case 'iconUrl':
+                      return textPage.iconUrl.toString();
+
+                    default:
+                      return '';
+                  }
+                } else if (pag.oneOf.value is WebViewPage) {
+                  WebViewPage webViewPage = pag.oneOf.value as WebViewPage;
+                  switch (returnType) {
+                    case 'name':
+                      return webViewPage.name;
+                    case 'url':
+                      return webViewPage.url;
+                    case 'id':
+                      return webViewPage.id.toString();
+
+                    case 'iconUrl':
+                      return webViewPage.iconUrl.toString();
+
+                    default:
+                      return '';
+                  }
+                } else
+                  return '';
+              }
               return Column(
                 children: [
                   Container(
@@ -89,10 +127,13 @@ class _BodyState extends State<Body> {
                         itemCount: pages.length,
                         itemBuilder: (context, index) {
                           return SocialPackageListElement(
-                            title: pages[index].name,
-                            link: pages[index].url,
-                            id: pages[index].id.toString(),
-                            iconUrl: pages[index].iconUrl,
+                            title: getSocialElementField(pages[index], 'name'),
+                            link: getSocialElementField(
+                              pages[index],
+                              'url'),
+                            id: getSocialElementField(pages[index], 'id'),
+                            iconUrl:
+                                getSocialElementField(pages[index], 'iconUrl'),
                           );
                         },
                       ),

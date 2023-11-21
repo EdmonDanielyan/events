@@ -20,6 +20,7 @@ class SingleSectionNetworkRequest extends SingleSectionRequestDependency {
   @override
   Future<Response<SingleSectionSuccessResponseBody>> call() async {
     ContentApi contentApi = getIt<MainApiProvider>().getContentApi();
-    return await contentApi.getPagesSection(code);
+    //TODO clean code
+    return await contentApi.getPagesSection(code: code ?? '');
   }
 }

@@ -23,10 +23,13 @@ class SendMedicalInsFormCubit extends Cubit<BtnCubitState> {
       final res =
           await getIt<SendMedicalInsFormNetworkRequest>(param1: entities)();
 
-      res.data!.success
-          ? emitSuccess(res.data!.data)
-          : emitError(res.data!.data);
-
+      // res.data!.success
+      //     ? emitSuccess(res.data!.data)
+      //     : emitError(res.data!.data);
+      // TODO migration
+   res.data!.success
+          ? emitSuccess(res.data!.data!)
+          : emitError(res.data!.data!);
       return res.data!.success;
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();

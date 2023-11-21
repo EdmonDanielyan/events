@@ -7,12 +7,12 @@ import 'package:openapi/openapi.dart';
 extension ReferenceAutoFillExt on Response<ReferenceAutoFill> {
   Autofill mapResponse() {
     return Autofill(
-      fio: this.data?.data.fio ?? '',
-      position: this.data?.data.position ?? '',
-      department: this.data?.data.department ?? '',
-      email: this.data?.data.email ?? '',
-      birthday: this.data?.data.birthday ?? "",
-      phone: this.data?.data.personalPhone ?? "",
+      fio: this.data?.data?.fio ?? '',
+      position: this.data?.data?.position ?? '',
+      department: this.data?.data?.department ?? '',
+      email: this.data?.data?.email ?? '',
+      birthday: this.data?.data?.birthday ?? "",
+      phone: this.data?.data?.personalPhone ?? "",
     );
   }
 }

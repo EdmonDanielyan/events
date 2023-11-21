@@ -9,7 +9,9 @@ import 'package:openapi/openapi.dart';
 extension GetPublicationsExt on Response<GetPublications> {
   Pagination<LearningMaterialsData> mapResponse(
       Pagination<LearningMaterialsData> pagination) {
-    Map? publicationListData = this.data?.data.asMap;
+    // Map? publicationListData = this.data?.data.asMap;
+    //migration
+        Map? publicationListData = this.data?.data?.asMap;
 
     if (publicationListData != null) {
       final _newList = List<LearningMaterialsData>.from(pagination.items)

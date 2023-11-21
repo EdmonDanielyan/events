@@ -19,7 +19,7 @@ class NewsCommentsEditNetworkRequest extends NewsCommentsEditRequestDependency {
 
   @override
   Future<Response<NewsLikeSuccess>> call() async {
-    return await getIt.get<MainApiProvider>().getNewsApi().commentUpdate(comment!.id,
+    return await getIt.get<MainApiProvider>().getNewsApi().commentUpdate(id: comment!.id,
       patchComment: CustomPatchCommentParamsBuilder(
                   text: comment!.text).build(),
         );

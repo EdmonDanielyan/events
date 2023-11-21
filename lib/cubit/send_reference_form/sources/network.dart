@@ -20,9 +20,9 @@ class SendReferenceFormNetworkRequest
   @override
   Future<Response<OrderReferenceSuccess>> call() async =>
       await getIt.get<MainApiProvider>().getUserApi().userOrderreferencePost(
-            entities!.referencesItem.referencesType,
-            entities!.entities.phone,
-            entities!.deliveryItem.deliveryType,
+            referenceType: entities!.referencesItem.referencesType,
+            phone: entities!.entities.phone,
+            way: entities!.deliveryItem.deliveryType,
             postalCode: entities!.entities.postCode,
             address: entities!.entities.address,
             period: entities!.entities.period,

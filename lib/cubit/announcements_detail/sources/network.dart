@@ -20,6 +20,7 @@ class AnnouncementsDetailNetworkRequest
   Future<Response<GetAnnouncementById>> call() async {
     AnnouncementsApi announcementsApi =
         getIt<MainApiProvider>().getAnnouncementsApi();
-    return await announcementsApi.getAnnouncementById(announcementId);
+        //TODO: clean code
+    return await announcementsApi.getAnnouncementById(id: announcementId ?? 1);
   }
 }

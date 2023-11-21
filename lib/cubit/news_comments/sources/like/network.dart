@@ -15,6 +15,7 @@ class NewsCommentsLikeNetworkRequest extends NewsCommentsLikeRequestDependency {
     await getIt
         .get<MainApiProvider>()
         .getNewsApi()
-        .newsCommentsLikeIdGet(commentId);
+        //TODO clean code
+        .newsCommentsLikeIdGet(id : commentId ?? 0);
   }
 }

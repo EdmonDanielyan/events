@@ -15,11 +15,11 @@ extension BirthdaysSuccessExt on Response<BirthdaysSuccess> {
       List<BirthdayData> birthdaysToday = [];
       List<BirthdayData> birthdaysOther = [];
 
-      data.today.forEach((birthday) {
+      data.today?.forEach((birthday) {
         birthdaysToday.add(BirthdayData.fromResponse(birthday));
       });
 
-      data.others.forEach((birthday) {
+      data.others?.forEach((birthday) {
         birthdaysOther.add(BirthdayData.fromResponse(birthday));
       });
 

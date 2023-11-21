@@ -12,6 +12,7 @@ class NewsLikeNetworkRequest extends NewsLikeRequestDependency {
 
   @override
   Future<void> call() async {
-    await getIt<MainApiProvider>().getNewsApi().newsLikeIdGet(newsId);
+    //TODO: clean code
+    await getIt<MainApiProvider>().getNewsApi().newsLikeIdGet(id: newsId ?? 1);
   }
 }

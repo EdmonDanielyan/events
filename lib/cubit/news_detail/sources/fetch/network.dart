@@ -17,6 +17,7 @@ class NewsDetailNetworkRequest extends NewsDetailRequestDependency {
   @override
   Future<Response<GetNewsById>> call() async {
     NewsApi newsApi = getIt<MainApiProvider>().getNewsApi();
-    return await newsApi.newsIdGet(newsId);
+    //TODO: clean code
+    return await newsApi.newsIdGet(id : newsId ?? 1);
   }
 }

@@ -17,6 +17,7 @@ class EventCancelNetworkRequest extends EventCancelRequestDependency {
   @override
   Future<Response<AddEventMember>> call() async {
     EventsApi eventApi = getIt<MainApiProvider>().getEventsApi();
-    return await eventApi.eventsRemoveeventmemberIdGet(eventId);
+    //TODO clean code
+    return await eventApi.eventsRemoveeventmemberIdGet(id: eventId ?? 1);
   }
 }

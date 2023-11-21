@@ -21,6 +21,7 @@ class NewsCommentsDeleteNetworkRequest
     return await getIt
         .get<MainApiProvider>()
         .getNewsApi()
-        .commentDelete(commentId);
+        //TODO clean code
+        .commentDelete(id: commentId ?? 1);
   }
 }

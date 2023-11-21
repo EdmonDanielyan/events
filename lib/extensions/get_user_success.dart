@@ -7,7 +7,10 @@ import 'package:openapi/openapi.dart';
 
 extension GetUserSuccessExt on Response<GetUserSuccess> {
   UserProfileData mapResponse() {
-    final Map? userDataMap = this.data?.data.asMap;
+    // final Map? userDataMap = this.data?.data.asMap;
+    //migration
+        final Map? userDataMap = this.data?.data?.asMap;
+
 
     if (userDataMap != null) {
       return UserProfileData.getUserFromResponse(userDataMap);

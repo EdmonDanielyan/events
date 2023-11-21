@@ -11,9 +11,10 @@ class ToggleNotificationsChatNetworkRequest {
   Future<Response<NotificationSubState>> call() async {
     GlobalApi globalApi = getIt.get<MainApiProvider>().getGlobalApi();
     return await globalApi.setNotificationSub(
-        'chat',
-        chatID,
-        value: value,
-      );
+      //TODO clean code
+      channel: 'chat',
+      targetId: chatID ?? '',
+      value: value,
+    );
   }
 }

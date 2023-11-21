@@ -11,14 +11,14 @@ extension QuestionsListExt on Response<QuestionsList> {
       Pagination<ManagementAnswer> pagination) {
     try {
       List<ManagementAnswer> items = [];
-
-      this.data?.data.forEach((item) {
+//migration
+      this.data?.data?.forEach((item) {
         items.add(
           ManagementAnswer(
-              id: item.id,
-              responsible: item.responsible,
-              question: item.question,
-              answer: item.answer),
+              id: item.id ?? 0 ,
+              responsible: item.responsible ?? '',
+              question: item.question ?? '',
+              answer: item.answer ?? ''),
         );
 
         if (pagination.next && item.next == null) pagination.next = false;

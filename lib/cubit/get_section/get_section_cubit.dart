@@ -27,7 +27,9 @@ class GetSectionCubit extends Cubit<GetSectionCubitState> {
     try {
       await Token.setNewTokensIfExpired();
       final response = await getIt<SingleSectionNetworkRequest>(param1: _socialPackageSectionName)();
-      final pages = response.data?.data.pages.toList();
+      // final pages = response.data?.data.pages.toList();
+      //migation
+        final pages = response.data?.data?.pages?.toList();
       if (pages != null) {
         emitSuccess(pages);
       } else {

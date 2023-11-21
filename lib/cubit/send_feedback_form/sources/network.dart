@@ -22,8 +22,8 @@ class SendFeedbackFormNetworkRequest extends SendFeedbackFormDependency {
         .get<MainApiProvider>()
         .getUserApi()
         .userSendfeedbackPost(
-          entities!.question,
-          entities!.getTagsListString().join(", "),
+          question: entities!.question,
+          tags: entities!.getTagsListString().join(", "),
           fio: entities!.name,
           contacts: entities!.email,
         )
@@ -32,3 +32,4 @@ class SendFeedbackFormNetworkRequest extends SendFeedbackFormDependency {
     return response.statusCode == 200;
   }
 }
+

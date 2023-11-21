@@ -8,15 +8,33 @@ extension MovementsSuccessExt on Response<MovementsSuccess> {
   List<MovementsData> mapResponse() {
     List<MovementsData> movementsData = [];
 
-    this.data?.data.forEach((movement) {
+    this.data?.data?.forEach((movement) {
       movementsData.add(MovementsData(
-          period: movement.period,
-          position: movement.position,
-          department: movement.department,
-          organization: movement.organization,
-          operation: movement.operation,
-          pnum: movement.pnum));
+          period: movement.period ?? '',
+          position: movement.position ?? '',
+          department: movement.department ?? '',
+          organization: movement.organization ?? '',
+          operation: movement.operation ?? '',
+          pnum: movement.pnum ?? ''));
     });
     return movementsData;
   }
 }
+
+// TODO migration
+// extension MovementsSuccessExt on Response<MovementsSuccess> {
+//   List<MovementsData> mapResponse() {
+//     List<MovementsData> movementsData = [];
+
+//     this.data?.data.forEach((movement) {
+//       movementsData.add(MovementsData(
+//           period: movement.period,
+//           position: movement.position,
+//           department: movement.department,
+//           organization: movement.organization,
+//           operation: movement.operation,
+//           pnum: movement.pnum));
+//     });
+//     return movementsData;
+//   }
+// }

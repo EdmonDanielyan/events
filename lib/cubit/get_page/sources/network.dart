@@ -19,6 +19,7 @@ class SinglePageNetworkRequest extends SinglePageRequestDependency {
   @override
   Future<Response<SinglePageSuccessResponseBody>> call() async {
     ContentApi contentApi = getIt<MainApiProvider>().getContentApi();
-    return await contentApi.getPage(id);
+    //TODO clean code
+    return await contentApi.getPage(idOrCode: id ?? '');
   }
 }

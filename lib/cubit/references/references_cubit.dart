@@ -19,13 +19,13 @@ class ReferencesPageCubit extends Cubit<ReferencesPageState> {
     await Token.setNewTokensIfExpired();
 
     final response = await getIt<CanInquireNetworkRequest>()();
-    bool access = response.data!.data;
+    bool? access = response.data!.data;
 
-    access
-        ? emit(ReferencesPageState(type: ReferencesStateType.INIT))
+    if(access != null ){access
+         ? emit(ReferencesPageState(type: ReferencesStateType.INIT))
         : emit(
             ReferencesPageState(type: ReferencesStateType.PERMISSIONS_DENIED));
-  }
+  }}
 
   Future<void> loadAutoFillData() async {
     await Token.setNewTokensIfExpired();
@@ -34,3 +34,35 @@ class ReferencesPageCubit extends Cubit<ReferencesPageState> {
     autofill = response.mapResponse();
   }
 }
+
+
+//migration
+// @singleton
+// class ReferencesPageCubit extends Cubit<ReferencesPageState> {
+//   ReferencesPageCubit()
+//       : super(ReferencesPageState(type: ReferencesStateType.LOADING));
+
+//   Autofill autofill = Autofill();
+
+//   Future<void> checkPermissions() async {
+//     await Token.setNewTokensIfExpired();
+
+//     final response = await getIt<CanInquireNetworkRequest>()();
+//     bool? access = response.data?.data;
+
+//     if (access != null) {
+//       access
+//           ? emit(ReferencesPageState(type: ReferencesStateType.INIT))
+//           : emit(ReferencesPageState(
+//               type: ReferencesStateType.PERMISSIONS_DENIED));
+//     } else
+//       emit(ReferencesPageState(type: ReferencesStateType.PERMISSIONS_DENIED));
+//   }
+
+//   Future<void> loadAutoFillData() async {
+//     await Token.setNewTokensIfExpired();
+//     final response = await getIt<GetAutofillNetworkRequest>()();
+
+//     autofill = response.mapResponse();
+//   }
+// }

@@ -10,7 +10,10 @@ extension GetSearchSuccessExt on Response<GetSearchSuccess> {
   SearchModel? mapResponse() {
     if (this.data?.data == null) return null;
 
-    Map? data = this.data?.data.asMap;
+    // Map? data = this.data?.data.asMap;
+    //migation
+        Map? data = this.data?.data?.asMap;
+
 
     List? users = data?['users'];
     List? events = data?['events'];

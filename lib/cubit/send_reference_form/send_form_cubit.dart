@@ -34,8 +34,11 @@ class SendReferenceFormCubit extends Cubit<BtnCubitState> {
       final res =
           await getIt<SendReferenceFormNetworkRequest>(param1: formEntities)();
       res.data!.success
-          ? emitSuccess(res.data!.data)
-          : emitError(res.data!.data);
+          // ? emitSuccess(res.data!.data)
+          // : emitError(res.data!.data);
+          //TODO migration
+          ? emitSuccess(res.data!.data!)
+          : emitError(res.data!.data!);
 
       return res.data!.success;
     } on DioError catch (e) {

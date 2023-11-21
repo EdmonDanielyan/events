@@ -15,6 +15,7 @@ class ProfileThankNetworkRequest extends ProfileThankRequestDependency {
   @override
   Future<void> call() async {
     ThankApi thank = getIt<MainApiProvider>().getThankApi();
-    await thank.thankIdGet(id, 0);
+    //TODO: clean code
+    await thank.thankIdGet(id: id ?? 0, heart: 0);
   }
 }

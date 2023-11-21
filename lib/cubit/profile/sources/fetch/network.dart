@@ -21,7 +21,8 @@ class ProfileFetchNetworkRequest extends ProfileFetchRequestDependency {
     if (id == null) {
       response = await user.userGet();
     } else {
-      response = await user.userIdGet(id);
+      //TODO: clean code
+      response = await user.userIdGet(id: id ?? 1);
     }
 
     return response;

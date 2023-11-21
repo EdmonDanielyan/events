@@ -25,7 +25,9 @@ class GetPageCubit extends Cubit<GetPageCubitState> {
     try {
       await Token.setNewTokensIfExpired();
       final response = await getIt<SinglePageNetworkRequest>(param1: id)();
-      final page = response.data?.data.page;
+      // final page = response.data?.data.page;
+      //migration
+      final page = response.data?.data?.page;
       if (page != null) {
         emitSuccess(page);
       } else {
