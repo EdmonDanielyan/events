@@ -6,7 +6,7 @@ import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/setup.dart';
 
-class NewBottomNavBarMixin {
+mixin class NewBottomNavBarMixin {
   List<NavBottomNavBarItem> navBottomNavBarItems = [
     MainBottomNavBarItem(),
     SearchBottomNavBarItem(),

@@ -128,7 +128,9 @@ class _MultiSelectBottomSheetState<V> extends State<MultiSelectBottomSheet<V>> {
     return Theme(
       data: ThemeData(
         unselectedWidgetColor: widget.unselectedColor ?? Colors.black54,
-        accentColor: widget.selectedColor ?? Theme.of(context).primaryColor,
+         colorScheme: ColorScheme.fromSeed(
+    seedColor: widget.selectedColor ?? Theme.of(context).colorScheme.primary,
+  ),
       ),
       child: CheckboxListTile(
         checkColor: widget.checkColor,

@@ -7,7 +7,7 @@ import 'package:ink_mobile/constants/palette.dart';
 
 import '../../messenger/functions/size_config.dart';
 
-class InkAppBarWithText extends StatelessWidget with PreferredSizeWidget {
+class InkAppBarWithText extends StatelessWidget implements PreferredSizeWidget {
   final BuildContext context;
   final String title;
   final Widget? titleWidget;

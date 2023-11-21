@@ -56,5 +56,5 @@ Future<void> setup() async {
       return true;
     };
   await getIt<PackageInfoProvider>().load();
-  getIt.registerSingleton<IVideoLinksService>(VideoLinksService());
+  // getIt.registerSingleton<IVideoLinksService>(VideoLinksService());
 }

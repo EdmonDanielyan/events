@@ -8,7 +8,7 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 
 import '../../messenger/functions/size_config.dart';
 
-class InkAppBar extends StatelessWidget with PreferredSizeWidget {
+class InkAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showPersonalPageLink;
   final BuildContext context;
   final Widget? leading;
