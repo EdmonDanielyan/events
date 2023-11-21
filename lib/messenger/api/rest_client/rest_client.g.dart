@@ -19,7 +19,7 @@ class _RestClient implements RestClient {
   String? baseUrl;
 
   @override
-  Future<CreateChatResponse> createChat(request) async {
+  Future<CreateChatResponse> createChat(CreateChatRequest request) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -37,15 +37,19 @@ class _RestClient implements RestClient {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = CreateChatResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<UpdateChatResponse> updateChat(
-    id,
-    request,
+    int id,
+    UpdateChatRequest request,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -64,13 +68,17 @@ class _RestClient implements RestClient {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = UpdateChatResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<InviteChatResponse> chatInvite(request) async {
+  Future<InviteChatResponse> chatInvite(InviteChatRequest request) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -88,13 +96,18 @@ class _RestClient implements RestClient {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = InviteChatResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<RemoveParticipantResponse> kickUser(request) async {
+  Future<RemoveParticipantResponse> kickUser(
+      RemoveParticipantRequest request) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -112,15 +125,19 @@ class _RestClient implements RestClient {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = RemoveParticipantResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<GetChatsResponse> getChats(
-    offset,
-    count,
+    int offset,
+    int count,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -128,7 +145,7 @@ class _RestClient implements RestClient {
       r'count': count,
     };
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<GetChatsResponse>(Options(
       method: 'GET',
@@ -141,7 +158,11 @@ class _RestClient implements RestClient {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = GetChatsResponse.fromJson(_result.data!);
     return value;
   }
@@ -151,7 +172,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GetChatListResponse>(Options(
       method: 'GET',
@@ -164,13 +185,17 @@ class _RestClient implements RestClient {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = GetChatListResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<SendMessageResponse> sendMessage(request) async {
+  Future<SendMessageResponse> sendMessage(SendMessageRequest request) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -188,15 +213,19 @@ class _RestClient implements RestClient {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = SendMessageResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<UpdateMessageResponse> updateMessage(
-    id,
-    request,
+    int id,
+    UpdateMessageRequest request,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -215,13 +244,18 @@ class _RestClient implements RestClient {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = UpdateMessageResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<DeleteMessagesResponse> deleteMessages(request) async {
+  Future<DeleteMessagesResponse> deleteMessages(
+      DeleteMessagesRequest request) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -239,16 +273,20 @@ class _RestClient implements RestClient {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = DeleteMessagesResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<GetMessagesResponse> getMessages(
-    chatId,
-    offset,
-    count,
+    int chatId,
+    int offset,
+    int count,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -256,7 +294,7 @@ class _RestClient implements RestClient {
       r'count': count,
     };
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GetMessagesResponse>(Options(
       method: 'GET',
@@ -269,17 +307,21 @@ class _RestClient implements RestClient {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = GetMessagesResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<ReadMessagesResponse> readMessage(messageId) async {
+  Future<ReadMessagesResponse> readMessage(int messageId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<ReadMessagesResponse>(Options(
       method: 'POST',
@@ -292,7 +334,11 @@ class _RestClient implements RestClient {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = ReadMessagesResponse.fromJson(_result.data!);
     return value;
   }
@@ -308,5 +354,22 @@ class _RestClient implements RestClient {
       }
     }
     return requestOptions;
+  }
+
+  String _combineBaseUrls(
+    String dioBaseUrl,
+    String? baseUrl,
+  ) {
+    if (baseUrl == null || baseUrl.trim().isEmpty) {
+      return dioBaseUrl;
+    }
+
+    final url = Uri.parse(baseUrl);
+
+    if (url.isAbsolute) {
+      return url.toString();
+    }
+
+    return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
 }

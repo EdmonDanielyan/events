@@ -46,6 +46,7 @@ dependencies:
     share_plus: ^7.2.1
     xxtea: ^2.1.0
     flutter_contacts: ^1.1.7+1
+    app_links: ^3.4.5
 
     ###modal_bottom_sheet: ^2.1.2
     modal_bottom_sheet: 3.0.0-pre

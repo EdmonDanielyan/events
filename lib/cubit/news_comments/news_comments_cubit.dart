@@ -18,7 +18,6 @@ import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/new_comment_entities.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/model/patch_comment.dart';
 import 'news_comments_state.dart';
 import 'package:ink_mobile/extensions/get_comments_by_id.dart';
 import 'package:ink_mobile/extensions/list_comment_data.dart';
