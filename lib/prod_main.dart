@@ -35,11 +35,15 @@ void main() async {
   }, (error, stack) {});
 
   // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-  OneSignal.shared.setAppId("4a08e645-b5e8-434d-9c5c-5280e7e49048");
+  // OneSignal.shared.setAppId("4a08e645-b5e8-434d-9c5c-5280e7e49048");
+    OneSignal.initialize("4a08e645-b5e8-434d-9c5c-5280e7e49048");
 
   //TODO: update with In-App message
   // The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
-  OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+  // OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+  //   print("Accepted permission: $accepted");
+  // });
+    OneSignal.Notifications.requestPermission(true).then((accepted) {
     print("Accepted permission: $accepted");
   });
 

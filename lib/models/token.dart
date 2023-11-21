@@ -100,9 +100,14 @@ abstract class Token {
           await Token.setRefresh(newRefresh);
 
           // если старое значение не удалить, новое не встанет
-          OneSignal.shared.removeExternalUserId().then((result){
-            OneSignal.shared.setExternalUserId(refreshDataMap['user_id'].toString());
-          });
+          // OneSignal.shared.removeExternalUserId().then((result){
+          //   OneSignal.shared.setExternalUserId(refreshDataMap['user_id'].toString());
+          // }
+              // migration
+          OneSignal.logout().then((result) {
+            OneSignal.login(refreshDataMap['user_id'].toString());
+          }
+          );
         }
       } else {
         throw InvalidRefreshTokenException();

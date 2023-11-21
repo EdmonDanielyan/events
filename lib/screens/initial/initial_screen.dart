@@ -93,7 +93,9 @@ class _InitPageState extends State<InitPage> {
     getIt<CachedChatsCubit>().clean();
     Token.deleteTokens();
     FlutterSecureStorage().deleteAll();
-    OneSignal.shared.removeExternalUserId();
+    // migration
+    // OneSignal.shared.removeExternalUserId();
+    OneSignal.logout();
 
     Navigator.of(context).popUntil((route) => route.isFirst);
     Navigator.pushReplacementNamed(context, '/welcome');

@@ -209,8 +209,8 @@ Future<void> _exit(BuildContext context) async {
   getIt<CachedChatsCubit>().clean();
   Token.deleteTokens();
   FlutterSecureStorage().deleteAll();
-  OneSignal.shared.removeExternalUserId();
-
+  // OneSignal.shared.removeExternalUserId();
+  OneSignal.logout();
   Navigator.of(context).popUntil((route) => route.isFirst);
   Navigator.pushReplacementNamed(context, '/init');
 }

@@ -113,7 +113,9 @@ class ProfileCubit extends Cubit<ProfileState> {
     getIt<CachedChatsCubit>().clean();
     Token.deleteTokens();
     FlutterSecureStorage().deleteAll();
-    OneSignal.shared.removeExternalUserId();
+    // OneSignal.shared.removeExternalUserId();
+    //migration
+    OneSignal.logout();
 
     Navigator.of(context).popUntil((route) => route.isFirst);
     Navigator.pushReplacementNamed(context, '/init');

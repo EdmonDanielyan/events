@@ -10,7 +10,14 @@ class PushTapHandler {
   static final logger = new Logger('PUSH-NAV');
 
   static void subscribe() {
-    OneSignal.shared.setNotificationOpenedHandler((notification) {
+    // OneSignal.shared.setNotificationOpenedHandler((notification) {
+    //   if (currentContext != null &&
+    //       notification.notification.launchUrl?.isNotEmpty == true) {
+    //     navigateToScreen(notification.notification.launchUrl!);
+    //   }
+    // });
+      // migration
+    OneSignal.Notifications.addClickListener((notification) {
       if (currentContext != null &&
           notification.notification.launchUrl?.isNotEmpty == true) {
         navigateToScreen(notification.notification.launchUrl!);

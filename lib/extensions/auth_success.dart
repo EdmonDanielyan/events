@@ -28,8 +28,12 @@ extension AuthSuccessExt on Response<AuthSuccess> {
       await getIt<AuthHandler>().authChallenge(pass: true);
 
       // если старое значение не удалить, новое не встанет
-      OneSignal.shared.removeExternalUserId().then((result){
-        OneSignal.shared.setExternalUserId(responseData['user_id'].toString());
+      // OneSignal.shared.removeExternalUserId().then((result){
+      //   OneSignal.shared.setExternalUserId(responseData['user_id'].toString());
+      // });
+         // migration
+      OneSignal.logout().then((result) {
+        OneSignal.login(responseData['user_id'].toString());
       });
 
       return true;
