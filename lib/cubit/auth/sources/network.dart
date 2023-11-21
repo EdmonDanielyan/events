@@ -7,8 +7,7 @@ import 'package:ink_mobile/core/builder/auth_params_builder.dart';
 import 'package:ink_mobile/cubit/auth/sources/dependency.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/api/auth_api.dart';
-import 'package:main_api_client/model/auth_success.dart';
+import 'package:openapi/openapi.dart';
 
 @injectable
 class AuthNetworkRequest extends AuthRequestDependency {

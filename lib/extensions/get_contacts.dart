@@ -3,7 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/absence.dart';
-import 'package:main_api_client/model/get_contacts.dart';
+import 'package:openapi/openapi.dart';
 
 extension GetContactsExt on Response<GetContacts> {
   List<User> mapResponse({List<int>? hideIds}) {

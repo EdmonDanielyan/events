@@ -2,7 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/models/autofill.dart';
-import 'package:main_api_client/model/reference_auto_fill.dart';
+import 'package:openapi/openapi.dart';
 
 extension ReferenceAutoFillExt on Response<ReferenceAutoFill> {
   Autofill mapResponse() {

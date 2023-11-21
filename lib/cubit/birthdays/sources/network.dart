@@ -5,9 +5,8 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/cubit/birthdays/sources/dependency.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/api/user_api.dart';
 import 'package:dio/dio.dart';
-import 'package:main_api_client/model/birthdays_success.dart';
+import 'package:openapi/openapi.dart';
 
 @singleton
 class BirthdaysNetworkRequest extends BirthdaysRequestDependency {

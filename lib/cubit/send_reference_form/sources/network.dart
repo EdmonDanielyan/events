@@ -2,12 +2,11 @@
 
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/functions/files.dart';
 import 'package:ink_mobile/models/send_reference_form_entities.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:intl/intl.dart';
-import 'package:main_api_client/model/order_reference_success.dart';
+import 'package:openapi/openapi.dart';
 import 'dependency.dart';
 
 @injectable

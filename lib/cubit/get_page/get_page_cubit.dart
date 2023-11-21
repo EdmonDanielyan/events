@@ -9,7 +9,7 @@ import 'package:ink_mobile/models/error_model.dart';
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/model/page.dart';
+import 'package:openapi/openapi.dart';
 
 
 

@@ -7,8 +7,7 @@ import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/api/events_api.dart';
-import 'package:main_api_client/model/get_events.dart';
+import 'package:openapi/openapi.dart';
 
 import 'dependency.dart';
 

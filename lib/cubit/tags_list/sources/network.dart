@@ -6,8 +6,7 @@ import 'package:ink_mobile/cubit/tags_list/sources/dependency.dart';
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/api/user_api.dart';
-import 'package:main_api_client/model/feedback_tags_list.dart';
+import 'package:openapi/openapi.dart';
 
 @singleton
 class TagsListNetworkRequest extends TagsListRequestDependency {

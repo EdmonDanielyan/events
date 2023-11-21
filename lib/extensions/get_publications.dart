@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/models/learning_materials_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
-import 'package:main_api_client/model/get_publications.dart';
+import 'package:openapi/openapi.dart';
 
 extension GetPublicationsExt on Response<GetPublications> {
   Pagination<LearningMaterialsData> mapResponse(

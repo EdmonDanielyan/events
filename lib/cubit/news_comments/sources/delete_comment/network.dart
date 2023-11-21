@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:dio/dio.dart';
-import 'package:main_api_client/model/news_like_success.dart';
+import 'package:openapi/openapi.dart';
 
 import 'dependency.dart';
 

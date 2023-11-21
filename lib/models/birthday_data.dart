@@ -1,6 +1,6 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
 
-import 'package:main_api_client/model/user_properties.dart';
+import 'package:openapi/openapi.dart';
 
 class BirthdayData {
   int id;

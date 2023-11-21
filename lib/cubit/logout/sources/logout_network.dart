@@ -6,8 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/model/logout_params.dart';
-import 'package:main_api_client/model/required_success.dart';
+import 'package:openapi/openapi.dart';
 
 import 'logout_source.dart';
 

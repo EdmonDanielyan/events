@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/models/birthday_data.dart';
 import 'package:ink_mobile/models/birthday_response.dart';
-import 'package:main_api_client/model/birthdays_success.dart';
+import 'package:openapi/openapi.dart';
 
 extension BirthdaysSuccessExt on Response<BirthdaysSuccess> {
   BirthDayResponse mapResponse() {

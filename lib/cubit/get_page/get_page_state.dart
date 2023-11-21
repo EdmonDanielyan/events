@@ -1,4 +1,4 @@
-import 'package:main_api_client/model/page.dart';
+import 'package:openapi/openapi.dart';
 
 enum GetPageCubitStateEnums { LOADING, SUCCESS, ERROR }
 

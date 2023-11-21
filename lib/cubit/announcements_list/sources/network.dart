@@ -8,8 +8,7 @@ import 'package:ink_mobile/models/announcement_data.dart';
 import 'package:ink_mobile/models/pagination.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/api/announcements_api.dart';
-import 'package:main_api_client/model/get_announcements.dart';
+import 'package:openapi/openapi.dart';
 
 @injectable
 class AnnouncementsListNetworkRequest

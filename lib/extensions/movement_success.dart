@@ -2,7 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/models/movements_data.dart';
-import 'package:main_api_client/model/movements_success.dart';
+import 'package:openapi/openapi.dart';
 
 extension MovementsSuccessExt on Response<MovementsSuccess> {
   List<MovementsData> mapResponse() {

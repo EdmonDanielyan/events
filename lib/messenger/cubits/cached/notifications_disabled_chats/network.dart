@@ -1,8 +1,7 @@
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/api/global_api.dart';
-import 'package:main_api_client/model/notification_sub_state.dart';
 import 'package:dio/dio.dart';
+import 'package:openapi/openapi.dart';
 
 class ToggleNotificationsChatNetworkRequest {
   String? chatID;

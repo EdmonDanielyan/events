@@ -3,7 +3,8 @@
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/models/search/data.dart';
 import 'package:ink_mobile/models/search/search_model.dart';
-import 'package:main_api_client/model/get_search_success.dart';
+import 'package:openapi/openapi.dart';
+
 
 extension GetSearchSuccessExt on Response<GetSearchSuccess> {
   SearchModel? mapResponse() {

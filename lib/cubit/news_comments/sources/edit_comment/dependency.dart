@@ -2,7 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/models/new_comment_entities.dart';
-import 'package:main_api_client/model/news_like_success.dart';
+import 'package:openapi/openapi.dart';
 
 abstract class NewsCommentsEditRequestDependency {
   abstract EditingCommentEntities? comment;

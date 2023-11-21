@@ -7,8 +7,8 @@ import 'package:ink_mobile/models/feedback/management_answer.dart';
 import 'package:ink_mobile/models/pagination.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/api/user_api.dart';
-import 'package:main_api_client/model/questions_list.dart';
+import 'package:openapi/openapi.dart';
+
 
 @injectable
 class FeedbackAnswerListNetworkRequest

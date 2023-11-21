@@ -3,7 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
-import 'package:main_api_client/model/get_announcement_by_id.dart';
+import 'package:openapi/openapi.dart';
 
 extension GetAnnouncementByIdExt on Response<GetAnnouncementById> {
   AnnouncementData mapResponse() {

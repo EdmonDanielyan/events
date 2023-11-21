@@ -7,10 +7,10 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/constants/timeouts.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:ink_mobile/utils/app_config.dart';
-import 'package:main_api_client/api.dart';
+import 'package:openapi_generator_annotations/openapi_generator_annotations.dart';
 
 @lazySingleton
-class MainApiProvider extends MainApiClient {
+class MainApiProvider extends Openapi {
   HttpClient? _sslPinnedHttpClient(HttpClient client) {
     SecurityContext securityContext = SecurityContext();
     return HttpClient(context: securityContext);

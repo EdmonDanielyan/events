@@ -2,7 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/models/selectfield.dart';
-import 'package:main_api_client/model/feedback_tags_list.dart';
+import 'package:openapi/openapi.dart';
 
 extension FeedbackTagsListExt on Response<FeedbackTagsList> {
   List<Selectfield> mapResponse() {

@@ -1,7 +1,7 @@
 // ignore_for_file: implementation_imports, import_of_legacy_library_into_null_safe
 import 'package:equatable/equatable.dart';
-import 'package:main_api_client/model/required_success.dart';
 import 'package:dio/src/response.dart';
+import 'package:openapi/openapi.dart';
 
 abstract class LogoutState extends Equatable {
   const LogoutState();

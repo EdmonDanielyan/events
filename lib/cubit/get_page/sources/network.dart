@@ -4,9 +4,8 @@ import 'package:dio/src/response.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/api/content_api.dart';
 import 'package:dio/dio.dart';
-import 'package:main_api_client/model/single_page_success_response_body.dart';
+import 'package:openapi/openapi.dart';
 
 import 'dependency.dart';
 

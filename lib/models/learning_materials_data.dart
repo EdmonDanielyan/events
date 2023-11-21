@@ -1,7 +1,7 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
 
 import 'package:ink_mobile/models/data.dart';
-import 'package:main_api_client/model/publications_property.dart';
+import 'package:openapi/openapi.dart';
 
 class LearningMaterialsData extends Data {
   int? id;

@@ -8,7 +8,7 @@ import 'package:ink_mobile/models/selectfield.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/model/order_dms_success.dart';
+import 'package:openapi/openapi.dart';
 import 'dependency.dart';
 
 @injectable

@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/screens/feedback/components/form/entities.dart';
 import 'package:ink_mobile/setup.dart';
-import 'package:main_api_client/model/send_feedback_success.dart';
+import 'package:openapi/openapi.dart';
 
 import 'dependency.dart';
 
