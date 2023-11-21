@@ -46,7 +46,8 @@ class NewsDetailCubit extends Cubit<NewsDetailState> {
       await Token.setNewTokensIfExpired();
       await getIt<NewsLikeNetworkRequest>(param1: newsId)();
     } on DioError catch (e) {
-      if (e.type == DioErrorType.other) throw NoConnectionException();
+       //TODO   DioErrorType.other
+      if (e.type == DioErrorType.unknown) throw NoConnectionException();
 
       throw UnknownErrorException();
     } on Exception catch (_) {

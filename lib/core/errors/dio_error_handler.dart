@@ -13,7 +13,9 @@ class DioErrorHandler {
   List<String> emptyResponseCodes = [QMA_32, QMA_33];
 
   bool isEmpty() {
-    if (e.type == DioErrorType.response) {
+      //TODO response вместо unknown
+    //https: //github.com/cfug/dio/blob/main/dio/migration_guide.md
+    if (e.type == DioExceptionType.unknown) {
       ErrorResponse response = ErrorResponse.fromException(e);
 
       for (var code in emptyResponseCodes)
@@ -23,12 +25,21 @@ class DioErrorHandler {
     return false;
   }
 
-  ErrorModel call() {
-    if (e.type == DioErrorType.response) {
+    ErrorModel call() {
+    //TODO response вместо unknown
+    //https: //github.com/cfug/dio/blob/main/dio/migration_guide.md
+    if (e.type ==
+        DioException.badResponse(
+            statusCode: 400,
+            requestOptions: RequestOptions(),
+            response: Response(data: {
+              "error": "Invalid request",
+              "message": "Missing required parameters"
+            }, statusCode: 400, requestOptions: RequestOptions()))) {
       ErrorResponse response = ErrorResponse.fromException(e);
       switch (response.code) {
-          case QMA_6:
-          case QMA_16:
+        case QMA_6:
+        case QMA_16:
           return invalidRefreshToken();
         case QMA_13:
           return unknownErrorException(response.title, response.detail);

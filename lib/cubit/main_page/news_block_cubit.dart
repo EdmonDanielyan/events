@@ -39,7 +39,7 @@ class NewsBlockCubit extends Cubit<NewsBlockState> {
   }
 
   Future<void> fetchNews() async {
-    final mapService = getIt<IVideoLinksService>();
+    // final mapService = getIt<IVideoLinksService>();
     try {
       await Token.setNewTokensIfExpired();
       final response = await getIt<NewsListNetworkRequest>(
@@ -47,7 +47,7 @@ class NewsBlockCubit extends Cubit<NewsBlockState> {
       _tabs = _mapFilterItems(response.data?.data.asMap);
       final mapResponse = response.mapResponse(pagination);
       emitSuccess(items: mapResponse.items, tabs: _tabs);
-      mapService.fetchVideoLinks(mapResponse.items);
+      // mapService.fetchVideoLinks(mapResponse.items);
     } on DioError catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 

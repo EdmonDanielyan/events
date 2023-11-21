@@ -68,7 +68,8 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       emitState(type: NewsCommentStateType.LOADING);
       return;
     } on DioError catch (e) {
-      if (e.type == DioErrorType.other) throw NoConnectionException();
+       //TODO   DioErrorType.other
+      if (e.type == DioErrorType.unknown) throw NoConnectionException();
     } on TimeoutException catch (_) {
       throw NoConnectionException();
     }
@@ -88,7 +89,8 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       emitState(type: NewsCommentStateType.LOADING);
       return;
     } on DioError catch (e) {
-      if (e.type == DioErrorType.other) throw NoConnectionException();
+       //TODO   DioErrorType.other
+      if (e.type == DioErrorType.unknown) throw NoConnectionException();
     } on TimeoutException catch (_) {
       throw NoConnectionException();
     }
@@ -109,7 +111,8 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       }
       return;
     } on DioError catch (e) {
-      if (e.type == DioErrorType.other) throw NoConnectionException();
+       //TODO  DioErrorType.other
+      if (e.type == DioErrorType.unknown) throw NoConnectionException();
     } on TimeoutException catch (_) {
       throw NoConnectionException();
     }

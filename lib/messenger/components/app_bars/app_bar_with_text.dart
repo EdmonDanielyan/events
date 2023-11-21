@@ -5,7 +5,7 @@ import 'package:ink_mobile/messenger/constants/svg_pictures.dart';
 import '../../functions/size_config.dart';
 import 'back_btn.dart';
 
-class AppBarWithText extends StatelessWidget with PreferredSizeWidget {
+class AppBarWithText extends StatelessWidget implements PreferredSizeWidget {
   final BuildContext context;
   final String title;
   final Widget? titleWidget;

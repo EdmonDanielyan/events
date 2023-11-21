@@ -24,7 +24,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  final mapService = getIt<IVideoLinksService>();
+  // final mapService = getIt<IVideoLinksService>();
   final ScrollController _controller = ScrollController();
   static late AppLocalizations _strings;
 
