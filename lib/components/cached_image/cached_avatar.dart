@@ -1,7 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/cached_image/avatar_indicator.dart';
 import 'package:ink_mobile/functions/files.dart';
-import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 import 'avatar_placeholder.dart';
 
@@ -30,7 +30,7 @@ class CachedCircleAvatar extends StatelessWidget {
           width: avatarWidth,
           height: avatarHeight,
           child: isStrPicture(url)
-              ? OptimizedCacheImage(
+              ? CachedNetworkImage(
                   imageUrl: url,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => AvatarPlaceholder(text: name),
