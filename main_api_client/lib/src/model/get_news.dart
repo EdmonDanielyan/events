@@ -119,7 +119,7 @@ class _$GetNewsSerializer implements PrimitiveSerializer<GetNews> {
             value,
             specifiedType: const FullType(JsonObject),
           ) as JsonObject;
-          result.data.replace(valueDes);
+          result.data = valueDes;
           break;
         case r'returned':
           final valueDes = serializers.deserialize(

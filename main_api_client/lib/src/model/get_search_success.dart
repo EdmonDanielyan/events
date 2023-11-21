@@ -120,7 +120,7 @@ class _$GetSearchSuccessSerializer implements PrimitiveSerializer<GetSearchSucce
             specifiedType: const FullType.nullable(JsonObject),
           ) as JsonObject?;
           if (valueDes == null) continue;
-          result.data.replace(valueDes);
+          result.data = valueDes;
           break;
         case r'returned':
           final valueDes = serializers.deserialize(

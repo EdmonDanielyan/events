@@ -119,7 +119,7 @@ class _$GetReferenceOrderFormSerializer implements PrimitiveSerializer<GetRefere
             value,
             specifiedType: const FullType(JsonObject),
           ) as JsonObject;
-          result.data.replace(valueDes);
+          result.data = valueDes;
           break;
         case r'returned':
           final valueDes = serializers.deserialize(

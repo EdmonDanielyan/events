@@ -118,7 +118,7 @@ class _$GetEventsSerializer implements PrimitiveSerializer<GetEvents> {
             value,
             specifiedType: const FullType(JsonObject),
           ) as JsonObject;
-          result.data.replace(valueDes);
+          result.data = valueDes;
           break;
         case r'returned':
           final valueDes = serializers.deserialize(

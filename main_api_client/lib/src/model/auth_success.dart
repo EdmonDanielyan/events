@@ -117,7 +117,7 @@ class _$AuthSuccessSerializer implements PrimitiveSerializer<AuthSuccess> {
             value,
             specifiedType: const FullType(JsonObject),
           ) as JsonObject;
-          result.data.replace(valueDes);
+          result.data =valueDes;
           break;
         case r'returned':
           final valueDes = serializers.deserialize(
