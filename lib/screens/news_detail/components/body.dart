@@ -80,10 +80,11 @@ class Body extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Header(
-                        imageLinks: newsItem.detailPictureLinks,
-                        videoLinks: newsItem.videoLinks,
-                      ),
+                      // TODO: player
+                      // Header(
+                      //   imageLinks: newsItem.detailPictureLinks,
+                      //   videoLinks: newsItem.videoLinks,
+                      // ),
                       HeaderInfo(
                         viewCount: newsItem.viewCount ?? 0,
                         dateCreate: newsItem.dateCreate,
