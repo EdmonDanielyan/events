@@ -20,21 +20,17 @@ void main() async {
         options: DefaultFirebaseOptions.currentPlatform);
 
     HttpOverrides.global = MyHttpOverrides();
-    final storage = await HydratedStorage.build(
+    HydratedBloc.storage = await HydratedStorage.build(
       storageDirectory: kIsWeb
           ? HydratedStorage.webStorageDirectory
           : await getTemporaryDirectory(),
     );
 
-    HydratedBlocOverrides.runZoned(
-          () async {
-        await writeEnv(Environment.dev);
-        await setup();
+    await writeEnv(Environment.dev);
 
-        runApp(InkMobile());
-      },
-      storage: storage,
-    );
+    await setup();
+
+    runApp(InkMobile());
   }, (error, stack) {});
 
   // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);

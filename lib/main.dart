@@ -25,20 +25,15 @@ void main() async {
           WidgetsFlutterBinding.ensureInitialized();
 
           HttpOverrides.global = MyHttpOverrides();
-          final storage = await HydratedStorage.build(
+         HydratedBloc.storage = await HydratedStorage.build(
             storageDirectory: kIsWeb
                 ? HydratedStorage.webStorageDirectory
                 : await getTemporaryDirectory(),
           );
 
-          HydratedBlocOverrides.runZoned(
-            () async {
-              await setup();
+          await setup();
 
-              runApp(InkMobile());
-            },
-            storage: storage,
-          );
+          runApp(InkMobile());
         },
         (error, stack) {},
       );
