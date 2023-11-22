@@ -8,7 +8,7 @@ class HexColor extends Color {
 int _strHexToInt(String hexColor, int onErrorValue) {
   hexColor = hexColor.toUpperCase().replaceAll("#", "");
   if (hexColor.length == 6) {
-    hexColor = "FF" + hexColor;
+    hexColor = "FF$hexColor";
   }
   return int.tryParse(hexColor, radix: 16) ?? onErrorValue;
 }

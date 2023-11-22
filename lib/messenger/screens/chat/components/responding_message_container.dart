@@ -28,38 +28,30 @@ class RespondingMessageContainer extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SvgPicture.asset(
-                IconLinks.REPLY_ICON,
-                color: Palette.textBlack50,
-                height: 28.0,
-                width: 28.0,
-              ),
+              SvgPicture.asset(IconLinks.REPLY_ICON,
+                  colorFilter:
+                      ColorFilter.mode(Palette.textBlack50, BlendMode.srcIn),
+                  height: 28.0,
+                  width: 28.0),
               const SizedBox(width: 8.0),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      state.owner.name,
-                      maxLines: 1,
-                      style: FontStyles.rubikP3Medium(color: Palette.greenE4A),
-                    ),
-                    Text(
-                      state.body,
-                      maxLines: 1,
-                      style: FontStyles.rubikP2(color: Palette.textBlack50),
-                    ),
+                    Text(state.owner.name,
+                        maxLines: 1,
+                        style:
+                            FontStyles.rubikP3Medium(color: Palette.greenE4A)),
+                    Text(state.body,
+                        maxLines: 1,
+                        style: FontStyles.rubikP2(color: Palette.textBlack50)),
                   ],
                 ),
               ),
               const SizedBox(width: 10.0),
               InkWell(
                 onTap: () => respondingMessage.set(null),
-                child: Icon(
-                  Icons.close,
-                  size: 28,
-                  color: Palette.greenE4A,
-                ),
+                child: Icon(Icons.close, size: 28, color: Palette.greenE4A),
               ),
               const SizedBox(width: 5.0),
             ],

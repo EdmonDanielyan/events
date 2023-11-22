@@ -1,5 +1,3 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
-
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/builder/dms_params_builder.dart';
@@ -14,6 +12,7 @@ import 'dependency.dart';
 @injectable
 class SendMedicalInsFormNetworkRequest
     extends SendMedicalInsFormRequestDependency {
+  @override
   MedicalInsuranceFormEntities? entities;
   SendMedicalInsFormNetworkRequest({@factoryParam required this.entities})
       : assert(entities != null);
@@ -36,7 +35,7 @@ class SendMedicalInsFormNetworkRequest
                 name: entities!.fio,
                 birthday: entities!.birthDate,
                 position: entities!.position,
-                
+
                 // TODO: CHECK
                 //organization: entities!.organization,
                 phone: entities!.phone,

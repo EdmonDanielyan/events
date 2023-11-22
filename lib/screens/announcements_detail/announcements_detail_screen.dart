@@ -50,7 +50,7 @@ class AnnouncementsDetailScreen extends StatelessWidget {
 
                 announcementCubit.fetch(announcementId);
 
-                return InkPageLoader();
+                return const InkPageLoader();
               }
 
             case AnnouncementsDetailStateType.LOADED:

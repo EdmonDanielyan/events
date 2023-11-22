@@ -84,28 +84,22 @@ class PickFilesState extends State<PickFiles> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _btnWidget(context),
-        const SizedBox(
-          height: 24.0,
-        ),
-        if (pickedFiles.isEmpty)
-          _fileStatusWidget(context),
-        ...List.generate(
-          pickedFiles.length,
-          (index) {
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: _fileStatusWidget(
-                      context, hasElement(index) ? pickedFiles[index] : null),
-                ),
-                if (hasElement(index)) ...[
-                  _deleteItemWidget(index),
-                ],
+        const SizedBox(height: 24.0),
+        if (pickedFiles.isEmpty) _fileStatusWidget(context),
+        ...List.generate(pickedFiles.length, (index) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: _fileStatusWidget(
+                    context, hasElement(index) ? pickedFiles[index] : null),
+              ),
+              if (hasElement(index)) ...[
+                _deleteItemWidget(index),
               ],
-            );
-          }
-        ),
+            ],
+          );
+        }),
       ],
     );
   }
@@ -124,12 +118,10 @@ class PickFilesState extends State<PickFiles> {
       },
       borderColor: Palette.greenE4A,
       textColor: Palette.greenE4A,
-      suffixIcon: SvgPicture.asset(
-        IconLinks.ATTACHMENT_ICON,
-        color: Palette.greenE4A,
-        height: 20.0,
-        width: 20.0,
-      ),
+      suffixIcon: SvgPicture.asset(IconLinks.ATTACHMENT_ICON,
+          colorFilter: ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn),
+          height: 20.0,
+          width: 20.0),
     );
   }
 
@@ -144,12 +136,10 @@ class PickFilesState extends State<PickFiles> {
   Widget _deleteItemWidget(int index) {
     return IconButton(
       onPressed: () => _removeFile(index),
-      icon: SvgPicture.asset(
-        IconLinks.CLOSE_ICON,
-        color: Palette.greenE4A,
-        width: 20.0,
-        height: 20.0,
-      ),
+      icon: SvgPicture.asset(IconLinks.CLOSE_ICON,
+          colorFilter: ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn),
+          width: 20.0,
+          height: 20.0),
     );
   }
 }

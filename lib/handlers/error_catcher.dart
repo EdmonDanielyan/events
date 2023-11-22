@@ -10,9 +10,7 @@ class ErrorCatcher {
   late ErrorHandler _handler;
 
   static ErrorCatcher getInstance() {
-    if (_instance == null) {
-      _instance = ErrorCatcher();
-    }
+    _instance ??= ErrorCatcher();
 
     return _instance!;
   }

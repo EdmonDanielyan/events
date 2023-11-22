@@ -12,20 +12,18 @@ class AnnouncementsListElementPlaceholder extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           children: [
-            Container(
-                child: Row(children: [
+            Row(children: [
               Shimmer.fromColors(
                 baseColor: Colors.grey.withOpacity(0.5),
                 highlightColor: Colors.grey.withOpacity(0.2),
                 child: Container(
-                  width: 100,
-                  height: 20,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5)),
-                ),
+                    width: 100,
+                    height: 20,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5))),
               ),
-            ])),
+            ]),
             Container(
               margin: const EdgeInsets.only(top: 8),
               alignment: Alignment.topLeft,
@@ -45,28 +43,25 @@ class AnnouncementsListElementPlaceholder extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 25),
                 child: Row(
                   children: [
-                    Container(
-                        child: Row(children: [
+                    Row(children: [
                       Container(
                           margin: const EdgeInsets.only(right: 3),
                           child: SvgPicture.asset(
                             IconLinks.VIEW_COUNT_SVG_LINK,
                             width: 16,
                           )),
-                      Container(
-                        child: Shimmer.fromColors(
-                          baseColor: Colors.grey.withOpacity(0.5),
-                          highlightColor: Colors.grey.withOpacity(0.2),
-                          child: Container(
-                            width: 30,
-                            height: 20,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5)),
-                          ),
+                      Shimmer.fromColors(
+                        baseColor: Colors.grey.withOpacity(0.5),
+                        highlightColor: Colors.grey.withOpacity(0.2),
+                        child: Container(
+                          width: 30,
+                          height: 20,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5)),
                         ),
                       )
-                    ]))
+                    ])
                   ],
                 ))
           ],

@@ -9,7 +9,7 @@ import 'package:ink_mobile/screens/news_comments/components/comment_intput.dart'
 class NewsCommentScreen extends StatelessWidget {
   final NewsCommentsCubit newsCommentsCubit;
   final NewsBlockCubit newsBlockCubit;
-  NewsCommentScreen(
+  const NewsCommentScreen(
       {Key? key, required this.newsCommentsCubit, required this.newsBlockCubit})
       : super(key: key);
 

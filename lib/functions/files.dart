@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:path/path.dart';
 import 'package:built_collection/built_collection.dart';
 
-
 List<MultipartFile> getFilesAsMultipart(List<File> files) {
   List<MultipartFile> summary = [];
 
@@ -32,7 +31,13 @@ bool isStringUrl(String url) {
 }
 
 bool isStringHttpUrl(String url) {
-  return isStringUrl(url) && (url.toLowerCase().contains("http") && !url.endsWith("pdf")  && !url.endsWith("docx") && !url.endsWith("doc") && !url.endsWith("xlsx") && !url.contains("USER_ID="));
+  return isStringUrl(url) &&
+      (url.toLowerCase().contains("http") &&
+          !url.endsWith("pdf") &&
+          !url.endsWith("docx") &&
+          !url.endsWith("doc") &&
+          !url.endsWith("xlsx") &&
+          !url.contains("USER_ID="));
 }
 
 bool isStrPicture(String picture) {

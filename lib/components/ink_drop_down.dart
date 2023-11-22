@@ -9,7 +9,7 @@ class InkDropDown extends StatefulWidget {
   final int? selectedIndex;
   final String hint;
 
-  InkDropDown(
+  const InkDropDown(
       {Key? key,
       required this.items,
       required this.onChanged,
@@ -18,7 +18,7 @@ class InkDropDown extends StatefulWidget {
       : super(key: key);
 
   @override
-  _InkDropDownState createState() => _InkDropDownState();
+  State<InkDropDown> createState() => _InkDropDownState();
 }
 
 class _InkDropDownState extends State<InkDropDown> {
@@ -45,7 +45,7 @@ class _InkDropDownState extends State<InkDropDown> {
           child: Container(
             width: MediaQuery.of(context).size.width * 0.7,
             clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(),
+            decoration: const BoxDecoration(),
             child: Text(
               selectedIndex != null
                   ? widget.items[selectedIndex!]
@@ -58,9 +58,9 @@ class _InkDropDownState extends State<InkDropDown> {
             ),
           ),
         ),
-        decoration: InputDecoration(border: OutlineInputBorder()),
+        decoration: const InputDecoration(border: OutlineInputBorder()),
         style: const TextStyle(color: Colors.deepPurple),
-        items: [],
+        items: const [],
         onChanged: (value) => widget.onChanged(value!),
       ),
     );
@@ -95,7 +95,7 @@ class SelectDialog extends StatefulWidget {
   final int? selectedIndex;
 
   @override
-  _SelectDialogState createState() => _SelectDialogState();
+  State<SelectDialog> createState() => _SelectDialogState();
 }
 
 class _SelectDialogState extends State<SelectDialog> {
@@ -106,9 +106,7 @@ class _SelectDialogState extends State<SelectDialog> {
   Widget build(BuildContext context) {
     _strings = localizationInstance;
 
-    if (selectedItem == null) {
-      selectedItem = widget.selectedIndex;
-    }
+    selectedItem ??= widget.selectedIndex;
 
     return AlertDialog(
       contentPadding: const EdgeInsets.all(0),
@@ -116,18 +114,18 @@ class _SelectDialogState extends State<SelectDialog> {
         constraints: BoxConstraints(
           maxHeight: MediaQuery.of(context).size.height,
         ),
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: ListView.separated(
             shrinkWrap: true,
-            separatorBuilder: (context, index) => Divider(
+            separatorBuilder: (context, index) => const Divider(
               thickness: 2,
               height: 2,
             ),
             itemCount: widget.items.length,
             itemBuilder: (context, index) {
               return RadioListTile<int>(
-                activeColor: Color(0xff2b5e4a),
+                activeColor: const Color(0xff2b5e4a),
                 controlAffinity: ListTileControlAffinity.trailing,
                 title: Text(
                   widget.items[index],
@@ -149,7 +147,7 @@ class _SelectDialogState extends State<SelectDialog> {
       ),
       actions: <Widget>[
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
               Expanded(
@@ -180,7 +178,7 @@ class _SelectDialogState extends State<SelectDialog> {
                     style: TextStyle(
                         fontSize: SizeConfig(context, 14)
                             .getProportionateScreenHeight,
-                        color: Color(0xFF2B5E4A)),
+                        color: const Color(0xFF2B5E4A)),
                   ),
                 ),
               )),

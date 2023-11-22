@@ -19,9 +19,9 @@ class AboutMyField extends StatefulWidget {
 
 class _AboutMyFieldState extends State<AboutMyField> {
   bool _isLoading = false;
-  bool _isErorr = false;
+  final bool _isErorr = false;
   String text = "";
-  TextEditingController _aboutMyFieldC = TextEditingController();
+  final TextEditingController _aboutMyFieldC = TextEditingController();
 
   @override
   void initState() {
@@ -36,9 +36,7 @@ class _AboutMyFieldState extends State<AboutMyField> {
       margin: const EdgeInsets.only(top: 24),
       child: Column(
         children: [
-          SectionTitle(
-            title: 'О себе',
-          ),
+          const SectionTitle(title: 'О себе'),
           Container(
             decoration: BoxDecoration(
                 color: Colors.white,
@@ -56,19 +54,19 @@ class _AboutMyFieldState extends State<AboutMyField> {
                     WidgetsBinding.instance.addPostFrameCallback((__) =>
                         widget.scrollController.animateTo(
                             widget.scrollController.position.maxScrollExtent,
-                            duration: Duration(milliseconds: 500),
+                            duration: const Duration(milliseconds: 500),
                             curve: Curves.easeOut));
                   });
                 },
                 decoration: InputDecoration(
                     hintText: 'Расскажи немного о себе',
-                    hintStyle:
-                        TextStyle(color: Color.fromRGBO(153, 153, 153, 1)),
+                    hintStyle: const TextStyle(
+                        color: Color.fromRGBO(153, 153, 153, 1)),
                     border: InputBorder.none,
                     isCollapsed: true,
                     suffixIcon: _aboutMyFieldC.text != ''
                         ? IconButton(
-                            icon: Icon(Icons.close),
+                            icon: const Icon(Icons.close),
                             iconSize: 30,
                             onPressed: () {
                               setState(() {
@@ -83,8 +81,8 @@ class _AboutMyFieldState extends State<AboutMyField> {
             ),
           ),
           _isLoading
-              ? Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
+              ? const Padding(
+                  padding: EdgeInsets.only(bottom: 20),
                   child: CircularProgressIndicator(),
                 )
               : const SizedBox.shrink(),
@@ -99,12 +97,13 @@ class _AboutMyFieldState extends State<AboutMyField> {
                       setState(() {
                         _isLoading = true;
                       });
-                      Future.delayed(Duration(seconds: 1), () {
-                        if (!_isErorr)
+                      Future.delayed(const Duration(seconds: 1), () {
+                        if (!_isErorr) {
                           setState(() {
                             text = _aboutMyFieldC.text;
                             _isLoading = false;
                           });
+                        }
                       });
 
                       //userCubit.saveFAboutMy(value: _aboutMyFieldC.text);

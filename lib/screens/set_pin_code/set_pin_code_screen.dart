@@ -29,7 +29,7 @@ class _SetPinCodeScreenState extends State<SetPinCodeScreen> {
     _stageCubit.setNew(2);
     _controller.clear();
     _pinCode2 = "";
-    Future.delayed(Duration(milliseconds: 200), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       focusNode.requestFocus();
     });
   }
@@ -58,7 +58,8 @@ class _SetPinCodeScreenState extends State<SetPinCodeScreen> {
           bloc: _stageCubit,
           builder: (context, state) {
             return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 20.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 32.0, horizontal: 20.0),
               child: Column(
                 children: [
                   Align(
@@ -81,7 +82,8 @@ class _SetPinCodeScreenState extends State<SetPinCodeScreen> {
                           child: Center(
                             child: Text(
                               str ?? "",
-                              style: TextStyle(fontSize: 13.0, color: Colors.red),
+                              style: const TextStyle(
+                                  fontSize: 13.0, color: Colors.red),
                               textAlign: TextAlign.center,
                             ),
                           ),

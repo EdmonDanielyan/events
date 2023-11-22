@@ -52,9 +52,7 @@ class Body extends StatelessWidget {
                     switch (state.type) {
                       case OpenUniversityStateType.ERROR:
                         {
-                          return Center(
-                            child: Text('ERROR'),
-                          );
+                          return const Center(child: Text('ERROR'));
                         }
 
                       case OpenUniversityStateType.ABOUT_PROJECT:

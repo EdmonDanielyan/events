@@ -88,7 +88,7 @@ class InkAppBar extends StatelessWidget implements PreferredSizeWidget {
               colors: [Theme.of(context).primaryColor, const Color(0xFF182B23)],
               begin: FractionalOffset.centerLeft,
               end: FractionalOffset.centerRight,
-              stops: [0.0, 1.0],
+              stops: const [0.0, 1.0],
               tileMode: TileMode.decal),
         ),
         child: image ??
@@ -119,7 +119,7 @@ class InkAppBar extends StatelessWidget implements PreferredSizeWidget {
               IconLinks.USER_ICON_LINK,
               height: 24.0,
               width: 24.0,
-              color: Palette.white,
+              colorFilter: ColorFilter.mode(Palette.white, BlendMode.srcIn),
             ),
             onTap: () {
               SchedulerBinding.instance.addPostFrameCallback((_) {

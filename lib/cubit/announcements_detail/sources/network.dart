@@ -11,6 +11,7 @@ import 'package:openapi/openapi.dart';
 @injectable
 class AnnouncementsDetailNetworkRequest
     extends AnnouncementsDetailRequestDependency {
+  @override
   int? announcementId;
   AnnouncementsDetailNetworkRequest(
       {@factoryParam required this.announcementId})
@@ -20,7 +21,7 @@ class AnnouncementsDetailNetworkRequest
   Future<Response<GetAnnouncementById>> call() async {
     AnnouncementsApi announcementsApi =
         getIt<MainApiProvider>().getAnnouncementsApi();
-        //TODO: clean code
+    //TODO: clean code
     return await announcementsApi.getAnnouncementById(id: announcementId ?? 1);
   }
 }

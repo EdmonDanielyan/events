@@ -13,6 +13,7 @@ import 'package:openapi/openapi.dart';
 @injectable
 class AnnouncementsListNetworkRequest
     extends AnnouncementsListRequestDependency {
+  @override
   Pagination<AnnouncementData>? pagination;
 
   AnnouncementsListNetworkRequest({@factoryParam required this.pagination})

@@ -29,12 +29,11 @@ class ServiceListElement extends StatelessWidget {
         height: 70,
         child: Row(
           children: [
-            SvgPicture.asset(
-              item.svgPicturePath,
-              width: 24.0,
-              height: 24.0,
-              color: Palette.greenE4A,
-            ),
+            SvgPicture.asset(item.svgPicturePath,
+                width: 24.0,
+                height: 24.0,
+                colorFilter:
+                    ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
             Container(
               margin: const EdgeInsets.only(left: 14),
               child: Text(
@@ -46,11 +45,8 @@ class ServiceListElement extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20.0,
-                    color: Palette.greenE4A,
-                  )
+                  Icon(Icons.arrow_forward_ios,
+                      size: 20.0, color: Palette.greenE4A)
                 ],
               ),
             ),

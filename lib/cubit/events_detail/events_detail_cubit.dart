@@ -17,10 +17,10 @@ import 'package:ink_mobile/extensions/get_event_by_id.dart';
 @injectable
 class EventDetailCubit extends Cubit<EventsDetailState> {
   EventDetailCubit()
-      : super(EventsDetailState(type: EventsDetailStateType.LOADING));
+      : super(const EventsDetailState(type: EventsDetailStateType.LOADING));
 
   Future<void> load(int eventId) async {
-    EventsDetailState(type: EventsDetailStateType.LOADING);
+    const EventsDetailState(type: EventsDetailStateType.LOADING);
 
     try {
       await Token.setNewTokensIfExpired();

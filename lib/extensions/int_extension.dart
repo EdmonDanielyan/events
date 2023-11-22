@@ -1,5 +1,5 @@
 extension IntToString on int {
   toThousandsString() {
-    return (this ~/ 1000).toString() + 'К';
+    return '${this ~/ 1000}К';
   }
 }

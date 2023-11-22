@@ -9,7 +9,8 @@ abstract class LogFilePathInjector {
   @prod
   @dev
   @Named('logFile')
-  Future<String> get logFile async => (await getApplicationDocumentsDirectory()).path + '/application.log';
+  Future<String> get logFile async =>
+      '${(await getApplicationDocumentsDirectory()).path}/application.log';
 }
 
 @module

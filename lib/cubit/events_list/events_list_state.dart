@@ -9,7 +9,7 @@ class EventsListState {
   final EventsListStateType type;
   final String? errorMessage;
 
-  EventsListState({required this.type, this.data, this.errorMessage})
+  const EventsListState({required this.type, this.data, this.errorMessage})
       : assert(
             type != EventsListStateType.ERROR ||
                 (type == EventsListStateType.ERROR && errorMessage != null),

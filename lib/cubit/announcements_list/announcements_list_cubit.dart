@@ -23,7 +23,8 @@ class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
   ScrollBottomToLoad scrollBottomToLoad = ScrollBottomToLoad();
 
   AnnouncementsListCubit()
-      : super(AnnouncementsListState(type: AnnouncementsListStateType.LOADING));
+      : super(const AnnouncementsListState(
+            type: AnnouncementsListStateType.LOADING));
 
   Future<void> fetch() async {
     try {
@@ -86,7 +87,8 @@ class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
 
   void refresh() {
     resetProperties();
-    emit(AnnouncementsListState(type: AnnouncementsListStateType.LOADING));
+    emit(
+        const AnnouncementsListState(type: AnnouncementsListStateType.LOADING));
   }
 
   Future<void> onScroll(ScrollController controller) async {

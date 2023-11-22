@@ -14,7 +14,7 @@ class ChatEditScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ChatEditScreenState createState() => _ChatEditScreenState();
+  State<ChatEditScreen> createState() => _ChatEditScreenState();
 }
 
 class _ChatEditScreenState extends State<ChatEditScreen> {

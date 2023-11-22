@@ -29,9 +29,9 @@ class NewsBlockCubit extends Cubit<NewsBlockState> {
     final List? tabsList = tabsMap?["tabs"];
     if (tabsList != null) {
       List<FilterItem> tabs = [];
-      tabsList.forEach((element) {
+      for (var element in tabsList) {
         tabs.add(FilterItem.fromMap(element));
-      });
+      }
       return tabs;
     } else {
       return [];

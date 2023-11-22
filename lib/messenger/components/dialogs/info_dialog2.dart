@@ -37,7 +37,6 @@ class InfoDialog2 {
                   const SizedBox(height: 15.0),
                 ],
                 TextButton(
-                  child: Text(close ?? "Закрыть"),
                   onPressed: onPressed ??
                       () {
                         Navigator.of(context).pop();
@@ -45,6 +44,7 @@ class InfoDialog2 {
                   style: TextButton.styleFrom(
                     foregroundColor: const Color(0XFF1068D7),
                   ),
+                  child: Text(close ?? "Закрыть"),
                 ),
               ],
             ),

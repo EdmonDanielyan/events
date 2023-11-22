@@ -101,7 +101,7 @@ class _AuthButtonsState extends State<AuthButtons> {
       bloc: authCubit,
       builder: (BuildContext context, state) {
         if (state.type == AuthStateType.LOADING) {
-          return CustomCircularProgressIndicator();
+          return const CustomCircularProgressIndicator();
         } else {
           return Column(
             children: [
@@ -109,8 +109,9 @@ class _AuthButtonsState extends State<AuthButtons> {
                 title: localizationInstance.enter,
                 onTap: () {
                   logger.finest(widget.formKey.currentState);
-                  if (widget.formKey.currentState!.validate())
+                  if (widget.formKey.currentState!.validate()) {
                     onSubmit(context);
+                  }
                 },
                 buttonColor: Palette.greenE4A,
                 textColor: Palette.white,

@@ -15,32 +15,31 @@ class InkMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light));
 
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return
-      // callback: startCallback,
-      MultiBlocProvider(
-        providers: GlobalProvider.getProviders(context).cast(),
-        child: MaterialApp(
-          navigatorKey: App.materialKey,
-          title: 'ИНК',
-          initialRoute: '/init',
-          localizationsDelegates: [
-            AppLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate
-          ],
-          supportedLocales: I18n.all,
-          routes: MainRoutes.routes,
-          theme: LightTheme().getThemeData(),
-          darkTheme: LightTheme().getThemeData(),
-          builder: EasyLoading.init(),
-        ),
-      );
+        // callback: startCallback,
+        MultiBlocProvider(
+      providers: GlobalProvider.getProviders(context).cast(),
+      child: MaterialApp(
+        navigatorKey: App.materialKey,
+        title: 'ИНК',
+        initialRoute: '/init',
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate
+        ],
+        supportedLocales: I18n.all,
+        routes: MainRoutes.routes,
+        theme: LightTheme().getThemeData(),
+        darkTheme: LightTheme().getThemeData(),
+        builder: EasyLoading.init(),
+      ),
+    );
   }
 }

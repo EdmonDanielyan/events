@@ -18,7 +18,8 @@ class MainApiProvider extends Openapi {
 
   MainApiProvider()
       : super(basePathOverride: getIt.get<AppConfig>().serverUrl) {
-    dio.options.connectTimeout = Duration(seconds: API_CONNECT_TIMEOUT_MS);
+    dio.options.connectTimeout =
+        const Duration(seconds: API_CONNECT_TIMEOUT_MS);
     (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
       return _sslPinnedHttpClient();
     };

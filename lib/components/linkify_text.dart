@@ -17,9 +17,7 @@ class LinkifyText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Linkify(
       text: text,
-      options: LinkifyOptions(
-        humanize: false,
-      ),
+      options: const LinkifyOptions(humanize: false),
       style: style,
       onOpen: (url) {
         launchUrl(url.url);

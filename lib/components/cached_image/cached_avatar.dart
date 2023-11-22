@@ -43,8 +43,8 @@ class CachedCircleAvatar extends StatelessWidget {
                       foregroundImage: image,
                     );
                   },
-                  fadeInDuration: Duration(milliseconds: 0),
-                  fadeOutDuration: Duration(milliseconds: 0),
+                  fadeInDuration: const Duration(milliseconds: 0),
+                  fadeOutDuration: const Duration(milliseconds: 0),
                 )
               : AvatarPlaceholder(text: name),
         ),

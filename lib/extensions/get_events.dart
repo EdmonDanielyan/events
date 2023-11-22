@@ -1,5 +1,3 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
-
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/models/event_data.dart';
@@ -8,7 +6,7 @@ import 'package:openapi/openapi.dart';
 
 extension GetEventsExt on Response<GetEvents> {
   Pagination<EventData> mapResponse(Pagination<EventData> pagination) {
-    Map? eventsListData = this.data?.data.asMap;
+    Map? eventsListData = data?.data.asMap;
 
     if (eventsListData != null) {
       final _newList = List<EventData>.from(pagination.items)

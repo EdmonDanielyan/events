@@ -7,7 +7,7 @@ import 'package:ink_mobile/screens/open_university/components/about_project_cont
 class AboutProject extends StatelessWidget {
   final bool isTablet;
 
-  AboutProject({Key? key, required this.isTablet}) : super(key: key);
+  const AboutProject({Key? key, required this.isTablet}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +18,10 @@ class AboutProject extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-                child: Text(
-                    " ${_strings.aboutProject}", // Пробел для того, чтобы заголовок был с тем же отступом, что и HTML
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 24))),
+            Text(
+                " ${_strings.aboutProject}", // Пробел для того, чтобы заголовок был с тем же отступом, что и HTML
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
             Html(
               data: '''<p align="right" style="text-align: left;">
  <b><span style="">Идёшь вперёд ты - идёт вперёд компания. </span></b>

@@ -24,18 +24,16 @@ class AnnouncementsListElement extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           children: [
-            Container(
-              child: Row(
-                children: [
-                  Text(
-                    announcement.dateCreate != null
-                        ? DateFormat('dd.MM.yyyy')
-                            .format(announcement.dateCreate!)
-                        : '',
-                    style: FontStyles.rubikP2(color: Palette.textBlack50),
-                  ),
-                ],
-              ),
+            Row(
+              children: [
+                Text(
+                  announcement.dateCreate != null
+                      ? DateFormat('dd.MM.yyyy')
+                          .format(announcement.dateCreate!)
+                      : '',
+                  style: FontStyles.rubikP2(color: Palette.textBlack50),
+                ),
+              ],
             ),
             Container(
               margin: const EdgeInsets.only(top: 8),
@@ -50,42 +48,35 @@ class AnnouncementsListElement extends StatelessWidget {
               margin: const EdgeInsets.only(top: 25),
               child: Row(
                 children: [
-                  Container(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 3),
-                          child: SvgPicture.asset(
-                            IconLinks.OPENED_EYE_ICON_LINK,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(right: 3),
+                        child: SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
                             height: 16.0,
                             width: 16.0,
-                            color: Palette.textBlack50,
-                          ),
-                        ),
-                        const SizedBox(width: 5.0),
-                        Container(
-                          child: Text(
-                            announcement.viewCount != null
-                                ? announcement.viewCount.toString()
-                                : '0',
-                            style:
-                                FontStyles.rubikP2(color: Palette.textBlack50),
-                          ),
-                        ),
-                        InkWell(
-                            onTap: () {
-                              Share.share(
-                                  'https://portal.irkutskoil.ru/announcements/${announcement.id}/');
-                            },
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 8),
-                              child: Icon(Icons.share,
-                                  size: 16, color: Palette.textBlack50),
-                            )),
-                      ],
-                    ),
+                            colorFilter: ColorFilter.mode(
+                                Palette.textBlack50, BlendMode.srcIn)),
+                      ),
+                      const SizedBox(width: 5.0),
+                      Text(
+                        announcement.viewCount != null
+                            ? announcement.viewCount.toString()
+                            : '0',
+                        style: FontStyles.rubikP2(color: Palette.textBlack50),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            Share.share(
+                                'https://portal.irkutskoil.ru/announcements/${announcement.id}/');
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 8),
+                            child: Icon(Icons.share,
+                                size: 16, color: Palette.textBlack50),
+                          )),
+                    ],
                   ),
                 ],
               ),

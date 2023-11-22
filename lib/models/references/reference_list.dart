@@ -189,10 +189,10 @@ class ReferencesList {
 
   List<String> getListTitles() {
     List<String> items = [];
-    ReferencesType.values.forEach((element) {
+    for (var element in ReferencesType.values) {
       String name = getReferencesItem(element)?.title ?? 'NaN';
       items.add(name);
-    });
+    }
 
     return items;
   }

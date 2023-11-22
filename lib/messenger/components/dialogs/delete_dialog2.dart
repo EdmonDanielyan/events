@@ -33,20 +33,18 @@ class DeleteDialog2 {
         final actions = [
           if (showCancel) ...[
             TextButton(
-              child: Text(cancel ?? "Отмена"),
-              onPressed: onCancelPressed ??
-                  () {
-                    Navigator.of(context).pop();
-                  },
-              style: TextButton.styleFrom(foregroundColor: Colors.black),
-            ),
+                onPressed: onCancelPressed ??
+                    () {
+                      Navigator.of(context).pop();
+                    },
+                style: TextButton.styleFrom(foregroundColor: Colors.black),
+                child: Text(cancel ?? "Отмена")),
           ],
           TextButton(
-            child: Text(ok ?? "Да"),
-            onPressed: onConfirmPressed != null
-                ? () => onConfirmPressed!(context)
-                : null,
-          )
+              onPressed: onConfirmPressed != null
+                  ? () => onConfirmPressed!(context)
+                  : null,
+              child: Text(ok ?? "Да"))
         ];
 
         return WillPopScope(
@@ -74,7 +72,7 @@ class DeleteDialog2 {
                       style: const TextStyle(fontSize: 16.0),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 15.0),
+                    const SizedBox(height: 15.0)
                   ],
                   if (bodyWidget != null) ...[
                     bodyWidget!,
@@ -85,14 +83,13 @@ class DeleteDialog2 {
                       style: const TextStyle(fontSize: 15.0),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0)
                   ],
                   Row(
-                    mainAxisAlignment: actions.length == 1
-                        ? MainAxisAlignment.center
-                        : MainAxisAlignment.spaceBetween,
-                    children: actions,
-                  ),
+                      mainAxisAlignment: actions.length == 1
+                          ? MainAxisAlignment.center
+                          : MainAxisAlignment.spaceBetween,
+                      children: actions),
                 ],
               ),
             ),

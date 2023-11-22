@@ -9,7 +9,7 @@ class ServiceListScreen extends StatefulWidget {
   const ServiceListScreen({Key? key}) : super(key: key);
 
   @override
-  _ServiceListScreenState createState() => _ServiceListScreenState();
+  State<ServiceListScreen> createState() => _ServiceListScreenState();
 }
 
 class _ServiceListScreenState extends State<ServiceListScreen>
@@ -20,14 +20,13 @@ class _ServiceListScreenState extends State<ServiceListScreen>
     final _strings = localizationInstance;
 
     return Scaffold(
-      appBar: InkAppBar(
-        context,
-        showPersonalPageLink: true,
-        title: _strings.services,
-      ),
-      body: Body(),
-      backgroundColor: Palette.white,
-    );
+        appBar: InkAppBar(
+          context,
+          showPersonalPageLink: true,
+          title: _strings.services,
+        ),
+        body: const Body(),
+        backgroundColor: Palette.white);
   }
 
   @override

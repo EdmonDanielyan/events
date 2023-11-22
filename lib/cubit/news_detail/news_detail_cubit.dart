@@ -15,7 +15,8 @@ import 'package:ink_mobile/extensions/get_news_by_id.dart';
 
 @injectable
 class NewsDetailCubit extends Cubit<NewsDetailState> {
-  NewsDetailCubit() : super(NewsDetailState(type: NewsDetailStateType.LOADING));
+  NewsDetailCubit()
+      : super(const NewsDetailState(type: NewsDetailStateType.LOADING));
 
   bool get isLiked => state.data!.isLiked!;
   int get countLikes => state.data!.likeCount!;
@@ -46,7 +47,7 @@ class NewsDetailCubit extends Cubit<NewsDetailState> {
       await Token.setNewTokensIfExpired();
       await getIt<NewsLikeNetworkRequest>(param1: newsId)();
     } on DioException catch (e) {
-       //TODO   DioErrorType.other
+      //TODO   DioErrorType.other
       if (e.type == DioExceptionType.unknown) throw NoConnectionException();
 
       throw UnknownErrorException();

@@ -54,7 +54,7 @@ class CustomDMSParamsBuilder {
   OrderDMS build() {
     OrderDMSBuilder builder = OrderDMSBuilder();
     final nameList = name.split(" ");
-    String lastName = nameList.length > 0 ? nameList[0] : "";
+    String lastName = nameList.isNotEmpty ? nameList[0] : "";
     String firstName = nameList.length > 1 ? nameList[1] : "";
     String secondName = nameList.length > 2 ? nameList[2] : "";
 

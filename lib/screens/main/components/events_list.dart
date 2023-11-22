@@ -35,7 +35,7 @@ class EventsList extends StatelessWidget {
                   ),
                 );
               } else {
-                return EventsListEmptyState();
+                return const EventsListEmptyState();
               }
             }
 
@@ -45,12 +45,13 @@ class EventsList extends StatelessWidget {
               return Container(
                 margin: const EdgeInsets.only(top: 30),
                 child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (ctx, index) => EventsListElementPlaceholder(),
-                  separatorBuilder: (ctx, index) => ListElementDivider(),
-                  itemCount: 4,
-                ),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (ctx, index) =>
+                        const EventsListElementPlaceholder(),
+                    separatorBuilder: (ctx, index) =>
+                        const ListElementDivider(),
+                    itemCount: 4),
               );
             }
 
@@ -69,16 +70,14 @@ class EventsList extends StatelessWidget {
     List<Widget> eventsWidgetList = [];
 
     if (events.isNotEmpty) {
-      events.forEach(
-        (element) {
-          eventsWidgetList.addAll(
-            [
-              EventsListElement(event: element),
-              const ListElementDivider(),
-            ],
-          );
-        },
-      );
+      for (var element in events) {
+        eventsWidgetList.addAll(
+          [
+            EventsListElement(event: element),
+            const ListElementDivider(),
+          ],
+        );
+      }
       eventsWidgetList.removeLast();
     }
 

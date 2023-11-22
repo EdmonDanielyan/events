@@ -95,7 +95,7 @@ class Body extends StatelessWidget {
       color: Palette.white,
       child: CustomScrollView(
         controller: _scrollController,
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           if (state.type == ProfileStateType.LOADED)
             PersonalPageHeader(user: user),
@@ -115,7 +115,7 @@ class Body extends StatelessWidget {
                         top: 24, left: 20, right: 20, bottom: 12),
                     sliver: SliverToBoxAdapter(
                         child: ThanksButton(userId: user.id)))
-                : SliverToBoxAdapter(child: const SizedBox.shrink()),
+                : const SliverToBoxAdapter(child: SizedBox.shrink()),
 
           Awards(awards: user.badges),
           Contacts(contacts: user.contacts),
@@ -125,9 +125,7 @@ class Body extends StatelessWidget {
               padding: const EdgeInsetsDirectional.symmetric(horizontal: 20),
               sliver: SliverToBoxAdapter(
                 child: BasicInfoRow(
-                  title: 'Статус',
-                  value: user.absence!.reason ?? "",
-                ),
+                    title: 'Статус', value: user.absence!.reason ?? ""),
               ),
             ),
           if (user.shiftMan != null)
@@ -148,7 +146,8 @@ class Body extends StatelessWidget {
             ),
 
           Diagnostics(logFile: logFile),
-          if (state.type == ProfileStateType.LOADED) ProfileSecuritySection(),
+          if (state.type == ProfileStateType.LOADED)
+            const ProfileSecuritySection(),
 
           /// todo AboutMyField
           // AboutMyField(user: user, scrollController: _scrollController,)

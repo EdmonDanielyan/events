@@ -1,8 +1,5 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
-
 import 'package:ink_mobile/models/data.dart';
 import 'package:openapi/openapi.dart';
-
 
 class NewsItemData extends Data {
   int? id;
@@ -34,6 +31,7 @@ class NewsItemData extends Data {
     this.videoLinks,
   });
 
+  @override
   void fillFromMap(Map map) {
     id = map['id'] is int ? map['id'] : int.tryParse(map['id'].toString());
 
@@ -120,26 +118,25 @@ class NewsItemData extends Data {
   }
 
   factory NewsItemData.fromProperty(NewsPropertyById property) {
-    return new NewsItemData(
-      id: property.id,
-      title: property.title,
-      viewCount: property.viewCount,
-      commentCount: property.commentCount,
-      likeCount: property.likeCount,
-      dateCreate: property.dateCreate,
-      detailText: property.detailText,
-      isLiked: property.liked,
-      detailPictureLinks: property.imageLinks?.asList() ,
-      videoLinks: property.videoLinks?.asList()
-    );
+    return NewsItemData(
+        id: property.id,
+        title: property.title,
+        viewCount: property.viewCount,
+        commentCount: property.commentCount,
+        likeCount: property.likeCount,
+        dateCreate: property.dateCreate,
+        detailText: property.detailText,
+        isLiked: property.liked,
+        detailPictureLinks: property.imageLinks?.asList(),
+        videoLinks: property.videoLinks?.asList());
   }
 
   static List<NewsItemData> getListFromResponse(List listData) {
     List<NewsItemData> list = [];
 
-    listData.forEach((element) {
+    for (var element in listData) {
       list.add(NewsItemData.fromMap(element));
-    });
+    }
 
     return list;
   }

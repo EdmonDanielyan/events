@@ -7,6 +7,6 @@ class PageNotFoundScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Body(), bottomNavigationBar: const NewBottomNavBar());
+    return const Scaffold(body: Body(), bottomNavigationBar: NewBottomNavBar());
   }
 }

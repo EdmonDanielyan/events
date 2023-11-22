@@ -30,10 +30,9 @@ class BirthdayTodayElement extends StatelessWidget {
     CreateChatHandler(
       [
         User(
-          id: birthday.id,
-          name: "${birthday.name ?? ""}".trim(),
-          avatarUrl: birthday.pathToAvatar ?? "",
-        )
+            id: birthday.id,
+            name: (birthday.name ?? "").trim(),
+            avatarUrl: birthday.pathToAvatar ?? "")
       ],
       context,
       chatsCubit: getIt<CachedChatsCubit>(),
@@ -54,25 +53,21 @@ class BirthdayTodayElement extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             AvatarWithBadge(
-              birthday: birthday.birthday,
-              avatarHeight:
-                  SizeConfig(context, 55).getProportionateScreenHeight,
-              avatarWidth: SizeConfig(context, 55).getProportionateScreenHeight,
-              url: birthday.pathToAvatar ?? "",
-            ),
-            const SizedBox(
-              width: 12.0,
-            ),
+                birthday: birthday.birthday,
+                avatarHeight:
+                    SizeConfig(context, 55).getProportionateScreenHeight,
+                avatarWidth:
+                    SizeConfig(context, 55).getProportionateScreenHeight,
+                url: birthday.pathToAvatar ?? ""),
+            const SizedBox(width: 12.0),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    birthday.name ?? '',
-                    style: FontStyles.rubikP2Medium(color: Palette.textBlack),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  Text(birthday.name ?? '',
+                      style: FontStyles.rubikP2Medium(color: Palette.textBlack),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis),
                   BirthdayBody(birthday: birthday),
                 ],
               ),

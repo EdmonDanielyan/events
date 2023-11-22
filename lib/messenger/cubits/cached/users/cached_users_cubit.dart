@@ -9,10 +9,7 @@ import '../chat_users_picker/chat_users_picker_cubit.dart';
 class CachedUsersCubit extends HydratedCubit<CachedUsersState> {
   CachedUsersCubit()
       : super(
-          CachedUsersState(
-            users: [],
-            lastCached: DateTime(2000, 9, 7),
-          ),
+          CachedUsersState(users: const [], lastCached: DateTime(2000, 9, 7)),
         );
 
   List<User> get users => state.users;
@@ -20,7 +17,7 @@ class CachedUsersCubit extends HydratedCubit<CachedUsersState> {
 
   void clean() {
     emit(CachedUsersState(
-      users: [],
+      users: const [],
       lastCached: DateTime(2000, 9, 7),
     ));
   }

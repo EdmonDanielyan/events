@@ -4,9 +4,7 @@ import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/components/cached_avatar/cached_avatar.dart';
 import 'package:ink_mobile/models/user_data.dart';
-import 'package:ink_mobile/screens/profile/components/thanks_button.dart';
 import 'package:ink_mobile/screens/profile/components/user_main_info.dart';
-import 'package:ink_mobile/screens/profile/components/votes_bar.dart';
 
 class OtherUserPageHeader extends StatelessWidget {
   final UserProfileData user;
@@ -15,13 +13,10 @@ class OtherUserPageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool showWriteBtn = true;
     Map? arg = ModalRoute.of(context)!.settings.arguments as Map?;
 
     if (arg != null && arg.isNotEmpty) {
-      if (arg.containsKey(HIDE_WRITE_BTN)) {
-        showWriteBtn = false;
-      }
+      if (arg.containsKey(HIDE_WRITE_BTN)) {}
     }
     return SliverLayoutBuilder(builder: (BuildContext context, constraints) {
       final scrolledValue = constraints.scrollOffset;

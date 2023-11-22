@@ -99,7 +99,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         /* Дни рождения сегодня*/
-                        state.birthdaysToday!.length > 0
+                        state.birthdaysToday!.isNotEmpty
                             ? BirthdaysListViewBuilder(
                                 title: RichText(
                                   text: TextSpan(
@@ -137,9 +137,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
                             _strings.inComingDays,
                             style: FontStyles.rubikH4(color: Palette.textBlack),
                           ),
-                          const SizedBox(
-                            height: 16.0,
-                          ),
+                          const SizedBox(height: 16.0),
                           if (state.firstDayBirthdays?.isNotEmpty == true)
                             soonBirthdaysList(
                               birthdays: state.firstDayBirthdays!,
@@ -164,7 +162,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
 
             case (BirthdaysStateType.LOADING):
               {
-                return InkPageLoader();
+                return const InkPageLoader();
               }
 
             case (BirthdaysStateType.ERROR):
@@ -195,10 +193,7 @@ class _BirthdaysScreenState extends State<BirthdaysScreen> {
         );
       },
       divider: needDivider
-          ? const Divider(
-              thickness: 1,
-              height: 48.0,
-            )
+          ? const Divider(thickness: 1, height: 48.0)
           : const SizedBox.shrink(),
     );
   }

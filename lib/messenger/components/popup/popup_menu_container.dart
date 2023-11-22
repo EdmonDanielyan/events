@@ -84,9 +84,7 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
             child: InkWell(
               onTap: () => Navigator.of(context).pop(),
               child: Stack(
-                children: [
-                  widget.child,
-                ],
+                children: [widget.child],
               ),
             ),
           ),
@@ -99,7 +97,7 @@ class PopupMenuContainerState<T> extends State<PopupMenuContainer<T>> {
     FocusManager.instance.primaryFocus?.unfocus();
 
     if (isKeyboardVisible) {
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 500));
     }
 
     final RenderBox overlay =

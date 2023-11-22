@@ -19,7 +19,7 @@ import 'core/cubit/scroll_bottom_load_more/scroll_bottom_load_more_state.dart'
     as _i89;
 import 'core/cubit/selectable/selectable_cubit.dart' as _i94;
 import 'core/cubit/selectfield/selectfield_cubit.dart' as _i95;
-import 'core/handlers/AuthHandler.dart' as _i112;
+import 'core/handlers/auth_handler.dart' as _i112;
 import 'core/logging/file_log_appender.dart' as _i113;
 import 'core/logging/files.dart' as _i116;
 import 'cubit/announcements_detail/announcements_detail_cubit.dart' as _i3;

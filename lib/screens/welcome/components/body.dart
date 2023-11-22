@@ -35,7 +35,7 @@ class _BodyState extends State<Body> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: size.height * 0.17),
-              Container(
+              SizedBox(
                 width: size.width * 0.60,
                 child: Column(
                   children: [
@@ -83,7 +83,7 @@ class _BodyState extends State<Body> {
                       ),
                       const SizedBox(height: 24.0),
                       if (isIOS) ...[
-                        DefaultLinkButton(
+                        const DefaultLinkButton(
                             link: UrlsConfig.signInInstructionUrl),
                         const SizedBox(height: 10.0),
                       ],

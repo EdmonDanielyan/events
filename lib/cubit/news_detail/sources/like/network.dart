@@ -6,6 +6,7 @@ import 'dependency.dart';
 
 @injectable
 class NewsLikeNetworkRequest extends NewsLikeRequestDependency {
+  @override
   int? newsId;
   NewsLikeNetworkRequest({@factoryParam required this.newsId})
       : assert(newsId != null);

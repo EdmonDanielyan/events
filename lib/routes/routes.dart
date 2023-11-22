@@ -19,7 +19,7 @@ import 'package:ink_mobile/screens/announcements_list/announcements_list_screen.
 import 'package:ink_mobile/screens/app_layer/app_layer_screen.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
 import 'package:ink_mobile/screens/birthdays/birthdays_screen.dart';
-import 'package:ink_mobile/screens/error/404_screen.dart';
+import 'package:ink_mobile/screens/error/screen_404.dart';
 import 'package:ink_mobile/screens/events_detail/events_detail_screen.dart';
 import 'package:ink_mobile/screens/events_list/events_list_screen.dart';
 import 'package:ink_mobile/screens/initial/initial_screen.dart';
@@ -109,7 +109,7 @@ class MainRoutes {
           mainAnnouncementsListCubit: getIt<MainAnnouncementsListCubit>(),
           announcementsListCubit: getIt<AnnouncementsListCubit>(),
         ),
-    '/404': (BuildContext context) => PageNotFoundScreen(),
+    '/404': (BuildContext context) => const PageNotFoundScreen(),
     '/event_detail': (BuildContext context) => EventDetailScreen(
           eventDetailCubit: getIt<EventDetailCubit>(),
         ),
@@ -122,31 +122,33 @@ class MainRoutes {
     '/announcements_list': (BuildContext context) => AnnouncementsListScreen(
           announcementsListCubit: getIt<AnnouncementsListCubit>(),
         ),
-    '/services': (BuildContext context) => ServiceListScreen(),
+    '/services': (BuildContext context) => const ServiceListScreen(),
     '/personnel_movements': (BuildContext context) => PersonnelMovementsScreen(
           personnelMovementsCubit: getIt<PersonnelMovementsCubit>(),
         ),
-    '/social_package': (BuildContext context) => SocialPackageScreen(),
-    "/social_package_details": (BuildContext context) => SocialPackageWidget(),
+    '/social_package': (BuildContext context) => const SocialPackageScreen(),
+    "/social_package_details": (BuildContext context) =>
+        const SocialPackageWidget(),
     '/voluntary_medical_insurance': (BuildContext context) =>
-        VoluntaryMedicalInsurance(),
-    '/accident_insurance': (BuildContext context) => AccidentInsurance(),
-    '/financial_aid': (BuildContext context) => FinancialAid(),
-    '/children_rest': (BuildContext context) => ChildrenRest(),
-    '/christmas_gifts': (BuildContext context) => ChristmasGifts(),
+        const VoluntaryMedicalInsurance(),
+    '/accident_insurance': (BuildContext context) => const AccidentInsurance(),
+    '/financial_aid': (BuildContext context) => const FinancialAid(),
+    '/children_rest': (BuildContext context) => const ChildrenRest(),
+    '/christmas_gifts': (BuildContext context) => const ChristmasGifts(),
     '/recreational_activities': (BuildContext context) =>
-        RecreationalActivities(),
-    '/birthdays': (BuildContext context) => BirthdaysScreen(),
+        const RecreationalActivities(),
+    '/birthdays': (BuildContext context) => const BirthdaysScreen(),
     '/open_university': (BuildContext context) => OpenUniversityScreen(
           eventsListCubit: getIt<EventsListCubit>(),
           learningMaterialsListCubit: getIt<LearningMaterialsListCubit>(),
           newsListCubit: getIt<NewsListCubit>(),
           openUniversityCubit: getIt<OpenUniversityCubit>(),
         ),
-    '/test': (BuildContext context) => TestScreen(),
-    '/set_pin': (BuildContext context) => SetPinCodeScreen(),
-    '/anniversary_bonus': (BuildContext context) => AnniversaryBonus(),
-    '/compensation_travel': (BuildContext context) => CompensationTravel(),
+    '/test': (BuildContext context) => const TestScreen(),
+    '/set_pin': (BuildContext context) => const SetPinCodeScreen(),
+    '/anniversary_bonus': (BuildContext context) => const AnniversaryBonus(),
+    '/compensation_travel': (BuildContext context) =>
+        const CompensationTravel(),
     '/users_picker': (BuildContext context) => UsersPickerScreen(
           onlineCubit: getIt<OnlineCubit>(),
           cachedChatsCubit: getIt<CachedChatsCubit>(),

@@ -106,7 +106,7 @@ class UserVotes {
   UserVotes({this.barrels = 0, this.reservoir = 0, this.tankers = 0});
 
   static UserVotes getUserVotesFromMap(Map userVotesMap) {
-    UserVotes userVotes = new UserVotes();
+    UserVotes userVotes = UserVotes();
 
     userVotes.barrels = userVotesMap['barrels'];
     userVotes.reservoir = userVotesMap['reservoir'];
@@ -139,7 +139,7 @@ class UserAwards {
       this.team = false});
 
   static UserAwards getUserAwardsFromMap(Map userAwardsMap) {
-    return new UserAwards(
+    return UserAwards(
         goldenTanker: userAwardsMap['gold_tanker'] ?? false,
         goldenTanker2019: userAwardsMap['gold_tanker_2019'] ?? false,
         team: userAwardsMap['team'] ?? false);
@@ -162,14 +162,14 @@ class UserBadges {
   static List<UserBadges> getUserBadgesFromMap(List userBadgesList) {
     List<UserBadges> userBadges = [];
 
-    userBadgesList.forEach((element) {
+    for (var element in userBadgesList) {
       userBadges.add(UserBadges(
         code: element['code'] ?? "",
         name: element['name'] ?? "",
         icon: element['icon'] ?? "",
         count: element['count'],
       ));
-    });
+    }
 
     return userBadges;
   }
@@ -185,7 +185,7 @@ class UserContacts {
       {this.workPhone, this.workMobilePhone, this.mobilePhone, this.email});
 
   static UserContacts getUserContactsFromMap(Map userContactsMap) {
-    return new UserContacts(
+    return UserContacts(
       workPhone: userContactsMap['work_phone'],
       workMobilePhone: userContactsMap['work_mobile_phone'],
       mobilePhone: userContactsMap['mobile_phone'],
@@ -209,7 +209,7 @@ class UserBasicInfo {
       this.birthday});
 
   static UserBasicInfo getUserBasicInfoFromMap(Map userBasicInfoMap) {
-    return new UserBasicInfo(
+    return UserBasicInfo(
         organization: userBasicInfoMap['organization'],
         department: userBasicInfoMap['department'],
         address: userBasicInfoMap['address'],

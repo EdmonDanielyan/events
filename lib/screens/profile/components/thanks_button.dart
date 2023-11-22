@@ -26,7 +26,7 @@ class ThanksButton extends StatelessWidget {
         IconLinks.BARREL_SVG_LINK,
         height: 20.0,
         width: 20.0,
-        color: Palette.greenE4A,
+        colorFilter: ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn),
       ),
     );
   }

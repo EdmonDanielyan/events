@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ink_mobile/components/textfields/service_selectfield_cubit.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
-import 'package:ink_mobile/components/textfields/service_disabled_textfield.dart';
 import 'package:ink_mobile/core/cubit/selectfield/selectfield_cubit.dart';
 import 'package:ink_mobile/core/lists/medical_services.dart';
 import 'package:ink_mobile/core/masks/input_formatters.dart';
@@ -37,17 +36,17 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
     return Column(
       children: [
         _selectService(context),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         _hospitalName(),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         _city(),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         _address(),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         //_organisation(),
         //SizedBox(height: 20),
         _price(),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         _dateStart(context),
       ],
     );
@@ -60,22 +59,22 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
       subWidget: subWidget,
       items: _servicesList,
       validator: (_) =>
-          entities.services.length < 1 ? _strings.fillTheField : null,
+          entities.services.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.services = val,
       descriptionText: "Тип услуги",
     );
   }
 
-  Widget _organisation() {
-    return ServiceDisabledTextField(
-      hint: "Организация",
-      keyboardType: TextInputType.streetAddress,
-      validator: (val) => FieldValidator(_strings).cityValidator(val),
-      onChanged: (val) => entities.organisation = val,
-      descriptionText: "Организация",
-      focusNode: FocusNode(),
-    );
-  }
+  // Widget _organisation() {
+  //   return ServiceDisabledTextField(
+  //     hint: "Организация",
+  //     keyboardType: TextInputType.streetAddress,
+  //     validator: (val) => FieldValidator(_strings).cityValidator(val),
+  //     onChanged: (val) => entities.organisation = val,
+  //     descriptionText: "Организация",
+  //     focusNode: FocusNode(),
+  //   );
+  // }
 
   Widget subWidget(Selectfield item, bool checked) {
     if (checked && item.subWidget) {
@@ -85,8 +84,9 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
           initialValue: item.description,
           hint: _strings.clarification,
           onChanged: (val) {
-            for (var item2 in _servicesList)
+            for (var item2 in _servicesList) {
               if (item2.title == item.title) item.description = val;
+            }
           },
           maxLines: 2,
           focusNode: FocusNode(),
@@ -100,7 +100,7 @@ class MedicalInsuranceRegAppFields extends StatelessWidget {
   Widget _hospitalName() {
     return ServiceTextField(
       hint: _strings.hospitalName,
-      validator: (val) => val!.length < 1 ? _strings.fillTheField : null,
+      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       inputFormatters: [InputFormatters().lettersNumbersOnly],
       onChanged: (val) => entities.hospitalName = val,
       descriptionText: "Название клиники",

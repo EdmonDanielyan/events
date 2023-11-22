@@ -17,7 +17,7 @@ class Body extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _BodyState createState() => _BodyState();
+  State<Body> createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
@@ -34,18 +34,18 @@ class _BodyState extends State<Body> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 32.0, bottom: 24.0),
+                const Padding(
+                  padding: EdgeInsets.only(top: 32.0, bottom: 24.0),
                   child: Align(
-                    child: AuthTitle(),
                     alignment: Alignment.topLeft,
+                    child: AuthTitle(),
                   ),
                 ),
                 AuthForm(
                   authCubit: widget.authCubit,
                   hasError: state.errorMessage?.isNotEmpty == true,
                 ),
-                AuthHint(),
+                const AuthHint(),
                 const Spacer(),
                 AuthButtons(
                   formKey: formKey,

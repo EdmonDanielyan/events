@@ -16,7 +16,7 @@ class MedicalServicesList {
 
   static Selectfield? getElementFromListById(
       List<Selectfield> items, String id) {
-    if (items.length > 0) {
+    if (items.isNotEmpty) {
       for (var item in items) {
         if (item.id == id) {
           return item;

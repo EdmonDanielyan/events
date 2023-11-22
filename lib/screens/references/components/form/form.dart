@@ -48,7 +48,7 @@ class ReferencesForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ReferencesFormState createState() => _ReferencesFormState();
+  State<ReferencesForm> createState() => _ReferencesFormState();
 }
 
 class _ReferencesFormState extends State<ReferencesForm> {
@@ -176,7 +176,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
                 const SizedBox(height: 20),
                 periodToWidget(),
               ],
-              if (currentReferenceItem.description.length > 0) ...[
+              if (currentReferenceItem.description.isNotEmpty) ...[
                 const SizedBox(height: 20),
                 descriptionWidget(),
               ],
@@ -232,7 +232,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
     return PickFiles(
       key: _pickFilesKey,
       title: _strings.childBirthCertificate,
-      titleStyle: TextStyle(fontSize: 16.0),
+      titleStyle: const TextStyle(fontSize: 16.0),
       onSuccesfullyPicked: (List<File> files) => entities.files = files,
     );
   }
@@ -330,7 +330,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
     return NumberSelectFormField(
       min: 1,
       controller: quantityTextController,
-      buttonsColor: ButtonsColor(
+      buttonsColor: const ButtonsColor(
         left: Color(0xFF4E6D49),
         right: Color(0xFF4E6D49),
       ),
@@ -341,7 +341,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
       validator: (value) {
         return null;
       },
-      style: TextStyle(fontSize: 30, height: 1),
+      style: const TextStyle(fontSize: 30, height: 1),
       textAlignVertical: TextAlignVertical.center,
       flex: NumberSelectFieldFlex(
         buttons: 4,
@@ -364,7 +364,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
   Widget periodWidget() {
     return ServiceTextField(
       hint: _strings.period,
-      validator: (val) => val!.length < 1 ? _strings.fillTheField : null,
+      validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
       onChanged: (val) => entities.period = val,
       inputFormatters: [InputFormatters().lettersNumbersOnly],
       focusNode: FocusNode(),
@@ -408,13 +408,13 @@ class _ReferencesFormState extends State<ReferencesForm> {
           SuccessCustomSnackbar(
             context: context,
             txt: state.message,
-            duration: Duration(seconds: 3),
+            duration: const Duration(seconds: 3),
           );
         }
       },
       builder: (BuildContext context, state) {
         if (state.state == BtnCubitStateEnums.SENDING) {
-          return CustomCircularProgressIndicator();
+          return const CustomCircularProgressIndicator();
         } else {
           return ServiceBtn(
             onPressed: () async {

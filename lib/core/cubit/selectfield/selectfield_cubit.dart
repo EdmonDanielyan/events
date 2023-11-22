@@ -6,7 +6,7 @@ import 'package:ink_mobile/models/selectfield.dart';
 
 @injectable
 class SelectfieldCubit extends Cubit<SelectfieldCubitState> {
-  SelectfieldCubit() : super(SelectfieldCubitState());
+  SelectfieldCubit() : super(const SelectfieldCubitState());
 
   void setItems(List<Selectfield> items) {
     emit(state.copyWith(items: items));
@@ -17,9 +17,7 @@ class SelectfieldCubit extends Cubit<SelectfieldCubitState> {
   }
 
   void clear() {
-    emit(state.copyWith(
-      items: [],
-      validateMode: AutovalidateMode.onUserInteraction,
-    ));
+    emit(state
+        .copyWith(items: [], validateMode: AutovalidateMode.onUserInteraction));
   }
 }

@@ -42,17 +42,18 @@ class ManagementFeedbackAnswersList extends StatelessWidget {
       builder: (BuildContext context, state) {
         if (state.state == FeedbackAnswerListCubitStateEnums.LOADING) {
           _answersCubit.fetch();
-          return CustomCircularProgressIndicator();
+          return const CustomCircularProgressIndicator();
         } else if (state.state == FeedbackAnswerListCubitStateEnums.SUCCESS) {
           return SingleChildScrollView(
-            controller:
-            FeedBackScreen.of(context).scrollBottomLoadMoreCubit.scrollController,
-            child: Container(
+            controller: FeedBackScreen.of(context)
+                .scrollBottomLoadMoreCubit
+                .scrollController,
+            child: SizedBox(
               width: size.width,
               child: _listWidget(
                 state.data,
                 _answersCubit,
-                    () => loadMore(_answersCubit),
+                () => loadMore(_answersCubit),
               ),
             ),
           );

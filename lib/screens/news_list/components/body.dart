@@ -12,12 +12,11 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/news_data.dart';
 import 'package:ink_mobile/screens/news_list/components/news_list_element.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ink_mobile/setup.dart';
 
 class Body extends StatefulWidget {
   final NewsListCubit cubit;
 
-  Body({Key? key, required this.cubit}) : super(key: key);
+  const Body({Key? key, required this.cubit}) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
@@ -87,15 +86,15 @@ class _BodyState extends State<Body> {
   List<Widget> _getNewsWidgetList(List<NewsItemData> newsList) {
     List<Widget> _newsWidgetList = [];
 
-    newsList.forEach((value) {
+    for (var value in newsList) {
       _newsWidgetList.add(NewsListElement(newsItem: value));
-    });
+    }
 
     return _newsWidgetList;
   }
 
   Widget _getLoadingStateWidget() {
-    return InkPageLoader();
+    return const InkPageLoader();
   }
 
   Widget _getLoadedStateWidget(List<NewsItemData> newsList, String title) {
@@ -112,7 +111,7 @@ class _BodyState extends State<Body> {
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  titles['$title'] ?? _strings.news,
+                  titles[title] ?? _strings.news,
                   style: FontStyles.rubikH2(color: Palette.textBlack),
                 ),
               ),

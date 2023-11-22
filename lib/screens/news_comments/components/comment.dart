@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bbcode/flutter_bbcode.dart';
 import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/ink_icons.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
 import 'package:ink_mobile/models/jwt_payload.dart';
-import 'package:ink_mobile/screens/news_comments/components/custom_color_tag.dart';
 import 'package:intl/intl.dart';
 import 'package:ink_mobile/extensions/int_extension.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -114,77 +112,73 @@ class _CommentState extends State<Comment> {
                             ..replaceTag(
                                 CustomColorTag(defaultColor: _textColor))),*/
 
-                      Container(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                child: GestureDetector(
-                                  onTap: JwtPayload.myId != widget.authorId
-                                      ? () async {
-                                          await _onLike(context);
-                                          setState(() {});
-                                        }
-                                      : null,
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        InkIcons.barrel,
-                                        color: barrelChecked
-                                            ? Theme.of(context).primaryColor
-                                            : _textColor,
-                                        size: (SizeConfig(context, 16)
-                                            .getProportionateScreenWidth),
-                                      ),
-                                      Text(
-                                        barrelsCount > 1000
-                                            ? barrelsCount.toThousandsString()
-                                            : barrelsCount.toString(),
-                                        style: TextStyle(
-                                          color: barrelChecked
-                                              ? Theme.of(context).primaryColor
-                                              : _textColor,
-                                          fontSize: (SizeConfig(context, 15)
-                                              .getProportionateScreenHeight),
-                                        ),
-                                      )
-                                    ],
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: GestureDetector(
+                              onTap: JwtPayload.myId != widget.authorId
+                                  ? () async {
+                                      await _onLike(context);
+                                      setState(() {});
+                                    }
+                                  : null,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    InkIcons.barrel,
+                                    color: barrelChecked
+                                        ? Theme.of(context).primaryColor
+                                        : _textColor,
+                                    size: (SizeConfig(context, 16)
+                                        .getProportionateScreenWidth),
                                   ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 4,
-                              child: Container(
-                                alignment: Alignment.topLeft,
-                                child: TextButton(
-                                  onPressed: () {
-                                    _onAnswerButtonTap();
-                                  },
-                                  child: Text(
-                                    _strings.reply,
+                                  Text(
+                                    barrelsCount > 1000
+                                        ? barrelsCount.toThousandsString()
+                                        : barrelsCount.toString(),
                                     style: TextStyle(
-                                        color: _textColor,
-                                        fontSize: (SizeConfig(context, 14)
-                                            .getProportionateScreenHeight),
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
+                                      color: barrelChecked
+                                          ? Theme.of(context).primaryColor
+                                          : _textColor,
+                                      fontSize: (SizeConfig(context, 15)
+                                          .getProportionateScreenHeight),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                            Expanded(
-                                flex: 6,
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: Container(
+                              alignment: Alignment.topLeft,
+                              child: TextButton(
+                                onPressed: () {
+                                  _onAnswerButtonTap();
+                                },
                                 child: Text(
-                                  DateFormat('dd.MM.yyyy HH:mm')
-                                      .format(widget.dateTime),
+                                  _strings.reply,
                                   style: TextStyle(
                                       color: _textColor,
-                                      fontSize: (SizeConfig(context, 12)
-                                          .getProportionateScreenHeight)),
-                                ))
-                          ],
-                        ),
+                                      fontSize: (SizeConfig(context, 14)
+                                          .getProportionateScreenHeight),
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                              flex: 6,
+                              child: Text(
+                                DateFormat('dd.MM.yyyy HH:mm')
+                                    .format(widget.dateTime),
+                                style: TextStyle(
+                                    color: _textColor,
+                                    fontSize: (SizeConfig(context, 12)
+                                        .getProportionateScreenHeight)),
+                              ))
+                        ],
                       ),
                     ],
                   ))
@@ -194,10 +188,11 @@ class _CommentState extends State<Comment> {
             Row(
               children: [
                 TextButton(
-                    onPressed: _onEditButtonTap, child: Text("Редактировать")),
+                    onPressed: _onEditButtonTap,
+                    child: const Text("Редактировать")),
                 TextButton(
                     onPressed: () => _onDeleteButtonTap(widget.newsId),
-                    child: Text("Удалить")),
+                    child: const Text("Удалить")),
               ],
             ),
         ],
@@ -238,7 +233,7 @@ class _CommentState extends State<Comment> {
     await widget.newsCommentsCubit.like(widget.id).onError((error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(_strings.errorOccurred),
-        duration: Duration(seconds: 1),
+        duration: const Duration(seconds: 1),
       ));
       return false;
     }).then((value) {

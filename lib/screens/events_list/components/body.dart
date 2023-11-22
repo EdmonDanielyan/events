@@ -11,7 +11,6 @@ import 'package:ink_mobile/models/event_data.dart';
 import 'package:ink_mobile/screens/events_list/components/events_list_element.dart';
 import 'package:ink_mobile/screens/events_list/components/events_list_empty_state.dart';
 
-
 class Body extends StatelessWidget {
   final EventsListCubit cubit;
 
@@ -33,7 +32,7 @@ class Body extends StatelessWidget {
         builder: (context, state) {
           if (state.type == EventsListStateType.LOADING) {
             cubit.fetch();
-            return InkPageLoader();
+            return const InkPageLoader();
           } else if (state.type == EventsListStateType.LOADED) {
             return _getLoadedStateWidget(context, state);
           } else {
@@ -58,28 +57,24 @@ class Body extends StatelessWidget {
             children: [
               Container(
                 color: Colors.white,
-                padding:
-                    EdgeInsets.symmetric(vertical: 32.0),
+                padding: const EdgeInsets.symmetric(vertical: 32.0),
                 child: Text(
                   localizationInstance.events,
                   style: FontStyles.rubikH2(color: Palette.textBlack),
                 ),
               ),
-              Container(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  controller: ScrollController(keepScrollOffset: false),
-                  itemCount: items.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      items[index],
-                ),
+              ListView.builder(
+                shrinkWrap: true,
+                controller: ScrollController(keepScrollOffset: false),
+                itemCount: items.length,
+                itemBuilder: (BuildContext context, int index) => items[index],
               )
             ],
           ),
         ),
       );
     } else {
-      return EventsListEmptyState();
+      return const EventsListEmptyState();
     }
   }
 
@@ -90,9 +85,9 @@ class Body extends StatelessWidget {
   List<EventsListElement> _getEventsWidgetList(List<EventData> eventsList) {
     List<EventsListElement> _eventsWidgetList = [];
 
-    eventsList.forEach((value) {
+    for (var value in eventsList) {
       _eventsWidgetList.add(EventsListElement(event: value));
-    });
+    }
 
     return _eventsWidgetList;
   }

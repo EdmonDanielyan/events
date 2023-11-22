@@ -21,7 +21,8 @@ class EventsListCubit extends Cubit<EventsListState> {
   Pagination<EventData> pagination = Pagination<EventData>(countOnPage: 5);
   ScrollBottomToLoad scrollBottomToLoad = ScrollBottomToLoad();
 
-  EventsListCubit() : super(EventsListState(type: EventsListStateType.LOADING));
+  EventsListCubit()
+      : super(const EventsListState(type: EventsListStateType.LOADING));
 
   Future<void> fetch() async {
     try {

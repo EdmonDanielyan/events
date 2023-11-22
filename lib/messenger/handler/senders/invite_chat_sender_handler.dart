@@ -52,11 +52,8 @@ class InviteChatSenderHandler {
 
   void _sendMessage() {
     List<String> participantsNames = users.map((e) => e.name).toList();
-    final messageBody = participantsNames.join(", ") +
-        " " +
-        (participantsNames.length == 1
-            ? "добавлен(а) в чат"
-            : "добавлены в чат");
+    final messageBody =
+        "${participantsNames.join(", ")} ${participantsNames.length == 1 ? "добавлен(а) в чат" : "добавлены в чат"}";
     final msg = CreateInfoMessage(chat.id, messageBody).call();
     SendMessageHandler([msg], chat).call();
   }

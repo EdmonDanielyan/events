@@ -265,10 +265,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             bloc: widget.cachedChatsCubit,
             builder: (context, state) {
               if (state.type == CachedChatsStateType.LOADING) {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: const InkPageLoader(),
-                );
+                return const Padding(
+                    padding: EdgeInsets.only(top: 8.0), child: InkPageLoader());
               }
               return const SizedBox.shrink();
             },
@@ -365,7 +363,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                                     cachedUsersCubit: widget.cachedUsersCubit,
                                     onGoTo: (context) {
                                       Future.delayed(
-                                          Duration(milliseconds: 200), () {
+                                          const Duration(milliseconds: 200),
+                                          () {
                                         Map<String, dynamic> args = {
                                           'id': _currentMessage.owner.id
                                         };
@@ -404,7 +403,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               if (chat == null) {
                 return const SizedBox.shrink();
               }
-              if (chat.type.name != 'notifications')
+              if (chat.type.name != 'notifications') {
                 return MessageBottomCard(
                   cachedChatsCubit: widget.cachedChatsCubit,
                   searchMessagesCubit: searchMessagesCubit,
@@ -420,6 +419,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                   scrollToCurrentSearchItem: _scrollToCurrentSearchItem,
                   onSearch: _onSearch,
                 );
+              }
               return const SizedBox(height: 30);
             },
           ),

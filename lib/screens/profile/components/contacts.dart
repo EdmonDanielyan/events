@@ -19,7 +19,7 @@ class Contacts extends StatelessWidget {
     if (contacts != null) {
       return getContactsWidget(context);
     }
-    return SliverToBoxAdapter(child: const SizedBox.shrink());
+    return const SliverToBoxAdapter(child: SizedBox.shrink());
   }
 
   getContactsWidget(BuildContext context) {
@@ -80,7 +80,7 @@ class Contacts extends StatelessWidget {
           IconLinks.PHONE_ICON,
           width: 20.0,
           height: 20.0,
-          color: Palette.white,
+          colorFilter: ColorFilter.mode(Palette.white, BlendMode.srcIn),
         ),
         'type': 'none'
       },
@@ -91,7 +91,7 @@ class Contacts extends StatelessWidget {
           IconLinks.SMARTPHONE_ICON,
           width: 20.0,
           height: 20.0,
-          color: Palette.white,
+          colorFilter: ColorFilter.mode(Palette.white, BlendMode.srcIn),
         ),
         'type': 'call'
       },
@@ -102,7 +102,7 @@ class Contacts extends StatelessWidget {
           IconLinks.SMARTPHONE_ICON,
           width: 20.0,
           height: 20.0,
-          color: Palette.white,
+          colorFilter: ColorFilter.mode(Palette.white, BlendMode.srcIn),
         ),
         'type': 'call'
       },
@@ -113,7 +113,7 @@ class Contacts extends StatelessWidget {
           IconLinks.MAIL_ICON,
           width: 20.0,
           height: 20.0,
-          color: Palette.white,
+          colorFilter: ColorFilter.mode(Palette.white, BlendMode.srcIn),
         ),
         'type': 'email'
       },

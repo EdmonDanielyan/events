@@ -29,11 +29,7 @@ class Body extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(
-              right: 20.0,
-              left: 20.0,
-              top: 24.0,
-              bottom: 16.0,
-            ),
+                right: 20.0, left: 20.0, top: 24.0, bottom: 16.0),
             child: SearchField(
               hint: _strings.searchHint,
               onChanged: (query) {
@@ -52,7 +48,7 @@ class Body extends StatelessWidget {
               switch (state.type) {
                 case SearchStateType.LOADING:
                   {
-                    return InkPageLoader();
+                    return const InkPageLoader();
                   }
 
                 case SearchStateType.LOADED:
@@ -71,10 +67,8 @@ class Body extends StatelessWidget {
 
                 case SearchStateType.EMPTY:
                   {
-                    return Text(
-                      _strings.nothingFound,
-                      style: FontStyles.rubikP2(color: Palette.textBlack50),
-                    );
+                    return Text(_strings.nothingFound,
+                        style: FontStyles.rubikP2(color: Palette.textBlack50));
                   }
 
                 case SearchStateType.STARTING:
@@ -117,28 +111,28 @@ class Body extends StatelessWidget {
 
     List<SearchContainer> searchResult = [];
 
-    if (users.length > 0) {
+    if (users.isNotEmpty) {
       searchResult.add(SearchContainer(
         label: _strings.employees,
         items: users,
       ));
     }
 
-    if (announcements.length > 0) {
+    if (announcements.isNotEmpty) {
       searchResult.add(SearchContainer(
         label: _strings.announcements,
         items: announcements,
       ));
     }
 
-    if (events.length > 0) {
+    if (events.isNotEmpty) {
       searchResult.add(SearchContainer(
         label: _strings.events,
         items: events,
       ));
     }
 
-    if (news.length > 0) {
+    if (news.isNotEmpty) {
       searchResult.add(SearchContainer(
         label: _strings.news,
         items: news,
@@ -152,12 +146,12 @@ class Body extends StatelessWidget {
     List<SearchItemUser> users = [];
 
     if (usersFromState != null) {
-      usersFromState.forEach((user) {
+      for (var user in usersFromState) {
         users.add(SearchItemUser(
           user: user,
           query: SearchQuery.query,
         ));
-      });
+      }
     }
 
     return users;
@@ -184,19 +178,17 @@ class Body extends StatelessWidget {
     List<SearchItemText> items = [];
 
     if (itemsFromState != null) {
-      itemsFromState.forEach(
-        (item) {
-          items.add(
-            SearchItemText(
-              id: item.id,
-              title: item.title,
-              query: SearchQuery.query,
-              route: route,
-              isLastItem: itemsFromState.last == item,
-            ),
-          );
-        },
-      );
+      for (var item in itemsFromState) {
+        items.add(
+          SearchItemText(
+            id: item.id,
+            title: item.title,
+            query: SearchQuery.query,
+            route: route,
+            isLastItem: itemsFromState.last == item,
+          ),
+        );
+      }
     }
 
     return items;

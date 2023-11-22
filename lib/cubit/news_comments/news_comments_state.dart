@@ -16,6 +16,6 @@ class NewsCommentState {
   final NewsCommentStateType type;
   final String? errorMessage;
 
-  NewsCommentState({required this.type, this.data, this.errorMessage})
+  const NewsCommentState({required this.type, this.data, this.errorMessage})
       : assert(type != NewsCommentStateType.ERROR || errorMessage != null);
 }

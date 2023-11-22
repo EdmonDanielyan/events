@@ -29,8 +29,8 @@ class JwtPayload {
       required this.userId,
       required this.avatar,
       required this.name}) {
-    myId = this.userId;
-    myAvatar = this.avatar;
+    myId = userId;
+    myAvatar = avatar;
     myName = "$lastName $name".trim();
   }
   factory JwtPayload.fromJson(Map<String, dynamic> json) =>

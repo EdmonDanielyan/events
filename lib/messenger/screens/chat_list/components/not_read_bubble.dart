@@ -9,21 +9,18 @@ class NotReadBubbble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
-        minWidth: 20.0
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.0),
-      decoration: BoxDecoration(
-        color: Palette.blue9CF,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      height: 20.0,
-      child: Center(
-        child: Text(
-          "$count",
-          style: FontStyles.rubikP3Medium(color: Palette.white),
+        constraints: const BoxConstraints(minWidth: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.0),
+        decoration: BoxDecoration(
+          color: Palette.blue9CF,
+          borderRadius: BorderRadius.circular(10.0),
         ),
-      )
-    );
+        height: 20.0,
+        child: Center(
+          child: Text(
+            "$count",
+            style: FontStyles.rubikP3Medium(color: Palette.white),
+          ),
+        ));
   }
 }

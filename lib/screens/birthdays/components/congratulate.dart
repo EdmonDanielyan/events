@@ -29,10 +29,8 @@ class BirthdayCongratulate extends StatelessWidget {
           shape: BoxShape.circle,
           border: Border.all(color: Palette.greenE4A),
         ),
-        child: SvgPicture.asset(
-          IconLinks.GIFT_ICON,
-          color: Palette.greenE4A,
-        ),
+        child: SvgPicture.asset(IconLinks.GIFT_ICON,
+            colorFilter: ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
       ),
     );
   }

@@ -14,7 +14,7 @@ class CustomDismissible extends StatelessWidget {
       child: Dismissible(
         background: const SizedBox.shrink(),
         direction: DismissDirection.endToStart,
-        secondaryBackground: Icon(Icons.delete, color: Colors.red),
+        secondaryBackground: const Icon(Icons.delete, color: Colors.red),
         confirmDismiss: confirmDismiss,
         resizeDuration: null,
         onDismissed: onDismissed,

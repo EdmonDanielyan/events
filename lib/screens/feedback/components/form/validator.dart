@@ -5,7 +5,7 @@ class ManagementFeedbackFormValidator {
   ManagementFeedbackFormValidator();
 
   String? toWhomValidator(List<Selectfield>? items) {
-    if (items == null || items.length < 1) {
+    if (items == null || items.isEmpty) {
       return localizationInstance.chooseAddressee;
     }
     return null;

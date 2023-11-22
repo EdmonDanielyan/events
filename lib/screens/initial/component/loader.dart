@@ -6,8 +6,8 @@ class InitScreenLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(child: const InkPageLoader()),
+    return const Scaffold(
+      body: InkPageLoader(),
     );
   }
 }

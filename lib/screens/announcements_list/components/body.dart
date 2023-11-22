@@ -77,7 +77,7 @@ class _BodyState extends State<Body> {
             case AnnouncementsListStateType.LOADING:
               {
                 widget.cubit.fetch();
-                return InkPageLoader();
+                return const InkPageLoader();
               }
 
             case AnnouncementsListStateType.ERROR:
@@ -101,10 +101,10 @@ class _BodyState extends State<Body> {
       List<AnnouncementData> announcementsList) {
     List<AnnouncementsListElement> _announcementsWidgetList = [];
 
-    announcementsList.forEach((value) {
+    for (var value in announcementsList) {
       _announcementsWidgetList
           .add(AnnouncementsListElement(announcement: value));
-    });
+    }
 
     return _announcementsWidgetList;
   }

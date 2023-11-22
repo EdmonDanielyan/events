@@ -8,7 +8,9 @@ abstract class CustomSnackbar {
 }
 
 class SimpleCustomSnackbar extends CustomSnackbar {
+  @override
   BuildContext context;
+  @override
   String txt;
   final Duration duration;
 
@@ -32,7 +34,9 @@ class SimpleCustomSnackbar extends CustomSnackbar {
 }
 
 class SuccessCustomSnackbar extends CustomSnackbar {
+  @override
   BuildContext context;
+  @override
   String txt;
   final Duration duration;
 
@@ -46,15 +50,12 @@ class SuccessCustomSnackbar extends CustomSnackbar {
         duration: duration,
         content: Row(
           children: [
-            Icon(
-              Icons.check,
-              color: Colors.lightGreen,
-            ),
-            SizedBox(width: 15),
+            const Icon(Icons.check, color: Colors.lightGreen),
+            const SizedBox(width: 15),
             Expanded(
               child: Text(
                 txt,
-                style: TextStyle(color: Colors.lightGreen),
+                style: const TextStyle(color: Colors.lightGreen),
               ),
             ),
           ],

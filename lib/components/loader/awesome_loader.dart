@@ -6,7 +6,7 @@ class AwesomeLoader extends StatefulWidget {
   const AwesomeLoader({Key? key, required this.color}) : super(key: key);
 
   @override
-  _AwesomeLoaderState createState() => _AwesomeLoaderState();
+  State<AwesomeLoader> createState() => _AwesomeLoaderState();
 }
 
 class _AwesomeLoaderState extends State<AwesomeLoader>
@@ -23,21 +23,21 @@ class _AwesomeLoaderState extends State<AwesomeLoader>
     super.initState();
 
     _controller = AnimationController(
-        vsync: this, duration: Duration(seconds: 1, milliseconds: 500));
+        vsync: this, duration: const Duration(seconds: 1, milliseconds: 500));
 
     _lengthAnimation = Tween<double>(begin: 0.0, end: 10.0).animate(
         CurvedAnimation(
             parent: _controller,
-            curve: Interval(0.0, 0.75, curve: Curves.easeOut)));
+            curve: const Interval(0.0, 0.75, curve: Curves.easeOut)));
     _lengthAnimation1 = Tween<double>(begin: 10.0, end: 0.0).animate(
         CurvedAnimation(
             parent: _controller,
-            curve: Interval(0.75, 1.0, curve: Curves.easeOut)));
+            curve: const Interval(0.75, 1.0, curve: Curves.easeOut)));
 
     _offsetAnimation = Tween<double>(begin: 30.0, end: 50.0).animate(
         CurvedAnimation(
             parent: _controller,
-            curve: Interval(0.25, 1.0, curve: Curves.easeIn)));
+            curve: const Interval(0.25, 1.0, curve: Curves.easeIn)));
 
     _controller.addListener(() {
       setState(() {
@@ -63,7 +63,7 @@ class _AwesomeLoaderState extends State<AwesomeLoader>
   Widget build(BuildContext context) {
     return Center(
       child: Stack(
-        alignment: Alignment(0.0, 0.0),
+        alignment: const Alignment(0.0, 0.0),
         children: <Widget>[
           Positioned(
             top: offset1,
@@ -118,11 +118,11 @@ class Line extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: this.width,
-        height: this.height,
+        width: width,
+        height: height,
         decoration: BoxDecoration(
-          color: this.color,
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          color: color,
+          borderRadius: const BorderRadius.all(Radius.circular(5.0)),
         ));
   }
 }

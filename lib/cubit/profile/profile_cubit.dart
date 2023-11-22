@@ -42,10 +42,11 @@ class ProfileCubit extends Cubit<ProfileState> {
 
       JwtPayload? authUser = await Token.getJwtPayloadObject();
 
-      if (userId == null || authUser != null && authUser.userId == userId)
+      if (userId == null || authUser != null && authUser.userId == userId) {
         emitSuccessUser(userData);
-      else
+      } else {
         emitSuccessOtherUser(userData);
+      }
     } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
@@ -112,7 +113,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     getIt<MessengerProvider>().dispose();
     getIt<CachedChatsCubit>().clean();
     Token.deleteTokens();
-    FlutterSecureStorage().deleteAll();
+    const FlutterSecureStorage().deleteAll();
     // OneSignal.shared.removeExternalUserId();
     //migration
     OneSignal.logout();

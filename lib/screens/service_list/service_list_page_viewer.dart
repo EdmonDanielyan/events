@@ -56,17 +56,17 @@ class ServiceListPageViewerState extends State<ServiceListPageViewer> {
     return Scaffold(
       body: PageView(
         controller: pageViewer.pageController,
-        children: [
-          ServiceListScreen(),
-          feedBackScreen(context),
-          referencesScreen(context),
-          medicalInsuranceScreen(context),
-        ],
         onPageChanged: (page) {
           TextFieldUtils.loseTextFieldFocus();
           pageViewer.onPageChanged(page);
         },
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          const ServiceListScreen(),
+          feedBackScreen(context),
+          referencesScreen(context),
+          medicalInsuranceScreen(context),
+        ],
       ),
     );
   }

@@ -31,7 +31,6 @@ class ContactsRow extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            child: icon,
             height: 36.0,
             width: 36.0,
             padding: const EdgeInsets.all(8.0),
@@ -39,6 +38,7 @@ class ContactsRow extends StatelessWidget {
               borderRadius: BorderRadius.circular(32.0),
               color: Palette.greenE4A,
             ),
+            child: icon,
           ),
           const SizedBox(width: 12.0),
           Column(
@@ -53,16 +53,14 @@ class ContactsRow extends StatelessWidget {
               InkWell(
                 onTap: () {
                   if (type == 'call') {
-                    launchUrl('tel:' + value);
+                    launchUrl('tel:$value');
                   } else if (type == 'email') {
-                    launchUrl('mailto:' + value);
+                    launchUrl('mailto:$value');
                   }
                 },
                 child: Text(
                   value,
-                  style: FontStyles.rubikP1(
-                    color: Palette.textBlack,
-                  ),
+                  style: FontStyles.rubikP1(color: Palette.textBlack),
                 ),
               ),
             ],

@@ -30,7 +30,7 @@ class NewsListSlider extends StatelessWidget {
               controller: _controllerOne,
               clipBehavior: Clip.none,
               scrollDirection: Axis.horizontal,
-              physics: AlwaysScrollableScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               child: Row(
                 children: getNewsList(),
               ),
@@ -44,7 +44,7 @@ class NewsListSlider extends StatelessWidget {
 
   Widget getSlider(Size size) {
     if (newsList.length < 2) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     return Container(
@@ -59,12 +59,12 @@ class NewsListSlider extends StatelessWidget {
   List<Widget> getNewsList() {
     List<Widget> newsWidgetList = [];
 
-    if (newsList.length > 0) {
+    if (newsList.isNotEmpty) {
       for (int i = 0; i < newsList.length - 1; i++) {
         NewsItemData curNewsItem = newsList[i];
         newsWidgetList.add(
           Container(
-            margin: EdgeInsets.only(right: marginBetweenElements),
+            margin: const EdgeInsets.only(right: marginBetweenElements),
             child: NewsListSliderElement(newsItem: curNewsItem),
           ),
         );
@@ -72,8 +72,7 @@ class NewsListSlider extends StatelessWidget {
 
       NewsItemData curNewsItem = newsList.last;
 
-      newsWidgetList
-          .add(Container(child: NewsListSliderElement(newsItem: curNewsItem)));
+      newsWidgetList.add(NewsListSliderElement(newsItem: curNewsItem));
     }
 
     return newsWidgetList;

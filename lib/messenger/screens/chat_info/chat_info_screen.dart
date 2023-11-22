@@ -46,7 +46,7 @@ class ChatInfoScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ChatInfoScreenState createState() => _ChatInfoScreenState();
+  State<ChatInfoScreen> createState() => _ChatInfoScreenState();
 }
 
 class _ChatInfoScreenState extends State<ChatInfoScreen> {
@@ -126,34 +126,31 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                     toggleNotificationsChatsCubit: notificationsCubit,
                     chatId: chat.id,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: const ChatInfoDivider(),
-                  ),
+                  const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20.0),
+                      child: ChatInfoDivider()),
                   ChatInfoBtn(
                     title: "Очистить историю",
                     color: const Color(0XFF5FB9CF),
                     onTap: () => widget.onClean?.call(context, chat),
                   ),
                   if (chat.isGroup) ...[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      child: const ChatInfoDivider(),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20.0),
+                      child: ChatInfoDivider(),
                     ),
                     ChatInfoBtn(
-                      title: "Покинуть чат",
-                      color: Palette.redF50,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: _horizontalPadding),
-                      onTap: () => widget.onDelete?.call(context, chat),
-                    ),
+                        title: "Покинуть чат",
+                        color: Palette.redF50,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: _horizontalPadding),
+                        onTap: () => widget.onDelete?.call(context, chat)),
                   ],
                   if (chat.isGroup) ...[
                     const SizedBox(height: 32.0),
-                    Text(
-                      "Участники ${chat.participants.length}",
-                      style: FontStyles.rubikP1Medium(color: Palette.textBlack),
-                    ),
+                    Text("Участники ${chat.participants.length}",
+                        style:
+                            FontStyles.rubikP1Medium(color: Palette.textBlack)),
                     if (chat.isOwner(widget.cachedChatsCubit.myId)) ...[
                       const SizedBox(height: 16.0),
                       ChatInfoAddBtn(

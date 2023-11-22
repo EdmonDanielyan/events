@@ -28,7 +28,7 @@ class ManagementFeedbackForm extends StatefulWidget {
   const ManagementFeedbackForm({Key? key}) : super(key: key);
 
   @override
-  _ManagementFeedbackFormState createState() => _ManagementFeedbackFormState();
+  State<ManagementFeedbackForm> createState() => _ManagementFeedbackFormState();
 }
 
 class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
@@ -56,7 +56,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
     return SingleChildScrollView(
       controller:
           FeedBackScreen.of(context).scrollBottomLoadMoreCubit.scrollController,
-      child: Container(
+      child: SizedBox(
         width: size.width,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -142,19 +142,16 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
         List<String> _items = getItems.map((e) => e.title).toList();
 
         return IgnorePointer(
-          ignoring: state.data.length < 1,
+          ignoring: state.data.isEmpty,
           child: DropdownButtonFormField<String>(
-            hint: Text("${localizationInstance.topic}"),
+            hint: Text(localizationInstance.topic),
             items: _items
                 .map(
                   (str) => DropdownMenuItem<String>(
                     value: str,
                     child: SizedBox(
                       width: size.width * 0.75,
-                      child: Text(
-                        str,
-                        overflow: TextOverflow.visible,
-                      ),
+                      child: Text(str, overflow: TextOverflow.visible),
                     ),
                   ),
                 )
@@ -163,7 +160,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
               entities.toWhom =
                   getItems.where((element) => element.title == value).toList();
             },
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black54, width: 1))),
           ),
@@ -205,7 +202,7 @@ class _ManagementFeedbackFormState extends State<ManagementFeedbackForm> {
       },
       builder: (BuildContext context, state) {
         if (state.state == BtnCubitStateEnums.SENDING) {
-          return CustomCircularProgressIndicator();
+          return const CustomCircularProgressIndicator();
         } else {
           return ServiceBtn(
             txt: localizationInstance.askQuestion,

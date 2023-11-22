@@ -29,12 +29,11 @@ class FilterSliderElement extends StatelessWidget {
     return Container(
       //clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        color: Palette.transparent,
-        borderRadius: BorderRadius.all(Radius.circular(65)),
-        border: Border.all(
-          color: Palette.greenE4A,
-        )
-      ),
+          color: Palette.transparent,
+          borderRadius: const BorderRadius.all(Radius.circular(65)),
+          border: Border.all(
+            color: Palette.greenE4A,
+          )),
       child: InkWell(
         onTap: onTap,
         child: Padding(

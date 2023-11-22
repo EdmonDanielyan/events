@@ -19,7 +19,7 @@ class ElevatedFullWidthButton extends StatelessWidget {
         child: Container(
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
-            color: Color(0xfff2f2f2),
+            color: const Color(0xfff2f2f2),
             borderRadius: BorderRadius.circular(40),
             border: Border.all(width: 0, style: BorderStyle.none),
             boxShadow: [
@@ -27,29 +27,27 @@ class ElevatedFullWidthButton extends StatelessWidget {
                   color: Colors.grey.withOpacity(0.25),
                   spreadRadius: 1,
                   blurRadius: 5,
-                  offset: Offset(1, 4))
+                  offset: const Offset(1, 4))
             ],
           ),
           child: ElevatedButton(
               onPressed: () {
                 onTap();
               },
-              child: Container(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize:
-                        SizeConfig(context, 18.0).getProportionateScreenHeight,
-                  ),
-                ),
-              ),
               style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(Color(0xfff2f2f2)),
+                      MaterialStateProperty.all<Color>(const Color(0xfff2f2f2)),
                   padding:
-                      MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero))),
+                      MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero)),
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize:
+                      SizeConfig(context, 18.0).getProportionateScreenHeight,
+                ),
+              )),
         ));
   }
 }

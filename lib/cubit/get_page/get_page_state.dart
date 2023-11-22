@@ -19,7 +19,7 @@ class GetPageCubitState {
     String? errorMessage,
   }) {
     return GetPageCubitState(
-      type: state ?? this.type,
+      type: state ?? type,
       data: data,
       errorMessage: errorMessage ?? this.errorMessage,
     );

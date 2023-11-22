@@ -25,7 +25,7 @@ void main() async {
           WidgetsFlutterBinding.ensureInitialized();
 
           HttpOverrides.global = MyHttpOverrides();
-         HydratedBloc.storage = await HydratedStorage.build(
+          HydratedBloc.storage = await HydratedStorage.build(
             storageDirectory: kIsWeb
                 ? HydratedStorage.webStorageDirectory
                 : await getTemporaryDirectory(),
@@ -33,7 +33,7 @@ void main() async {
 
           await setup();
 
-          runApp(InkMobile());
+          runApp(const InkMobile());
         },
         (error, stack) {},
       );
@@ -53,7 +53,7 @@ class InkMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
     ));
@@ -68,7 +68,7 @@ class InkMobile extends StatelessWidget {
         navigatorKey: App.materialKey,
         title: 'ИНК',
         initialRoute: '/init',
-        localizationsDelegates: [
+        localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

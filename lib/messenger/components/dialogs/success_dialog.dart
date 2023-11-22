@@ -52,28 +52,28 @@ class SuccessDialog {
                     style: const TextStyle(fontSize: 15.0),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0)
                 ],
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     if (cancel != null) ...[
                       TextButton(
-                        child: Text(cancel!),
                         onPressed: onCancelPressed ??
                             () {
                               Navigator.of(context).pop();
                             },
                         style:
                             TextButton.styleFrom(foregroundColor: Colors.black),
+                        child: Text(cancel!),
                       ),
                     ],
                     if (ok != null) ...[
                       TextButton(
-                        child: Text(ok!),
                         onPressed: onConfirmPressed != null
                             ? () => onConfirmPressed!(context)
                             : null,
+                        child: Text(ok!),
                       )
                     ],
                   ],

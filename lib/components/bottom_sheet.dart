@@ -49,16 +49,16 @@ class CustomBottomSheetChild extends StatelessWidget {
   }) : super(key: key);
 
   void _onCancel(BuildContext context) {
-    if (this.onCancel != null) {
-      this.onCancel!();
+    if (onCancel != null) {
+      onCancel!();
     } else {
       Navigator.of(context).pop();
     }
   }
 
   void _onSubmit(BuildContext context) {
-    if (this.onSubmit != null) {
-      this.onSubmit!();
+    if (onSubmit != null) {
+      onSubmit!();
     } else {
       Navigator.of(context).pop();
     }
@@ -130,7 +130,7 @@ class CustomBottomSheetChild extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         title!,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
         ),
       ),

@@ -1,5 +1,3 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
-
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
@@ -103,11 +101,10 @@ abstract class Token {
           // OneSignal.shared.removeExternalUserId().then((result){
           //   OneSignal.shared.setExternalUserId(refreshDataMap['user_id'].toString());
           // }
-              // migration
+          // migration
           OneSignal.logout().then((result) {
             OneSignal.login(refreshDataMap['user_id'].toString());
-          }
-          );
+          });
         }
       } else {
         throw InvalidRefreshTokenException();
@@ -158,7 +155,7 @@ abstract class Token {
   static Future<void> setDeviceVirtualIdIfEmpty() async {
     if (!await getIt<SecureStorage>().containsKey(DeviceTypes.virtualId.key)) {
       await getIt<SecureStorage>()
-          .write(key: DeviceTypes.virtualId.key, value: Uuid().v4());
+          .write(key: DeviceTypes.virtualId.key, value: const Uuid().v4());
     }
   }
 
@@ -185,13 +182,13 @@ class TokenTypes {
   static const TokenType jwt = TokenType('token');
   static const TokenType refresh = TokenType('refreshToken');
 
-  static TokenType localDbToken = TokenType('localDbToken');
+  static TokenType localDbToken = const TokenType('localDbToken');
 }
 
 class TokenType {
   final String key;
 
-  const TokenType(String key) : key = key;
+  const TokenType(this.key);
 }
 
 class DeviceTypes {
@@ -205,7 +202,7 @@ class NatsTypes {
 class DeviceType {
   final String key;
 
-  const DeviceType(String key) : key = key;
+  const DeviceType(this.key);
 }
 
 @module

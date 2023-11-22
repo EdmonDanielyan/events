@@ -33,7 +33,7 @@ class AboutProjectContact extends StatelessWidget {
           Clipboard.setData(ClipboardData(text: data)).then(
               (value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(_strings.textCopied),
-                    duration: Duration(seconds: 1),
+                    duration: const Duration(seconds: 1),
                   )));
         }
       },
@@ -49,7 +49,7 @@ class AboutProjectContact extends StatelessWidget {
                   color: Colors.grey.withOpacity(0.15),
                   spreadRadius: 0.5,
                   blurRadius: 20,
-                  offset: Offset(0, 15),
+                  offset: const Offset(0, 15),
                 ),
               ]),
           child: Column(

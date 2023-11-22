@@ -15,7 +15,7 @@ import 'package:ink_mobile/screens/main/main_screen.dart';
 import '../../../constants/palette.dart';
 
 class NewsBlock extends StatelessWidget {
-  NewsBlock({Key? key}) : super(key: key);
+  const NewsBlock({Key? key}) : super(key: key);
   static late Size size;
   static late NewsBlockCubit newsCubit;
 
@@ -41,7 +41,7 @@ class NewsBlock extends StatelessWidget {
               const SizedBox(height: 16.0),
               Column(
                 children: [
-                  NewsFilterSlider(),
+                  const NewsFilterSlider(),
                   const SizedBox(height: 16.0),
                   getCurrentStateWidget(context, state),
                 ],
@@ -70,7 +70,7 @@ class NewsBlock extends StatelessWidget {
         {
           MainScreen.of(context).mainPageCubit.emitErrorState();
 
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
     }
   }
@@ -95,12 +95,12 @@ class NewsBlock extends StatelessWidget {
               controller: _controllerOne,
               clipBehavior: Clip.none,
               scrollDirection: Axis.horizontal,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 Container(
                     margin: const EdgeInsets.only(right: 30),
-                    child: NewsListSliderElementPlaceholder()),
-                NewsListSliderElementPlaceholder(),
+                    child: const NewsListSliderElementPlaceholder()),
+                const NewsListSliderElementPlaceholder(),
               ],
             ),
           ),

@@ -10,26 +10,24 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:openapi/openapi.dart';
 
-
 import 'get_section_state.dart';
-
 
 @injectable
 class GetSectionCubit extends Cubit<GetSectionCubitState> {
   GetSectionCubit()
-      : super(GetSectionCubitState(
-      type: GetSectionCubitStateEnums.LOADING));
+      : super(GetSectionCubitState(type: GetSectionCubitStateEnums.LOADING));
 
-  String _socialPackageSectionName = "social";
-  String _emptySectionError = "There is no similar section";
+  final String _socialPackageSectionName = "social";
+  final String _emptySectionError = "There is no similar section";
 
   Future<void> fetch() async {
     try {
       await Token.setNewTokensIfExpired();
-      final response = await getIt<SingleSectionNetworkRequest>(param1: _socialPackageSectionName)();
+      final response = await getIt<SingleSectionNetworkRequest>(
+          param1: _socialPackageSectionName)();
       // final pages = response.data?.data.pages.toList();
       //migation
-        final pages = response.data?.data?.pages?.toList();
+      final pages = response.data?.data?.pages?.toList();
       if (pages != null) {
         emitSuccess(pages);
       } else {

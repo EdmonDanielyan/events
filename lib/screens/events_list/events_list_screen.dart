@@ -21,6 +21,7 @@ class _EventsListScreenState extends State<EventsListScreen> {
     super.initState();
     AppMetricsEvents().eventsEvent();
   }
+
   @override
   Widget build(BuildContext context) {
     final _strings = localizationInstance;
@@ -28,7 +29,7 @@ class _EventsListScreenState extends State<EventsListScreen> {
     return Scaffold(
       appBar: InkAppBarWithText(context, title: _strings.events),
       body: Body(cubit: widget.eventsListCubit),
-      bottomNavigationBar: NewBottomNavBar(showActive: false),
+      bottomNavigationBar: const NewBottomNavBar(showActive: false),
     );
   }
 }

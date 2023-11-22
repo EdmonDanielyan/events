@@ -29,7 +29,7 @@ class UsersPickerScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _UsersPickerScreenState createState() => _UsersPickerScreenState();
+  State<UsersPickerScreen> createState() => _UsersPickerScreenState();
 }
 
 class _UsersPickerScreenState extends State<UsersPickerScreen> {

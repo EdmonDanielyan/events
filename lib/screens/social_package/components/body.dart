@@ -12,7 +12,7 @@ import 'package:openapi/openapi.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
-  static double _horizontalPadding = 15.0;
+  static const double _horizontalPadding = 15.0;
 
   @override
   State<Body> createState() => _BodyState();
@@ -60,13 +60,13 @@ class _BodyState extends State<Body> {
           switch (state.type) {
             case GetSectionCubitStateEnums.LOADING:
               getSectionCubit.fetch();
-              return Center(
+              return const Center(
                 child: InkPageLoader(),
               );
             case GetSectionCubitStateEnums.SUCCESS:
               final pages = state.data;
               //TODO refactoring after migration
-                String getSocialElementField(Page pag, String returnType) {
+              String getSocialElementField(Page pag, String returnType) {
                 if (pag.oneOf.value is TextPage) {
                   TextPage textPage = pag.oneOf.value as TextPage;
                   switch (returnType) {
@@ -106,7 +106,7 @@ class _BodyState extends State<Body> {
                 children: [
                   Container(
                     width: size.width,
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                         horizontal: Body._horizontalPadding, vertical: 25),
                     color: Colors.white,
                     child: Text(
@@ -116,7 +116,7 @@ class _BodyState extends State<Body> {
                   ),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                           horizontal: Body._horizontalPadding),
                       color: Palette.white,
                       width: size.width,
@@ -128,9 +128,7 @@ class _BodyState extends State<Body> {
                         itemBuilder: (context, index) {
                           return SocialPackageListElement(
                             title: getSocialElementField(pages[index], 'name'),
-                            link: getSocialElementField(
-                              pages[index],
-                              'url'),
+                            link: getSocialElementField(pages[index], 'url'),
                             id: getSocialElementField(pages[index], 'id'),
                             iconUrl:
                                 getSocialElementField(pages[index], 'iconUrl'),

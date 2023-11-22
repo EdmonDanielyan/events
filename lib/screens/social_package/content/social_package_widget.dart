@@ -12,7 +12,8 @@ import 'package:openapi/openapi.dart';
 class SocialPackageWidget extends StatefulWidget {
   final Widget errorWidget;
 
-  SocialPackageWidget({
+  const SocialPackageWidget({
+    super.key,
     this.errorWidget = const SizedBox.shrink(),
   });
   @override
@@ -39,9 +40,8 @@ class _SocialPackageWidgetState extends State<SocialPackageWidget> {
             switch (state.type) {
               case GetPageCubitStateEnums.LOADING:
                 _getPageCubit.fetch(_id);
-                return Center(child: InkPageLoader());
+                return const Center(child: InkPageLoader());
               case GetPageCubitStateEnums.SUCCESS:
-
                 if (state.data?.oneOf.value is TextPage) {
                   TextPage textPage = state.data?.oneOf.value as TextPage;
                   data = textPage.detail;
@@ -69,4 +69,3 @@ class _SocialPackageWidgetState extends State<SocialPackageWidget> {
     );
   }
 }
-

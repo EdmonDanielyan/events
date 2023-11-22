@@ -13,7 +13,7 @@ class PermissionDenied extends StatelessWidget {
           child: Text(
         _strings.accessRightsReferInfo,
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20, color: Color(0xFF2B5E4A)),
+        style: const TextStyle(fontSize: 20, color: Color(0xFF2B5E4A)),
       )),
     );
   }

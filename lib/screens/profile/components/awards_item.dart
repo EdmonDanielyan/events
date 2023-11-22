@@ -12,25 +12,20 @@ class Award extends StatelessWidget {
   }
 
   Widget getWidgetByExtension(BuildContext context) {
-    int dotPosition = this.award.icon.lastIndexOf('.');
-    String extension = this.award.icon.substring(dotPosition);
+    int dotPosition = award.icon.lastIndexOf('.');
+    String extension = award.icon.substring(dotPosition);
     bool isSvg = extension == '.svg';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (isSvg)
-          SvgPicture.network(
-            this.award.icon,
-            width: 64.0,
-            height: 64.0,
-          ),
+        if (isSvg) SvgPicture.network(award.icon, width: 64.0, height: 64.0),
         if (!isSvg)
           Image.network(
-            this.award.icon,
+            award.icon,
             width: 64.0,
             height: 64.0,
           ),
-        Text(this.award.count.toString() == "null" ? "" : this.award.count.toString()),
+        Text(award.count.toString() == "null" ? "" : award.count.toString()),
       ],
     );
   }

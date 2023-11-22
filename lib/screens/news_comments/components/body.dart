@@ -16,7 +16,7 @@ class Body extends StatefulWidget {
   const Body({Key? key, required this.newsCommentsCubit}) : super(key: key);
 
   @override
-  _BodyState createState() => _BodyState();
+  State<Body> createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
@@ -51,7 +51,7 @@ class _BodyState extends State<Body> {
                   }
 
                   widget.newsCommentsCubit.load(newsId!);
-                  return InkPageLoader();
+                  return const InkPageLoader();
                 }
 
               case NewsCommentStateType.EMPTY:
@@ -66,7 +66,7 @@ class _BodyState extends State<Body> {
                   List<Widget> items = _buildComments(state.data!);
                   final commentsCount = state.data!.commentCount;
                   return Container(
-                    decoration: BoxDecoration(color: Colors.white),
+                    decoration: const BoxDecoration(color: Colors.white),
                     padding: const EdgeInsets.only(
                         top: 15, bottom: 25, left: 15, right: 15),
                     child: Column(
@@ -132,7 +132,7 @@ class _BodyState extends State<Body> {
           id: comment.id,
           authorId: comment.authorId,
           avatar: comment.pathToAvatar,
-          name: name != null && lastName != null ? lastName + " " + name : name,
+          name: name != null && lastName != null ? "$lastName $name" : name,
           text: comment.comment,
           barrelChecked: comment.barrelsChecked,
           barrelsCount: comment.barrels,
@@ -153,9 +153,7 @@ class _BodyState extends State<Body> {
               id: childrenComment.id,
               authorId: childrenComment.authorId,
               avatar: childrenComment.pathToAvatar,
-              name: name != null && lastName != null
-                  ? lastName + " " + name
-                  : name,
+              name: name != null && lastName != null ? "$lastName $name" : name,
               text: childrenComment.comment,
               barrelChecked: childrenComment.barrelsChecked,
               barrelsCount: childrenComment.barrels,

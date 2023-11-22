@@ -14,6 +14,7 @@ import 'dependency.dart';
 @injectable
 class LearningMaterialListNetworkRequest
     extends LearningMaterialListRequestDependency {
+  @override
   Pagination<LearningMaterialsData>? pagination;
 
   LearningMaterialListNetworkRequest({@factoryParam required this.pagination})

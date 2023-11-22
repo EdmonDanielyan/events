@@ -37,7 +37,7 @@ class LearningMaterialsList extends StatelessWidget {
             case LearningMaterialsListStateType.LOADING:
               {
                 cubit.fetch();
-                return CentringWrapper(child: InkPageLoader());
+                return const CentringWrapper(child: InkPageLoader());
               }
 
             case LearningMaterialsListStateType.LOADED:
@@ -45,7 +45,7 @@ class LearningMaterialsList extends StatelessWidget {
                 List<LearningMaterialsListElement> items =
                     _getLearningMaterialsWidgetList(state.data!);
                 return Container(
-                  color: Color(0xfff9f9f9),
+                  color: const Color(0xfff9f9f9),
                   child: Column(children: [
                     Container(
                         padding: const EdgeInsets.only(
@@ -54,19 +54,17 @@ class LearningMaterialsList extends StatelessWidget {
                           children: [
                             Text(
                               _strings.learningMaterials,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 24),
                             )
                           ],
                         )),
-                    Container(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        controller: ScrollController(keepScrollOffset: false),
-                        itemCount: items.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            items[index],
-                      ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      controller: ScrollController(keepScrollOffset: false),
+                      itemCount: items.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          items[index],
                     )
                   ]),
                 );
@@ -94,10 +92,10 @@ class LearningMaterialsList extends StatelessWidget {
       List<LearningMaterialsData> learningMaterialsList) {
     List<LearningMaterialsListElement> _learningMaterialsWidgetList = [];
 
-    learningMaterialsList.forEach((value) {
+    for (var value in learningMaterialsList) {
       _learningMaterialsWidgetList
           .add(LearningMaterialsListElement(learningMaterial: value));
-    });
+    }
 
     return _learningMaterialsWidgetList;
   }

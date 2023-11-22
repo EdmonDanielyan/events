@@ -4,7 +4,6 @@ import 'package:ink_mobile/screens/feedback/components/answers/answers_list.dart
 import 'package:ink_mobile/screens/feedback/components/feadback_navigation_header.dart';
 import 'package:ink_mobile/screens/feedback/components/form/form.dart';
 
-
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
 
@@ -26,8 +25,10 @@ class _BodyState extends State<Body> {
       child: Column(
         children: [
           FeedbackNavigationHeader(
-            askQuestionColor: isFirstPageActive ? Palette.textBlack : Palette.text20Grey,
-            answersColor: isFirstPageActive ? Palette.text20Grey : Palette.textBlack,
+            askQuestionColor:
+                isFirstPageActive ? Palette.textBlack : Palette.text20Grey,
+            answersColor:
+                isFirstPageActive ? Palette.text20Grey : Palette.textBlack,
             onTap: (index) {
               setState(() {
                 currentIndex = index;
@@ -43,7 +44,7 @@ class _BodyState extends State<Body> {
                   currentIndex = index;
                 });
               },
-              children: [
+              children: const [
                 ManagementFeedbackForm(),
                 ManagementFeedbackAnswersList(),
               ],

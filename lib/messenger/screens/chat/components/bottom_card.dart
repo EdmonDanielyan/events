@@ -177,11 +177,13 @@ class _MessageBottomCardState extends State<MessageBottomCard> {
                   return InkWell(
                     onTap: () => state != null ? _onEdit(state) : _onSend(),
                     child: SvgPicture.asset(
-                      state != null ? IconLinks.TICK_ICON : IconLinks.SEND_ICON,
-                      height: 28.0,
-                      width: 28.0,
-                      color: Palette.greenE4A,
-                    ),
+                        state != null
+                            ? IconLinks.TICK_ICON
+                            : IconLinks.SEND_ICON,
+                        height: 28.0,
+                        width: 28.0,
+                        colorFilter: ColorFilter.mode(
+                            Palette.greenE4A, BlendMode.srcIn)),
                   );
                 },
               ),

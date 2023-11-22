@@ -13,7 +13,7 @@ class ReferencesPageCubit extends Cubit<ReferencesPageState> {
   ReferencesPageCubit()
       : super(ReferencesPageState(type: ReferencesStateType.LOADING));
 
-  Autofill autofill = Autofill();
+  Autofill autofill = const Autofill();
 
   Future<void> checkPermissions() async {
     await Token.setNewTokensIfExpired();
@@ -21,11 +21,13 @@ class ReferencesPageCubit extends Cubit<ReferencesPageState> {
     final response = await getIt<CanInquireNetworkRequest>()();
     bool? access = response.data!.data;
 
-    if(access != null ){access
-         ? emit(ReferencesPageState(type: ReferencesStateType.INIT))
-        : emit(
-            ReferencesPageState(type: ReferencesStateType.PERMISSIONS_DENIED));
-  }}
+    if (access != null) {
+      access
+          ? emit(ReferencesPageState(type: ReferencesStateType.INIT))
+          : emit(ReferencesPageState(
+              type: ReferencesStateType.PERMISSIONS_DENIED));
+    }
+  }
 
   Future<void> loadAutoFillData() async {
     await Token.setNewTokensIfExpired();

@@ -47,7 +47,7 @@ class Body extends StatelessWidget {
                 newsBlockCubit.refresh();
                 mainAnnouncementsListCubit.refresh();
                 mainEventsListCubit.refresh();
-                return InkPageLoader();
+                return const InkPageLoader();
               }
 
             case (MainPageStateType.ERROR):
@@ -64,7 +64,7 @@ class Body extends StatelessWidget {
   }
 
   Widget getLoadedStateWidget() {
-    return Background(
+    return const Background(
       child: Column(
         children: [
           NewsBlock(),

@@ -9,7 +9,8 @@ class PersonnelMovementsState {
   final PersonnelMovementsStateType type;
   final String? errorMessage;
 
-  PersonnelMovementsState({required this.type, this.data, this.errorMessage})
+  const PersonnelMovementsState(
+      {required this.type, this.data, this.errorMessage})
       : assert(
             type != PersonnelMovementsStateType.ERROR || errorMessage != null,
             'errorMessage must not be null in error state');

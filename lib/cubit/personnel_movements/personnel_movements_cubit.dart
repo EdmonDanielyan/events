@@ -17,8 +17,8 @@ import 'package:ink_mobile/extensions/movement_success.dart';
 @injectable
 class PersonnelMovementsCubit extends Cubit<PersonnelMovementsState> {
   PersonnelMovementsCubit()
-      : super(
-            PersonnelMovementsState(type: PersonnelMovementsStateType.LOADING));
+      : super(const PersonnelMovementsState(
+            type: PersonnelMovementsStateType.LOADING));
 
   Future<void> load() async {
     try {
@@ -46,8 +46,8 @@ class PersonnelMovementsCubit extends Cubit<PersonnelMovementsState> {
 //     "code": "QMA-33"
 // }
 //надо это потестить и обработать нормально
-// а сейчас пока что 
-     emitEmpty();
+// а сейчас пока что
+      emitEmpty();
       ErrorModel error = _errorHandler.call();
       // throw error.exception;
     } on TimeoutException catch (_) {

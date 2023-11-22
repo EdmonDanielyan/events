@@ -25,9 +25,8 @@ class DateFunctions {
   bool isToday() => isThisYear() && isThisMonth() && isThisDay();
 
   String dayMonthYear() {
-    DateFormat formatter = isThisYear()
-        ? new DateFormat.MMMMd("ru_RU")
-        : new DateFormat.yMMMMd("ru_RU");
+    DateFormat formatter =
+        isThisYear() ? DateFormat.MMMMd("ru_RU") : DateFormat.yMMMMd("ru_RU");
 
     return formatter.format(passedDate);
   }
@@ -48,16 +47,18 @@ class DateFunctions {
   String hourMinute() => DateFormat("HH:mm").format(passedDate.toLocal());
 
   String displayDate() {
-    if (isToday())
+    if (isToday()) {
       return hourMinute();
-    else
-      return dayMonthYear() + " " + hourMinute();
+    } else {
+      return "${dayMonthYear()} ${hourMinute()}";
+    }
   }
 
   String displayTimeForTodayOrDate() {
-    if (isToday())
+    if (isToday()) {
       return hourMinute();
-    else
+    } else {
       return dayMonthYear();
+    }
   }
 }

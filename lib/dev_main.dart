@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'ink_app.dart';
 import 'utils/my_http_overrides.dart';
+
 void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +31,7 @@ void main() async {
 
     await setup();
 
-    runApp(InkMobile());
+    runApp(const InkMobile());
   }, (error, stack) {});
 
   // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
@@ -45,11 +46,9 @@ void main() async {
   // OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
   //   print("Accepted permission: $accepted");
   // });
-    OneSignal.Notifications.requestPermission(true).then((accepted) {
+  OneSignal.Notifications.requestPermission(true).then((accepted) {
     print("Accepted permission: $accepted");
   });
 
   //AppMetrica.activate(AppMetricaConfig("3948ed67-c81f-4920-ad3a-bd4b70a59376"));
 }
-
-

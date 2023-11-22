@@ -24,7 +24,7 @@ class ChatListScreen extends StatefulWidget {
   const ChatListScreen({Key? key}) : super(key: key);
 
   @override
-  _ChatListScreenState createState() => _ChatListScreenState();
+  State<ChatListScreen> createState() => _ChatListScreenState();
 }
 
 class _ChatListScreenState extends State<ChatListScreen>
@@ -79,11 +79,11 @@ class _ChatListScreenState extends State<ChatListScreen>
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: _onCreateChat,
+        backgroundColor: Palette.greenE4A,
         child: SvgPicture.asset(
           IconLinks.EDIT_ICON,
-          color: Palette.white,
+          colorFilter: ColorFilter.mode(Palette.white, BlendMode.srcIn),
         ),
-        backgroundColor: Palette.greenE4A,
       ),
       backgroundColor: Palette.white,
       appBar: InkAppBar(

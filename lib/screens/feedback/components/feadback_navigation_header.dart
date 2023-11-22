@@ -6,7 +6,8 @@ class FeedbackNavigationHeader extends StatelessWidget {
   final Color answersColor;
   final Function onTap;
 
-  FeedbackNavigationHeader({
+  const FeedbackNavigationHeader({
+    super.key,
     required this.askQuestionColor,
     required this.answersColor,
     required this.onTap,
@@ -14,7 +15,6 @@ class FeedbackNavigationHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

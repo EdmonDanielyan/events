@@ -52,7 +52,7 @@ class EventDetailScreen extends StatelessWidget {
               {
                 eventDetailCubit.load(eventId);
 
-                return InkPageLoader();
+                return const InkPageLoader();
               }
 
             case EventsDetailStateType.LOADED:
@@ -80,7 +80,7 @@ class EventDetailScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: size.width,
             height: SizeConfig(context, 220).getProportionateScreenHeight,
             child: event.pictureLink == null
@@ -97,11 +97,7 @@ class EventDetailScreen extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(
-              right: 20.0,
-              left: 20.0,
-              top: 32.0,
-              bottom: 16.0,
-            ),
+                right: 20.0, left: 20.0, top: 32.0, bottom: 16.0),
             child: Row(
               children: [
                 Text(
@@ -111,13 +107,12 @@ class EventDetailScreen extends StatelessWidget {
                   style: FontStyles.rubikP2(color: Palette.textBlack50),
                 ),
                 const Spacer(),
-                SvgPicture.asset(
-                  IconLinks.OPENED_EYE_ICON_LINK,
-                  semanticsLabel: 'View Count',
-                  height: 16.0,
-                  width: 16.0,
-                  color: Palette.textBlack50,
-                ),
+                SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
+                    semanticsLabel: 'View Count',
+                    height: 16.0,
+                    width: 16.0,
+                    colorFilter:
+                        ColorFilter.mode(Palette.textBlack50, BlendMode.srcIn)),
                 const SizedBox(width: 4.0),
                 Text(
                   event.viewCount != null

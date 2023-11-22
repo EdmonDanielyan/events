@@ -29,7 +29,7 @@ class ChatInfoBtn extends StatelessWidget {
               IconLinks.FIRE_ICON,
               height: 24.0,
               width: 24.0,
-              color: Palette.redF1C,
+              colorFilter: ColorFilter.mode(Palette.redF1C, BlendMode.srcIn),
             ),
             const SizedBox(width: 12.0),
             Text(

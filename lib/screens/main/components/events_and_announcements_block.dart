@@ -16,8 +16,7 @@ import '../main_screen.dart';
 class EventsAndAnnouncementsBlock extends StatelessWidget {
   static late EventsAndAnnouncementsBlockCubit cubit;
   static late Size? size;
-  EventsAndAnnouncementsBlock({Key? key}) : super(key: key);
-
+  const EventsAndAnnouncementsBlock({Key? key}) : super(key: key);
   static late AppLocalizations _strings;
 
   @override
@@ -38,11 +37,11 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 25),
                 padding: const EdgeInsets.symmetric(
                     vertical: 30.0, horizontal: 20.0),
-                decoration: BoxDecoration(color: Colors.white),
+                decoration: const BoxDecoration(color: Colors.white),
                 child: Column(
                   children: [
                     getNavigationRow(context, 'events'),
-                    EventsList(),
+                    const EventsList(),
                     const SizedBox(height: 15.0),
                     DefaultButton(
                       title: _strings.allEvents,
@@ -64,11 +63,11 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 25),
                 padding: const EdgeInsets.symmetric(
                     vertical: 30.0, horizontal: 20.0),
-                decoration: BoxDecoration(color: Colors.white),
+                decoration: const BoxDecoration(color: Colors.white),
                 child: Column(
                   children: [
                     getNavigationRow(context, 'announcements'),
-                    AnnouncementsList(),
+                    const AnnouncementsList(),
                     const SizedBox(height: 15),
                     DefaultButton(
                       title: _strings.allAnnouncements,
@@ -152,13 +151,13 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
     return Container(
       alignment: Alignment.topLeft,
       child: InkWell(
+        onTap: checked ? null : onTap,
         child: Text(
           title,
           style: FontStyles.rubikH2(
             color: checked ? Palette.greenE4A : Palette.textBlack,
           ),
         ),
-        onTap: checked ? null : onTap,
       ),
     );
   }

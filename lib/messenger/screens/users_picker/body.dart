@@ -28,7 +28,7 @@ class Body extends StatefulWidget {
   final void Function(List<User>)? onChange;
   final Chat? chat;
 
-  Body({
+  const Body({
     Key? key,
     required this.onlineCubit,
     required this.cachedChatsCubit,
@@ -40,7 +40,7 @@ class Body extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _BodyState createState() => _BodyState();
+  State<Body> createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
@@ -182,7 +182,7 @@ class _BodyState extends State<Body> {
                     color: Palette.white,
                     height: 76.0,
                     width: double.infinity,
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: BlocBuilder<UsersCubit, List<User>>(
                       bloc: selectedUsers,
                       builder: (context, usersState) {
@@ -202,9 +202,11 @@ class _BodyState extends State<Body> {
                             IconLinks.EDIT_ICON,
                             height: 20.0,
                             width: 20.0,
-                            color: usersSelected
-                                ? Palette.white
-                                : Palette.text20Grey,
+                            colorFilter: ColorFilter.mode(
+                                usersSelected
+                                    ? Palette.white
+                                    : Palette.text20Grey,
+                                BlendMode.srcIn),
                           ),
                         );
                       },

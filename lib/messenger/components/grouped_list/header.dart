@@ -10,7 +10,7 @@ class GroupedListHeader extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _GroupedListHeaderState createState() => _GroupedListHeaderState();
+  State<GroupedListHeader> createState() => _GroupedListHeaderState();
 }
 
 class _GroupedListHeaderState extends State<GroupedListHeader> {

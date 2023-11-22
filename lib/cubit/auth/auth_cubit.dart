@@ -15,7 +15,7 @@ import 'package:ink_mobile/extensions/auth_success.dart';
 
 @injectable
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthState(type: AuthStateType.LOADED));
+  AuthCubit() : super(const AuthState(type: AuthStateType.LOADED));
 
   String login = '';
   String password = '';

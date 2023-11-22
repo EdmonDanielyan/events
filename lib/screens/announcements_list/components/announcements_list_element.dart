@@ -23,7 +23,7 @@ class AnnouncementsListElement extends StatelessWidget {
         Navigator.pushNamed(context, '/announcement_detail',
             arguments: {'id': announcement.id});
       },
-      child: Container(
+      child: SizedBox(
         width: size.width,
         child: Column(
           children: [
@@ -52,12 +52,11 @@ class AnnouncementsListElement extends StatelessWidget {
               margin: const EdgeInsets.only(top: 16.0),
               child: Row(
                 children: [
-                  SvgPicture.asset(
-                    IconLinks.OPENED_EYE_ICON_LINK,
-                    width: 16.0,
-                    height: 16.0,
-                    color: Palette.textBlack50,
-                  ),
+                  SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
+                      width: 16.0,
+                      height: 16.0,
+                      colorFilter: ColorFilter.mode(
+                          Palette.textBlack50, BlendMode.srcIn)),
                   Container(
                     margin: const EdgeInsets.only(left: 4),
                     child: Text(

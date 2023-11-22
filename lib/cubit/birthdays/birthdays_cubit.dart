@@ -16,7 +16,8 @@ import 'package:ink_mobile/utils/date_comparison_util.dart';
 
 @LazySingleton()
 class BirthdaysCubit extends Cubit<BirthdaysState> {
-  BirthdaysCubit() : super(BirthdaysState(type: BirthdaysStateType.LOADING));
+  BirthdaysCubit()
+      : super(const BirthdaysState(type: BirthdaysStateType.LOADING));
 
   List<BirthdayData>? firstDayBirthdays;
   List<BirthdayData>? secondDayBirthdays;
@@ -82,7 +83,7 @@ class BirthdaysCubit extends Cubit<BirthdaysState> {
   }
 
   void refresh() {
-    emit(BirthdaysState(type: BirthdaysStateType.LOADING));
+    emit(const BirthdaysState(type: BirthdaysStateType.LOADING));
   }
 
   void sortBirthdays(List<BirthdayData> birthdays) {
@@ -98,11 +99,11 @@ class BirthdaysCubit extends Cubit<BirthdaysState> {
           .toList();
       secondDayBirthdays = birthdays
           .where((birthday) => DateOnlyCompare().isSameDateWithoutYear(
-              birthday.birthday!, minBirthdayDate.add(Duration(days: 1))))
+              birthday.birthday!, minBirthdayDate.add(const Duration(days: 1))))
           .toList();
       thirdDayBirthdays = birthdays
           .where((birthday) => DateOnlyCompare().isSameDateWithoutYear(
-              birthday.birthday!, minBirthdayDate.add(Duration(days: 2))))
+              birthday.birthday!, minBirthdayDate.add(const Duration(days: 2))))
           .toList();
     }
   }

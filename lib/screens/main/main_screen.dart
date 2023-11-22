@@ -49,12 +49,9 @@ class MainScreenState extends State<MainScreen>
     super.initState();
 
     getIt<MessengerProvider>().init(
-        getIt.get<AppConfig>().wsUrl,
-        JwtPayload.myId,
+        getIt.get<AppConfig>().wsUrl, JwtPayload.myId,
         path: getIt.get<AppConfig>().wsPath,
-        apiUrl: getIt.get<AppConfig>().messengerApiUrl
-    );
-
+        apiUrl: getIt.get<AppConfig>().messengerApiUrl);
   }
 
   @override
@@ -66,7 +63,7 @@ class MainScreenState extends State<MainScreen>
         leading: const SizedBox.shrink(),
         showPersonalPageLink: true,
       ),
-      body: Body(),
+      body: const Body(),
     );
   }
 

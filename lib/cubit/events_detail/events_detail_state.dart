@@ -9,7 +9,7 @@ class EventsDetailState {
   final EventsDetailStateType type;
   final String? errorMessage;
 
-  EventsDetailState({required this.type, this.data, this.errorMessage})
+  const EventsDetailState({required this.type, this.data, this.errorMessage})
       : assert(
             type != EventsDetailStateType.ERROR ||
                 (type == EventsDetailStateType.ERROR && errorMessage != null),

@@ -26,7 +26,7 @@ class DateInputField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DateInputFieldState createState() => _DateInputFieldState();
+  State<DateInputField> createState() => _DateInputFieldState();
 }
 
 class _DateInputFieldState extends State<DateInputField> {
@@ -58,13 +58,17 @@ class _DateInputFieldState extends State<DateInputField> {
               decoration: InputDecoration(
                 hintText: "Выберите дату",
                 hintStyle: TextStyle(
-                    fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
+                    fontSize:
+                        SizeConfig(context, 14).getProportionateScreenHeight),
                 errorStyle: TextStyle(
-                    fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
+                    fontSize:
+                        SizeConfig(context, 14).getProportionateScreenHeight),
                 labelStyle: TextStyle(
-                    fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
+                    fontSize:
+                        SizeConfig(context, 14).getProportionateScreenHeight),
                 helperStyle: TextStyle(
-                    fontSize: SizeConfig(context, 14).getProportionateScreenHeight),
+                    fontSize:
+                        SizeConfig(context, 14).getProportionateScreenHeight),
                 //labelText: widget.title,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
@@ -76,15 +80,13 @@ class _DateInputFieldState extends State<DateInputField> {
                 ),
                 suffixIcon: Padding(
                   padding: const EdgeInsets.only(
-                    top: 12.0,
-                    bottom: 12.0,
-                    right: 16.0
-                  ),
+                      top: 12.0, bottom: 12.0, right: 16.0),
                   child: SvgPicture.asset(
                     IconLinks.CALENDAR_ICON_LINK,
                     height: 20.0,
                     width: 20.0,
-                    color: Palette.textBlack,
+                    colorFilter:
+                        ColorFilter.mode(Palette.textBlack, BlendMode.srcIn),
                   ),
                 ),
               ),
@@ -95,10 +97,10 @@ class _DateInputFieldState extends State<DateInputField> {
     );
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        locale: Locale('ru', 'RU'),
+        locale: const Locale('ru', 'RU'),
         initialDate: _selectedDate,
         firstDate: widget.firstDate ?? DateTime(1946),
         lastDate: widget.lastDate ?? DateTime(2100));

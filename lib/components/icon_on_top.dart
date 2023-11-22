@@ -14,10 +14,7 @@ class IconOnTop extends StatelessWidget {
         color: Colors.black.withOpacity(0.3),
         borderRadius: BorderRadius.circular(150.0),
       ),
-      child: Icon(
-        Icons.camera_alt_outlined,
-        color: Colors.white,
-      ),
+      child: const Icon(Icons.camera_alt_outlined, color: Colors.white),
     );
   }
 }

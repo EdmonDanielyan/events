@@ -53,22 +53,22 @@ class _BodyState extends State<Body> {
                 ),
               )),
           RadioListTile<String>(
-              title: ConfigText("Для разработчиков"),
-              subtitle:
-                  ConfigText("Используйте данный тип окружения для разработки"),
+              title: const ConfigText("Для разработчиков"),
+              subtitle: const ConfigText(
+                  "Используйте данный тип окружения для разработки"),
               value: Environment.dev,
               groupValue: environment,
               onChanged: _onChanged),
           RadioListTile<String>(
-              title: ConfigText("Тестирование"),
-              subtitle: ConfigText(
+              title: const ConfigText("Тестирование"),
+              subtitle: const ConfigText(
                   "Используйте данный тип окружения перед выходом в релиз и проведения тестирования"),
               value: Environment.test,
               groupValue: environment,
               onChanged: _onChanged),
           RadioListTile<String>(
-              title: ConfigText("Продакшен окружение"),
-              subtitle: ConfigText(
+              title: const ConfigText("Продакшен окружение"),
+              subtitle: const ConfigText(
                   "Внимание!!! Есть риски изменения данных на серверах заказчика. Не использовать при тестировании и разработки"),
               value: Environment.prod,
               groupValue: environment,
@@ -109,6 +109,7 @@ class _BodyState extends State<Body> {
       setState(() {
         environment = value;
       });
+      //TODO понять что с этим делать, нашел при миграции
       try {
         //await getIt<Messenger>().chatDatabaseCubit.db.deleteDatabaseFiles();
       } catch (e) {}

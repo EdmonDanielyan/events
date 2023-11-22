@@ -11,7 +11,7 @@ class AppBarWithText extends StatelessWidget implements PreferredSizeWidget {
   final Widget? titleWidget;
   final List<Widget>? actions;
   final Widget? leading;
-  AppBarWithText(
+  const AppBarWithText(
     this.context, {
     Key? key,
     this.title = "",
@@ -22,54 +22,55 @@ class AppBarWithText extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(
-        SizeConfig(context, MediaQuery.of(context).size.width).isTablet
-            ? 70
-            : kToolbarHeight,
-      );
+      SizeConfig(context, MediaQuery.of(context).size.width).isTablet
+          ? 70
+          : kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
     BuildContext appBarContext = context;
 
     return AppBar(
-      leading: leading ??
-          Builder(
-            builder: (context) {
-              if (Navigator.of(appBarContext).canPop()) {
-                return const AppBarBackBtn();
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-          ),
-      flexibleSpace: Container(
-        child: SvgPicture.asset(
-          SvgPictures.appBarLines,
-          semanticsLabel: 'appbar Line',
-          height: MediaQuery.of(context).size.height *
-              MediaQuery.of(context).devicePixelRatio,
-          width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
-        ),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [Theme.of(context).primaryColor, const Color(0xFF182B23)],
-              begin: FractionalOffset.centerLeft,
-              end: FractionalOffset.centerRight,
-              stops: const [0.0, 1.0],
-              tileMode: TileMode.decal),
-        ),
-      ),
-      title: titleWidget ??
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
+        leading: leading ??
+            Builder(
+              builder: (context) {
+                if (Navigator.of(appBarContext).canPop()) {
+                  return const AppBarBackBtn();
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
             ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).primaryColor,
+                  const Color(0xFF182B23)
+                ],
+                begin: FractionalOffset.centerLeft,
+                end: FractionalOffset.centerRight,
+                stops: const [0.0, 1.0],
+                tileMode: TileMode.decal),
           ),
-      centerTitle: true,
-      actions: actions,
-    );
+          child: SvgPicture.asset(
+            SvgPictures.appBarLines,
+            semanticsLabel: 'appbar Line',
+            height: MediaQuery.of(context).size.height *
+                MediaQuery.of(context).devicePixelRatio,
+            width: MediaQuery.of(context).size.width,
+            fit: BoxFit.cover,
+          ),
+        ),
+        title: titleWidget ??
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize:
+                      SizeConfig(context, 13).getProportionateScreenHeight),
+            ),
+        centerTitle: true,
+        actions: actions);
   }
 }

@@ -9,6 +9,6 @@ class TextFieldMasks {
         initialText: initialText,
       );
 
-  MaskTextInputFormatter date = new MaskTextInputFormatter(
+  MaskTextInputFormatter date = MaskTextInputFormatter(
       mask: '##.##.####', filter: {"#": RegExp(r'[0-9]')});
 }

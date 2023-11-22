@@ -13,7 +13,7 @@ class AvatarPlaceholder extends StatelessWidget {
       radius: 48.0,
       backgroundColor: Palette.text20Grey,
       foregroundImage: textEmpty
-          ? AssetImage(
+          ? const AssetImage(
               "assets/images/avatars/avatar_default.png",
             )
           : null,
@@ -21,7 +21,7 @@ class AvatarPlaceholder extends StatelessWidget {
           ? null
           : Text(
               FancyText(text).cutName().toUpperCase(),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontFamily: "Noto",
               ),

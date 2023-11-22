@@ -1,6 +1,3 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
-
-import 'package:dio/src/response.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/providers/main_api.dart';
@@ -12,6 +9,7 @@ import 'dependency.dart';
 
 @injectable
 class SendFeedbackFormNetworkRequest extends SendFeedbackFormDependency {
+  @override
   ManagementFeedbackFormEntities? entities;
   SendFeedbackFormNetworkRequest({@factoryParam required this.entities})
       : assert(entities != null);
@@ -32,4 +30,3 @@ class SendFeedbackFormNetworkRequest extends SendFeedbackFormDependency {
     return response.statusCode == 200;
   }
 }
-

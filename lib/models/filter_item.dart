@@ -14,9 +14,9 @@ class FilterItem {
   static List<FilterItem> getListFromResponse(List listData) {
     List<FilterItem> list = [];
 
-    listData.forEach((element) {
+    for (var element in listData) {
       list.add(FilterItem.fromMap(element));
-    });
+    }
 
     return list;
   }

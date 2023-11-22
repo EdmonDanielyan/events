@@ -27,7 +27,7 @@ class AuthScreenState extends State<AuthScreen> {
     return Scaffold(
       appBar: InkAppBar(context),
       body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         child: Body(
           authCubit: authCubit,
         ),

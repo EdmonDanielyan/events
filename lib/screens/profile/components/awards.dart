@@ -21,7 +21,7 @@ class Awards extends StatelessWidget {
   Widget getAwardsWidget(context) {
     Size size = MediaQuery.of(context).size;
 
-    List<Award> awardsList = this.getAwards();
+    List<Award> awardsList = getAwards();
 
     if (awardsList.isNotEmpty) {
       return SliverPadding(
@@ -32,9 +32,7 @@ class Awards extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SectionTitle(
-                  title: "Статусы",
-                ),
+                const SectionTitle(title: "Статусы"),
                 SizedBox(
                   width: size.width,
                   height: SizeConfig(context, 90).getProportionateScreenHeight,
@@ -59,7 +57,7 @@ class Awards extends StatelessWidget {
         ),
       );
     }
-    return SliverToBoxAdapter(child: const SizedBox.shrink());
+    return const SliverToBoxAdapter(child: SizedBox.shrink());
   }
 
   List<Award> getAwards() {

@@ -130,7 +130,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
               autovalidateMode: state.validateMode,
               validator: validator,
               decoration: InputDecoration(
-                hintText: state.items.length < 1 ? hint : "",
+                hintText: state.items.isEmpty ? hint : "",
                 hintStyle: FontStyles.rubikP2(color: Palette.textBlack50),
                 errorStyle: TextStyle(
                   fontSize:
@@ -199,7 +199,7 @@ class ServiceSelectFieldCubit extends StatelessWidget {
         border: Border.all(color: Theme.of(context).primaryColor),
       ),
       child: Text(
-        name.length > 10 ? name.substring(0, 10) + '...' : name,
+        name.length > 10 ? '${name.substring(0, 10)}...' : name,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(

@@ -7,7 +7,6 @@ import 'package:local_auth/local_auth.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
 
-
 @singleton
 class LockApp with Loggable {
   late LocalAuthentication _localAuth;
@@ -56,15 +55,15 @@ class LockApp with Loggable {
     return await _localAuth.authenticate(
       localizedReason: canCheckBios ? localizationInstance.biometricReason : "",
       authMessages: [
-     _iosStrings(),
-     _androidStrings( biometricHint: localizationInstance.biometricHint)
-    ],
-    options: AuthenticationOptions(
-      // useErrorDialogs: true,
-      // stickyAuth: false,
-      // sensitiveTransaction: false,
-      biometricOnly: true,
-    ),
+        _iosStrings(),
+        _androidStrings(biometricHint: localizationInstance.biometricHint)
+      ],
+      options: const AuthenticationOptions(
+        // useErrorDialogs: true,
+        // stickyAuth: false,
+        // sensitiveTransaction: false,
+        biometricOnly: true,
+      ),
     );
   }
 

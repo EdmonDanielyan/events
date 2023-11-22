@@ -9,7 +9,7 @@ class CentringWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Container(
+    return SizedBox(
         height: size.height * 0.65,
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Expanded(flex: 1, child: child),

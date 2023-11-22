@@ -19,7 +19,7 @@ class ServiceDisabledTextField extends StatelessWidget {
   final AutovalidateMode autoValidateMode;
   final String? descriptionText;
   final FocusNode? focusNode;
-  ServiceDisabledTextField({
+  const ServiceDisabledTextField({
     Key? key,
     this.hint = "",
     this.controller,

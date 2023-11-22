@@ -36,13 +36,13 @@ class NumberSelectFormField extends FormField<String> {
       'behaviour related to auto validation. '
       'This feature was deprecated after v1.19.0.',
     )
-        bool autovalidate = false,
+    bool autovalidate = false,
     @Deprecated(
       'Use maxLengthEnforcement parameter which provides more specific '
       'behavior related to the maxLength limit. '
       'This feature was deprecated after v1.25.0-5.0.pre.',
     )
-        bool maxLengthEnforced = true,
+    bool maxLengthEnforced = true,
     MaxLengthEnforcement? maxLengthEnforcement,
     bool expands = false,
     int? maxLength,
@@ -130,6 +130,8 @@ class NumberSelectFormField extends FormField<String> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Expanded(
+                          flex:
+                              flex?.buttons ?? flex?.leftButton ?? defaultFlex,
                           child: GestureDetector(
                               child: Container(
                                   alignment: AlignmentDirectional.center,
@@ -151,12 +153,10 @@ class NumberSelectFormField extends FormField<String> {
 
                                 onChangedHandler(controller.text);
                               }),
-                          flex:
-                              flex?.buttons ?? flex?.leftButton ?? defaultFlex,
                         ),
                         Expanded(
-                          child: Container(
-                              child: TextFormField(
+                          flex: flex?.textField ?? defaultFlex,
+                          child: TextFormField(
                             controller: state._effectiveController,
                             focusNode: focusNode,
                             decoration: textFieldDecoration,
@@ -195,10 +195,11 @@ class NumberSelectFormField extends FormField<String> {
                                 enableInteractiveSelection,
                             selectionControls: selectionControls,
                             buildCounter: buildCounter,
-                          )),
-                          flex: flex?.textField ?? defaultFlex,
+                          ),
                         ),
                         Expanded(
+                          flex:
+                              flex?.buttons ?? flex?.rightButton ?? defaultFlex,
                           child: GestureDetector(
                               child: Container(
                                   alignment: AlignmentDirectional.center,
@@ -218,8 +219,6 @@ class NumberSelectFormField extends FormField<String> {
                                             : 1);
                                 onChangedHandler(controller.text);
                               }),
-                          flex:
-                              flex?.buttons ?? flex?.rightButton ?? defaultFlex,
                         ),
                       ],
                     )),
@@ -235,7 +234,7 @@ class NumberSelectFormField extends FormField<String> {
             margin: const EdgeInsets.only(top: 8),
             child: Text(
               field.errorText!,
-              style: TextStyle(color: Colors.red, fontSize: 12),
+              style: const TextStyle(color: Colors.red, fontSize: 12),
             ),
           )
         : Container();
@@ -367,8 +366,9 @@ class _NumberSelectFormFieldState extends FormFieldState<String> {
   void didChange(String? value) {
     super.didChange(value);
 
-    if (_effectiveController!.text != value)
+    if (_effectiveController!.text != value) {
       _effectiveController!.text = value ?? '';
+    }
   }
 
   @override
@@ -387,8 +387,9 @@ class _NumberSelectFormFieldState extends FormFieldState<String> {
     // notifications for changes originating from within this class -- for
     // example, the reset() method. In such cases, the FormField value will
     // already have been set.
-    if (_effectiveController!.text != value)
+    if (_effectiveController!.text != value) {
       didChange(_effectiveController!.text);
+    }
   }
 }
 
@@ -439,12 +440,14 @@ abstract class TextToNumberConverter {
 }
 
 class TextToDoubleConverter implements TextToNumberConverter {
+  @override
   double convert(String text) {
     return double.tryParse(text) ?? 0;
   }
 }
 
 class TextToIntConverter implements TextToNumberConverter {
+  @override
   int convert(String text) {
     return int.tryParse(text) ?? 0;
   }

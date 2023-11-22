@@ -14,17 +14,17 @@ class ChatSearchTextField extends StatelessWidget {
   final int currentIndex;
   final int itemsLength;
   final Color? textColor;
-  const ChatSearchTextField({
-    Key? key,
-    this.onChanged,
-    this.onFieldSubmitted,
-    this.onUp,
-    this.onDown,
-    required this.onClose,
-    this.textColor,
-    required this.currentIndex,
-    required this.itemsLength
-  }) : super(key: key);
+  const ChatSearchTextField(
+      {Key? key,
+      this.onChanged,
+      this.onFieldSubmitted,
+      this.onUp,
+      this.onDown,
+      required this.onClose,
+      this.textColor,
+      required this.currentIndex,
+      required this.itemsLength})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +41,7 @@ class ChatSearchTextField extends StatelessWidget {
             const Spacer(),
             if (onUp != null) ...[
               InkWell(
+                onTap: onUp,
                 child: SizedBox.square(
                   dimension: 44.0,
                   child: Center(
@@ -51,12 +52,12 @@ class ChatSearchTextField extends StatelessWidget {
                     ),
                   ),
                 ),
-                onTap: onUp,
               ),
               const SizedBox(width: 5),
             ],
             if (onDown != null) ...[
               InkWell(
+                onTap: onDown,
                 child: SizedBox.square(
                   dimension: 44.0,
                   child: Center(
@@ -67,22 +68,22 @@ class ChatSearchTextField extends StatelessWidget {
                     ),
                   ),
                 ),
-                onTap: onDown,
               ),
             ],
-            const SizedBox(width: 8.0,),
+            const SizedBox(
+              width: 8.0,
+            ),
           ],
         ),
         Row(
           children: [
             InkWell(
-              child: SvgPicture.asset(
-                IconLinks.CLOSE_ICON,
-                height: 28.0,
-                width: 28.0,
-                color: Palette.textBlack50,
-              ),
               onTap: onClose,
+              child: SvgPicture.asset(IconLinks.CLOSE_ICON,
+                  height: 28.0,
+                  width: 28.0,
+                  colorFilter:
+                      ColorFilter.mode(Palette.textBlack50, BlendMode.srcIn)),
             ),
             const SizedBox(width: 16.0),
             Expanded(
@@ -98,12 +99,11 @@ class ChatSearchTextField extends StatelessWidget {
             InkWell(
               onTap: () =>
                   onFieldSubmitted?.call(_searchTextEditingController.text),
-              child: SvgPicture.asset(
-                IconLinks.SEARCH_ICON,
-                height: 28.0,
-                width: 28.0,
-                color: Palette.greenE4A,
-              ),
+              child: SvgPicture.asset(IconLinks.SEARCH_ICON,
+                  height: 28.0,
+                  width: 28.0,
+                  colorFilter:
+                      ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
             ),
           ],
         ),

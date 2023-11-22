@@ -44,7 +44,7 @@ class _OpenUniversityFilterSliderState
 
     return ListView.separated(
         addAutomaticKeepAlives: false,
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         addRepaintBoundaries: false,
         addSemanticIndexes: false,
         clipBehavior: Clip.none,

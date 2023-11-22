@@ -12,31 +12,29 @@ class ServiceBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       width: size.width,
       // margin: const EdgeInsets.symmetric(horizontal: 20.0),
       child: TextButton(
         onPressed: onPressed,
-        child: Text(
-          txt,
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: SizeConfig(context, 16.0).getProportionateScreenHeight,
-          ),
-        ),
         style: TextButton.styleFrom(
           foregroundColor: Colors.black,
           disabledForegroundColor: Colors.black,
-          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 13.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 13.0),
           shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: Colors.grey,
-              width: 1,
-              style: BorderStyle.solid,
-            ),
-            borderRadius: BorderRadius.circular(50),
-          ),
+              side: const BorderSide(
+                color: Colors.grey,
+                width: 1,
+                style: BorderStyle.solid,
+              ),
+              borderRadius: BorderRadius.circular(50)),
+        ),
+        child: Text(
+          txt,
+          style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: SizeConfig(context, 16.0).getProportionateScreenHeight),
         ),
       ),
     );

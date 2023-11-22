@@ -58,13 +58,8 @@ class RemoveParticipantHandler {
 
   void _sendMessage() {
     List<String> participantsNames = users.map((e) => e.name).toList();
-    final messageBody = participantsNames.join(", ") +
-        " " +
-        (participantsNames.length == 1
-            ? myId == users.first.id
-                ? "вышел(ла) из чата"
-                : "удален(а) из чата"
-            : "удалены из чата");
+    final messageBody =
+        "${participantsNames.join(", ")} ${participantsNames.length == 1 ? myId == users.first.id ? "вышел(ла) из чата" : "удален(а) из чата" : "удалены из чата"}";
     final msg = CreateInfoMessage(chat.id, messageBody).call();
     SendMessageHandler([msg], chat).call();
   }

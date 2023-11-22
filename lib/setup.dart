@@ -51,10 +51,9 @@ Future<void> setup() async {
 
   await getIt<LocalNotificationsProvider>().load();
 
-  getIt<BootCubit>()
-    ..onStart = () async {
-      return true;
-    };
+  getIt<BootCubit>().onStart = () async {
+    return true;
+  };
   await getIt<PackageInfoProvider>().load();
   // getIt.registerSingleton<IVideoLinksService>(VideoLinksService());
 }

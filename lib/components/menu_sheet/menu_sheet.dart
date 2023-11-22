@@ -75,48 +75,40 @@ class _MenuSheetState extends State<MenuSheet> {
           Navigator.popAndPushNamed(context, '/news_list',
               arguments: {'filter': 'news'});
         },
-        icon: SvgPicture.asset(
-          IconLinks.NEWS_ICON_LINK,
-          height: 24.0,
-          width: 24.0,
-          color: Palette.greenE4A,
-        ),
+        icon: SvgPicture.asset(IconLinks.NEWS_ICON_LINK,
+            height: 24.0,
+            width: 24.0,
+            colorFilter: ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
       ),
       MenuSheetItem(
         title: strings.events,
         onTap: () {
           Navigator.popAndPushNamed(context, '/events_list');
         },
-        icon: SvgPicture.asset(
-          IconLinks.CALENDAR_ICON_LINK,
-          height: 24.0,
-          width: 24.0,
-          color: Palette.greenE4A,
-        ),
+        icon: SvgPicture.asset(IconLinks.CALENDAR_ICON_LINK,
+            height: 24.0,
+            width: 24.0,
+            colorFilter: ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
       ),
       MenuSheetItem(
         title: strings.announcements,
         onTap: () {
           Navigator.popAndPushNamed(context, '/announcements_list');
         },
-        icon: SvgPicture.asset(
-          IconLinks.ANNOUNCEMENT_ICON_LINK,
-          height: 24.0,
-          width: 24.0,
-          color: Palette.greenE4A,
-        ),
+        icon: SvgPicture.asset(IconLinks.ANNOUNCEMENT_ICON_LINK,
+            height: 24.0,
+            width: 24.0,
+            colorFilter: ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
       ),
       MenuSheetItem(
         title: strings.myData,
         onTap: () {
           Navigator.popAndPushNamed(context, '/personal');
         },
-        icon: SvgPicture.asset(
-          IconLinks.USER_ICON_LINK,
-          height: 24.0,
-          width: 24.0,
-          color: Palette.greenE4A,
-        ),
+        icon: SvgPicture.asset(IconLinks.USER_ICON_LINK,
+            height: 24.0,
+            width: 24.0,
+            colorFilter: ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
       ),
       MenuSheetItem(
         title: strings.signOff,
@@ -128,12 +120,10 @@ class _MenuSheetState extends State<MenuSheet> {
             ),
           );
         },
-        icon: SvgPicture.asset(
-          IconLinks.LOGOUT_ICON_LINK,
-          height: 24.0,
-          width: 24.0,
-          color: Palette.greenE4A,
-        ),
+        icon: SvgPicture.asset(IconLinks.LOGOUT_ICON_LINK,
+            height: 24.0,
+            width: 24.0,
+            colorFilter: ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
         withBottomDivider: false,
       ),
     ];
@@ -145,7 +135,7 @@ class ExitAlertDialog extends StatefulWidget {
   const ExitAlertDialog({Key? key, required this.onPressed}) : super(key: key);
 
   @override
-  _ExitAlertDialogState createState() => _ExitAlertDialogState();
+  State<ExitAlertDialog> createState() => _ExitAlertDialogState();
 }
 
 class _ExitAlertDialogState extends State<ExitAlertDialog> {
@@ -172,27 +162,27 @@ class _ExitAlertDialogState extends State<ExitAlertDialog> {
       ),
       actions: [
         TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.red,
+          ),
           child: Text(
             localizationInstance.cancel,
             style: TextStyle(
               fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
             ),
           ),
-          onPressed: () => Navigator.of(context).pop(),
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.red,
-          ),
         ),
         TextButton(
+          onPressed: widget.onPressed,
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.blue,
+          ),
           child: Text(
             localizationInstance.yes,
             style: TextStyle(
               fontSize: SizeConfig(context, 13).getProportionateScreenHeight,
             ),
-          ),
-          onPressed: widget.onPressed,
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.blue,
           ),
         ),
       ],
@@ -208,7 +198,7 @@ Future<void> _exit(BuildContext context) async {
   getIt<MessengerProvider>().dispose();
   getIt<CachedChatsCubit>().clean();
   Token.deleteTokens();
-  FlutterSecureStorage().deleteAll();
+  const FlutterSecureStorage().deleteAll();
   // OneSignal.shared.removeExternalUserId();
   OneSignal.logout();
   Navigator.of(context).popUntil((route) => route.isFirst);

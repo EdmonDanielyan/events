@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
-import 'package:ink_mobile/components/cached_image/cached_avatar.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
@@ -13,7 +12,7 @@ class UserMainInfo extends StatefulWidget {
   final UserProfileData user;
   final bool showWriteButton;
   final bool? isOtherUser;
-  UserMainInfo({
+  const UserMainInfo({
     Key? key,
     required this.user,
     this.showWriteButton = false,
@@ -50,7 +49,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       sliver: SliverToBoxAdapter(
-        child: Container(
+        child: SizedBox(
           // padding: EdgeInsets.only(bottom: 24.0),
           width: size.width,
           child: Column(
@@ -157,7 +156,7 @@ class _UserMainInfoState extends State<UserMainInfo> {
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 14.0),
           decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(16),
               bottomRight: Radius.circular(16),
             ),
@@ -180,12 +179,10 @@ class _UserMainInfoState extends State<UserMainInfo> {
                   ),
                 ),
               ),
-              SvgPicture.asset(
-                iconLink,
-                height: 24.0,
-                width: 24.0,
-                color: iconColor,
-              )
+              SvgPicture.asset(iconLink,
+                  height: 24.0,
+                  width: 24.0,
+                  colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn))
             ],
           ),
         ),

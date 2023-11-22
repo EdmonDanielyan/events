@@ -10,7 +10,7 @@ import 'package:dio/dio.dart';
 import '../../setup.dart';
 
 class GetAutofill {
-  Autofill autofill = Autofill();
+  Autofill autofill = const Autofill();
 
   Future<void> load() async {
     try {

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/core/cubit/bool_cubit/bool_cubit.dart';
 import 'package:ink_mobile/core/cubit/bool_cubit/bool_state.dart';
-import 'package:ink_mobile/core/handlers/AuthHandler.dart';
+import 'package:ink_mobile/core/handlers/auth_handler.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/token.dart';
@@ -27,7 +27,7 @@ class CheckPinCodeScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CheckPinCodeScreenState createState() => _CheckPinCodeScreenState();
+  State<CheckPinCodeScreen> createState() => _CheckPinCodeScreenState();
 }
 
 class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
@@ -145,16 +145,15 @@ class _CheckPinCodeScreenState extends State<CheckPinCodeScreen> with Loggable {
                           builder: (context, state) {
                             if (state.enable) {
                               return IconButton(
-                                onPressed: _showBiometrics,
-                                icon: Icon(
-                                  availableBios.contains(BiometricType.face)
-                                      ? CupertinoIcons.lock_circle
-                                      : Icons.fingerprint,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                iconSize: SizeConfig(context, 35.0)
-                                    .getProportionateScreenHeight,
-                              );
+                                  onPressed: _showBiometrics,
+                                  icon: Icon(
+                                    availableBios.contains(BiometricType.face)
+                                        ? CupertinoIcons.lock_circle
+                                        : Icons.fingerprint,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                  iconSize: SizeConfig(context, 35.0)
+                                      .getProportionateScreenHeight);
                             }
 
                             return const SizedBox.shrink();

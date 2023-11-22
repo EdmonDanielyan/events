@@ -26,7 +26,7 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
 
   List<int> hideIds = [];
 
-  Set<void Function(List<User>)> _functions = {};
+  final Set<void Function(List<User>)> _functions = {};
 
   void addListener(void Function(List<User>) func) {
     _functions.add(func);

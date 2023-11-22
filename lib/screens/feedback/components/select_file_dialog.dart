@@ -11,7 +11,7 @@ class SelectFileDialog extends StatefulWidget {
       : super(key: key);
 
   @override
-  _SelectFileDialogState createState() => _SelectFileDialogState();
+  State<SelectFileDialog> createState() => _SelectFileDialogState();
 }
 
 class _SelectFileDialogState extends State<SelectFileDialog> {
@@ -49,7 +49,7 @@ class _SelectFileDialogState extends State<SelectFileDialog> {
               text: _strings.allFiles,
               onTap: widget.onFiles,
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 50)
           ],
         ),
       ),
@@ -71,18 +71,13 @@ class _SelectFileDialogState extends State<SelectFileDialog> {
             icon,
             const SizedBox(width: 10.0),
             Expanded(
-                child: Text(
-              text,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize:
-                    SizeConfig(context, 13.0).getProportionateScreenHeight,
-              ),
-            )),
-            Icon(
-              Icons.chevron_right,
-              size: SizeConfig(context, 20.0).getProportionateScreenHeight,
-            ),
+                child: Text(text,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: SizeConfig(context, 13.0)
+                            .getProportionateScreenHeight))),
+            Icon(Icons.chevron_right,
+                size: SizeConfig(context, 20.0).getProportionateScreenHeight),
           ],
         ),
       ),

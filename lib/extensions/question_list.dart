@@ -1,5 +1,3 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
-
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/models/feedback/management_answer.dart';
@@ -12,10 +10,10 @@ extension QuestionsListExt on Response<QuestionsList> {
     try {
       List<ManagementAnswer> items = [];
 //migration
-      this.data?.data?.forEach((item) {
+      data?.data?.forEach((item) {
         items.add(
           ManagementAnswer(
-              id: item.id ?? 0 ,
+              id: item.id ?? 0,
               responsible: item.responsible ?? '',
               question: item.question ?? '',
               answer: item.answer ?? ''),

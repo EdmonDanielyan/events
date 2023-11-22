@@ -26,11 +26,12 @@ class ErrorResponse {
       this.code = '',
       this.responseData});
 
+  @override
   String toString() {
     return responseData.toString();
   }
 
-  factory ErrorResponse.fromException(DioError error) {
+  factory ErrorResponse.fromException(DioException error) {
     dynamic response = error.response?.data;
     try {
       return ErrorResponse(

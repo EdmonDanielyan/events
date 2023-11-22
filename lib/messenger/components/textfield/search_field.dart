@@ -50,11 +50,7 @@ class _SearchFieldState extends State<SearchField> {
       child: Platform.isIOS
           ? Container(
               padding: const EdgeInsets.only(
-                left: 11.0,
-                right: 28.0,
-                top: 5.0,
-                bottom: 5.0,
-              ),
+                  left: 11.0, right: 28.0, top: 5.0, bottom: 5.0),
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(50)),
               ),
@@ -67,9 +63,8 @@ class _SearchFieldState extends State<SearchField> {
                       focusNode: _textFieldFocus,
                       placeholder: _hintText ?? widget.hint,
                       style: TextStyle(
-                        fontSize: SizeConfig(context, 13.0)
-                            .getProportionateScreenHeight,
-                      ),
+                          fontSize: SizeConfig(context, 13.0)
+                              .getProportionateScreenHeight),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0),
                         color: Colors.transparent,
@@ -77,14 +72,14 @@ class _SearchFieldState extends State<SearchField> {
                     ),
                   ),
                   const SizedBox(width: 10.0),
-                  SvgPicture.asset(
-                    SvgPictures.search,
-                    color: Colors.grey[700],
-                    width:
-                        SizeConfig(context, 18.0).getProportionateScreenHeight,
-                    height:
-                        SizeConfig(context, 18.0).getProportionateScreenHeight,
-                  ),
+                  SvgPicture.asset(SvgPictures.search,
+                      colorFilter: const ColorFilter.mode(
+                          Color(0xFF616161), BlendMode.srcIn),
+                      // color: Colors.grey[700],
+                      width: SizeConfig(context, 18.0)
+                          .getProportionateScreenHeight,
+                      height: SizeConfig(context, 18.0)
+                          .getProportionateScreenHeight)
                 ],
               ),
             )
@@ -101,12 +96,14 @@ class _SearchFieldState extends State<SearchField> {
                     const BoxConstraints(minHeight: 20, minWidth: 20),
                 suffixIcon: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: SvgPicture.asset(
-                    SvgPictures.search,
-                    color: Colors.grey[700],
-                    width: SizeConfig(context, 20).getProportionateScreenWidth,
-                    height: SizeConfig(context, 20).getProportionateScreenHeight,
-                  ),
+                  child: SvgPicture.asset(SvgPictures.search,
+                      colorFilter: const ColorFilter.mode(
+                          Color(0xFF616161), BlendMode.srcIn),
+                      // color: Colors.grey[700],
+                      width:
+                          SizeConfig(context, 20).getProportionateScreenWidth,
+                      height:
+                          SizeConfig(context, 20).getProportionateScreenHeight),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide.none,
@@ -117,9 +114,8 @@ class _SearchFieldState extends State<SearchField> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
                 border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
-                  borderSide: BorderSide(color: Colors.grey, width: 15.0),
-                ),
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    borderSide: BorderSide(color: Colors.grey, width: 15.0)),
               ),
             ),
     );

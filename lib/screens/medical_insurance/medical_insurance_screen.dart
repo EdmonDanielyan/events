@@ -20,7 +20,7 @@ class MedicalInsuranceScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MedicalInsuranceScreenState createState() => _MedicalInsuranceScreenState();
+  State<MedicalInsuranceScreen> createState() => _MedicalInsuranceScreenState();
 }
 
 class _MedicalInsuranceScreenState extends State<MedicalInsuranceScreen>
@@ -37,7 +37,7 @@ class _MedicalInsuranceScreenState extends State<MedicalInsuranceScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Head(),
+            const Head(),
             MedicalInsuranceForm(
               sendMedicalInsFormCubit: widget.sendMedicalInsFormCubit,
               selectFieldCubit: widget.selectFieldCubit,

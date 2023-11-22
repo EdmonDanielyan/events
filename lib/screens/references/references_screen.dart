@@ -19,7 +19,7 @@ class ReferencesScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ReferencesScreenState createState() => _ReferencesScreenState();
+  State<ReferencesScreen> createState() => _ReferencesScreenState();
 }
 
 class _ReferencesScreenState extends State<ReferencesScreen>
@@ -39,16 +39,14 @@ class _ReferencesScreenState extends State<ReferencesScreen>
             children: [
               Container(
                 padding: const EdgeInsets.only(top: 20, left: 25),
-                child: Text(
-                  _strings.orderInquiry,
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
+                child: Text(_strings.orderInquiry,
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold)),
               ),
               Body(
-                isTablet: isTablet,
-                referencesPageCubit: widget.referencesPageCubit,
-                sendReferenceFormCubit: widget.sendReferenceFormCubit,
-              ),
+                  isTablet: isTablet,
+                  referencesPageCubit: widget.referencesPageCubit,
+                  sendReferenceFormCubit: widget.sendReferenceFormCubit),
             ],
           ),
         );

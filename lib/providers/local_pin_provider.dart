@@ -9,7 +9,7 @@ const _tries = 5;
 
 @LazySingleton()
 class LocalPinProvider {
-  FlutterSecureStorage _flutterSecureStorage = FlutterSecureStorage(
+  final FlutterSecureStorage _flutterSecureStorage = const FlutterSecureStorage(
     aOptions: AndroidOptions(
       encryptedSharedPreferences: true,
     ),

@@ -177,24 +177,21 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   context, selectedMessagesState, chat);
                             }
                           : null,
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                        size: SizeConfig(context, 20)
-                            .getProportionateScreenHeight,
-                      ),
+                      icon: Icon(Icons.delete,
+                          color: Colors.red,
+                          size: SizeConfig(context, 20)
+                              .getProportionateScreenHeight),
                     ),
                   ],
                   IconButton(
                     onPressed: () => searchMessagesCubit.enable(true),
-                    icon: SvgPicture.asset(
-                      IconLinks.SEARCH_ICON,
-                      color: Palette.white,
-                      width:
-                          SizeConfig(context, 17).getProportionateScreenHeight,
-                      height:
-                          SizeConfig(context, 17).getProportionateScreenHeight,
-                    ),
+                    icon: SvgPicture.asset(IconLinks.SEARCH_ICON,
+                        colorFilter:
+                            ColorFilter.mode(Palette.white, BlendMode.srcIn),
+                        width: SizeConfig(context, 17)
+                            .getProportionateScreenHeight,
+                        height: SizeConfig(context, 17)
+                            .getProportionateScreenHeight),
                   ),
                 ],
               );

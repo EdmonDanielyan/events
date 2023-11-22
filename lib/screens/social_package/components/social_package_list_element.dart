@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/routes/routes.dart';
@@ -26,7 +25,7 @@ class SocialPackageListElement extends StatelessWidget {
             arguments: {"id": id, "app_bar_title": title});
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Row(
           children: [
             iconUrl.isNotEmpty

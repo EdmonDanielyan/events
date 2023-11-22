@@ -5,7 +5,7 @@ class Absence {
   DateTime? from;
   DateTime? to;
 
-  String _businessTripString = "Командировка";
+  final String _businessTripString = "Командировка";
 
   Absence({
     required this.reason,
@@ -35,8 +35,7 @@ class Absence {
 
   Map<String, dynamic> toJson() => toMap();
 
-  bool get isBusinessTrip => this.reason == _businessTripString;
+  bool get isBusinessTrip => reason == _businessTripString;
 
-  bool get isNotEmpty =>
-      this.reason != null && this.from != null && this.to != null;
+  bool get isNotEmpty => reason != null && from != null && to != null;
 }

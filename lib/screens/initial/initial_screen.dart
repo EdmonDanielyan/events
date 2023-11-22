@@ -92,7 +92,7 @@ class _InitPageState extends State<InitPage> {
     getIt<MessengerProvider>().dispose();
     getIt<CachedChatsCubit>().clean();
     Token.deleteTokens();
-    FlutterSecureStorage().deleteAll();
+    const FlutterSecureStorage().deleteAll();
     // migration
     // OneSignal.shared.removeExternalUserId();
     OneSignal.logout();

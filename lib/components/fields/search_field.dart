@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/components/fields/default_text_field.dart';
@@ -16,7 +15,7 @@ class SearchField extends StatefulWidget {
 }
 
 class _SearchFieldState extends State<SearchField> {
-  FocusNode _textFieldFocus = FocusNode();
+  final FocusNode _textFieldFocus = FocusNode();
   String _hintText = "";
 
   @override
@@ -39,7 +38,6 @@ class _SearchFieldState extends State<SearchField> {
 
   @override
   Widget build(BuildContext context) {
-
     return DefaultTextField(
       focusNode: _textFieldFocus,
       hint: _hintText,
@@ -48,7 +46,7 @@ class _SearchFieldState extends State<SearchField> {
         SvgPictures.search,
         width: 20.0,
         height: 20.0,
-        color: Palette.textBlack,
+        colorFilter: ColorFilter.mode(Palette.textBlack, BlendMode.srcIn),
       ),
     );
   }

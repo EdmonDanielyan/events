@@ -1,6 +1,3 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
-
-import 'package:dio/src/response.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/providers/main_api.dart';
 import 'package:ink_mobile/setup.dart';
@@ -10,6 +7,7 @@ import 'dependency.dart';
 
 @injectable
 class NewsDetailNetworkRequest extends NewsDetailRequestDependency {
+  @override
   int? newsId;
   NewsDetailNetworkRequest({@factoryParam required this.newsId})
       : assert(newsId != null);
@@ -18,6 +16,6 @@ class NewsDetailNetworkRequest extends NewsDetailRequestDependency {
   Future<Response<GetNewsById>> call() async {
     NewsApi newsApi = getIt<MainApiProvider>().getNewsApi();
     //TODO: clean code
-    return await newsApi.newsIdGet(id : newsId ?? 1);
+    return await newsApi.newsIdGet(id: newsId ?? 1);
   }
 }

@@ -31,7 +31,7 @@ class SwipeTo extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SwipeToState createState() => _SwipeToState();
+  State<SwipeTo> createState() => _SwipeToState();
 }
 
 class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
@@ -50,17 +50,13 @@ class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
       duration: widget.animationDuration,
     );
     _animation = Tween<Offset>(
-      begin: const Offset(0.0, 0.0),
-      end: const Offset(0.0, 0.0),
-    ).animate(
+            begin: const Offset(0.0, 0.0), end: const Offset(0.0, 0.0))
+        .animate(
       CurvedAnimation(curve: Curves.decelerate, parent: _controller),
     );
-    _leftIconAnimation = _controller.drive(
-      Tween<double>(begin: 0.0, end: 0.0),
-    );
-    _rightIconAnimation = _controller.drive(
-      Tween<double>(begin: 0.0, end: 0.0),
-    );
+    _leftIconAnimation = _controller.drive(Tween<double>(begin: 0.0, end: 0.0));
+    _rightIconAnimation =
+        _controller.drive(Tween<double>(begin: 0.0, end: 0.0));
 
     _controller.addListener(() {
       setState(() {});
@@ -75,20 +71,17 @@ class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
 
   void _runAnimation({required bool onRight}) {
     _animation = Tween(
-      begin: const Offset(0.0, 0.0),
-      end: Offset(onRight ? widget.offsetDx : -widget.offsetDx, 0.0),
-    ).animate(
-      CurvedAnimation(curve: Curves.decelerate, parent: _controller),
-    );
+            begin: const Offset(0.0, 0.0),
+            end: Offset(onRight ? widget.offsetDx : -widget.offsetDx, 0.0))
+        .animate(
+            CurvedAnimation(curve: Curves.decelerate, parent: _controller));
 
     if (onRight) {
       _leftIconAnimation = Tween(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(curve: Curves.decelerate, parent: _controller),
-      );
+          CurvedAnimation(curve: Curves.decelerate, parent: _controller));
     } else {
       _rightIconAnimation = Tween(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(curve: Curves.decelerate, parent: _controller),
-      );
+          CurvedAnimation(curve: Curves.decelerate, parent: _controller));
     }
 
     _controller.forward().whenComplete(() {

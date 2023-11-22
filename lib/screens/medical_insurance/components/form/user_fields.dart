@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:ink_mobile/components/textfields/service_textfield.dart';
 import 'package:ink_mobile/components/textfields/service_disabled_textfield.dart';
@@ -21,7 +19,7 @@ class MedicalInsuranceFormUserFields extends StatefulWidget {
       : super(key: key);
 
   @override
-  _MedicalInsuranceFormUserFieldsState createState() =>
+  State<MedicalInsuranceFormUserFields> createState() =>
       _MedicalInsuranceFormUserFieldsState();
 }
 
@@ -49,8 +47,12 @@ class _MedicalInsuranceFormUserFieldsState
     widget.entities.email = getAutofill.autofill.email;
 
     // TODO: CHECK
-    organisationController.text = getAutofill.autofill.organisation.isEmpty ? 'ООО "ИНК"': getAutofill.autofill.organisation;
-    widget.entities.organisation = getAutofill.autofill.organisation.isEmpty ? 'ООО "ИНК"': getAutofill.autofill.organisation;
+    organisationController.text = getAutofill.autofill.organisation.isEmpty
+        ? 'ООО "ИНК"'
+        : getAutofill.autofill.organisation;
+    widget.entities.organisation = getAutofill.autofill.organisation.isEmpty
+        ? 'ООО "ИНК"'
+        : getAutofill.autofill.organisation;
 
     if (getAutofill.autofill.birthday.isNotEmpty) {
       final birthday = DateTime.tryParse(getAutofill.autofill.birthday);
@@ -82,15 +84,15 @@ class _MedicalInsuranceFormUserFieldsState
     return Column(
       children: [
         _fioWidget(),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         _birthDate(),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         _positionWidget(),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         _mobilePhoneWidget(),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         _emailWidget(),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         _organisationWidget(),
       ],
     );

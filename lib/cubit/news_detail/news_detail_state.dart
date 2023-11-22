@@ -9,7 +9,7 @@ class NewsDetailState {
   final NewsDetailStateType type;
   final String? errorMessage;
 
-  NewsDetailState({required this.type, this.data, this.errorMessage})
+  const NewsDetailState({required this.type, this.data, this.errorMessage})
       : assert(type != NewsDetailStateType.ERROR || errorMessage != null,
             'errorMessage must not be null in error state');
 }

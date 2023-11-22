@@ -11,7 +11,7 @@ import 'package:ink_mobile/messenger/functions/size_config.dart';
 import '../../../extensions/list_news_item_data.dart';
 
 class NewsCommentInput extends StatelessWidget {
-  NewsCommentInput(
+  const NewsCommentInput(
       {Key? key, required this.newsCommentsCubit, required this.newsBlockCubit})
       : super(key: key);
   static late AppLocalizations _strings;
@@ -79,7 +79,7 @@ class NewsCommentInput extends StatelessWidget {
               onTap: () async {
                 await _onMessageSend(context, newsId);
               },
-              child: Container(
+              child: SizedBox(
                   width: SizeConfig(context, 40).getProportionateScreenWidth,
                   height: SizeConfig(context, 40).getProportionateScreenHeight,
                   child: SvgPicture.asset(SEND_COMMENT_SVG_LINK)),
@@ -118,7 +118,7 @@ class NewsCommentInput extends StatelessWidget {
 
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(errorMessage),
-            duration: Duration(seconds: 1),
+            duration: const Duration(seconds: 1),
           ));
         });
       }

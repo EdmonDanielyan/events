@@ -72,7 +72,8 @@ class _BodyState extends State<Body> {
                       semanticsLabel: 'View Count',
                       height: 16.0,
                       width: 16.0,
-                      color: Palette.textBlack50,
+                      colorFilter: ColorFilter.mode(
+                          Palette.textBlack50, BlendMode.srcIn),
                     ),
                     const SizedBox(width: 4.0),
                     Text(
@@ -104,7 +105,7 @@ class _BodyState extends State<Body> {
                 borderColor: Palette.greenE4A,
                 textColor: Palette.greenE4A,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
             ],
           ),
         );

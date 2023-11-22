@@ -7,7 +7,6 @@ import 'package:ink_mobile/cubit/auth/auth_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/screens/auth/auth_screen.dart';
 
-
 class AuthPasswordField extends StatefulWidget {
   final AuthCubit authCubit;
   final bool hasError;
@@ -18,7 +17,7 @@ class AuthPasswordField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AuthPasswordFieldState createState() => _AuthPasswordFieldState();
+  State<AuthPasswordField> createState() => _AuthPasswordFieldState();
 }
 
 class _AuthPasswordFieldState extends State<AuthPasswordField> {
@@ -50,29 +49,34 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
         errorStyle: FontStyles.rubikP3Medium(color: Palette.redF1C),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: widget.hasError ? Palette.redF1C : Palette.text20Grey),
+          borderSide: BorderSide(
+              color: widget.hasError ? Palette.redF1C : Palette.text20Grey),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: widget.hasError ? Palette.redF1C : Palette.text20Grey),
+          borderSide: BorderSide(
+              color: widget.hasError ? Palette.redF1C : Palette.text20Grey),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: widget.hasError ? Palette.redF1C : Palette.text20Grey),
+          borderSide: BorderSide(
+              color: widget.hasError ? Palette.redF1C : Palette.text20Grey),
         ),
         fillColor: Colors.white,
         filled: true,
         suffixIcon: GestureDetector(
+          onTap: _toggle,
           child: Container(
-            padding: EdgeInsets.only(top: 16, bottom: 16, right: 16),
+            padding: const EdgeInsets.only(top: 16, bottom: 16, right: 16),
             child: SvgPicture.asset(
-              _obscureText ? IconLinks.CLOSED_EYE_ICON_LINK : IconLinks.OPENED_EYE_ICON_LINK,
+              _obscureText
+                  ? IconLinks.CLOSED_EYE_ICON_LINK
+                  : IconLinks.OPENED_EYE_ICON_LINK,
               width: 20.0,
               height: 20.0,
-              color: Palette.greenE4A,
+              colorFilter: ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn),
             ),
           ),
-          onTap: _toggle,
         ),
       ),
     );

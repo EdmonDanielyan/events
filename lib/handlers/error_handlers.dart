@@ -8,6 +8,7 @@ abstract class ErrorHandler {
 }
 
 class AuthErrorHandler implements ErrorHandler {
+  @override
   void handle(CustomException error, StackTrace stackTrace) {
     switch (error.runtimeType) {
       case InvalidRefreshTokenException:
@@ -21,6 +22,7 @@ class AuthErrorHandler implements ErrorHandler {
 }
 
 class NoConnectionHandler implements ErrorHandler {
+  @override
   void handle(CustomException error, StackTrace stackTrace) {
     showErrorDialog(error.message);
   }

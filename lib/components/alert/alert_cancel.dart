@@ -31,27 +31,27 @@ class CustomAlertCancel {
         ),
         actions: [
           TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.red,
+            ),
             child: Text(
               localizationInstance.cancel,
               style: TextStyle(
                 fontSize: fontSize,
               ),
             ),
-            onPressed: () => Navigator.of(context).pop(),
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.red,
-            ),
           ),
           TextButton(
+            onPressed: onSubmit,
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.blue,
+            ),
             child: Text(
               submitTxt ?? localizationInstance.yes,
               style: TextStyle(
                 fontSize: fontSize,
               ),
-            ),
-            onPressed: onSubmit,
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.blue,
             ),
           ),
         ],

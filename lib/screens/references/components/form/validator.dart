@@ -23,7 +23,7 @@ class ReferencesFormValidator {
   }
 
   String? validateFiles(List<File> files) {
-    if (files.length < 1 && referencesItem.fields.files) {
+    if (files.isEmpty && referencesItem.fields.files) {
       return "${strings.choose} ${strings.files.toLowerCase()}";
     }
     return null;

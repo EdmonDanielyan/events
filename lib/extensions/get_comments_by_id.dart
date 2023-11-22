@@ -1,5 +1,3 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
-
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/models/comment_data.dart';
 import 'package:openapi/openapi.dart';
@@ -8,10 +6,10 @@ extension GetCommentsByIdExt on Response<GetCommentsById> {
   List<CommentData> mapResponse(int id) {
     List<CommentData> comments = [];
 
-    this.data?.data?.forEach((comment) {
+    data?.data?.forEach((comment) {
       List<CommentData> commentsChildren = [];
 
-      if (comment.children!.length > 0) {
+      if (comment.children!.isNotEmpty) {
         comment.children?.forEach((commentChildren) {
           commentsChildren.add(CommentData(
               newsId: id,

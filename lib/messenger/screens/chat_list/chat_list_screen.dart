@@ -39,7 +39,7 @@ class ChatList extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ChatListState createState() => _ChatListState();
+  State<ChatList> createState() => _ChatListState();
 }
 
 class _ChatListState extends State<ChatList> {
@@ -143,7 +143,7 @@ class _ChatListState extends State<ChatList> {
                         _chats = _chats.toSet().toList();
                         switch (state.type) {
                           case CachedChatsStateType.LOADING:
-                            return InkPageLoader();
+                            return const InkPageLoader();
                           case CachedChatsStateType.LOADED:
                             if (_chats.isEmpty) {
                               return RefreshIndicator(
@@ -151,7 +151,8 @@ class _ChatListState extends State<ChatList> {
                                 child: Center(
                                   child: ListView(
                                     shrinkWrap: true,
-                                    physics: AlwaysScrollableScrollPhysics(),
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
                                     children: [
                                       EmptyChats(
                                           title: isSearchNotEmpty
@@ -179,7 +180,7 @@ class _ChatListState extends State<ChatList> {
                             return RefreshIndicator(
                               onRefresh: cubit.fetchChats,
                               child: ScrollablePositionedList.builder(
-                                physics: AlwaysScrollableScrollPhysics(),
+                                physics: const AlwaysScrollableScrollPhysics(),
                                 itemCount: _chats.length,
                                 itemScrollController: _controller,
                                 itemPositionsListener: itemPositionsListener,
@@ -188,7 +189,7 @@ class _ChatListState extends State<ChatList> {
                                   _currentChat.sortMessagesByTime();
 
                                   final _unreadMsgs =
-                                  cubit.notReadMsgsOfChat(_currentChat.id);
+                                      cubit.notReadMsgsOfChat(_currentChat.id);
 
                                   return ChatCardWrapper(
                                     unreadMsgsCount: _unreadMsgs,
@@ -197,8 +198,8 @@ class _ChatListState extends State<ChatList> {
                                     chat: _currentChat,
                                     onDismissed: widget.onDismissed != null
                                         ? (_) {
-                                      widget.onDismissed!(_currentChat);
-                                    }
+                                            widget.onDismissed!(_currentChat);
+                                          }
                                         : null,
                                     onTap: widget.onTap != null
                                         ? () => widget.onTap!(_currentChat)

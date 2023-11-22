@@ -9,7 +9,7 @@ class PersonnelMovement extends StatelessWidget {
   final PersonnelMovementLabel? label;
   final MovementsData movement;
 
-  PersonnelMovement({required this.movement, Key? key, this.label})
+  const PersonnelMovement({required this.movement, Key? key, this.label})
       : super(key: key);
 
   @override
@@ -19,7 +19,7 @@ class PersonnelMovement extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(top: 20),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           border: Border(
         top: BorderSide(width: 1, color: Color(0xFFE5E5E5)),
         bottom: BorderSide(width: 1, color: Color(0xFFE5E5E5)),
@@ -237,7 +237,7 @@ class PersonnelMovement extends StatelessWidget {
         ? Container(
             decoration: BoxDecoration(
               color: label!.background,
-              borderRadius: BorderRadius.all(Radius.circular(80)),
+              borderRadius: const BorderRadius.all(Radius.circular(80)),
             ),
             margin: const EdgeInsets.only(left: 10),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),

@@ -25,7 +25,7 @@ class LearningMaterialsListElement extends StatelessWidget {
         //   child:
         Container(
             width: size.width,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.white,
                 border: Border(bottom: BorderSide(color: Color(0xffe5e5e5)))),
             child: Column(children: [
@@ -48,16 +48,13 @@ class LearningMaterialsListElement extends StatelessWidget {
                       Container(
                           margin: const EdgeInsets.only(top: 8),
                           alignment: Alignment.topLeft,
-                          child: Text(
-                            learningMaterial.title ?? '',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 4,
-                            textAlign: TextAlign.start,
-                          )),
+                          child: Text(learningMaterial.title ?? '',
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                              maxLines: 4,
+                              textAlign: TextAlign.start)),
                       Container(
                           alignment: Alignment.bottomCenter,
                           margin: const EdgeInsets.only(top: 24),

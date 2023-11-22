@@ -18,7 +18,7 @@ import 'package:ink_mobile/extensions/get_search_success.dart';
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit() : super(SearchState(type: SearchStateType.STARTING));
 
-  Debouncer _debouncer = Debouncer(milliseconds: 300);
+  final Debouncer _debouncer = Debouncer(milliseconds: 300);
 
   Future<void> search(String query) async {
     emit(SearchState(type: SearchStateType.LOADING));

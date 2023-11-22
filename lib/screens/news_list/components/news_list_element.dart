@@ -25,9 +25,7 @@ class NewsListElement extends StatelessWidget {
       child: Container(
         width: size.width,
         margin: const EdgeInsets.only(bottom: 15),
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
+        decoration: const BoxDecoration(color: Colors.white),
         child: Column(
           children: [
             Container(
@@ -79,44 +77,43 @@ class NewsListElement extends StatelessWidget {
                     margin: const EdgeInsets.only(top: 16),
                     child: Row(
                       children: [
-                        Container(
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                IconLinks.BARREL_SVG_LINK,
-                                width: 16.0,
-                                height: 16.0,
-                                color: (newsItem.isLiked != null &&
-                                        newsItem.isLiked!)
-                                    ? Palette.greenE4A
-                                    : Palette.textBlack50,
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 4),
-                                child: Text(
-                                  newsItem.likeCount != null
-                                      ? newsItem.likeCount.toString()
-                                      : '0',
-                                  style: FontStyles.rubikP2(
-                                    color: (newsItem.isLiked != null &&
-                                            newsItem.isLiked!)
-                                        ? Palette.greenE4A
-                                        : Palette.textBlack50,
-                                  ),
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              IconLinks.BARREL_SVG_LINK,
+                              width: 16.0,
+                              height: 16.0,
+                              color: (newsItem.isLiked != null &&
+                                      newsItem.isLiked!)
+                                  ? Palette.greenE4A
+                                  : Palette.textBlack50,
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 4),
+                              child: Text(
+                                newsItem.likeCount != null
+                                    ? newsItem.likeCount.toString()
+                                    : '0',
+                                style: FontStyles.rubikP2(
+                                  color: (newsItem.isLiked != null &&
+                                          newsItem.isLiked!)
+                                      ? Palette.greenE4A
+                                      : Palette.textBlack50,
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                         Container(
-                          margin:const EdgeInsets.only(left: 24),
+                          margin: const EdgeInsets.only(left: 24),
                           child: Row(
                             children: [
                               SvgPicture.asset(
                                 IconLinks.COMMENT_ICON_LINK,
                                 width: 16.0,
                                 height: 16.0,
-                                color: Palette.textBlack50,
+                                colorFilter: ColorFilter.mode(
+                                    Palette.textBlack50, BlendMode.srcIn),
                               ),
                               Container(
                                 margin: const EdgeInsets.only(left: 4),
@@ -153,7 +150,8 @@ class NewsListElement extends StatelessWidget {
                                     IconLinks.OPENED_EYE_ICON_LINK,
                                     width: 16.0,
                                     height: 16.0,
-                                    color: Palette.textBlack50,
+                                    colorFilter: ColorFilter.mode(
+                                        Palette.textBlack50, BlendMode.srcIn),
                                   ),
                                   Container(
                                     margin: const EdgeInsets.only(left: 4),

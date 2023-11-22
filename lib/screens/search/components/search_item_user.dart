@@ -57,12 +57,11 @@ class SearchItemUser extends StatelessWidget {
                     if (user.workPosition.isNotEmpty) ...[
                       const SizedBox(height: 7.0),
                       HighlightText(
-                        txt: user.workPosition,
-                        highlightTxt: query,
-                        textStyle:
-                            FontStyles.rubikP3(color: Palette.textBlack50),
-                        maxLines: 4,
-                      ),
+                          txt: user.workPosition,
+                          highlightTxt: query,
+                          textStyle:
+                              FontStyles.rubikP3(color: Palette.textBlack50),
+                          maxLines: 4),
                     ],
                   ],
                 ),
@@ -71,12 +70,9 @@ class SearchItemUser extends StatelessWidget {
             if (user.birthday != null &&
                 DateOnlyCompare()
                     .isSameDateWithoutYear(user.birthday!, DateTime.now()))
-              Padding(
-                padding: const EdgeInsets.only(left: 12.0),
-                child: BirthdayCongratulate(
-                  height: 44.0,
-                  width: 44.0,
-                ),
+              const Padding(
+                padding: EdgeInsets.only(left: 12.0),
+                child: BirthdayCongratulate(height: 44.0, width: 44.0),
               ),
           ],
         ),

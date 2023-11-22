@@ -6,7 +6,7 @@ import 'package:xxtea/xxtea.dart';
 
 class DeepLinkHandler {
   static BuildContext? currentContext;
-  static final logger = new Logger('DEEPLINK-NAV');
+  static final logger = Logger('DEEPLINK-NAV');
 
   static void catchLink(String url) {
     if (currentContext != null) {
@@ -31,7 +31,7 @@ class DeepLinkHandler {
               int.parse(pathParts.elementAt(1)),
             );
             break;
-          } else
+          } else {
             switch (pathParts.elementAt(1)) {
               TODO: // Добавить id объявления на беке
               case "ads":
@@ -100,6 +100,7 @@ class DeepLinkHandler {
                 NavigationMethods.backToMainScreen(currentContext!);
                 break;
             }
+          }
         }
         break;
       // Волонтерское движеие

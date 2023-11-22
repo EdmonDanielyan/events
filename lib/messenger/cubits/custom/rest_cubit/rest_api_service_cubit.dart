@@ -25,7 +25,7 @@ class RestApiServiceCubit<T, K> extends Cubit<RestApiServiceState<T, K?>> {
       return response;
     } catch (e) {
       ErrorApiResponse? response;
-      if (e is DioError) {
+      if (e is DioException) {
         final res = (e).response;
 
         if (res?.data != null && res?.data is Map<String, dynamic>) {

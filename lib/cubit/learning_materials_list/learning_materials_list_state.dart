@@ -9,7 +9,8 @@ class LearningMaterialsListState {
   final LearningMaterialsListStateType type;
   final String? errorMessage;
 
-  LearningMaterialsListState({required this.type, this.data, this.errorMessage})
+  const LearningMaterialsListState(
+      {required this.type, this.data, this.errorMessage})
       : assert(
             type != LearningMaterialsListStateType.ERROR ||
                 errorMessage != null,

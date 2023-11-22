@@ -60,7 +60,7 @@ class ChatScreenOpener {
   void _onMessageDelete(
       BuildContext context, List<Message> messages, Chat chat) {
     if (messages.length == 1) {
-      Future.delayed(Duration(milliseconds: 200), () {
+      Future.delayed(const Duration(milliseconds: 200), () {
         CustomAlertCancel(
           context,
           title: localizationInstance.delete,

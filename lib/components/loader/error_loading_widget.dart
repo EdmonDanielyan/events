@@ -11,10 +11,7 @@ class ErrorLoadingWidget extends StatelessWidget {
       padding: const EdgeInsets.all(15.0),
       child: Text(
         errorMsg,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16.0,
-        ),
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
       ),
     );
   }

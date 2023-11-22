@@ -20,7 +20,7 @@ class NewsListScreen extends StatelessWidget {
         title: _strings.news,
       ),
       body: Body(cubit: newsListCubit),
-      bottomNavigationBar: NewBottomNavBar(showActive: false),
+      bottomNavigationBar: const NewBottomNavBar(showActive: false),
     );
   }
 }

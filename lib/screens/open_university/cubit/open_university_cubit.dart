@@ -9,7 +9,8 @@ import 'open_university_state.dart';
 @injectable
 class OpenUniversityCubit extends Cubit<OpenUniversityState> {
   OpenUniversityCubit()
-      : super(OpenUniversityState(type: OpenUniversityStateType.ABOUT_PROJECT));
+      : super(const OpenUniversityState(
+            type: OpenUniversityStateType.ABOUT_PROJECT));
 
   Future<void> load(OpenUniversityFilterCodes code) async {
     try {
@@ -40,7 +41,8 @@ class OpenUniversityCubit extends Cubit<OpenUniversityState> {
             break;
           }
       }
-    } on DioError catch (_) {} on Exception catch (_) {}
+    } on DioException catch (_) {
+    } on Exception catch (_) {}
   }
 
   void _emitState({required OpenUniversityStateType type, dynamic data}) {

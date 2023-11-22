@@ -15,7 +15,7 @@ import 'package:video_player/video_player.dart';
 // Проблема в том что в генераторе тип BuitList<String?>, из-за этого не получается привести к List<String>?
 // Идея: накатить CustomBuilder как в core/builder, но пока непонятно как это сделать, в т.ч. из-за сгенеренной апи
 // но в кажется нужно туда копать и решение найдется
-// 
+//
 class Header extends StatefulWidget {
   final List<String?>? imageLinks;
   final List<String?>? videoLinks;
@@ -23,14 +23,13 @@ class Header extends StatefulWidget {
   const Header({Key? key, this.imageLinks, this.videoLinks}) : super(key: key);
 
   @override
-  _HeaderState createState() => _HeaderState();
+  State<Header> createState() => _HeaderState();
 }
 
 class _HeaderState extends State<Header> {
   List<Widget> videoWidgets = [];
   // List<BetterPlayerController> betterPlayerControllers = [];
-    List<ChewieController> betterPlayerControllers = [];
-
+  List<ChewieController> betterPlayerControllers = [];
 
   @override
   void initState() {
@@ -55,29 +54,29 @@ class _HeaderState extends State<Header> {
         //   videoWidgets.add(
         //     CustomVideoPlayer(controller: _controller),
         //   );
-             if (link!.isNotEmpty && link.contains("mp4")) {
-                final videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(link));
+        if (link!.isNotEmpty && link.contains("mp4")) {
+          final videoPlayerController =
+              VideoPlayerController.networkUrl(Uri.parse(link));
           // BetterPlayerDataSource betterPlayerDataSource =
           //     BetterPlayerDataSource(BetterPlayerDataSourceType.network, link);
-          final _controller = ChewieController(
-            videoPlayerController: videoPlayerController
-            
-            // BetterPlayerConfiguration(
-            //   controlsConfiguration: BetterPlayerControlsConfiguration(
-            //     playerTheme: BetterPlayerTheme.material,
-            //     enableSkips: false,
-            //   ),
-            //   fit: BoxFit.contain,
-            // ),
-            // betterPlayerDataSource: betterPlayerDataSource,
-          );
+          final _controller =
+              ChewieController(videoPlayerController: videoPlayerController
+
+                  // BetterPlayerConfiguration(
+                  //   controlsConfiguration: BetterPlayerControlsConfiguration(
+                  //     playerTheme: BetterPlayerTheme.material,
+                  //     enableSkips: false,
+                  //   ),
+                  //   fit: BoxFit.contain,
+                  // ),
+                  // betterPlayerDataSource: betterPlayerDataSource,
+                  );
           betterPlayerControllers.add(_controller);
           videoWidgets.add(
             CustomVideoPlayer(controller: _controller),
           );
         }
-        }
-      
+      }
     }
   }
 
@@ -135,12 +134,12 @@ class _HeaderState extends State<Header> {
           if (slider.length > 1) ...[
             Positioned.fill(
               child: Align(
-                alignment: AlignmentDirectional(0, 0.9),
+                alignment: const AlignmentDirectional(0, 0.9),
                 child: AnimatedSmoothIndicator(
                   activeIndex: _sliderIndex,
                   count: slider.length,
                   effect: ScrollingDotsEffect(
-                    dotColor: Color(0xFFFFFFFF).withOpacity(0.5),
+                    dotColor: const Color(0xFFFFFFFF).withOpacity(0.5),
                     dotWidth: 10,
                     dotHeight: 10,
                     activeDotColor: Colors.white,
@@ -158,45 +157,42 @@ class _HeaderState extends State<Header> {
     List<Widget> imagesContainer = [];
 
     if (images != null && images.isNotEmpty) {
-      images.forEach(
-        (image) {
-          imagesContainer.add(
-            CachedNetworkImage(
-              imageUrl: image!,
-              placeholder: (context, _) {
-                return Shimmer.fromColors(
-                  baseColor: Colors.grey,
-                  highlightColor: Colors.grey.withOpacity(0.2),
-                  child: Container(
-                    height:
-                        SizeConfig(context, 270).getProportionateScreenHeight,
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.black,
+      for (var image in images) {
+        imagesContainer.add(
+          CachedNetworkImage(
+            imageUrl: image!,
+            placeholder: (context, _) {
+              return Shimmer.fromColors(
+                baseColor: Colors.grey,
+                highlightColor: Colors.grey.withOpacity(0.2),
+                child: Container(
+                  height: SizeConfig(context, 270).getProportionateScreenHeight,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.black,
+                ),
+              );
+            },
+            imageBuilder: (context, imageProvider) {
+              return Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.contain,
                   ),
-                );
-              },
-              imageBuilder: (context, imageProvider) {
-                return Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                );
-              },
-              errorWidget: (context, _, __) {
-                return Image.asset(
-                  DEFAULT_PREVIEW_PICTURE_LINK,
-                  fit: BoxFit.fitWidth,
-                  colorBlendMode: BlendMode.darken,
-                  color: Colors.black.withOpacity(0.15),
-                );
-              },
-            ),
-          );
-        },
-      );
+                ),
+              );
+            },
+            errorWidget: (context, _, __) {
+              return Image.asset(
+                DEFAULT_PREVIEW_PICTURE_LINK,
+                fit: BoxFit.fitWidth,
+                colorBlendMode: BlendMode.darken,
+                color: Colors.black.withOpacity(0.15),
+              );
+            },
+          ),
+        );
+      }
     } else {
       imagesContainer.add(
         Image.asset(

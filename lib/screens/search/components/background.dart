@@ -12,8 +12,8 @@ class Background extends StatelessWidget {
       alignment: Alignment.topLeft,
       height: size.height,
       width: size.width,
-      child: SingleChildScrollView(child: child),
       decoration: BoxDecoration(color: Palette.white),
+      child: SingleChildScrollView(child: child),
     );
   }
 }

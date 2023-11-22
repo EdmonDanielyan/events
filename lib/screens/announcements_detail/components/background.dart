@@ -10,8 +10,8 @@ class Background extends StatelessWidget {
     return Container(
       alignment: Alignment.topLeft,
       width: size.width,
+      decoration: const BoxDecoration(color: Color(0xFFF9F9F9)),
       child: child,
-      decoration: BoxDecoration(color: Color(0xFFF9F9F9)),
     );
   }
 }

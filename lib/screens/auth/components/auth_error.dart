@@ -9,7 +9,7 @@ class AuthError extends StatelessWidget {
     return Center(
       child: Text(
         error,
-        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+        style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
       ),
     );
   }

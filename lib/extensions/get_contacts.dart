@@ -1,5 +1,3 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
-
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/absence.dart';
@@ -9,11 +7,11 @@ extension GetContactsExt on Response<GetContacts> {
   List<User> mapResponse({List<int>? hideIds}) {
     List<User> users = [];
 
-    if (this.data == null) {
+    if (data == null) {
       return users;
     }
 
-    List items = this.data?.data.asMap['contacts'] ?? [];
+    List items = data?.data.asMap['contacts'] ?? [];
 
     for (final item in items) {
       String lastName = item['last_name'] ?? "";
@@ -23,9 +21,8 @@ extension GetContactsExt on Response<GetContacts> {
         id: item['id'],
         name: "$lastName $name".trim(),
         avatarUrl: item["photo"] ?? "",
-        absence: item["absence"] != null
-            ? Absence.fromMap(item["absence"])
-            : null,
+        absence:
+            item["absence"] != null ? Absence.fromMap(item["absence"]) : null,
         workPosition: item["work_position"],
         birthday: item["birthday"] != null
             ? DateTime.tryParse(item["birthday"])

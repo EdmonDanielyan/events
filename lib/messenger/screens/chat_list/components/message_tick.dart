@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
-import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/messenger/constants/svg_pictures.dart';
 import 'package:ink_mobile/messenger/model/message.dart';
 
 class MessageTick extends StatelessWidget {
   final MessageStatus status;
   final bool isRead;
-  final Color? color;
+  final Color color;
   final MessageType type;
   const MessageTick(
     this.status, {
     Key? key,
     this.isRead = false,
-    this.color,
+    required this.color,
     required this.type,
   }) : super(key: key);
 
@@ -37,13 +36,11 @@ class MessageTick extends StatelessWidget {
       asset = SvgPictures.tick;
     }
 
-    final iconSize = 16.0;
+    const iconSize = 16.0;
 
-    return SvgPicture.asset(
-      asset,
-      width: iconSize,
-      height: iconSize,
-      color: color,
-    );
+    return SvgPicture.asset(asset,
+        width: iconSize,
+        height: iconSize,
+        colorFilter: ColorFilter.mode(color, BlendMode.srcIn));
   }
 }

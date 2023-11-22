@@ -7,18 +7,17 @@ class SuccessScreen extends StatelessWidget {
   final void Function(BuildContext) onSendNew;
 
   const SuccessScreen({
+    super.key,
     required this.onDismiss,
     required this.onSendNew,
   });
 
   @override
   Widget build(BuildContext context) {
-
     final style = ElevatedButton.styleFrom(
-      fixedSize: Size(150, 40),
-      backgroundColor: Theme.of(context).primaryColor,
-      padding: const EdgeInsets.all(11.0),
-    );
+        fixedSize: const Size(150, 40),
+        backgroundColor: Theme.of(context).primaryColor,
+        padding: const EdgeInsets.all(11.0));
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: InkAppBarWithText(context, title: localizationInstance.feedback),
@@ -27,22 +26,18 @@ class SuccessScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                localizationInstance.yourApplyCreated,
-                style: TextStyle(fontSize: 18),
-              ),
+              Text(localizationInstance.yourApplyCreated,
+                  style: const TextStyle(fontSize: 18)),
               const SizedBox(height: 32),
               ElevatedButton(
-                onPressed: () => onDismiss(context),
-                child: Text(localizationInstance.end),
-                style: style,
-              ),
+                  onPressed: () => onDismiss(context),
+                  style: style,
+                  child: Text(localizationInstance.end)),
               const SizedBox(height: 8),
               ElevatedButton(
-                onPressed: () =>  onSendNew(context),
-                child: Text(localizationInstance.createNew),
-                style: style,
-              )
+                  onPressed: () => onSendNew(context),
+                  style: style,
+                  child: Text(localizationInstance.createNew))
             ]),
       ),
     );

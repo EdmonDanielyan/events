@@ -65,7 +65,7 @@ class Body extends StatelessWidget {
                   newsId = arg['id'];
                 }
                 newsDetailCubit.load(newsId);
-                return Center(
+                return const Center(
                   child: InkPageLoader(),
                 );
               }

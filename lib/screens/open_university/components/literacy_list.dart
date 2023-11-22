@@ -70,21 +70,21 @@ class OpenUniversityLiteracyList extends StatelessWidget {
   List<Widget> _getNewsWidgetList(List<NewsItemData> newsList) {
     List<Widget> _newsWidgetList = [];
 
-    newsList.forEach((value) {
+    for (var value in newsList) {
       _newsWidgetList.add(NewsListElement(newsItem: value));
-    });
+    }
 
     return _newsWidgetList;
   }
 
   Widget _getLoadingStateWidget() {
-    return CentringWrapper(child: InkPageLoader());
+    return const CentringWrapper(child: InkPageLoader());
   }
 
   Widget _getLoadedStateWidget(
       List<NewsItemData> newsList, BuildContext context) {
     return Container(
-      color: Color(0xfff9f9f9),
+      color: const Color(0xfff9f9f9),
       child: Column(children: [
         Container(
             // color: Colors.white,
@@ -99,7 +99,7 @@ class OpenUniversityLiteracyList extends StatelessWidget {
                             .getProportionateScreenHeight)),
               ],
             )),
-        Container(child: Column(children: _getNewsWidgetList(newsList)))
+        Column(children: _getNewsWidgetList(newsList))
       ]),
     );
   }

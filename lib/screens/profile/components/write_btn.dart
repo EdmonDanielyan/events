@@ -35,12 +35,10 @@ class WriteBtn extends StatelessWidget {
           title: localizationInstance.writeHint,
           buttonColor: Palette.greenE4A,
           textColor: Palette.white,
-          suffixIcon: SvgPicture.asset(
-            IconLinks.CHAT_OPEN_ICON,
-            height: 20.0,
-            width: 20.0,
-            color: Palette.white,
-          ),
+          suffixIcon: SvgPicture.asset(IconLinks.CHAT_OPEN_ICON,
+              height: 20.0,
+              width: 20.0,
+              colorFilter: ColorFilter.mode(Palette.white, BlendMode.srcIn)),
         ),
       ),
     );

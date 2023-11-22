@@ -40,6 +40,8 @@ class FetchParticipants {
           cubit.removeAndAddUser(u, u.id);
         }
       }
-    } catch (_e) {}
+    } catch (_e) {
+      //TODO пам пам
+    }
   }
 }

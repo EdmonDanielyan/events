@@ -17,11 +17,10 @@ class LoadMoreBtn extends StatelessWidget {
         margin: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 0.5,
-            blurRadius: 13,
-            offset: Offset(0, 1),
-          ),
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 0.5,
+              blurRadius: 13,
+              offset: const Offset(0, 1)),
         ]),
         child: ElevatedButton(
           onPressed: onPressed,
@@ -36,11 +35,10 @@ class LoadMoreBtn extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(
-                fontSize:
-                    SizeConfig(context, 16.0).getProportionateScreenHeight,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize:
+                      SizeConfig(context, 16.0).getProportionateScreenHeight,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ),

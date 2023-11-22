@@ -56,6 +56,6 @@ class ProfileScreenState extends State<ProfileScreen> {
       }
     }
 
-    return NewBottomNavBar(showActive: false);
+    return const NewBottomNavBar(showActive: false);
   }
 }

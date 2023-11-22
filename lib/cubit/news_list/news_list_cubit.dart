@@ -24,7 +24,7 @@ class NewsListCubit extends Cubit<NewsListState> {
 
   String filter = 'news';
 
-  NewsListCubit() : super(NewsListState(type: NewsListStateType.LOADING));
+  NewsListCubit() : super(const NewsListState(type: NewsListStateType.LOADING));
 
   Future<void> fetch() async {
     try {
@@ -80,7 +80,7 @@ class NewsListCubit extends Cubit<NewsListState> {
 
   void refresh() {
     resetProperties();
-    emit(NewsListState(type: NewsListStateType.LOADING));
+    emit(const NewsListState(type: NewsListStateType.LOADING));
   }
 
   Future<void> onScroll(ScrollController controller) async {
@@ -97,7 +97,6 @@ class NewsListCubit extends Cubit<NewsListState> {
         scrollBottomToLoad.clear();
       });
     });
-
   }
 
   void emitSuccess(List<NewsItemData> items) {

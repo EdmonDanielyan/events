@@ -11,30 +11,27 @@ class Body extends StatelessWidget {
     return Background(
         child: SingleChildScrollView(
       padding: const EdgeInsets.all(20),
-      child: Container(
-        child: Column(
-          children: [
-            Text(
-              '404',
-              style: TextStyle(
-                  fontSize:
-                      SizeConfig(context, 100).getProportionateScreenHeight,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.white.withOpacity(0.5),
-                  fontFamily: "Helvetica"),
-              textAlign: TextAlign.center,
+      child: Column(
+        children: [
+          Text(
+            '404',
+            style: TextStyle(
+                fontSize: SizeConfig(context, 100).getProportionateScreenHeight,
+                fontWeight: FontWeight.w800,
+                color: Colors.white.withOpacity(0.5),
+                fontFamily: "Helvetica"),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            localizationInstance.pageNotFound,
+            style: TextStyle(
+              fontSize: SizeConfig(context, 21).getProportionateScreenHeight,
+              color: Colors.white,
+              fontFamily: "Helvetica",
             ),
-            Text(
-              localizationInstance.pageNotFound,
-              style: TextStyle(
-                fontSize: SizeConfig(context, 21).getProportionateScreenHeight,
-                color: Colors.white,
-                fontFamily: "Helvetica",
-              ),
-              textAlign: TextAlign.center,
-            )
-          ],
-        ),
+            textAlign: TextAlign.center,
+          )
+        ],
       ),
     ));
   }

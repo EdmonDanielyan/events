@@ -8,7 +8,7 @@ class DefaultTextField extends StatefulWidget {
   final Widget? icon;
   final FocusNode focusNode;
 
-  DefaultTextField({
+  const DefaultTextField({
     Key? key,
     required this.focusNode,
     this.onChanged,
@@ -51,7 +51,7 @@ class _DefaultTextFieldState extends State<DefaultTextField> {
                 onChanged: widget.onChanged,
                 maxLines: 1,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: InputDecoration(border: InputBorder.none),
+                decoration: const InputDecoration(border: InputBorder.none),
                 //placeholder: widget.hint,
                 // iosOptions: IosOptions(
                 //   placeholderStyle:
@@ -66,7 +66,7 @@ class _DefaultTextFieldState extends State<DefaultTextField> {
                 controller.text = '';
                 widget.onChanged?.call('');
               },
-              child: Icon(Icons.close),
+              child: const Icon(Icons.close),
             ),
             if (widget.icon != null) ...[
               const SizedBox(width: 10.0),

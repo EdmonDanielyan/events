@@ -6,7 +6,7 @@ PersistentBottomSheetController showMenuSheet(context) {
     backgroundColor: Colors.black.withOpacity(0.7),
     context: context,
     builder: (BuildContext context) {
-      return MenuSheet();
+      return const MenuSheet();
     },
   );
 }

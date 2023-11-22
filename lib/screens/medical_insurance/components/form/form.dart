@@ -28,7 +28,7 @@ class MedicalInsuranceForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MedicalInsuranceFormState createState() => _MedicalInsuranceFormState();
+  State<MedicalInsuranceForm> createState() => _MedicalInsuranceFormState();
 }
 
 class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
@@ -161,7 +161,7 @@ class _MedicalInsuranceFormState extends State<MedicalInsuranceForm> {
       },
       builder: (BuildContext context, state) {
         if (state.state == BtnCubitStateEnums.SENDING) {
-          return CustomCircularProgressIndicator();
+          return const CustomCircularProgressIndicator();
         } else {
           return DefaultButton(
             title: localizationInstance.submit,

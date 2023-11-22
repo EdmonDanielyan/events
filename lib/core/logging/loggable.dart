@@ -3,17 +3,18 @@ import 'package:uuid/uuid.dart';
 
 mixin Loggable {
   Logger? _logger;
-  Logger get logger => _logger ?? (_logger = Logger(this.runtimeType.toString()));
+  Logger get logger => _logger ?? (_logger = Logger(runtimeType.toString()));
 }
 
 mixin Profileable {
-  Map<String, DateTime> _times = {};
+  final Map<String, DateTime> _times = {};
   String startProfiling() {
-    var id = Uuid().v4();
+    var id = const Uuid().v4();
     _times[id] = DateTime.now();
     return id;
   }
-  int endProfiling(String id){
+
+  int endProfiling(String id) {
     var time = _times[id];
     int result = 0;
     if (time != null) {

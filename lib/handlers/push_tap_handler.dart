@@ -7,7 +7,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 class PushTapHandler {
   static BuildContext? currentContext;
   static bool isSubscribed = false;
-  static final logger = new Logger('PUSH-NAV');
+  static final logger = Logger('PUSH-NAV');
 
   static void subscribe() {
     // OneSignal.shared.setNotificationOpenedHandler((notification) {
@@ -16,7 +16,7 @@ class PushTapHandler {
     //     navigateToScreen(notification.notification.launchUrl!);
     //   }
     // });
-      // migration
+    // migration
     OneSignal.Notifications.addClickListener((notification) {
       if (currentContext != null &&
           notification.notification.launchUrl?.isNotEmpty == true) {
@@ -75,9 +75,11 @@ class PushTapHandler {
           logger.finest('TODO: Open meddenger');
           // TODO: открыть мессенждер
         } else {
-          NavigationMethods.openChatByID(currentContext!,
-            int.parse(pathParts[1]),);
-          logger.finest('TODO:  Open chat '+pathParts[1]);
+          NavigationMethods.openChatByID(
+            currentContext!,
+            int.parse(pathParts[1]),
+          );
+          logger.finest('TODO:  Open chat ${pathParts[1]}');
         }
         break;
       default:

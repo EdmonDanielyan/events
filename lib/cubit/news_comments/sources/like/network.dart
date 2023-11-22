@@ -6,6 +6,7 @@ import 'dependency.dart';
 
 @injectable
 class NewsCommentsLikeNetworkRequest extends NewsCommentsLikeRequestDependency {
+  @override
   int? commentId;
   NewsCommentsLikeNetworkRequest({@factoryParam required this.commentId})
       : assert(commentId != null);
@@ -16,6 +17,6 @@ class NewsCommentsLikeNetworkRequest extends NewsCommentsLikeRequestDependency {
         .get<MainApiProvider>()
         .getNewsApi()
         //TODO clean code
-        .newsCommentsLikeIdGet(id : commentId ?? 0);
+        .newsCommentsLikeIdGet(id: commentId ?? 0);
   }
 }

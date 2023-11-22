@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:ink_mobile/core/handlers/AuthHandler.dart';
+import 'package:ink_mobile/core/handlers/auth_handler.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/core/token/set_token.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';

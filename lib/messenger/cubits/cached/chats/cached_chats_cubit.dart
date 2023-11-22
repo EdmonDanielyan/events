@@ -33,7 +33,7 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
 
   void toSet() {
     if (chats.isNotEmpty) {
-      final _chatIds = Set<int>();
+      final _chatIds = <int>{};
       List<Chat> newChats = [];
       for (final chat in chats) {
         if (!_chatIds.contains(chat.id)) {
@@ -64,7 +64,7 @@ class CachedChatsCubit extends HydratedCubit<CachedChatsState> {
 
   Future<void> fetchChats() async {
     emit(state.copyWith(type: CachedChatsStateType.LOADING));
-    await FetchChats().call();
+    await const FetchChats().call();
   }
 
   void fixChats() {

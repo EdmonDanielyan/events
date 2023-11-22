@@ -13,5 +13,5 @@ class OpenUniversityState {
   final List<dynamic>? data;
   final OpenUniversityStateType type;
 
-  OpenUniversityState({required this.type, this.data});
+  const OpenUniversityState({required this.type, this.data});
 }

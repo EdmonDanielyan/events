@@ -55,9 +55,9 @@ class FeedBackScreenState extends State<FeedBackScreen>
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar:
-            widget.appBar ?? InkAppBarWithText(context, title: _strings.feedback),
-        body: Body(),
+        appBar: widget.appBar ??
+            InkAppBarWithText(context, title: _strings.feedback),
+        body: const Body(),
         bottomNavigationBar:
             widget.bottomNavigationBar ?? const NewBottomNavBar(),
         backgroundColor: Palette.white,

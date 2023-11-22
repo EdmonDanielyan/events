@@ -13,19 +13,20 @@ class DioErrorHandler {
   List<String> emptyResponseCodes = [QMA_32, QMA_33];
 
   bool isEmpty() {
-      //TODO response вместо unknown
+    //TODO response вместо unknown
     //https: //github.com/cfug/dio/blob/main/dio/migration_guide.md
     if (e.type == DioExceptionType.unknown) {
       ErrorResponse response = ErrorResponse.fromException(e);
 
-      for (var code in emptyResponseCodes)
+      for (var code in emptyResponseCodes) {
         if (code == response.code) return true;
+      }
     }
 
     return false;
   }
 
-    ErrorModel call() {
+  ErrorModel call() {
     //TODO response вместо unknown
     //https: //github.com/cfug/dio/blob/main/dio/migration_guide.md
     if (e.type ==

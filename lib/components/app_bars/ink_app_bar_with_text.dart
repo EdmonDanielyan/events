@@ -13,7 +13,7 @@ class InkAppBarWithText extends StatelessWidget implements PreferredSizeWidget {
   final Widget? titleWidget;
   final List<Widget>? actions;
   final Widget? leading;
-  InkAppBarWithText(
+  const InkAppBarWithText(
     this.context, {
     Key? key,
     required this.title,
@@ -45,6 +45,14 @@ class InkAppBarWithText extends StatelessWidget implements PreferredSizeWidget {
             },
           ),
       flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Theme.of(context).primaryColor, const Color(0xFF182B23)],
+              begin: FractionalOffset.centerLeft,
+              end: FractionalOffset.centerRight,
+              stops: const [0.0, 1.0],
+              tileMode: TileMode.decal),
+        ),
         child: SvgPicture.asset(
           IconLinks.APP_BAR_LINES_SVG_LINK,
           semanticsLabel: 'appbar Line',
@@ -52,14 +60,6 @@ class InkAppBarWithText extends StatelessWidget implements PreferredSizeWidget {
               MediaQuery.of(context).devicePixelRatio,
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
-        ),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [Theme.of(context).primaryColor, const Color(0xFF182B23)],
-              begin: FractionalOffset.centerLeft,
-              end: FractionalOffset.centerRight,
-              stops: [0.0, 1.0],
-              tileMode: TileMode.decal),
         ),
       ),
       title: titleWidget ??

@@ -10,7 +10,7 @@ class PageViewer {
   });
 
   void onPageChanged(int index) {
-    this.copyWith(currentIndex: index);
+    copyWith(currentIndex: index);
   }
 
   PageViewer copyWith({

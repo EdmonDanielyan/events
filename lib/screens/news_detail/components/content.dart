@@ -30,7 +30,7 @@ class Content extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ContentState createState() => _ContentState();
+  State<Content> createState() => _ContentState();
 }
 
 class _ContentState extends State<Content> {
@@ -54,12 +54,11 @@ class _ContentState extends State<Content> {
               children: [
                 DefaultButton(
                   title: widget.likeCount.toString(),
-                  prefixIcon: SvgPicture.asset(
-                    IconLinks.BARREL_SVG_LINK,
-                    width: 20.0,
-                    height: 20.0,
-                    color: Palette.greenE4A,
-                  ),
+                  prefixIcon: SvgPicture.asset(IconLinks.BARREL_SVG_LINK,
+                      width: 20.0,
+                      height: 20.0,
+                      colorFilter:
+                          ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
                   textColor: Palette.greenE4A,
                   borderColor: Palette.greenE4A,
                   buttonColor: Palette.transparent,
@@ -68,12 +67,11 @@ class _ContentState extends State<Content> {
                 ),
                 DefaultButton(
                   title: widget.commentsCount.toString(),
-                  prefixIcon: SvgPicture.asset(
-                    IconLinks.COMMENT_ICON_LINK,
-                    width: 20.0,
-                    height: 20.0,
-                    color: Palette.greenE4A,
-                  ),
+                  prefixIcon: SvgPicture.asset(IconLinks.COMMENT_ICON_LINK,
+                      width: 20.0,
+                      height: 20.0,
+                      colorFilter:
+                          ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
                   textColor: Palette.greenE4A,
                   borderColor: Palette.greenE4A,
                   buttonColor: Palette.transparent,

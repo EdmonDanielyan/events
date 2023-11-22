@@ -35,7 +35,7 @@ class _UserPickerRadioState extends State<UserPickerRadio> {
                 IconLinks.TICK_ICON,
                 height: 16.0,
                 width: 16.0,
-                color: Palette.white,
+                colorFilter: ColorFilter.mode(Palette.white, BlendMode.srcIn),
               )
             : null,
       ),

@@ -7,6 +7,7 @@ class CustomColorTag extends StyleTag {
   final Color defaultColor;
   CustomColorTag({required this.defaultColor}) : super('color');
 
+  @override
   TextStyle transformStyle(
       TextStyle oldStyle, Map<String, String>? attributes) {
     if (attributes != null && attributes.isNotEmpty) {

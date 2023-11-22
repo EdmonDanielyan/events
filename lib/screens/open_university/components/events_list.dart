@@ -12,7 +12,7 @@ class OpenUniversityEventsList extends StatelessWidget {
 
   final ScrollController controller;
 
-  OpenUniversityEventsList({
+  const OpenUniversityEventsList({
     Key? key,
     required this.controller,
     required this.cubit,
@@ -41,28 +41,24 @@ class OpenUniversityEventsList extends StatelessWidget {
             {
               List<EventsListElement> items = _getEventsWidgetList(state.data!);
               return Container(
-                color: Color(0xfff9f9f9),
+                color: const Color(0xfff9f9f9),
                 child: Column(children: [
                   Container(
                       padding: const EdgeInsets.only(
                           left: 20, right: 20, top: 24, bottom: 20),
                       child: Row(
                         children: [
-                          Text(
-                            _strings.events,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 24),
-                          )
+                          Text(_strings.events,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 24))
                         ],
                       )),
-                  Container(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      controller: ScrollController(keepScrollOffset: false),
-                      itemCount: items.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          items[index],
-                    ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    controller: ScrollController(keepScrollOffset: false),
+                    itemCount: items.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        items[index],
                   )
                 ]),
               );
@@ -70,7 +66,7 @@ class OpenUniversityEventsList extends StatelessWidget {
 
           case EventsListStateType.ERROR:
             {
-              return Container(
+              return SizedBox(
                 height: size.height * 0.65,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -93,9 +89,9 @@ class OpenUniversityEventsList extends StatelessWidget {
   List<EventsListElement> _getEventsWidgetList(List<EventData> eventsList) {
     List<EventsListElement> _eventsWidgetList = [];
 
-    eventsList.forEach((value) {
+    for (var value in eventsList) {
       _eventsWidgetList.add(EventsListElement(event: value));
-    });
+    }
 
     return _eventsWidgetList;
   }

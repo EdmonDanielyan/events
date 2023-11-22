@@ -15,7 +15,7 @@ class SocialPackageScreen extends StatelessWidget {
         context,
         title: _strings.socialPackage,
       ),
-      body: Body(),
+      body: const Body(),
       bottomNavigationBar: const NewBottomNavBar(),
     );
   }

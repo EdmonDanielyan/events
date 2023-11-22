@@ -22,7 +22,7 @@ import '../messenger/screens/chat/opener.dart';
 class NavigationMethods {
   static void backToMainScreen(BuildContext context) {
     if (Navigator.of(context).canPop()) {
-      final mainScreenKey = "/app_layer";
+      const mainScreenKey = "/app_layer";
       Navigator.of(context)
           .popUntil((route) => route.settings.name == mainScreenKey);
     }
@@ -31,38 +31,38 @@ class NavigationMethods {
 
   static void openNewsList(BuildContext context, {dynamic arguments}) {
     backToMainScreen(context);
-    final newsListKey = "/news_list";
+    const newsListKey = "/news_list";
     Navigator.of(context).pushNamed(newsListKey, arguments: arguments);
   }
 
   static void openNewsDetail(BuildContext context, int articleID) {
     openNewsList(context);
-    final newsArticleKey = "/news_detail";
+    const newsArticleKey = "/news_detail";
     Navigator.of(context)
         .pushNamed(newsArticleKey, arguments: {"id": articleID});
   }
 
   static void openEventsList(BuildContext context, {dynamic arguments}) {
     backToMainScreen(context);
-    final eventsListKey = "/events_list";
+    const eventsListKey = "/events_list";
     Navigator.of(context).pushNamed(eventsListKey, arguments: arguments);
   }
 
   static void openEventDetail(BuildContext context, int eventID) {
     openEventsList(context);
-    final eventDetailKey = "/event_detail";
+    const eventDetailKey = "/event_detail";
     Navigator.of(context).pushNamed(eventDetailKey, arguments: {"id": eventID});
   }
 
   static void openAnnouncementsList(BuildContext context, {dynamic arguments}) {
     backToMainScreen(context);
-    final announcementsListKey = "/announcements_list";
+    const announcementsListKey = "/announcements_list";
     Navigator.of(context).pushNamed(announcementsListKey, arguments: arguments);
   }
 
   static void openAnnouncementDetail(BuildContext context, int announcementID) {
     openAnnouncementsList(context);
-    final announcementDetailKey = "/announcement_detail";
+    const announcementDetailKey = "/announcement_detail";
     Navigator.of(context)
         .pushNamed(announcementDetailKey, arguments: {"id": announcementID});
   }
@@ -130,14 +130,14 @@ class NavigationMethods {
 
   static void openUserPageById(BuildContext context, int userID) {
     openNewsList(context);
-    final userKey = "/personal";
+    const userKey = "/personal";
     Navigator.of(context).pushNamed(userKey, arguments: {"id": userID});
   }
 
   static void openChatInviteLink(BuildContext context, int chatID) async {
     final chatsCubit = getIt<CachedChatsCubit>();
     await chatsCubit.fetchChats();
-    final response = await chatsCubit.getChatById(chatID);
+    final response = chatsCubit.getChatById(chatID);
     if (response is Chat) {
       _openChat(context, chatID);
     } else {
@@ -154,15 +154,14 @@ class NavigationMethods {
     final chatsCubit = getIt<CachedChatsCubit>();
     final chat = chatsCubit.getChatById(chatID);
     User? user = chatsCubit.me;
-    if (user == null) {
-      await Token.setNewTokensIfExpired();
-      final response =
-          await getIt<ProfileFetchNetworkRequest>(param1: userID)();
-      UserProfileData userData = response.mapResponse();
-      user = User.fromUserProfileData(userData);
-    }
+
+    await Token.setNewTokensIfExpired();
+    final response = await getIt<ProfileFetchNetworkRequest>(param1: userID)();
+    UserProfileData userData = response.mapResponse();
+    user = User.fromUserProfileData(userData);
+
     if (chat != null) {
-      final messageBody = user.name + ' добавлен в чат';
+      final messageBody = '${user.name} добавлен в чат';
       final msg = CreateInfoMessage(chatID, messageBody).call();
       SendMessageHandler([msg], chat).call();
       _openChat(context, chatID);

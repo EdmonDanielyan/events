@@ -30,8 +30,8 @@ class ReferencesFormEntities {
     this.address = "",
     this.postCode = "",
     this.files = const [],
-  })  : periodFrom = new DateTime.now(),
-        periodTo = new DateTime.now();
+  })  : periodFrom = DateTime.now(),
+        periodTo = DateTime.now();
 
   void clear() {
     deliveryType = null;

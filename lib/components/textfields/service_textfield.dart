@@ -19,7 +19,7 @@ class ServiceTextField extends StatelessWidget {
   final AutovalidateMode autoValidateMode;
   final String? descriptionText;
   final FocusNode? focusNode;
-  ServiceTextField({
+  const ServiceTextField({
     Key? key,
     this.hint = "",
     this.controller,
@@ -50,45 +50,46 @@ class ServiceTextField extends StatelessWidget {
             ),
           ),
         TextFormField(
-          controller: controller,
-          onChanged: onChanged,
-          obscureText: obscureText,
-          keyboardType: keyboardType,
-          inputFormatters: inputFormatters,
-          autocorrect: autocorrect,
-          maxLines: maxLines,
-          validator: validator,
-          autovalidateMode: autoValidateMode,
-          initialValue: initialValue,
-          textCapitalization: TextCapitalization.sentences,
-          decoration: InputDecoration(
-            helperStyle: TextStyle(
-                fontSize: SizeConfig(context, 12).getProportionateScreenHeight),
-            labelStyle: TextStyle(
-                fontSize: SizeConfig(context, 12).getProportionateScreenHeight),
-            hintText: hint,
-            hintStyle: FontStyles.rubikP2(color: Palette.textBlack50),
-            errorStyle: TextStyle(
-              fontSize: SizeConfig(context, 13.0).getProportionateScreenHeight,
+            controller: controller,
+            onChanged: onChanged,
+            obscureText: obscureText,
+            keyboardType: keyboardType,
+            inputFormatters: inputFormatters,
+            autocorrect: autocorrect,
+            maxLines: maxLines,
+            validator: validator,
+            autovalidateMode: autoValidateMode,
+            initialValue: initialValue,
+            textCapitalization: TextCapitalization.sentences,
+            decoration: InputDecoration(
+              helperStyle: TextStyle(
+                  fontSize:
+                      SizeConfig(context, 12).getProportionateScreenHeight),
+              labelStyle: TextStyle(
+                  fontSize:
+                      SizeConfig(context, 12).getProportionateScreenHeight),
+              hintText: hint,
+              hintStyle: FontStyles.rubikP2(color: Palette.textBlack50),
+              errorStyle: TextStyle(
+                  fontSize:
+                      SizeConfig(context, 13.0).getProportionateScreenHeight),
+              suffixIconConstraints:
+                  const BoxConstraints(maxHeight: double.infinity),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Palette.text20Grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Palette.greenE4A),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Palette.text20Grey),
+              ),
             ),
-            suffixIconConstraints:
-                const BoxConstraints(maxHeight: double.infinity),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(color: Palette.text20Grey),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Palette.greenE4A),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(color: Palette.text20Grey),
-            ),
-          ),
-          style: FontStyles.rubikP2(color: Palette.textBlack),
-          focusNode: focusNode,
-        ),
+            style: FontStyles.rubikP2(color: Palette.textBlack),
+            focusNode: focusNode),
       ],
     );
   }

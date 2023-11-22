@@ -40,11 +40,11 @@ class NotificationsBtn extends StatelessWidget {
             child: Row(
               children: [
                 SvgPicture.asset(
-                  isEnabled ? IconLinks.MUTE_ICON : IconLinks.SOUND_ICON,
-                  height: 24.0,
-                  width: 24.0,
-                  color: Palette.greenE4A,
-                ),
+                    isEnabled ? IconLinks.MUTE_ICON : IconLinks.SOUND_ICON,
+                    height: 24.0,
+                    width: 24.0,
+                    colorFilter:
+                        ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
                 const SizedBox(width: 12.0),
                 Text(
                   isEnabled ? "Выкл. уведомления" : "Вкл. уведомления",

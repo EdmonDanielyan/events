@@ -35,11 +35,9 @@ class NewsListSliderElement extends StatelessWidget {
               color: Colors.black.withOpacity(0.15),
               spreadRadius: 2,
               blurRadius: 10,
-              offset: Offset(10, 10))
+              offset: const Offset(10, 10))
         ],
-        borderRadius: BorderRadius.all(
-          Radius.circular(15),
-        ),
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
       ),
       child: GestureDetector(
         onTap: () {
@@ -47,14 +45,14 @@ class NewsListSliderElement extends StatelessWidget {
               arguments: {'id': newsItem.id});
         },
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
           ),
           clipBehavior: Clip.hardEdge,
           width: elementWidth,
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: SizeConfig(context, 130.0).getProportionateScreenHeight,
                 width: elementWidth,
                 child: newsItem.previewPictureLink == null
@@ -86,12 +84,10 @@ class NewsListSliderElement extends StatelessWidget {
                       ),
                       Container(
                         margin: const EdgeInsets.only(top: 8),
-                        child: Text(
-                          newsItem.title ?? '',
-                          style: FontStyles.rubikH4(color: Palette.textBlack),
-                          maxLines: 4,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        child: Text(newsItem.title ?? '',
+                            style: FontStyles.rubikH4(color: Palette.textBlack),
+                            maxLines: 4,
+                            overflow: TextOverflow.ellipsis),
                       ),
                       Expanded(
                         child: Column(
@@ -103,31 +99,28 @@ class NewsListSliderElement extends StatelessWidget {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
                                           IconLinks.BARREL_SVG_LINK,
                                           width: 16.0,
                                           height: 16.0,
-                                          color: Palette.textBlack50,
-                                        ),
-                                        const SizedBox(width: 5.0),
-                                        Container(
-                                          margin:
-                                              const EdgeInsets.only(left: 4),
-                                          child: Text(
+                                          colorFilter: ColorFilter.mode(
+                                              Palette.textBlack50,
+                                              BlendMode.srcIn)),
+                                      const SizedBox(width: 5.0),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 4),
+                                        child: Text(
                                             newsItem.likeCount != null
                                                 ? newsItem.likeCount.toString()
                                                 : '0',
                                             style: FontStyles.rubikP2(
-                                                color: Palette.textBlack50),
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                                color: Palette.textBlack50)),
+                                      )
+                                    ],
                                   ),
                                   Container(
                                     margin: const EdgeInsets.only(left: 24),
@@ -136,11 +129,12 @@ class NewsListSliderElement extends StatelessWidget {
                                           CrossAxisAlignment.center,
                                       children: [
                                         SvgPicture.asset(
-                                          IconLinks.COMMENT_ICON_LINK,
-                                          width: 16.0,
-                                          height: 16.0,
-                                          color: Palette.textBlack50,
-                                        ),
+                                            IconLinks.COMMENT_ICON_LINK,
+                                            width: 16.0,
+                                            height: 16.0,
+                                            colorFilter: ColorFilter.mode(
+                                                Palette.textBlack50,
+                                                BlendMode.srcIn)),
                                         const SizedBox(width: 5.0),
                                         Container(
                                           margin:
@@ -177,11 +171,12 @@ class NewsListSliderElement extends StatelessWidget {
                                         Row(
                                           children: [
                                             SvgPicture.asset(
-                                              IconLinks.OPENED_EYE_ICON_LINK,
-                                              width: 16.0,
-                                              height: 16.0,
-                                              color: Palette.textBlack50,
-                                            ),
+                                                IconLinks.OPENED_EYE_ICON_LINK,
+                                                width: 16.0,
+                                                height: 16.0,
+                                                colorFilter: ColorFilter.mode(
+                                                    Palette.textBlack50,
+                                                    BlendMode.srcIn)),
                                             Container(
                                               margin: const EdgeInsets.only(
                                                   left: 4),

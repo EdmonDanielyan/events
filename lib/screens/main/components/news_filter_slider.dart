@@ -36,7 +36,7 @@ class NewsFilterSlider extends StatelessWidget {
     filterItems.removeWhere(((tab) => tab.code == 'main'));
     return ListView.separated(
         addAutomaticKeepAlives: false,
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         addRepaintBoundaries: false,
         addSemanticIndexes: false,
         clipBehavior: Clip.none,

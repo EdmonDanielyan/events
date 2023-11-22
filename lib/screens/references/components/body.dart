@@ -10,42 +10,40 @@ import 'loading.dart';
 class Body extends StatelessWidget {
   final SendReferenceFormCubit sendReferenceFormCubit;
   final ReferencesPageCubit referencesPageCubit;
-  
+
   final bool isTablet;
   const Body({
     Key? key,
     required this.referencesPageCubit,
-    required this.sendReferenceFormCubit, required this. isTablet,
+    required this.sendReferenceFormCubit,
+    required this.isTablet,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: BlocBuilder<ReferencesPageCubit, ReferencesPageState>(
-        bloc: referencesPageCubit,
-        builder: (context, state) {
-          if (state.type == ReferencesStateType.LOADING) {
-            referencesPageCubit.checkPermissions();
-            return Loading();
-          }
+    return BlocBuilder<ReferencesPageCubit, ReferencesPageState>(
+      bloc: referencesPageCubit,
+      builder: (context, state) {
+        if (state.type == ReferencesStateType.LOADING) {
+          referencesPageCubit.checkPermissions();
+          return const Loading();
+        }
 
-          if (state.type == ReferencesStateType.PERMISSIONS_DENIED) {
-            return PermissionDenied();
-          }
+        if (state.type == ReferencesStateType.PERMISSIONS_DENIED) {
+          return const PermissionDenied();
+        }
 
-          if (state.type == ReferencesStateType.INIT) {
-            referencesPageCubit.loadAutoFillData();
-          }
+        if (state.type == ReferencesStateType.INIT) {
+          referencesPageCubit.loadAutoFillData();
+        }
 
-          return SafeArea(
-            child: ReferencesForm(
-              isTablet:isTablet,
+        return SafeArea(
+          child: ReferencesForm(
+              isTablet: isTablet,
               referencesPageCubit: referencesPageCubit,
-              sendReferenceFormCubit: sendReferenceFormCubit,
-            ),
-          );
-        },
-      ),
+              sendReferenceFormCubit: sendReferenceFormCubit),
+        );
+      },
     );
   }
 }

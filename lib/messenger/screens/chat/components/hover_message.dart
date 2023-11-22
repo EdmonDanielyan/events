@@ -70,18 +70,17 @@ class HoverMessageCard extends StatelessWidget {
 
     return PopupMenuContainer<String>(
       blurBackground: true,
-      child: child,
       items: [
         if (onRespond != null) ...[
           PopupMenuItem(
-           value: _respond,
+            value: _respond,
             child: my.MenuItem(
               value: "Ответить",
               icon: Icon(
                 CupertinoIcons.arrowshape_turn_up_left_fill,
                 size: _iconSize,
               ),
-           ),
+            ),
           ),
         ],
         if (onEdit != null) ...[
@@ -144,6 +143,7 @@ class HoverMessageCard extends StatelessWidget {
           _onEdit(context);
         }
       },
+      child: child,
     );
   }
 }

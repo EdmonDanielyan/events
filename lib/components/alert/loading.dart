@@ -9,7 +9,7 @@ class CustomAlertLoading {
   void call() {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (_) => const AlertDialog(
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

@@ -9,7 +9,8 @@ class AnnouncementsListState {
   final AnnouncementsListStateType type;
   final String? errorMessage;
 
-  AnnouncementsListState({required this.type, this.data, this.errorMessage})
+  const AnnouncementsListState(
+      {required this.type, this.data, this.errorMessage})
       : assert(
             type != AnnouncementsListStateType.ERROR ||
                 (type == AnnouncementsListStateType.ERROR &&

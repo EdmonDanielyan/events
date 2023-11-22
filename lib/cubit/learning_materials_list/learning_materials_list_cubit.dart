@@ -23,7 +23,7 @@ class LearningMaterialsListCubit extends Cubit<LearningMaterialsListState> {
   ScrollBottomToLoad scrollBottomToLoad = ScrollBottomToLoad();
 
   LearningMaterialsListCubit()
-      : super(LearningMaterialsListState(
+      : super(const LearningMaterialsListState(
             type: LearningMaterialsListStateType.LOADING));
 
   Future<void> fetch() async {

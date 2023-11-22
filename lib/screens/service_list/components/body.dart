@@ -14,10 +14,10 @@ class Body extends StatelessWidget {
 
     List<ServiceListItem> items = ServiceListItemListView.getItems(_strings);
 
-    return Container(
+    return SizedBox(
       width: size.width,
       child: ScrollConfiguration(
-        behavior: ScrollBehavior().copyWith(overscroll: false),
+        behavior: const ScrollBehavior().copyWith(overscroll: false),
         child: ListView.separated(
           separatorBuilder: (context, index) {
             return Divider(

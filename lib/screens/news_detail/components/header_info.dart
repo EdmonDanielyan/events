@@ -33,13 +33,12 @@ class HeaderInfo extends StatelessWidget {
               style: FontStyles.rubikP2(color: Palette.textBlack50),
             ),
             const Spacer(),
-            SvgPicture.asset(
-              IconLinks.OPENED_EYE_ICON_LINK,
-              semanticsLabel: 'View Count',
-              height: 16.0,
-              width: 16.0,
-              color: Palette.textBlack50,
-            ),
+            SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
+                semanticsLabel: 'View Count',
+                height: 16.0,
+                width: 16.0,
+                colorFilter:
+                    ColorFilter.mode(Palette.textBlack50, BlendMode.srcIn)),
             const SizedBox(width: 4.0),
             Text(
               viewCount.toString(),

@@ -12,20 +12,18 @@ void showErrorDialog(
     context: buildContext,
     builder: (context) {
       return AlertDialog(
-        title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         content: Text(message),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10))),
         actions: actions ??
             [
               TextButton(
-                child: Text(
-                  'Закрыть',
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  maxLines: 1,
-                ),
+                child: Text('Закрыть',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    maxLines: 1),
                 onPressed: () {
                   Navigator.pop(context);
                 },

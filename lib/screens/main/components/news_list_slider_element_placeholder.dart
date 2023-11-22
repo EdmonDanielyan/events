@@ -17,7 +17,7 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     final elementWidth = MediaQuery.of(context).size.width * 0.8;
 
-    return Container(
+    return SizedBox(
         width: elementWidth,
         height: SizeConfig(context, 300).getProportionateScreenHeight,
         child: Container(
@@ -29,11 +29,11 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                     color: Colors.black.withOpacity(0.15),
                     spreadRadius: 2,
                     blurRadius: 10,
-                    offset: Offset(10, 10))
+                    offset: const Offset(10, 10))
               ],
-              borderRadius: BorderRadius.all(Radius.circular(15))),
+              borderRadius: const BorderRadius.all(Radius.circular(15))),
           child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
               ),
               clipBehavior: Clip.hardEdge,
@@ -90,8 +90,7 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                                       alignment: Alignment.bottomCenter,
                                       margin: const EdgeInsets.only(bottom: 20),
                                       child: Row(children: [
-                                        Container(
-                                            child: Row(children: [
+                                        Row(children: [
                                           SvgPicture.asset(
                                               IconLinks.BARREL_SVG_LINK,
                                               width: 14,
@@ -118,7 +117,7 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                                               ),
                                             ),
                                           )
-                                        ])),
+                                        ]),
                                         Container(
                                             margin:
                                                 const EdgeInsets.only(left: 24),

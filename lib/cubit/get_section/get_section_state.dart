@@ -19,7 +19,7 @@ class GetSectionCubitState {
     String? errorMessage,
   }) {
     return GetSectionCubitState(
-      type: state ?? this.type,
+      type: state ?? type,
       data: data ?? this.data,
       errorMessage: errorMessage ?? this.errorMessage,
     );

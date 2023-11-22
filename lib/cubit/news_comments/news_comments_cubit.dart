@@ -31,7 +31,7 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
   int? editingCommentId;
 
   NewsCommentsCubit()
-      : super(NewsCommentState(type: NewsCommentStateType.LOADING));
+      : super(const NewsCommentState(type: NewsCommentStateType.LOADING));
 
   Future<void> load(int newsId) async {
     try {
@@ -68,7 +68,7 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       emitState(type: NewsCommentStateType.LOADING);
       return;
     } on DioException catch (e) {
-       //TODO   DioErrorType.other
+      //TODO   DioErrorType.other
       if (e.type == DioExceptionType.unknown) throw NoConnectionException();
     } on TimeoutException catch (_) {
       throw NoConnectionException();
@@ -80,8 +80,7 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       final commentStr = commentInputController.text;
       commentInputController.text = "";
       await Token.setNewTokensIfExpired();
-      final comment =
-      EditingCommentEntities(id: commentId, text: commentStr);
+      final comment = EditingCommentEntities(id: commentId, text: commentStr);
 
       await getIt<NewsCommentsEditNetworkRequest>(param1: comment)();
       editingCommentId = null;
@@ -89,7 +88,7 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       emitState(type: NewsCommentStateType.LOADING);
       return;
     } on DioException catch (e) {
-       //TODO   DioErrorType.other
+      //TODO   DioErrorType.other
       if (e.type == DioExceptionType.unknown) throw NoConnectionException();
     } on TimeoutException catch (_) {
       throw NoConnectionException();
@@ -105,13 +104,13 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       final NewsBlockCubit newsBlockCubit = getIt<NewsBlockCubit>();
       final getItem = newsBlockCubit.state.data.getItem(newsId);
       final newItem =
-      getItem?.copyWith(commentCount: (getItem.commentCount ?? 0) - 1);
-      if(newItem != null) {
+          getItem?.copyWith(commentCount: (getItem.commentCount ?? 0) - 1);
+      if (newItem != null) {
         newsBlockCubit.updateItem(newItem);
       }
       return;
     } on DioException catch (e) {
-       //TODO  DioErrorType.other
+      //TODO  DioErrorType.other
       if (e.type == DioExceptionType.unknown) throw NoConnectionException();
     } on TimeoutException catch (_) {
       throw NoConnectionException();

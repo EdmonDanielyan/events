@@ -1,5 +1,3 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
-
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/exceptions/custom_exceptions.dart';
 import 'package:ink_mobile/models/announcement_data.dart';
@@ -9,7 +7,7 @@ import 'package:openapi/openapi.dart';
 extension GetAnnouncementsExt on Response<GetAnnouncements> {
   Pagination<AnnouncementData> mapResponse(
       Pagination<AnnouncementData> pagination) {
-    Map? announcementsListData = this.data?.data.asMap;
+    Map? announcementsListData = data?.data.asMap;
 
     if (announcementsListData != null) {
       final _newList = List<AnnouncementData>.from(pagination.items)

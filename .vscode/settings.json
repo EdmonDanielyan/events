@@ -1,4 +1,5 @@
 {
     "editor.minimap.maxColumn": 200,
-    "editor.wordWrapColumn": 120
+    "editor.wordWrapColumn": 120,
+    "editor.formatOnSave": true
 }

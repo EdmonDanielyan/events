@@ -34,8 +34,11 @@ abstract class NavBottomNavBarItem {
 }
 
 class MainBottomNavBarItem extends NavBottomNavBarItem {
+  @override
   String icon = 'assets/svg/home.svg';
+  @override
   String label = localizationInstance.home;
+  @override
   Widget screen = MainScreen(
     mainAnnouncementsListCubit: getIt<MainAnnouncementsListCubit>(),
     eventsAndAnnouncementsBlockCubit: getIt<EventsAndAnnouncementsBlockCubit>(),
@@ -44,6 +47,7 @@ class MainBottomNavBarItem extends NavBottomNavBarItem {
     newsBlockCubit: getIt<NewsBlockCubit>(),
   );
 
+  @override
   void onTap(BuildContext context, Function onChanged, int index) {
     NavigationUtils(context).popToFirstScreenIfCan();
     onChanged(index);
@@ -51,12 +55,16 @@ class MainBottomNavBarItem extends NavBottomNavBarItem {
 }
 
 class SearchBottomNavBarItem extends NavBottomNavBarItem {
+  @override
   String icon = SEARCH_ICON;
+  @override
   String label = localizationInstance.search;
+  @override
   Widget screen = SearchScreen(
     searchCubit: getIt<SearchCubit>(),
   );
 
+  @override
   void onTap(BuildContext context, Function onChanged, int index) {
     NavigationUtils(context).popToFirstScreenIfCan();
     onChanged(index);
@@ -64,11 +72,15 @@ class SearchBottomNavBarItem extends NavBottomNavBarItem {
 }
 
 class MessagesBottomNavBarItem extends NavBottomNavBarItem {
+  @override
   String icon = 'assets/svg/chat.svg';
+  @override
   String label = localizationInstance.messages;
 
-  Widget screen = ChatListScreen();
+  @override
+  Widget screen = const ChatListScreen();
 
+  @override
   void onTap(BuildContext context, Function onChanged, int index) {
     NavigationUtils(context).popToFirstScreenIfCan();
     onChanged(index);
@@ -76,8 +88,11 @@ class MessagesBottomNavBarItem extends NavBottomNavBarItem {
 }
 
 class ServicesBottomNavBarItem extends NavBottomNavBarItem {
+  @override
   String icon = 'assets/svg/service.svg';
+  @override
   String label = localizationInstance.services;
+  @override
   Widget screen = ServiceListPageViewer(
       feedbackAnswerListCubit: getIt<FeedbackAnswerListCubit>(),
       referencesPageCubit: getIt<ReferencesPageCubit>(),
@@ -91,6 +106,7 @@ class ServicesBottomNavBarItem extends NavBottomNavBarItem {
         param1: ScrollBottomLoadMoreState(isOn: false),
       ));
 
+  @override
   void onTap(BuildContext context, Function onChanged, int index) {
     NavigationUtils(context).popToFirstScreenIfCan();
     onChanged(index);
@@ -102,14 +118,18 @@ class ServicesBottomNavBarItem extends NavBottomNavBarItem {
 }
 
 class MenuBottomNavBarItem extends NavBottomNavBarItem {
+  @override
   String icon = 'assets/svg/menu.svg';
+  @override
   String label = localizationInstance.menu;
+  @override
   Widget screen = const SizedBox.shrink();
 
+  @override
   void onTap(BuildContext context, Function onChanged, int index) {
     showMaterialModalBottomSheet(
       backgroundColor: Palette.white,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
       ),
       context: context,

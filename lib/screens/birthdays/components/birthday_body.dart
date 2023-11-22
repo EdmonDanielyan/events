@@ -17,7 +17,7 @@ class BirthdayBody extends StatelessWidget {
           style: FontStyles.rubikP3(color: Palette.textBlack50),
         ),
         Text(
-          "${birthday.city?.trim() ?? ""}",
+          birthday.city?.trim() ?? "",
           style: FontStyles.rubikP3(color: Palette.textBlack50),
         ),
       ],

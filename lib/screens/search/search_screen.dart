@@ -9,7 +9,7 @@ class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key, required this.searchCubit}) : super(key: key);
 
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  State<SearchScreen> createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen>
@@ -19,6 +19,7 @@ class _SearchScreenState extends State<SearchScreen>
     AppMetricsEvents().searchEvent();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -27,7 +28,7 @@ class _SearchScreenState extends State<SearchScreen>
         context,
         leading: const SizedBox.shrink(),
         showPersonalPageLink: true,
-          title: "Поиск по порталу",
+        title: "Поиск по порталу",
       ),
       body: Body(
         searchCubit: widget.searchCubit,

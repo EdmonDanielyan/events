@@ -62,9 +62,9 @@ class _AppLayerScreenState extends State<AppLayerScreen>
       child: Scaffold(
         body: PageView(
           controller: widget.newBottomNavBarCubit.pageController,
-          children: _screens,
           onPageChanged: widget.newBottomNavBarCubit.onPageChanged,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
+          children: _screens,
         ),
         bottomNavigationBar: const NewBottomNavBar(),
       ),

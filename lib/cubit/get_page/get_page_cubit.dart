@@ -11,15 +11,12 @@ import 'package:ink_mobile/models/token.dart';
 import 'package:ink_mobile/setup.dart';
 import 'package:openapi/openapi.dart';
 
-
-
 @injectable
 class GetPageCubit extends Cubit<GetPageCubitState> {
   GetPageCubit()
-      : super(GetPageCubitState(
-      type: GetPageCubitStateEnums.LOADING));
+      : super(GetPageCubitState(type: GetPageCubitStateEnums.LOADING));
 
-  String _emptySectionError = "There is no similar page";
+  final String _emptySectionError = "There is no similar page";
 
   Future<void> fetch(String id) async {
     try {

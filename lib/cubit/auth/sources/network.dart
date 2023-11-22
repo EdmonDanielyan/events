@@ -11,7 +11,9 @@ import 'package:openapi/openapi.dart';
 
 @injectable
 class AuthNetworkRequest extends AuthRequestDependency {
+  @override
   String? login;
+  @override
   String? password;
   AuthNetworkRequest(
       {@factoryParam required this.login, @factoryParam required this.password})

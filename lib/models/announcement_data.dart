@@ -1,5 +1,3 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
-
 import 'package:ink_mobile/models/data.dart';
 import 'package:openapi/openapi.dart';
 
@@ -18,6 +16,7 @@ class AnnouncementData extends Data {
     this.detailText,
   });
 
+  @override
   void fillFromMap(Map map) {
     id = map['id'] is int ? map['id'] : int.tryParse(map['id'].toString());
 
@@ -60,9 +59,9 @@ class AnnouncementData extends Data {
   static List<AnnouncementData> getListFromMap(List listData) {
     List<AnnouncementData> list = [];
 
-    listData.forEach((element) {
+    for (var element in listData) {
       list.add(AnnouncementData.fromMap(element));
-    });
+    }
 
     return list;
   }

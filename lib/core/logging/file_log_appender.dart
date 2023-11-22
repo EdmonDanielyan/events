@@ -9,7 +9,7 @@ import 'device_info_printer.dart';
 class FileLogAppender with DeviceInfoPrinter {
   bool get shouldLog => false;
   String logFile;
-  List<String> _recordsCache = [];
+  final List<String> _recordsCache = [];
   Timer? _timer;
   File? _file;
 
@@ -73,9 +73,7 @@ class FileLogAppender with DeviceInfoPrinter {
     }
 
     try {
-      if (_file == null) {
-        _file = File("$logFile");
-      }
+      _file ??= File(logFile);
       bool exists = _file!.existsSync();
       if (!exists) {
         _file!.createSync();

@@ -31,7 +31,7 @@ class DateFunctions {
   }
 
   String minutesHoursDayMonthYear() {
-    return dayMonthYear() + " " + hourMinute();
+    return "${dayMonthYear()} ${hourMinute()}";
   }
 
   String dayMonthYearHuman() {
@@ -47,14 +47,14 @@ class DateFunctions {
     if (isToday()) {
       return hourMinute();
     }
-    return dayMonthYear() + " " + hourMinute();
+    return "${dayMonthYear()} ${hourMinute()}";
   }
 
   String displayDate() {
     if (isToday()) {
       return hourMinute();
     } else {
-      return dayMonthYear() + " " + hourMinute();
+      return "${dayMonthYear()} ${hourMinute()}";
     }
   }
 

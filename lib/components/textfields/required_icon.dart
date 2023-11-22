@@ -5,13 +5,10 @@ class RequiredTextfieldIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 10),
-      child: Text(
-        "*",
-        style: TextStyle(color: Colors.red),
-        textAlign: TextAlign.center,
-      ),
+    return const Padding(
+      padding: EdgeInsets.only(right: 10),
+      child: Text("*",
+          style: TextStyle(color: Colors.red), textAlign: TextAlign.center),
     );
   }
 }

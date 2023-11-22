@@ -21,12 +21,10 @@ class ChatInfoAddBtn extends StatelessWidget {
       title: "Добавить участников",
       borderColor: Palette.greenE4A,
       textColor: Palette.greenE4A,
-      suffixIcon: SvgPicture.asset(
-        IconLinks.USER_ADD_ICON,
-        height: 20.0,
-        width: 20.0,
-        color: Palette.greenE4A,
-      ),
+      suffixIcon: SvgPicture.asset(IconLinks.USER_ADD_ICON,
+          height: 20.0,
+          width: 20.0,
+          colorFilter: ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
     );
   }
 }

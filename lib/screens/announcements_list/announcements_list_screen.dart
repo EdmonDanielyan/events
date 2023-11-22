@@ -18,7 +18,7 @@ class AnnouncementsListScreen extends StatelessWidget {
     return Scaffold(
       appBar: InkAppBarWithText(context, title: _strings.announcements),
       body: Body(cubit: announcementsListCubit),
-      bottomNavigationBar: NewBottomNavBar(showActive: false),
+      bottomNavigationBar: const NewBottomNavBar(showActive: false),
     );
   }
 }

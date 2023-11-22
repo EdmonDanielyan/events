@@ -5,7 +5,7 @@ import 'package:ink_mobile/setup.dart';
 
 class TokenInterceptor implements Interceptor {
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) async {
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
     return handler.next(err);
   }
 

@@ -17,7 +17,9 @@ mixin class NewBottomNavBarMixin {
 
   List<Widget> getScreens() {
     List<Widget> items = [];
-    navBottomNavBarItems.forEach((element) => items.add(element.screen));
+    for (var element in navBottomNavBarItems) {
+      items.add(element.screen);
+    }
 
     return items;
   }
@@ -28,7 +30,7 @@ mixin class NewBottomNavBarMixin {
     double activeIconHeight = 25.0,
   }) {
     List<BottomNavigationBarItem> items = [];
-    navBottomNavBarItems.forEach((element) {
+    for (var element in navBottomNavBarItems) {
       items.add(
         _buildNewBottomNavItem(
           element,
@@ -38,7 +40,7 @@ mixin class NewBottomNavBarMixin {
           activeIconHeight: activeIconHeight,
         ),
       );
-    });
+    }
 
     return items;
   }
@@ -59,7 +61,8 @@ mixin class NewBottomNavBarMixin {
             child: SvgPicture.asset(
               item.icon,
               height: iconHeight,
-              color: Palette.textBlack50,
+              colorFilter:
+                  ColorFilter.mode(Palette.textBlack50, BlendMode.srcIn),
             ),
           ),
           if (msgIndicator) ...[
@@ -79,7 +82,8 @@ mixin class NewBottomNavBarMixin {
                   child: SvgPicture.asset(
                     item.icon,
                     height: activeIconHeight,
-                    color: Palette.greenE4A,
+                    colorFilter:
+                        ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn),
                   ),
                 ),
                 if (msgIndicator) ...[

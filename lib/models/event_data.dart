@@ -1,5 +1,3 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
-
 import 'package:ink_mobile/models/data.dart';
 import 'package:openapi/openapi.dart';
 
@@ -17,21 +15,21 @@ class EventData extends Data {
   bool? isActual;
   bool? placesAvailable;
 
-  EventData({
-    this.id,
-    this.title,
-    this.dateCreate,
-    this.beginDate,
-    this.endDate,
-    this.place,
-    this.viewCount,
-    this.detailText,
-    this.pictureLink,
-    this.isMember,
-    this.isActual,
-    this.placesAvailable
-  });
+  EventData(
+      {this.id,
+      this.title,
+      this.dateCreate,
+      this.beginDate,
+      this.endDate,
+      this.place,
+      this.viewCount,
+      this.detailText,
+      this.pictureLink,
+      this.isMember,
+      this.isActual,
+      this.placesAvailable});
 
+  @override
   void fillFromMap(Map map) {
     id = map['id'] is int ? map['id'] : int.tryParse(map['id'].toString());
 
@@ -61,7 +59,8 @@ class EventData extends Data {
 
     isMember = map['is_member'] is bool ? map['is_member'] : null;
     isActual = map['is_actual'] is bool ? map['is_actual'] : null;
-    placesAvailable = map['places_available'] is bool ? map['places_available'] : null;
+    placesAvailable =
+        map['places_available'] is bool ? map['places_available'] : null;
   }
 
   factory EventData.fromMap(Map map) {
@@ -85,7 +84,8 @@ class EventData extends Data {
           map['preview_picture'] is String ? map['preview_picture'] : null,
       isMember: map['is_member'] is bool ? map['is_member'] : null,
       isActual: map['is_actual'] is bool ? map['is_actual'] : null,
-      placesAvailable: map['places_available'] is bool ? map['places_available'] : null,
+      placesAvailable:
+          map['places_available'] is bool ? map['places_available'] : null,
     );
   }
 
@@ -121,25 +121,25 @@ class EventData extends Data {
 
   factory EventData.fromProperty(EventProperty property) {
     return EventData(
-        id: property.id,
-        title: property.title,
-        viewCount: property.viewCount,
-        detailText: property.detailText,
-        dateCreate: property.dateCreate,
-        beginDate: property.dateStart,
-        endDate: property.dateFinish,
-        place: property.place,
-        pictureLink: property.detailPicture,
-        isMember: property.isMember,
+      id: property.id,
+      title: property.title,
+      viewCount: property.viewCount,
+      detailText: property.detailText,
+      dateCreate: property.dateCreate,
+      beginDate: property.dateStart,
+      endDate: property.dateFinish,
+      place: property.place,
+      pictureLink: property.detailPicture,
+      isMember: property.isMember,
     );
   }
 
   static List<EventData> getListFromResponse(List eventDataList) {
     List<EventData> list = [];
 
-    eventDataList.forEach((element) {
+    for (var element in eventDataList) {
       list.add(EventData.fromMap(element));
-    });
+    }
 
     return list;
   }

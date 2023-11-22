@@ -16,7 +16,7 @@ class BasicInformation extends StatelessWidget {
     if (info != null) {
       return getBasicInfoWidget(context);
     }
-    return SliverToBoxAdapter(child: const SizedBox.shrink());
+    return const SliverToBoxAdapter(child: SizedBox.shrink());
   }
 
   Widget getBasicInfoWidget(context) {
@@ -36,9 +36,7 @@ class BasicInformation extends StatelessWidget {
                 SectionTitle(
                   title: _strings.mainInformation,
                 ),
-                const SizedBox(
-                  height: 24.0,
-                ),
+                const SizedBox(height: 24.0),
                 ...getBasicInfoWidgetRows(),
               ],
             ),
@@ -46,7 +44,7 @@ class BasicInformation extends StatelessWidget {
         ),
       );
     }
-    return SliverToBoxAdapter(child: const SizedBox.shrink());
+    return const SliverToBoxAdapter(child: SizedBox.shrink());
   }
 
   List<Widget> getBasicInfoWidgetRows() {

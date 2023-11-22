@@ -7,7 +7,7 @@ class FancyText {
     if (text.length >= limit) {
       String newTxt = text.substring(0, limit);
       if (ellipsis) {
-        newTxt = newTxt + "...";
+        newTxt = "$newTxt...";
       }
       return newTxt;
     }

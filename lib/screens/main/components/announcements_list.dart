@@ -40,16 +40,16 @@ class AnnouncementsList extends StatelessWidget {
               announcementsCubit.fetchAnnouncements();
               return Container(
                   margin: const EdgeInsets.only(top: 30),
-                  child: Column(children: [
-                    const AnnouncementsListElementPlaceholder(),
-                    const ListElementDivider(),
-                    const AnnouncementsListElementPlaceholder(),
-                    const ListElementDivider(),
-                    const AnnouncementsListElementPlaceholder(),
-                    const ListElementDivider(),
-                    const AnnouncementsListElementPlaceholder(),
-                    const ListElementDivider(),
-                    const AnnouncementsListElementPlaceholder(),
+                  child: const Column(children: [
+                    AnnouncementsListElementPlaceholder(),
+                    ListElementDivider(),
+                    AnnouncementsListElementPlaceholder(),
+                    ListElementDivider(),
+                    AnnouncementsListElementPlaceholder(),
+                    ListElementDivider(),
+                    AnnouncementsListElementPlaceholder(),
+                    ListElementDivider(),
+                    AnnouncementsListElementPlaceholder(),
                   ]));
             }
 
@@ -67,15 +67,15 @@ class AnnouncementsList extends StatelessWidget {
       List<AnnouncementData> announcements) {
     List<Widget> announcementsWidgetList = [];
 
-    announcements.forEach((element) {
+    for (var element in announcements) {
       announcementsWidgetList.addAll([
         AnnouncementsListElement(announcement: element),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: const ListElementDivider(),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          child: ListElementDivider(),
         )
       ]);
-    });
+    }
 
     announcementsWidgetList.removeLast();
 

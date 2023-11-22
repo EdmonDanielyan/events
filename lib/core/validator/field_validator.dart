@@ -21,11 +21,11 @@ class FieldValidator {
   }
 
   String? cityValidator(String? str) {
-    return str!.length < 1 ? strings.fillTheField : null;
+    return str!.isEmpty ? strings.fillTheField : null;
   }
 
   String? streetValidator(String? str) {
-    return str!.length < 1 ? strings.fillTheField : null;
+    return str!.isEmpty ? strings.fillTheField : null;
   }
 
   String? addressValidator(String? str) {

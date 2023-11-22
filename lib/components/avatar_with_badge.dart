@@ -9,7 +9,7 @@ import '../messenger/constants/enums.dart';
 import 'cached_image/cached_avatar.dart';
 
 class AvatarWithBadge extends StatelessWidget {
-  AvatarWithBadge({
+  const AvatarWithBadge({
     Key? key,
     this.absence,
     this.birthday,
@@ -56,16 +56,14 @@ class AvatarWithBadge extends StatelessWidget {
       onTap: onTap,
       child: Badge(
         isLabelVisible: chatBadge != ChatBadge.none,
-        label: SvgPicture.asset(
-          iconLink,
-          color: Palette.white,
-          height: 12.0,
-          width: 12.0,
-        ),
+        label: SvgPicture.asset(iconLink,
+            colorFilter: ColorFilter.mode(Palette.white, BlendMode.srcIn),
+            height: 12.0,
+            width: 12.0),
         backgroundColor: backgroundColor,
         smallSize: 20.0,
         largeSize: 20.0,
-        alignment: AlignmentDirectional(0.0, 0.0),
+        alignment: const AlignmentDirectional(0.0, 0.0),
         child: Padding(
           padding: padding ?? EdgeInsets.zero,
           child: CachedCircleAvatar(
