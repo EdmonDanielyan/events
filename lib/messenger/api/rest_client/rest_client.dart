@@ -87,18 +87,7 @@ class MainApi {
     if (useTokenInterceptor) {
       dio.interceptors.add(TokenInterceptor());
     }
-    dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
-      print('${options.method} ${options.baseUrl}${options.path}');
 
-      print('Params:');
-      options.queryParameters.forEach((k, v) => print('$k: $v'));
-      if (options.data != null) {
-        print('Body:');
-        print(jsonEncode(options.data));
-      }
-
-      return handler.next(options);
-    }));
 
     return RestClient(dio, baseUrl: getIt<BaseUrlCubit>().url);
   }
