@@ -2,9 +2,11 @@ import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/core/logging/loggable.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
-import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:local_auth/local_auth.dart';
+import 'package:local_auth_android/local_auth_android.dart';
+import 'package:local_auth_ios/local_auth_ios.dart';
+
 
 @singleton
 class LockApp with Loggable {
@@ -53,11 +55,16 @@ class LockApp with Loggable {
   Future<bool> _authRequest(bool canCheckBios) async {
     return await _localAuth.authenticate(
       localizedReason: canCheckBios ? localizationInstance.biometricReason : "",
-      iOSAuthStrings: _iosStrings(),
+      authMessages: [
+     _iosStrings(),
+     _androidStrings( biometricHint: localizationInstance.biometricHint)
+    ],
+    options: AuthenticationOptions(
+      // useErrorDialogs: true,
+      // stickyAuth: false,
+      // sensitiveTransaction: false,
       biometricOnly: true,
-      sensitiveTransaction: false,
-      androidAuthStrings:
-          _androidStrings(biometricHint: localizationInstance.biometricHint),
+    ),
     );
   }
 
