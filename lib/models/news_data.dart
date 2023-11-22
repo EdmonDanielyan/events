@@ -14,8 +14,11 @@ class NewsItemData extends Data {
   String? detailText;
   bool? isLiked;
   String? previewPictureLink;
-  List<String>? detailPictureLinks;
-  List<String>? videoLinks;
+  List<String?>? detailPictureLinks;
+  List<String?>? videoLinks;
+  // migration
+  // List<String>? detailPictureLinks;
+  // List<String>? videoLinks;
 
   NewsItemData({
     this.id,
@@ -126,8 +129,8 @@ class NewsItemData extends Data {
       dateCreate: property.dateCreate,
       detailText: property.detailText,
       isLiked: property.liked,
-      detailPictureLinks: property.imageLinks.asList(),
-      videoLinks: property.videoLinks.asList(),
+      detailPictureLinks: property.imageLinks?.asList() ,
+      videoLinks: property.videoLinks?.asList()
     );
   }
 
