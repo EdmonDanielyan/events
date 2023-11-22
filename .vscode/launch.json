@@ -9,7 +9,6 @@
             "request": "launch",
             "type": "dart",
             "args": [
-                "--no-sound-null-safety",
                 "--flavor",
                 "dev",
                 "-t",
@@ -21,7 +20,6 @@
             "request": "launch",
             "type": "dart",
             "args": [
-                "--no-sound-null-safety",
                 "--flavor",
                 "prod",
                 "-t",

@@ -133,10 +133,10 @@ import 'screens/initial/cubit/initial_cubit.dart' as _i115;
 import 'screens/medical_insurance/components/form/entities.dart' as _i101;
 import 'screens/open_university/cubit/open_university_cubit.dart' as _i81;
 
+const String _unitTest = 'unitTest';
 const String _test = 'test';
 const String _prod = 'prod';
 const String _dev = 'dev';
-const String _unitTest = 'unitTest';
 
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
@@ -389,25 +389,29 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i107.StaffMovementsNetworkRequest>(
       _i107.StaffMovementsNetworkRequest());
   gh.factory<String>(
-    () => tokenDataInjectorModule.messengerAuthLogin,
-    instanceName: 'messengerAuthLogin',
+    () => tokenDataInjectorModule.deviceVirtualId,
+    instanceName: 'deviceVirtualId',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.natsToken,
+    instanceName: 'natsToken',
   );
   gh.factory<String>(
     () => tokenDataInjectorModule.messengerAuthPassword,
     instanceName: 'messengerAuthPassword',
   );
   gh.factory<String>(
+    () => tokenDataInjectorModule.messengerAuthLogin,
+    instanceName: 'messengerAuthLogin',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.userId,
+    instanceName: 'userId',
+  );
+  gh.factory<String>(
     () => testLogFilePathInjector.logFile,
     instanceName: 'logFile',
     registerFor: {_unitTest},
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.deviceVirtualId,
-    instanceName: 'deviceVirtualId',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.localDatabasePassword,
-    instanceName: 'localDatabasePassword',
   );
   await gh.factoryAsync<String>(
     () => logFilePathInjector.logFile,
@@ -420,12 +424,8 @@ Future<_i1.GetIt> $initGetIt(
     preResolve: true,
   );
   gh.factory<String>(
-    () => tokenDataInjectorModule.userId,
-    instanceName: 'userId',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.natsToken,
-    instanceName: 'natsToken',
+    () => tokenDataInjectorModule.localDatabasePassword,
+    instanceName: 'localDatabasePassword',
   );
   gh.singleton<_i108.TagsListCubit>(_i108.TagsListCubit());
   gh.singleton<_i109.TagsListNetworkRequest>(_i109.TagsListNetworkRequest());
@@ -444,8 +444,8 @@ Future<_i1.GetIt> $initGetIt(
   return getIt;
 }
 
-class _$LogFilePathInjector extends _i116.LogFilePathInjector {}
-
 class _$TokenDataInjectorModule extends _i111.TokenDataInjectorModule {}
 
 class _$TestLogFilePathInjector extends _i116.TestLogFilePathInjector {}
+
+class _$LogFilePathInjector extends _i116.LogFilePathInjector {}
