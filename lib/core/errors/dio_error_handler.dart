@@ -6,7 +6,7 @@ import 'package:ink_mobile/models/error_model.dart';
 import 'package:ink_mobile/models/error_response.dart';
 
 class DioErrorHandler {
-  final DioError e;
+  final DioException e;
 
   DioErrorHandler({required this.e});
 

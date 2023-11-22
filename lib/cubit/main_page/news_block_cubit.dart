@@ -48,7 +48,7 @@ class NewsBlockCubit extends Cubit<NewsBlockState> {
       final mapResponse = response.mapResponse(pagination);
       emitSuccess(items: mapResponse.items, tabs: _tabs);
       // mapService.fetchVideoLinks(mapResponse.items);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);

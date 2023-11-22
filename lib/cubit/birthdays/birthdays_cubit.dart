@@ -29,7 +29,7 @@ class BirthdaysCubit extends Cubit<BirthdaysState> {
       final mapResponse = response.mapResponse();
       sortBirthdays(mapResponse.birthdaysOther);
       emitSuccess(mapResponse.birthdaysToday, mapResponse.birthdaysOther);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       final _errorHandler = DioErrorHandler(e: e);
 
       if (_errorHandler.isEmpty()) {

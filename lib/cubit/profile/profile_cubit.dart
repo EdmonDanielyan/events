@@ -46,7 +46,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         emitSuccessUser(userData);
       else
         emitSuccessOtherUser(userData);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
       throw error.exception;
@@ -66,7 +66,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       ));
       await Token.setNewTokensIfExpired();
       getIt<ProfileThankNetworkRequest>(param1: userId)();
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
       throw error.exception;

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 class CustomLogInterceptor implements Interceptor {
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) async {
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
     return handler.next(err);
   }
 

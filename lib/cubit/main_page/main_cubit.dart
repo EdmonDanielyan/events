@@ -18,7 +18,7 @@ class MainPageCubit extends Cubit<MainPageState> {
       await Token.setNewTokensIfExpired();
 
       emit(MainPageState(type: MainPageStateType.LOADED));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError();

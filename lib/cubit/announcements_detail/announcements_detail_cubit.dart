@@ -24,7 +24,7 @@ class AnnouncementCubit extends Cubit<AnnouncementsDetailState> {
       final _makeRequest = await getIt<AnnouncementsDetailNetworkRequest>(
           param1: announcementId)();
       emitSuccess(_makeRequest.mapResponse());
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);

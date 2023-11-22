@@ -29,7 +29,7 @@ class AuthCubit extends Cubit<AuthState> {
     } on TimeoutException catch (_) {
       emitError(localizationInstance.noConnectionError);
       throw FormatException(localizationInstance.noConnectionError);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       if (error.exception is UnknownErrorException) {
         emitError(ErrorMessages.AUTH_ERROR_MESSAGE);

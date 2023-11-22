@@ -17,7 +17,7 @@ class GetAutofill {
       await Token.setNewTokensIfExpired();
       final response = await getIt<GetAutofillNetworkRequest>()();
       autofill = response.mapResponse();
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       throw error.exception;
     } on Exception catch (_) {

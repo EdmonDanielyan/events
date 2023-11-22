@@ -33,7 +33,7 @@ class GetPageCubit extends Cubit<GetPageCubitState> {
       } else {
         emitError(_emptySectionError);
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
       throw error.exception;

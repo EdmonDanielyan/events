@@ -25,7 +25,7 @@ class NewsDetailCubit extends Cubit<NewsDetailState> {
       await Token.setNewTokensIfExpired();
       final response = await getIt<NewsDetailNetworkRequest>(param1: newsId)();
       emitSuccess(response.mapResponse());
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);
@@ -45,9 +45,9 @@ class NewsDetailCubit extends Cubit<NewsDetailState> {
           .copyWith(isLiked: !state.data!.isLiked!, likeCount: likeCount));
       await Token.setNewTokensIfExpired();
       await getIt<NewsLikeNetworkRequest>(param1: newsId)();
-    } on DioError catch (e) {
+    } on DioException catch (e) {
        //TODO   DioErrorType.other
-      if (e.type == DioErrorType.unknown) throw NoConnectionException();
+      if (e.type == DioExceptionType.unknown) throw NoConnectionException();
 
       throw UnknownErrorException();
     } on Exception catch (_) {

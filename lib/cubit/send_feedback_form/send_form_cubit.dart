@@ -26,7 +26,7 @@ class SendManagementFormCubit extends Cubit<BtnCubitState> {
       res
           ? emitSuccess(localizationInstance.feedbackSuccessfullySent)
           : emitError(localizationInstance.requiredParamsAreNotFilled);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);

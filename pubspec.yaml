@@ -118,6 +118,7 @@ dev_dependencies:
     # drift_dev: ^2.11.1
     # yaml:
     # flutter_native_splash: ^2.2.4
+    flutter_lints: ^2.0.0
     retrofit_generator: ^8.0.0
     json_serializable: ^6.7.1
     build_runner: ^2.4.6

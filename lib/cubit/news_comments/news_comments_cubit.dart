@@ -40,7 +40,7 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
           await getIt<NewsCommentsFetchNetworkRequest>(param1: newsId)();
       List<CommentData> comments = response.mapResponse(newsId);
       emitSuccess(comments);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       final _errorHandler = DioErrorHandler(e: e);
       if (_errorHandler.isEmpty()) {
         emitEmpty();
@@ -67,9 +67,9 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       clear();
       emitState(type: NewsCommentStateType.LOADING);
       return;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
        //TODO   DioErrorType.other
-      if (e.type == DioErrorType.unknown) throw NoConnectionException();
+      if (e.type == DioExceptionType.unknown) throw NoConnectionException();
     } on TimeoutException catch (_) {
       throw NoConnectionException();
     }
@@ -88,9 +88,9 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
       isEditing = false;
       emitState(type: NewsCommentStateType.LOADING);
       return;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
        //TODO   DioErrorType.other
-      if (e.type == DioErrorType.unknown) throw NoConnectionException();
+      if (e.type == DioExceptionType.unknown) throw NoConnectionException();
     } on TimeoutException catch (_) {
       throw NoConnectionException();
     }
@@ -110,9 +110,9 @@ class NewsCommentsCubit extends Cubit<NewsCommentState> {
         newsBlockCubit.updateItem(newItem);
       }
       return;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
        //TODO  DioErrorType.other
-      if (e.type == DioErrorType.unknown) throw NoConnectionException();
+      if (e.type == DioExceptionType.unknown) throw NoConnectionException();
     } on TimeoutException catch (_) {
       throw NoConnectionException();
     }

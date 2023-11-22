@@ -33,7 +33,7 @@ class EventsListCubit extends Cubit<EventsListState> {
 
         emitSuccess(pagination.items);
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);

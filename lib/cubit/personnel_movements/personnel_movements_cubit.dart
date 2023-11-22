@@ -25,7 +25,7 @@ class PersonnelMovementsCubit extends Cubit<PersonnelMovementsState> {
       await Token.setNewTokensIfExpired();
       final response = await getIt<StaffMovementsNetworkRequest>()();
       emitSuccess(response.mapResponse());
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       final _errorHandler = DioErrorHandler(e: e);
       if (_errorHandler.isEmpty()) {
         emitEmpty();

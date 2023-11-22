@@ -41,7 +41,7 @@ class SendReferenceFormCubit extends Cubit<BtnCubitState> {
           : emitError(res.data!.data!);
 
       return res.data!.success;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);

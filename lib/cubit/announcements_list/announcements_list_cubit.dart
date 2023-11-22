@@ -35,7 +35,7 @@ class AnnouncementsListCubit extends Cubit<AnnouncementsListState> {
         pagination = response.mapResponse(pagination);
         emitSuccess(pagination.items);
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
       throw error.exception;

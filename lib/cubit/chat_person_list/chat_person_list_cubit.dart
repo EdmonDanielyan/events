@@ -52,7 +52,7 @@ class ChatPersonListCubit extends Cubit<ChatPersonListCubitState> {
       }
 
       emitUsers(items: users);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
     } on Exception catch (_) {

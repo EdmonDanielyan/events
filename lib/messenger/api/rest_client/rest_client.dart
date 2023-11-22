@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:ink_mobile/messenger/api/interceptors/token_interceptor.dart';
 import 'package:ink_mobile/messenger/api/rest_client/chat/create/request.dart';
 import 'package:ink_mobile/messenger/api/rest_client/chat/create/response.dart';

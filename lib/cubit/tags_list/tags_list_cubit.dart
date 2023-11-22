@@ -22,7 +22,7 @@ class TagsListCubit extends Cubit<TagsListCubitState> {
       final response = await getIt<TagsListNetworkRequest>()();
       List<Selectfield> items = response.mapResponse();
       emitSuccess(items);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);

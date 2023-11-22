@@ -34,7 +34,7 @@ class SearchCubit extends Cubit<SearchState> {
           return;
         }
         searchModel.isEmpty() ? emitEmpty() : emitSuccess(searchModel);
-      } on DioError catch (e) {
+      } on DioException catch (e) {
         ErrorModel error = DioErrorHandler(e: e).call();
         emitError(error.msg);
         throw error.exception;

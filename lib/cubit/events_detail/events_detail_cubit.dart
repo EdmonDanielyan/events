@@ -27,7 +27,7 @@ class EventDetailCubit extends Cubit<EventsDetailState> {
       final response =
           await getIt<EventsDetailNetworkRequest>(param1: eventId)();
       emitSuccess(response.mapResponse());
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
 
       emitError(error.msg);
@@ -49,7 +49,7 @@ class EventDetailCubit extends Cubit<EventsDetailState> {
         }
         emitSuccess(state.data!.copyWith(isMember: !state.data!.isMember!));
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       ErrorModel error = DioErrorHandler(e: e).call();
       emitError(error.msg);
       throw error.exception;
