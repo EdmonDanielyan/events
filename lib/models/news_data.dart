@@ -87,8 +87,8 @@ class NewsItemData extends Data {
         isLiked: map['liked'] is bool ? map['liked'] : null,
         previewPictureLink:
             map['preview_picture'] is String ? map['preview_picture'] : null,
-        detailPictureLinks: map['image_links'] as List<String>,
-        videoLinks: map['videos_links'] as List<String>);
+        detailPictureLinks: map['image_links'] as List<String>?,
+        videoLinks: map['videos_links'] as List<String>?);
   }
 
   NewsItemData copyWith({

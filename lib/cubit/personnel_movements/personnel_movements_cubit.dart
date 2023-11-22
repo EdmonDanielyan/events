@@ -32,8 +32,24 @@ class PersonnelMovementsCubit extends Cubit<PersonnelMovementsState> {
         return;
       }
 
+//TODO: возвращает 404 на верный запрос, если не было перемещний
+// {
+//     "success": false,
+//     "host": "https://portal.irkutskoil.ru",
+//     "version": "1.0.0",
+//     "returned": "2023-11-21T06:27:40+0800",
+//     "type": "about:blank",
+//     "instance": "https://portal.irkutskoil.ru/api/v1/user/movements",
+//     "title": "Кадровые перемещения не найдены",
+//     "detail": "Для текущего пользователя не найдено ни одного кадрового перемещения",
+//     "status": 404,
+//     "code": "QMA-33"
+// }
+//надо это потестить и обработать нормально
+// а сейчас пока что 
+     emitEmpty();
       ErrorModel error = _errorHandler.call();
-      throw error.exception;
+      // throw error.exception;
     } on TimeoutException catch (_) {
       emitError(localizationInstance.noConnectionError);
       throw NoConnectionException();

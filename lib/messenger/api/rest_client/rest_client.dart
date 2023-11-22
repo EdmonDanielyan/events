@@ -77,7 +77,7 @@ class MainApi {
       BaseOptions(
         headers: {
           "X-Requested-With": "XMLHttpRequest",
-          "Content-Type": "application/json",
+          // "Content-Type": "application/json",
           "Accept": "*/*",
           "Accept-Encoding": "gzip, deflate, br",
         },

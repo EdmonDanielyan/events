@@ -39,7 +39,7 @@ class BirthdaysCubit extends Cubit<BirthdaysState> {
 
       ErrorModel error = _errorHandler.call();
       _emitError(error.msg);
-      throw error.exception;
+      // throw error.exception;
     }
   }
 
