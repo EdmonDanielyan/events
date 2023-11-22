@@ -7,7 +7,7 @@ class LocalNotificationsProvider {
 
   Future<void> load() async {
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    var _initializationSettingsIOS = const IOSInitializationSettings(
+    var _initializationSettingsIOS = const DarwinInitializationSettings(
       requestBadgePermission: false,
       defaultPresentBadge: false,
       requestAlertPermission: true,
@@ -20,24 +20,24 @@ class LocalNotificationsProvider {
     );
     await _flutterLocalNotificationsPlugin.initialize(
       _initializationSettings,
-      onSelectNotification: _handleSelections,
+      onDidReceiveNotificationResponse: _handleSelections,
     );
     var _notificationAppLaunchDetails = await _flutterLocalNotificationsPlugin
         .getNotificationAppLaunchDetails();
     if (_notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
       final selectedNotificationPayload =
-          _notificationAppLaunchDetails!.payload;
+          _notificationAppLaunchDetails?.notificationResponse;
       selectNotification(selectedNotificationPayload);
     }
   }
 
   Map<String, void Function(String?)> listeners = {};
 
-  void _handleSelections(String? payload) {
-    listeners[payload]?.call(payload);
-  }
+ void _handleSelections(NotificationResponse response) {
+  listeners[response.payload]?.call(response.payload);
+}
 
-  Future<void> selectNotification(String? payload) async {
+  Future<void> selectNotification(NotificationResponse? payload) async {
     // if (payload != null) {
     //   logger.info(() => 'notification payload: $payload');
     //   var secureStorage = getIt<SecureStorage>();
@@ -61,7 +61,7 @@ class LocalNotificationsProvider {
       ticker: 'ticker',
     );
 
-    const iosNotificationDetails = IOSNotificationDetails(
+    const iosNotificationDetails = DarwinNotificationDetails(
       presentBadge: false,
       presentAlert: true,
       badgeNumber: 0,

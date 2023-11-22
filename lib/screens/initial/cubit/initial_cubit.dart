@@ -58,7 +58,8 @@ class InitialCubit extends Cubit<InitialState> with Loggable {
     } on DioError catch (e, s) {
       logger.severe('Error during load', e, s);
       if ([
-        DioErrorType.connectTimeout,
+        // TODO migartion
+        // DioErrorType.connectTimeout,
         DioErrorType.receiveTimeout,
         DioErrorType.sendTimeout
       ].contains(e.type)) {
