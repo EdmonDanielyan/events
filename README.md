@@ -19,19 +19,19 @@
     Для Android: 
 
     Для прода
-    `flutter build apk --no-sound-null-safety -t lib/prod_main.dart`
+    `flutter build apk -t lib/prod_main.dart`
     Для тестового сервера
-   `flutter build apk --no-sound-null-safety -t lib/dev_main.dart`
+   `flutter build apk -t lib/dev_main.dart`
 
     Или можно использовать готовый скрипт build.sh
    `./build.sh $env $paltform`, описание параметров можно найти в скрипте
 
     или, в случае, если сборка не работает
-    `flutter build apk --release --no-sound-null-safety --obfuscate --split-debug-info=./debug` 
+    `flutter build apk --release --obfuscate --split-debug-info=./debug` 
     
     Для IOS:
     
-    `flutter pub build ios --no-sound-null-safety`
+    `flutter pub build ios`
 
 2. Добавьте директорию .dart_tool/flutter_gen/ в исходники проекта
 
@@ -71,3 +71,26 @@ r'files': files,
 Для того, чтобы добавить новое значение для локализации, пишем туда уникальный ключ для добавляемой строчки и для файлов app_ru и app_en прописываем русский и английский вариант строки соответственно
 Для использования необходимой строчки в коде используем сущность localizationInstance и обращаемся к ней по ключу 
 Запустить команду  flutter packages pub run build_runner build --delete-conflicting-outputs
+
+
+### API generation dart 3.0
+
+Перед генерацией необходимо получить у бэкенда актуальный specification.yaml 
+
+Для генерации сейчас используем пакет https://pub.dev/packages/openapi_generator 4.13.1
+Это аналог https://openapi-generator.tech/docs/generators/dart-dio, но он генерирует dio совместимый с новой версий
+Всё по документации, создаем новый пустой проект, в корне проекта добавляем наш specification.yaml, добавляем зависимости, вставляем в main.dart
+@Openapi(
+  skipSpecValidation: true,
+  inputSpecFile: 'specification.yaml',
+  generatorName: Generator.dio,
+  outputDirectory: 'api/main_api_client',
+)
+Так же в outputDirectory должен быть только один файл pubspec.yaml (см example у них на гите), остальное сгенерируется
+Забираем папку, которая указана в outputDirectory и кладем в наш проект. (можно сделать всё это в основном проекте, но так надежнее)
+
+Возникает 14 ошибок с методом replace в таких строчках  "result.data.replace(valueDes)". Меняем на "result.data = valueDes", так как нет метода replace
+Ещё на будущее надо бы проанализировать наш specification.yaml, так как с флагом skipSpecValidation: false выдает ошибки при генерации
+Так же мониторим первоисточник https://openapi-generator.tech/docs/generators/dart, ждем обновление до 3.0, пока что генерирует на dart 2.6
+
+Запуск с терминала  flutter run --flavor dev -t lib/dev_main.dart

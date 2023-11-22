@@ -11,9 +11,9 @@ building()
   environment=$2
 
   if [ "$environment" == "all" ]; then
-    flutter build "$build_type" --release  --flavor dev -t lib/dev_main.dart
-    flutter build "$build_type" --release  --flavor prod -t lib/prod_main.dart
-  else flutter build "$build_type" --release  --flavor "$environment" -t lib/"$environment"_main.dart
+    flutter build "$build_type" --release --flavor dev -t lib/dev_main.dart
+    flutter build "$build_type" --release --flavor prod -t lib/prod_main.dart
+  else flutter build "$build_type" --release --flavor "$environment" -t lib/"$environment"_main.dart
   fi
 
 }
