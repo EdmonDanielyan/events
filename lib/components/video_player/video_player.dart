@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
 
-
 class CustomVideoPlayer extends StatefulWidget {
-  // final BetterPlayerController controller;
-    final ChewieController controller;
+  final ChewieController controller;
   const CustomVideoPlayer({Key? key, required this.controller})
       : super(key: key);
 
@@ -17,12 +15,9 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-     return Chewie(
+    return Chewie(
       controller: widget.controller,
     );
-    // return BetterPlayer(
-    //   controller: widget.controller,
-    // );
   }
 
   @override

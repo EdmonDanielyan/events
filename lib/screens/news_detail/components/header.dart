@@ -1,6 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ink_mobile/components/video_player/video_player.dart';
 import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/messenger/functions/size_config.dart';
@@ -28,7 +29,6 @@ class Header extends StatefulWidget {
 
 class _HeaderState extends State<Header> {
   List<Widget> videoWidgets = [];
-  // List<BetterPlayerController> betterPlayerControllers = [];
   List<ChewieController> betterPlayerControllers = [];
 
   @override
@@ -37,40 +37,17 @@ class _HeaderState extends State<Header> {
 
     if (widget.videoLinks != null && widget.videoLinks!.isNotEmpty) {
       for (final link in widget.videoLinks!) {
-        // if (link.isNotEmpty && link.contains("mp4")) {
-        //   BetterPlayerDataSource betterPlayerDataSource =
-        //       BetterPlayerDataSource(BetterPlayerDataSourceType.network, link);
-        //   final _controller = BetterPlayerController(
-        //     BetterPlayerConfiguration(
-        //       controlsConfiguration: BetterPlayerControlsConfiguration(
-        //         playerTheme: BetterPlayerTheme.material,
-        //         enableSkips: false,
-        //       ),
-        //       fit: BoxFit.contain,
-        //     ),
-        //     betterPlayerDataSource: betterPlayerDataSource,
-        //   );
-        //   betterPlayerControllers.add(_controller);
-        //   videoWidgets.add(
-        //     CustomVideoPlayer(controller: _controller),
-        //   );
         if (link!.isNotEmpty && link.contains("mp4")) {
           final videoPlayerController =
               VideoPlayerController.networkUrl(Uri.parse(link));
-          // BetterPlayerDataSource betterPlayerDataSource =
-          //     BetterPlayerDataSource(BetterPlayerDataSourceType.network, link);
-          final _controller =
-              ChewieController(videoPlayerController: videoPlayerController
-
-                  // BetterPlayerConfiguration(
-                  //   controlsConfiguration: BetterPlayerControlsConfiguration(
-                  //     playerTheme: BetterPlayerTheme.material,
-                  //     enableSkips: false,
-                  //   ),
-                  //   fit: BoxFit.contain,
-                  // ),
-                  // betterPlayerDataSource: betterPlayerDataSource,
-                  );
+          final _controller = ChewieController(
+              videoPlayerController: videoPlayerController,
+              autoPlay: true,
+              looping: false,
+              aspectRatio: 16 / 9,
+              deviceOrientationsAfterFullScreen: [
+                DeviceOrientation.portraitUp
+              ]);
           betterPlayerControllers.add(_controller);
           videoWidgets.add(
             CustomVideoPlayer(controller: _controller),
@@ -90,9 +67,11 @@ class _HeaderState extends State<Header> {
   void _disposeAllVideos() {
     if (betterPlayerControllers.isNotEmpty) {
       for (final video in betterPlayerControllers) {
+        video.setVolume(0);
         video.dispose();
       }
     }
+    betterPlayerControllers.clear();
   }
 
   void _stopAllVideos() {
@@ -119,18 +98,6 @@ class _HeaderState extends State<Header> {
       height: SizeConfig(context, 270).getProportionateScreenHeight,
       child: Stack(
         children: [
-          Positioned.fill(
-            child: PageView(
-              onPageChanged: (index) {
-                setState(() {
-                  setSliderIndex(index);
-                });
-                _stopAllVideos();
-              },
-              scrollDirection: Axis.horizontal,
-              children: slider,
-            ),
-          ),
           if (slider.length > 1) ...[
             Positioned.fill(
               child: Align(
@@ -148,6 +115,18 @@ class _HeaderState extends State<Header> {
               ),
             ),
           ],
+          Positioned.fill(
+            child: PageView(
+              onPageChanged: (index) {
+                setState(() {
+                  setSliderIndex(index);
+                  _stopAllVideos();
+                });
+              },
+              scrollDirection: Axis.horizontal,
+              children: slider,
+            ),
+          ),
         ],
       ),
     );
