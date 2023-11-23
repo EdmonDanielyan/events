@@ -82,8 +82,8 @@ class NewsListSliderElement extends StatelessWidget {
                             : '',
                         style: FontStyles.rubikP2(color: Palette.textBlack50),
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
                         child: Text(newsItem.title ?? '',
                             style: FontStyles.rubikH4(color: Palette.textBlack),
                             maxLines: 4,
@@ -91,111 +91,64 @@ class NewsListSliderElement extends StatelessWidget {
                       ),
                       Expanded(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              alignment: Alignment.bottomCenter,
-                              margin: const EdgeInsets.only(bottom: 20),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                          IconLinks.BARREL_SVG_LINK,
-                                          width: 16.0,
-                                          height: 16.0,
-                                          colorFilter: ColorFilter.mode(
-                                              Palette.textBlack50,
-                                              BlendMode.srcIn)),
-                                      const SizedBox(width: 5.0),
-                                      Container(
-                                        margin: const EdgeInsets.only(left: 4),
-                                        child: Text(
-                                            newsItem.likeCount != null
-                                                ? newsItem.likeCount.toString()
-                                                : '0',
-                                            style: FontStyles.rubikP2(
-                                                color: Palette.textBlack50)),
-                                      )
-                                    ],
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 24),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                            IconLinks.COMMENT_ICON_LINK,
-                                            width: 16.0,
-                                            height: 16.0,
-                                            colorFilter: ColorFilter.mode(
-                                                Palette.textBlack50,
-                                                BlendMode.srcIn)),
-                                        const SizedBox(width: 5.0),
-                                        Container(
-                                          margin:
-                                              const EdgeInsets.only(left: 4),
-                                          child: Text(
-                                            newsItem.commentCount != null
-                                                ? newsItem.commentCount
-                                                    .toString()
-                                                : '0',
-                                            style: FontStyles.rubikP2(
-                                                color: Palette.textBlack50),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  InkWell(
-                                      onTap: () {
-                                        Share.share(
-                                            'https://portal.irkutskoil.ru/events/news/${newsItem.id}/');
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 20, right: 5),
-                                        child: Icon(Icons.share,
-                                            size: 16,
-                                            color: Palette.textBlack50),
-                                      )),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                                IconLinks.OPENED_EYE_ICON_LINK,
-                                                width: 16.0,
-                                                height: 16.0,
-                                                colorFilter: ColorFilter.mode(
-                                                    Palette.textBlack50,
-                                                    BlendMode.srcIn)),
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  left: 4),
-                                              child: Text(
-                                                newsItem.viewCount != null
-                                                    ? newsItem.viewCount
-                                                        .toString()
-                                                    : '0',
-                                                style: FontStyles.rubikP2(
-                                                    color: Palette.textBlack50),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(IconLinks.BARREL_SVG_LINK,
+                                    width: 16.0,
+                                    height: 16.0,
+                                    colorFilter: ColorFilter.mode(
+                                        Palette.textBlack50, BlendMode.srcIn)),
+                                const SizedBox(width: 9),
+                                Text(
+                                    newsItem.likeCount != null
+                                        ? newsItem.likeCount.toString()
+                                        : '0',
+                                    style: FontStyles.rubikP2(
+                                        color: Palette.textBlack50)),
+                                const SizedBox(width: 24),
+                                SvgPicture.asset(IconLinks.COMMENT_ICON_LINK,
+                                    width: 16.0,
+                                    height: 16.0,
+                                    colorFilter: ColorFilter.mode(
+                                        Palette.textBlack50, BlendMode.srcIn)),
+                                const SizedBox(width: 9),
+                                Text(
+                                  newsItem.commentCount != null
+                                      ? newsItem.commentCount.toString()
+                                      : '0',
+                                  style: FontStyles.rubikP2(
+                                      color: Palette.textBlack50),
+                                ),
+                                const SizedBox(width: 10),
+                                FloatingActionButton.small(
+                                    highlightElevation: 0,
+                                    hoverElevation: 0,
+                                    backgroundColor: Colors.transparent,
+                                    onPressed: () {
+                                      Share.share(
+                                          'https://portal.irkutskoil.ru/events/news/${newsItem.id}/');
+                                    },
+                                    elevation: 0,
+                                    child: Icon(Icons.share,
+                                        size: 16, color: Palette.textBlack50)),
+                                const Spacer(),
+                                SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
+                                    width: 16.0,
+                                    height: 16.0,
+                                    colorFilter: ColorFilter.mode(
+                                        Palette.textBlack50, BlendMode.srcIn)),
+                                const SizedBox(width: 4),
+                                Text(
+                                  newsItem.viewCount != null
+                                      ? newsItem.viewCount.toString()
+                                      : '0',
+                                  style: FontStyles.rubikP2(
+                                      color: Palette.textBlack50),
+                                ),
+                              ],
                             ),
                           ],
                         ),

@@ -9,6 +9,7 @@ import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/providers/global_providers.dart';
 import 'package:ink_mobile/routes/routes.dart';
 import 'package:ink_mobile/themes/light.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 class InkMobile extends StatelessWidget {
   const InkMobile({Key? key}) : super(key: key);
@@ -25,6 +26,9 @@ class InkMobile extends StatelessWidget {
         MultiBlocProvider(
       providers: GlobalProvider.getProviders(context).cast(),
       child: MaterialApp(
+        navigatorObservers: [
+          TalkerRouteObserver(TalkerFlutter.init()),
+        ],
         navigatorKey: App.materialKey,
         title: 'ИНК',
         initialRoute: '/init',

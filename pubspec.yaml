@@ -91,7 +91,7 @@ dependencies:
     webview_flutter: ^4.4.2
     flutter_widget_from_html: ^0.10.5
     custom_refresh_indicator: ^2.2.1
-
+    talker_flutter: ^3.5.4
 
     onesignal_flutter: ^5.0.3
 

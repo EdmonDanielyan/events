@@ -111,24 +111,37 @@ class InkAppBar extends StatelessWidget implements PreferredSizeWidget {
     List<Widget> actions = [];
 
     if (showPersonalPageLink) {
-      actions.add(
-        Container(
-          margin: const EdgeInsets.only(right: 15.0),
-          child: InkWell(
-            child: SvgPicture.asset(
-              IconLinks.USER_ICON_LINK,
-              height: 24.0,
-              width: 24.0,
-              colorFilter: ColorFilter.mode(Palette.white, BlendMode.srcIn),
-            ),
-            onTap: () {
-              SchedulerBinding.instance.addPostFrameCallback((_) {
-                Navigator.pushNamed(context, '/personal');
-              });
-            },
+      actions.add(IconButton(
+          icon: SvgPicture.asset(
+            IconLinks.USER_ICON_LINK,
+            height: 24.0,
+            width: 24.0,
+            colorFilter: ColorFilter.mode(Palette.white, BlendMode.srcIn),
           ),
-        ),
-      );
+          onPressed: () {
+            SchedulerBinding.instance.addPostFrameCallback(
+              (_) {
+                Navigator.pushNamed(context, '/personal');
+              },
+            );
+          }));
+      //old
+      // Container(
+      //   margin: const EdgeInsets.only(right: 15.0),
+      //   child: InkWell(
+      //     child: SvgPicture.asset(
+      //       IconLinks.USER_ICON_LINK,
+      //       height: 24.0,
+      //       width: 24.0,
+      //       colorFilter: ColorFilter.mode(Palette.white, BlendMode.srcIn),
+      //     ),
+      //     onTap: () {
+      //       SchedulerBinding.instance.addPostFrameCallback((_) {
+      //         Navigator.pushNamed(context, '/personal');
+      //       });
+      //     },
+      //   ),
+      // ),
     }
 
     return actions;
