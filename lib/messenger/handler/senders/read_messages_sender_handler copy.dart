@@ -1,5 +1,3 @@
-// ignore_for_file: file_names
-
 import 'package:ink_mobile/messenger/api/services/message/read.dart';
 import 'package:ink_mobile/messenger/handler/read_messages.dart';
 import 'package:ink_mobile/messenger/messenger/senders/read_message/model.dart';

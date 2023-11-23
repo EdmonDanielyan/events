@@ -1,5 +1,3 @@
-// ignore_for_file: implementation_imports, import_of_legacy_library_into_null_safe
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ink_mobile/setup.dart';

@@ -1,4 +1,3 @@
-// ignore_for_file: implementation_imports, import_of_legacy_library_into_null_safe
 import 'package:equatable/equatable.dart';
 import 'package:dio/src/response.dart';
 import 'package:openapi/openapi.dart';
@@ -23,5 +22,5 @@ class LogoutLoaded extends LogoutState {
 
 class LogoutError extends LogoutState {
   final Object error;
- const LogoutError(this.error);
+  const LogoutError(this.error);
 }

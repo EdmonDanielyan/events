@@ -54,8 +54,6 @@ PODS:
   - FirebaseCoreInternal (10.18.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - Flutter (1.0.0)
-  - flutter_contacts (0.0.1):
-    - Flutter
   - flutter_jailbreak_detection (1.0.0):
     - Flutter
     - IOSSecuritySuite
@@ -63,9 +61,6 @@ PODS:
     - Flutter
   - flutter_local_notifications (0.0.1):
     - Flutter
-  - flutter_logs (0.0.1):
-    - Flutter
-    - ZIPFoundation
   - flutter_native_text_input (2.2.0):
     - Flutter
   - flutter_secure_storage (6.0.0):
@@ -167,7 +162,6 @@ PODS:
   - YandexMobileMetrica/Static/Core (4.5.2)
   - YandexMobileMetrica/Static/Crashes (4.5.2):
     - YandexMobileMetrica/Static/Core
-  - ZIPFoundation (0.9.11)
 
 DEPENDENCIES:
   - app_links (from `.symlinks/plugins/app_links/ios`)
@@ -177,11 +171,9 @@ DEPENDENCIES:
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
-  - flutter_contacts (from `.symlinks/plugins/flutter_contacts/ios`)
   - flutter_jailbreak_detection (from `.symlinks/plugins/flutter_jailbreak_detection/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
-  - flutter_logs (from `.symlinks/plugins/flutter_logs/ios`)
   - flutter_native_text_input (from `.symlinks/plugins/flutter_native_text_input/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
@@ -216,7 +208,6 @@ SPEC REPOS:
     - SDWebImage
     - SwiftyGif
     - YandexMobileMetrica
-    - ZIPFoundation
 
 EXTERNAL SOURCES:
   app_links:
@@ -233,16 +224,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
     :path: Flutter
-  flutter_contacts:
-    :path: ".symlinks/plugins/flutter_contacts/ios"
   flutter_jailbreak_detection:
     :path: ".symlinks/plugins/flutter_jailbreak_detection/ios"
   flutter_keyboard_visibility:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
-  flutter_logs:
-    :path: ".symlinks/plugins/flutter_logs/ios"
   flutter_native_text_input:
     :path: ".symlinks/plugins/flutter_native_text_input/ios"
   flutter_secure_storage:
@@ -291,11 +278,9 @@ SPEC CHECKSUMS:
   FirebaseCore: 2322423314d92f946219c8791674d2f3345b598f
   FirebaseCoreInternal: 8eb002e564b533bdcf1ba011f33f2b5c10e2ed4a
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_contacts: edb1c5ce76aa433e20e6cb14c615f4c0b66e0983
   flutter_jailbreak_detection: c5bf66ff6c0c4230769b6ba0bd63eb6ac4148a76
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
-  flutter_logs: 5d0dca26963e0f30b11a995a764744ef77d5d428
   flutter_native_text_input: 246da758e5a2e744774aa839a1a21902e0e84ceb
   flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
@@ -321,7 +306,6 @@ SPEC CHECKSUMS:
   wakelock_plus: 8b09852c8876491e4b6d179e17dfe2a0b5f60d47
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
-  ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
 PODFILE CHECKSUM: 0823651c0f4c4b97b3ef5e720056d93a53b6d248
 

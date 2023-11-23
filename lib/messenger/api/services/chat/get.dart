@@ -25,7 +25,7 @@ class GetChatsService {
       List<Chat> chats = [];
       if (response.data!.isNotEmpty) {
         for (final chat in response.data!) {
-          print(chat.toString());
+          // print(chat.toString());
           chats.add(chat.toLocal(myId: myId));
         }
       }

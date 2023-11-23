@@ -1,10 +1,7 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, implementation_imports
-
 import 'package:dio/dio.dart';
 import 'package:ink_mobile/models/search/data.dart';
 import 'package:ink_mobile/models/search/search_model.dart';
 import 'package:openapi/openapi.dart';
-
 
 extension GetSearchSuccessExt on Response<GetSearchSuccess> {
   SearchModel? mapResponse() {
@@ -12,8 +9,7 @@ extension GetSearchSuccessExt on Response<GetSearchSuccess> {
 
     // Map? data = this.data?.data.asMap;
     //migation
-        Map? data = this.data?.data?.asMap;
-
+    Map? data = this.data?.data?.asMap;
 
     List? users = data?['users'];
     List? events = data?['events'];
