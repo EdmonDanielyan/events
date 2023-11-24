@@ -9,8 +9,8 @@ class TestScreen extends StatelessWidget {
     final TextEditingController _controller = TextEditingController();
 
     return Scaffold(
-      body: Container(
-          margin: const EdgeInsets.only(top: 100, left: 30),
+      body: Padding(
+          padding: const EdgeInsets.only(top: 100, left: 30),
           child: NumberSelectFormField(
               controller: _controller,
               buttonsColor:

@@ -22,52 +22,52 @@ class EventsListElement extends StatelessWidget {
         Navigator.pushNamed(context, '/event_detail',
             arguments: {'id': event.id});
       },
-      child: Container(
-        width: size.width,
-        margin: const EdgeInsets.only(bottom: 15),
-        child: Column(
-          children: [
-            Container(
-              clipBehavior: Clip.hardEdge,
-              width: size.width,
-              height: SizeConfig(context, 175.0).getProportionateScreenHeight,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-              child: event.pictureLink == null
-                  ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
-                      fit: BoxFit.fitWidth)
-                  : Image.network(
-                      event.pictureLink!,
-                      fit: BoxFit.fitWidth,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
-                            fit: BoxFit.fitWidth);
-                      },
-                    ),
+      child: Column(
+        children: [
+          Container(
+            clipBehavior: Clip.hardEdge,
+            width: size.width,
+            height: SizeConfig(context, 175.0).getProportionateScreenHeight,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16.0),
             ),
-            const SizedBox(height: 20),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                _getEventTimeAndPlace(),
-                style: FontStyles.rubikP2(color: Palette.textBlack50),
-                textAlign: TextAlign.start,
-              ),
+            child: event.pictureLink == null
+                ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
+                    fit: BoxFit.fitWidth)
+                : Image.network(
+                    event.pictureLink!,
+                    fit: BoxFit.fitWidth,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
+                          fit: BoxFit.fitWidth);
+                    },
+                  ),
+          ),
+          const SizedBox(height: 20),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              _getEventTimeAndPlace(),
+              style: FontStyles.rubikP2(color: Palette.textBlack50),
+              textAlign: TextAlign.start,
             ),
-            const SizedBox(height: 8),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                event.title ?? '',
-                style: FontStyles.rubikH4(color: Palette.textBlack),
-                textAlign: TextAlign.start,
-              ),
+          ),
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              event.title ?? '',
+              style: FontStyles.rubikH4(color: Palette.textBlack),
+              textAlign: TextAlign.start,
             ),
-            const SizedBox(height: 12),
-            Align(
-              alignment: Alignment.centerRight,
+          ),
+          const SizedBox(height: 12),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Material(
+              color: Colors.transparent,
               child: InkWell(
+                borderRadius: BorderRadius.circular(25),
                 onTap: () {
                   Share.share(
                       'https://portal.irkutskoil.ru/events/${event.id}/');
@@ -90,10 +90,11 @@ class EventsListElement extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 8.0),
-            Divider(color: Palette.text20Grey)
-          ],
-        ),
+          ),
+          const SizedBox(height: 8.0),
+          Divider(color: Palette.text20Grey),
+          const SizedBox(height: 15),
+        ],
       ),
     );
   }

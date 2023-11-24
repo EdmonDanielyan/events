@@ -29,25 +29,23 @@ class PersonnelMovement extends StatelessWidget {
           Container(
             width: size.width,
             color: Colors.white,
-            child: Container(
-              margin: const EdgeInsets.all(20),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      children: [
-                        Text(
-                          _strings.dateOfTakingPosition,
-                          style: TextStyle(
-                              fontSize: SizeConfig(context, 14)
-                                  .getProportionateScreenHeight,
-                              color: Theme.of(context).colorScheme.secondary),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        _strings.dateOfTakingPosition,
+                        style: TextStyle(
+                            fontSize: SizeConfig(context, 14)
+                                .getProportionateScreenHeight,
+                            color: Theme.of(context).colorScheme.secondary),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 5),
                   Text(
                     DateFunctions(
                             DateFormat('dd.MM.yyyy').parse(movement.period))
@@ -64,26 +62,24 @@ class PersonnelMovement extends StatelessWidget {
           Container(
             width: size.width,
             color: Colors.white,
-            child: Container(
-              margin: const EdgeInsets.all(20),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      children: [
-                        Text(
-                          _strings.position,
-                          style: TextStyle(
-                              fontSize: SizeConfig(context, 14)
-                                  .getProportionateScreenHeight,
-                              color: Theme.of(context).colorScheme.secondary),
-                        ),
-                        getLabel(context)
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        _strings.position,
+                        style: TextStyle(
+                            fontSize: SizeConfig(context, 14)
+                                .getProportionateScreenHeight,
+                            color: Theme.of(context).colorScheme.secondary),
+                      ),
+                      getLabel(context)
+                    ],
                   ),
+                  const SizedBox(height: 5),
                   Text(
                     movement.position,
                     style: TextStyle(
@@ -98,25 +94,23 @@ class PersonnelMovement extends StatelessWidget {
           Container(
             width: size.width,
             color: Colors.white,
-            child: Container(
-              margin: const EdgeInsets.all(20),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      children: [
-                        Text(
-                          _strings.department,
-                          style: TextStyle(
-                              fontSize: SizeConfig(context, 14)
-                                  .getProportionateScreenHeight,
-                              color: Theme.of(context).colorScheme.secondary),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        _strings.department,
+                        style: TextStyle(
+                            fontSize: SizeConfig(context, 14)
+                                .getProportionateScreenHeight,
+                            color: Theme.of(context).colorScheme.secondary),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 5),
                   Text(
                     movement.department,
                     style: TextStyle(
@@ -131,25 +125,23 @@ class PersonnelMovement extends StatelessWidget {
           Container(
             width: size.width,
             color: Colors.white,
-            child: Container(
-              margin: const EdgeInsets.all(20),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      children: [
-                        Text(
-                          _strings.company,
-                          style: TextStyle(
-                              fontSize: SizeConfig(context, 14)
-                                  .getProportionateScreenHeight,
-                              color: Theme.of(context).colorScheme.secondary),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        _strings.company,
+                        style: TextStyle(
+                            fontSize: SizeConfig(context, 14)
+                                .getProportionateScreenHeight,
+                            color: Theme.of(context).colorScheme.secondary),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 5),
                   Text(
                     movement.organization,
                     style: TextStyle(
@@ -164,25 +156,23 @@ class PersonnelMovement extends StatelessWidget {
           Container(
             width: size.width,
             color: Colors.white,
-            child: Container(
-              margin: const EdgeInsets.all(20),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      children: [
-                        Text(
-                          _strings.status,
-                          style: TextStyle(
-                              fontSize: SizeConfig(context, 14)
-                                  .getProportionateScreenHeight,
-                              color: Theme.of(context).colorScheme.secondary),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        _strings.status,
+                        style: TextStyle(
+                            fontSize: SizeConfig(context, 14)
+                                .getProportionateScreenHeight,
+                            color: Theme.of(context).colorScheme.secondary),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 5),
                   Text(
                     movement.operation,
                     style: TextStyle(
@@ -197,25 +187,23 @@ class PersonnelMovement extends StatelessWidget {
           Container(
             width: size.width,
             color: Colors.white,
-            child: Container(
-              margin: const EdgeInsets.all(20),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      children: [
-                        Text(
-                          _strings.staffNumber,
-                          style: TextStyle(
-                              fontSize: SizeConfig(context, 14)
-                                  .getProportionateScreenHeight,
-                              color: Theme.of(context).colorScheme.secondary),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        _strings.staffNumber,
+                        style: TextStyle(
+                            fontSize: SizeConfig(context, 14)
+                                .getProportionateScreenHeight,
+                            color: Theme.of(context).colorScheme.secondary),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 5),
                   Text(
                     movement.pnum,
                     style: TextStyle(

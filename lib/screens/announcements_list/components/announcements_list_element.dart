@@ -26,62 +26,57 @@ class AnnouncementsListElement extends StatelessWidget {
       child: SizedBox(
         width: size.width,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              alignment: Alignment.topLeft,
-              child: Text(
-                announcement.dateCreate != null
-                    ? DateFormat('dd.MM.yyyy').format(announcement.dateCreate!)
-                    : '',
-                style: FontStyles.rubikP2(color: Palette.textBlack50),
-                textAlign: TextAlign.start,
-              ),
+            Text(
+              announcement.dateCreate != null
+                  ? DateFormat('dd.MM.yyyy').format(announcement.dateCreate!)
+                  : '',
+              style: FontStyles.rubikP2(color: Palette.textBlack50),
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 8),
-              alignment: Alignment.topLeft,
-              child: Text(
-                announcement.title ?? '',
-                style: FontStyles.rubikH4(color: Palette.textBlack),
-                maxLines: 4,
-                textAlign: TextAlign.start,
-              ),
+            const SizedBox(height: 8),
+            Text(
+              announcement.title ?? '',
+              style: FontStyles.rubikH4(color: Palette.textBlack),
+              textAlign: TextAlign.start,
             ),
-            Container(
-              alignment: Alignment.bottomLeft,
-              margin: const EdgeInsets.only(top: 16.0),
-              child: Row(
-                children: [
-                  SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
-                      width: 16.0,
-                      height: 16.0,
-                      colorFilter: ColorFilter.mode(
-                          Palette.textBlack50, BlendMode.srcIn)),
-                  Container(
-                    margin: const EdgeInsets.only(left: 4),
-                    child: Text(
-                      announcement.viewCount != null
-                          ? announcement.viewCount.toString()
-                          : '0',
-                      style: FontStyles.rubikP2(color: Palette.textBlack50),
-                    ),
-                  ),
-                  InkWell(
-                      onTap: () {
+            const SizedBox(height: 16),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
+                    height: 16.0,
+                    width: 16.0,
+                    colorFilter:
+                        ColorFilter.mode(Palette.textBlack50, BlendMode.srcIn)),
+                const SizedBox(width: 9),
+                Text(
+                  announcement.viewCount != null
+                      ? announcement.viewCount.toString()
+                      : '0',
+                  style: FontStyles.rubikP2(color: Palette.textBlack50),
+                ),
+                const SizedBox(width: 10),
+                CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  radius: 12,
+                  child: FloatingActionButton.small(
+                      highlightElevation: 0,
+                      hoverElevation: 0,
+                      backgroundColor: Colors.transparent,
+                      onPressed: () {
                         Share.share(
-                            'https://portal.irkutskoil.ru/announcements/${announcement.id}/');
+                            'https://portal.irkutskoil.ru/events/news/${announcement.id}/');
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8, right: 8),
-                        child: Icon(Icons.share,
-                            size: 16, color: Palette.textBlack50),
-                      )),
-                ],
-              ),
+                      elevation: 0,
+                      child: Icon(Icons.share,
+                          size: 16, color: Palette.textBlack50)),
+                ),
+              ],
             ),
             Divider(
               color: Palette.text20Grey,
-              height: 48.0,
+              height: 32.0,
             ),
           ],
         ),

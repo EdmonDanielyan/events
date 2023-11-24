@@ -21,8 +21,8 @@ class AuthForm extends StatelessWidget {
     final _strings = localizationInstance;
     Size size = MediaQuery.of(context).size;
 
-    return Container(
-      margin: EdgeInsets.only(top: size.height * 0.03),
+    return Padding(
+      padding: EdgeInsets.only(top: size.height * 0.03),
       child: Column(
         children: [
           TextFormField(
@@ -31,15 +31,18 @@ class AuthForm extends StatelessWidget {
               labelStyle: FontStyles.rubikP2(color: Palette.textBlack50),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: hasError ? Palette.redF1C : Palette.text20Grey),
+                borderSide: BorderSide(
+                    color: hasError ? Palette.redF1C : Palette.text20Grey),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: hasError ? Palette.redF1C : Palette.text20Grey),
+                borderSide: BorderSide(
+                    color: hasError ? Palette.redF1C : Palette.text20Grey),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: hasError ? Palette.redF1C : Palette.text20Grey),
+                borderSide: BorderSide(
+                    color: hasError ? Palette.redF1C : Palette.text20Grey),
               ),
               fillColor: Colors.white,
               filled: true,
@@ -55,7 +58,10 @@ class AuthForm extends StatelessWidget {
             },
           ),
           const SizedBox(height: 24.0),
-          AuthPasswordField(authCubit: authCubit, hasError: hasError,),
+          AuthPasswordField(
+            authCubit: authCubit,
+            hasError: hasError,
+          ),
         ],
       ),
     );

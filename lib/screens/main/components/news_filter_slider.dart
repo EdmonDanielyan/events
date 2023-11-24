@@ -23,10 +23,12 @@ class NewsFilterSlider extends StatelessWidget {
     return BlocBuilder<NewsBlockCubit, NewsBlockState>(
         bloc: newsCubit,
         builder: (context, state) {
-          return Container(
-            height: SizeConfig(context, 28.0).getProportionateScreenHeight,
-            margin: const EdgeInsets.only(top: 8.0),
-            child: getFilterListView(state.tabs ?? _getFilterItems()),
+          return Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: SizedBox(
+              height: SizeConfig(context, 28.0).getProportionateScreenHeight,
+              child: getFilterListView(state.tabs ?? _getFilterItems()),
+            ),
           );
         });
   }
@@ -62,7 +64,7 @@ class NewsFilterSlider extends StatelessWidget {
           );
         },
         separatorBuilder: (context, index) {
-          return Container(margin: const EdgeInsets.only(right: 10.0));
+          return const Padding(padding: EdgeInsets.only(right: 10.0));
         },
         itemCount: filterItems.length);
   }

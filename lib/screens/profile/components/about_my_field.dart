@@ -32,8 +32,8 @@ class _AboutMyFieldState extends State<AboutMyField> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 24),
+    return Padding(
+      padding: const EdgeInsets.only(top: 24),
       child: Column(
         children: [
           const SectionTitle(title: 'О себе'),

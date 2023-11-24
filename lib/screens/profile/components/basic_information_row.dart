@@ -17,11 +17,8 @@ class BasicInfoRow extends StatelessWidget {
   }
 
   Widget getBasicInfoRow(context) {
-    Size size = MediaQuery.of(context).size;
-
-    return Container(
-      width: size.width,
-      margin: const EdgeInsets.only(bottom: 24.0),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -18,7 +18,7 @@ class OpenUniversityFilterSlider extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _OpenUniversityFilterSliderState createState() =>
+  State<OpenUniversityFilterSlider> createState() =>
       _OpenUniversityFilterSliderState(selectedFilter: selectedFilter);
 }
 

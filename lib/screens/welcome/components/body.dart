@@ -54,9 +54,9 @@ class _BodyState extends State<Body> {
                 ),
               ),
               Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 48.0),
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(bottom: 48.0, left: 20, right: 20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -92,18 +92,13 @@ class _BodyState extends State<Body> {
                         link: ImportantUrls.policyConf,
                       ),
                       const SizedBox(height: 10.0),
-                      Stack(
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          Center(
-                            child: Text(
-                              widget.packageInfo.version,
-                              style: TextStyle(
-                                  color: Colors.grey[400],
-                                  fontSize: isTablet ? 17.0 : 13),
-                            ),
-                          ),
-                        ],
+                      Center(
+                        child: Text(
+                          widget.packageInfo.version,
+                          style: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: isTablet ? 17.0 : 13),
+                        ),
                       ),
                     ],
                   ),

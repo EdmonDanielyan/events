@@ -33,8 +33,8 @@ class Body extends StatelessWidget {
     return SingleChildScrollView(
       controller: _scrollController,
       clipBehavior: Clip.none,
-      child: Container(
-        margin: const EdgeInsets.only(top: 24),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 24),
         child: Column(
           children: [
             Container(

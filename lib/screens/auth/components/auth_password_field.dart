@@ -66,7 +66,7 @@ class _AuthPasswordFieldState extends State<AuthPasswordField> {
         filled: true,
         suffixIcon: GestureDetector(
           onTap: _toggle,
-          child: Container(
+          child: Padding(
             padding: const EdgeInsets.only(top: 16, bottom: 16, right: 16),
             child: SvgPicture.asset(
               _obscureText

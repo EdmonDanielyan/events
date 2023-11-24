@@ -93,9 +93,8 @@ class _ReferencesFormState extends State<ReferencesForm> {
     bool deliveryAddress = deliveryList.canBeAddressDelivered(
         currentReferenceItem, entities.deliveryType);
 
-    return Container(
-      margin: const EdgeInsets.only(top: 20, bottom: 20.0),
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
       child: Form(
         key: _key,
         child: Column(

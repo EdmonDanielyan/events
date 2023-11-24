@@ -10,16 +10,20 @@ class DateSeparator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 16.0),
-        padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: Palette.text5Grey,
-        ),
-        child: Text(
-          DateFunctions(dateTime).dayMonthYearHuman(),
-          style: FontStyles.rubikP3(color: Palette.textBlack50),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Palette.text5Grey,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+            child: Text(
+              DateFunctions(dateTime).dayMonthYearHuman(),
+              style: FontStyles.rubikP3(color: Palette.textBlack50),
+            ),
+          ),
         ),
       ),
     );

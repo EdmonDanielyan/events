@@ -96,17 +96,16 @@ class NewsBlock extends StatelessWidget {
               clipBehavior: Clip.none,
               scrollDirection: Axis.horizontal,
               physics: const NeverScrollableScrollPhysics(),
-              children: [
-                Container(
-                    margin: const EdgeInsets.only(right: 30),
-                    child: const NewsListSliderElementPlaceholder()),
-                const NewsListSliderElementPlaceholder(),
+              children: const [
+                NewsListSliderElementPlaceholder(),
+                SizedBox(width: 30),
+                NewsListSliderElementPlaceholder(),
               ],
             ),
           ),
           Expanded(
-            child: Container(
-              margin: const EdgeInsets.only(top: 30),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30),
               child: CustomPageIndicator(
                 controller: _controllerOne,
                 count: 5,

@@ -65,37 +65,39 @@ class _BodyState extends State<Body> {
                 {
                   List<Widget> items = _buildComments(state.data!);
                   final commentsCount = state.data!.commentCount;
-                  return Container(
+                  return DecoratedBox(
                     decoration: const BoxDecoration(color: Colors.white),
-                    padding: const EdgeInsets.only(
-                        top: 15, bottom: 25, left: 15, right: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(
-                              top: 20, left: 10, bottom: 15),
-                          child: Text(
-                            "$commentsCount ${Plural(commentsCount).declense(_strings.oneCommentNoun.toUpperCase(), _strings.multipleCommentsNoun.toUpperCase(), _strings.lotOfCommentsNoun.toUpperCase())}",
-                            style: TextStyle(
-                                fontSize: SizeConfig(context, 20)
-                                    .getProportionateScreenHeight,
-                                fontWeight: FontWeight.w500),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 15, bottom: 25, left: 15, right: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 20, left: 10, bottom: 15),
+                            child: Text(
+                              "$commentsCount ${Plural(commentsCount).declense(_strings.oneCommentNoun.toUpperCase(), _strings.multipleCommentsNoun.toUpperCase(), _strings.lotOfCommentsNoun.toUpperCase())}",
+                              style: TextStyle(
+                                  fontSize: SizeConfig(context, 20)
+                                      .getProportionateScreenHeight,
+                                  fontWeight: FontWeight.w500),
+                            ),
                           ),
-                        ),
-                        MediaQuery.removePadding(
-                          context: context,
-                          removeBottom: true,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            controller:
-                                ScrollController(keepScrollOffset: false),
-                            itemCount: items.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                items[index],
+                          MediaQuery.removePadding(
+                            context: context,
+                            removeBottom: true,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              controller:
+                                  ScrollController(keepScrollOffset: false),
+                              itemCount: items.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  items[index],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 }
@@ -147,8 +149,8 @@ class _BodyState extends State<Body> {
         String? lastName = childrenComment.authorLastName;
 
         comments.add(
-          Container(
-            margin: const EdgeInsets.only(left: 25),
+          Padding(
+            padding: const EdgeInsets.only(left: 25),
             child: Comment(
               id: childrenComment.id,
               authorId: childrenComment.authorId,

@@ -74,8 +74,8 @@ class _BodyState extends State<Body> {
               groupValue: environment,
               onChanged: _onChanged),
           Expanded(
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 20, right: 10.0),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 20, right: 10.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

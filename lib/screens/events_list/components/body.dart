@@ -48,28 +48,32 @@ class Body extends StatelessWidget {
     List<EventsListElement> items = [];
     if (state.data?.isNotEmpty == true) {
       items = _getEventsWidgetList(state.data!);
-      return SingleChildScrollView(
-        controller: _controller,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                color: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 32.0),
-                child: Text(
-                  localizationInstance.events,
-                  style: FontStyles.rubikH2(color: Palette.textBlack),
+      return DecoratedBox(
+        decoration: BoxDecoration(color: Palette.white),
+        child: SingleChildScrollView(
+          controller: _controller,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  color: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 32.0),
+                  child: Text(
+                    localizationInstance.events,
+                    style: FontStyles.rubikH2(color: Palette.textBlack),
+                  ),
                 ),
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                controller: ScrollController(keepScrollOffset: false),
-                itemCount: items.length,
-                itemBuilder: (BuildContext context, int index) => items[index],
-              )
-            ],
+                ListView.builder(
+                  shrinkWrap: true,
+                  controller: ScrollController(keepScrollOffset: false),
+                  itemCount: items.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      items[index],
+                )
+              ],
+            ),
           ),
         ),
       );

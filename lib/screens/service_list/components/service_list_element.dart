@@ -22,34 +22,24 @@ class ServiceListElement extends StatelessWidget {
           Navigator.pushNamed(context, item.link);
         }
       },
-      child: Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.only(
-            left: 22.0, right: 32.0, top: 22.0, bottom: 22.0),
+      child: SizedBox(
         height: 70,
         child: Row(
           children: [
+            const SizedBox(width: 22),
             SvgPicture.asset(item.svgPicturePath,
                 width: 24.0,
                 height: 24.0,
                 colorFilter:
                     ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
-            Container(
-              margin: const EdgeInsets.only(left: 14),
-              child: Text(
-                item.title,
-                style: FontStyles.rubikP1(color: Palette.textBlack),
-              ),
+            const SizedBox(width: 14),
+            Text(
+              item.title,
+              style: FontStyles.rubikP1(color: Palette.textBlack),
             ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Icon(Icons.arrow_forward_ios,
-                      size: 20.0, color: Palette.greenE4A)
-                ],
-              ),
-            ),
+            const Spacer(),
+            Icon(Icons.arrow_forward_ios, size: 20.0, color: Palette.greenE4A),
+            const SizedBox(width: 32),
           ],
         ),
       ),

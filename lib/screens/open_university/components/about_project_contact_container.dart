@@ -56,12 +56,12 @@ class AboutProjectContact extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               title != null
-                  ? Container(
-                      margin: const EdgeInsets.only(bottom: 5),
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
                       child: Text(title!,
                           style: TextStyle(fontSize: isTablet ? 18 : 12)),
                     )
-                  : Container(),
+                  : const SizedBox(),
               Text(
                 text,
                 style: TextStyle(

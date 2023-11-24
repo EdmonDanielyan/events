@@ -6,7 +6,7 @@ class Loading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
       child: const InkPageLoader(),
     );

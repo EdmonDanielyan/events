@@ -36,6 +36,7 @@ class DefaultButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: enabled ? onTap : null,
+      borderRadius: BorderRadius.circular(64.0),
       child: Container(
         height: height,
         width: width,

@@ -68,97 +68,106 @@ class NewsListSliderElement extends StatelessWidget {
                       ),
               ),
               Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(top: 18.0),
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  width: elementWidth,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        newsItem.dateCreate != null
-                            ? DateFormat('dd.MM.yyyy')
-                                .format(newsItem.dateCreate!)
-                            : '',
-                        style: FontStyles.rubikP2(color: Palette.textBlack50),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Text(newsItem.title ?? '',
-                            style: FontStyles.rubikH4(color: Palette.textBlack),
-                            maxLines: 4,
-                            overflow: TextOverflow.ellipsis),
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 18.0),
+                  child: SizedBox(
+                    width: elementWidth,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            newsItem.dateCreate != null
+                                ? DateFormat('dd.MM.yyyy')
+                                    .format(newsItem.dateCreate!)
+                                : '',
+                            style:
+                                FontStyles.rubikP2(color: Palette.textBlack50),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(newsItem.title ?? '',
+                              style:
+                                  FontStyles.rubikH4(color: Palette.textBlack),
+                              maxLines: 4,
+                              overflow: TextOverflow.ellipsis),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SvgPicture.asset(IconLinks.BARREL_SVG_LINK,
-                                    width: 16.0,
-                                    height: 16.0,
-                                    colorFilter: ColorFilter.mode(
-                                        Palette.textBlack50, BlendMode.srcIn)),
-                                const SizedBox(width: 9),
-                                Text(
-                                    newsItem.likeCount != null
-                                        ? newsItem.likeCount.toString()
-                                        : '0',
-                                    style: FontStyles.rubikP2(
-                                        color: Palette.textBlack50)),
-                                const SizedBox(width: 24),
-                                SvgPicture.asset(IconLinks.COMMENT_ICON_LINK,
-                                    width: 16.0,
-                                    height: 16.0,
-                                    colorFilter: ColorFilter.mode(
-                                        Palette.textBlack50, BlendMode.srcIn)),
-                                const SizedBox(width: 9),
-                                Text(
-                                  newsItem.commentCount != null
-                                      ? newsItem.commentCount.toString()
-                                      : '0',
-                                  style: FontStyles.rubikP2(
-                                      color: Palette.textBlack50),
-                                ),
-                                const SizedBox(width: 10),
-                                CircleAvatar(
-                                  radius: 12,
-                                  backgroundColor: Colors.transparent,
-                                  child: FloatingActionButton.small(
-                                      highlightElevation: 0,
-                                      hoverElevation: 0,
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(IconLinks.BARREL_SVG_LINK,
+                                        width: 16.0,
+                                        height: 16.0,
+                                        colorFilter: ColorFilter.mode(
+                                            Palette.textBlack50,
+                                            BlendMode.srcIn)),
+                                    const SizedBox(width: 9),
+                                    Text(
+                                        newsItem.likeCount != null
+                                            ? newsItem.likeCount.toString()
+                                            : '0',
+                                        style: FontStyles.rubikP2(
+                                            color: Palette.textBlack50)),
+                                    const SizedBox(width: 24),
+                                    SvgPicture.asset(
+                                        IconLinks.COMMENT_ICON_LINK,
+                                        width: 16.0,
+                                        height: 16.0,
+                                        colorFilter: ColorFilter.mode(
+                                            Palette.textBlack50,
+                                            BlendMode.srcIn)),
+                                    const SizedBox(width: 9),
+                                    Text(
+                                      newsItem.commentCount != null
+                                          ? newsItem.commentCount.toString()
+                                          : '0',
+                                      style: FontStyles.rubikP2(
+                                          color: Palette.textBlack50),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    CircleAvatar(
+                                      radius: 12,
                                       backgroundColor: Colors.transparent,
-                                      onPressed: () {
-                                        Share.share(
-                                            'https://portal.irkutskoil.ru/events/news/${newsItem.id}/');
-                                      },
-                                      elevation: 0,
-                                      child: Icon(Icons.share,
-                                          size: 16,
-                                          color: Palette.textBlack50)),
-                                ),
-                                const Spacer(),
-                                SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
-                                    width: 16.0,
-                                    height: 16.0,
-                                    colorFilter: ColorFilter.mode(
-                                        Palette.textBlack50, BlendMode.srcIn)),
-                                const SizedBox(width: 4),
-                                Text(
-                                  newsItem.viewCount != null
-                                      ? newsItem.viewCount.toString()
-                                      : '0',
-                                  style: FontStyles.rubikP2(
-                                      color: Palette.textBlack50),
+                                      child: FloatingActionButton.small(
+                                          highlightElevation: 0,
+                                          hoverElevation: 0,
+                                          backgroundColor: Colors.transparent,
+                                          onPressed: () {
+                                            Share.share(
+                                                'https://portal.irkutskoil.ru/events/news/${newsItem.id}/');
+                                          },
+                                          elevation: 0,
+                                          child: Icon(Icons.share,
+                                              size: 16,
+                                              color: Palette.textBlack50)),
+                                    ),
+                                    const Spacer(),
+                                    SvgPicture.asset(
+                                        IconLinks.OPENED_EYE_ICON_LINK,
+                                        width: 16.0,
+                                        height: 16.0,
+                                        colorFilter: ColorFilter.mode(
+                                            Palette.textBlack50,
+                                            BlendMode.srcIn)),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      newsItem.viewCount != null
+                                          ? newsItem.viewCount.toString()
+                                          : '0',
+                                      style: FontStyles.rubikP2(
+                                          color: Palette.textBlack50),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),

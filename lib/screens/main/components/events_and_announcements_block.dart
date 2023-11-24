@@ -33,52 +33,60 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
         switch (state.type) {
           case EventsAndAnnouncementsBlockStateType.EVENTS:
             {
-              return Container(
-                margin: const EdgeInsets.only(top: 25),
-                padding: const EdgeInsets.symmetric(
-                    vertical: 30.0, horizontal: 20.0),
-                decoration: const BoxDecoration(color: Colors.white),
-                child: Column(
-                  children: [
-                    getNavigationRow(context, 'events'),
-                    const EventsList(),
-                    const SizedBox(height: 15.0),
-                    DefaultButton(
-                      title: _strings.allEvents,
-                      onTap: () {
-                        Navigator.pushNamed(context, '/events_list');
-                      },
-                      buttonColor: Palette.transparent,
-                      borderColor: Palette.greenE4A,
-                      textColor: Palette.greenE4A,
+              return Padding(
+                padding: const EdgeInsets.only(top: 25),
+                child: DecoratedBox(
+                  decoration: const BoxDecoration(color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 30.0, horizontal: 20.0),
+                    child: Column(
+                      children: [
+                        getNavigationRow(context, 'events'),
+                        const EventsList(),
+                        const SizedBox(height: 15.0),
+                        DefaultButton(
+                          title: _strings.allEvents,
+                          onTap: () {
+                            Navigator.pushNamed(context, '/events_list');
+                          },
+                          buttonColor: Palette.transparent,
+                          borderColor: Palette.greenE4A,
+                          textColor: Palette.greenE4A,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               );
             }
 
           case EventsAndAnnouncementsBlockStateType.ANNOUNCEMENTS:
             {
-              return Container(
-                margin: const EdgeInsets.only(top: 25),
-                padding: const EdgeInsets.symmetric(
-                    vertical: 30.0, horizontal: 20.0),
-                decoration: const BoxDecoration(color: Colors.white),
-                child: Column(
-                  children: [
-                    getNavigationRow(context, 'announcements'),
-                    const AnnouncementsList(),
-                    const SizedBox(height: 15),
-                    DefaultButton(
-                      title: _strings.allAnnouncements,
-                      onTap: () {
-                        Navigator.pushNamed(context, '/announcements_list');
-                      },
-                      buttonColor: Palette.transparent,
-                      borderColor: Palette.greenE4A,
-                      textColor: Palette.greenE4A,
+              return Padding(
+                padding: const EdgeInsets.only(top: 25),
+                child: DecoratedBox(
+                  decoration: const BoxDecoration(color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 30.0, horizontal: 20.0),
+                    child: Column(
+                      children: [
+                        getNavigationRow(context, 'announcements'),
+                        const AnnouncementsList(),
+                        const SizedBox(height: 15),
+                        DefaultButton(
+                          title: _strings.allAnnouncements,
+                          onTap: () {
+                            Navigator.pushNamed(context, '/announcements_list');
+                          },
+                          buttonColor: Palette.transparent,
+                          borderColor: Palette.greenE4A,
+                          textColor: Palette.greenE4A,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               );
             }

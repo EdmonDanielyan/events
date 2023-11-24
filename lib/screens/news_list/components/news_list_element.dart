@@ -22,9 +22,7 @@ class NewsListElement extends StatelessWidget {
         Navigator.pushNamed(context, '/news_detail',
             arguments: {'id': newsItem.id});
       },
-      child: Container(
-        width: size.width,
-        margin: const EdgeInsets.only(bottom: 15),
+      child: DecoratedBox(
         decoration: const BoxDecoration(color: Colors.white),
         child: Column(
           children: [
@@ -58,14 +56,14 @@ class NewsListElement extends StatelessWidget {
                   style: FontStyles.rubikP2(color: Palette.textBlack50),
                   textAlign: TextAlign.start,
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   newsItem.title ?? '',
                   style: FontStyles.rubikH4(color: Palette.textBlack),
                   maxLines: 4,
                   textAlign: TextAlign.start,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -93,7 +91,7 @@ class NewsListElement extends StatelessWidget {
                           : '0',
                       style: FontStyles.rubikP2(color: Palette.textBlack50),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 16),
                     CircleAvatar(
                       radius: 12,
                       backgroundColor: Colors.transparent,
@@ -128,6 +126,7 @@ class NewsListElement extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Divider(color: Palette.text20Grey),
+            const SizedBox(height: 15),
           ],
         ),
       ),

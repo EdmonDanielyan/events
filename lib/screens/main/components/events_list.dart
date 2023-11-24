@@ -24,8 +24,8 @@ class EventsList extends StatelessWidget {
             {
               List<Widget> items = getEventsWidgetList(state.data!);
               if (items.isNotEmpty) {
-                return Container(
-                  margin: const EdgeInsets.only(top: 30),
+                return Padding(
+                  padding: const EdgeInsets.only(top: 30),
                   child: ListView.builder(
                     shrinkWrap: true,
                     controller: ScrollController(keepScrollOffset: false),
@@ -42,8 +42,8 @@ class EventsList extends StatelessWidget {
           case EventsListStateType.LOADING:
             {
               eventsCubit.fetchEvents();
-              return Container(
-                margin: const EdgeInsets.only(top: 30),
+              return Padding(
+                padding: const EdgeInsets.only(top: 30),
                 child: ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

@@ -47,8 +47,8 @@ class NewsListSlider extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Container(
-      margin: const EdgeInsets.only(top: 30),
+    return Padding(
+      padding: const EdgeInsets.only(top: 30),
       child: CustomPageIndicator(
         controller: _controllerOne,
         count: newsList.length,
@@ -63,8 +63,8 @@ class NewsListSlider extends StatelessWidget {
       for (int i = 0; i < newsList.length - 1; i++) {
         NewsItemData curNewsItem = newsList[i];
         newsWidgetList.add(
-          Container(
-            margin: const EdgeInsets.only(right: marginBetweenElements),
+          Padding(
+            padding: const EdgeInsets.only(right: marginBetweenElements),
             child: NewsListSliderElement(newsItem: curNewsItem),
           ),
         );

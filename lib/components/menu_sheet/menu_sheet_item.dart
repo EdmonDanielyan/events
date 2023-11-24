@@ -38,8 +38,8 @@ class MenuSheetItem extends StatelessWidget {
               Row(
                 children: [
                   icon,
-                  Container(
-                    margin: const EdgeInsets.only(left: 15),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15),
                     child: Text(
                       title,
                       style: FontStyles.rubikP1(color: Palette.textBlack),
