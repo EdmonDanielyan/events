@@ -24,6 +24,7 @@ class EventsListElement extends StatelessWidget {
             arguments: {'id': event.id});
       },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: size.width,
@@ -45,43 +46,43 @@ class EventsListElement extends StatelessWidget {
                   ),
           ),
           const SizedBox(height: 20),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              _getEventTimeAndPlace(),
-              style: FontStyles.rubikP2(color: Palette.textBlack50),
-              textAlign: TextAlign.start,
-            ),
+          Text(
+            _getEventTimeAndPlace(),
+            style: FontStyles.rubikP2(color: Palette.textBlack50),
+            textAlign: TextAlign.start,
           ),
           const SizedBox(height: 8),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              event.title ?? '',
-              style: FontStyles.rubikH4(color: Palette.textBlack),
-              textAlign: TextAlign.start,
-            ),
+          Text(
+            event.title ?? '',
+            style: FontStyles.rubikH4(color: Palette.textBlack),
+            textAlign: TextAlign.start,
           ),
           const SizedBox(height: 12),
           Align(
             alignment: Alignment.centerRight,
-            child: InkWell(
-              onTap: () {
-                Share.share('https://portal.irkutskoil.ru/events/${event.id}/');
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12, bottom: 12, left: 12),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Поделиться',
-                      style: FontStyles.rubikP1Medium(color: Palette.greenE4A),
-                    ),
-                    const SizedBox(width: 8),
-                    Icon(Icons.share, size: 16, color: Palette.greenE4A),
-                  ],
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(25),
+                onTap: () {
+                  Share.share(
+                      'https://portal.irkutskoil.ru/events/${event.id}/');
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 12, bottom: 12, left: 12),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Поделиться',
+                        style:
+                            FontStyles.rubikP1Medium(color: Palette.greenE4A),
+                      ),
+                      const SizedBox(width: 8),
+                      Icon(Icons.share, size: 16, color: Palette.greenE4A),
+                    ],
+                  ),
                 ),
               ),
             ),

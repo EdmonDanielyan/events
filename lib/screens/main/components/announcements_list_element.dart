@@ -19,67 +19,56 @@ class AnnouncementsListElement extends StatelessWidget {
         Navigator.pushNamed(context, '/announcement_detail',
             arguments: {'id': announcement.id});
       },
-      child: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: DecoratedBox(
+        decoration: const BoxDecoration(color: Colors.white),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              announcement.dateCreate != null
+                  ? DateFormat('dd.MM.yyyy').format(announcement.dateCreate!)
+                  : '',
+              style: FontStyles.rubikP2(color: Palette.textBlack50),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              announcement.title ?? '',
+              style: FontStyles.rubikH4(color: Palette.textBlack),
+              textAlign: TextAlign.start,
+            ),
+            const SizedBox(height: 21),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
+                    height: 16.0,
+                    width: 16.0,
+                    colorFilter:
+                        ColorFilter.mode(Palette.textBlack50, BlendMode.srcIn)),
+                const SizedBox(width: 9),
                 Text(
-                  announcement.dateCreate != null
-                      ? DateFormat('dd.MM.yyyy')
-                          .format(announcement.dateCreate!)
-                      : '',
+                  announcement.viewCount != null
+                      ? announcement.viewCount.toString()
+                      : '0',
                   style: FontStyles.rubikP2(color: Palette.textBlack50),
                 ),
+                const SizedBox(width: 10),
+                CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  radius: 12,
+                  child: FloatingActionButton.small(
+                      highlightElevation: 0,
+                      hoverElevation: 0,
+                      backgroundColor: Colors.transparent,
+                      onPressed: () {
+                        Share.share(
+                            'https://portal.irkutskoil.ru/events/news/${announcement.id}/');
+                      },
+                      elevation: 0,
+                      child: Icon(Icons.share,
+                          size: 16, color: Palette.textBlack50)),
+                ),
               ],
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 8),
-              alignment: Alignment.topLeft,
-              child: Text(
-                announcement.title ?? '',
-                style: FontStyles.rubikH4(color: Palette.textBlack),
-                textAlign: TextAlign.start,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 25),
-              child: Row(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(right: 3),
-                        child: SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
-                            height: 16.0,
-                            width: 16.0,
-                            colorFilter: ColorFilter.mode(
-                                Palette.textBlack50, BlendMode.srcIn)),
-                      ),
-                      const SizedBox(width: 5.0),
-                      Text(
-                        announcement.viewCount != null
-                            ? announcement.viewCount.toString()
-                            : '0',
-                        style: FontStyles.rubikP2(color: Palette.textBlack50),
-                      ),
-                      InkWell(
-                          onTap: () {
-                            Share.share(
-                                'https://portal.irkutskoil.ru/announcements/${announcement.id}/');
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 8),
-                            child: Icon(Icons.share,
-                                size: 16, color: Palette.textBlack50),
-                          )),
-                    ],
-                  ),
-                ],
-              ),
             ),
           ],
         ),

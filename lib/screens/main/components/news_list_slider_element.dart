@@ -123,17 +123,22 @@ class NewsListSliderElement extends StatelessWidget {
                                       color: Palette.textBlack50),
                                 ),
                                 const SizedBox(width: 10),
-                                FloatingActionButton.small(
-                                    highlightElevation: 0,
-                                    hoverElevation: 0,
-                                    backgroundColor: Colors.transparent,
-                                    onPressed: () {
-                                      Share.share(
-                                          'https://portal.irkutskoil.ru/events/news/${newsItem.id}/');
-                                    },
-                                    elevation: 0,
-                                    child: Icon(Icons.share,
-                                        size: 16, color: Palette.textBlack50)),
+                                CircleAvatar(
+                                  radius: 12,
+                                  backgroundColor: Colors.transparent,
+                                  child: FloatingActionButton.small(
+                                      highlightElevation: 0,
+                                      hoverElevation: 0,
+                                      backgroundColor: Colors.transparent,
+                                      onPressed: () {
+                                        Share.share(
+                                            'https://portal.irkutskoil.ru/events/news/${newsItem.id}/');
+                                      },
+                                      elevation: 0,
+                                      child: Icon(Icons.share,
+                                          size: 16,
+                                          color: Palette.textBlack50)),
+                                ),
                                 const Spacer(),
                                 SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
                                     width: 16.0,

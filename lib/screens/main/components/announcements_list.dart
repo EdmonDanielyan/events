@@ -23,8 +23,8 @@ class AnnouncementsList extends StatelessWidget {
           case AnnouncementsListStateType.LOADED:
             {
               List<Widget> items = getAnnouncementsWidgetList(state.data!);
-              return Container(
-                margin: const EdgeInsets.only(top: 30),
+              return Padding(
+                padding: const EdgeInsets.only(top: 30),
                 child: ListView.builder(
                   shrinkWrap: true,
                   controller: ScrollController(keepScrollOffset: false),
@@ -38,19 +38,20 @@ class AnnouncementsList extends StatelessWidget {
           case AnnouncementsListStateType.LOADING:
             {
               announcementsCubit.fetchAnnouncements();
-              return Container(
-                  margin: const EdgeInsets.only(top: 30),
-                  child: const Column(children: [
-                    AnnouncementsListElementPlaceholder(),
-                    ListElementDivider(),
-                    AnnouncementsListElementPlaceholder(),
-                    ListElementDivider(),
-                    AnnouncementsListElementPlaceholder(),
-                    ListElementDivider(),
-                    AnnouncementsListElementPlaceholder(),
-                    ListElementDivider(),
-                    AnnouncementsListElementPlaceholder(),
-                  ]));
+              return const Padding(
+                padding: EdgeInsets.only(top: 30),
+                child: Column(children: [
+                  AnnouncementsListElementPlaceholder(),
+                  ListElementDivider(),
+                  AnnouncementsListElementPlaceholder(),
+                  ListElementDivider(),
+                  AnnouncementsListElementPlaceholder(),
+                  ListElementDivider(),
+                  AnnouncementsListElementPlaceholder(),
+                  ListElementDivider(),
+                  AnnouncementsListElementPlaceholder(),
+                ]),
+              );
             }
 
           case AnnouncementsListStateType.ERROR:
@@ -70,10 +71,7 @@ class AnnouncementsList extends StatelessWidget {
     for (var element in announcements) {
       announcementsWidgetList.addAll([
         AnnouncementsListElement(announcement: element),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: ListElementDivider(),
-        )
+        const ListElementDivider()
       ]);
     }
 
