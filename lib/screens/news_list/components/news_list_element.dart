@@ -22,8 +22,8 @@ class NewsListElement extends StatelessWidget {
         Navigator.pushNamed(context, '/news_detail',
             arguments: {'id': newsItem.id});
       },
-      child: DecoratedBox(
-        decoration: const BoxDecoration(color: Colors.white),
+      child: ColoredBox(
+        color: Colors.white,
         child: Column(
           children: [
             Container(

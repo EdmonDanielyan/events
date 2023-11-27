@@ -1,4 +1,4 @@
-class IconLinks {
+ abstract final interface class IconLinks {
   static const String CLOSE_BUTTON_SVG_LINK = "assets/images/close_button.svg";
   static const String VIEW_COUNT_SVG_LINK = "assets/images/view_count.svg";
   static const String BARREL_SVG_LINK = "assets/svg/barrel.svg";

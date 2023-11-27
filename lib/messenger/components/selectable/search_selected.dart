@@ -16,12 +16,9 @@ class SearchSelected extends StatefulWidget {
 class _SearchSelectedState extends State<SearchSelected> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: widget.selected
-            ? Colors.black.withOpacity(0.2)
-            : Colors.transparent,
-      ),
+    return ColoredBox(
+      color:
+          widget.selected ? Colors.black.withOpacity(0.2) : Colors.transparent,
       child: widget.child,
     );
   }

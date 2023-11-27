@@ -19,8 +19,8 @@ class AnnouncementsListElement extends StatelessWidget {
         Navigator.pushNamed(context, '/announcement_detail',
             arguments: {'id': announcement.id});
       },
-      child: DecoratedBox(
-        decoration: const BoxDecoration(color: Colors.white),
+      child: ColoredBox(
+        color: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

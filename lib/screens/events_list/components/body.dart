@@ -48,8 +48,8 @@ class Body extends StatelessWidget {
     List<EventsListElement> items = [];
     if (state.data?.isNotEmpty == true) {
       items = _getEventsWidgetList(state.data!);
-      return DecoratedBox(
-        decoration: BoxDecoration(color: Palette.white),
+      return ColoredBox(
+        color: Palette.white,
         child: SingleChildScrollView(
           controller: _controller,
           child: Padding(

@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ink_mobile/constants/palette.dart';
 
-class FontStyles {
+abstract final interface class FontStyles {
   static rubikP1Medium({Color? color, TextDecoration? decoration}) =>
       GoogleFonts.rubik(
         fontWeight: FontWeight.w500,

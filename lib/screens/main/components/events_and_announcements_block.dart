@@ -35,8 +35,8 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
             {
               return Padding(
                 padding: const EdgeInsets.only(top: 25),
-                child: DecoratedBox(
-                  decoration: const BoxDecoration(color: Colors.white),
+                child: ColoredBox(
+                  color: Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 30.0, horizontal: 20.0),

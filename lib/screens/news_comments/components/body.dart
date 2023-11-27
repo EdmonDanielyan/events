@@ -65,8 +65,8 @@ class _BodyState extends State<Body> {
                 {
                   List<Widget> items = _buildComments(state.data!);
                   final commentsCount = state.data!.commentCount;
-                  return DecoratedBox(
-                    decoration: const BoxDecoration(color: Colors.white),
+                  return ColoredBox(
+                    color: Colors.white,
                     child: Padding(
                       padding: const EdgeInsets.only(
                           top: 15, bottom: 25, left: 15, right: 15),

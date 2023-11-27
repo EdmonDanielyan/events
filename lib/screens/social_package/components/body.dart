@@ -115,25 +115,31 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                   Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Body._horizontalPadding),
-                      color: Palette.white,
+                    child: SizedBox(
                       width: size.width,
-                      child: ListView.separated(
-                        separatorBuilder: (context, index) {
-                          return const Divider(color: Colors.grey);
-                        },
-                        itemCount: pages.length,
-                        itemBuilder: (context, index) {
-                          return SocialPackageListElement(
-                            title: getSocialElementField(pages[index], 'name'),
-                            link: getSocialElementField(pages[index], 'url'),
-                            id: getSocialElementField(pages[index], 'id'),
-                            iconUrl:
-                                getSocialElementField(pages[index], 'iconUrl'),
-                          );
-                        },
+                      child: ColoredBox(
+                        color: Palette.white,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Body._horizontalPadding),
+                          child: ListView.separated(
+                            separatorBuilder: (context, index) {
+                              return const Divider(color: Colors.grey);
+                            },
+                            itemCount: pages.length,
+                            itemBuilder: (context, index) {
+                              return SocialPackageListElement(
+                                title:
+                                    getSocialElementField(pages[index], 'name'),
+                                link:
+                                    getSocialElementField(pages[index], 'url'),
+                                id: getSocialElementField(pages[index], 'id'),
+                                iconUrl: getSocialElementField(
+                                    pages[index], 'iconUrl'),
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ),
                   ),

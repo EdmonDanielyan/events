@@ -27,10 +27,8 @@ class SelectableWidget extends StatelessWidget {
       return child;
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        color: selected ? Colors.grey[400] : Colors.transparent,
-      ),
+    return ColoredBox(
+      color: selected ? Colors.grey.shade400 : Colors.transparent,
       child: InkWell(
         onTap: _switchState,
         child: Row(

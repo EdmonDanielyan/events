@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class Palette {
+ abstract final interface class Palette {
   static Color white = Colors.white;
   static Color text5Grey = const Color(0xFF1D2126).withOpacity(0.05);
   static Color myMessageCard = const Color(0xFF1D2126).withOpacity(0.08);

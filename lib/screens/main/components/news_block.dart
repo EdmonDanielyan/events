@@ -27,7 +27,7 @@ class NewsBlock extends StatelessWidget {
     return BlocBuilder<NewsBlockCubit, NewsBlockState>(
       bloc: newsCubit,
       builder: (context, state) {
-        return Container(
+        return Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 24.0),
           child: Column(
             children: [
@@ -85,22 +85,21 @@ class NewsBlock extends StatelessWidget {
       height: SizeConfig(context, 350).getProportionateScreenHeight,
       child: Column(
         children: [
-          Container(
-            width: size.width,
-            height: SizeConfig(context, 300).getProportionateScreenHeight,
-            alignment: AlignmentDirectional.topStart,
-            margin: const EdgeInsets.only(top: 20.0),
-            clipBehavior: Clip.none,
-            child: ListView(
-              controller: _controllerOne,
-              clipBehavior: Clip.none,
-              scrollDirection: Axis.horizontal,
-              physics: const NeverScrollableScrollPhysics(),
-              children: const [
-                NewsListSliderElementPlaceholder(),
-                SizedBox(width: 30),
-                NewsListSliderElementPlaceholder(),
-              ],
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: SizedBox(
+              height: SizeConfig(context, 300).getProportionateScreenHeight,
+              child: ListView(
+                controller: _controllerOne,
+                clipBehavior: Clip.none,
+                scrollDirection: Axis.horizontal,
+                physics: const NeverScrollableScrollPhysics(),
+                children: const [
+                  NewsListSliderElementPlaceholder(),
+                  SizedBox(width: 30),
+                  NewsListSliderElementPlaceholder(),
+                ],
+              ),
             ),
           ),
           Expanded(

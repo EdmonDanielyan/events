@@ -26,7 +26,7 @@ class FilterSliderElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DecoratedBox(
       //clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
           color: Palette.transparent,

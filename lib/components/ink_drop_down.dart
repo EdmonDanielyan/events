@@ -42,10 +42,10 @@ class _InkDropDownState extends State<InkDropDown> {
           color: Colors.black,
         ),
         hint: IntrinsicWidth(
-          child: Container(
+          child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.7,
-            clipBehavior: Clip.hardEdge,
-            decoration: const BoxDecoration(),
+            // clipBehavior: Clip.hardEdge,
+            // decoration: const BoxDecoration(),
             child: Text(
               selectedIndex != null
                   ? widget.items[selectedIndex!]
@@ -146,44 +146,42 @@ class _SelectDialogState extends State<SelectDialog> {
         ),
       ),
       actions: <Widget>[
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            children: [
-              Expanded(
-                  child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    _strings.back,
-                    style: TextStyle(
-                        fontSize: SizeConfig(context, 14)
-                            .getProportionateScreenHeight,
-                        color: Colors.grey),
-                  ),
+        const SizedBox(width: 10),
+        Row(
+          children: [
+            Expanded(
+                child: TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  _strings.back,
+                  style: TextStyle(
+                      fontSize:
+                          SizeConfig(context, 14).getProportionateScreenHeight,
+                      color: Colors.grey),
                 ),
-              )),
-              Expanded(
-                  child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(selectedItem);
-                },
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    _strings.choose,
-                    style: TextStyle(
-                        fontSize: SizeConfig(context, 14)
-                            .getProportionateScreenHeight,
-                        color: const Color(0xFF2B5E4A)),
-                  ),
+              ),
+            )),
+            Expanded(
+                child: TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(selectedItem);
+              },
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  _strings.choose,
+                  style: TextStyle(
+                      fontSize:
+                          SizeConfig(context, 14).getProportionateScreenHeight,
+                      color: const Color(0xFF2B5E4A)),
                 ),
-              )),
-            ],
-          ),
+              ),
+            )),
+          ],
         )
       ],
     );
