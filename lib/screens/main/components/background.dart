@@ -6,17 +6,10 @@ class Background extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
-      child: Stack(
-        children: [
-          Container(
-            alignment: Alignment.topLeft,
-            width: size.width,
-            decoration: const BoxDecoration(color: Color(0xFFF9F9F9)),
-            child: child,
-          )
-        ],
+      child: ColoredBox(
+        color: const Color(0xFFF9F9F9),
+        child: child,
       ),
     );
   }

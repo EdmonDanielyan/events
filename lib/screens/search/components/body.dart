@@ -7,7 +7,6 @@ import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/search/data.dart';
 import 'package:ink_mobile/models/search/search_query.dart';
-import 'package:ink_mobile/screens/search/components/background.dart';
 import 'package:ink_mobile/screens/search/components/search_container.dart';
 import 'package:ink_mobile/components/fields/search_field.dart';
 import 'package:ink_mobile/screens/search/components/search_item_text.dart';
@@ -24,7 +23,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _strings = localizationInstance;
-    return Background(
+    return SingleChildScrollView(
       child: Column(
         children: [
           Padding(

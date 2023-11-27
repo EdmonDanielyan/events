@@ -28,9 +28,10 @@ class NewsBlock extends StatelessWidget {
       bloc: newsCubit,
       builder: (context, state) {
         return Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 24.0),
+          padding: const EdgeInsets.only(left: 20.0),
           child: Column(
             children: [
+              const SizedBox(height: 24),
               Align(
                 alignment: Alignment.topLeft,
                 child: Text(
@@ -39,13 +40,9 @@ class NewsBlock extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16.0),
-              Column(
-                children: [
-                  const NewsFilterSlider(),
-                  const SizedBox(height: 16.0),
-                  getCurrentStateWidget(context, state),
-                ],
-              ),
+              const NewsFilterSlider(),
+              const SizedBox(height: 16.0),
+              getCurrentStateWidget(context, state),
             ],
           ),
         );
@@ -85,21 +82,15 @@ class NewsBlock extends StatelessWidget {
       height: SizeConfig(context, 350).getProportionateScreenHeight,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: SizedBox(
-              height: SizeConfig(context, 300).getProportionateScreenHeight,
-              child: ListView(
-                controller: _controllerOne,
-                clipBehavior: Clip.none,
-                scrollDirection: Axis.horizontal,
-                physics: const NeverScrollableScrollPhysics(),
-                children: const [
-                  NewsListSliderElementPlaceholder(),
-                  SizedBox(width: 30),
-                  NewsListSliderElementPlaceholder(),
-                ],
-              ),
+          const SizedBox(height: 20),
+          SizedBox(
+            height: SizeConfig(context, 300).getProportionateScreenHeight,
+            child: const Row(
+              children: [
+                NewsListSliderElementPlaceholder(),
+                SizedBox(width: 30),
+                Flexible(child: NewsListSliderElementPlaceholder()),
+              ],
             ),
           ),
           Expanded(

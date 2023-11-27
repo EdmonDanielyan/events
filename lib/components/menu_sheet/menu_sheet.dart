@@ -36,30 +36,26 @@ class _MenuSheetState extends State<MenuSheet> {
       width: size.width,
       child: Column(
         children: [
-          Container(
-            margin: const EdgeInsets.only(top: 7),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: SizeConfig(context, 40).getProportionateScreenHeight,
-                  height: SizeConfig(context, 5).getProportionateScreenHeight,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                        SizeConfig(context, 5).getProportionateScreenHeight),
-                    color: Colors.grey.withOpacity(0.3),
-                  ),
+          const SizedBox(height: 7),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: SizeConfig(context, 40).getProportionateScreenHeight,
+                height: SizeConfig(context, 5).getProportionateScreenHeight,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      SizeConfig(context, 5).getProportionateScreenHeight),
+                  color: Colors.grey.withOpacity(0.3),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Container(
-            margin: const EdgeInsets.only(top: 24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: _getItemsList(context, localizationInstance),
-            ),
+          const SizedBox(height: 24),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: _getItemsList(context, localizationInstance),
           ),
         ],
       ),

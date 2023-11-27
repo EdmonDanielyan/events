@@ -60,7 +60,7 @@ dependencies:
     mask_text_input_formatter: ^2.5.0
     get_it: ^7.6.4
     injectable: ^2.3.1
-    flutter_linkify: ^6.0.0
+    # flutter_linkify: ^6.0.0
     flutter_keyboard_visibility: ^5.4.1
     flutter_local_notifications: ^15.1.2
     logging: ^1.2.0
@@ -71,7 +71,7 @@ dependencies:
     flutter_native_text_input:
         path: "./custom/libs/native_text_input"
     cached_network_image: ^3.3.0
-    flutter_emoji: ^2.5.1
+    # flutter_emoji: ^2.5.1
     pinput: ^3.0.1
     retrofit: ^4.0.2
     google_fonts: ^4.0.5
@@ -95,7 +95,7 @@ dependencies:
 
     onesignal_flutter: ^5.0.3
 
-    image_picker: ^1.0.4
+    # image_picker: ^1.0.4
     # flutter_contacts: ^1.1.7+1
     permission_handler: ^10.4.5
     geolocator: ^10.1.0
@@ -104,7 +104,7 @@ dependencies:
     firebase_core: ^2.17.0
     url_launcher: ^6.1.14
     appmetrica_plugin: ^1.4.0
-    badges: ^3.1.2
+    # badges: ^3.1.2
     dio: ^5.3.3
 
 dev_dependencies:

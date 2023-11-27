@@ -96,11 +96,13 @@ class EventsAndAnnouncementsBlock extends StatelessWidget {
   }
 
   Widget getNavigationRow(BuildContext context, String checked) {
-    return Container(
+    return Padding(
       padding: const EdgeInsets.only(left: 20),
-      height: SizeConfig(context, 34).getProportionateScreenHeight,
-      child: Row(
-        children: getNavRowItemList(context: context, checkedItem: checked),
+      child: SizedBox(
+        height: SizeConfig(context, 34).getProportionateScreenHeight,
+        child: Row(
+          children: getNavRowItemList(context: context, checkedItem: checked),
+        ),
       ),
     );
   }
