@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/constants/palette.dart';
+import 'package:ink_mobile/screens/main/components/placeholder_constructor.dart';
+import 'package:ink_mobile/screens/main/components/placeholder_text.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../messenger/functions/size_config.dart';
@@ -58,9 +60,9 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    shimmerConstructor(width: 100, height: 20),
+                    const PlaceHolderConstructor(width: 100, height: 20),
                     const SizedBox(height: 8),
-                    shimmerConstructor(width: 400, height: 80),
+                    const PlaceHolderConstructor(width: 400, height: 80),
                     Flexible(
                       child: Align(
                         alignment: Alignment.bottomCenter,
@@ -73,7 +75,7 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                                 colorFilter: ColorFilter.mode(
                                     Palette.textBlack50, BlendMode.srcIn)),
                             const SizedBox(width: 9),
-                            shimmerText(),
+                            const PlaceholderText(),
                             const SizedBox(width: 24),
                             SvgPicture.asset(IconLinks.COMMENT_ICON_LINK,
                                 width: 16.0,
@@ -81,7 +83,7 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                                 colorFilter: ColorFilter.mode(
                                     Palette.textBlack50, BlendMode.srcIn)),
                             const SizedBox(width: 9),
-                            shimmerText(),
+                            const PlaceholderText(),
                             const SizedBox(width: 16),
                             Shimmer.fromColors(
                               baseColor: Colors.grey.withOpacity(0.5),
@@ -98,7 +100,7 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
                                 colorFilter: ColorFilter.mode(
                                     Palette.textBlack50, BlendMode.srcIn)),
                             const SizedBox(width: 4),
-                            shimmerText(),
+                            const PlaceholderText(),
                           ],
                         ),
                       ),
@@ -113,34 +115,4 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget shimmerText() {
-  return Shimmer.fromColors(
-    baseColor: Colors.grey.withOpacity(0.5),
-    highlightColor: Colors.grey.withOpacity(0.2),
-    child: SizedBox(
-      width: 30,
-      height: 16,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(5)),
-      ),
-    ),
-  );
-}
-
-Widget shimmerConstructor({required double width, required double height}) {
-  return Shimmer.fromColors(
-    baseColor: Colors.grey.withOpacity(0.5),
-    highlightColor: Colors.grey.withOpacity(0.2),
-    child: SizedBox(
-      width: width,
-      height: height,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(5)),
-      ),
-    ),
-  );
 }
