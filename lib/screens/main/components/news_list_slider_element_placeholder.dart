@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../messenger/functions/size_config.dart';
@@ -15,174 +16,131 @@ class NewsListSliderElementPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final elementWidth = MediaQuery.of(context).size.width * 0.8;
+    final elementWidth = MediaQuery.of(context).size.width * 0.73;
+    final elementHeight =
+        SizeConfig(context, 300.0).getProportionateScreenHeight;
 
     return SizedBox(
-        width: elementWidth,
-        height: SizeConfig(context, 300).getProportionateScreenHeight,
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
-                    spreadRadius: 2,
-                    blurRadius: 10,
-                    offset: const Offset(10, 10))
-              ],
-              borderRadius: const BorderRadius.all(Radius.circular(15))),
-          child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              clipBehavior: Clip.hardEdge,
-              width: elementWidth,
-              child: Column(children: [
-                Shimmer.fromColors(
-                  baseColor: Colors.grey.withOpacity(0.5),
-                  highlightColor: Colors.grey.withOpacity(0.2),
-                  child: Container(
-                    height:
-                        SizeConfig(context, 110).getProportionateScreenHeight,
-                    width: elementWidth,
-                    color: Colors.black,
-                  ),
+      width: elementWidth,
+      height: elementHeight,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                spreadRadius: 2,
+                blurRadius: 10,
+                offset: const Offset(10, 10))
+          ],
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(15)),
+              child: Shimmer.fromColors(
+                baseColor: Colors.grey.withOpacity(0.5),
+                highlightColor: Colors.grey.withOpacity(0.2),
+                child: SizedBox(
+                  height: SizeConfig(context, 130).getProportionateScreenHeight,
+                  width: elementWidth,
+                  child: const ColoredBox(color: Colors.black),
                 ),
-                Expanded(
-                    child: Container(
-                        margin: const EdgeInsets.only(top: 18.0),
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        width: elementWidth,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+            ),
+            const SizedBox(height: 18),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    shimmerConstructor(width: 100, height: 20),
+                    const SizedBox(height: 8),
+                    shimmerConstructor(width: 400, height: 80),
+                    Flexible(
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            SvgPicture.asset(IconLinks.BARREL_SVG_LINK,
+                                width: 16.0,
+                                height: 16.0,
+                                colorFilter: ColorFilter.mode(
+                                    Palette.textBlack50, BlendMode.srcIn)),
+                            const SizedBox(width: 9),
+                            shimmerText(),
+                            const SizedBox(width: 24),
+                            SvgPicture.asset(IconLinks.COMMENT_ICON_LINK,
+                                width: 16.0,
+                                height: 16.0,
+                                colorFilter: ColorFilter.mode(
+                                    Palette.textBlack50, BlendMode.srcIn)),
+                            const SizedBox(width: 9),
+                            shimmerText(),
+                            const SizedBox(width: 16),
                             Shimmer.fromColors(
                               baseColor: Colors.grey.withOpacity(0.5),
                               highlightColor: Colors.grey.withOpacity(0.2),
-                              child: Container(
-                                width: 100,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(5)),
+                              child: const CircleAvatar(
+                                radius: 9,
+                                backgroundColor: Colors.white,
                               ),
                             ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 8),
-                              child: Shimmer.fromColors(
-                                baseColor: Colors.grey.withOpacity(0.5),
-                                highlightColor: Colors.grey.withOpacity(0.2),
-                                child: Container(
-                                  width: 400,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5)),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                  Container(
-                                      alignment: Alignment.bottomCenter,
-                                      margin: const EdgeInsets.only(bottom: 20),
-                                      child: Row(children: [
-                                        Row(children: [
-                                          SvgPicture.asset(
-                                              IconLinks.BARREL_SVG_LINK,
-                                              width: 14,
-                                              height: 16,
-                                              color: Theme.of(context)
-                                                  .iconTheme
-                                                  .color),
-                                          Container(
-                                            margin:
-                                                const EdgeInsets.only(left: 4),
-                                            child: Shimmer.fromColors(
-                                              baseColor:
-                                                  Colors.grey.withOpacity(0.5),
-                                              highlightColor:
-                                                  Colors.grey.withOpacity(0.2),
-                                              child: Container(
-                                                width: 30,
-                                                height: 15,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                              ),
-                                            ),
-                                          )
-                                        ]),
-                                        Container(
-                                            margin:
-                                                const EdgeInsets.only(left: 24),
-                                            child: Row(children: [
-                                              SvgPicture.asset(
-                                                  IconLinks.COMMENT_ICON_LINK,
-                                                  width: 18,
-                                                  height: 16),
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 4),
-                                                child: Shimmer.fromColors(
-                                                  baseColor: Colors.grey
-                                                      .withOpacity(0.5),
-                                                  highlightColor: Colors.grey
-                                                      .withOpacity(0.2),
-                                                  child: Container(
-                                                    width: 30,
-                                                    height: 15,
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5)),
-                                                  ),
-                                                ),
-                                              )
-                                            ])),
-                                        Expanded(
-                                            child: Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                              Row(children: [
-                                                SvgPicture.asset(
-                                                    IconLinks
-                                                        .VIEW_COUNT_SVG_LINK,
-                                                    width: 16),
-                                                Container(
-                                                  margin: const EdgeInsets.only(
-                                                      left: 4),
-                                                  child: Shimmer.fromColors(
-                                                    baseColor: Colors.grey
-                                                        .withOpacity(0.5),
-                                                    highlightColor: Colors.grey
-                                                        .withOpacity(0.2),
-                                                    child: Container(
-                                                      width: 30,
-                                                      height: 15,
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5)),
-                                                    ),
-                                                  ),
-                                                )
-                                              ])
-                                            ]))
-                                      ]))
-                                ]))
+                            const Spacer(),
+                            SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
+                                width: 16.0,
+                                height: 16.0,
+                                colorFilter: ColorFilter.mode(
+                                    Palette.textBlack50, BlendMode.srcIn)),
+                            const SizedBox(width: 4),
+                            shimmerText(),
                           ],
-                        )))
-              ])),
-        ));
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
+}
+
+Widget shimmerText() {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey.withOpacity(0.5),
+    highlightColor: Colors.grey.withOpacity(0.2),
+    child: SizedBox(
+      width: 30,
+      height: 16,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(5)),
+      ),
+    ),
+  );
+}
+
+Widget shimmerConstructor({required double width, required double height}) {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey.withOpacity(0.5),
+    highlightColor: Colors.grey.withOpacity(0.2),
+    child: SizedBox(
+      width: width,
+      height: height,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(5)),
+      ),
+    ),
+  );
 }

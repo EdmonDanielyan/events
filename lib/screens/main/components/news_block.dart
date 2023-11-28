@@ -77,25 +77,31 @@ class NewsBlock extends StatelessWidget {
   }
 
   Widget getLoadingStateWidget(BuildContext context) {
-    final PageController _controllerOne = PageController();
+    final PageController _controllerOne = PageController(keepPage: false);
     return SizedBox(
       height: SizeConfig(context, 350).getProportionateScreenHeight,
       child: Column(
         children: [
           const SizedBox(height: 20),
           SizedBox(
-            height: SizeConfig(context, 300).getProportionateScreenHeight,
-            child: const Row(
-              children: [
-                NewsListSliderElementPlaceholder(),
-                SizedBox(width: 30),
-                Flexible(child: NewsListSliderElementPlaceholder()),
-              ],
+            height: SizeConfig(context, 290).getProportionateScreenHeight,
+            child: const SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: NeverScrollableScrollPhysics(),
+              clipBehavior: Clip.none,
+              primary: true,
+              child: Row(
+                children: [
+                  NewsListSliderElementPlaceholder(),
+                  SizedBox(width: 30),
+                  NewsListSliderElementPlaceholder(),
+                ],
+              ),
             ),
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(top: 30),
+              padding: const EdgeInsets.only(top: 30, right: 20),
               child: CustomPageIndicator(
                 controller: _controllerOne,
                 count: 5,
