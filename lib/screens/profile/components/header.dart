@@ -28,6 +28,11 @@ class PersonalPageHeader extends StatelessWidget {
         }
       }
       return SliverAppBar(
+        // title: Container(
+        //   width: 20,
+        //   height: 10,
+        //   color: Colors.blue,
+        // ),
         backgroundColor: Palette.white,
         leading: IconButton(
           icon: Icon(
@@ -38,32 +43,32 @@ class PersonalPageHeader extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         pinned: true,
-        expandedHeight: 250.0,
+        // expandedHeight: 250.0,
         flexibleSpace: FlexibleSpaceBar(
           centerTitle: true,
           collapseMode: CollapseMode.pin,
           expandedTitleScale: 1,
           title: titleBar(spaceBarTitleOpacity, appBarTitleOpacity),
-          background: Stack(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Palette.text5Grey,
-                    ),
-                    child: CachedCircleAvatar(
-                      avatarWidth: 164.0,
-                      avatarHeight: 164.0,
-                      url: user.pathToAvatar ?? "",
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // background: Stack(
+          //   children: <Widget>[
+          //     Padding(
+          //       padding: const EdgeInsets.only(top: 30),
+          //       child: Center(
+          //         child: Container(
+          //           decoration: BoxDecoration(
+          //             shape: BoxShape.circle,
+          //             color: Palette.text5Grey,
+          //           ),
+          //           child: CachedCircleAvatar(
+          //             avatarWidth: 164.0,
+          //             avatarHeight: 164.0,
+          //             url: user.pathToAvatar ?? "",
+          //           ),
+          //         ),
+          //       ),
+          //   ),
+          // ],
+          // ),
         ),
       );
     });
@@ -99,28 +104,14 @@ class PersonalPageHeader extends StatelessWidget {
   }
 
   Widget titleBar(double opacitySpaceBar, double opacityAppBar) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        Opacity(
-          opacity: opacitySpaceBar,
-          child: Text(
-            user.fullName,
-            style: FontStyles.rubikH3(color: Palette.textBlack),
-            maxLines: 2,
-            textAlign: TextAlign.center,
-          ),
-        ),
-        Opacity(
-          opacity: opacityAppBar,
-          child: Text(
-            user.name ?? user.fullName,
-            style: FontStyles.rubikH3(color: Palette.textBlack),
-            maxLines: 1,
-            textAlign: TextAlign.center,
-          ),
-        )
-      ],
+    return Opacity(
+      opacity: opacityAppBar,
+      child: Text(
+        user.name ?? user.fullName,
+        style: FontStyles.rubikH3(color: Palette.textBlack),
+        maxLines: 1,
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }

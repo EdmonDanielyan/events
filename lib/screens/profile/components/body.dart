@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
+import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/cubit/profile/profile_state.dart';
+import 'package:ink_mobile/messenger/components/cached_avatar/cached_avatar.dart';
 import 'package:ink_mobile/messenger/cubits/cached/users/cached_users_cubit.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/user_data.dart';
@@ -95,6 +97,7 @@ class Body extends StatelessWidget {
       slivers: [
         if (state.type == ProfileStateType.LOADED)
           PersonalPageHeader(user: user),
+
         if (state.type == ProfileStateType.LOADED) UserMainInfo(user: user),
         if (state.type == ProfileStateType.LOADED) VotesBar(votes: user.votes),
         if (state.type == ProfileStateType.OTHER_USER_LOADED)
@@ -143,6 +146,12 @@ class Body extends StatelessWidget {
         Diagnostics(logFile: logFile),
         if (state.type == ProfileStateType.LOADED)
           const ProfileSecuritySection(),
+        if (state.type == ProfileStateType.LOADED)
+          SliverToBoxAdapter(
+              child: Container(
+            height: 400,
+            color: Colors.red,
+          )),
 
         /// todo AboutMyField
         // AboutMyField(user: user, scrollController: _scrollController,)
@@ -150,12 +159,24 @@ class Body extends StatelessWidget {
     );
   }
 
-  Widget _getErrorStateWidget(BuildContext context, ProfileState state) {
-    final cubit = ProfileScreen.of(context).profileCubit;
+// List<Widget> buildSliverList(BuildContext context, ProfileState state){
+//   final user = state.data!;
+//   switch (state.type) {
+//     case ProfileStateType.LOADED:
+//     [
+//     PersonalPageHeader(user: user),VotesBar(votes: user.votes),];
 
-    return ErrorRefreshButton(
-      onTap: cubit.refresh,
-      text: state.errorMessage!,
-    );
-  }
+//       break;
+//     default:
+//   }
+//   return [];
+}
+
+Widget _getErrorStateWidget(BuildContext context, ProfileState state) {
+  final cubit = ProfileScreen.of(context).profileCubit;
+
+  return ErrorRefreshButton(
+    onTap: cubit.refresh,
+    text: state.errorMessage!,
+  );
 }

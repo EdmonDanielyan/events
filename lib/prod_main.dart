@@ -31,7 +31,6 @@ void main() async {
     await writeEnv(Environment.prod);
 
     await setup();
-
     runApp(const InkMobile());
   }, (error, stack) {});
 
@@ -48,6 +47,6 @@ void main() async {
     print("Accepted permission: $accepted");
   });
 
-  AppMetrica.activate(
-      const AppMetricaConfig("3948ed67-c81f-4920-ad3a-bd4b70a59376"));
+  // AppMetrica.activate(
+  //     const AppMetricaConfig("3948ed67-c81f-4920-ad3a-bd4b70a59376"));
 }

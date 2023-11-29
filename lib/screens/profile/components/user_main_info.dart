@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ink_mobile/assets/constants.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
+import 'package:ink_mobile/messenger/components/cached_avatar/cached_avatar.dart';
 import 'package:ink_mobile/messenger/model/user.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/components/write_btn.dart';
@@ -50,14 +51,26 @@ class _UserMainInfoState extends State<UserMainInfo> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       sliver: SliverToBoxAdapter(
         child: SizedBox(
-          // padding: EdgeInsets.only(bottom: 24.0),
           width: size.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // getUserAvatar(),
-              // getUserFullName(),
-              // const SizedBox(height: 8.0),
+              Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Palette.text5Grey,
+                  ),
+                  child: CachedCircleAvatar(
+                    avatarWidth: 164.0,
+                    avatarHeight: 164.0,
+                    url: user.pathToAvatar ?? "",
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              getUserFullName(),
+              const SizedBox(height: 8.0),
               getUserPositionWidget(),
               if (widget.showWriteButton) ...[
                 const SizedBox(height: 24.0),
@@ -78,36 +91,16 @@ class _UserMainInfoState extends State<UserMainInfo> {
     );
   }
 
-  // Widget getUserFullName() {
-  //   return Center(
-  //     child: Text(
-  //       user.fullName,
-  //       style: FontStyles.rubikH3(color: Palette.textBlack),
-  //       maxLines: 2,
-  //       textAlign: TextAlign.center,
-  //     ),
-  //   );
-  // }
-
-  // Widget getUserAvatar() {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(
-  //       top: 16.0,
-  //       bottom: 24.0,
-  //     ),
-  //     child: Container(
-  //       decoration: BoxDecoration(
-  //         shape: BoxShape.circle,
-  //         color: Palette.text5Grey,
-  //       ),
-  //       child: CachedCircleAvatar(
-  //         avatarWidth: 164.0,
-  //         avatarHeight: 164.0,
-  //         url: user.pathToAvatar ?? "",
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget getUserFullName() {
+    return Center(
+      child: Text(
+        user.fullName,
+        style: FontStyles.rubikH3(color: Palette.textBlack),
+        maxLines: 2,
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
 
   String getFullName() {
     List nameComponents = [];
