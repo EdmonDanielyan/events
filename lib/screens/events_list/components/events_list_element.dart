@@ -32,14 +32,13 @@ class EventsListElement extends StatelessWidget {
               borderRadius: BorderRadius.circular(16.0),
             ),
             child: event.pictureLink == null
-                ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
-                    fit: BoxFit.fitWidth)
+                ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK, fit: BoxFit.fill)
                 : Image.network(
                     event.pictureLink!,
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.fill,
                     errorBuilder: (context, error, stackTrace) {
                       return Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
-                          fit: BoxFit.fitWidth);
+                          fit: BoxFit.fill);
                     },
                   ),
           ),

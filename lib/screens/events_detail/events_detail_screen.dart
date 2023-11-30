@@ -6,6 +6,7 @@ import 'package:ink_mobile/components/app_bars/ink_app_bar.dart';
 import 'package:ink_mobile/components/buttons/default_button.dart';
 import 'package:ink_mobile/components/buttons/error_refresh_button.dart';
 import 'package:ink_mobile/components/html.dart';
+import 'package:ink_mobile/components/ink_drop_down.dart';
 import 'package:ink_mobile/components/ink_page_loader.dart';
 import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
@@ -80,96 +81,403 @@ class EventDetailScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(
-            width: size.width,
-            height: SizeConfig(context, 220).getProportionateScreenHeight,
-            child: event.pictureLink == null
-                ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
-                    fit: BoxFit.fitWidth)
-                : Image.network(
-                    event.pictureLink!,
-                    fit: BoxFit.fitWidth,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
-                          fit: BoxFit.fitWidth);
-                    },
-                  ),
-          ),
+          // SizedBox(
+          //   width: size.width,
+          //   height: SizeConfig(context, 220).getProportionateScreenHeight,
+          //   child: event.pictureLink == null
+          //       ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
+          //           fit: BoxFit.fitWidth)
+          //       : Image.network(
+          //           event.pictureLink!,
+          //           fit: BoxFit.fitWidth,
+          //           errorBuilder: (context, error, stackTrace) {
+          //             return Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
+          //                 fit: BoxFit.fitWidth);
+          //           },
+          //         ),
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.only(
+          //       right: 20.0, left: 20.0, top: 32.0, bottom: 16.0),
+          //   child: Row(
+          //     children: [
+          //       Text(
+          //         event.beginDate != null && event.endDate != null
+          //             ? "${DateFunctions(passedDate: event.beginDate!).dayMonthYearNumbers()} ${DateFunctions(passedDate: event.beginDate!).hourMinute()} - ${DateFunctions(passedDate: event.endDate!).dayMonthYearNumbers()} ${DateFunctions(passedDate: event.endDate!).hourMinute()}"
+          //             : "",
+          //         style: FontStyles.rubikP2(color: Palette.textBlack50),
+          //       ),
+          //       const Spacer(),
+          //       SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
+          //           semanticsLabel: 'View Count',
+          //           height: 16.0,
+          //           width: 16.0,
+          //           colorFilter:
+          //               ColorFilter.mode(Palette.textBlack50, BlendMode.srcIn)),
+          //       const SizedBox(width: 4.0),
+          //       Text(
+          //         event.viewCount != null
+          //             ? state.data!.viewCount.toString()
+          //             : '0',
+          //         style: FontStyles.rubikP2(color: Palette.textBlack50),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // Padding(
+          //     padding: const EdgeInsets.only(left: 20, right: 50, bottom: 10),
+          //     child: Text(
+          //       event.title ?? '',
+          //       style: TextStyle(
+          //         fontSize:
+          //             SizeConfig(context, 20.0).getProportionateScreenHeight,
+          //         fontWeight: FontWeight.bold,
+          //       ),
+          //     )),
+          // const Divider(color: Color(0xFFE5E5E5), thickness: 2),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 20),
+          //   child: CustomHtml(data: event.detailText),
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.all(20),
+          //   child: ((event.isActual ?? true) && (event.placesAvailable ?? true))
+          //       ? DefaultButton(
+          //           title: isMember
+          //               ? _strings.cancelParticipating
+          //               : _strings.iWillParticipate,
+          //           borderColor: isMember ? Palette.redF1C : Palette.greenE4A,
+          //           textColor: isMember ? Palette.redF1C : Palette.white,
+          //           buttonColor: isMember ? Palette.white : Palette.greenE4A,
+          //           onTap: () {
+          //             return eventDetailCubit
+          //                 .changeParticipationStatus(event.id!);
+          //           })
+          //       : const SizedBox.shrink(),
+          // ),
           Padding(
-            padding: const EdgeInsets.only(
-                right: 20.0, left: 20.0, top: 32.0, bottom: 16.0),
-            child: Row(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  event.beginDate != null && event.endDate != null
-                      ? "${DateFunctions(passedDate: event.beginDate!).dayMonthYearNumbers()} ${DateFunctions(passedDate: event.beginDate!).hourMinute()} - ${DateFunctions(passedDate: event.endDate!).dayMonthYearNumbers()} ${DateFunctions(passedDate: event.endDate!).hourMinute()}"
-                      : "",
-                  style: FontStyles.rubikP2(color: Palette.textBlack50),
+                  'Запись на событие',
+                  style: FontStyles.rubikH2(color: Palette.textBlack),
                 ),
-                const Spacer(),
-                SvgPicture.asset(IconLinks.OPENED_EYE_ICON_LINK,
-                    semanticsLabel: 'View Count',
-                    height: 16.0,
-                    width: 16.0,
-                    colorFilter:
-                        ColorFilter.mode(Palette.textBlack50, BlendMode.srcIn)),
-                const SizedBox(width: 4.0),
+                SizedBox(height: 24),
+                Text('Участники',
+                    style: FontStyles.rubikP1Medium(color: Palette.textBlack)),
+                InkWell(
+                  onTap: () {},
+                  child: ListTile(
+                      horizontalTitleGap: 12,
+                      contentPadding: EdgeInsets.all(0),
+                      leading: CircleAvatar(
+                          radius: 22, backgroundColor: Colors.grey),
+                      // ClipRRect(
+                      //     borderRadius: BorderRadius.all(Radius.circular(41.r)),
+                      //     child: Image.asset(
+                      //       'assets/images/${item.imageName}',
+                      //       width: 42.r,
+                      //       height: 42.r,
+                      //       fit: BoxFit.cover,
+                      //     )),
+                      title: Text('Алексеев Вадим Андреевич (вы)',
+                          style: FontStyles.rubikP2Medium(
+                              color: Palette.textBlack)),
+                      subtitle: Text(
+                        'Водитель фронтального погрузчика \nг. Иркутск',
+                        maxLines: 2,
+                        style: FontStyles.rubikP3(color: Palette.textBlack50),
+                      ),
+                      trailing: Icon(Icons.keyboard_arrow_right,
+                          // color: AppColors.subTitleColor,
+                          size: 24),
+                      isThreeLine: true),
+                ),
                 Text(
-                  event.viewCount != null
-                      ? state.data!.viewCount.toString()
-                      : '0',
-                  style: FontStyles.rubikP2(color: Palette.textBlack50),
+                  'Условия для вас',
+                  style: FontStyles.rubikP3(color: Palette.textBlack50),
                 ),
+                SizedBox(height: 8),
+                ExpansionTileControllerApp(),
+                Container(height: 44, color: Colors.grey),
+                SizedBox(height: 32),
+                Text('Родственники и другие лица',
+                    style: FontStyles.rubikP1Medium(color: Palette.textBlack)),
+                SizedBox(height: 16),
+                Container(height: 44, color: Colors.grey),
+                SizedBox(height: 16),
+                Text(
+                  'Условия для добавленых лиц',
+                  style: FontStyles.rubikP3(color: Palette.textBlack50),
+                ),
+                SizedBox(height: 8),
+                Container(height: 44, color: Colors.grey),
+                SizedBox(height: 32),
+                Text('Родственники и другие лица',
+                    style: FontStyles.rubikP1Medium(color: Palette.textBlack)),
+                SizedBox(
+                  height: 16,
+                ),
+                Text('Первый участник'),
+                SizedBox(height: 8),
+                Container(height: 44, color: Colors.grey),
+                SizedBox(height: 8),
+                Container(height: 44, color: Colors.grey),
+                SizedBox(height: 16),
+                Text(
+                  'Заголовок условия',
+                  style: FontStyles.rubikP3(color: Palette.textBlack50),
+                ),
+                SizedBox(height: 8),
+                Container(height: 44, color: Colors.grey),
+                SizedBox(height: 16),
+                DefaultButton(
+                  title: 'Добавить участника',
+                  onTap: () {
+                    // Share.share('https://portal.irkutskoil.ru/events/${event.id}/');
+                  },
+                  buttonColor: Palette.transparent,
+                  borderColor: Palette.greenE4A,
+                  textColor: Palette.greenE4A,
+                ),
+                SizedBox(height: 32),
+                Text('Заголовок опции',
+                    style: FontStyles.rubikP1Medium(color: Palette.textBlack)),
+                SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child:
+                          Container(width: 56, height: 56, color: Colors.grey),
+                    ),
+                    Flexible(
+                      flex: 3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Название опции',
+                              style: FontStyles.rubikP2Medium(
+                                  color: Palette.textBlack)),
+                          Text('Здесь могло быть ваше короткое описание')
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      flex: 2,
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 44,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(height: 8),
+                          Text('Осталось: 400')
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 32),
+                RadioListTileExample(),
+                SizedBox(height: 32),
+                Text('Желаемая дата посещения'),
+                SizedBox(height: 8),
+                Container(height: 44, color: Colors.grey),
+                SizedBox(height: 32),
+                const SizedBox(height: 10),
+                LabeledCheckboxExample()
+                // DropdownMenuExample(),
               ],
             ),
           ),
-          Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 20, right: 50, bottom: 10),
-              child: Text(
-                event.title ?? '',
-                style: TextStyle(
-                  fontSize:
-                      SizeConfig(context, 20.0).getProportionateScreenHeight,
-                  fontWeight: FontWeight.bold,
-                ),
-              )),
-          const Divider(color: Color(0xFFE5E5E5), thickness: 2),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: CustomHtml(data: event.detailText),
-          ),
-          Container(
-            padding: const EdgeInsets.only(bottom: 30, top: 20),
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            child: ((event.isActual ?? true) && (event.placesAvailable ?? true))
-                ? DefaultButton(
-                    title: isMember
-                        ? _strings.cancelParticipating
-                        : _strings.iWillParticipate,
-                    borderColor: isMember ? Palette.redF1C : Palette.greenE4A,
-                    textColor: isMember ? Palette.redF1C : Palette.white,
-                    buttonColor: isMember ? Palette.white : Palette.greenE4A,
-                    onTap: () =>
-                        eventDetailCubit.changeParticipationStatus(event.id!),
-                  )
-                : const SizedBox.shrink(),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: DefaultButton(
-              title: 'Поделиться',
-              onTap: () {
-                Share.share('https://portal.irkutskoil.ru/events/${event.id}/');
-              },
-              buttonColor: Palette.transparent,
-              borderColor: Palette.greenE4A,
-              textColor: Palette.greenE4A,
-            ),
-          ),
-          const SizedBox(height: 10),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 20),
+          //   child: DefaultButton(
+          //     title: 'Поделиться',
+          //     onTap: () {
+          //       Share.share('https://portal.irkutskoil.ru/events/${event.id}/');
+          //     },
+          //     buttonColor: Palette.transparent,
+          //     borderColor: Palette.greenE4A,
+          //     textColor: Palette.greenE4A,
+          //   ),
+          // ),
         ],
       ),
     );
+  }
+}
+
+enum Groceries { pickles, tomato, lettuce }
+
+class RadioListTileExample extends StatefulWidget {
+  const RadioListTileExample({super.key});
+
+  @override
+  State<RadioListTileExample> createState() => _RadioListTileExampleState();
+}
+
+class _RadioListTileExampleState extends State<RadioListTileExample> {
+  Groceries? _groceryItem = Groceries.pickles;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        RadioListTile<Groceries>(
+          value: Groceries.pickles,
+          groupValue: _groceryItem,
+          onChanged: (Groceries? value) {
+            setState(() {
+              _groceryItem = value;
+            });
+          },
+          title: Text('Название опции',
+              style: FontStyles.rubikP2Medium(color: Palette.textBlack)),
+          subtitle: const Text('Здесь могло быть ваше короткое описание'),
+        ),
+        RadioListTile<Groceries>(
+          value: Groceries.tomato,
+          groupValue: _groceryItem,
+          onChanged: (Groceries? value) {
+            setState(() {
+              _groceryItem = value;
+            });
+          },
+          title: Text('Название опции',
+              style: FontStyles.rubikP2Medium(color: Palette.textBlack)),
+          subtitle: const Text('Здесь могло быть ваше короткое описание'),
+        ),
+      ],
+    );
+  }
+}
+
+class LabeledCheckbox extends StatelessWidget {
+  const LabeledCheckbox({
+    super.key,
+    required this.label,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final String label;
+
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        onChanged(!value);
+      },
+      child: Row(
+        children: <Widget>[
+          Checkbox(
+            value: value,
+            onChanged: (bool? newValue) {
+              onChanged(newValue!);
+            },
+          ),
+          Expanded(child: Text(label)),
+        ],
+      ),
+    );
+  }
+}
+
+class LabeledCheckboxExample extends StatefulWidget {
+  const LabeledCheckboxExample({super.key});
+
+  @override
+  State<LabeledCheckboxExample> createState() => _LabeledCheckboxExampleState();
+}
+
+class _LabeledCheckboxExampleState extends State<LabeledCheckboxExample> {
+  bool _isSelected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return LabeledCheckbox(
+      label: 'Запланировать в календаре',
+      value: _isSelected,
+      onChanged: (bool newValue) {
+        setState(() {
+          _isSelected = newValue;
+        });
+      },
+    );
+  }
+}
+
+class ExpansionTileControllerApp extends StatefulWidget {
+  const ExpansionTileControllerApp({super.key});
+
+  @override
+  State<ExpansionTileControllerApp> createState() =>
+      _ExpansionTileControllerAppState();
+}
+
+class _ExpansionTileControllerAppState
+    extends State<ExpansionTileControllerApp> {
+  final ExpansionTileController controller = ExpansionTileController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: <Widget>[
+      // A controller has been provided to the ExpansionTile because it's
+      // going to be accessed from a component that is not within the
+      // tile's BuildContext.
+      ExpansionTile(
+        controller: controller,
+        title: const Text('ExpansionTile with explicit controller.'),
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(24),
+            child: const Text('ExpansionTile Contents'),
+          ),
+        ],
+      ),
+      const SizedBox(height: 8),
+      // ElevatedButton(
+      //   child: const Text('Expand/Collapse the Tile Above'),
+      //   onPressed: () {
+      //     if (controller.isExpanded) {
+      //       controller.collapse();
+      //     } else {
+      //       controller.expand();
+      //     }
+      //   },
+      // ),
+      const SizedBox(height: 48),
+      // A controller has not been provided to the ExpansionTile because
+      // the automatically created one can be retrieved via the tile's BuildContext.
+      ExpansionTile(
+        title: const Text('ExpansionTile with implicit controller.'),
+        children: <Widget>[
+          Builder(
+            builder: (BuildContext context) {
+              return Container(
+                padding: const EdgeInsets.all(24),
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                  child: const Text('Collapse This Tile'),
+                  onPressed: () {
+                    return ExpansionTileController.of(context).collapse();
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    ]);
   }
 }

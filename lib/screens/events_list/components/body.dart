@@ -57,12 +57,14 @@ class Body extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
+                ColoredBox(
                   color: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 32.0),
-                  child: Text(
-                    localizationInstance.events,
-                    style: FontStyles.rubikH2(color: Palette.textBlack),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 32.0),
+                    child: Text(
+                      localizationInstance.events,
+                      style: FontStyles.rubikH2(color: Palette.textBlack),
+                    ),
                   ),
                 ),
                 ListView.builder(

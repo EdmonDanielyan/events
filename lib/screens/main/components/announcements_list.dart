@@ -52,7 +52,7 @@ class AnnouncementsList extends StatelessWidget {
                   controller: ScrollController(keepScrollOffset: false),
                   itemCount: 5,
                   itemBuilder: (BuildContext context, int index) =>
-                      AnnouncementsListElementPlaceholder(),
+                      const AnnouncementsListElementPlaceholder(),
                   separatorBuilder: (BuildContext context, int index) {
                     return const Divider(
                       height: 40,

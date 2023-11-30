@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
   static Color text5Grey = const Color(0xFF1D2126).withOpacity(0.05);
   static Color myMessageCard = const Color(0xFF1D2126).withOpacity(0.08);
   static Color text20Grey = const Color(0xFF1D2126).withOpacity(0.2);
-  static Color textBlack = const Color(0xFF1D2126).withOpacity(1);
+  static Color textBlack = const Color(0xFF1D2126);
   static Color textBlack50 = const Color(0xFF1D2126).withOpacity(0.5);
 
   static Color green66E = const Color(0xFF46966E);

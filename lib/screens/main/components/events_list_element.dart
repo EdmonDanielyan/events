@@ -16,6 +16,7 @@ class EventsListElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/event_detail',
@@ -24,21 +25,23 @@ class EventsListElement extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: SizedBox(
-              height: SizeConfig(context, 180.0).getProportionateScreenHeight,
-              child: event.pictureLink == null
-                  ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK, fit: BoxFit.fill)
-                  : Image.network(
-                      event.pictureLink!,
-                      fit: BoxFit.fill,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
-                            fit: BoxFit.fill);
-                      },
-                    ),
+          Container(
+            clipBehavior: Clip.hardEdge,
+            width: size.width,
+            height: SizeConfig(context, 175.0).getProportionateScreenHeight,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16.0),
             ),
+            child: event.pictureLink == null
+                ? Image.asset(DEFAULT_PREVIEW_PICTURE_LINK, fit: BoxFit.fill)
+                : Image.network(
+                    event.pictureLink!,
+                    fit: BoxFit.fill,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(DEFAULT_PREVIEW_PICTURE_LINK,
+                          fit: BoxFit.fill);
+                    },
+                  ),
           ),
           const SizedBox(height: 20),
           Text(
