@@ -180,7 +180,7 @@ class EventDetailScreen extends StatelessWidget {
                       //       'assets/images/${item.imageName}',
                       //       width: 42.r,
                       //       height: 42.r,
-                      //       fit: BoxFit.cover,
+                      //       fit: BoxFit.cover,1
                       //     )),
                       title: Text('Алексеев Вадим Андреевич (вы)',
                           style: FontStyles.rubikP2Medium(
@@ -190,9 +190,11 @@ class EventDetailScreen extends StatelessWidget {
                         maxLines: 2,
                         style: FontStyles.rubikP3(color: Palette.textBlack50),
                       ),
-                      trailing: Icon(Icons.keyboard_arrow_right,
-                          // color: AppColors.subTitleColor,
-                          size: 24),
+                      trailing: SvgPicture.asset(
+                        IconLinks.EDIT_ICON,
+                        height: 24, width: 24,
+                        // color: AppColors.subTitleColor,
+                      ),
                       isThreeLine: true),
                 ),
                 Text(
@@ -201,6 +203,9 @@ class EventDetailScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 ExpansionTileControllerApp(),
+                SizedBox(
+                  height: 32,
+                ),
                 Container(height: 44, color: Colors.grey),
                 SizedBox(height: 32),
                 Text('Родственники и другие лица',
@@ -241,6 +246,11 @@ class EventDetailScreen extends StatelessWidget {
                   buttonColor: Palette.transparent,
                   borderColor: Palette.greenE4A,
                   textColor: Palette.greenE4A,
+                  suffixIcon: SvgPicture.asset(IconLinks.PLUS_ICON,
+                      height: 20.0,
+                      width: 20.0,
+                      colorFilter:
+                          ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
                 ),
                 SizedBox(height: 32),
                 Text('Заголовок опции',
@@ -312,6 +322,170 @@ class EventDetailScreen extends StatelessWidget {
     );
   }
 }
+
+class ExpansionTileControllerApp extends StatefulWidget {
+  const ExpansionTileControllerApp({super.key});
+
+  @override
+  State<ExpansionTileControllerApp> createState() =>
+      _ExpansionTileControllerAppState();
+}
+
+class _ExpansionTileControllerAppState
+    extends State<ExpansionTileControllerApp> {
+  bool value = false;
+  final ExpansionTileController controller = ExpansionTileController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Card(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(
+              color: Palette.text20Grey,
+            ),
+          ),
+          clipBehavior: Clip.antiAlias,
+          margin: EdgeInsets.zero,
+          child: ExpansionTile(
+            expandedCrossAxisAlignment: CrossAxisAlignment.start,
+            // clipBehavior: Clip.hardEdge,
+            // collapsedShape: ContinuousRectangleBorder(
+            //     side: BorderSide(color: Palette.text20Grey),
+            //     borderRadius: BorderRadius.all(Radius.circular(8))),
+            // shape: ContinuousRectangleBorder(
+            //     side: BorderSide(color: Palette.text20Grey),
+            //     borderRadius: BorderRadius.all(Radius.circular(8))),
+            controller: controller,
+            title: const Text('Выберите условия для вас'),
+            children: <Widget>[
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    value = !value;
+                  });
+                  // onChanged(!value);
+                },
+                child: Row(
+                  children: <Widget>[
+                    Checkbox(
+                      value: value,
+                      onChanged: (bool? value) {
+                        // setState(() {
+                        //   value != value;
+                        // });
+                      },
+                    ),
+                    Expanded(
+                      child: Text(
+                        'Сергей Николаевич Евчик, сын, 20.07.1998',
+                        maxLines: 2,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // LabeledCheckboxExample(),
+              // LabeledCheckboxExample(),
+              // LabeledCheckboxExample(),
+              // LabeledCheckboxExample(),
+              Divider(
+                endIndent: 16,
+                indent: 16,
+                height: 1,
+                thickness: 1,
+                color: Palette.text20Grey,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: DefaultButton(
+                  title: 'Добавить участника',
+                  onTap: () {
+                    // Share.share('https://portal.irkutskoil.ru/events/${event.id}/');
+                  },
+                  buttonColor: Palette.transparent,
+                  borderColor: Palette.greenE4A,
+                  textColor: Palette.greenE4A,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Positioned.fill(
+            top: 57,
+            child: Align(
+                alignment: Alignment.topCenter,
+                child: Divider(
+                  endIndent: 1,
+                  indent: 1,
+                  height: 1,
+                  thickness: 1,
+                  color: Palette.text20Grey,
+                ))),
+      ],
+    );
+    // Positioned.fill(
+    //     top: 54,
+    //     child: Align(
+    //       alignment: Alignment.topCenter,
+    //       child: Divider(
+    //         // height: 50,
+    //         // thickness: 10,
+    //         color: Palette.text20Grey,
+    //       ),
+    //     ))
+    // const SizedBox(height: 8),
+    // ElevatedButton(
+    //   child: const Text('Expand/Collapse the Tile Above'),
+    //   onPressed: () {
+    //     if (controller.isExpanded) {
+    //       controller.collapse();
+    //     } else {
+    //       controller.expand();
+    //     }
+    //   },
+    // ),
+    // const SizedBox(height: 48),
+    // A controller has not been provided to the ExpansionTile because
+    // the automatically created one can be retrieved via the tile's BuildContext.
+    // ExpansionTile(
+    //   title: const Text('ExpansionTile with implicit controller.'),
+    //   children: <Widget>[
+    //     Builder(
+    //       builder: (BuildContext context) {
+    //         return Container(
+    //           padding: const EdgeInsets.all(24),
+    //           alignment: Alignment.center,
+    //           child: ElevatedButton(
+    //             child: const Text('Collapse This Tile'),
+    //             onPressed: () {
+    //               return ExpansionTileController.of(context).collapse();
+    //             },
+    //           ),
+    //         );
+    //       },
+    //     ),
+    //   ],
+    // ),
+  }
+}
+//border
+// border: OutlineInputBorder(
+//                 borderRadius: BorderRadius.circular(8.0),
+//                 borderSide: BorderSide(color: Palette.text20Grey),
+//               ),
+//               focusedBorder: OutlineInputBorder(
+//                 borderSide: BorderSide(color: Palette.greenE4A),
+//                 borderRadius: BorderRadius.circular(8.0),
+//               ),
+//               enabledBorder: OutlineInputBorder(
+//                 borderRadius: BorderRadius.circular(8.0),
+//                 borderSide: BorderSide(color: Palette.text20Grey),
+//               ),
+//             ),
 
 enum Groceries { pickles, tomato, lettuce }
 
@@ -413,71 +587,5 @@ class _LabeledCheckboxExampleState extends State<LabeledCheckboxExample> {
         });
       },
     );
-  }
-}
-
-class ExpansionTileControllerApp extends StatefulWidget {
-  const ExpansionTileControllerApp({super.key});
-
-  @override
-  State<ExpansionTileControllerApp> createState() =>
-      _ExpansionTileControllerAppState();
-}
-
-class _ExpansionTileControllerAppState
-    extends State<ExpansionTileControllerApp> {
-  final ExpansionTileController controller = ExpansionTileController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      // A controller has been provided to the ExpansionTile because it's
-      // going to be accessed from a component that is not within the
-      // tile's BuildContext.
-      ExpansionTile(
-        controller: controller,
-        title: const Text('ExpansionTile with explicit controller.'),
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(24),
-            child: const Text('ExpansionTile Contents'),
-          ),
-        ],
-      ),
-      const SizedBox(height: 8),
-      // ElevatedButton(
-      //   child: const Text('Expand/Collapse the Tile Above'),
-      //   onPressed: () {
-      //     if (controller.isExpanded) {
-      //       controller.collapse();
-      //     } else {
-      //       controller.expand();
-      //     }
-      //   },
-      // ),
-      const SizedBox(height: 48),
-      // A controller has not been provided to the ExpansionTile because
-      // the automatically created one can be retrieved via the tile's BuildContext.
-      ExpansionTile(
-        title: const Text('ExpansionTile with implicit controller.'),
-        children: <Widget>[
-          Builder(
-            builder: (BuildContext context) {
-              return Container(
-                padding: const EdgeInsets.all(24),
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  child: const Text('Collapse This Tile'),
-                  onPressed: () {
-                    return ExpansionTileController.of(context).collapse();
-                  },
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    ]);
   }
 }

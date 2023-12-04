@@ -39,4 +39,5 @@
   static const String SEND_ICON = "assets/svg/send.svg";
   static const String REPLY_ICON = "assets/svg/reply.svg";
     static const String LOGO_ICON = "assets/svg/logo.svg";
+     static const String PLUS_ICON = "assets/svg/plus.svg";
 }
