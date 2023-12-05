@@ -11,7 +11,7 @@ enum ReferencesType {
   // sickLeave,
   income2ndfl,
   childAllowance,
-  childAllowanceOneAndHalfYears,
+  childAllowanceThreeYears,
   fifo,
   workAtCompany,
   averageEarnings,
@@ -29,7 +29,8 @@ class ReferencesList {
         DeliveryType.OK_UK,
         DeliveryType.OK_IRK,
         DeliveryType.INKTKRS,
-        DeliveryType.POST
+        DeliveryType.POST,
+        DeliveryType.EMAIL
       ],
       fields: ReferencesField());
 
@@ -40,7 +41,8 @@ class ReferencesList {
         DeliveryType.OK_UK,
         DeliveryType.OK_IRK,
         DeliveryType.INKTKRS,
-        DeliveryType.POST
+        DeliveryType.POST,
+        DeliveryType.EMAIL
       ],
       fields: ReferencesField());
 
@@ -57,7 +59,8 @@ class ReferencesList {
         DeliveryType.OK_UK,
         DeliveryType.OK_IRK,
         DeliveryType.INKTKRS,
-        DeliveryType.POST
+        DeliveryType.POST,
+        DeliveryType.EMAIL
       ],
       fields: ReferencesField());
 
@@ -84,19 +87,21 @@ class ReferencesList {
           DeliveryType.OK_UK,
           DeliveryType.OK_IRK,
           DeliveryType.INKTKRS,
-          DeliveryType.POST
+          DeliveryType.POST,
+          DeliveryType.EMAIL
         ],
         fields: ReferencesField(fioChildren: true, files: true),
         description: localizationInstance.childAllowanceInfo,
       );
-  ReferencesItem childAllowanceOneAndHalfYears() => ReferencesItem(
-        title: localizationInstance.refChildAllowance1HalfYears,
-        referencesType: 'child_allowance_1.5_years',
+  ReferencesItem childAllowanceThreeYears() => ReferencesItem(
+        title: localizationInstance.refChildAllowance3Years,
+        referencesType: 'child_allowance_3_years',
         deliveryList: [
           DeliveryType.OK_UK,
           DeliveryType.OK_IRK,
           DeliveryType.INKTKRS,
-          DeliveryType.POST
+          DeliveryType.POST,
+          DeliveryType.EMAIL
         ],
         fields: ReferencesField(fioChildren: true, files: true),
         description: localizationInstance.childAllowanceInfo,
@@ -108,7 +113,8 @@ class ReferencesList {
         DeliveryType.OK_UK,
         DeliveryType.OK_IRK,
         DeliveryType.INKTKRS,
-        DeliveryType.POST
+        DeliveryType.POST,
+        DeliveryType.EMAIL
       ],
       fields: ReferencesField(periodFrom: true, periodTo: true));
   // ReferencesItem sickLeave() => ReferencesItem(
@@ -124,7 +130,8 @@ class ReferencesList {
         DeliveryType.OK_UK,
         DeliveryType.OK_IRK,
         DeliveryType.INKTKRS,
-        DeliveryType.POST
+        DeliveryType.POST,
+        DeliveryType.EMAIL
       ],
       fields: ReferencesField());
   ReferencesItem averageEarnings() => ReferencesItem(
@@ -168,8 +175,8 @@ class ReferencesList {
         return income2ndfl();
       case ReferencesType.childAllowance:
         return childAllowance();
-      case ReferencesType.childAllowanceOneAndHalfYears:
-        return childAllowanceOneAndHalfYears();
+      case ReferencesType.childAllowanceThreeYears:
+        return childAllowanceThreeYears();
       case ReferencesType.fifo:
         return fifo();
       // case ReferencesType.sickLeave:

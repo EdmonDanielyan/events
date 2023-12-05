@@ -30,6 +30,7 @@ import 'package:ink_mobile/models/references/delivery_list.dart';
 import 'package:ink_mobile/models/references/reference_list.dart';
 import 'package:ink_mobile/models/user_data.dart';
 import 'package:ink_mobile/screens/profile/profile_screen.dart';
+import 'package:ink_mobile/screens/references/components/form/checkbox_component.dart';
 import 'package:ink_mobile/screens/references/components/form/entities.dart';
 import 'package:ink_mobile/screens/references/components/form/validator.dart';
 import 'package:ink_mobile/screens/service_list/service_list_page_viewer.dart';
@@ -65,6 +66,8 @@ class _ReferencesFormState extends State<ReferencesForm> {
   late DeliveryItem? deliveryItem;
   late ReferencesFormValidator validatorMixin;
   bool showEmail = false;
+  bool deliveryPostMail = false;
+  bool activeButton = true;
   String email = '';
   int stage = 1;
   final emailService = getIt<ProfileCubit>();
@@ -137,12 +140,29 @@ class _ReferencesFormState extends State<ReferencesForm> {
               ],
               if (currentReferenceItem.fields.delivery) ...[
                 const SizedBox(height: 20),
-                deliveryMethodWidget(context),
-                showEmail
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: deliveryMethod(context))
-                    : const SizedBox()
+                deliveryMethodWidget(context)
+              ],
+              if (showEmail) ...[
+                Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: deliveryMethod(context)),
+                ConfirmCheckboxesEmail(
+                  onChange: (bool value) {
+                    setState(() {
+                      activeButton = value;
+                    });
+                  },
+                ),
+              ],
+              if (deliveryPostMail) ...[
+                const SizedBox(height: 10),
+                ConfirmCheckboxesPostMail(
+                  onChange: (bool value) {
+                    setState(() {
+                      activeButton = value;
+                    });
+                  },
+                ),
               ],
               if (deliveryAddress) ...[
                 const SizedBox(height: 20),
@@ -255,10 +275,22 @@ class _ReferencesFormState extends State<ReferencesForm> {
       selectedIndex: entities.deliveryType,
       onChanged: (int index) {
         setState(() {
-          deliveryList.getDeliveryItemsList(currentReferenceItem)[index] ==
-                  localizationInstance.deliveryMethodEmail
-              ? showEmail = true
-              : showEmail = false;
+          if (deliveryList.getDeliveryItemsList(currentReferenceItem)[index] ==
+              localizationInstance.deliveryMethodPostMail) {
+            deliveryPostMail = true;
+            activeButton = false;
+            showEmail = false;
+          } else if (deliveryList
+                  .getDeliveryItemsList(currentReferenceItem)[index] ==
+              localizationInstance.deliveryMethodEmail) {
+            showEmail = true;
+            activeButton = false;
+            deliveryPostMail = false;
+          } else {
+            showEmail = false;
+            activeButton = true;
+            deliveryPostMail = false;
+          }
           entities.deliveryType = index;
         });
       },
@@ -417,24 +449,26 @@ class _ReferencesFormState extends State<ReferencesForm> {
         } else {
           return ServiceBtn(
             onPressed: () async {
-              if (validatorMixin.validateForm(context, entities)) {
-                final sent = await widget.sendReferenceFormCubit.send(
-                  entities: entities,
-                  referencesItem: currentReferenceItem,
-                  deliveryItem: deliveryItem!,
-                );
+              if (activeButton) {
+                if (validatorMixin.validateForm(context, entities)) {
+                  final sent = await widget.sendReferenceFormCubit.send(
+                    entities: entities,
+                    referencesItem: currentReferenceItem,
+                    deliveryItem: deliveryItem!,
+                  );
 
-                if (sent) {
-                  setState(() {
-                    stage = 1;
-                  });
+                  if (sent) {
+                    setState(() {
+                      stage = 1;
+                    });
 
-                  ServiceListPageViewerState.pageViewer.pageController
-                      .jumpToPage(0);
+                    ServiceListPageViewerState.pageViewer.pageController
+                        .jumpToPage(0);
+                  }
                 }
-              }
+              } else {}
             },
-            txt: _strings.order,
+            txt: activeButton ? _strings.order : 'Заполните все поля',
           );
         }
       },

@@ -12,7 +12,7 @@
                 "--flavor",
                 "dev",
                 "-t",
-                "./lib/prod_main.dart"
+                "./lib/dev_main.dart"
             ]
         },
         {
