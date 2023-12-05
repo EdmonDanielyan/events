@@ -32,7 +32,7 @@ class ReferencesList {
         DeliveryType.POST,
         DeliveryType.EMAIL
       ],
-      fields: ReferencesField());
+      fields: ReferencesField(quantity: true));
 
   ReferencesItem laborActivity() => ReferencesItem(
       title: localizationInstance.refLaborActivity,
@@ -68,7 +68,8 @@ class ReferencesList {
         title: localizationInstance.refIncome,
         referencesType: 'income',
         deliveryList: [DeliveryType.BUH, DeliveryType.POST, DeliveryType.EMAIL],
-        fields: ReferencesField(period: true, toProvideIn: true),
+        fields:
+            ReferencesField(period: true, toProvideIn: true, quantity: true),
         description: localizationInstance.productionTimeReferInfo,
       );
   ReferencesItem income2ndfl() => ReferencesItem(

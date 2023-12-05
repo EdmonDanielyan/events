@@ -83,6 +83,11 @@ class PickFilesState extends State<PickFiles> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text(
+          widget.title,
+          style: FontStyles.rubikP1Medium(color: Palette.textBlack),
+        ),
+        const SizedBox(height: 24.0),
         _btnWidget(context),
         const SizedBox(height: 24.0),
         if (pickedFiles.isEmpty) _fileStatusWidget(context),

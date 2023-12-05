@@ -404,6 +404,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget periodFromWidget() {
     return DateInputField(
+      hintText: 'Начало периода',
       controller: periodFromController,
       title: _strings.periodStart,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,
@@ -413,6 +414,7 @@ class _ReferencesFormState extends State<ReferencesForm> {
 
   Widget periodToWidget() {
     return DateInputField(
+      hintText: 'Конец периода',
       controller: periodToController,
       title: _strings.periodEnd,
       validator: (val) => val!.isEmpty ? _strings.fillTheField : null,

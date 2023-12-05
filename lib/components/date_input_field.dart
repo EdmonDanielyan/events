@@ -14,6 +14,7 @@ class DateInputField extends StatefulWidget {
   final DateTime? firstDate;
   final DateTime? lastDate;
   final String? descriptionText;
+  final String? hintText;
   const DateInputField({
     Key? key,
     required this.controller,
@@ -23,6 +24,7 @@ class DateInputField extends StatefulWidget {
     this.onChanged,
     this.validator,
     this.descriptionText,
+    this.hintText,
   }) : super(key: key);
 
   @override
@@ -56,7 +58,7 @@ class _DateInputFieldState extends State<DateInputField> {
               textCapitalization: TextCapitalization.sentences,
               style: FontStyles.rubikP2(color: Palette.textBlack),
               decoration: InputDecoration(
-                hintText: "Выберите дату",
+                hintText: widget.hintText ?? "Выберите дату",
                 hintStyle: TextStyle(
                     fontSize:
                         SizeConfig(context, 14).getProportionateScreenHeight),
