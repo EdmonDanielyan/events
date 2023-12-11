@@ -15,8 +15,6 @@ import 'package:openapi/src/date_serializer.dart';
 import 'package:openapi/src/model/date.dart';
 
 import 'package:openapi/src/model/add_event_member.dart';
-import 'package:openapi/src/model/all_notifications_config_result_body.dart';
-import 'package:openapi/src/model/all_notifications_config_result_body_all_of.dart';
 import 'package:openapi/src/model/already_event_member.dart';
 import 'package:openapi/src/model/already_thanked.dart';
 import 'package:openapi/src/model/announcement_property.dart';
@@ -48,6 +46,7 @@ import 'package:openapi/src/model/events_property.dart';
 import 'package:openapi/src/model/feedback_form.dart';
 import 'package:openapi/src/model/feedback_tags_list.dart';
 import 'package:openapi/src/model/forbidden.dart';
+import 'package:openapi/src/model/generic_error.dart';
 import 'package:openapi/src/model/get_announcement_by_id.dart';
 import 'package:openapi/src/model/get_announcements.dart';
 import 'package:openapi/src/model/get_comments_by_id.dart';
@@ -117,14 +116,11 @@ import 'package:openapi/src/model/register_confirm_params.dart';
 import 'package:openapi/src/model/register_confirm_success.dart';
 import 'package:openapi/src/model/register_params.dart';
 import 'package:openapi/src/model/register_success.dart';
-import 'package:openapi/src/model/remove_event_member.dart';
 import 'package:openapi/src/model/required_error.dart';
 import 'package:openapi/src/model/required_success.dart';
 import 'package:openapi/src/model/send_feedback_fail.dart';
 import 'package:openapi/src/model/send_feedback_success.dart';
 import 'package:openapi/src/model/server_error.dart';
-import 'package:openapi/src/model/single_notification_config_result_body.dart';
-import 'package:openapi/src/model/single_notification_config_result_body_all_of.dart';
 import 'package:openapi/src/model/single_page_response_data.dart';
 import 'package:openapi/src/model/single_page_success_response_body.dart';
 import 'package:openapi/src/model/single_page_success_response_body_all_of.dart';
@@ -133,10 +129,33 @@ import 'package:openapi/src/model/single_section_success_response_body.dart';
 import 'package:openapi/src/model/single_section_success_response_body_all_of.dart';
 import 'package:openapi/src/model/snippet.dart';
 import 'package:openapi/src/model/snippet_list_response_data.dart';
+import 'package:openapi/src/model/subscription_config.dart';
+import 'package:openapi/src/model/subscription_config_children.dart';
+import 'package:openapi/src/model/subscription_config_options.dart';
+import 'package:openapi/src/model/subscription_config_visitors.dart';
+import 'package:openapi/src/model/subscription_field.dart';
+import 'package:openapi/src/model/subscription_option.dart';
+import 'package:openapi/src/model/subscription_state.dart';
 import 'package:openapi/src/model/text_page.dart';
 import 'package:openapi/src/model/thank_by_id.dart';
 import 'package:openapi/src/model/thank_self.dart';
 import 'package:openapi/src/model/transport_form.dart';
+import 'package:openapi/src/model/uni_event_detail.dart';
+import 'package:openapi/src/model/uni_event_short.dart';
+import 'package:openapi/src/model/uni_events_get_detail_resp_body.dart';
+import 'package:openapi/src/model/uni_events_get_detail_resp_body_all_of.dart';
+import 'package:openapi/src/model/uni_events_get_detail_resp_body_all_of_data.dart';
+import 'package:openapi/src/model/uni_events_get_list_resp_body.dart';
+import 'package:openapi/src/model/uni_events_get_list_resp_body_all_of.dart';
+import 'package:openapi/src/model/uni_events_get_list_resp_body_all_of_data.dart';
+import 'package:openapi/src/model/uni_sub_cancel_request.dart';
+import 'package:openapi/src/model/uni_sub_get_state_resp_body.dart';
+import 'package:openapi/src/model/uni_sub_get_state_resp_body_all_of.dart';
+import 'package:openapi/src/model/uni_sub_request.dart';
+import 'package:openapi/src/model/uni_sub_request_field.dart';
+import 'package:openapi/src/model/uni_sub_request_option.dart';
+import 'package:openapi/src/model/uni_sub_request_visitor.dart';
+import 'package:openapi/src/model/uni_sub_request_visitor_new.dart';
 import 'package:openapi/src/model/user_not_found.dart';
 import 'package:openapi/src/model/user_profile_badge.dart';
 import 'package:openapi/src/model/user_properties.dart';
@@ -146,8 +165,6 @@ part 'serializers.g.dart';
 
 @SerializersFor([
   AddEventMember,
-  AllNotificationsConfigResultBody,
-  AllNotificationsConfigResultBodyAllOf,$AllNotificationsConfigResultBodyAllOf,
   AlreadyEventMember,
   AlreadyThanked,
   AnnouncementProperty,
@@ -179,6 +196,7 @@ part 'serializers.g.dart';
   FeedbackForm,
   FeedbackTagsList,
   Forbidden,
+  GenericError,
   GetAnnouncementById,
   GetAnnouncements,
   GetCommentsById,
@@ -248,14 +266,11 @@ part 'serializers.g.dart';
   RegisterConfirmSuccess,
   RegisterParams,
   RegisterSuccess,
-  RemoveEventMember,
   RequiredError,$RequiredError,
   RequiredSuccess,$RequiredSuccess,
   SendFeedbackFail,
   SendFeedbackSuccess,
   ServerError,
-  SingleNotificationConfigResultBody,
-  SingleNotificationConfigResultBodyAllOf,$SingleNotificationConfigResultBodyAllOf,
   SinglePageResponseData,
   SinglePageSuccessResponseBody,
   SinglePageSuccessResponseBodyAllOf,$SinglePageSuccessResponseBodyAllOf,
@@ -264,17 +279,39 @@ part 'serializers.g.dart';
   SingleSectionSuccessResponseBodyAllOf,$SingleSectionSuccessResponseBodyAllOf,
   Snippet,
   SnippetListResponseData,
+  SubscriptionConfig,
+  SubscriptionConfigChildren,
+  SubscriptionConfigOptions,
+  SubscriptionConfigVisitors,
+  SubscriptionField,
+  SubscriptionOption,
+  SubscriptionState,
   TextPage,
   ThankById,
   ThankSelf,
   TransportForm,
+  UniEventDetail,
+  UniEventShort,
+  UniEventsGetDetailRespBody,
+  UniEventsGetDetailRespBodyAllOf,$UniEventsGetDetailRespBodyAllOf,
+  UniEventsGetDetailRespBodyAllOfData,
+  UniEventsGetListRespBody,
+  UniEventsGetListRespBodyAllOf,$UniEventsGetListRespBodyAllOf,
+  UniEventsGetListRespBodyAllOfData,
+  UniSubCancelRequest,
+  UniSubGetStateRespBody,
+  UniSubGetStateRespBodyAllOf,$UniSubGetStateRespBodyAllOf,
+  UniSubRequest,
+  UniSubRequestField,
+  UniSubRequestOption,
+  UniSubRequestVisitor,
+  UniSubRequestVisitorNew,
   UserNotFound,
   UserProfileBadge,
   UserProperties,
   WebViewPage,
 ])
 Serializers serializers = (_$serializers.toBuilder()
-      ..add(AllNotificationsConfigResultBodyAllOf.serializer)
       ..add(Comment.serializer)
       ..add(DirectoryMeta.serializer)
       ..add(GlobalSettingsResponseBodyAllOf.serializer)
@@ -285,9 +322,11 @@ Serializers serializers = (_$serializers.toBuilder()
       ..add(OrganisationDirectoryResponseBodyAllOf.serializer)
       ..add(RequiredError.serializer)
       ..add(RequiredSuccess.serializer)
-      ..add(SingleNotificationConfigResultBodyAllOf.serializer)
       ..add(SinglePageSuccessResponseBodyAllOf.serializer)
       ..add(SingleSectionSuccessResponseBodyAllOf.serializer)
+      ..add(UniEventsGetDetailRespBodyAllOf.serializer)
+      ..add(UniEventsGetListRespBodyAllOf.serializer)
+      ..add(UniSubGetStateRespBodyAllOf.serializer)
       ..add(const OneOfSerializer())
       ..add(const AnyOfSerializer())
       ..add(const DateSerializer())

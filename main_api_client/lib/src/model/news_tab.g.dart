@@ -14,13 +14,19 @@ class _$NewsTab extends NewsTab {
   @override
   final bool? visible;
   @override
+  final int? total;
+  @override
   final int? new_;
 
   factory _$NewsTab([void Function(NewsTabBuilder)? updates]) =>
       (new NewsTabBuilder()..update(updates))._build();
 
   _$NewsTab._(
-      {required this.code, required this.title, this.visible, this.new_})
+      {required this.code,
+      required this.title,
+      this.visible,
+      this.total,
+      this.new_})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(code, r'NewsTab', 'code');
     BuiltValueNullFieldError.checkNotNull(title, r'NewsTab', 'title');
@@ -40,6 +46,7 @@ class _$NewsTab extends NewsTab {
         code == other.code &&
         title == other.title &&
         visible == other.visible &&
+        total == other.total &&
         new_ == other.new_;
   }
 
@@ -49,6 +56,7 @@ class _$NewsTab extends NewsTab {
     _$hash = $jc(_$hash, code.hashCode);
     _$hash = $jc(_$hash, title.hashCode);
     _$hash = $jc(_$hash, visible.hashCode);
+    _$hash = $jc(_$hash, total.hashCode);
     _$hash = $jc(_$hash, new_.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -60,6 +68,7 @@ class _$NewsTab extends NewsTab {
           ..add('code', code)
           ..add('title', title)
           ..add('visible', visible)
+          ..add('total', total)
           ..add('new_', new_))
         .toString();
   }
@@ -80,6 +89,10 @@ class NewsTabBuilder implements Builder<NewsTab, NewsTabBuilder> {
   bool? get visible => _$this._visible;
   set visible(bool? visible) => _$this._visible = visible;
 
+  int? _total;
+  int? get total => _$this._total;
+  set total(int? total) => _$this._total = total;
+
   int? _new_;
   int? get new_ => _$this._new_;
   set new_(int? new_) => _$this._new_ = new_;
@@ -94,6 +107,7 @@ class NewsTabBuilder implements Builder<NewsTab, NewsTabBuilder> {
       _code = $v.code;
       _title = $v.title;
       _visible = $v.visible;
+      _total = $v.total;
       _new_ = $v.new_;
       _$v = null;
     }
@@ -122,6 +136,7 @@ class NewsTabBuilder implements Builder<NewsTab, NewsTabBuilder> {
             title: BuiltValueNullFieldError.checkNotNull(
                 title, r'NewsTab', 'title'),
             visible: visible,
+            total: total,
             new_: new_);
     replace(_$result);
     return _$result;

@@ -14,33 +14,37 @@ part 'register_success.g.dart';
 /// RegisterSuccess
 ///
 /// Properties:
-/// * [status] 
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
+/// * [status]
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
 @BuiltValue()
-abstract class RegisterSuccess implements RequiredSuccess, Built<RegisterSuccess, RegisterSuccessBuilder> {
+abstract class RegisterSuccess
+    implements RequiredSuccess, Built<RegisterSuccess, RegisterSuccessBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject? get data;
 
   RegisterSuccess._();
 
-  factory RegisterSuccess([void updates(RegisterSuccessBuilder b)]) = _$RegisterSuccess;
+  factory RegisterSuccess([void updates(RegisterSuccessBuilder b)]) =
+      _$RegisterSuccess;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(RegisterSuccessBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<RegisterSuccess> get serializer => _$RegisterSuccessSerializer();
+  static Serializer<RegisterSuccess> get serializer =>
+      _$RegisterSuccessSerializer();
 }
 
-class _$RegisterSuccessSerializer implements PrimitiveSerializer<RegisterSuccess> {
+class _$RegisterSuccessSerializer
+    implements PrimitiveSerializer<RegisterSuccess> {
   @override
   final Iterable<Type> types = const [RegisterSuccess, _$RegisterSuccess];
 
@@ -92,7 +96,9 @@ class _$RegisterSuccessSerializer implements PrimitiveSerializer<RegisterSuccess
     RegisterSuccess object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -177,4 +183,3 @@ class _$RegisterSuccessSerializer implements PrimitiveSerializer<RegisterSuccess
     return result.build();
   }
 }
-

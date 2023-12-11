@@ -16,14 +16,15 @@ part 'get_news.g.dart';
 /// GetNews
 ///
 /// Properties:
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
-/// * [status] 
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
+/// * [status]
 @BuiltValue()
-abstract class GetNews implements RequiredSuccess, Built<GetNews, GetNewsBuilder> {
+abstract class GetNews
+    implements RequiredSuccess, Built<GetNews, GetNewsBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject get data;
 
@@ -33,10 +34,10 @@ abstract class GetNews implements RequiredSuccess, Built<GetNews, GetNewsBuilder
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetNewsBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<GetNews> get serializer => _$GetNewsSerializer();
@@ -92,7 +93,9 @@ class _$GetNewsSerializer implements PrimitiveSerializer<GetNews> {
     GetNews object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -177,4 +180,3 @@ class _$GetNewsSerializer implements PrimitiveSerializer<GetNews> {
     return result.build();
   }
 }
-

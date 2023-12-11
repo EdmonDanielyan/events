@@ -14,14 +14,15 @@ part 'auth_success.g.dart';
 /// AuthSuccess
 ///
 /// Properties:
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
-/// * [status] 
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
+/// * [status]
 @BuiltValue()
-abstract class AuthSuccess implements RequiredSuccess, Built<AuthSuccess, AuthSuccessBuilder> {
+abstract class AuthSuccess
+    implements RequiredSuccess, Built<AuthSuccess, AuthSuccessBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject get data;
 
@@ -31,10 +32,10 @@ abstract class AuthSuccess implements RequiredSuccess, Built<AuthSuccess, AuthSu
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(AuthSuccessBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<AuthSuccess> get serializer => _$AuthSuccessSerializer();
@@ -90,7 +91,9 @@ class _$AuthSuccessSerializer implements PrimitiveSerializer<AuthSuccess> {
     AuthSuccess object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -117,7 +120,7 @@ class _$AuthSuccessSerializer implements PrimitiveSerializer<AuthSuccess> {
             value,
             specifiedType: const FullType(JsonObject),
           ) as JsonObject;
-          result.data =valueDes;
+          result.data = valueDes;
           break;
         case r'returned':
           final valueDes = serializers.deserialize(
@@ -175,4 +178,3 @@ class _$AuthSuccessSerializer implements PrimitiveSerializer<AuthSuccess> {
     return result.build();
   }
 }
-

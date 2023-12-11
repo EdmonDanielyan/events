@@ -11,7 +11,7 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
-    - main_api_client
+    # - main_api_client
   errors:
     non_constant_identifier_names: ignore
     

@@ -14,33 +14,39 @@ part 'get_search_success.g.dart';
 /// GetSearchSuccess
 ///
 /// Properties:
-/// * [status] 
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
+/// * [status]
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
 @BuiltValue()
-abstract class GetSearchSuccess implements RequiredSuccess, Built<GetSearchSuccess, GetSearchSuccessBuilder> {
+abstract class GetSearchSuccess
+    implements
+        RequiredSuccess,
+        Built<GetSearchSuccess, GetSearchSuccessBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject? get data;
 
   GetSearchSuccess._();
 
-  factory GetSearchSuccess([void updates(GetSearchSuccessBuilder b)]) = _$GetSearchSuccess;
+  factory GetSearchSuccess([void updates(GetSearchSuccessBuilder b)]) =
+      _$GetSearchSuccess;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetSearchSuccessBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetSearchSuccess> get serializer => _$GetSearchSuccessSerializer();
+  static Serializer<GetSearchSuccess> get serializer =>
+      _$GetSearchSuccessSerializer();
 }
 
-class _$GetSearchSuccessSerializer implements PrimitiveSerializer<GetSearchSuccess> {
+class _$GetSearchSuccessSerializer
+    implements PrimitiveSerializer<GetSearchSuccess> {
   @override
   final Iterable<Type> types = const [GetSearchSuccess, _$GetSearchSuccess];
 
@@ -92,7 +98,9 @@ class _$GetSearchSuccessSerializer implements PrimitiveSerializer<GetSearchSucce
     GetSearchSuccess object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -178,4 +186,3 @@ class _$GetSearchSuccessSerializer implements PrimitiveSerializer<GetSearchSucce
     return result.build();
   }
 }
-

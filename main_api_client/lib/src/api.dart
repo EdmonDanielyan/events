@@ -19,6 +19,7 @@ import 'package:openapi/src/api/global_api.dart';
 import 'package:openapi/src/api/news_api.dart';
 import 'package:openapi/src/api/publications_api.dart';
 import 'package:openapi/src/api/search_api.dart';
+import 'package:openapi/src/api/subscription_api.dart';
 import 'package:openapi/src/api/thank_api.dart';
 import 'package:openapi/src/api/user_api.dart';
 
@@ -134,6 +135,12 @@ class Openapi {
   /// by doing that all interceptors will not be executed
   SearchApi getSearchApi() {
     return SearchApi(dio, serializers);
+  }
+
+  /// Get SubscriptionApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  SubscriptionApi getSubscriptionApi() {
+    return SubscriptionApi(dio, serializers);
   }
 
   /// Get ThankApi instance, base route and serializer can be overridden by a given but be careful,

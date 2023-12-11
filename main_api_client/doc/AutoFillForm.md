@@ -10,7 +10,10 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **fio** | **String** |  | [optional] 
 **position** | **String** |  | [optional] 
+**organisation** | **String** |  | [optional] 
+**organisationId** | **int** |  | [optional] 
 **department** | **String** |  | [optional] 
+**departmentId** | **int** |  | [optional] 
 **email** | **String** |  | [optional] 
 **birthday** | **String** |  | [optional] 
 **personalPhone** | **String** |  | [optional] 

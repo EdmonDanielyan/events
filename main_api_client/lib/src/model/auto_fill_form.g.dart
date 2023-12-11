@@ -12,7 +12,13 @@ class _$AutoFillForm extends AutoFillForm {
   @override
   final String? position;
   @override
+  final String? organisation;
+  @override
+  final int? organisationId;
+  @override
   final String? department;
+  @override
+  final int? departmentId;
   @override
   final String? email;
   @override
@@ -26,7 +32,10 @@ class _$AutoFillForm extends AutoFillForm {
   _$AutoFillForm._(
       {this.fio,
       this.position,
+      this.organisation,
+      this.organisationId,
       this.department,
+      this.departmentId,
       this.email,
       this.birthday,
       this.personalPhone})
@@ -45,7 +54,10 @@ class _$AutoFillForm extends AutoFillForm {
     return other is AutoFillForm &&
         fio == other.fio &&
         position == other.position &&
+        organisation == other.organisation &&
+        organisationId == other.organisationId &&
         department == other.department &&
+        departmentId == other.departmentId &&
         email == other.email &&
         birthday == other.birthday &&
         personalPhone == other.personalPhone;
@@ -56,7 +68,10 @@ class _$AutoFillForm extends AutoFillForm {
     var _$hash = 0;
     _$hash = $jc(_$hash, fio.hashCode);
     _$hash = $jc(_$hash, position.hashCode);
+    _$hash = $jc(_$hash, organisation.hashCode);
+    _$hash = $jc(_$hash, organisationId.hashCode);
     _$hash = $jc(_$hash, department.hashCode);
+    _$hash = $jc(_$hash, departmentId.hashCode);
     _$hash = $jc(_$hash, email.hashCode);
     _$hash = $jc(_$hash, birthday.hashCode);
     _$hash = $jc(_$hash, personalPhone.hashCode);
@@ -69,7 +84,10 @@ class _$AutoFillForm extends AutoFillForm {
     return (newBuiltValueToStringHelper(r'AutoFillForm')
           ..add('fio', fio)
           ..add('position', position)
+          ..add('organisation', organisation)
+          ..add('organisationId', organisationId)
           ..add('department', department)
+          ..add('departmentId', departmentId)
           ..add('email', email)
           ..add('birthday', birthday)
           ..add('personalPhone', personalPhone))
@@ -89,9 +107,22 @@ class AutoFillFormBuilder
   String? get position => _$this._position;
   set position(String? position) => _$this._position = position;
 
+  String? _organisation;
+  String? get organisation => _$this._organisation;
+  set organisation(String? organisation) => _$this._organisation = organisation;
+
+  int? _organisationId;
+  int? get organisationId => _$this._organisationId;
+  set organisationId(int? organisationId) =>
+      _$this._organisationId = organisationId;
+
   String? _department;
   String? get department => _$this._department;
   set department(String? department) => _$this._department = department;
+
+  int? _departmentId;
+  int? get departmentId => _$this._departmentId;
+  set departmentId(int? departmentId) => _$this._departmentId = departmentId;
 
   String? _email;
   String? get email => _$this._email;
@@ -115,7 +146,10 @@ class AutoFillFormBuilder
     if ($v != null) {
       _fio = $v.fio;
       _position = $v.position;
+      _organisation = $v.organisation;
+      _organisationId = $v.organisationId;
       _department = $v.department;
+      _departmentId = $v.departmentId;
       _email = $v.email;
       _birthday = $v.birthday;
       _personalPhone = $v.personalPhone;
@@ -143,7 +177,10 @@ class AutoFillFormBuilder
         new _$AutoFillForm._(
             fio: fio,
             position: position,
+            organisation: organisation,
+            organisationId: organisationId,
             department: department,
+            departmentId: departmentId,
             email: email,
             birthday: birthday,
             personalPhone: personalPhone);

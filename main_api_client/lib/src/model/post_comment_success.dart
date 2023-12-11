@@ -14,33 +14,39 @@ part 'post_comment_success.g.dart';
 /// PostCommentSuccess
 ///
 /// Properties:
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
-/// * [status] 
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
+/// * [status]
 @BuiltValue()
-abstract class PostCommentSuccess implements RequiredSuccess, Built<PostCommentSuccess, PostCommentSuccessBuilder> {
+abstract class PostCommentSuccess
+    implements
+        RequiredSuccess,
+        Built<PostCommentSuccess, PostCommentSuccessBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject? get data;
 
   PostCommentSuccess._();
 
-  factory PostCommentSuccess([void updates(PostCommentSuccessBuilder b)]) = _$PostCommentSuccess;
+  factory PostCommentSuccess([void updates(PostCommentSuccessBuilder b)]) =
+      _$PostCommentSuccess;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(PostCommentSuccessBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<PostCommentSuccess> get serializer => _$PostCommentSuccessSerializer();
+  static Serializer<PostCommentSuccess> get serializer =>
+      _$PostCommentSuccessSerializer();
 }
 
-class _$PostCommentSuccessSerializer implements PrimitiveSerializer<PostCommentSuccess> {
+class _$PostCommentSuccessSerializer
+    implements PrimitiveSerializer<PostCommentSuccess> {
   @override
   final Iterable<Type> types = const [PostCommentSuccess, _$PostCommentSuccess];
 
@@ -92,7 +98,9 @@ class _$PostCommentSuccessSerializer implements PrimitiveSerializer<PostCommentS
     PostCommentSuccess object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -177,4 +185,3 @@ class _$PostCommentSuccessSerializer implements PrimitiveSerializer<PostCommentS
     return result.build();
   }
 }
-

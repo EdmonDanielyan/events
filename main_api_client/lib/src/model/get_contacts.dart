@@ -15,14 +15,15 @@ part 'get_contacts.g.dart';
 /// GetContacts
 ///
 /// Properties:
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
-/// * [status] 
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
+/// * [status]
 @BuiltValue()
-abstract class GetContacts implements RequiredSuccess, Built<GetContacts, GetContactsBuilder> {
+abstract class GetContacts
+    implements RequiredSuccess, Built<GetContacts, GetContactsBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject get data;
 
@@ -32,10 +33,10 @@ abstract class GetContacts implements RequiredSuccess, Built<GetContacts, GetCon
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetContactsBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<GetContacts> get serializer => _$GetContactsSerializer();
@@ -91,7 +92,9 @@ class _$GetContactsSerializer implements PrimitiveSerializer<GetContacts> {
     GetContacts object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -176,4 +179,3 @@ class _$GetContactsSerializer implements PrimitiveSerializer<GetContacts> {
     return result.build();
   }
 }
-

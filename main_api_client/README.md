@@ -77,6 +77,8 @@ Class | Method | HTTP request | Description
 [*ContentApi*](doc/ContentApi.md) | [**getPagesSection**](doc/ContentApi.md#getpagessection) | **GET** /pages/sections/{code} | Получить список страниц раздела. Например, список страниц для раздела \&quot;социальная ответственность\&quot;.
 [*ContentApi*](doc/ContentApi.md) | [**getPagesSectionsList**](doc/ContentApi.md#getpagessectionslist) | **GET** /pages/sections | Получить список разделов страниц.
 [*ContentApi*](doc/ContentApi.md) | [**getSnippetsList**](doc/ContentApi.md#getsnippetslist) | **GET** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
+[*ContentApi*](doc/ContentApi.md) | [**uniEventsGetDetail**](doc/ContentApi.md#unieventsgetdetail) | **GET** /uni_evens/{id} | Детальная информация о событии
+[*ContentApi*](doc/ContentApi.md) | [**uniEventsGetList**](doc/ContentApi.md#unieventsgetlist) | **GET** /uni_evens | Список событий
 [*DirectoryApi*](doc/DirectoryApi.md) | [**getOrganisationDirectory**](doc/DirectoryApi.md#getorganisationdirectory) | **GET** /directory/organisation | Справочник организаций
 [*EventsApi*](doc/EventsApi.md) | [**eventsAddeventmemberIdGet**](doc/EventsApi.md#eventsaddeventmemberidget) | **GET** /events/addeventmember/{id} | Добавить текущего пользователя как участника события
 [*EventsApi*](doc/EventsApi.md) | [**eventsRemoveeventmemberIdGet**](doc/EventsApi.md#eventsremoveeventmemberidget) | **GET** /events/removeeventmember/{id} | Удалить текущего пользователя как участника события
@@ -98,6 +100,9 @@ Class | Method | HTTP request | Description
 [*NewsApi*](doc/NewsApi.md) | [**newsPostcommentPost**](doc/NewsApi.md#newspostcommentpost) | **POST** /news/postcomment | Создание нового комментария
 [*PublicationsApi*](doc/PublicationsApi.md) | [**publicationsGet**](doc/PublicationsApi.md#publicationsget) | **GET** /publications | ИНК-Знание - Публикации
 [*SearchApi*](doc/SearchApi.md) | [**searchGet**](doc/SearchApi.md#searchget) | **GET** /search | Метод поиска по сотрудниками, объявлениям, событиям, новостям
+[*SubscriptionApi*](doc/SubscriptionApi.md) | [**uniSubCancel**](doc/SubscriptionApi.md#unisubcancel) | **DELETE** /uni_sub/{id} | Состояние подписки
+[*SubscriptionApi*](doc/SubscriptionApi.md) | [**uniSubGetState**](doc/SubscriptionApi.md#unisubgetstate) | **GET** /uni_sub/{id} | Состояние подписки
+[*SubscriptionApi*](doc/SubscriptionApi.md) | [**uniSubSubscribe**](doc/SubscriptionApi.md#unisubsubscribe) | **POST** /uni_sub/{id} | Состояние подписки
 [*ThankApi*](doc/ThankApi.md) | [**thankIdGet**](doc/ThankApi.md#thankidget) | **GET** /thank/{id} | Поблагодарить
 [*UserApi*](doc/UserApi.md) | [**keysGet**](doc/UserApi.md#keysget) | **GET** /keys | Получение ключей шифрования текущего пользователя
 [*UserApi*](doc/UserApi.md) | [**keysIdGet**](doc/UserApi.md#keysidget) | **GET** /keys/{id} | Получение публичного ключа другого пользователя
@@ -121,8 +126,6 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [AddEventMember](doc/AddEventMember.md)
- - [AllNotificationsConfigResultBody](doc/AllNotificationsConfigResultBody.md)
- - [AllNotificationsConfigResultBodyAllOf](doc/AllNotificationsConfigResultBodyAllOf.md)
  - [AlreadyEventMember](doc/AlreadyEventMember.md)
  - [AlreadyThanked](doc/AlreadyThanked.md)
  - [AnnouncementProperty](doc/AnnouncementProperty.md)
@@ -154,6 +157,7 @@ Class | Method | HTTP request | Description
  - [FeedbackForm](doc/FeedbackForm.md)
  - [FeedbackTagsList](doc/FeedbackTagsList.md)
  - [Forbidden](doc/Forbidden.md)
+ - [GenericError](doc/GenericError.md)
  - [GetAnnouncementById](doc/GetAnnouncementById.md)
  - [GetAnnouncements](doc/GetAnnouncements.md)
  - [GetCommentsById](doc/GetCommentsById.md)
@@ -223,14 +227,11 @@ Class | Method | HTTP request | Description
  - [RegisterConfirmSuccess](doc/RegisterConfirmSuccess.md)
  - [RegisterParams](doc/RegisterParams.md)
  - [RegisterSuccess](doc/RegisterSuccess.md)
- - [RemoveEventMember](doc/RemoveEventMember.md)
  - [RequiredError](doc/RequiredError.md)
  - [RequiredSuccess](doc/RequiredSuccess.md)
  - [SendFeedbackFail](doc/SendFeedbackFail.md)
  - [SendFeedbackSuccess](doc/SendFeedbackSuccess.md)
  - [ServerError](doc/ServerError.md)
- - [SingleNotificationConfigResultBody](doc/SingleNotificationConfigResultBody.md)
- - [SingleNotificationConfigResultBodyAllOf](doc/SingleNotificationConfigResultBodyAllOf.md)
  - [SinglePageResponseData](doc/SinglePageResponseData.md)
  - [SinglePageSuccessResponseBody](doc/SinglePageSuccessResponseBody.md)
  - [SinglePageSuccessResponseBodyAllOf](doc/SinglePageSuccessResponseBodyAllOf.md)
@@ -239,10 +240,33 @@ Class | Method | HTTP request | Description
  - [SingleSectionSuccessResponseBodyAllOf](doc/SingleSectionSuccessResponseBodyAllOf.md)
  - [Snippet](doc/Snippet.md)
  - [SnippetListResponseData](doc/SnippetListResponseData.md)
+ - [SubscriptionConfig](doc/SubscriptionConfig.md)
+ - [SubscriptionConfigChildren](doc/SubscriptionConfigChildren.md)
+ - [SubscriptionConfigOptions](doc/SubscriptionConfigOptions.md)
+ - [SubscriptionConfigVisitors](doc/SubscriptionConfigVisitors.md)
+ - [SubscriptionField](doc/SubscriptionField.md)
+ - [SubscriptionOption](doc/SubscriptionOption.md)
+ - [SubscriptionState](doc/SubscriptionState.md)
  - [TextPage](doc/TextPage.md)
  - [ThankById](doc/ThankById.md)
  - [ThankSelf](doc/ThankSelf.md)
  - [TransportForm](doc/TransportForm.md)
+ - [UniEventDetail](doc/UniEventDetail.md)
+ - [UniEventShort](doc/UniEventShort.md)
+ - [UniEventsGetDetailRespBody](doc/UniEventsGetDetailRespBody.md)
+ - [UniEventsGetDetailRespBodyAllOf](doc/UniEventsGetDetailRespBodyAllOf.md)
+ - [UniEventsGetDetailRespBodyAllOfData](doc/UniEventsGetDetailRespBodyAllOfData.md)
+ - [UniEventsGetListRespBody](doc/UniEventsGetListRespBody.md)
+ - [UniEventsGetListRespBodyAllOf](doc/UniEventsGetListRespBodyAllOf.md)
+ - [UniEventsGetListRespBodyAllOfData](doc/UniEventsGetListRespBodyAllOfData.md)
+ - [UniSubCancelRequest](doc/UniSubCancelRequest.md)
+ - [UniSubGetStateRespBody](doc/UniSubGetStateRespBody.md)
+ - [UniSubGetStateRespBodyAllOf](doc/UniSubGetStateRespBodyAllOf.md)
+ - [UniSubRequest](doc/UniSubRequest.md)
+ - [UniSubRequestField](doc/UniSubRequestField.md)
+ - [UniSubRequestOption](doc/UniSubRequestOption.md)
+ - [UniSubRequestVisitor](doc/UniSubRequestVisitor.md)
+ - [UniSubRequestVisitorNew](doc/UniSubRequestVisitorNew.md)
  - [UserNotFound](doc/UserNotFound.md)
  - [UserProfileBadge](doc/UserProfileBadge.md)
  - [UserProperties](doc/UserProperties.md)

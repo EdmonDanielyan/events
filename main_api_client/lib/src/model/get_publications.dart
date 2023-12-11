@@ -15,33 +15,37 @@ part 'get_publications.g.dart';
 /// GetPublications
 ///
 /// Properties:
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
-/// * [status] 
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
+/// * [status]
 @BuiltValue()
-abstract class GetPublications implements RequiredSuccess, Built<GetPublications, GetPublicationsBuilder> {
+abstract class GetPublications
+    implements RequiredSuccess, Built<GetPublications, GetPublicationsBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject? get data;
 
   GetPublications._();
 
-  factory GetPublications([void updates(GetPublicationsBuilder b)]) = _$GetPublications;
+  factory GetPublications([void updates(GetPublicationsBuilder b)]) =
+      _$GetPublications;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetPublicationsBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetPublications> get serializer => _$GetPublicationsSerializer();
+  static Serializer<GetPublications> get serializer =>
+      _$GetPublicationsSerializer();
 }
 
-class _$GetPublicationsSerializer implements PrimitiveSerializer<GetPublications> {
+class _$GetPublicationsSerializer
+    implements PrimitiveSerializer<GetPublications> {
   @override
   final Iterable<Type> types = const [GetPublications, _$GetPublications];
 
@@ -93,7 +97,9 @@ class _$GetPublicationsSerializer implements PrimitiveSerializer<GetPublications
     GetPublications object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -178,4 +184,3 @@ class _$GetPublicationsSerializer implements PrimitiveSerializer<GetPublications
     return result.build();
   }
 }
-

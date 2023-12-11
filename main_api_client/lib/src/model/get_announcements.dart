@@ -15,33 +15,39 @@ part 'get_announcements.g.dart';
 /// GetAnnouncements
 ///
 /// Properties:
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
-/// * [status] 
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
+/// * [status]
 @BuiltValue()
-abstract class GetAnnouncements implements RequiredSuccess, Built<GetAnnouncements, GetAnnouncementsBuilder> {
+abstract class GetAnnouncements
+    implements
+        RequiredSuccess,
+        Built<GetAnnouncements, GetAnnouncementsBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject get data;
 
   GetAnnouncements._();
 
-  factory GetAnnouncements([void updates(GetAnnouncementsBuilder b)]) = _$GetAnnouncements;
+  factory GetAnnouncements([void updates(GetAnnouncementsBuilder b)]) =
+      _$GetAnnouncements;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetAnnouncementsBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetAnnouncements> get serializer => _$GetAnnouncementsSerializer();
+  static Serializer<GetAnnouncements> get serializer =>
+      _$GetAnnouncementsSerializer();
 }
 
-class _$GetAnnouncementsSerializer implements PrimitiveSerializer<GetAnnouncements> {
+class _$GetAnnouncementsSerializer
+    implements PrimitiveSerializer<GetAnnouncements> {
   @override
   final Iterable<Type> types = const [GetAnnouncements, _$GetAnnouncements];
 
@@ -91,7 +97,9 @@ class _$GetAnnouncementsSerializer implements PrimitiveSerializer<GetAnnouncemen
     GetAnnouncements object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -176,4 +184,3 @@ class _$GetAnnouncementsSerializer implements PrimitiveSerializer<GetAnnouncemen
     return result.build();
   }
 }
-

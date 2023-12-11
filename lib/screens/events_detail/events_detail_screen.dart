@@ -14,6 +14,7 @@ import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_state.dart';
+import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/event_data.dart';
 import 'package:share_plus/share_plus.dart';
@@ -24,10 +25,11 @@ import '../../messenger/utils/date_functions.dart';
 class EventDetailScreen extends StatelessWidget {
   static const String DEFAULT_PREVIEW_PICTURE_LINK =
       'assets/images/default_event.jpg';
-
   final EventDetailCubit eventDetailCubit;
+  final ProfileCubit profileCubit;
 
-  const EventDetailScreen({Key? key, required this.eventDetailCubit})
+  const EventDetailScreen(
+      {Key? key, required this.eventDetailCubit, required this.profileCubit})
       : super(key: key);
 
   @override
@@ -85,7 +87,11 @@ class GetLoadedStateWidget extends StatefulWidget {
   State<GetLoadedStateWidget> createState() => _GetLoadedStateWidgetState();
 }
 
-class _GetLoadedStateWidgetState extends State<GetLoadedStateWidget> {
+class _GetLoadedStateWidgetState extends State<GetLoadedStateWidget>
+    with TickerProviderStateMixin {
+  bool _expanded = false;
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
   // late final EventData event;
   // EventData? event = widget.state.data;
   // Size size = MediaQuery.of(context).size;
@@ -93,10 +99,31 @@ class _GetLoadedStateWidgetState extends State<GetLoadedStateWidget> {
   // bool isMember = event.isMember ?? false;
   @override
   void initState() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
+    //   animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    //   CurvedAnimation(
+    //     parent: animationController,
+    //     curve: Curves.fastOutSlowIn
+    //   )
+    // );
+
     // EventData event = widget.state.data!;
     // final _strings = localizationInstance;
     // bool isMember = event.isMember ?? false;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -184,7 +211,16 @@ class _GetLoadedStateWidgetState extends State<GetLoadedStateWidget> {
           // ),
           DefaultButton(
             title: 'Записаться',
-            onTap: () {},
+            onTap: () {
+              setState(() {
+                _expanded = !_expanded;
+                if (_expanded) {
+                  _controller.forward();
+                } else {
+                  _controller.reverse();
+                }
+              });
+            },
             buttonColor: Palette.transparent,
             borderColor: Palette.greenE4A,
             textColor: Palette.greenE4A,
@@ -194,154 +230,162 @@ class _GetLoadedStateWidgetState extends State<GetLoadedStateWidget> {
                 colorFilter:
                     ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Запись на событие',
-                  style: FontStyles.rubikH2(color: Palette.textBlack),
-                ),
-                SizedBox(height: 24),
-                Text('Участники',
-                    style: FontStyles.rubikP1Medium(color: Palette.textBlack)),
-                InkWell(
-                  onTap: () {},
-                  child: ListTile(
-                      horizontalTitleGap: 12,
-                      contentPadding: EdgeInsets.all(0),
-                      leading: CircleAvatar(
-                          radius: 22, backgroundColor: Colors.grey),
-                      // ClipRRect(
-                      //     borderRadius: BorderRadius.all(Radius.circular(41.r)),
-                      //     child: Image.asset(
-                      //       'assets/images/${item.imageName}',
-                      //       width: 42.r,
-                      //       height: 42.r,
-                      //       fit: BoxFit.cover,1
-                      //     )),
-                      title: Text('Алексеев Вадим Андреевич (вы)',
-                          style: FontStyles.rubikP2Medium(
-                              color: Palette.textBlack)),
-                      subtitle: Text(
-                        'Водитель фронтального погрузчика \nг. Иркутск',
-                        maxLines: 2,
-                        style: FontStyles.rubikP3(color: Palette.textBlack50),
+          SizeTransition(
+            axisAlignment: 1.0,
+            sizeFactor: _animation,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Запись на событие',
+                    style: FontStyles.rubikH2(color: Palette.textBlack),
+                  ),
+                  SizedBox(height: 24),
+                  Text('Участники',
+                      style:
+                          FontStyles.rubikP1Medium(color: Palette.textBlack)),
+                  InkWell(
+                    onTap: () {},
+                    child: ListTile(
+                        horizontalTitleGap: 12,
+                        contentPadding: EdgeInsets.all(0),
+                        leading: CircleAvatar(
+                            radius: 22, backgroundColor: Colors.grey),
+                        // ClipRRect(
+                        //     borderRadius: BorderRadius.all(Radius.circular(41.r)),
+                        //     child: Image.asset(
+                        //       'assets/images/${item.imageName}',
+                        //       width: 42.r,
+                        //       height: 42.r,
+                        //       fit: BoxFit.cover,1
+                        //     )),
+                        title: Text('Алексеев Вадим Андреевич (вы)',
+                            style: FontStyles.rubikP2Medium(
+                                color: Palette.textBlack)),
+                        subtitle: Text(
+                          'Водитель фронтального погрузчика \nг. Иркутск',
+                          maxLines: 2,
+                          style: FontStyles.rubikP3(color: Palette.textBlack50),
+                        ),
+                        trailing: SvgPicture.asset(
+                          IconLinks.EDIT_ICON,
+                          height: 24, width: 24,
+                          // color: AppColors.subTitleColor,
+                        ),
+                        isThreeLine: true),
+                  ),
+                  Text(
+                    'Условия для вас',
+                    style: FontStyles.rubikP3(color: Palette.textBlack50),
+                  ),
+                  SizedBox(height: 8),
+                  ExpansionTileControllerApp(),
+                  SizedBox(
+                    height: 32,
+                  ),
+                  Container(height: 44, color: Colors.grey),
+                  SizedBox(height: 32),
+                  Text('Родственники и другие лица',
+                      style:
+                          FontStyles.rubikP1Medium(color: Palette.textBlack)),
+                  SizedBox(height: 16),
+                  Container(height: 44, color: Colors.grey),
+                  SizedBox(height: 16),
+                  Text(
+                    'Условия для добавленых лиц',
+                    style: FontStyles.rubikP3(color: Palette.textBlack50),
+                  ),
+                  SizedBox(height: 8),
+                  Container(height: 44, color: Colors.grey),
+                  SizedBox(height: 32),
+                  Text('Родственники и другие лица',
+                      style:
+                          FontStyles.rubikP1Medium(color: Palette.textBlack)),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Text('Первый участник'),
+                  SizedBox(height: 8),
+                  Container(height: 44, color: Colors.grey),
+                  SizedBox(height: 8),
+                  Container(height: 44, color: Colors.grey),
+                  SizedBox(height: 16),
+                  Text(
+                    'Заголовок условия',
+                    style: FontStyles.rubikP3(color: Palette.textBlack50),
+                  ),
+                  SizedBox(height: 8),
+                  Container(height: 44, color: Colors.grey),
+                  SizedBox(height: 16),
+                  DefaultButton(
+                    title: 'Добавить участника',
+                    onTap: () {
+                      // Share.share('https://portal.irkutskoil.ru/events/${event.id}/');
+                    },
+                    buttonColor: Palette.transparent,
+                    borderColor: Palette.greenE4A,
+                    textColor: Palette.greenE4A,
+                    suffixIcon: SvgPicture.asset(IconLinks.PLUS_ICON,
+                        height: 20.0,
+                        width: 20.0,
+                        colorFilter: ColorFilter.mode(
+                            Palette.greenE4A, BlendMode.srcIn)),
+                  ),
+                  SizedBox(height: 32),
+                  Text('Заголовок опции',
+                      style:
+                          FontStyles.rubikP1Medium(color: Palette.textBlack)),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                            width: 56, height: 56, color: Colors.grey),
                       ),
-                      trailing: SvgPicture.asset(
-                        IconLinks.EDIT_ICON,
-                        height: 24, width: 24,
-                        // color: AppColors.subTitleColor,
+                      Flexible(
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Название опции',
+                                style: FontStyles.rubikP2Medium(
+                                    color: Palette.textBlack)),
+                            Text('Здесь могло быть ваше короткое описание')
+                          ],
+                        ),
                       ),
-                      isThreeLine: true),
-                ),
-                Text(
-                  'Условия для вас',
-                  style: FontStyles.rubikP3(color: Palette.textBlack50),
-                ),
-                SizedBox(height: 8),
-                ExpansionTileControllerApp(),
-                SizedBox(
-                  height: 32,
-                ),
-                Container(height: 44, color: Colors.grey),
-                SizedBox(height: 32),
-                Text('Родственники и другие лица',
-                    style: FontStyles.rubikP1Medium(color: Palette.textBlack)),
-                SizedBox(height: 16),
-                Container(height: 44, color: Colors.grey),
-                SizedBox(height: 16),
-                Text(
-                  'Условия для добавленых лиц',
-                  style: FontStyles.rubikP3(color: Palette.textBlack50),
-                ),
-                SizedBox(height: 8),
-                Container(height: 44, color: Colors.grey),
-                SizedBox(height: 32),
-                Text('Родственники и другие лица',
-                    style: FontStyles.rubikP1Medium(color: Palette.textBlack)),
-                SizedBox(
-                  height: 16,
-                ),
-                Text('Первый участник'),
-                SizedBox(height: 8),
-                Container(height: 44, color: Colors.grey),
-                SizedBox(height: 8),
-                Container(height: 44, color: Colors.grey),
-                SizedBox(height: 16),
-                Text(
-                  'Заголовок условия',
-                  style: FontStyles.rubikP3(color: Palette.textBlack50),
-                ),
-                SizedBox(height: 8),
-                Container(height: 44, color: Colors.grey),
-                SizedBox(height: 16),
-                DefaultButton(
-                  title: 'Добавить участника',
-                  onTap: () {
-                    // Share.share('https://portal.irkutskoil.ru/events/${event.id}/');
-                  },
-                  buttonColor: Palette.transparent,
-                  borderColor: Palette.greenE4A,
-                  textColor: Palette.greenE4A,
-                  suffixIcon: SvgPicture.asset(IconLinks.PLUS_ICON,
-                      height: 20.0,
-                      width: 20.0,
-                      colorFilter:
-                          ColorFilter.mode(Palette.greenE4A, BlendMode.srcIn)),
-                ),
-                SizedBox(height: 32),
-                Text('Заголовок опции',
-                    style: FontStyles.rubikP1Medium(color: Palette.textBlack)),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 1,
-                      child:
-                          Container(width: 56, height: 56, color: Colors.grey),
-                    ),
-                    Flexible(
-                      flex: 3,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Название опции',
-                              style: FontStyles.rubikP2Medium(
-                                  color: Palette.textBlack)),
-                          Text('Здесь могло быть ваше короткое описание')
-                        ],
-                      ),
-                    ),
-                    Flexible(
-                      flex: 2,
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 80,
-                            height: 44,
-                            color: Colors.grey,
-                          ),
-                          SizedBox(height: 8),
-                          Text('Осталось: 400')
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(height: 32),
-                RadioListTileExample(),
-                SizedBox(height: 32),
-                Text('Желаемая дата посещения'),
-                SizedBox(height: 8),
-                Container(height: 44, color: Colors.grey),
-                SizedBox(height: 32),
-                const SizedBox(height: 10),
-                LabeledCheckboxExample()
-                // DropdownMenuExample(),
-              ],
+                      Flexible(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 80,
+                              height: 44,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(height: 8),
+                            Text('Осталось: 400')
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 32),
+                  RadioListTileExample(),
+                  SizedBox(height: 32),
+                  Text('Желаемая дата посещения'),
+                  SizedBox(height: 8),
+                  Container(height: 44, color: Colors.grey),
+                  SizedBox(height: 32),
+                  const SizedBox(height: 10),
+                  LabeledCheckboxExample()
+                  // DropdownMenuExample(),
+                ],
+              ),
             ),
           ),
           // Padding(

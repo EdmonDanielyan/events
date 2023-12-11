@@ -15,14 +15,15 @@ part 'get_events.g.dart';
 /// GetEvents
 ///
 /// Properties:
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
-/// * [status] 
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
+/// * [status]
 @BuiltValue()
-abstract class GetEvents implements RequiredSuccess, Built<GetEvents, GetEventsBuilder> {
+abstract class GetEvents
+    implements RequiredSuccess, Built<GetEvents, GetEventsBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject get data;
 
@@ -32,10 +33,10 @@ abstract class GetEvents implements RequiredSuccess, Built<GetEvents, GetEventsB
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetEventsBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<GetEvents> get serializer => _$GetEventsSerializer();
@@ -91,7 +92,9 @@ class _$GetEventsSerializer implements PrimitiveSerializer<GetEvents> {
     GetEvents object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -176,4 +179,3 @@ class _$GetEventsSerializer implements PrimitiveSerializer<GetEvents> {
     return result.build();
   }
 }
-

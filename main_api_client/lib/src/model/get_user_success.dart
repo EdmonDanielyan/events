@@ -15,33 +15,37 @@ part 'get_user_success.g.dart';
 /// GetUserSuccess
 ///
 /// Properties:
-/// * [status] 
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
+/// * [status]
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
 @BuiltValue()
-abstract class GetUserSuccess implements RequiredSuccess, Built<GetUserSuccess, GetUserSuccessBuilder> {
+abstract class GetUserSuccess
+    implements RequiredSuccess, Built<GetUserSuccess, GetUserSuccessBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject? get data;
 
   GetUserSuccess._();
 
-  factory GetUserSuccess([void updates(GetUserSuccessBuilder b)]) = _$GetUserSuccess;
+  factory GetUserSuccess([void updates(GetUserSuccessBuilder b)]) =
+      _$GetUserSuccess;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetUserSuccessBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetUserSuccess> get serializer => _$GetUserSuccessSerializer();
+  static Serializer<GetUserSuccess> get serializer =>
+      _$GetUserSuccessSerializer();
 }
 
-class _$GetUserSuccessSerializer implements PrimitiveSerializer<GetUserSuccess> {
+class _$GetUserSuccessSerializer
+    implements PrimitiveSerializer<GetUserSuccess> {
   @override
   final Iterable<Type> types = const [GetUserSuccess, _$GetUserSuccess];
 
@@ -93,7 +97,9 @@ class _$GetUserSuccessSerializer implements PrimitiveSerializer<GetUserSuccess> 
     GetUserSuccess object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -178,4 +184,3 @@ class _$GetUserSuccessSerializer implements PrimitiveSerializer<GetUserSuccess> 
     return result.build();
   }
 }
-

@@ -7,7 +7,6 @@ part of 'serializers.dart';
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
-      ..add($AllNotificationsConfigResultBodyAllOf.serializer)
       ..add($Comment.serializer)
       ..add($DirectoryMeta.serializer)
       ..add($GlobalSettingsResponseBodyAllOf.serializer)
@@ -18,11 +17,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add($OrganisationDirectoryResponseBodyAllOf.serializer)
       ..add($RequiredError.serializer)
       ..add($RequiredSuccess.serializer)
-      ..add($SingleNotificationConfigResultBodyAllOf.serializer)
       ..add($SinglePageSuccessResponseBodyAllOf.serializer)
       ..add($SingleSectionSuccessResponseBodyAllOf.serializer)
+      ..add($UniEventsGetDetailRespBodyAllOf.serializer)
+      ..add($UniEventsGetListRespBodyAllOf.serializer)
+      ..add($UniSubGetStateRespBodyAllOf.serializer)
       ..add(AddEventMember.serializer)
-      ..add(AllNotificationsConfigResultBody.serializer)
       ..add(AlreadyEventMember.serializer)
       ..add(AlreadyThanked.serializer)
       ..add(AnnouncementProperty.serializer)
@@ -52,6 +52,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(FeedbackForm.serializer)
       ..add(FeedbackTagsList.serializer)
       ..add(Forbidden.serializer)
+      ..add(GenericError.serializer)
       ..add(GetAnnouncementById.serializer)
       ..add(GetAnnouncements.serializer)
       ..add(GetCommentsById.serializer)
@@ -115,11 +116,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(RegisterConfirmSuccess.serializer)
       ..add(RegisterParams.serializer)
       ..add(RegisterSuccess.serializer)
-      ..add(RemoveEventMember.serializer)
       ..add(SendFeedbackFail.serializer)
       ..add(SendFeedbackSuccess.serializer)
       ..add(ServerError.serializer)
-      ..add(SingleNotificationConfigResultBody.serializer)
       ..add(SinglePageResponseData.serializer)
       ..add(SinglePageSuccessResponseBody.serializer)
       ..add(SingleSectionResponseData.serializer)
@@ -127,10 +126,33 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Snippet.serializer)
       ..add(SnippetListResponseData.serializer)
       ..add(SnippetTypeEnum.serializer)
+      ..add(SubscriptionConfig.serializer)
+      ..add(SubscriptionConfigChildren.serializer)
+      ..add(SubscriptionConfigOptions.serializer)
+      ..add(SubscriptionConfigOptionsDisplayModeEnum.serializer)
+      ..add(SubscriptionConfigVisitors.serializer)
+      ..add(SubscriptionField.serializer)
+      ..add(SubscriptionFieldTypeEnum.serializer)
+      ..add(SubscriptionOption.serializer)
+      ..add(SubscriptionState.serializer)
       ..add(TextPage.serializer)
       ..add(ThankById.serializer)
       ..add(ThankSelf.serializer)
       ..add(TransportForm.serializer)
+      ..add(UniEventDetail.serializer)
+      ..add(UniEventShort.serializer)
+      ..add(UniEventsGetDetailRespBody.serializer)
+      ..add(UniEventsGetDetailRespBodyAllOfData.serializer)
+      ..add(UniEventsGetListRespBody.serializer)
+      ..add(UniEventsGetListRespBodyAllOfData.serializer)
+      ..add(UniSubCancelRequest.serializer)
+      ..add(UniSubGetStateRespBody.serializer)
+      ..add(UniSubRequest.serializer)
+      ..add(UniSubRequestField.serializer)
+      ..add(UniSubRequestOption.serializer)
+      ..add(UniSubRequestVersionEnum.serializer)
+      ..add(UniSubRequestVisitor.serializer)
+      ..add(UniSubRequestVisitorNew.serializer)
       ..add(UserNotFound.serializer)
       ..add(UserProfileBadge.serializer)
       ..add(UserProperties.serializer)
@@ -145,6 +167,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(
               BuiltList, const [const FullType(ContactsPropertyAbsenceInner)]),
           () => new ListBuilder<ContactsPropertyAbsenceInner>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Date)]),
+          () => new ListBuilder<Date>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Date)]),
+          () => new ListBuilder<Date>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(FeedbackForm)]),
           () => new ListBuilder<FeedbackForm>())
@@ -179,8 +207,35 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(SubscriptionField)]),
+          () => new ListBuilder<SubscriptionField>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(SubscriptionOption)]),
+          () => new ListBuilder<SubscriptionOption>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TransportForm)]),
           () => new ListBuilder<TransportForm>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(UniEventShort)]),
+          () => new ListBuilder<UniEventShort>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(UniSubRequestField)]),
+          () => new ListBuilder<UniSubRequestField>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(UniSubRequestOption)]),
+          () => new ListBuilder<UniSubRequestOption>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(UniSubRequestVisitor)]),
+          () => new ListBuilder<UniSubRequestVisitor>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(UniSubRequestVisitor)]),
+          () => new ListBuilder<UniSubRequestVisitor>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UserProfileBadge)]),
           () => new ListBuilder<UserProfileBadge>())

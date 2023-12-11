@@ -13,7 +13,10 @@ part 'auto_fill_form.g.dart';
 /// Properties:
 /// * [fio] 
 /// * [position] 
+/// * [organisation] 
+/// * [organisationId] 
 /// * [department] 
+/// * [departmentId] 
 /// * [email] 
 /// * [birthday] 
 /// * [personalPhone] 
@@ -25,8 +28,17 @@ abstract class AutoFillForm implements Built<AutoFillForm, AutoFillFormBuilder> 
   @BuiltValueField(wireName: r'position')
   String? get position;
 
+  @BuiltValueField(wireName: r'organisation')
+  String? get organisation;
+
+  @BuiltValueField(wireName: r'organisation_id')
+  int? get organisationId;
+
   @BuiltValueField(wireName: r'department')
   String? get department;
+
+  @BuiltValueField(wireName: r'department_id')
+  int? get departmentId;
 
   @BuiltValueField(wireName: r'email')
   String? get email;
@@ -74,11 +86,32 @@ class _$AutoFillFormSerializer implements PrimitiveSerializer<AutoFillForm> {
         specifiedType: const FullType.nullable(String),
       );
     }
+    if (object.organisation != null) {
+      yield r'organisation';
+      yield serializers.serialize(
+        object.organisation,
+        specifiedType: const FullType.nullable(String),
+      );
+    }
+    if (object.organisationId != null) {
+      yield r'organisation_id';
+      yield serializers.serialize(
+        object.organisationId,
+        specifiedType: const FullType.nullable(int),
+      );
+    }
     if (object.department != null) {
       yield r'department';
       yield serializers.serialize(
         object.department,
         specifiedType: const FullType.nullable(String),
+      );
+    }
+    if (object.departmentId != null) {
+      yield r'department_id';
+      yield serializers.serialize(
+        object.departmentId,
+        specifiedType: const FullType.nullable(int),
       );
     }
     if (object.email != null) {
@@ -141,6 +174,22 @@ class _$AutoFillFormSerializer implements PrimitiveSerializer<AutoFillForm> {
           if (valueDes == null) continue;
           result.position = valueDes;
           break;
+        case r'organisation':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(String),
+          ) as String?;
+          if (valueDes == null) continue;
+          result.organisation = valueDes;
+          break;
+        case r'organisation_id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(int),
+          ) as int?;
+          if (valueDes == null) continue;
+          result.organisationId = valueDes;
+          break;
         case r'department':
           final valueDes = serializers.deserialize(
             value,
@@ -148,6 +197,14 @@ class _$AutoFillFormSerializer implements PrimitiveSerializer<AutoFillForm> {
           ) as String?;
           if (valueDes == null) continue;
           result.department = valueDes;
+          break;
+        case r'department_id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(int),
+          ) as int?;
+          if (valueDes == null) continue;
+          result.departmentId = valueDes;
           break;
         case r'email':
           final valueDes = serializers.deserialize(

@@ -102,7 +102,7 @@ class _$UserProfileBadgeSerializer implements PrimitiveSerializer<UserProfileBad
       yield r'group';
       yield serializers.serialize(
         object.group,
-        specifiedType: const FullType(String),
+        specifiedType: const FullType.nullable(String),
       );
     }
     yield r'icon';
@@ -114,42 +114,42 @@ class _$UserProfileBadgeSerializer implements PrimitiveSerializer<UserProfileBad
       yield r'svg';
       yield serializers.serialize(
         object.svg,
-        specifiedType: const FullType(String),
+        specifiedType: const FullType.nullable(String),
       );
     }
     if (object.count != null) {
       yield r'count';
       yield serializers.serialize(
         object.count,
-        specifiedType: const FullType(num),
+        specifiedType: const FullType.nullable(num),
       );
     }
     if (object.label != null) {
       yield r'label';
       yield serializers.serialize(
         object.label,
-        specifiedType: const FullType(String),
+        specifiedType: const FullType.nullable(String),
       );
     }
     if (object.link != null) {
       yield r'link';
       yield serializers.serialize(
         object.link,
-        specifiedType: const FullType(String),
+        specifiedType: const FullType.nullable(String),
       );
     }
     if (object.extra != null) {
       yield r'extra';
       yield serializers.serialize(
         object.extra,
-        specifiedType: const FullType(JsonObject),
+        specifiedType: const FullType.nullable(JsonObject),
       );
     }
     if (object.subs != null) {
       yield r'subs';
       yield serializers.serialize(
         object.subs,
-        specifiedType: const FullType(BuiltList, [FullType(UserProfileBadge)]),
+        specifiedType: const FullType.nullable(BuiltList, [FullType(UserProfileBadge)]),
       );
     }
   }
@@ -192,8 +192,9 @@ class _$UserProfileBadgeSerializer implements PrimitiveSerializer<UserProfileBad
         case r'group':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(String),
-          ) as String;
+            specifiedType: const FullType.nullable(String),
+          ) as String?;
+          if (valueDes == null) continue;
           result.group = valueDes;
           break;
         case r'icon':
@@ -207,43 +208,49 @@ class _$UserProfileBadgeSerializer implements PrimitiveSerializer<UserProfileBad
         case r'svg':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(String),
-          ) as String;
+            specifiedType: const FullType.nullable(String),
+          ) as String?;
+          if (valueDes == null) continue;
           result.svg = valueDes;
           break;
         case r'count':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(num),
-          ) as num;
+            specifiedType: const FullType.nullable(num),
+          ) as num?;
+          if (valueDes == null) continue;
           result.count = valueDes;
           break;
         case r'label':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(String),
-          ) as String;
+            specifiedType: const FullType.nullable(String),
+          ) as String?;
+          if (valueDes == null) continue;
           result.label = valueDes;
           break;
         case r'link':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(String),
-          ) as String;
+            specifiedType: const FullType.nullable(String),
+          ) as String?;
+          if (valueDes == null) continue;
           result.link = valueDes;
           break;
         case r'extra':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
+            specifiedType: const FullType.nullable(JsonObject),
+          ) as JsonObject?;
+          if (valueDes == null) continue;
           result.extra = valueDes;
           break;
         case r'subs':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(BuiltList, [FullType(UserProfileBadge)]),
-          ) as BuiltList<UserProfileBadge>;
+            specifiedType: const FullType.nullable(BuiltList, [FullType(UserProfileBadge)]),
+          ) as BuiltList<UserProfileBadge>?;
+          if (valueDes == null) continue;
           result.subs.replace(valueDes);
           break;
         default:

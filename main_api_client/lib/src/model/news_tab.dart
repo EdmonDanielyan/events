@@ -14,6 +14,7 @@ part 'news_tab.g.dart';
 /// * [code] - Символьный код для последующего запроса фильтрованных результатов
 /// * [title] - Отображаемое название
 /// * [visible] - Отображать ли в списке табов.
+/// * [total] - Количество доступных записей
 /// * [new_] - Количество непрочитанных записей (зарезервировано, пока не реализовано).
 @BuiltValue()
 abstract class NewsTab implements Built<NewsTab, NewsTabBuilder> {
@@ -28,6 +29,10 @@ abstract class NewsTab implements Built<NewsTab, NewsTabBuilder> {
   /// Отображать ли в списке табов.
   @BuiltValueField(wireName: r'visible')
   bool? get visible;
+
+  /// Количество доступных записей
+  @BuiltValueField(wireName: r'total')
+  int? get total;
 
   /// Количество непрочитанных записей (зарезервировано, пока не реализовано).
   @BuiltValueField(wireName: r'new')
@@ -71,6 +76,13 @@ class _$NewsTabSerializer implements PrimitiveSerializer<NewsTab> {
       yield serializers.serialize(
         object.visible,
         specifiedType: const FullType.nullable(bool),
+      );
+    }
+    if (object.total != null) {
+      yield r'total';
+      yield serializers.serialize(
+        object.total,
+        specifiedType: const FullType.nullable(int),
       );
     }
     if (object.new_ != null) {
@@ -124,6 +136,14 @@ class _$NewsTabSerializer implements PrimitiveSerializer<NewsTab> {
           ) as bool?;
           if (valueDes == null) continue;
           result.visible = valueDes;
+          break;
+        case r'total':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType.nullable(int),
+          ) as int?;
+          if (valueDes == null) continue;
+          result.total = valueDes;
           break;
         case r'new':
           final valueDes = serializers.deserialize(

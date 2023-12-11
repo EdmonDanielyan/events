@@ -14,35 +14,45 @@ part 'register_confirm_success.g.dart';
 /// RegisterConfirmSuccess
 ///
 /// Properties:
-/// * [status] 
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
+/// * [status]
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
 @BuiltValue()
-abstract class RegisterConfirmSuccess implements RequiredSuccess, Built<RegisterConfirmSuccess, RegisterConfirmSuccessBuilder> {
+abstract class RegisterConfirmSuccess
+    implements
+        RequiredSuccess,
+        Built<RegisterConfirmSuccess, RegisterConfirmSuccessBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject? get data;
 
   RegisterConfirmSuccess._();
 
-  factory RegisterConfirmSuccess([void updates(RegisterConfirmSuccessBuilder b)]) = _$RegisterConfirmSuccess;
+  factory RegisterConfirmSuccess(
+          [void updates(RegisterConfirmSuccessBuilder b)]) =
+      _$RegisterConfirmSuccess;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(RegisterConfirmSuccessBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<RegisterConfirmSuccess> get serializer => _$RegisterConfirmSuccessSerializer();
+  static Serializer<RegisterConfirmSuccess> get serializer =>
+      _$RegisterConfirmSuccessSerializer();
 }
 
-class _$RegisterConfirmSuccessSerializer implements PrimitiveSerializer<RegisterConfirmSuccess> {
+class _$RegisterConfirmSuccessSerializer
+    implements PrimitiveSerializer<RegisterConfirmSuccess> {
   @override
-  final Iterable<Type> types = const [RegisterConfirmSuccess, _$RegisterConfirmSuccess];
+  final Iterable<Type> types = const [
+    RegisterConfirmSuccess,
+    _$RegisterConfirmSuccess
+  ];
 
   @override
   final String wireName = r'RegisterConfirmSuccess';
@@ -92,7 +102,9 @@ class _$RegisterConfirmSuccessSerializer implements PrimitiveSerializer<Register
     RegisterConfirmSuccess object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -177,4 +189,3 @@ class _$RegisterConfirmSuccessSerializer implements PrimitiveSerializer<Register
     return result.build();
   }
 }
-

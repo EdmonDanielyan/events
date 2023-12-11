@@ -14,35 +14,44 @@ part 'get_reference_order_form.g.dart';
 /// GetReferenceOrderForm
 ///
 /// Properties:
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
-/// * [status] 
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
+/// * [status]
 @BuiltValue()
-abstract class GetReferenceOrderForm implements RequiredSuccess, Built<GetReferenceOrderForm, GetReferenceOrderFormBuilder> {
+abstract class GetReferenceOrderForm
+    implements
+        RequiredSuccess,
+        Built<GetReferenceOrderForm, GetReferenceOrderFormBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject? get data;
 
   GetReferenceOrderForm._();
 
-  factory GetReferenceOrderForm([void updates(GetReferenceOrderFormBuilder b)]) = _$GetReferenceOrderForm;
+  factory GetReferenceOrderForm(
+      [void updates(GetReferenceOrderFormBuilder b)]) = _$GetReferenceOrderForm;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetReferenceOrderFormBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetReferenceOrderForm> get serializer => _$GetReferenceOrderFormSerializer();
+  static Serializer<GetReferenceOrderForm> get serializer =>
+      _$GetReferenceOrderFormSerializer();
 }
 
-class _$GetReferenceOrderFormSerializer implements PrimitiveSerializer<GetReferenceOrderForm> {
+class _$GetReferenceOrderFormSerializer
+    implements PrimitiveSerializer<GetReferenceOrderForm> {
   @override
-  final Iterable<Type> types = const [GetReferenceOrderForm, _$GetReferenceOrderForm];
+  final Iterable<Type> types = const [
+    GetReferenceOrderForm,
+    _$GetReferenceOrderForm
+  ];
 
   @override
   final String wireName = r'GetReferenceOrderForm';
@@ -92,7 +101,9 @@ class _$GetReferenceOrderFormSerializer implements PrimitiveSerializer<GetRefere
     GetReferenceOrderForm object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -177,4 +188,3 @@ class _$GetReferenceOrderFormSerializer implements PrimitiveSerializer<GetRefere
     return result.build();
   }
 }
-

@@ -14,33 +14,39 @@ part 'get_pub_key_success.g.dart';
 /// GetPubKeySuccess
 ///
 /// Properties:
-/// * [status] 
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
+/// * [status]
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
 @BuiltValue()
-abstract class GetPubKeySuccess implements RequiredSuccess, Built<GetPubKeySuccess, GetPubKeySuccessBuilder> {
+abstract class GetPubKeySuccess
+    implements
+        RequiredSuccess,
+        Built<GetPubKeySuccess, GetPubKeySuccessBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject? get data;
 
   GetPubKeySuccess._();
 
-  factory GetPubKeySuccess([void updates(GetPubKeySuccessBuilder b)]) = _$GetPubKeySuccess;
+  factory GetPubKeySuccess([void updates(GetPubKeySuccessBuilder b)]) =
+      _$GetPubKeySuccess;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetPubKeySuccessBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetPubKeySuccess> get serializer => _$GetPubKeySuccessSerializer();
+  static Serializer<GetPubKeySuccess> get serializer =>
+      _$GetPubKeySuccessSerializer();
 }
 
-class _$GetPubKeySuccessSerializer implements PrimitiveSerializer<GetPubKeySuccess> {
+class _$GetPubKeySuccessSerializer
+    implements PrimitiveSerializer<GetPubKeySuccess> {
   @override
   final Iterable<Type> types = const [GetPubKeySuccess, _$GetPubKeySuccess];
 
@@ -92,7 +98,9 @@ class _$GetPubKeySuccessSerializer implements PrimitiveSerializer<GetPubKeySucce
     GetPubKeySuccess object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -177,4 +185,3 @@ class _$GetPubKeySuccessSerializer implements PrimitiveSerializer<GetPubKeySucce
     return result.build();
   }
 }
-

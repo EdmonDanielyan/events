@@ -14,33 +14,37 @@ part 'get_keys_success.g.dart';
 /// GetKeysSuccess
 ///
 /// Properties:
-/// * [status] 
-/// * [data] 
-/// * [success] 
-/// * [host] 
-/// * [version] 
-/// * [returned] 
+/// * [status]
+/// * [data]
+/// * [success]
+/// * [host]
+/// * [version]
+/// * [returned]
 @BuiltValue()
-abstract class GetKeysSuccess implements RequiredSuccess, Built<GetKeysSuccess, GetKeysSuccessBuilder> {
+abstract class GetKeysSuccess
+    implements RequiredSuccess, Built<GetKeysSuccess, GetKeysSuccessBuilder> {
   @BuiltValueField(wireName: r'data')
   JsonObject? get data;
 
   GetKeysSuccess._();
 
-  factory GetKeysSuccess([void updates(GetKeysSuccessBuilder b)]) = _$GetKeysSuccess;
+  factory GetKeysSuccess([void updates(GetKeysSuccessBuilder b)]) =
+      _$GetKeysSuccess;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(GetKeysSuccessBuilder b) => b
-      ..host = 'https://example.com'
-      ..version = '1.0.0'
-      ..success = true
-      ..status = 200;
+    ..host = 'https://example.com'
+    ..version = '1.0.0'
+    ..success = true
+    ..status = 200;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<GetKeysSuccess> get serializer => _$GetKeysSuccessSerializer();
+  static Serializer<GetKeysSuccess> get serializer =>
+      _$GetKeysSuccessSerializer();
 }
 
-class _$GetKeysSuccessSerializer implements PrimitiveSerializer<GetKeysSuccess> {
+class _$GetKeysSuccessSerializer
+    implements PrimitiveSerializer<GetKeysSuccess> {
   @override
   final Iterable<Type> types = const [GetKeysSuccess, _$GetKeysSuccess];
 
@@ -92,7 +96,9 @@ class _$GetKeysSuccessSerializer implements PrimitiveSerializer<GetKeysSuccess> 
     GetKeysSuccess object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
+    return _serializeProperties(serializers, object,
+            specifiedType: specifiedType)
+        .toList();
   }
 
   void _deserializeProperties(
@@ -119,7 +125,7 @@ class _$GetKeysSuccessSerializer implements PrimitiveSerializer<GetKeysSuccess> 
             value,
             specifiedType: const FullType(JsonObject),
           ) as JsonObject;
-          result.data =valueDes;
+          result.data = valueDes;
           break;
         case r'returned':
           final valueDes = serializers.deserialize(
@@ -177,4 +183,3 @@ class _$GetKeysSuccessSerializer implements PrimitiveSerializer<GetKeysSuccess> 
     return result.build();
   }
 }
-

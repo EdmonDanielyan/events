@@ -8,7 +8,7 @@ import 'package:built_value/serializer.dart';
 
 part 'notification_sub_state.g.dart';
 
-/// Сотяние подписки на единичное уведомлениие
+/// Состояние подписки на единичное уведомление
 ///
 /// Properties:
 /// * [value] - TRUE - подписан. FALSE - не подписан. NULL - по умолчанию.

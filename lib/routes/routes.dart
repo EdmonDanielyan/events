@@ -10,6 +10,7 @@ import 'package:ink_mobile/cubit/news_comments/news_comments_cubit.dart';
 import 'package:ink_mobile/cubit/news_detail/news_detail_cubit.dart';
 import 'package:ink_mobile/cubit/news_list/news_list_cubit.dart';
 import 'package:ink_mobile/cubit/personnel_movements/personnel_movements_cubit.dart';
+import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/cached/chats/cached_chats_cubit.dart';
 import 'package:ink_mobile/messenger/cubits/custom/online_cubit/online_cubit.dart';
 import 'package:ink_mobile/messenger/screens/users_picker/users_picker_screen.dart';
@@ -112,6 +113,7 @@ class MainRoutes {
     '/404': (BuildContext context) => const PageNotFoundScreen(),
     '/event_detail': (BuildContext context) => EventDetailScreen(
           eventDetailCubit: getIt<EventDetailCubit>(),
+          profileCubit: getIt<ProfileCubit>(),
         ),
     '/events_list': (BuildContext context) => EventsListScreen(
           eventsListCubit: getIt<EventsListCubit>(),
