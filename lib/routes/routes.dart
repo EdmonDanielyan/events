@@ -113,7 +113,6 @@ class MainRoutes {
     '/404': (BuildContext context) => const PageNotFoundScreen(),
     '/event_detail': (BuildContext context) => EventDetailScreen(
           eventDetailCubit: getIt<EventDetailCubit>(),
-          profileCubit: getIt<ProfileCubit>(),
         ),
     '/events_list': (BuildContext context) => EventsListScreen(
           eventsListCubit: getIt<EventsListCubit>(),

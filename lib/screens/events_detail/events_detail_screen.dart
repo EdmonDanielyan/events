@@ -12,11 +12,14 @@ import 'package:ink_mobile/components/new_bottom_nav_bar/new_bottom_nav_bar.dart
 import 'package:ink_mobile/constants/aseets.dart';
 import 'package:ink_mobile/constants/font_styles.dart';
 import 'package:ink_mobile/constants/palette.dart';
+import 'package:ink_mobile/core/masks/textfield_masks.dart';
+import 'package:ink_mobile/cubit/autofill/get_autofill.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_cubit.dart';
 import 'package:ink_mobile/cubit/events_detail/events_detail_state.dart';
 import 'package:ink_mobile/cubit/profile/profile_cubit.dart';
 import 'package:ink_mobile/localization/i18n/i18n.dart';
 import 'package:ink_mobile/models/event_data.dart';
+import 'package:ink_mobile/screens/medical_insurance/components/form/entities.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../messenger/functions/size_config.dart';
@@ -26,10 +29,9 @@ class EventDetailScreen extends StatelessWidget {
   static const String DEFAULT_PREVIEW_PICTURE_LINK =
       'assets/images/default_event.jpg';
   final EventDetailCubit eventDetailCubit;
-  final ProfileCubit profileCubit;
+  // final ProfileCubit profileCubit;
 
-  const EventDetailScreen(
-      {Key? key, required this.eventDetailCubit, required this.profileCubit})
+  const EventDetailScreen({Key? key, required this.eventDetailCubit})
       : super(key: key);
 
   @override
@@ -89,6 +91,50 @@ class GetLoadedStateWidget extends StatefulWidget {
 
 class _GetLoadedStateWidgetState extends State<GetLoadedStateWidget>
     with TickerProviderStateMixin {
+  final MedicalInsuranceFormEntities entities = MedicalInsuranceFormEntities();
+  TextEditingController fioController = TextEditingController();
+  TextEditingController positionController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController birthdayController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController organisationController = TextEditingController();
+
+  GetAutofill getAutofill = GetAutofill();
+
+  Future<void> loadData() async {
+    await getAutofill.load();
+    fioController.text = getAutofill.autofill.fio;
+    entities.fio = getAutofill.autofill.fio;
+    positionController.text = getAutofill.autofill.position;
+    entities.position = getAutofill.autofill.position;
+    emailController.text = getAutofill.autofill.email;
+    entities.email = getAutofill.autofill.email;
+
+    // TODO: CHECK
+    organisationController.text = getAutofill.autofill.organisation.isEmpty
+        ? 'ООО "ИНК"'
+        : getAutofill.autofill.organisation;
+    entities.organisation = getAutofill.autofill.organisation.isEmpty
+        ? 'ООО "ИНК"'
+        : getAutofill.autofill.organisation;
+
+    if (getAutofill.autofill.birthday.isNotEmpty) {
+      final birthday = DateTime.tryParse(getAutofill.autofill.birthday);
+
+      if (birthday != null) {
+        final date = DateFunctions(passedDate: birthday).dayMonthYearNumbers();
+        entities.birthDate = date;
+        birthdayController.text = date;
+      }
+    }
+    if (getAutofill.autofill.phone.isNotEmpty) {
+      final phone =
+          TextFieldMasks().phone().maskText(getAutofill.autofill.phone);
+      entities.phone = phone;
+      phoneController.text = phone;
+    }
+  }
+
   bool _expanded = false;
   late final AnimationController _controller;
   late final Animation<double> _animation;
@@ -99,6 +145,7 @@ class _GetLoadedStateWidgetState extends State<GetLoadedStateWidget>
   // bool isMember = event.isMember ?? false;
   @override
   void initState() {
+    loadData();
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 500),
@@ -261,11 +308,12 @@ class _GetLoadedStateWidgetState extends State<GetLoadedStateWidget>
                         //       height: 42.r,
                         //       fit: BoxFit.cover,1
                         //     )),
-                        title: Text('Алексеев Вадим Андреевич (вы)',
+                        title: Text('${fioController.text} (вы)',
                             style: FontStyles.rubikP2Medium(
                                 color: Palette.textBlack)),
                         subtitle: Text(
-                          'Водитель фронтального погрузчика \nг. Иркутск',
+                          '${positionController.text}',
+                          // 'Водитель фронтального погрузчика \nг. Иркутск',
                           maxLines: 2,
                           style: FontStyles.rubikP3(color: Palette.textBlack50),
                         ),
