@@ -18,7 +18,6 @@ import 'package:openapi/src/model/uni_events_get_detail_resp_body.dart';
 import 'package:openapi/src/model/uni_events_get_list_resp_body.dart';
 
 class ContentApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -26,7 +25,7 @@ class ContentApi {
   const ContentApi(this._dio, this._serializers);
 
   /// Получает полный текст страницы.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [idOrCode] - ID или символьный код страницы
@@ -39,7 +38,7 @@ class ContentApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SinglePageSuccessResponseBody] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<SinglePageSuccessResponseBody>> getPage({ 
+  Future<Response<SinglePageSuccessResponseBody>> getPage({
     required String idOrCode,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -48,7 +47,8 @@ class ContentApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/pages/pages/{idOrCode}'.replaceAll('{' r'idOrCode' '}', idOrCode.toString());
+    final _path = r'/pages/pages/{idOrCode}'
+        .replaceAll('{' r'idOrCode' '}', idOrCode.toString());
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -79,11 +79,12 @@ class ContentApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SinglePageSuccessResponseBody),
-      ) as SinglePageSuccessResponseBody;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(SinglePageSuccessResponseBody),
+            ) as SinglePageSuccessResponseBody;
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -107,7 +108,7 @@ class ContentApi {
   }
 
   /// Получает список страниц с не пустыми сивольными кода. Для отладки.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -119,7 +120,7 @@ class ContentApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ListPageSuccessResponseBody] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<ListPageSuccessResponseBody>> getPagesList({ 
+  Future<Response<ListPageSuccessResponseBody>> getPagesList({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -158,11 +159,12 @@ class ContentApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(ListPageSuccessResponseBody),
-      ) as ListPageSuccessResponseBody;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(ListPageSuccessResponseBody),
+            ) as ListPageSuccessResponseBody;
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -186,7 +188,7 @@ class ContentApi {
   }
 
   /// Получить список страниц раздела. Например, список страниц для раздела \&quot;социальная ответственность\&quot;.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [code] - Символьный код раздела
@@ -199,7 +201,7 @@ class ContentApi {
   ///
   /// Returns a [Future] containing a [Response] with a [SingleSectionSuccessResponseBody] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<SingleSectionSuccessResponseBody>> getPagesSection({ 
+  Future<Response<SingleSectionSuccessResponseBody>> getPagesSection({
     required String code,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -208,7 +210,8 @@ class ContentApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/pages/sections/{code}'.replaceAll('{' r'code' '}', code.toString());
+    final _path =
+        r'/pages/sections/{code}'.replaceAll('{' r'code' '}', code.toString());
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -239,11 +242,12 @@ class ContentApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(SingleSectionSuccessResponseBody),
-      ) as SingleSectionSuccessResponseBody;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(SingleSectionSuccessResponseBody),
+            ) as SingleSectionSuccessResponseBody;
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -267,7 +271,7 @@ class ContentApi {
   }
 
   /// Получить список разделов страниц.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -279,7 +283,7 @@ class ContentApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ListSectionSuccessResponseBody] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<ListSectionSuccessResponseBody>> getPagesSectionsList({ 
+  Future<Response<ListSectionSuccessResponseBody>> getPagesSectionsList({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -318,11 +322,12 @@ class ContentApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(ListSectionSuccessResponseBody),
-      ) as ListSectionSuccessResponseBody;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(ListSectionSuccessResponseBody),
+            ) as ListSectionSuccessResponseBody;
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -346,7 +351,7 @@ class ContentApi {
   }
 
   /// Получить список текстовых фрагментов для использования в интерфейсе.
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -358,7 +363,7 @@ class ContentApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ListSnippetSuccessResponseBody] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<ListSnippetSuccessResponseBody>> getSnippetsList({ 
+  Future<Response<ListSnippetSuccessResponseBody>> getSnippetsList({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -397,11 +402,12 @@ class ContentApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(ListSnippetSuccessResponseBody),
-      ) as ListSnippetSuccessResponseBody;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(ListSnippetSuccessResponseBody),
+            ) as ListSnippetSuccessResponseBody;
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -425,7 +431,7 @@ class ContentApi {
   }
 
   /// Детальная информация о событии
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [id] - ID подписки (не события)
@@ -438,7 +444,7 @@ class ContentApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UniEventsGetDetailRespBody] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<UniEventsGetDetailRespBody>> uniEventsGetDetail({ 
+  Future<Response<UniEventsGetDetailRespBody>> uniEventsGetDetail({
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -447,7 +453,7 @@ class ContentApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/uni_evens/{id}'.replaceAll('{' r'id' '}', id.toString());
+    final _path = r'/uni_events/{id}'.replaceAll('{' r'id' '}', id.toString());
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -478,11 +484,12 @@ class ContentApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(UniEventsGetDetailRespBody),
-      ) as UniEventsGetDetailRespBody;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(UniEventsGetDetailRespBody),
+            ) as UniEventsGetDetailRespBody;
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -506,7 +513,7 @@ class ContentApi {
   }
 
   /// Список событий
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -518,7 +525,7 @@ class ContentApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UniEventsGetListRespBody] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<UniEventsGetListRespBody>> uniEventsGetList({ 
+  Future<Response<UniEventsGetListRespBody>> uniEventsGetList({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -526,7 +533,7 @@ class ContentApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/uni_evens';
+    final _path = r'/uni_events';
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -557,11 +564,12 @@ class ContentApi {
 
     try {
       final rawResponse = _response.data;
-      _responseData = rawResponse == null ? null : _serializers.deserialize(
-        rawResponse,
-        specifiedType: const FullType(UniEventsGetListRespBody),
-      ) as UniEventsGetListRespBody;
-
+      _responseData = rawResponse == null
+          ? null
+          : _serializers.deserialize(
+              rawResponse,
+              specifiedType: const FullType(UniEventsGetListRespBody),
+            ) as UniEventsGetListRespBody;
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -583,5 +591,4 @@ class ContentApi {
       extra: _response.extra,
     );
   }
-
 }

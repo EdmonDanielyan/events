@@ -389,28 +389,24 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i107.StaffMovementsNetworkRequest>(
       _i107.StaffMovementsNetworkRequest());
   gh.factory<String>(
-    () => tokenDataInjectorModule.localDatabasePassword,
-    instanceName: 'localDatabasePassword',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.deviceVirtualId,
-    instanceName: 'deviceVirtualId',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.natsToken,
-    instanceName: 'natsToken',
-  );
-  gh.factory<String>(
-    () => tokenDataInjectorModule.messengerAuthPassword,
-    instanceName: 'messengerAuthPassword',
-  );
-  gh.factory<String>(
     () => tokenDataInjectorModule.messengerAuthLogin,
     instanceName: 'messengerAuthLogin',
   );
   gh.factory<String>(
     () => tokenDataInjectorModule.userId,
     instanceName: 'userId',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.natsToken,
+    instanceName: 'natsToken',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.localDatabasePassword,
+    instanceName: 'localDatabasePassword',
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.messengerAuthPassword,
+    instanceName: 'messengerAuthPassword',
   );
   await gh.factoryAsync<String>(
     () => logFilePathInjector.logFile,
@@ -426,6 +422,10 @@ Future<_i1.GetIt> $initGetIt(
     () => testLogFilePathInjector.logFile,
     instanceName: 'logFile',
     registerFor: {_unitTest},
+  );
+  gh.factory<String>(
+    () => tokenDataInjectorModule.deviceVirtualId,
+    instanceName: 'deviceVirtualId',
   );
   gh.singleton<_i108.TagsListCubit>(_i108.TagsListCubit());
   gh.singleton<_i109.TagsListNetworkRequest>(_i109.TagsListNetworkRequest());
@@ -444,8 +444,8 @@ Future<_i1.GetIt> $initGetIt(
   return getIt;
 }
 
-class _$TokenDataInjectorModule extends _i111.TokenDataInjectorModule {}
-
 class _$LogFilePathInjector extends _i116.LogFilePathInjector {}
+
+class _$TokenDataInjectorModule extends _i111.TokenDataInjectorModule {}
 
 class _$TestLogFilePathInjector extends _i116.TestLogFilePathInjector {}
