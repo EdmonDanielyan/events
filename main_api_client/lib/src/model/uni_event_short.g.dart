@@ -8,13 +8,13 @@ part of 'uni_event_short.dart';
 
 class _$UniEventShort extends UniEventShort {
   @override
-  final int? id;
+  final String? id;
   @override
   final String? title;
   @override
   final String? place;
   @override
-  final int? viewCount;
+  final String? viewCount;
   @override
   final BuiltList<Date>? dates;
   @override
@@ -93,9 +93,9 @@ class UniEventShortBuilder
     implements Builder<UniEventShort, UniEventShortBuilder> {
   _$UniEventShort? _$v;
 
-  int? _id;
-  int? get id => _$this._id;
-  set id(int? id) => _$this._id = id;
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
   String? _title;
   String? get title => _$this._title;
@@ -105,9 +105,9 @@ class UniEventShortBuilder
   String? get place => _$this._place;
   set place(String? place) => _$this._place = place;
 
-  int? _viewCount;
-  int? get viewCount => _$this._viewCount;
-  set viewCount(int? viewCount) => _$this._viewCount = viewCount;
+  String? _viewCount;
+  String? get viewCount => _$this._viewCount;
+  set viewCount(String? viewCount) => _$this._viewCount = viewCount;
 
   ListBuilder<Date>? _dates;
   ListBuilder<Date> get dates => _$this._dates ??= new ListBuilder<Date>();

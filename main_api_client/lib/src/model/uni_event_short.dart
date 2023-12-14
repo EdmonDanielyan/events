@@ -22,11 +22,10 @@ part 'uni_event_short.g.dart';
 /// * [dateFinish] - Дата и время окончания
 /// * [previewPicture] - Картинка
 @BuiltValue()
-abstract class UniEventShort
-    implements Built<UniEventShort, UniEventShortBuilder> {
+abstract class UniEventShort implements Built<UniEventShort, UniEventShortBuilder> {
   /// ID события
   @BuiltValueField(wireName: r'id')
-  int? get id;
+  String? get id;
 
   /// Заголовок
   @BuiltValueField(wireName: r'title')
@@ -38,7 +37,7 @@ abstract class UniEventShort
 
   /// Количество просмотров
   @BuiltValueField(wireName: r'viewCount')
-  int? get viewCount;
+  String? get viewCount;
 
   /// Список дат проведения (если их несколько)
   @BuiltValueField(wireName: r'dates')
@@ -58,15 +57,13 @@ abstract class UniEventShort
 
   UniEventShort._();
 
-  factory UniEventShort([void updates(UniEventShortBuilder b)]) =
-      _$UniEventShort;
+  factory UniEventShort([void updates(UniEventShortBuilder b)]) = _$UniEventShort;
 
   @BuiltValueHook(initializeBuilder: true)
   static void _defaults(UniEventShortBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<UniEventShort> get serializer =>
-      _$UniEventShortSerializer();
+  static Serializer<UniEventShort> get serializer => _$UniEventShortSerializer();
 }
 
 class _$UniEventShortSerializer implements PrimitiveSerializer<UniEventShort> {
@@ -85,7 +82,7 @@ class _$UniEventShortSerializer implements PrimitiveSerializer<UniEventShort> {
       yield r'id';
       yield serializers.serialize(
         object.id,
-        specifiedType: const FullType(int),
+        specifiedType: const FullType(String),
       );
     }
     if (object.title != null) {
@@ -145,9 +142,7 @@ class _$UniEventShortSerializer implements PrimitiveSerializer<UniEventShort> {
     UniEventShort object, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    return _serializeProperties(serializers, object,
-            specifiedType: specifiedType)
-        .toList();
+    return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
   }
 
   void _deserializeProperties(
@@ -165,8 +160,8 @@ class _$UniEventShortSerializer implements PrimitiveSerializer<UniEventShort> {
         case r'id':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(int),
-          ) as int;
+            specifiedType: const FullType(String),
+          ) as String;
           result.id = valueDes;
           break;
         case r'title':
@@ -186,8 +181,8 @@ class _$UniEventShortSerializer implements PrimitiveSerializer<UniEventShort> {
         case r'viewCount':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(int),
-          ) as int;
+            specifiedType: const FullType(String),
+          ) as String;
           result.viewCount = valueDes;
           break;
         case r'dates':
@@ -250,3 +245,4 @@ class _$UniEventShortSerializer implements PrimitiveSerializer<UniEventShort> {
     return result.build();
   }
 }
+

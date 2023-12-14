@@ -25,6 +25,12 @@ void main() {
       // TODO
     });
 
+    // Количество доступных записей
+    // int total
+    test('to test the property `total`', () async {
+      // TODO
+    });
+
     // Количество непрочитанных записей (зарезервировано, пока не реализовано).
     // int new_
     test('to test the property `new_`', () async {

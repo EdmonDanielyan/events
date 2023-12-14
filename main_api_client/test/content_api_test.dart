@@ -42,5 +42,19 @@ void main() {
       // TODO
     });
 
+    // Детальная информация о событии
+    //
+    //Future<UniEventsGetDetailRespBody> uniEventsGetDetail(String id) async
+    test('test uniEventsGetDetail', () async {
+      // TODO
+    });
+
+    // Список событий
+    //
+    //Future<UniEventsGetListRespBody> uniEventsGetList() async
+    test('test uniEventsGetList', () async {
+      // TODO
+    });
+
   });
 }

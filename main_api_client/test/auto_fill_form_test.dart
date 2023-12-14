@@ -17,8 +17,23 @@ void main() {
       // TODO
     });
 
+    // String organisation
+    test('to test the property `organisation`', () async {
+      // TODO
+    });
+
+    // int organisationId
+    test('to test the property `organisationId`', () async {
+      // TODO
+    });
+
     // String department
     test('to test the property `department`', () async {
+      // TODO
+    });
+
+    // int departmentId
+    test('to test the property `departmentId`', () async {
       // TODO
     });
 

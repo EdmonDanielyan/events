@@ -77,8 +77,8 @@ Class | Method | HTTP request | Description
 [*ContentApi*](doc/ContentApi.md) | [**getPagesSection**](doc/ContentApi.md#getpagessection) | **GET** /pages/sections/{code} | Получить список страниц раздела. Например, список страниц для раздела \&quot;социальная ответственность\&quot;.
 [*ContentApi*](doc/ContentApi.md) | [**getPagesSectionsList**](doc/ContentApi.md#getpagessectionslist) | **GET** /pages/sections | Получить список разделов страниц.
 [*ContentApi*](doc/ContentApi.md) | [**getSnippetsList**](doc/ContentApi.md#getsnippetslist) | **GET** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
-[*ContentApi*](doc/ContentApi.md) | [**uniEventsGetDetail**](doc/ContentApi.md#unieventsgetdetail) | **GET** /uni_evens/{id} | Детальная информация о событии
-[*ContentApi*](doc/ContentApi.md) | [**uniEventsGetList**](doc/ContentApi.md#unieventsgetlist) | **GET** /uni_evens | Список событий
+[*ContentApi*](doc/ContentApi.md) | [**uniEventsGetDetail**](doc/ContentApi.md#unieventsgetdetail) | **GET** /uni_events/{id} | Детальная информация о событии
+[*ContentApi*](doc/ContentApi.md) | [**uniEventsGetList**](doc/ContentApi.md#unieventsgetlist) | **GET** /uni_events | Список событий
 [*DirectoryApi*](doc/DirectoryApi.md) | [**getOrganisationDirectory**](doc/DirectoryApi.md#getorganisationdirectory) | **GET** /directory/organisation | Справочник организаций
 [*EventsApi*](doc/EventsApi.md) | [**eventsAddeventmemberIdGet**](doc/EventsApi.md#eventsaddeventmemberidget) | **GET** /events/addeventmember/{id} | Добавить текущего пользователя как участника события
 [*EventsApi*](doc/EventsApi.md) | [**eventsRemoveeventmemberIdGet**](doc/EventsApi.md#eventsremoveeventmemberidget) | **GET** /events/removeeventmember/{id} | Удалить текущего пользователя как участника события

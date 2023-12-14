@@ -14,8 +14,8 @@ Method | HTTP request | Description
 [**getPagesSection**](ContentApi.md#getpagessection) | **GET** /pages/sections/{code} | Получить список страниц раздела. Например, список страниц для раздела \&quot;социальная ответственность\&quot;.
 [**getPagesSectionsList**](ContentApi.md#getpagessectionslist) | **GET** /pages/sections | Получить список разделов страниц.
 [**getSnippetsList**](ContentApi.md#getsnippetslist) | **GET** /snippets | Получить список текстовых фрагментов для использования в интерфейсе.
-[**uniEventsGetDetail**](ContentApi.md#unieventsgetdetail) | **GET** /uni_evens/{id} | Детальная информация о событии
-[**uniEventsGetList**](ContentApi.md#unieventsgetlist) | **GET** /uni_evens | Список событий
+[**uniEventsGetDetail**](ContentApi.md#unieventsgetdetail) | **GET** /uni_events/{id} | Детальная информация о событии
+[**uniEventsGetList**](ContentApi.md#unieventsgetlist) | **GET** /uni_events | Список событий
 
 
 # **getPage**
