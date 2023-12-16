@@ -30,8 +30,8 @@ class EventsListCubit extends Cubit<EventsListState> {
         await Token.setNewTokensIfExpired();
         final response =
             await getIt<EventsListNetworkRequest>(param1: pagination)();
-        pagination = response.mapResponse(pagination);
-
+        // pagination = response.mapResponse(pagination);
+        print(response);
         emitSuccess(pagination.items);
       }
     } on DioException catch (e) {

@@ -5,5 +5,5 @@ import 'package:openapi/openapi.dart';
 
 abstract class EventListRequestDependency {
   abstract Pagination<EventData>? pagination;
-  Future<Response<GetEvents>> call();
+  Future<Response<UniEventsGetListRespBody>> call();
 }

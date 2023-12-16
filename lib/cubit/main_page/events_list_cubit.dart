@@ -28,8 +28,10 @@ class MainEventsListCubit extends Cubit<EventsListState> {
         await Token.setNewTokensIfExpired();
         final response =
             await getIt<EventsListNetworkRequest>(param1: pagination)();
-        final mapResponse = response.mapResponse(pagination);
-        emitSuccess(mapResponse.items);
+        // final mapResponse = response.mapResponse(pagination);
+        print(response);
+
+        // emitSuccess(mapResponse.items);
       } else {
         emitSuccess(eventList!);
       }
